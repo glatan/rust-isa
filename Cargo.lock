@@ -12,3 +12,10 @@ version = "0.0.0"
 dependencies = [
  "rust-isa",
 ]
+
+[[package]]
+name = "sse2-link"
+version = "0.1.0"
+dependencies = [
+ "rust-isa",
+]

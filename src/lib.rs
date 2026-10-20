@@ -10,5 +10,8 @@
 
 #![no_std]
 
+#[cfg(target_arch = "x86_64")]
+pub mod x86;
+
 #[cfg(target_arch = "wasm32")]
 pub mod wasm32;

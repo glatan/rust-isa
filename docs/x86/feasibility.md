@@ -7,7 +7,7 @@
 | feature | 種別 | 判定 | 実装 |
 | --- | --- | --- | --- |
 | `sse` | SIMD | 既定 | 未 |
-| `sse2` | SIMD | 既定 | 未 |
+| `sse2` | SIMD | 既定 | 一部 |
 | `sse3` | SIMD | 安定 | 未 |
 | `ssse3` | SIMD | 安定 | 未 |
 | `sse4.1` | SIMD | 安定 | 未 |
