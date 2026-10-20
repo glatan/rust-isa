@@ -31,3 +31,32 @@ pub fn paddd(a: V128, b: V128) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_sse2_psubd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pcmpeqd(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `psubd`
+///
+/// Subtract the four 32-bit integer lanes, wrapping at 32 bits.
+#[inline(always)]
+pub fn psubd(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_psubd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `pcmpeqd`
+///
+/// Compare the four 32-bit integer lanes. A true lane is all bits one.
+#[inline(always)]
+pub fn pcmpeqd(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_pcmpeqd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}

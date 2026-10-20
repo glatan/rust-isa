@@ -28,7 +28,7 @@
 | 段階 | 対象 | 内容 | 目安 |
 | --- | --- | --- | --- |
 | 0 | 共通 | build.rs、値の型、native テスト fixture（一部） | M |
-| 1 | x86_64 | SSE2 の `paddd` / load / store を実装済み。AVX2、AVX-512、暗号・整数は未着手 | L |
+| 1 | x86_64 | SSE2 の load / store、整数加減算、比較、bitwise を実装済み。AVX2、AVX-512、暗号・整数は未着手 | L |
 | 2 | AArch64 | NEON、dotprod、SVE スライス API、暗号 | L |
 | 3 | RISC-V | 固定長 V128、zba など、スライス API | L |
 | 4 | LoongArch | LSX、LASX | M |
