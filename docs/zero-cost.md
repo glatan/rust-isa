@@ -114,10 +114,10 @@ __attribute__((always_inline)) void c_add(const int *a, const int *b, int *out) 
 
 RISC-V と LoongArch では、次の intrinsics を使うと、C がインラインされても一時値の store/load が残った。
 
-- RISC-V: `__riscv_vle32_v_i32m1` / `__riscv_vse32_v_i32m1`
+- RISC-V: `__riscv_vle32_v_i32m1` / `__riscv_vse32_v_i32m1`、`__riscv_vrgather_vv_i32m1`
 - LoongArch: `__lasx_xvld` / `__lasx_xvst`
 
-GCC の vector 拡張に置き換えると、どちらも store/load が消えた。intrinsics が必要な命令は、命令ごとに disassembly を確認する。
+GCC の vector 拡張に置き換えると、どちらも store/load が消えた。一方、`vrgather` は intrinsics が必要で、2 命令を合成すると `vrgather` の間に store/load が残った。intrinsics が必要な命令は、命令ごとに disassembly を確認する。
 
 ### target-cpu と feature 集合
 
