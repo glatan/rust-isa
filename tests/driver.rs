@@ -54,23 +54,30 @@ fn relaxed_symbols_match() {
     assert_eq!(rust_symbols.len(), 20);
 }
 
-
 #[test]
 fn x86_symbols_match() {
-    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("src/x86/simd/sse2");
+    check_x86_symbols("sse2", "sse2.c", "rust_isa_sse2_");
+    check_x86_symbols("avx2", "avx2.c", "rust_isa_avx2_");
+    check_x86_symbols("avx512f", "avx512f.c", "rust_isa_avx512f_");
+    check_x86_symbols("avx512bw", "avx512bw.c", "rust_isa_avx512bw_");
+    check_x86_symbols("avx512dq", "avx512dq.c", "rust_isa_avx512dq_");
+    check_x86_symbols("avx512ifma", "avx512ifma.c", "rust_isa_avx512ifma_");
+    check_x86_symbols("avx512vbmi", "avx512vbmi.c", "rust_isa_avx512vbmi_");
+    check_x86_symbols("avx512vnni", "avx512vnni.c", "rust_isa_avx512vnni_");
+    check_x86_symbols("avx512vl", "avx512vl.c", "rust_isa_avx512vl_");
+}
+
+fn check_x86_symbols(module: &str, c_file: &str, prefix: &str) {
+    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("src/x86/simd")
+        .join(module);
     let mut rust_symbols = BTreeSet::new();
     for path in rust_sources(&root) {
-        rust_symbols.extend(rust_symbols_in(
-            &fs::read_to_string(&path).unwrap(),
-            "rust_isa_sse2_",
-        ));
+        rust_symbols.extend(rust_symbols_in(&fs::read_to_string(&path).unwrap(), prefix));
     }
-    let c_symbols = c_symbols_in(
-        &fs::read_to_string(root.join("sse2.c")).unwrap(),
-        "rust_isa_sse2_",
-    );
-    assert_eq!(rust_symbols, c_symbols);
-    assert_eq!(rust_symbols.len(), 17);
+    let c_symbols = c_symbols_in(&fs::read_to_string(root.join(c_file)).unwrap(), prefix);
+    assert_eq!(rust_symbols, c_symbols, "{module}");
+    assert!(!rust_symbols.is_empty(), "{module}");
 }
 
 #[test]
@@ -128,14 +135,14 @@ fn lane_arms_match_width() {
     assert_eq!(seen, 24);
 }
 
-
 #[test]
 fn sse2_pipeline() {
     if std::env::var_os("RUST_ISA_NESTED").is_some() {
         return;
     }
     let dir = nested_dir("sse2-link");
-    let rustflags = "-C target-feature=+sse2 -C linker-plugin-lto -C linker=clang -C link-arg=-fuse-ld=lld";
+    let rustflags =
+        "-C target-feature=+sse2 -C linker-plugin-lto -C linker=clang -C link-arg=-fuse-ld=lld";
     let output = cargo(&dir)
         .env("RUSTFLAGS", rustflags)
         .args(["build", "-p", "sse2-link", "--release"])
@@ -168,6 +175,92 @@ fn sse2_pipeline() {
         paddd[1],
         paddd[0] + 1,
         "store or load between paddd:\n{body}"
+    );
+}
+
+#[test]
+fn avx2_pipeline() {
+    if std::env::var_os("RUST_ISA_NESTED").is_some() {
+        return;
+    }
+    let dir = nested_dir("avx2-link");
+    let rustflags =
+        "-C target-feature=+avx2 -C linker-plugin-lto -C linker=clang -C link-arg=-fuse-ld=lld";
+    let output = cargo(&dir)
+        .env("RUSTFLAGS", rustflags)
+        .args(["build", "-p", "avx2-link", "--release"])
+        .output()
+        .expect("cargo");
+    assert!(output.status.success(), "{}", output_text(&output));
+
+    let binary = dir.join("release/avx2-link");
+    assert!(binary.is_file(), "missing {}", binary.display());
+    let output = Command::new("llvm-objdump")
+        .args(["-d", "--no-show-raw-insn"])
+        .arg(&binary)
+        .output()
+        .expect("llvm-objdump");
+    assert!(output.status.success(), "{}", output_text(&output));
+    let text = String::from_utf8_lossy(&output.stdout);
+    let start = text.find("<kernel>:").expect("kernel symbol");
+    let body = &text[start..];
+    let body = &body[..body.find("\n\n").unwrap_or(body.len())];
+    assert!(!body.contains("call"), "kernel calls C:\n{body}");
+    let add = body
+        .lines()
+        .position(|line| line.contains("vpaddd"))
+        .unwrap_or_else(|| panic!("missing vpaddd:\n{body}"));
+    let mul = body
+        .lines()
+        .position(|line| line.contains("vpmulld"))
+        .unwrap_or_else(|| panic!("missing vpmulld:\n{body}"));
+    assert_eq!(
+        mul,
+        add + 1,
+        "store or load between vpaddd and vpmulld:\n{body}"
+    );
+}
+
+#[test]
+fn avx512_pipeline() {
+    if std::env::var_os("RUST_ISA_NESTED").is_some() {
+        return;
+    }
+    let dir = nested_dir("avx512-link");
+    let rustflags =
+        "-C target-feature=+avx512f -C linker-plugin-lto -C linker=clang -C link-arg=-fuse-ld=lld";
+    let output = cargo(&dir)
+        .env("RUSTFLAGS", rustflags)
+        .args(["build", "-p", "avx512-link", "--release"])
+        .output()
+        .expect("cargo");
+    assert!(output.status.success(), "{}", output_text(&output));
+
+    let binary = dir.join("release/avx512-link");
+    assert!(binary.is_file(), "missing {}", binary.display());
+    let output = Command::new("llvm-objdump")
+        .args(["-d", "--no-show-raw-insn"])
+        .arg(&binary)
+        .output()
+        .expect("llvm-objdump");
+    assert!(output.status.success(), "{}", output_text(&output));
+    let text = String::from_utf8_lossy(&output.stdout);
+    let start = text.find("<kernel>:").expect("kernel symbol");
+    let body = &text[start..];
+    let body = &body[..body.find("\n\n").unwrap_or(body.len())];
+    assert!(!body.contains("call"), "kernel calls C:\n{body}");
+    let lines: Vec<_> = body.lines().collect();
+    let paddd: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("vpaddd"))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(paddd.len(), 2, "kernel body:\n{body}");
+    assert_eq!(
+        paddd[1],
+        paddd[0] + 1,
+        "store or load between vpaddd:\n{body}"
     );
 }
 

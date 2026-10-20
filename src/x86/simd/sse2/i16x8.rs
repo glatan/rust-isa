@@ -56,3 +56,83 @@ pub fn pmullw(a: V128, b: V128) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_sse2_pcmpgtw(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `pcmpgtw`
+///
+/// Compare the eight signed 16-bit integer lanes. A true lane is all bits one.
+#[inline(always)]
+pub fn pcmpgtw(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_pcmpgtw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse2_pmaddwd(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `pmaddwd`
+///
+/// Multiply and add adjacent 16-bit integer lanes into 32-bit lanes.
+#[inline(always)]
+pub fn pmaddwd(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_pmaddwd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse2_pminw(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `pminw`
+///
+/// Take the minimum of the eight signed 16-bit integer lanes.
+#[inline(always)]
+pub fn pminw(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_pminw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse2_pmaxw(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `pmaxw`
+///
+/// Take the maximum of the eight signed 16-bit integer lanes.
+#[inline(always)]
+pub fn pmaxw(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_pmaxw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse2_pavgw(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `pavgw`
+///
+/// Average the eight unsigned 16-bit integer lanes, rounding up.
+#[inline(always)]
+pub fn pavgw(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_pavgw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}

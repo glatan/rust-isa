@@ -60,3 +60,35 @@ pub fn pcmpeqd(a: V128, b: V128) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_sse2_pcmpgtd(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `pcmpgtd`
+///
+/// Compare the four signed 32-bit integer lanes. A true lane is all bits one.
+#[inline(always)]
+pub fn pcmpgtd(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_pcmpgtd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse2_pmuludq(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `pmuludq`
+///
+/// Multiply the low unsigned 32-bit value of each 64-bit lane.
+#[inline(always)]
+pub fn pmuludq(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_pmuludq(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}

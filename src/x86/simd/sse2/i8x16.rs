@@ -43,3 +43,67 @@ pub fn pcmpeqb(a: V128, b: V128) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_sse2_pcmpgtb(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `pcmpgtb`
+///
+/// Compare the 16 signed byte lanes. A true lane is all bits one.
+#[inline(always)]
+pub fn pcmpgtb(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_pcmpgtb(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse2_pminub(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `pminub`
+///
+/// Take the minimum of the 16 unsigned byte lanes.
+#[inline(always)]
+pub fn pminub(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_pminub(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse2_pmaxub(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `pmaxub`
+///
+/// Take the maximum of the 16 unsigned byte lanes.
+#[inline(always)]
+pub fn pmaxub(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_pmaxub(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse2_pavgb(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `pavgb`
+///
+/// Average the 16 unsigned byte lanes, rounding up.
+#[inline(always)]
+pub fn pavgb(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_pavgb(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}

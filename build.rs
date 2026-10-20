@@ -7,27 +7,78 @@ fn main() {
     let simd128_c = manifest.join("src/wasm32/simd/simd128/simd128.c");
     let relaxed_c = manifest.join("src/wasm32/simd/relaxed_simd/relaxed_simd.c");
     let sse2_c = manifest.join("src/x86/simd/sse2/sse2.c");
-    println!("cargo:rerun-if-changed={}", simd128_c.display());
-    println!("cargo:rerun-if-changed={}", relaxed_c.display());
-    println!("cargo:rerun-if-changed={}", sse2_c.display());
+    let avx2_c = manifest.join("src/x86/simd/avx2/avx2.c");
+    let avx512f_c = manifest.join("src/x86/simd/avx512f/avx512f.c");
+    let avx512bw_c = manifest.join("src/x86/simd/avx512bw/avx512bw.c");
+    let avx512dq_c = manifest.join("src/x86/simd/avx512dq/avx512dq.c");
+    let avx512ifma_c = manifest.join("src/x86/simd/avx512ifma/avx512ifma.c");
+    let avx512vbmi_c = manifest.join("src/x86/simd/avx512vbmi/avx512vbmi.c");
+    let avx512vnni_c = manifest.join("src/x86/simd/avx512vnni/avx512vnni.c");
+    let avx512vl_c = manifest.join("src/x86/simd/avx512vl/avx512vl.c");
+    for path in [
+        &simd128_c,
+        &relaxed_c,
+        &sse2_c,
+        &avx2_c,
+        &avx512f_c,
+        &avx512bw_c,
+        &avx512dq_c,
+        &avx512ifma_c,
+        &avx512vbmi_c,
+        &avx512vnni_c,
+        &avx512vl_c,
+    ] {
+        println!("cargo:rerun-if-changed={}", path.display());
+    }
     println!("cargo:rerun-if-env-changed=CARGO_CFG_TARGET_FEATURE");
 
     let target = env::var("TARGET").unwrap_or_default();
     let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
 
     if target == "x86_64-unknown-linux-gnu" {
-        compile_archive(
+        compile_native(&out_dir, &sse2_c, "rust_isa_sse2", &["-msse2"]);
+        compile_native(
             &out_dir,
-            &sse2_c,
-            "rust_isa_sse2",
-            &[
-                "-msse2",
-                "-mno-mmx",
-                "-mno-x87",
-                "-mno-popcnt",
-                "-mno-xsave",
-            ],
-            None,
+            &avx2_c,
+            "rust_isa_avx2",
+            &["-mavx2", "-mno-avx512f"],
+        );
+        compile_native(&out_dir, &avx512f_c, "rust_isa_avx512f", &["-mavx512f"]);
+        compile_native(
+            &out_dir,
+            &avx512bw_c,
+            "rust_isa_avx512bw",
+            &["-mavx512f", "-mavx512bw"],
+        );
+        compile_native(
+            &out_dir,
+            &avx512dq_c,
+            "rust_isa_avx512dq",
+            &["-mavx512f", "-mavx512dq"],
+        );
+        compile_native(
+            &out_dir,
+            &avx512ifma_c,
+            "rust_isa_avx512ifma",
+            &["-mavx512f", "-mavx512ifma"],
+        );
+        compile_native(
+            &out_dir,
+            &avx512vbmi_c,
+            "rust_isa_avx512vbmi",
+            &["-mavx512f", "-mavx512vbmi"],
+        );
+        compile_native(
+            &out_dir,
+            &avx512vnni_c,
+            "rust_isa_avx512vnni",
+            &["-mavx512f", "-mavx512vnni"],
+        );
+        compile_native(
+            &out_dir,
+            &avx512vl_c,
+            "rust_isa_avx512vl",
+            &["-mavx512f", "-mavx512dq", "-mavx512vl"],
         );
         return;
     }
@@ -62,6 +113,12 @@ fn main() {
 
 fn has_feature(features: &str, name: &str) -> bool {
     features.split([',', ' ']).any(|feature| feature == name)
+}
+
+fn compile_native(out_dir: &Path, c_path: &Path, name: &str, flags: &[&str]) {
+    let mut all_flags = vec!["-mno-mmx", "-mno-x87", "-mno-popcnt", "-mno-xsave"];
+    all_flags.extend_from_slice(flags);
+    compile_archive(out_dir, c_path, name, &all_flags, None);
 }
 
 fn compile_archive(
