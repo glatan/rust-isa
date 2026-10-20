@@ -30,13 +30,13 @@
 | 0 | 共通 | build.rs、値の型、native テスト fixture（一部） | M |
 | 1 | x86_64 | SSE2、AVX2、AVX-512 の代表、暗号・整数の一部を実装済み。i686 の SSE2/AVX2 値テスト済み | L |
 | 2 | AArch64 | NEON と dotprod の一部を実装済み。SVE スライス API、暗号は未着手 | L |
-| 3 | RISC-V | 固定長 V128、zba など、スライス API | L |
-| 4 | LoongArch | LSX、LASX | M |
-| 5 | s390x | vector | M |
-| 6 | 32-bit ARM | NEON | M |
-| 7 | PowerPC | Altivec、VSX | M |
-| 8 | MIPS | MSA | S |
-| 9 | wasm32 | wide-arithmetic、整理 | S |
+| 3 | RISC-V | 固定長 V128 の load/store と add/mul を実装済み。zba、スライス API は未着手 | L |
+| 4 | LoongArch | LSX の load/store と add/mul を実装済み。LASX は未着手 | M |
+| 5 | s390x | vector の load/store と add/mul を実装済み | M |
+| 6 | 32-bit ARM | NEON の load/store と add/mul を実装済み | M |
+| 7 | PowerPC | Altivec の load/store と add/mul を実装済み | M |
+| 8 | MIPS | MSA の load/store と add/mul を実装済み | S |
+| 9 | wasm32 | wide-arithmetic を実装済み | S |
 
 ## 段階 0: 共通基盤
 

@@ -6,7 +6,7 @@
 
 | feature | 種別 | 判定 | 実装 |
 | --- | --- | --- | --- |
-| `vector` | SIMD | 安定 | 未 |
+| `vector` | SIMD | 安定 | 一部 |
 | `vector-enhancements-1` | SIMD | 安定 | 未 |
 | `vector-enhancements-2` | SIMD | 安定 | 未 |
 | `vector-enhancements-3` | SIMD | 安定 | 未 |

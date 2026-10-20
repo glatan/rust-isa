@@ -473,6 +473,377 @@ fn aarch64_pipeline() {
 }
 
 #[test]
+fn riscv_pipeline() {
+    if std::env::var_os("RUST_ISA_NESTED").is_some() {
+        return;
+    }
+    let dir = nested_dir("riscv-values");
+    let rustflags = "-C target-feature=+v -C linker-plugin-lto -C linker=clang -C link-arg=--target=riscv64-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
+    let output = cargo(&dir)
+        .env("RUSTC_BOOTSTRAP", "1")
+        .env("RUSTFLAGS", rustflags)
+        .args([
+            "build",
+            "--manifest-path",
+            "fixtures/riscv-values/Cargo.toml",
+            "-Z",
+            "build-std=core",
+            "--target",
+            "riscv64gc-unknown-linux-gnu",
+            "--release",
+        ])
+        .output()
+        .expect("cargo");
+    assert!(output.status.success(), "{}", output_text(&output));
+
+    let binary = dir.join("riscv64gc-unknown-linux-gnu/release/riscv-values");
+    assert!(binary.is_file(), "missing {}", binary.display());
+    let output = Command::new("qemu-riscv64-static")
+        .arg(&binary)
+        .output()
+        .expect("qemu-riscv64-static");
+    assert!(
+        output.status.success(),
+        "riscv value test failed: {}\n{}",
+        output.status,
+        output_text(&output)
+    );
+
+    let output = Command::new("llvm-objdump")
+        .args(["-d", "--no-show-raw-insn"])
+        .arg(&binary)
+        .output()
+        .expect("llvm-objdump");
+    assert!(output.status.success(), "{}", output_text(&output));
+    let text = String::from_utf8_lossy(&output.stdout);
+
+    for (symbol, mnemonic) in [("<kernel_add>:", "vadd.vv"), ("<kernel_mul>:", "vmul.vv")] {
+        let body = function_at(&text, symbol);
+        assert!(
+            !body
+                .lines()
+                .any(|line| line.split_whitespace().any(|word| word == "jal")),
+            "{symbol} calls C:\n{body}"
+        );
+        let lines: Vec<_> = body.lines().collect();
+        let found: Vec<_> = lines
+            .iter()
+            .enumerate()
+            .filter(|(_, line)| line.contains(mnemonic))
+            .map(|(index, _)| index)
+            .collect();
+        assert_eq!(found.len(), 2, "{symbol} body:\n{body}");
+        assert_eq!(
+            found[1],
+            found[0] + 1,
+            "{mnemonic} is not adjacent:\n{body}"
+        );
+    }
+}
+
+#[test]
+fn loongarch_pipeline() {
+    if std::env::var_os("RUST_ISA_NESTED").is_some() {
+        return;
+    }
+    let dir = nested_dir("loongarch-values");
+    let rustflags = "-C linker-plugin-lto -C linker=clang -C link-arg=--target=loongarch64-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
+    let output = cargo(&dir)
+        .env("RUSTC_BOOTSTRAP", "1")
+        .env("RUSTFLAGS", rustflags)
+        .args([
+            "build",
+            "--manifest-path",
+            "fixtures/loongarch-values/Cargo.toml",
+            "-Z",
+            "build-std=core",
+            "--target",
+            "loongarch64-unknown-linux-gnu",
+            "--release",
+        ])
+        .output()
+        .expect("cargo");
+    assert!(output.status.success(), "{}", output_text(&output));
+
+    let binary = dir.join("loongarch64-unknown-linux-gnu/release/loongarch-values");
+    assert!(binary.is_file(), "missing {}", binary.display());
+    let output = Command::new("qemu-loongarch64-static")
+        .arg(&binary)
+        .output()
+        .expect("qemu-loongarch64-static");
+    assert!(
+        output.status.success(),
+        "loongarch value test failed: {}\n{}",
+        output.status,
+        output_text(&output)
+    );
+
+    let output = Command::new("llvm-objdump")
+        .args(["-d", "--no-show-raw-insn"])
+        .arg(&binary)
+        .output()
+        .expect("llvm-objdump");
+    assert!(output.status.success(), "{}", output_text(&output));
+    let text = String::from_utf8_lossy(&output.stdout);
+
+    let add = function_at(&text, "<kernel_add>:");
+    assert!(
+        !add.lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
+        "kernel_add calls C:\n{add}"
+    );
+    assert!(add.contains("vadd.w"), "kernel_add body:\n{add}");
+
+    let mul = function_at(&text, "<kernel_mul>:");
+    assert!(
+        !mul.lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
+        "kernel_mul calls C:\n{mul}"
+    );
+    let lines: Vec<_> = mul.lines().collect();
+    let found: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("vmul.w"))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(found.len(), 2, "kernel_mul body:\n{mul}");
+    assert_eq!(found[1], found[0] + 1, "vmul.w is not adjacent:\n{mul}");
+}
+
+#[test]
+fn s390x_values() {
+    if std::env::var_os("RUST_ISA_NESTED").is_some() {
+        return;
+    }
+    let dir = nested_dir("s390x-values");
+    let rustflags = "-C target-feature=+vector -C linker-plugin-lto -C linker=clang -C link-arg=--target=s390x-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
+    let output = cargo(&dir)
+        .env("RUSTC_BOOTSTRAP", "1")
+        .env("RUSTFLAGS", rustflags)
+        .args([
+            "build",
+            "--manifest-path",
+            "fixtures/s390x-values/Cargo.toml",
+            "-Z",
+            "build-std=core",
+            "--target",
+            "s390x-unknown-linux-gnu",
+            "--release",
+        ])
+        .output()
+        .expect("cargo");
+    assert!(output.status.success(), "{}", output_text(&output));
+
+    let binary = dir.join("s390x-unknown-linux-gnu/release/s390x-values");
+    assert!(binary.is_file(), "missing {}", binary.display());
+    let output = Command::new("qemu-s390x-static")
+        .arg(&binary)
+        .output()
+        .expect("qemu-s390x-static");
+    assert!(
+        output.status.success(),
+        "s390x value test failed: {}\n{}",
+        output.status,
+        output_text(&output)
+    );
+}
+
+#[test]
+fn arm_values() {
+    if std::env::var_os("RUST_ISA_NESTED").is_some() {
+        return;
+    }
+    let dir = nested_dir("arm-values");
+    let rustflags = "-C target-feature=+neon -C linker-plugin-lto -C linker=clang -C link-arg=--target=armv7-unknown-linux-gnueabihf -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
+    let output = cargo(&dir)
+        .env("RUSTC_BOOTSTRAP", "1")
+        .env("RUSTFLAGS", rustflags)
+        .args([
+            "build",
+            "--manifest-path",
+            "fixtures/arm-values/Cargo.toml",
+            "-Z",
+            "build-std=core",
+            "--target",
+            "armv7-unknown-linux-gnueabihf",
+            "--release",
+        ])
+        .output()
+        .expect("cargo");
+    assert!(output.status.success(), "{}", output_text(&output));
+
+    let binary = dir.join("armv7-unknown-linux-gnueabihf/release/arm-values");
+    assert!(binary.is_file(), "missing {}", binary.display());
+    let output = Command::new("qemu-arm-static")
+        .arg(&binary)
+        .output()
+        .expect("qemu-arm-static");
+    assert!(
+        output.status.success(),
+        "arm value test failed: {}\n{}",
+        output.status,
+        output_text(&output)
+    );
+}
+
+#[test]
+fn powerpc_pipeline() {
+    if std::env::var_os("RUST_ISA_NESTED").is_some() {
+        return;
+    }
+    let dir = nested_dir("powerpc-values");
+    let rustflags = "-C target-feature=+altivec,+vsx -C linker-plugin-lto -C linker=clang -C link-arg=--target=powerpc64le-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
+    let output = cargo(&dir)
+        .env("RUSTC_BOOTSTRAP", "1")
+        .env("RUSTFLAGS", rustflags)
+        .args([
+            "build",
+            "--manifest-path",
+            "fixtures/powerpc-values/Cargo.toml",
+            "-Z",
+            "build-std=core",
+            "--target",
+            "powerpc64le-unknown-linux-gnu",
+            "--release",
+        ])
+        .output()
+        .expect("cargo");
+    assert!(output.status.success(), "{}", output_text(&output));
+
+    let binary = dir.join("powerpc64le-unknown-linux-gnu/release/powerpc-values");
+    assert!(binary.is_file(), "missing {}", binary.display());
+    let output = Command::new("qemu-ppc64le-static")
+        .arg(&binary)
+        .output()
+        .expect("qemu-ppc64le-static");
+    assert!(
+        output.status.success(),
+        "powerpc value test failed: {}\n{}",
+        output.status,
+        output_text(&output)
+    );
+
+    let output = Command::new("llvm-objdump")
+        .args(["-d", "--no-show-raw-insn"])
+        .arg(&binary)
+        .output()
+        .expect("llvm-objdump");
+    assert!(output.status.success(), "{}", output_text(&output));
+    let text = String::from_utf8_lossy(&output.stdout);
+
+    for (symbol, mnemonic) in [("<kernel_add>:", "vadduwm"), ("<kernel_mul>:", "vmuluwm")] {
+        let body = function_at(&text, symbol);
+        assert!(
+            !body
+                .lines()
+                .any(|line| line.split_whitespace().any(|word| word == "bl")),
+            "{symbol} calls C:\n{body}"
+        );
+        let lines: Vec<_> = body.lines().collect();
+        let found: Vec<_> = lines
+            .iter()
+            .enumerate()
+            .filter(|(_, line)| line.contains(mnemonic))
+            .map(|(index, _)| index)
+            .collect();
+        assert_eq!(found.len(), 2, "{symbol} body:\n{body}");
+        assert_eq!(
+            found[1],
+            found[0] + 1,
+            "{mnemonic} is not adjacent:\n{body}"
+        );
+    }
+}
+
+#[test]
+fn mips_values() {
+    if std::env::var_os("RUST_ISA_NESTED").is_some() {
+        return;
+    }
+    let dir = nested_dir("mips-values");
+    let rustflags = "-C target-feature=+msa,+fp64 -C linker-plugin-lto -C linker=clang -C link-arg=--target=mips64-unknown-linux-gnuabi64 -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C link-arg=-Wl,-e,_start -C relocation-model=static";
+    let output = cargo(&dir)
+        .env("RUSTC_BOOTSTRAP", "1")
+        .env("RUSTFLAGS", rustflags)
+        .args([
+            "build",
+            "--manifest-path",
+            "fixtures/mips-values/Cargo.toml",
+            "-Z",
+            "build-std=core",
+            "--target",
+            "mips64-unknown-linux-gnuabi64",
+            "--release",
+        ])
+        .output()
+        .expect("cargo");
+    assert!(output.status.success(), "{}", output_text(&output));
+
+    let binary = dir.join("mips64-unknown-linux-gnuabi64/release/mips-values");
+    assert!(binary.is_file(), "missing {}", binary.display());
+    let output = Command::new("qemu-mips64-static")
+        .arg(&binary)
+        .output()
+        .expect("qemu-mips64-static");
+    assert!(
+        output.status.success(),
+        "mips value test failed: {}\n{}",
+        output.status,
+        output_text(&output)
+    );
+}
+
+#[test]
+fn wide_arithmetic_pipeline() {
+    if std::env::var_os("RUST_ISA_NESTED").is_some() {
+        return;
+    }
+    let dir = nested_dir("wide-link");
+    let output = cargo(&dir)
+        .args([
+            "build",
+            "-p",
+            "wide-link",
+            "--release",
+            "--target",
+            "wasm32-unknown-unknown",
+        ])
+        .output()
+        .expect("cargo");
+    assert!(output.status.success(), "{}", output_text(&output));
+
+    let wasm = dir.join("wasm32-unknown-unknown/release/wide_link.wasm");
+    assert!(wasm.is_file(), "missing {}", wasm.display());
+    let opt = dir.join("wide-link.opt.wasm");
+    let wat = dir.join("wide-link.wat");
+    let status = Command::new("wasm-opt")
+        .args(["-O3"])
+        .arg(&wasm)
+        .arg("-o")
+        .arg(&opt)
+        .status()
+        .expect("wasm-opt");
+    assert!(status.success(), "wasm-opt failed");
+    let status = Command::new("wasm2wat")
+        .arg(&opt)
+        .arg("-o")
+        .arg(&wat)
+        .status()
+        .expect("wasm2wat");
+    assert!(status.success(), "wasm2wat failed");
+    let text = fs::read_to_string(&wat).unwrap();
+    for opcode in [
+        "i64.add128",
+        "i64.sub128",
+        "i64.mul_wide_u",
+        "i64.mul_wide_s",
+    ] {
+        assert!(text.contains(opcode), "missing {opcode}");
+    }
+}
+
+#[test]
 fn wasm_pipeline() {
     if std::env::var_os("RUST_ISA_NESTED").is_some() {
         return;

@@ -6,7 +6,7 @@ family は命令の種類に合わせて決める（`simd`、`system` など）�
 
 ## 実装状況
 
-なし。
+LSX の `V128`、load / store、`vadd.w`、`vmul.w` を実装してある。`fixtures/loongarch-values` を QEMU-LoongArch で実行し、`vadd.w` と `vmul.w` の zero-cost を確認する。
 
 ## 実装方式
 

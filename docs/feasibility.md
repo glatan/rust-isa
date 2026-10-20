@@ -39,13 +39,13 @@ wasm32 では、モジュールが含む命令の feature を全体として要�
 | --- | --- | --- | --- | --- | --- | --- |
 | x86 | `x86_64-unknown-linux-gnu`、`i686-unknown-linux-gnu` | `sse`、`sse2` | `avx2`、`avx512f`、`aes`、`bmi2` | `sse2`、`avx2`、`avx512f`、暗号・整数の一部 | x86_64、i686 で条件付き | [x86](x86/feasibility.md) |
 | AArch64 | `aarch64-unknown-linux-gnu` | `neon` | `sve`、`sve2`、`dotprod`、`i8mm` | `neon`、`dotprod` の一部 | `neon` で条件付き | [AArch64](aarch64/feasibility.md) |
-| 32-bit ARM | `armv7-unknown-linux-gnueabihf` | なし | 今回測った範囲ではなし | なし | `neon` で条件付き | [32-bit ARM](arm/feasibility.md) |
-| PowerPC | `powerpc64le-unknown-linux-gnu` | なし | 今回測った範囲ではなし | なし | 条件付き | [PowerPC](powerpc/feasibility.md) |
-| RISC-V | `riscv64gc-unknown-linux-gnu` | なし | `zba`、`zbb`、`zbc`、`zbs`、`zk*` | なし | `v` で条件付き | [RISC-V](riscv/feasibility.md) |
-| LoongArch | `loongarch64-unknown-linux-gnu` | `lsx` | `lasx`、`lbt` | なし | `lasx` で条件付き | [LoongArch](loongarch/feasibility.md) |
+| 32-bit ARM | `armv7-unknown-linux-gnueabihf` | なし | 今回測った範囲ではなし | `neon` の一部 | `neon` で条件付き | [32-bit ARM](arm/feasibility.md) |
+| PowerPC | `powerpc64le-unknown-linux-gnu` | なし | 今回測った範囲ではなし | `altivec` の一部 | 条件付き | [PowerPC](powerpc/feasibility.md) |
+| RISC-V | `riscv64gc-unknown-linux-gnu` | なし | `zba`、`zbb`、`zbc`、`zbs`、`zk*` | `v` の一部 | `v` で条件付き | [RISC-V](riscv/feasibility.md) |
+| LoongArch | `loongarch64-unknown-linux-gnu` | `lsx` | `lasx`、`lbt` | `lsx` の一部 | `lasx` で条件付き | [LoongArch](loongarch/feasibility.md) |
 | s390x | `s390x-unknown-linux-gnu` | なし | `vector`、`vector-enhancements-*` | なし | `vector` で条件付き | [s390x](s390x/feasibility.md) |
 | MIPS | `mips64-unknown-linux-gnuabi64` | なし | 今回測った範囲ではなし | なし | 条件付き | [MIPS](mips/feasibility.md) |
-| wasm32 | `wasm32-unknown-unknown` | なし | `simd128`、`relaxed-simd` | `simd128`、`relaxed-simd` | 確認済み | [wasm32](wasm32/feasibility.md) |
+| wasm32 | `wasm32-unknown-unknown` | なし | `simd128`、`relaxed-simd` | `simd128`、`relaxed-simd`、`wide-arithmetic` | 確認済み | [wasm32](wasm32/feasibility.md) |
 
 ## ゼロコストの状態
 

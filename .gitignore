@@ -2,3 +2,9 @@
 /target-nested
 /fixtures/native-values/target
 /fixtures/aarch64-values/target
+/fixtures/riscv-values/target
+/fixtures/loongarch-values/target
+/fixtures/s390x-values/target
+/fixtures/arm-values/target
+/fixtures/powerpc-values/target
+/fixtures/mips-values/target

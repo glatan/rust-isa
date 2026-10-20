@@ -6,7 +6,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 ## 実装状況
 
-なし。
+Altivec の `V128`、load / store、`vadduwm`、`vmuluwm` を実装してある。`fixtures/powerpc-values` を QEMU-PowerPC で実行し、zero-cost を確認する。LTO のリンクには `.TOC.` を参照する `toc.s` を加える。
 
 ## 実装方式
 

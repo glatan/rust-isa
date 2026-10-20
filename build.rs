@@ -6,6 +6,7 @@ fn main() {
     let manifest = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
     let simd128_c = manifest.join("src/wasm32/simd/simd128/simd128.c");
     let relaxed_c = manifest.join("src/wasm32/simd/relaxed_simd/relaxed_simd.c");
+    let wide_arithmetic_c = manifest.join("src/wasm32/wide_arithmetic/wide_arithmetic.c");
     let sse2_c = manifest.join("src/x86/simd/sse2/sse2.c");
     let avx2_c = manifest.join("src/x86/simd/avx2/avx2.c");
     let avx512f_c = manifest.join("src/x86/simd/avx512f/avx512f.c");
@@ -26,9 +27,16 @@ fn main() {
     let popcnt_c = manifest.join("src/x86/integer/popcnt/popcnt.c");
     let neon_c = manifest.join("src/aarch64/simd/neon/neon.c");
     let dotprod_c = manifest.join("src/aarch64/simd/dotprod/dotprod.c");
+    let rv_vector_c = manifest.join("src/riscv/simd/rv_vector/rv_vector.c");
+    let lsx_c = manifest.join("src/loongarch/simd/lsx/lsx.c");
+    let s390x_vector_c = manifest.join("src/s390x/simd/vector/vector.c");
+    let arm_neon_c = manifest.join("src/arm/simd/neon/neon.c");
+    let altivec_c = manifest.join("src/powerpc/simd/altivec/altivec.c");
+    let msa_c = manifest.join("src/mips/simd/msa/msa.c");
     for path in [
         &simd128_c,
         &relaxed_c,
+        &wide_arithmetic_c,
         &sse2_c,
         &avx2_c,
         &avx512f_c,
@@ -49,6 +57,12 @@ fn main() {
         &popcnt_c,
         &neon_c,
         &dotprod_c,
+        &rv_vector_c,
+        &lsx_c,
+        &s390x_vector_c,
+        &arm_neon_c,
+        &altivec_c,
+        &msa_c,
     ] {
         println!("cargo:rerun-if-changed={}", path.display());
     }
@@ -56,6 +70,77 @@ fn main() {
 
     let target = env::var("TARGET").unwrap_or_default();
     let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
+
+    if target == "mips64-unknown-linux-gnuabi64" {
+        compile_archive(
+            &out_dir,
+            &msa_c,
+            "rust_isa_msa",
+            &["-march=mips64r2", "-mmsa", "-mabicalls", "-mxgot"],
+            Some("mips64-unknown-linux-gnuabi64"),
+        );
+        return;
+    }
+
+    if target == "powerpc64le-unknown-linux-gnu" {
+        compile_archive(
+            &out_dir,
+            &altivec_c,
+            "rust_isa_altivec",
+            &["-maltivec", "-mvsx"],
+            Some("powerpc64le-unknown-linux-gnu"),
+        );
+        return;
+    }
+
+    if target == "armv7-unknown-linux-gnueabihf" {
+        compile_archive(
+            &out_dir,
+            &arm_neon_c,
+            "rust_isa_arm_neon",
+            &[
+                "-mthumb",
+                "-march=armv7-a",
+                "-mfpu=neon",
+                "-mfloat-abi=hard",
+            ],
+            Some("armv7-unknown-linux-gnueabihf"),
+        );
+        return;
+    }
+
+    if target == "s390x-unknown-linux-gnu" {
+        compile_archive(
+            &out_dir,
+            &s390x_vector_c,
+            "rust_isa_s390x_vector",
+            &["-march=z13", "-mzvector"],
+            Some("s390x-unknown-linux-gnu"),
+        );
+        return;
+    }
+
+    if target == "loongarch64-unknown-linux-gnu" {
+        compile_archive(
+            &out_dir,
+            &lsx_c,
+            "rust_isa_lsx",
+            &["-mlsx"],
+            Some("loongarch64-unknown-linux-gnu"),
+        );
+        return;
+    }
+
+    if target == "riscv64gc-unknown-linux-gnu" {
+        compile_archive(
+            &out_dir,
+            &rv_vector_c,
+            "rust_isa_rv_vector",
+            &["-march=rv64gcv", "-mabi=lp64d", "-mno-relax"],
+            Some("riscv64-unknown-linux-gnu"),
+        );
+        return;
+    }
 
     if target == "aarch64-unknown-linux-gnu" {
         compile_archive(
@@ -143,23 +228,31 @@ fn main() {
     let features = env::var("CARGO_CFG_TARGET_FEATURE").unwrap_or_default();
     let simd128 = has_feature(&features, "simd128");
     let relaxed = has_feature(&features, "relaxed-simd");
-    if !simd128 {
-        return;
-    }
 
-    compile_archive(
-        &out_dir,
-        &simd128_c,
-        "rust_isa_simd128",
-        &["-msimd128"],
-        Some("wasm32-unknown-unknown"),
-    );
-    if relaxed {
+    if simd128 {
         compile_archive(
             &out_dir,
-            &relaxed_c,
-            "rust_isa_relaxed_simd",
-            &["-msimd128", "-mrelaxed-simd"],
+            &simd128_c,
+            "rust_isa_simd128",
+            &["-msimd128"],
+            Some("wasm32-unknown-unknown"),
+        );
+        if relaxed {
+            compile_archive(
+                &out_dir,
+                &relaxed_c,
+                "rust_isa_relaxed_simd",
+                &["-msimd128", "-mrelaxed-simd"],
+                Some("wasm32-unknown-unknown"),
+            );
+        }
+    }
+    if env::var_os("CARGO_FEATURE_WIDE_ARITHMETIC").is_some() {
+        compile_archive(
+            &out_dir,
+            &wide_arithmetic_c,
+            "rust_isa_wide_arithmetic",
+            &["-mwide-arithmetic"],
             Some("wasm32-unknown-unknown"),
         );
     }

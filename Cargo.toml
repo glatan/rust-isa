@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = [".", "fixtures/simd128-link", "fixtures/sse2-link", "fixtures/avx2-link", "fixtures/avx512-link", "fixtures/crypto-link"]
+members = [".", "fixtures/simd128-link", "fixtures/sse2-link", "fixtures/avx2-link", "fixtures/avx512-link", "fixtures/crypto-link", "fixtures/wide-link"]
 
 [package]
 name = "rust-isa"
@@ -10,6 +10,9 @@ rust-version = "1.99.1"
 license = "MIT OR Apache-2.0"
 description = "Architecture-specific ISA extensions for stable no_std Rust"
 repository = "https://gitlab.com/glatan/rust-simd"
+
+[features]
+wide-arithmetic = []
 
 [dependencies]
 

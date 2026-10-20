@@ -6,7 +6,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 ## 実装状況
 
-なし。
+NEON の `V128`、load / store、`vadd.i32`、`vmul.i32` を実装してある。`fixtures/arm-values` を QEMU-ARM で実行する。NEON は不安定なので、利用者はクレート全体を `-C target-feature=+neon` でコンパイルする。
 
 ## 実装方式
 

@@ -6,7 +6,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 ## 実装状況
 
-なし。
+`V128`、load / store、vector の整数 add / mul を実装してある。`fixtures/s390x-values` を QEMU-s390x で実行する。値はビッグエンディアンで扱う。
 
 ## 実装方式
 
