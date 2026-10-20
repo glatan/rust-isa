@@ -28,7 +28,7 @@ x86_64 で条件付きのゼロコストを確認した。
 - 呼び出し側の関数に `#[target_feature]` を付けるか、`-C target-feature=+...` を付ける。
 - LTO を扱えるリンカを使う。clang + lld で確認した。
 
-確認した命令は、SSE2 の `paddd`、AVX2 の `vpaddd` と `vpmulld`、AVX-512F の `vpaddd`、AES の `aesenc`、FMA の `vfmadd`、AVX10.1 の `vpaddd` と `vpmulld`、SHA の `sha256rnds2`、AVX-512BW の `vpaddb`、AVX-512VL の `vpaddb`、AVX-512DQ の `vpmullq`、AVX-512IFMA の `vpmadd52luq`、AVX-512VBMI の `vpermb`、AVX-512VNNI の `vpdpbusd`、GFNI の `gf2p8affineqb`、VAES の `vaesenc`、VPCLMULQDQ の `vpclmulqdq` である。AVX2 の確認では、`vpaddd` の結果が `ymm1` のまま `vpmulld` に入り、間の store/load が無かった。
+確認した命令は、SSE2 の `paddd`、AVX2 の `vpaddd`、`vpmulld`、`vpshufb`、AVX-512F の `vpaddd`、AES の `aesenc`、FMA の `vfmadd`、AVX10.1 の `vpaddd` と `vpmulld`、SHA の `sha256rnds2`、AVX-512BW の `vpaddb`、AVX-512VL の `vpaddb`、AVX-512DQ の `vpmullq`、AVX-512IFMA の `vpmadd52luq`、AVX-512VBMI の `vpermb`、AVX-512VNNI の `vpdpbusd`、GFNI の `gf2p8affineqb`、VAES の `vaesenc`、VPCLMULQDQ の `vpclmulqdq` である。AVX2 の確認では、`vpaddd` の結果が `ymm1` のまま `vpmulld` に入り、間の store/load が無かった。
 
 Cargo では `-C lto` を `RUSTFLAGS` に入れない。build script の `embed-bitcode=no` と衝突する。最終バイナリの profile に設定する。
 

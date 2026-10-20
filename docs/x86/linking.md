@@ -85,7 +85,7 @@ llvm-objdump -d --no-show-raw-insn target/release/app | sed -n "/<$sym>:/,/^$/p"
 | feature | C のフラグ | 確認した命令 |
 | --- | --- | --- |
 | `sse2` | `-msse2` | `paddd` |
-| `avx2` | `-mavx2` | `vpaddd`、`vpmulld` |
+| `avx2` | `-mavx2` | `vpaddd`、`vpmulld`、`vpshufb` |
 | `avx512f` | `-mavx512f` | `vpaddd` |
 | `aes` | `-maes` | `aesenc` |
 | `fma` | `-mfma` | `vfmadd` |
