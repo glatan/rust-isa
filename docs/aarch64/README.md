@@ -19,7 +19,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`system`
 
 ## ゼロコスト
 
-- 条件付きでゼロコストを確認した。`#[target_feature(enable = "neon")]` のカーネルで、`add v0.4s` と `mul v0.4s` が並び、`call` と命令間の store/load が無かった。
+- 条件付きでゼロコストを確認した。`#[target_feature(enable = "neon")]` のカーネルで、`add v0.4s`、`mul v0.4s`、`tbl v0.16b` が並び、`call` と命令間の store/load が無かった。
 - C は `-march=armv8-a+simd -flto=thin`、`__attribute__((always_inline))` を使う。Rust は `profile.release.lto = "thin"` と `-C linker-plugin-lto` を使う。
 - LTO モード、C の feature 集合、呼び出し側の feature を一致させる。条件を満たさない場合は `call` が残る。
 - カーネルに `#[target_feature]` を付けると、命令間の値がレジスタに残る。ループの外側など、feature の無い関数から呼ぶと、境界の `call` は残る。
