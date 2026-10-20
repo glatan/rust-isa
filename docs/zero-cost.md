@@ -83,6 +83,22 @@ RVV のスライス API も RISC-V で確認した。C のループを Rust の�
 
 どちらも命令ごとの API ではなく、スライスに対するループになる。固定長 API の「命令間の store/load」とは別に扱う。
 
+## shuffle
+
+shuffle は命令ごとに結果が違う。
+
+| arch | 命令 | 結果 |
+| --- | --- | --- |
+| x86_64 | `vpshufb` | zero-cost |
+| AArch64 | `tbl` | zero-cost |
+| PowerPC | `vperm` | zero-cost |
+| RISC-V | `vrgather` | store/load が残る |
+| LoongArch | `xvshuf.b` | store/load が残る |
+| s390x | `vec_perm` | 未確認（z13 の feature 集合で `call` が残る） |
+| MIPS | `vshf.w` | 未確認 |
+
+`intrinsics` が必要な shuffle は、SROA が一時値を消せず、往復が残ることがある。命令ごとに disassembly を確認する。
+
 ## Rust の属性
 
 rustc 1.99.1 では、`#[inline(always)]` と `#[target_feature]` を同じ関数に付けられない（E0658）。
