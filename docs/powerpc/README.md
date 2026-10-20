@@ -18,7 +18,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 ## ゼロコスト
 
-- ゼロコストを確認した。`vadduwm` と `vmuluwm` が並び、`call` と命令間の store/load が無かった。
+- ゼロコストを確認した。`vadduwm`、`vmuluwm`、`vperm` が並び、`call` と命令間の store/load が無かった。
 - `.TOC.` は lld が `addReservedSymbols` で定義するが、LTO 後のオブジェクトにだけ参照があると定義されない。`.TOC.` を参照する非 LTO オブジェクトをリンクに加えると解決する。`.quad .TOC.` を持つ小さなアセンブリオブジェクトで確認した。
 - ELFv2 ABI のベクタ引数と戻り値は、C の関数境界で確認する必要がある。
 
