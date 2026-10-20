@@ -40,3 +40,10 @@ version = "0.1.0"
 dependencies = [
  "rust-isa",
 ]
+
+[[package]]
+name = "wide-link"
+version = "0.1.0"
+dependencies = [
+ "rust-isa",
+]

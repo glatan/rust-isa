@@ -6,7 +6,7 @@ family は命令の種類に合わせて決める（`simd`、`system` など）�
 
 ## 実装状況
 
-なし。
+MSA の `V128`、load / store、`addv.w`、`mulv.w` を実装してある。`fixtures/mips-values` を QEMU-MIPS64 で実行する。`_start` は C で書き、終了コードで合否を返す。
 
 ## 実装方式
 

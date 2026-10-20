@@ -6,7 +6,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 ## 実装状況
 
-なし。
+固定長 `V128` の load / store、`vadd.vv`、`vmul.vv` を実装してある。`fixtures/riscv-values` を QEMU-RISC-V で実行し、`vadd.vv` と `vmul.vv` が隣接して `call` が無いことを確認する。
 
 ## 実装方式
 

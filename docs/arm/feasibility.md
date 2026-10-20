@@ -6,7 +6,7 @@
 
 | feature | 種別 | 判定 | 実装 |
 | --- | --- | --- | --- |
-| `neon` | SIMD | 不安定 | 未 |
+| `neon` | SIMD | 不安定 | 一部 |
 | `vfp2` | SIMD | 不安定 | 未 |
 | `vfp3` | SIMD | 不安定 | 未 |
 | `vfp4` | SIMD | 不安定 | 未 |

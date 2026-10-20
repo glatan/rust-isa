@@ -6,8 +6,8 @@
 
 | feature | 種別 | 判定 | 実装 |
 | --- | --- | --- | --- |
-| `altivec` | SIMD | 不安定 | 未 |
-| `vsx` | SIMD | 不安定 | 未 |
+| `altivec` | SIMD | 不安定 | 一部 |
+| `vsx` | SIMD | 不安定 | 一部 |
 | `power8-altivec` | SIMD | 不安定 | 未 |
 | `power8-vector` | SIMD | 不安定 | 未 |
 | `power9-altivec` | SIMD | 不安定 | 未 |

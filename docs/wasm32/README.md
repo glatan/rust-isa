@@ -9,7 +9,7 @@ family は `simd` である。extension は次である。
 
 ## 実装状況
 
-`simd128` と `relaxed-simd` を実装してある。
+`simd128` と `relaxed-simd` を実装してある。`wide-arithmetic` は Cargo feature で opt-in し、`i64.add128`、`i64.sub128`、`i64.mul_wide_u`、`i64.mul_wide_s` を提供する。
 
 ## 実装方式
 
@@ -32,6 +32,7 @@ family は `simd` である。extension は次である。
 
 - feature 名は `wide-arithmetic` とする。既定では無効にする。
 - 有効なとき、`build.rs` は C を `-mwide-arithmetic` でコンパイルし、モジュールを `cfg(feature = "wide-arithmetic")` で公開する。
+- `fixtures/wide-link` をビルドし、`wasm2wat` で四つの命令を確認する。
 - この feature を有効にした wasm モジュールは、`wide-arithmetic` を要求する。利用者はこの条件を受け入れる場合だけ有効にする。
 - `docs.rs` のメタデータで all-features を使う場合も、この条件を rustdoc に書く。
 

@@ -16,7 +16,7 @@ wasm32 では、モジュールが含む命令の feature を全体として要�
 | `sign-ext` | 制御 | 既定 | 未 | rustc がキャストから出す。命令 API にはしない |
 | `tail-call` | 制御 | 安定 | 未 | 命令 API にはしない |
 | `extended-const` | 制御 | 安定 | 未 | 命令 API にはしない |
-| `wide-arithmetic` | 整数 | 不安定 | 未 | 未実装。Cargo feature `wide-arithmetic` で opt-in する方針 |
+| `wide-arithmetic` | 整数 | 不安定 | 済み | Cargo feature `wide-arithmetic` で opt-in |
 | `atomics` | その他 | 不安定 | 未 |  |
 | `exception-handling` | 制御 | 不安定 | 未 | 命令 API にはしない |
 | `gc` | 制御 | 不安定 | 未 | 命令 API にはしない |
