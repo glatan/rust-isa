@@ -92,12 +92,16 @@ llvm-objdump -d --no-show-raw-insn target/release/app | sed -n "/<$sym>:/,/^$/p"
 | `avx10.1` | `-mavx10.1` | `vpaddd`、`vpmulld` |
 | `sha` | `-msha` | `sha256rnds2` |
 | `avx512bw` | `-mavx512bw` | `vpaddb` |
+| `gfni` | `-mgfni` | `gf2p8affineqb` |
+| `vaes` | `-mvaes -mavx2` | `vaesenc` |
 
 ## unstable feature
 
 `avx10.1` は `#[target_feature]` を付けられない。クレート全体を `-C target-feature=+avx10.1` でコンパイルし、カーネルには `#[target_feature]` を付けない。C は `-mavx10.1 -mno-mmx -mno-x87 -mno-popcnt -mno-xsave` でコンパイルする。`vpaddd` と `vpmulld` が `zmm` のまま並び、`call` と store/load が消えることを確認した。
 
 `-C target-feature=+avx10.1` は警告を出すが、LLVM の属性には入る。cfg は立たない。
+
+`vpclmulqdq` は、256-bit の intrinsic が AVX2 / AVX-512VL も要求する。C と Rust の feature 集合を追加で合わせる必要があり、まだ確認していない。
 
 ## 128-bit の `asm!`
 
