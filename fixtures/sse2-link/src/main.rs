@@ -1,4 +1,4 @@
-use rust_isa::x86::simd::sse2::{paddd, V128};
+use rust_isa::x86::simd::sse2::{V128, paddd};
 use std::hint::black_box;
 
 #[inline(never)]

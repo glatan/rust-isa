@@ -3,6 +3,20 @@
 version = 4
 
 [[package]]
+name = "avx2-link"
+version = "0.1.0"
+dependencies = [
+ "rust-isa",
+]
+
+[[package]]
+name = "avx512-link"
+version = "0.1.0"
+dependencies = [
+ "rust-isa",
+]
+
+[[package]]
 name = "rust-isa"
 version = "0.1.0"
 

@@ -6,7 +6,11 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 ## 実装状況
 
-`sse2` の `v128_load` / `v128_store`、`paddb` / `psubb` / `pcmpeqb`、`paddw` / `psubw` / `pcmpeqw` / `pmullw`、`paddd` / `psubd` / `pcmpeqd`、`paddq` / `psubq`、`pand` / `por` / `pxor` を実装してある。ほかの命令は未実装である。
+SSE2 は load / store、整数の加減算・比較・乗算・平均・unpack・shift・lane shuffle、32-bit / 64-bit 浮動小数点の加減乗除・比較・平方根、bitwise を実装してある。
+
+AVX2 は `V256`、load / store、`vpadd*` / `vpsub*`、`vpand` / `vpor` / `vpxor`、`vpcmpeq*`、`vpmulld` / `vpmullw`、`vpshufb`、`vpermd`、`vpbroadcastd`、`vpslld` / `vpsrld` を実装してある。
+
+AVX-512 は `V512` と load / store、AVX-512F の整数加減算・乗算・bitwise・`vpermd`、AVX-512BW の byte 加減算と 16-bit 乗算、AVX-512DQ の `vpmullq`、AVX-512IFMA、AVX-512VBMI、AVX-512VNNI、AVX-512VL の 128/256-bit `vpmullq` を実装してある。
 
 ## 実装方式
 
@@ -40,7 +44,7 @@ lto = "thin"
 rustflags = ["-C", "linker-plugin-lto", "-C", "linker=clang", "-C", "link-arg=-fuse-ld=lld"]
 ```
 
-C は `-flto=thin` でコンパイルする。`lto = "fat"` の場合は C も `-flto` にする。
+C は `-flto=thin` でコンパイルする。`lto = "fat"` の場合は C も `-flto` にする。現在は `fixtures/sse2-link`、`fixtures/avx2-link`、`fixtures/avx512-link` で、`paddd`、`vpaddd` + `vpmulld`、`vpaddd` の並びを確認している。
 
 条件を満たさないビルドでは、C 関数への `call` が残る。x86 の既定は呼び出しベースである。
 
@@ -64,11 +68,11 @@ C は `-flto=thin` でコンパイルする。`lto = "fat"` の場合は C も `
 5. `aes`、`sha`、`pclmulqdq`
 6. `bmi1`、`bmi2`、`popcnt` など
 
-## 未決定
+## 未対応
 
-- native のゼロコストをどう実現するか（LTO の設定、`asm!` の範囲）。
-- AMX のタイル状態を API に出すか。
 - i686 の値テストと命令の確認。
+- AMX のタイル状態を API に出すか。
+- shuffle / compress のうち、intrinsics が往復を残す命令の個別確認。
 
 ## 文書
 

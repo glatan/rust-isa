@@ -28,7 +28,7 @@
 | 段階 | 対象 | 内容 | 目安 |
 | --- | --- | --- | --- |
 | 0 | 共通 | build.rs、値の型、native テスト fixture（一部） | M |
-| 1 | x86_64 | SSE2 の load / store、整数加減算、比較、bitwise を実装済み。AVX2、AVX-512、暗号・整数は未着手 | L |
+| 1 | x86_64 | SSE2 の算術・浮動小数点・shift・unpack、AVX2、AVX-512F/BW/DQ/VL/IFMA/VBMI/VNNI の一部を実装済み。暗号・整数は未着手 | L |
 | 2 | AArch64 | NEON、dotprod、SVE スライス API、暗号 | L |
 | 3 | RISC-V | 固定長 V128、zba など、スライス API | L |
 | 4 | LoongArch | LSX、LASX | M |
@@ -66,6 +66,8 @@ x86_64 を最初に実装する。ホストで値テストを実行でき、QEMU
 
 ### 1a. SSE2
 
+進捗: `V128`、load / store、整数の加減算・比較・乗算・平均・unpack・shift、浮動小数点の加減乗除・比較・平方根、bitwise、lane shuffle を実装した。`paddd` のゼロコストを確認した。i686 の値テストはまだない。
+
 - `V128`、load / store、整数・浮動小数点の加減乗除、比較、shuffle。
 - SSE2 は既定なので、演算は safe、メモリ操作は `unsafe`。
 - `paddd`、`pmuludq`、`pshufb` などの zero-cost を fixture で確認する。
@@ -73,11 +75,15 @@ x86_64 を最初に実装する。ホストで値テストを実行でき、QEMU
 
 ### 1b. AVX2
 
+進捗: `V256`、load / store、整数の加減算・乗算・比較、bitwise、`vpshufb`、`vpermd`、`vpbroadcastd`、shift を実装した。`vpaddd` と `vpmulld` のゼロコストを確認した。
+
 - `V256`、`#[target_feature(enable = "avx2")]`、`unsafe fn`。
 - `vpaddd`、`vpmulld`、`vpshufb` の zero-cost。
 - 呼び出し側のカーネルに feature を付ける形を rustdoc に書く。
 
 ### 1c. AVX-512
+
+進捗: `V512`、load / store、AVX-512F の整数加減算・乗算・bitwise・`vpermd`、AVX-512BW の byte 加減算と 16-bit 乗算、AVX-512DQ の `vpmullq`、AVX-512IFMA、AVX-512VBMI、AVX-512VNNI、AVX-512VL の 128/256-bit `vpmullq` を実装した。AVX-512F のゼロコストを確認した。
 
 - `V512`、AVX-512F / BW / VL / DQ / IFMA / VBMI / VNNI。
 - Rust の feature 名と C のフラグを一致させる。VPCLMULQDQ は AVX2 / AVX-512F / AVX-512VL も必要。
