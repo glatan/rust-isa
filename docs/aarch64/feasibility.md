@@ -6,10 +6,10 @@
 
 | feature | 種別 | 判定 | 実装 | 備考 |
 | --- | --- | --- | --- | --- |
-| `neon` | SIMD | 既定 | 未 |  |
+| `neon` | SIMD | 既定 | 一部 |  |
 | `fp16` | SIMD | 安定 | 未 |  |
 | `bf16` | SIMD | 安定 | 未 |  |
-| `dotprod` | SIMD | 安定 | 未 |  |
+| `dotprod` | SIMD | 安定 | 一部 |  |
 | `i8mm` | SIMD | 安定 | 未 |  |
 | `f32mm` | SIMD | 安定 | 未 |  |
 | `f64mm` | SIMD | 安定 | 未 |  |

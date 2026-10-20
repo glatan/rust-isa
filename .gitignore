@@ -1,3 +1,4 @@
 /target
 /target-nested
 /fixtures/native-values/target
+/fixtures/aarch64-values/target

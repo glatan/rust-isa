@@ -24,6 +24,8 @@ fn main() {
     let bmi1_c = manifest.join("src/x86/integer/bmi1/bmi1.c");
     let bmi2_c = manifest.join("src/x86/integer/bmi2/bmi2.c");
     let popcnt_c = manifest.join("src/x86/integer/popcnt/popcnt.c");
+    let neon_c = manifest.join("src/aarch64/simd/neon/neon.c");
+    let dotprod_c = manifest.join("src/aarch64/simd/dotprod/dotprod.c");
     for path in [
         &simd128_c,
         &relaxed_c,
@@ -45,6 +47,8 @@ fn main() {
         &bmi1_c,
         &bmi2_c,
         &popcnt_c,
+        &neon_c,
+        &dotprod_c,
     ] {
         println!("cargo:rerun-if-changed={}", path.display());
     }
@@ -52,6 +56,24 @@ fn main() {
 
     let target = env::var("TARGET").unwrap_or_default();
     let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
+
+    if target == "aarch64-unknown-linux-gnu" {
+        compile_archive(
+            &out_dir,
+            &neon_c,
+            "rust_isa_neon",
+            &["-march=armv8-a+simd"],
+            Some("aarch64-unknown-linux-gnu"),
+        );
+        compile_archive(
+            &out_dir,
+            &dotprod_c,
+            "rust_isa_dotprod",
+            &["-march=armv8-a+dotprod"],
+            Some("aarch64-unknown-linux-gnu"),
+        );
+        return;
+    }
 
     if target == "x86_64-unknown-linux-gnu" || target == "i686-unknown-linux-gnu" {
         compile_native(&out_dir, &sse2_c, "rust_isa_sse2", &["-msse2"]);
