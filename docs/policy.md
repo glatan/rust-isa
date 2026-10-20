@@ -83,7 +83,7 @@
 | 対象 | 方式 | 状態 |
 | --- | --- | --- |
 | wasm32 の `simd128`、`relaxed-simd` | cfg ゲート、C + clang + LTO | 往復が消えることを `tests/driver.rs` で確認済み |
-| native の x86_64 / i686 | 無条件公開、`#[target_feature]`、C + clang + LTO | 条件付きで確認済み（i686 は SSE2） |
+| native の x86_64 / i686 | 無条件公開、`#[target_feature]`、C + clang + LTO | 条件付きで確認済み（i686 は SSE2 / AVX2） |
 | native の AArch64 / RISC-V / LoongArch / s390x / 32-bit ARM / PowerPC / MIPS | 無条件公開、`#[target_feature]` または global flag、C + clang + LTO | 条件付きで確認済み |
 | native の 128-bit `asm!` | `u128` と `xmm_reg` | x86_64 で確認済み |
 

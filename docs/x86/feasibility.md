@@ -1,6 +1,6 @@
 # x86 の実装可否
 
-対象は `x86_64-unknown-linux-gnu` と `i686-unknown-linux-gnu` である。`sse` と `sse2` は両方で既定である。`i686` の `sse2` はゼロコストを確認した。次の表のほかの行は `x86_64-unknown-linux-gnu` で測った。`i686` のほかの feature は測っていない。
+対象は `x86_64-unknown-linux-gnu` と `i686-unknown-linux-gnu` である。`sse` と `sse2` は両方で既定である。`i686` の `sse2` と `avx2` はゼロコストを確認した。次の表のほかの行は `x86_64-unknown-linux-gnu` で測った。`i686` のほかの feature は測っていない。
 
 既定と安定の feature は cfg が立つ。不安定の feature は立たない。native では公開条件に cfg を使わない（[実装方針](../policy.md)）。実装方式は [x86](README.md) に、LTO とゼロコストは [リンクとゼロコスト](linking.md) に書く。
 
