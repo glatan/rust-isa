@@ -94,6 +94,9 @@ llvm-objdump -d --no-show-raw-insn target/release/app | sed -n "/<$sym>:/,/^$/p"
 | `avx512bw` | `-mavx512bw` | `vpaddb` |
 | `avx512vl` | `-mavx512vl -mavx512bw` | `vpaddb` |
 | `avx512dq` | `-mavx512dq -mavx512f` | `vpmullq` |
+| `avx512ifma` | `-mavx512ifma -mavx512f` | `vpmadd52luq` |
+| `avx512vbmi` | `-mavx512vbmi -mavx512bw` | `vpermb` |
+| `avx512vnni` | `-mavx512vnni -mavx512f` | `vpdpbusd` |
 | `gfni` | `-mgfni` | `gf2p8affineqb` |
 | `vaes` | `-mvaes -mavx2` | `vaesenc` |
 | `vpclmulqdq` | `-mvpclmulqdq -mavx2 -mavx512f -mavx512vl` | `vpclmulqdq` |
