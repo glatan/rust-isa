@@ -16,6 +16,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 - 値は `V128` をポインタで渡す。
 - C は extension ごとに分ける。`-march=z14` と `-mzvector` を使う。
 - `asm!` は補助として使える。vector operand の型と ABI は、実装前に確認する。
+- `vec_perm` は z13 の feature 集合で `call` が残り、zero-cost は未確認である。
 - s390x はビッグエンディアンである。レーンの並びは命令ごとに rustdoc へ書く。
 
 ## ゼロコスト
