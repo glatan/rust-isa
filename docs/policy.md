@@ -65,6 +65,7 @@
 - C は extension ごとにリポジトリへコミットする。生成物は同梱しない。
 - C は、可能なら GCC の vector 拡張と通常のロード・ストアで書く。intrinsics は SROA を妨げ、一時値の store/load を残すことがある。wasm32 は `<wasm_simd128.h>` の intrinsics を使う。
 - C の関数は、可能なら `__attribute__((target("...")))` を関数単位で付ける。ファイル全体の `-m` フラグが必要な場合は extension ごとに分ける。
+- shuffle のように intrinsics が必要な命令は、intrinsics が SROA を妨げることがある。命令ごとに zero-cost を disassembly で確認する。
 - Rust 側は `unsafe extern "C"` で宣言し、`#[inline(always)]` のラッパーから呼ぶ。ラッパーに `#[target_feature]` は付けない。
 - レーン即値は const generics と `match` で、即値ごとの C 関数に振り分ける。
 - LTO は、wasm32 と native のゼロコストのために使う。native は LTO モードと feature 集合を一致させる必要がある。
