@@ -20,6 +20,7 @@ family は命令の種類に合わせて決める（`simd`、`system` など）�
 ## ゼロコスト
 
 - 条件付きでゼロコストを確認した。`xvadd.w` と `xvmul.w` が並び、`call` と命令間の store/load が無かった。
+- `xvshuf.b` は intrinsics（`__lasx_xvshuf_b`）が必要で、2 命令を合成すると `xvshuf.b` の間に store/load が残った。shuffle 系は命令ごとに zero-cost を確認する。
 - C は `-mlasx` を使う。`__lasx_xvld` / `__lasx_xvst` の intrinsics では、インライン後も一時値の store/load が残った。GCC の vector 拡張と通常のロード・ストアを使う。
 - `#[target_feature(enable = "lasx")]` をカーネルに付ける。
 - LTO モード、C の feature 集合、呼び出し側の feature を一致させる。条件を満たさない場合は `call` が残る。

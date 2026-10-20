@@ -50,9 +50,10 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 | AArch64 | `neon` | `add v0.4s`、`mul v0.4s`、`tbl` | なし | なし | ゼロコスト |
 | RISC-V | `v` | `vadd.vv`、`vmul.vv` | なし | なし | ゼロコスト |
 | LoongArch | `lasx` | `xvadd.w`、`xvmul.w` | なし | なし | ゼロコスト |
+| LoongArch | `lasx` shuffle | `xvshuf.b` | なし | あり | 往復が残る |
 | s390x | `vector` | `vaf`、`vmlf` | なし | なし | ゼロコスト |
 | 32-bit ARM | `neon` | `vadd.i32`、`vmul.i32` | なし | なし | ゼロコスト |
-| PowerPC | `altivec` | `vadduwm`、`vmuluwm` | なし | なし | ゼロコスト |
+| PowerPC | `altivec` | `vadduwm`、`vmuluwm`、`vperm` | なし | なし | ゼロコスト |
 | MIPS | `msa` | `addv.w`、`mulv.w` | なし | なし | ゼロコスト |
 
 ## IR レベルの確認
@@ -117,7 +118,7 @@ RISC-V と LoongArch では、次の intrinsics を使うと、C がインライ
 - RISC-V: `__riscv_vle32_v_i32m1` / `__riscv_vse32_v_i32m1`、`__riscv_vrgather_vv_i32m1`
 - LoongArch: `__lasx_xvld` / `__lasx_xvst`
 
-GCC の vector 拡張に置き換えると、どちらも store/load が消えた。一方、`vrgather` は intrinsics が必要で、2 命令を合成すると `vrgather` の間に store/load が残った。intrinsics が必要な命令は、命令ごとに disassembly を確認する。
+GCC の vector 拡張に置き換えると、どちらも store/load が消えた。一方、`vrgather` は intrinsics が必要で、2 命令を合成すると `vrgather` の間に store/load が残った。LoongArch の `xvshuf.b` も同じだった。intrinsics が必要な命令は、命令ごとに disassembly を確認する。
 
 ### target-cpu と feature 集合
 
