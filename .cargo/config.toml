@@ -1,0 +1,7 @@
+[target.wasm32-unknown-unknown]
+rustflags = ["-C", "target-feature=+simd128,+relaxed-simd", "-C", "linker-plugin-lto"]
+rustdocflags = ["-C", "target-feature=+simd128,+relaxed-simd", "-C", "linker-plugin-lto"]
+
+[target.wasm32-wasip1]
+rustflags = ["-C", "target-feature=+simd128,+relaxed-simd", "-C", "linker-plugin-lto"]
+rustdocflags = ["-C", "target-feature=+simd128,+relaxed-simd", "-C", "linker-plugin-lto"]
