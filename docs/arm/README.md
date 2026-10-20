@@ -15,6 +15,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 - 値は `V128` をポインタで渡す。
 - C は extension ごとに分ける。`-mfpu=neon` と `-mfloat-abi=hard` を使う。
 - `asm!` の `qreg` は `u128` を受け付けず、`neon` を要求する。`qreg` が受け付ける `i32x4` などは unstable である。NEON は C + clang を使う。
+- NEON の table lookup は 8-byte の `vtbl1_s8` / `vtbl2_s8` だけである。128-bit の `V128` を 1 命令で shuffle する命令は無い。`V128` の shuffle API は出さない。必要なら 8-byte の `V64` を別に設計する。
 
 ## ゼロコスト
 

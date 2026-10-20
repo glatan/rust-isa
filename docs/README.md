@@ -9,6 +9,7 @@
 - [実装可否](feasibility.md)
 - [ゼロコストの確認](zero-cost.md)
 - [スケーラブルベクタと状態](scalable-state.md)
+- [native の値テスト](native-testing.md)
 - [ソースの置き方](source-layout.md)
 - [文書の位置](documentation.md)
 

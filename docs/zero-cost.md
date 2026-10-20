@@ -94,13 +94,22 @@ shuffle は命令ごとに結果が違う。
 | AArch64 | `tbl` | zero-cost |
 | PowerPC | `vperm` | zero-cost |
 | RISC-V | `vrgather` | store/load が残る |
-| RISC-V | `vcompress` | store/load が残る |
 | LoongArch | `xvshuf.b` | store/load が残る |
 | s390x | `vec_perm` | zero-cost |
 | MIPS | `vshf.w` | zero-cost |
-
+| ARMv7 | `vtbl1_s8` / `vtbl2_s8` | 8-byte table のみ。128-bit の単一命令はない |
 
 `intrinsics` が必要な shuffle は、SROA が一時値を消せず、往復が残ることがある。命令ごとに disassembly を確認する。
+
+## dot / compress
+
+| arch | 命令 | 結果 |
+| --- | --- | --- |
+| x86_64 | `vpdpbusd` | zero-cost |
+| AArch64 | `sdot` | zero-cost |
+| RISC-V | `vcompress` | store/load が残る |
+
+`expand` など、まだ確認していない命令は、実装時に個別に確認する。
 
 ## Rust の属性
 

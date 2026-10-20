@@ -195,7 +195,7 @@ clang 23.1.1 で確認したこと:
 
 ## テスト
 
-- 値テスト: ホストまたはエミュレータで実行する。開発イメージには `qemu-user-static` と各ターゲットの runner を入れてある。native の値テストは、実装を足すときに `tests/` へ追加する。
+- 値テスト: ホストまたはエミュレータで実行する。開発イメージには `qemu-user-static` と各ターゲットの runner を入れてある。native の値テストは、実装を足すときに `tests/` へ追加する。設計は [native の値テスト](native-testing.md) にある。
 - 命令の存在: `llvm-objdump` または `wasm2wat` で確認する。
 - ゼロコスト: wasm32 は `tests/driver.rs`。native は 2 命令を合成する fixture のカーネルを disassembly し、`call` と命令間の store/load が無いことを確認する。C への `call` は `callq *...` の間接呼び出しになることがあるため、シンボル名だけで探さない。x86_64 の確認は済みである。`lto = "thin"` と C `-flto=thin`、`lto = "fat"` と C `-flto`、LTO なしの三つを確認する。
 - ELF のリンクが通らない arch は、Rust と C の bitcode を `llvm-link` し、`opt -passes="default<O3>"` で最適化して IR を確認する。これはバイナリでの確認の代わりではなく、リンク前の確認である。
@@ -255,5 +255,5 @@ clang 23.1.1 で確認したこと:
 - unstable feature のゼロコストを利用者が設定する方法。
 - Cargo feature による opt-in。
 - 実行時ディスパッチを提供する `std` feature。
-- SVE / RVV のスケーラブルベクタ型。
-- SME / AMX の状態管理。
+- native の命令 API の実装。
+- native の値テストの追加。
