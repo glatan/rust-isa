@@ -6,7 +6,9 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`system`
 
 ## 実装状況
 
-なし。
+NEON は `V128`、load / store、32-bit 整数の `add` / `mul`、32-bit 浮動小数点の `fadd` / `fmul`、`tbl` を実装してある。`dotprod` は `sdot` を実装してある。
+
+`fixtures/aarch64-values` を `-Z build-std=core` でビルドし、QEMU-AArch64 で値テストを実行する。`kernel_add`、`kernel_tbl`、`kernel_dot` の disassembly で、`add`、`tbl`、`sdot` が隣接し、`call` が無いことを確認する。
 
 ## 実装方式
 

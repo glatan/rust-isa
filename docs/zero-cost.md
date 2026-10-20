@@ -49,6 +49,7 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 | x86_64 | `vaes` | `vaesenc` | なし | なし | ゼロコスト |
 | x86_64 | `vpclmulqdq` | `vpclmulqdq` | なし | なし | ゼロコスト |
 | AArch64 | `neon` | `add v0.4s`、`mul v0.4s`、`tbl` | なし | なし | ゼロコスト |
+| AArch64 | `neon` + `dotprod` fixture | `add`、`tbl`、`sdot` | なし | なし | ゼロコスト |
 | AArch64 | `dotprod` | `sdot` | なし | なし | ゼロコスト |
 | RISC-V | `v` | `vadd.vv`、`vmul.vv` | なし | なし | ゼロコスト |
 | LoongArch | `lasx` | `xvadd.w`、`xvmul.w` | なし | なし | ゼロコスト |

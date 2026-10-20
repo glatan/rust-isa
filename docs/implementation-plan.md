@@ -29,7 +29,7 @@
 | --- | --- | --- | --- |
 | 0 | 共通 | build.rs、値の型、native テスト fixture（一部） | M |
 | 1 | x86_64 | SSE2、AVX2、AVX-512 の代表、暗号・整数の一部を実装済み。i686 の SSE2/AVX2 値テスト済み | L |
-| 2 | AArch64 | NEON、dotprod、SVE スライス API、暗号 | L |
+| 2 | AArch64 | NEON と dotprod の一部を実装済み。SVE スライス API、暗号は未着手 | L |
 | 3 | RISC-V | 固定長 V128、zba など、スライス API | L |
 | 4 | LoongArch | LSX、LASX | M |
 | 5 | s390x | vector | M |

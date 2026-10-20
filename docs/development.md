@@ -60,7 +60,7 @@ QEMU の runner は、静的にリンクしたテストバイナリを前提に�
 
 `target-nested/no-simd` のビルドだけは、外したあとに空の `RUSTFLAGS` を付ける。空の `RUSTFLAGS` は config の rustflags を置き換えるので、`simd128` も `relaxed-simd` も付かない。
 
-現在のテストが使うディレクトリは八つある。`target-nested/wide-link` は過去の `wide-arithmetic` 実験の残骸で、現在のテストは使わない。
+現在のテストが使うディレクトリは九つある。`target-nested/wide-link` は過去の `wide-arithmetic` 実験の残骸で、現在のテストは使わない。
 
 - `target-nested/link` は `fixtures/simd128-link` の `wasm32-unknown-unknown` release ビルドである。確認する内容は [wasm32 のリンク](wasm32/linking.md) に書く。
 - `target-nested/no-simd` は、`simd128` も `relaxed-simd` も付けない wasm32 ビルドと、その状態で `fixtures/simd128-link` がコンパイルに失敗することの確認である。
@@ -70,6 +70,7 @@ QEMU の runner は、静的にリンクしたテストバイナリを前提に�
 - `target-nested/avx512-link` は `fixtures/avx512-link` の release ビルドである。`kernel` に `call` が無く、`vpaddd` が 2 つ隣接することを確認する。
 - `target-nested/crypto-link` は `fixtures/crypto-link` の release ビルドである。`kernel_aes` と `kernel_fma` に `call` が無く、`aesenc` と `vfmadd` が隣接することを確認する。
 - `target-nested/i686-values` は `fixtures/native-values` の i686 release ビルドである。QEMU-i386 で SSE2 と AVX2 の値テストを実行する。
+- `target-nested/aarch64-values` は `fixtures/aarch64-values` の AArch64 release ビルドである。QEMU-AArch64 で NEON と dotprod の値テストを実行し、`add` / `tbl` / `sdot` の disassembly を確認する。
 
 `target-nested` は `.gitignore` と `.dockerignore` に入っている。消しても次の `cargo test` が作り直す。
 
