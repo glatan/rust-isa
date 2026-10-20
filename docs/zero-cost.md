@@ -38,6 +38,8 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 | x86_64 | `avx10.1` | `vpaddd`、`vpmulld` | なし | なし | ゼロコスト |
 | x86_64 | `sha` | `sha256rnds2` | なし | なし | ゼロコスト |
 | x86_64 | `avx512bw` | `vpaddb` | なし | なし | ゼロコスト |
+| x86_64 | `gfni` | `gf2p8affineqb` | なし | なし | ゼロコスト |
+| x86_64 | `vaes` | `vaesenc` | なし | なし | ゼロコスト |
 | AArch64 | `neon` | `add v0.4s`、`mul v0.4s` | なし | なし | ゼロコスト |
 | RISC-V | `v` | `vadd.vv`、`vmul.vv` | なし | なし | ゼロコスト |
 | LoongArch | `lasx` | `xvadd.w`、`xvmul.w` | なし | なし | ゼロコスト |
@@ -156,7 +158,7 @@ C の集合が Rust の集合の部分集合になるまで、`-mno-*` や `-Xcl
 ### LTO
 
 - Rust と C の LTO モードを一致させる。`thin` と `thin`、または `fat` と `fat`。
-- `thin` と `fat` の両方を x86_64、AArch64、RISC-V で確認した。
+- `thin` と `fat` の両方を、x86_64、i686、AArch64、ARMv7、RISC-V、LoongArch、s390x、PowerPC、MIPS で確認した。
 - `-C linker-plugin-lto` が無いと、C への `call` が残る。
 - Cargo では `-C lto` を `RUSTFLAGS` に入れない。build script の `embed-bitcode=no` と衝突する。`profile.release.lto` に設定する。
 
