@@ -41,6 +41,9 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 | x86_64 | `avx512bw` | `vpaddb` | なし | なし | ゼロコスト |
 | x86_64 | `avx512vl` | `vpaddb` | なし | なし | ゼロコスト |
 | x86_64 | `avx512dq` | `vpmullq` | なし | なし | ゼロコスト |
+| x86_64 | `avx512ifma` | `vpmadd52luq` | なし | なし | ゼロコスト |
+| x86_64 | `avx512vbmi` | `vpermb` | なし | なし | ゼロコスト |
+| x86_64 | `avx512vnni` | `vpdpbusd` | なし | なし | ゼロコスト |
 | x86_64 | `gfni` | `gf2p8affineqb` | なし | なし | ゼロコスト |
 | x86_64 | `vaes` | `vaesenc` | なし | なし | ゼロコスト |
 | x86_64 | `vpclmulqdq` | `vpclmulqdq` | なし | なし | ゼロコスト |
