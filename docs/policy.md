@@ -59,7 +59,7 @@
 | 方式 | 用途 | 長所 | 制約 |
 | --- | --- | --- | --- |
 | C + clang + LTO | ベクタ命令の主方式 | `core::arch` なしで、LLVM の feature と vector 型を使える。rustc が unstable とする feature も clang は扱える | clang が必要。値の受け渡しはポインタ。native のゼロコストは LTO の条件付き |
-| `asm!` | 補助 | cfg に依存しない。C ツールチェーンが不要 | 256/512-bit の値型がない。wasm と MIPS では unstable。vector operand の型が限られる。AArch64 の `vreg` は `u128` を受け付けない |
+| `asm!` | 補助 | cfg に依存しない。C ツールチェーンが不要 | 256/512-bit の値型がない。wasm と MIPS では unstable。vector operand の型が限られる。AArch64 の `vreg` と ARMv7 の `qreg` は `u128` を受け付けない |
 | 純 Rust | 値の構築、ビット操作 | ツールチェーンが不要 | 命令の意味論には使わない。自動ベクトル化に依存しない |
 
 - C は extension ごとにリポジトリへコミットする。生成物は同梱しない。

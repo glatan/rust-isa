@@ -94,6 +94,7 @@ llvm-objdump -d --no-show-raw-insn target/release/app | sed -n "/<$sym>:/,/^$/p"
 | `avx512bw` | `-mavx512bw` | `vpaddb` |
 | `gfni` | `-mgfni` | `gf2p8affineqb` |
 | `vaes` | `-mvaes -mavx2` | `vaesenc` |
+| `vpclmulqdq` | `-mvpclmulqdq -mavx2 -mavx512f -mavx512vl` | `vpclmulqdq` |
 
 ## unstable feature
 
@@ -101,7 +102,7 @@ llvm-objdump -d --no-show-raw-insn target/release/app | sed -n "/<$sym>:/,/^$/p"
 
 `-C target-feature=+avx10.1` は警告を出すが、LLVM の属性には入る。cfg は立たない。
 
-`vpclmulqdq` は、256-bit の intrinsic が AVX2 / AVX-512VL も要求する。C と Rust の feature 集合を追加で合わせる必要があり、まだ確認していない。
+`vpclmulqdq` は、256-bit の intrinsic が AVX2 / AVX-512F / AVX-512VL も要求する。Rust のカーネルにこれらの `#[target_feature]` を追加し、C のフラグを合わせると、`call` と store/load が消えることを確認した。
 
 ## 128-bit の `asm!`
 

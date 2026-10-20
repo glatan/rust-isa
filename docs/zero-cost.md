@@ -40,6 +40,7 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 | x86_64 | `avx512bw` | `vpaddb` | なし | なし | ゼロコスト |
 | x86_64 | `gfni` | `gf2p8affineqb` | なし | なし | ゼロコスト |
 | x86_64 | `vaes` | `vaesenc` | なし | なし | ゼロコスト |
+| x86_64 | `vpclmulqdq` | `vpclmulqdq` | なし | なし | ゼロコスト |
 | AArch64 | `neon` | `add v0.4s`、`mul v0.4s` | なし | なし | ゼロコスト |
 | RISC-V | `v` | `vadd.vv`、`vmul.vv` | なし | なし | ゼロコスト |
 | LoongArch | `lasx` | `xvadd.w`、`xvmul.w` | なし | なし | ゼロコスト |
@@ -87,6 +88,8 @@ rustc 1.99.1 では、`#[inline(always)]` と `#[target_feature]` を同じ関�
 x86_64 では、`asm!` の `xmm_reg` に `u128` を渡せる。`paddd` と `pmulld` を並べると、間の store/load が消えた。
 
 AArch64 では、`asm!` の `vreg` が `u128` を受け付けない。`vreg` が受け付ける `i64x2` や `f128` は unstable である。このため、AArch64 の NEON は C + clang を使う。
+
+ARMv7 では、`asm!` の `qreg` が `u128` を受け付けず、`neon` を要求する。`qreg` が受け付ける `i32x4` などは unstable である。ARMv7 の NEON も C + clang を使う。
 
 ## 実装上の注意
 
