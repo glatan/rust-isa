@@ -134,3 +134,51 @@ fn f64x2_arithmetic_and_rounding() {
     assert_eq!(f64_lanes(f64x2_pmax(f64x2_splat(3.0), nan))[0], 3.0);
     assert!(f64_lanes(f64x2_pmax(nan, f64x2_splat(3.0)))[0].is_nan());
 }
+
+#[test]
+fn f32x4_gt_and_le() {
+    assert!(true_lane(
+        f32x4_gt(f32x4_splat(2.0), f32x4_splat(1.0)),
+        0,
+        4
+    ));
+    assert!(!true_lane(
+        f32x4_gt(f32x4_splat(1.0), f32x4_splat(2.0)),
+        0,
+        4
+    ));
+    assert!(true_lane(
+        f32x4_le(f32x4_splat(-1.0), f32x4_splat(-1.0)),
+        0,
+        4
+    ));
+    assert!(!true_lane(
+        f32x4_le(f32x4_splat(2.0), f32x4_splat(1.0)),
+        0,
+        4
+    ));
+}
+
+#[test]
+fn f64x2_lt_and_ge() {
+    assert!(true_lane(
+        f64x2_lt(f64x2_splat(1.0), f64x2_splat(2.0)),
+        0,
+        8
+    ));
+    assert!(!true_lane(
+        f64x2_lt(f64x2_splat(2.0), f64x2_splat(1.0)),
+        0,
+        8
+    ));
+    assert!(true_lane(
+        f64x2_ge(f64x2_splat(-1.0), f64x2_splat(-1.0)),
+        1,
+        8
+    ));
+    assert!(!true_lane(
+        f64x2_ge(f64x2_splat(1.0), f64x2_splat(2.0)),
+        1,
+        8
+    ));
+}

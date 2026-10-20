@@ -1,12 +1,16 @@
-use rust_isa::x86::crypto::aes::{aesdec, aesdeclast, aesenc, aesenclast, aesimc};
-use rust_isa::x86::crypto::gfni::gf2p8mulb;
+use rust_isa::x86::crypto::aes::{aesdec, aesdeclast, aesenc, aesenclast, aesimc, aeskeygenassist};
+use rust_isa::x86::crypto::gfni::{gf2p8affineqb, gf2p8mulb};
 use rust_isa::x86::crypto::pclmulqdq::pclmulqdq;
-use rust_isa::x86::crypto::sha::{sha1msg1, sha1msg2, sha1nexte, sha256msg1, sha256msg2};
-use rust_isa::x86::crypto::vaes::{vaesenc, vaesenc_v128};
+use rust_isa::x86::crypto::sha::{
+    sha1msg1, sha1msg2, sha1nexte, sha1rnds4, sha256msg1, sha256msg2, sha256rnds2,
+};
+use rust_isa::x86::crypto::vaes::{
+    vaesdec, vaesdec_v128, vaesdeclast, vaesdeclast_v128, vaesenc, vaesenc_v128, vaesenclast,
+    vaesenclast_v128,
+};
 use rust_isa::x86::crypto::vpclmulqdq::{vpclmulqdq_v256, vpclmulqdq_v512};
 use rust_isa::x86::simd::avx2::V256;
 use rust_isa::x86::simd::avx512f::V512;
-use rust_isa::x86::simd::fma::vfmadd132ps;
 use rust_isa::x86::simd::sse2::V128;
 
 fn aes_enabled() -> bool {
@@ -35,14 +39,18 @@ fn vpclmul_enabled() -> bool {
         && is_x86_feature_detected!("avx512vl")
 }
 
-fn fma_enabled() -> bool {
-    is_x86_feature_detected!("fma") && is_x86_feature_detected!("avx2")
-}
-
 fn quad(value: u64) -> V128 {
     let mut bytes = [0u8; 16];
     bytes[0..8].copy_from_slice(&value.to_le_bytes());
     V128::from_bytes(bytes)
+}
+
+fn sequential(start: u8) -> V128 {
+    V128::from_bytes(core::array::from_fn(|index| start + index as u8))
+}
+
+fn sequential256(start: u8) -> V256 {
+    V256::from_bytes(core::array::from_fn(|index| start + (index % 16) as u8))
 }
 
 #[test]
@@ -56,6 +64,37 @@ fn aes_rounds() {
     assert_eq!(unsafe { aesdec(zero, zero) }.to_bytes(), [0x52; 16]);
     assert_eq!(unsafe { aesdeclast(zero, zero) }.to_bytes(), [0x52; 16]);
     assert_eq!(unsafe { aesimc(zero) }.to_bytes(), [0; 16]);
+
+    let a = sequential(0);
+    let b = sequential(16);
+    assert_eq!(
+        unsafe { aesenc(a, b) }.to_bytes(),
+        [
+            0x7a, 0x7b, 0x4e, 0x56, 0x38, 0x78, 0x25, 0x46, 0xa8, 0xc0, 0x47, 0x7a, 0x3b, 0x81,
+            0x3f, 0x43
+        ]
+    );
+    assert_eq!(
+        unsafe { aesdec(a, b) }.to_bytes(),
+        [
+            0x03, 0xb2, 0x84, 0x0f, 0x3a, 0x0c, 0x3f, 0x79, 0x0f, 0x56, 0xe8, 0xa9, 0xda, 0xa0,
+            0x85, 0x4e
+        ]
+    );
+    assert_eq!(
+        unsafe { aesenclast(a, b) }.to_bytes(),
+        [
+            0x73, 0x7a, 0x75, 0x65, 0xe6, 0x14, 0xbd, 0x6c, 0x28, 0xce, 0x6d, 0xde, 0xe2, 0x61,
+            0x71, 0x34
+        ]
+    );
+    assert_eq!(
+        unsafe { aesdeclast(a, b) }.to_bytes(),
+        [
+            0x42, 0xe2, 0xb1, 0x2b, 0x24, 0x1c, 0xc1, 0x89, 0xa7, 0x2f, 0x70, 0xe0, 0x9d, 0x5d,
+            0xbb, 0xca
+        ]
+    );
 }
 
 #[test]
@@ -111,6 +150,17 @@ fn vaes_rounds() {
     );
     let zero256 = V256::from_bytes([0; 32]);
     assert_eq!(unsafe { vaesenc(zero256, zero256) }.to_bytes(), [0x63; 32]);
+
+    let a = sequential(0);
+    let b = sequential(16);
+    let expected = [
+        0x7a, 0x7b, 0x4e, 0x56, 0x38, 0x78, 0x25, 0x46, 0xa8, 0xc0, 0x47, 0x7a, 0x3b, 0x81, 0x3f,
+        0x43,
+    ];
+    assert_eq!(unsafe { vaesenc_v128(a, b) }.to_bytes(), expected);
+    let out = unsafe { vaesenc(sequential256(0), sequential256(16)) }.to_bytes();
+    assert_eq!(&out[..16], &expected);
+    assert_eq!(&out[16..], &expected);
 }
 
 #[test]
@@ -156,30 +206,129 @@ fn vpclmulqdq_lanes() {
 }
 
 #[test]
-fn fma() {
-    if !fma_enabled() {
+fn sha_rounds() {
+    if !sha_enabled() {
         return;
     }
-    let mut a = [0u8; 32];
-    let mut b = [0u8; 32];
-    let mut c = [0u8; 32];
-    for lane in 0..8 {
-        a[lane * 4..lane * 4 + 4].copy_from_slice(&2.0f32.to_le_bytes());
-        b[lane * 4..lane * 4 + 4].copy_from_slice(&3.0f32.to_le_bytes());
-        c[lane * 4..lane * 4 + 4].copy_from_slice(&4.0f32.to_le_bytes());
+    let a = sequential(0);
+    let b = sequential(16);
+    let k = sequential(32);
+    assert_eq!(
+        unsafe { sha256rnds2(a, b, k) }.to_bytes(),
+        [
+            0xd5, 0x6c, 0x14, 0xbe, 0x29, 0x46, 0xca, 0x1a, 0xb4, 0x90, 0x7b, 0x69, 0x8d, 0xd0,
+            0x95, 0x98
+        ]
+    );
+    assert_eq!(
+        unsafe { sha1rnds4::<0>(a, b) }.to_bytes(),
+        [
+            0x4d, 0x0e, 0x99, 0x97, 0x9f, 0xee, 0xc9, 0x11, 0x7b, 0x66, 0x58, 0x60, 0xa6, 0xe7,
+            0x24, 0x83
+        ]
+    );
+    assert_eq!(
+        unsafe { sha1rnds4::<1>(a, b) }.to_bytes(),
+        [
+            0xd2, 0xed, 0xb1, 0x9f, 0x54, 0xde, 0x2d, 0x9c, 0x52, 0xe6, 0xab, 0x23, 0xfa, 0x60,
+            0xf0, 0xe6
+        ]
+    );
+}
+
+#[test]
+fn gfni_affine_identity() {
+    if !gfni_enabled() {
+        return;
     }
-    let out = unsafe {
-        vfmadd132ps(
-            V256::from_bytes(a),
-            V256::from_bytes(b),
-            V256::from_bytes(c),
-        )
-    };
-    for lane in 0..8 {
-        let bytes = out.to_bytes();
-        assert_eq!(
-            f32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap()),
-            10.0
-        );
+    let matrix = V128::from_bytes(core::array::from_fn(|index| 1u8 << (7 - (index % 8))));
+    assert_eq!(
+        unsafe { gf2p8affineqb::<0>(V128::from_bytes([1; 16]), matrix) }.to_bytes(),
+        [1; 16]
+    );
+    assert_eq!(
+        unsafe { gf2p8affineqb::<0>(V128::from_bytes([2; 16]), matrix) }.to_bytes(),
+        [2; 16]
+    );
+}
+
+#[test]
+fn aes_key_schedule() {
+    if !aes_enabled() {
+        return;
     }
+    assert_eq!(
+        unsafe { aeskeygenassist::<1>(sequential(0)) }.to_bytes(),
+        [
+            0xf2, 0x6b, 0x6f, 0xc5, 0x6a, 0x6f, 0xc5, 0xf2, 0xfe, 0xd7, 0xab, 0x76, 0xd6, 0xab,
+            0x76, 0xfe
+        ]
+    );
+}
+
+#[test]
+fn vaes_sub_bytes_and_last_rounds() {
+    if !vaes_enabled() {
+        return;
+    }
+    let zero128 = V128::from_bytes([0; 16]);
+    assert_eq!(
+        unsafe { vaesdec_v128(zero128, zero128) }.to_bytes(),
+        [0x52; 16]
+    );
+    assert_eq!(
+        unsafe { vaesenclast_v128(zero128, zero128) }.to_bytes(),
+        [0x63; 16]
+    );
+    assert_eq!(
+        unsafe { vaesdeclast_v128(zero128, zero128) }.to_bytes(),
+        [0x52; 16]
+    );
+
+    let zero256 = V256::from_bytes([0; 32]);
+    assert_eq!(unsafe { vaesdec(zero256, zero256) }.to_bytes(), [0x52; 32]);
+    assert_eq!(
+        unsafe { vaesenclast(zero256, zero256) }.to_bytes(),
+        [0x63; 32]
+    );
+    assert_eq!(
+        unsafe { vaesdeclast(zero256, zero256) }.to_bytes(),
+        [0x52; 32]
+    );
+
+    let a = sequential(0);
+    let b = sequential(16);
+    let expected_dec = [
+        0x03, 0xb2, 0x84, 0x0f, 0x3a, 0x0c, 0x3f, 0x79, 0x0f, 0x56, 0xe8, 0xa9, 0xda, 0xa0, 0x85,
+        0x4e,
+    ];
+    let expected_enc_last = [
+        0x73, 0x7a, 0x75, 0x65, 0xe6, 0x14, 0xbd, 0x6c, 0x28, 0xce, 0x6d, 0xde, 0xe2, 0x61, 0x71,
+        0x34,
+    ];
+    let expected_dec_last = [
+        0x42, 0xe2, 0xb1, 0x2b, 0x24, 0x1c, 0xc1, 0x89, 0xa7, 0x2f, 0x70, 0xe0, 0x9d, 0x5d, 0xbb,
+        0xca,
+    ];
+    assert_eq!(unsafe { vaesdec_v128(a, b) }.to_bytes(), expected_dec);
+    assert_eq!(
+        unsafe { vaesenclast_v128(a, b) }.to_bytes(),
+        expected_enc_last
+    );
+    assert_eq!(
+        unsafe { vaesdeclast_v128(a, b) }.to_bytes(),
+        expected_dec_last
+    );
+
+    let a = sequential256(0);
+    let b = sequential256(16);
+    let out = unsafe { vaesdec(a, b) }.to_bytes();
+    assert_eq!(&out[..16], &expected_dec);
+    assert_eq!(&out[16..], &expected_dec);
+    let out = unsafe { vaesenclast(a, b) }.to_bytes();
+    assert_eq!(&out[..16], &expected_enc_last);
+    assert_eq!(&out[16..], &expected_enc_last);
+    let out = unsafe { vaesdeclast(a, b) }.to_bytes();
+    assert_eq!(&out[..16], &expected_dec_last);
+    assert_eq!(&out[16..], &expected_dec_last);
 }

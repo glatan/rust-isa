@@ -1,5 +1,5 @@
 [package]
-name = "native-values"
+name = "i686-values"
 version = "0.1.0"
 edition = "2024"
 

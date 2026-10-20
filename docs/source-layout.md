@@ -4,6 +4,8 @@
 
 extension の名前は、rustc の feature 名の `.` と `-` を `_` に置き換える。たとえば `sse4.1` は `sse4_1`、`relaxed-simd` は `relaxed_simd` である。仕様名をそのまま使う arch は、その arch の `README.md` に規則を書く。
 
+テストも同じ階層に置く。統合テストは `tests/<arch>.rs` または `tests/<arch>/main.rs` を起点にし、family と extension のディレクトリを `src/<arch>/` に合わせる。たとえば wasm32 の `simd128` は `tests/wasm32/simd/simd128/`、x86 の `simd` は `tests/x86/simd/` である。QEMU で実行する native の値テストは `fixtures/<arch>-values` に置き、`tests/<arch>.rs` からビルドして実行する。共通処理は `tests/common/mod.rs` に置く。
+
 extension ごとのファイル一覧は、`docs/<arch>/` のその extension の文書に書く。extension の実装ファイル（C や `asm!` を含む Rust）は、extension のディレクトリに置く。
 
 実装方式は arch ごとに決める。C + clang を主方式とし、`asm!` を補助に使う。LTO は wasm32 と native のゼロコストに使う。native は LTO モードと feature 集合を一致させる。詳しくは [実装方針](policy.md) と、その arch の `README.md` に書く。

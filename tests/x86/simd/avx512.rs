@@ -1,8 +1,9 @@
 use rust_isa::x86::simd::avx2::V256;
-use rust_isa::x86::simd::avx512bw::vpaddb;
+use rust_isa::x86::simd::avx512bw::{vpaddb, vpmullw, vpsubb};
 use rust_isa::x86::simd::avx512dq::vpmullq;
 use rust_isa::x86::simd::avx512f::{
-    V512, v512_load, v512_store, vpaddd, vpaddq, vpandd, vpbroadcastd, vpermd, vpmulld,
+    V512, v512_load, v512_store, vpaddd, vpaddq, vpandd, vpbroadcastd, vpermd, vpmulld, vpord,
+    vpslld, vpsrld, vpsubd, vpsubq, vpxord,
 };
 use rust_isa::x86::simd::avx512ifma::{vpmadd52huq, vpmadd52luq};
 use rust_isa::x86::simd::avx512vbmi::vpermb;
@@ -214,4 +215,70 @@ fn vl_mullo() {
             (index as i64 + 2) * (index as i64 + 3)
         );
     }
+}
+
+fn i16x32(values: [i16; 32]) -> V512 {
+    let mut bytes = [0u8; 64];
+    for (lane, value) in values.iter().enumerate() {
+        bytes[lane * 2..lane * 2 + 2].copy_from_slice(&value.to_le_bytes());
+    }
+    V512::from_bytes(bytes)
+}
+
+fn i16_lanes(value: V512) -> [i16; 32] {
+    let bytes = value.to_bytes();
+    core::array::from_fn(|lane| {
+        i16::from_le_bytes(bytes[lane * 2..lane * 2 + 2].try_into().unwrap())
+    })
+}
+
+#[test]
+fn subtract_bitwise_and_shift() {
+    if !f_enabled() {
+        return;
+    }
+    let a = i32x16(core::array::from_fn(|index| index as i32 + 1));
+    let b = i32x16(core::array::from_fn(|index| (index as i32 + 1) * 10));
+    assert_eq!(
+        i32_lanes(unsafe { vpsubd(b, a) }),
+        core::array::from_fn(|index| (index as i32 + 1) * 9)
+    );
+    assert_eq!(
+        i64_lanes(unsafe {
+            vpsubq(
+                i64x8([0, 5, -1, 7, 9, -9, 2, 3]),
+                i64x8([1, 2, 1, 3, 4, -1, 2, 4]),
+            )
+        }),
+        [-1, 3, -2, 4, 5, -8, 0, -1]
+    );
+
+    let a = V512::from_bytes([0b1010_1010; 64]);
+    let b = V512::from_bytes([0b1100_1100; 64]);
+    assert_eq!(unsafe { vpord(a, b) }.to_bytes(), [0b1110_1110; 64]);
+    assert_eq!(unsafe { vpxord(a, b) }.to_bytes(), [0b0110_0110; 64]);
+
+    assert_eq!(
+        i32_lanes(unsafe { vpslld(i32x16(core::array::from_fn(|index| index as i32 + 1)), 1) }),
+        core::array::from_fn(|index| (index as i32 + 1) * 2)
+    );
+    assert_eq!(
+        i32_lanes(unsafe { vpsrld(i32x16([-1; 16]), 1) }),
+        [0x7fff_ffff; 16]
+    );
+}
+
+#[test]
+fn byte_word_arithmetic() {
+    if !bw_enabled() {
+        return;
+    }
+    assert_eq!(
+        unsafe { vpsubb(V512::from_bytes([10; 64]), V512::from_bytes([3; 64])) }.to_bytes(),
+        [7; 64]
+    );
+    assert_eq!(
+        i16_lanes(unsafe { vpmullw(i16x32([300; 32]), i16x32([3; 32])) }),
+        [900; 32]
+    );
 }
