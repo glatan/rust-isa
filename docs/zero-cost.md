@@ -39,6 +39,8 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 | x86_64 | `avx10.1` | `vpaddd`、`vpmulld` | なし | なし | ゼロコスト |
 | x86_64 | `sha` | `sha256rnds2` | なし | なし | ゼロコスト |
 | x86_64 | `avx512bw` | `vpaddb` | なし | なし | ゼロコスト |
+| x86_64 | `avx512vl` | `vpaddb` | なし | なし | ゼロコスト |
+| x86_64 | `avx512dq` | `vpmullq` | なし | なし | ゼロコスト |
 | x86_64 | `gfni` | `gf2p8affineqb` | なし | なし | ゼロコスト |
 | x86_64 | `vaes` | `vaesenc` | なし | なし | ゼロコスト |
 | x86_64 | `vpclmulqdq` | `vpclmulqdq` | なし | なし | ゼロコスト |

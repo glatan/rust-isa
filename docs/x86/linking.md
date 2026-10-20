@@ -92,6 +92,8 @@ llvm-objdump -d --no-show-raw-insn target/release/app | sed -n "/<$sym>:/,/^$/p"
 | `avx10.1` | `-mavx10.1` | `vpaddd`、`vpmulld` |
 | `sha` | `-msha` | `sha256rnds2` |
 | `avx512bw` | `-mavx512bw` | `vpaddb` |
+| `avx512vl` | `-mavx512vl -mavx512bw` | `vpaddb` |
+| `avx512dq` | `-mavx512dq -mavx512f` | `vpmullq` |
 | `gfni` | `-mgfni` | `gf2p8affineqb` |
 | `vaes` | `-mvaes -mavx2` | `vaesenc` |
 | `vpclmulqdq` | `-mvpclmulqdq -mavx2 -mavx512f -mavx512vl` | `vpclmulqdq` |
