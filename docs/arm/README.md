@@ -14,7 +14,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 - C + clang を主方式とする。LTO は wasm32 と native のゼロコストに使う。NEON は `<arm_neon.h>` を使う。
 - 値は `V128` をポインタで渡す。
 - C は extension ごとに分ける。`-mfpu=neon` と `-mfloat-abi=hard` を使う。
-- `asm!` は補助として使える。NEON の vector operand と ABI は、実装前に確認する。
+- `asm!` の `qreg` は `u128` を受け付けず、`neon` を要求する。`qreg` が受け付ける `i32x4` などは unstable である。NEON は C + clang を使う。
 
 ## ゼロコスト
 
