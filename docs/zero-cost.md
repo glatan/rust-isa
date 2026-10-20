@@ -33,6 +33,7 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 | i686 | `sse2` | `paddd`、`pmuludq` | なし | なし | ゼロコスト |
 | i686 | `avx2` | `vpaddd`、`vpmulld` | なし | なし | ゼロコスト |
 | x86_64 | `avx2` | `vpaddd`、`vpmulld`、`vpshufb` | なし | なし | ゼロコスト |
+| x86_64 | `aes` + `fma` fixture | `aesenc`、`vfmadd` | なし | なし | ゼロコスト |
 | x86_64 | `avx512f` | `vpaddd` | なし | なし | ゼロコスト |
 | x86_64 | `aes` | `aesenc` | なし | なし | ゼロコスト |
 | x86_64 | `fma` | `vfmadd` | なし | なし | ゼロコスト |

@@ -28,7 +28,7 @@
 | 段階 | 対象 | 内容 | 目安 |
 | --- | --- | --- | --- |
 | 0 | 共通 | build.rs、値の型、native テスト fixture（一部） | M |
-| 1 | x86_64 | SSE2 の算術・浮動小数点・shift・unpack、AVX2、AVX-512F/BW/DQ/VL/IFMA/VBMI/VNNI の一部を実装済み。暗号・整数は未着手 | L |
+| 1 | x86_64 | SSE2、AVX2、AVX-512 の代表、暗号・整数の一部を実装済み。i686 の SSE2/AVX2 値テスト済み | L |
 | 2 | AArch64 | NEON、dotprod、SVE スライス API、暗号 | L |
 | 3 | RISC-V | 固定長 V128、zba など、スライス API | L |
 | 4 | LoongArch | LSX、LASX | M |
@@ -90,6 +90,8 @@ x86_64 を最初に実装する。ホストで値テストを実行でき、QEMU
 - AVX10.1 は global flag で提供する。`#[target_feature]` は使えない。
 
 ### 1d. 暗号・整数
+
+進捗: AES、SHA、GFNI、PCLMULQDQ、VAES、VPCLMULQDQ、FMA、BMI1、BMI2、POPCNT の代表命令を実装した。`crypto-link` で `aesenc` と `vfmadd` のゼロコストを確認した。
 
 - AES、SHA、GFNI、VAES、VPCLMULQDQ、FMA、BMI1/2、POPCNT など。
 - C の feature 集合を Rust の部分集合にする。

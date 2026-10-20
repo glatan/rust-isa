@@ -1,0 +1,140 @@
+//! BMI2.
+
+use core::arch::asm;
+
+unsafe extern "C" {
+    fn rust_isa_bmi2_bzhi(a: u32, index: u32) -> u32;
+    fn rust_isa_bmi2_pdep(a: u32, mask: u32) -> u32;
+    fn rust_isa_bmi2_pext(a: u32, mask: u32) -> u32;
+}
+
+/// `bzhi`
+///
+/// Zero the bits from `index` upward.
+///
+/// # Safety
+///
+/// The caller must enable BMI2.
+#[target_feature(enable = "bmi2")]
+#[inline]
+pub unsafe fn bzhi(a: u32, index: u32) -> u32 {
+    unsafe { rust_isa_bmi2_bzhi(a, index) }
+}
+
+/// `pdep`
+///
+/// Deposit the low bits of `a` into the positions selected by `mask`.
+///
+/// # Safety
+///
+/// The caller must enable BMI2.
+#[target_feature(enable = "bmi2")]
+#[inline]
+pub unsafe fn pdep(a: u32, mask: u32) -> u32 {
+    unsafe { rust_isa_bmi2_pdep(a, mask) }
+}
+
+/// `pext`
+///
+/// Extract the bits selected by `mask`.
+///
+/// # Safety
+///
+/// The caller must enable BMI2.
+#[target_feature(enable = "bmi2")]
+#[inline]
+pub unsafe fn pext(a: u32, mask: u32) -> u32 {
+    unsafe { rust_isa_bmi2_pext(a, mask) }
+}
+
+/// `sarx`
+///
+/// Arithmetic shift right by `count`.
+///
+/// # Safety
+///
+/// The caller must enable BMI2.
+#[target_feature(enable = "bmi2")]
+#[inline]
+pub unsafe fn sarx(a: u32, count: u32) -> u32 {
+    let output: u32;
+    unsafe {
+        asm!(
+            "sarx {out:e}, {a:e}, {count:e}",
+            out = lateout(reg) output,
+            a = in(reg) a,
+            count = in(reg) count,
+            options(nostack, nomem, pure)
+        );
+    }
+    output
+}
+
+/// `shlx`
+///
+/// Logical shift left by `count`.
+///
+/// # Safety
+///
+/// The caller must enable BMI2.
+#[target_feature(enable = "bmi2")]
+#[inline]
+pub unsafe fn shlx(a: u32, count: u32) -> u32 {
+    let output: u32;
+    unsafe {
+        asm!(
+            "shlx {out:e}, {a:e}, {count:e}",
+            out = lateout(reg) output,
+            a = in(reg) a,
+            count = in(reg) count,
+            options(nostack, nomem, pure)
+        );
+    }
+    output
+}
+
+/// `shrx`
+///
+/// Logical shift right by `count`.
+///
+/// # Safety
+///
+/// The caller must enable BMI2.
+#[target_feature(enable = "bmi2")]
+#[inline]
+pub unsafe fn shrx(a: u32, count: u32) -> u32 {
+    let output: u32;
+    unsafe {
+        asm!(
+            "shrx {out:e}, {a:e}, {count:e}",
+            out = lateout(reg) output,
+            a = in(reg) a,
+            count = in(reg) count,
+            options(nostack, nomem, pure)
+        );
+    }
+    output
+}
+
+/// `rorx`
+///
+/// Rotate right by `IMM`.
+///
+/// # Safety
+///
+/// The caller must enable BMI2.
+#[target_feature(enable = "bmi2")]
+#[inline]
+pub unsafe fn rorx<const IMM: u8>(a: u32) -> u32 {
+    let output: u32;
+    unsafe {
+        asm!(
+            "rorx {output:e}, {a:e}, {imm}",
+            output = lateout(reg) output,
+            a = in(reg) a,
+            imm = const IMM,
+            options(nostack, nomem, pure)
+        );
+    }
+    output
+}

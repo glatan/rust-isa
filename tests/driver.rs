@@ -56,20 +56,29 @@ fn relaxed_symbols_match() {
 
 #[test]
 fn x86_symbols_match() {
-    check_x86_symbols("sse2", "sse2.c", "rust_isa_sse2_");
-    check_x86_symbols("avx2", "avx2.c", "rust_isa_avx2_");
-    check_x86_symbols("avx512f", "avx512f.c", "rust_isa_avx512f_");
-    check_x86_symbols("avx512bw", "avx512bw.c", "rust_isa_avx512bw_");
-    check_x86_symbols("avx512dq", "avx512dq.c", "rust_isa_avx512dq_");
-    check_x86_symbols("avx512ifma", "avx512ifma.c", "rust_isa_avx512ifma_");
-    check_x86_symbols("avx512vbmi", "avx512vbmi.c", "rust_isa_avx512vbmi_");
-    check_x86_symbols("avx512vnni", "avx512vnni.c", "rust_isa_avx512vnni_");
-    check_x86_symbols("avx512vl", "avx512vl.c", "rust_isa_avx512vl_");
+    check_x86_symbols("simd/sse2", "sse2.c", "rust_isa_sse2_");
+    check_x86_symbols("simd/avx2", "avx2.c", "rust_isa_avx2_");
+    check_x86_symbols("simd/avx512f", "avx512f.c", "rust_isa_avx512f_");
+    check_x86_symbols("simd/avx512bw", "avx512bw.c", "rust_isa_avx512bw_");
+    check_x86_symbols("simd/avx512dq", "avx512dq.c", "rust_isa_avx512dq_");
+    check_x86_symbols("simd/avx512ifma", "avx512ifma.c", "rust_isa_avx512ifma_");
+    check_x86_symbols("simd/avx512vbmi", "avx512vbmi.c", "rust_isa_avx512vbmi_");
+    check_x86_symbols("simd/avx512vnni", "avx512vnni.c", "rust_isa_avx512vnni_");
+    check_x86_symbols("simd/avx512vl", "avx512vl.c", "rust_isa_avx512vl_");
+    check_x86_symbols("crypto/aes", "aes.c", "rust_isa_aes_");
+    check_x86_symbols("crypto/sha", "sha.c", "rust_isa_sha_");
+    check_x86_symbols("crypto/gfni", "gfni.c", "rust_isa_gfni_");
+    check_x86_symbols("crypto/vaes", "vaes.c", "rust_isa_vaes_");
+    check_x86_symbols("crypto/vpclmulqdq", "vpclmulqdq.c", "rust_isa_vpclmulqdq_");
+    check_x86_symbols("simd/fma", "fma.c", "rust_isa_fma_");
+    check_x86_symbols("integer/bmi1", "bmi1.c", "rust_isa_bmi1_");
+    check_x86_symbols("integer/bmi2", "bmi2.c", "rust_isa_bmi2_");
+    check_x86_symbols("integer/popcnt", "popcnt.c", "rust_isa_popcnt_");
 }
 
 fn check_x86_symbols(module: &str, c_file: &str, prefix: &str) {
     let root = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("src/x86/simd")
+        .join("src/x86")
         .join(module);
     let mut rust_symbols = BTreeSet::new();
     for path in rust_sources(&root) {
@@ -261,6 +270,111 @@ fn avx512_pipeline() {
         paddd[1],
         paddd[0] + 1,
         "store or load between vpaddd:\n{body}"
+    );
+}
+
+#[test]
+fn crypto_pipeline() {
+    if std::env::var_os("RUST_ISA_NESTED").is_some() {
+        return;
+    }
+    let dir = nested_dir("crypto-link");
+    let rustflags = "-C target-feature=+aes,+avx2,+fma -C linker-plugin-lto -C linker=clang -C link-arg=-fuse-ld=lld";
+    let output = cargo(&dir)
+        .env("RUSTFLAGS", rustflags)
+        .args(["build", "-p", "crypto-link", "--release"])
+        .output()
+        .expect("cargo");
+    assert!(output.status.success(), "{}", output_text(&output));
+
+    let binary = dir.join("release/crypto-link");
+    assert!(binary.is_file(), "missing {}", binary.display());
+    let output = Command::new("llvm-objdump")
+        .args(["-d", "--no-show-raw-insn"])
+        .arg(&binary)
+        .output()
+        .expect("llvm-objdump");
+    assert!(output.status.success(), "{}", output_text(&output));
+    let text = String::from_utf8_lossy(&output.stdout);
+
+    let aes = function_at(&text, "<kernel_aes>:");
+    assert!(!aes.contains("call"), "kernel_aes calls C:\n{aes}");
+    let lines: Vec<_> = aes.lines().collect();
+    let aesenc: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("aesenc"))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(aesenc.len(), 2, "kernel_aes body:\n{aes}");
+    assert_eq!(
+        aesenc[1],
+        aesenc[0] + 1,
+        "store or load between aesenc:\n{aes}"
+    );
+
+    let fma = function_at(&text, "<kernel_fma>:");
+    assert!(!fma.contains("call"), "kernel_fma calls C:\n{fma}");
+    let lines: Vec<_> = fma.lines().collect();
+    let vfmadd: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("vfmadd"))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(vfmadd.len(), 2, "kernel_fma body:\n{fma}");
+    assert_eq!(
+        vfmadd[1],
+        vfmadd[0] + 1,
+        "store or load between vfmadd:\n{fma}"
+    );
+}
+
+fn function_at<'a>(text: &'a str, symbol: &str) -> &'a str {
+    let start = text
+        .find(symbol)
+        .unwrap_or_else(|| panic!("missing {symbol}"));
+    let body = &text[start..];
+    &body[..body.find("\n\n").unwrap_or(body.len())]
+}
+
+#[test]
+fn i686_values() {
+    if std::env::var_os("RUST_ISA_NESTED").is_some() {
+        return;
+    }
+    let dir = nested_dir("i686-values");
+    let rustflags = "-C linker-plugin-lto -C linker=clang -C link-arg=--target=i686-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
+    let output = cargo(&dir)
+        .env("RUSTC_BOOTSTRAP", "1")
+        .env("RUSTFLAGS", rustflags)
+        .args([
+            "build",
+            "--manifest-path",
+            "fixtures/native-values/Cargo.toml",
+            "-Z",
+            "build-std=core",
+            "--target",
+            "i686-unknown-linux-gnu",
+            "--release",
+        ])
+        .output()
+        .expect("cargo");
+    assert!(output.status.success(), "{}", output_text(&output));
+
+    let binary = dir.join("i686-unknown-linux-gnu/release/native-values");
+    assert!(binary.is_file(), "missing {}", binary.display());
+    let output = Command::new("qemu-i386-static")
+        .arg("-cpu")
+        .arg("max")
+        .arg(&binary)
+        .output()
+        .expect("qemu-i386-static");
+    assert!(
+        output.status.success(),
+        "i686 value test failed: {}\n{}",
+        output.status,
+        output_text(&output)
     );
 }
 

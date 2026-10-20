@@ -12,6 +12,8 @@ AVX2 は `V256`、load / store、`vpadd*` / `vpsub*`、`vpand` / `vpor` / `vpxor
 
 AVX-512 は `V512` と load / store、AVX-512F の整数加減算・乗算・bitwise・`vpermd`、AVX-512BW の byte 加減算と 16-bit 乗算、AVX-512DQ の `vpmullq`、AVX-512IFMA、AVX-512VBMI、AVX-512VNNI、AVX-512VL の 128/256-bit `vpmullq` を実装してある。
 
+暗号は AES、SHA、GFNI、PCLMULQDQ、VAES、VPCLMULQDQ の代表命令を実装してある。整数は FMA、BMI1、BMI2、POPCNT を実装してある。i686 は SSE2 と AVX2 の値テストを QEMU で実行する。
+
 ## 実装方式
 
 - native なので無条件に公開する。任意の feature を要求する命令は `unsafe fn` とする。
@@ -44,7 +46,7 @@ lto = "thin"
 rustflags = ["-C", "linker-plugin-lto", "-C", "linker=clang", "-C", "link-arg=-fuse-ld=lld"]
 ```
 
-C は `-flto=thin` でコンパイルする。`lto = "fat"` の場合は C も `-flto` にする。現在は `fixtures/sse2-link`、`fixtures/avx2-link`、`fixtures/avx512-link` で、`paddd`、`vpaddd` + `vpmulld`、`vpaddd` の並びを確認している。
+C は `-flto=thin` でコンパイルする。`lto = "fat"` の場合は C も `-flto` にする。現在は `fixtures/sse2-link`、`fixtures/avx2-link`、`fixtures/avx512-link`、`fixtures/crypto-link` で、`paddd`、`vpaddd` + `vpmulld`、`vpaddd`、`aesenc` と `vfmadd` の並びを確認している。
 
 条件を満たさないビルドでは、C 関数への `call` が残る。x86 の既定は呼び出しベースである。
 
@@ -70,7 +72,7 @@ C は `-flto=thin` でコンパイルする。`lto = "fat"` の場合は C も `
 
 ## 未対応
 
-- i686 の値テストと命令の確認。
+- i686 の AVX-512 と暗号・整数の値テスト。
 - AMX のタイル状態を API に出すか。
 - shuffle / compress のうち、intrinsics が往復を残す命令の個別確認。
 

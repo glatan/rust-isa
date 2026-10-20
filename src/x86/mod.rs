@@ -2,4 +2,6 @@
 //!
 //! The public path is `x86::{family}::{extension}::{instruction}`.
 
+pub mod crypto;
+pub mod integer;
 pub mod simd;
