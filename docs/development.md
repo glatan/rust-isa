@@ -37,8 +37,8 @@ QEMU の runner は、静的にリンクしたテストバイナリを前提に�
 
 調査では、`no_std` の静的バイナリを作り、SIMD の値テストを QEMU で実行した。Rust の `_start` から C の関数を呼び、結果を Rust で比較し、終了コードで判定した。
 
-- AArch64、ARMv7、RISC-V、LoongArch、s390x、PowerPC、i686: Rust から C を呼ぶ値テストが通った。
-- MIPS: lane ごとの値テストでは、すべて 15 になった。Rust から C を呼ぶ結合ハーネスは、まだ一致しない。
+- AArch64、ARMv7、RISC-V、LoongArch、s390x、PowerPC、MIPS、i686: Rust から C を呼ぶ値テストが通った。
+- MIPS は、共有の静的配列や lane を引数で選ぶ関数を使うと、codegen の都合で一致しなかった。lane ごとに独立した関数（`c_lane0` など）にすると通った。
 
 終了コードのインライン asm は、レジスタを明示する。`in(reg)` と `li` を組み合わせると、宛先レジスタとオペランドが同じになって値が壊れることがある（PowerPC で発生した）。
 

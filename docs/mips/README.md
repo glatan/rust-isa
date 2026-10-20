@@ -22,6 +22,7 @@ family は命令の種類に合わせて決める（`simd`、`system` など）�
 - C は `-march=mips64r2 -mmsa -mabicalls -mxgot`、Rust は `-C target-feature=+msa,+fp64` を使う。`-mxgot` と `-mabicalls` が無いと feature 集合が一致しなかった。
 - `llvm-objdump` は MSA 命令を `<unknown>` と表示する。バイト列を `llvm-mc --disassemble --triple=mips64-unknown-linux-gnuabi64 --mattr=+msa` でデコードする。
 - リンクでは `-Wl,-e,_start` を付ける。付けないと entry が 0 になり、`--gc-sections` でコードが消える。
+- 値テストは、lane ごとに独立した C 関数（`c_lane0` など）を使うと通った。共有の静的配列や lane を引数で選ぶ関数は、MIPS の codegen で一致しなかった。
 
 ## ツールチェーン
 
