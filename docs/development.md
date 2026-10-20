@@ -60,11 +60,12 @@ QEMU の runner は、静的にリンクしたテストバイナリを前提に�
 
 `target-nested/no-simd` のビルドだけは、外したあとに空の `RUSTFLAGS` を付ける。空の `RUSTFLAGS` は config の rustflags を置き換えるので、`simd128` も `relaxed-simd` も付かない。
 
-現在のテストが使うディレクトリは三つある。`target-nested/wide-link` は過去の `wide-arithmetic` 実験の残骸で、現在のテストは使わない。
+現在のテストが使うディレクトリは四つある。`target-nested/wide-link` は過去の `wide-arithmetic` 実験の残骸で、現在のテストは使わない。
 
 - `target-nested/link` は `fixtures/simd128-link` の `wasm32-unknown-unknown` release ビルドである。確認する内容は [wasm32 のリンク](wasm32/linking.md) に書く。
 - `target-nested/no-simd` は、`simd128` も `relaxed-simd` も付けない wasm32 ビルドと、その状態で `fixtures/simd128-link` がコンパイルに失敗することの確認である。
 - `target-nested/wasip1` は `cargo test --target wasm32-wasip1` の値テストと doctest である。
+- `target-nested/sse2-link` は `fixtures/sse2-link` の release ビルドである。`kernel` に `call` が無く、`paddd` が 2 つ残ることを確認する。
 
 `target-nested` は `.gitignore` と `.dockerignore` に入っている。消しても次の `cargo test` が作り直す。
 

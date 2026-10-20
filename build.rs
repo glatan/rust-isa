@@ -6,11 +6,32 @@ fn main() {
     let manifest = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
     let simd128_c = manifest.join("src/wasm32/simd/simd128/simd128.c");
     let relaxed_c = manifest.join("src/wasm32/simd/relaxed_simd/relaxed_simd.c");
+    let sse2_c = manifest.join("src/x86/simd/sse2/sse2.c");
     println!("cargo:rerun-if-changed={}", simd128_c.display());
     println!("cargo:rerun-if-changed={}", relaxed_c.display());
+    println!("cargo:rerun-if-changed={}", sse2_c.display());
     println!("cargo:rerun-if-env-changed=CARGO_CFG_TARGET_FEATURE");
 
     let target = env::var("TARGET").unwrap_or_default();
+    let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
+
+    if target == "x86_64-unknown-linux-gnu" {
+        compile_archive(
+            &out_dir,
+            &sse2_c,
+            "rust_isa_sse2",
+            &[
+                "-msse2",
+                "-mno-mmx",
+                "-mno-x87",
+                "-mno-popcnt",
+                "-mno-xsave",
+            ],
+            None,
+        );
+        return;
+    }
+
     if !target.starts_with("wasm32") {
         return;
     }
@@ -21,14 +42,20 @@ fn main() {
         return;
     }
 
-    let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
-    compile_archive(&out_dir, &simd128_c, "rust_isa_simd128", &["-msimd128"]);
+    compile_archive(
+        &out_dir,
+        &simd128_c,
+        "rust_isa_simd128",
+        &["-msimd128"],
+        Some("wasm32-unknown-unknown"),
+    );
     if relaxed {
         compile_archive(
             &out_dir,
             &relaxed_c,
             "rust_isa_relaxed_simd",
             &["-msimd128", "-mrelaxed-simd"],
+            Some("wasm32-unknown-unknown"),
         );
     }
 }
@@ -37,11 +64,19 @@ fn has_feature(features: &str, name: &str) -> bool {
     features.split([',', ' ']).any(|feature| feature == name)
 }
 
-fn compile_archive(out_dir: &Path, c_path: &Path, name: &str, flags: &[&str]) {
+fn compile_archive(
+    out_dir: &Path,
+    c_path: &Path,
+    name: &str,
+    flags: &[&str],
+    clang_target: Option<&str>,
+) {
     let obj_path = out_dir.join(format!("{name}.o"));
     let mut command = Command::new("clang");
+    if let Some(target) = clang_target {
+        command.arg(format!("--target={target}"));
+    }
     command.args([
-        "--target=wasm32-unknown-unknown",
         "-c",
         "-O2",
         "-flto=thin",
