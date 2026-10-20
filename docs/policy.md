@@ -83,7 +83,7 @@
 
 | 対象 | 方式 | 状態 |
 | --- | --- | --- |
-| wasm32 の `simd128`、`relaxed-simd` | cfg ゲート、C + clang + LTO | 往復が消えることを `tests/driver.rs` で確認済み |
+| wasm32 の `simd128`、`relaxed-simd` | cfg ゲート、C + clang + LTO | 往復が消えることを `tests/wasm_link.rs` で確認済み |
 | native の x86_64 / i686 | 無条件公開、`#[target_feature]`、C + clang + LTO | 条件付きで確認済み（i686 は SSE2 / AVX2） |
 | native の AArch64 / RISC-V / LoongArch / s390x / 32-bit ARM / PowerPC / MIPS | 無条件公開、`#[target_feature]` または global flag、C + clang + LTO | 条件付きで確認済み |
 | native の 128-bit `asm!` | `u128` と `xmm_reg` | x86_64 で確認済み |
@@ -197,11 +197,11 @@ clang 23.1.1 で確認したこと:
 
 - 値テスト: ホストまたはエミュレータで実行する。開発イメージには `qemu-user-static` と各ターゲットの runner を入れてある。native の値テストは、実装を足すときに `tests/` へ追加する。設計は [native の値テスト](native-testing.md) にある。
 - 命令の存在: `llvm-objdump` または `wasm2wat` で確認する。
-- ゼロコスト: wasm32 は `tests/driver.rs`。native は 2 命令を合成する fixture のカーネルを disassembly し、`call` と命令間の store/load が無いことを確認する。C への `call` は `callq *...` の間接呼び出しになることがあるため、シンボル名だけで探さない。x86_64 の確認は済みである。`lto = "thin"` と C `-flto=thin`、`lto = "fat"` と C `-flto`、LTO なしの三つを確認する。
+- ゼロコスト: wasm32 は `tests/wasm_link.rs`。native は 2 命令を合成する fixture のカーネルを disassembly し、`call` と命令間の store/load が無いことを確認する。C への `call` は `callq *...` の間接呼び出しになることがあるため、シンボル名だけで探さない。x86_64 の確認は済みである。`lto = "thin"` と C `-flto=thin`、`lto = "fat"` と C `-flto`、LTO なしの三つを確認する。
 - ELF のリンクが通らない arch は、Rust と C の bitcode を `llvm-link` し、`opt -passes="default<O3>"` で最適化して IR を確認する。これはバイナリでの確認の代わりではなく、リンク前の確認である。
 - cfg の観測: `rustc --print cfg`。結果は `docs/<arch>/feasibility.md` に置く。
 - 未対応の CPU でテストを走らせない。native の任意 feature は、実行時検出でスキップするか、`cfg(target_feature)` でテストを分ける。
-- C と Rust のシンボルが一致することを確認する（wasm32 の `tests/driver.rs` と同じ形）。
+- C と Rust のシンボルが一致することを確認する（`tests/checks.rs` と同じ形）。
 
 ## セキュリティ
 
@@ -237,7 +237,7 @@ clang 23.1.1 で確認したこと:
 4. 値の型と安全境界を決める。
 5. C または `asm!` を実装し、extension の `mod.rs` に契約を書く。
 6. 値テスト、命令の存在、シンボル一致のテストを追加する。
-7. ゼロコストを主張する場合は、wasm32 は `tests/driver.rs`、native は disassembly の確認を追加する。確認できるまでは「未確立」と書く。
+7. ゼロコストを主張する場合は、wasm32 は `tests/wasm_link.rs`、native は disassembly の確認を追加する。確認できるまでは「未確立」と書く。
 8. `docs/README.md` の索引に arch を足す。
 
 ## 決定

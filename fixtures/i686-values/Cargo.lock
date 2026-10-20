@@ -3,7 +3,7 @@
 version = 4
 
 [[package]]
-name = "native-values"
+name = "i686-values"
 version = "0.1.0"
 dependencies = [
  "rust-isa",

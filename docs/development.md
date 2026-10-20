@@ -1,20 +1,36 @@
 # 開発環境
 
-このリポジトリのコマンドは `Containerfile` のイメージの中で動かす。cargo、clang、llvm-ar、wasm-opt、wasm2wat、wasmtime、qemu-user-static はホストに置かない。
+このリポジトリのコマンドは `Containerfile` のイメージの中で動かす。cargo、cargo-nextest、clang、llvm-ar、wasm-opt、wasm2wat、wasmtime、qemu-user-static はホストに置かない。
 
 ```sh
 make image
 make test
+make test-host
+make test-x86_64
+make test-check-static
+make test-check-wasm-link
 make test-wasip1
+make test-wasip1-wide-arithmetic
 ```
 
-`make test` が既定である。イメージの中の `cargo test` が、rustdoc の言語と、`tests/driver.rs` に書いた wasm32 の確認を実行し、続けて `wasm32-wasip1` の値テストと doctest を実行する。値テストのランナーはイメージの `CARGO_TARGET_WASM32_WASIP1_RUNNER=wasmtime` である。`make test-wasip1` は `wasm32-wasip1` の値テストと doctest だけを実行する。
+`make test` が既定で、`test-host`、`test-wasip1`、`test-wasip1-wide-arithmetic` を実行する。すべてのテストはイメージ内で、対象 triple を明示して実行する。
+
+- `make test-host`: `x86_64-unknown-linux-gnu` で実行する全テストと doctest。新しい統合テストも自動的に対象になる
+- `make test-x86_64`: x86_64 の値テスト、doctest、x86 のゼロコスト検査だけを実行する
+- `make test-check-static`: シンボル一致、rustdoc の言語、レーン即値の検査
+- `make test-check-wasm-link`: `wasm32-unknown-unknown` のリンクと simd128 無効時の検査
+- `make test-wasip1`: `wasm32-wasip1` の nextest と doctest
+- `make test-wasip1-wide-arithmetic`: `wide-arithmetic` feature を有効にした wasm32-wasip1 の nextest、doctest、リンク検査
+
+arch ごとの `test-i686`、`test-aarch64`、`test-armv7`、`test-riscv64`、`test-loongarch64`、`test-s390x`、`test-powerpc64le`、`test-mips64` は、対応する `tests/<arch>.rs` のテストだけを実行する。`make test` は `test-host` 経由でこれらも実行する。
+
+テストの実行には `cargo nextest run` を使い、`--no-tests=fail` を付ける。テストターゲットにテストが 0 件の場合は失敗する。doctest は nextest の対象外なので、`cargo test --doc` で別に実行する。
 
 ## arch ごとの確認
 
-現在のテストは wasm32 とホスト向けである。native の他 arch は、実装を足すときに値テストと命令の確認を追加する。runner と必要なツールは `docs/<arch>/README.md` に書く。
+すべての値テストはイメージ内で実行する。x86_64 は `cargo test --target x86_64-unknown-linux-gnu`、wasm32 は wasmtime、その他の native arch は QEMU の runner を使う。runner と必要なツールは `docs/<arch>/README.md` に書く。
 
-イメージには `qemu-user-static` が入っている。次の runner を `Containerfile` で設定してある。Cargo は `cargo test --target <triple>` のときにこれを使う。
+イメージには `qemu-user-static` が入っている。次の runner を `Containerfile` で設定してある。`tests/<arch>.rs` は、native arch の値を QEMU で実行するときにこれらを使う。
 
 - `aarch64-unknown-linux-gnu`: `qemu-aarch64-static`
 - `armv7-unknown-linux-gnueabihf`: `qemu-arm-static`
@@ -27,7 +43,7 @@ make test-wasip1
 
 QEMU の runner は、静的にリンクしたテストバイナリを前提にする。動的リンクのバイナリは、ターゲットの loader と libc が無いため動かない。
 
-- 値テスト: ホスト、QEMU、または実機で実行する。
+- 値テスト: イメージ内で、対象 triple ごとの runner で実行する。
 - 命令の存在: `llvm-objdump` で確認する。
 - ゼロコスト: Rust と C の LTO モードを一致させ、C の feature 集合を Rust の部分集合にする。手順と arch ごとの結果は [ゼロコストの確認](zero-cost.md) にある。
 - ELF のリンクが通らない arch は、Rust と C の bitcode を `llvm-link` し、`opt -passes="default<O3>"` で最適化して IR を確認する。PowerPC はこの方法でもインラインを確認した。
@@ -52,7 +68,7 @@ QEMU の runner は、静的にリンクしたテストバイナリを前提に�
 
 ## `target-nested`
 
-`cargo test` は、ホスト向けのテストを `target/` に書きながら、別の `cargo` を起動する。起動される側の成果物は、リポジトリ直下の `target-nested` に置かれる。`CARGO_TARGET_DIR` の設定は `tests/driver.rs` にある。
+`cargo test` は、x86_64 向けのテストを `target/` に書きながら、別の `cargo` を起動する。起動される側の成果物は、リポジトリ直下の `target-nested` に置かれる。`CARGO_TARGET_DIR` の設定は `tests/common/mod.rs` にある。
 
 外側の `cargo test` は `target/.cargo-lock` を保持する。内側が同じ `target/` へ書くと、このロックが外れるまで待つ。成果物のディレクトリを分けるのは、この待ちを避けるためである。
 
@@ -60,16 +76,15 @@ QEMU の runner は、静的にリンクしたテストバイナリを前提に�
 
 `target-nested/no-simd` のビルドだけは、外したあとに空の `RUSTFLAGS` を付ける。空の `RUSTFLAGS` は config の rustflags を置き換えるので、`simd128` も `relaxed-simd` も付かない。
 
-現在のテストが使うディレクトリは十六ある。`target-nested/wide-link` は過去の `wide-arithmetic` 実験の残骸で、現在のテストは使わない。
+現在のテストが使うディレクトリは十五ある。
 
 - `target-nested/link` は `fixtures/simd128-link` の `wasm32-unknown-unknown` release ビルドである。確認する内容は [wasm32 のリンク](wasm32/linking.md) に書く。
 - `target-nested/no-simd` は、`simd128` も `relaxed-simd` も付けない wasm32 ビルドと、その状態で `fixtures/simd128-link` がコンパイルに失敗することの確認である。
-- `target-nested/wasip1` は `cargo test --target wasm32-wasip1` の値テストと doctest である。
 - `target-nested/sse2-link` は `fixtures/sse2-link` の release ビルドである。`kernel` に `call` が無く、`paddd` が 2 つ残ることを確認する。
 - `target-nested/avx2-link` は `fixtures/avx2-link` の release ビルドである。`kernel` に `call` が無く、`vpaddd` の直後に `vpmulld` が残ることを確認する。
 - `target-nested/avx512-link` は `fixtures/avx512-link` の release ビルドである。`kernel` に `call` が無く、`vpaddd` が 2 つ隣接することを確認する。
 - `target-nested/crypto-link` は `fixtures/crypto-link` の release ビルドである。`kernel_aes` と `kernel_fma` に `call` が無く、`aesenc` と `vfmadd` が隣接することを確認する。
-- `target-nested/i686-values` は `fixtures/native-values` の i686 release ビルドである。QEMU-i386 で SSE2 と AVX2 の値テストを実行する。
+- `target-nested/i686-values` は `fixtures/i686-values` の i686 release ビルドである。QEMU-i386 で SSE2 と AVX2 の値テストを実行する。
 - `target-nested/aarch64-values` は `fixtures/aarch64-values` の AArch64 release ビルドである。QEMU-AArch64 で NEON と dotprod の値テストを実行し、`add` / `tbl` / `sdot` の disassembly を確認する。
 - `target-nested/riscv-values` は RISC-V の固定長 V128 値テストである。
 - `target-nested/loongarch-values` は LoongArch LSX の値テストである。
@@ -77,7 +92,7 @@ QEMU の runner は、静的にリンクしたテストバイナリを前提に�
 - `target-nested/arm-values` は ARMv7 NEON の値テストである。
 - `target-nested/powerpc-values` は PowerPC Altivec の値テストである。
 - `target-nested/mips-values` は MIPS MSA の値テストである。
-- `target-nested/wide-link` は wasm32 の `wide-arithmetic` ビルドである。
+- `target-nested/wide-link` は wasm32 の `wide-arithmetic` リンク検査に使うビルドである。
 
 `target-nested` は `.gitignore` と `.dockerignore` に入っている。消しても次の `cargo test` が作り直す。
 

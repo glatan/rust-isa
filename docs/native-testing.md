@@ -1,6 +1,6 @@
 # native の値テスト
 
-この文書は、native arch の値テストを `tests/` に追加するときの設計である。i686 の SSE2 / AVX2 値テストを `fixtures/native-values` で実行している。
+この文書は、native arch の値テストを `tests/` に追加するときの設計である。i686 の SSE2 / AVX2 値テストを `fixtures/i686-values` で実行している。
 
 ## 前提
 
@@ -12,14 +12,12 @@
 ## 置き場所
 
 ```text
-fixtures/native-values/
+fixtures/i686-values/
   Cargo.toml
-  build.rs
-  c/test.c
   src/main.rs
 ```
 
-`fixtures/native-values` は workspace のメンバーにしない。`tests/driver.rs` から `cargo build --target <triple>` でビルドし、QEMU で実行する。wasm の `fixtures/simd128-link` と同じ形にする。
+`fixtures/i686-values` は workspace のメンバーにしない。`tests/<arch>.rs` から `cargo build --target <triple>` でビルドし、QEMU で実行する。wasm の `fixtures/simd128-link` と同じ形にする。
 
 ## テストの形
 
@@ -46,11 +44,11 @@ native の API を実装したら、extension ごとに次を追加する。
 4. 値テストが通ること
 5. 必要なら zero-cost の disassembly 確認
 
-`tests/driver.rs` には、`cargo build`、QEMU の実行、終了コードの確認を追加する。失敗時は build log と終了コードを表示する。
+`tests/<arch>.rs` には、`cargo build`、QEMU の実行、終了コードの確認を追加する。失敗時は build log と終了コードを表示する。
 
 ## 現在の状態
 
-- `fixtures/native-values` は `no_std` の `_start` を持ち、終了コードで合否を返す。
+- `fixtures/i686-values` は `no_std` の `_start` を持ち、終了コードで合否を返す。
 - i686 は `cargo build -Z build-std=core --target i686-unknown-linux-gnu` でビルドし、QEMU-i386 で SSE2 と AVX2 の値テストを実行する。
 - AArch64 は同じ形でビルドし、QEMU-AArch64 で NEON と dotprod の値テストを実行する。
 - RISC-V、LoongArch、s390x、ARMv7、PowerPC、MIPS も同じ形でビルドし、それぞれの QEMU で代表的な SIMD 命令を実行する。

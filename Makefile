@@ -1,8 +1,17 @@
 # 開発コマンドはイメージの中で動かす。ホストに cargo や clang は置かない。
+# テストはすべてイメージ内で、対象 triple を明示して実行する。
 
-IMAGE := localhost/rust-isa-dev:20261011
+# Containerfile のベースイメージ日付とイメージ改訂番号に合わせる。
+IMAGE_TAG ?= 20261018.1
+IMAGE ?= localhost/rust-isa-dev:$(IMAGE_TAG)
+PODMAN ?= podman
+NEXTEST ?= cargo nextest run
+NEXTEST_FLAGS ?= --no-tests=fail
 
-PODMAN_RUN := podman run --rm \
+X86_64_TARGET ?= x86_64-unknown-linux-gnu
+WASIP1_TARGET ?= wasm32-wasip1
+
+PODMAN_RUN := $(PODMAN) run --rm \
 	-v "$(CURDIR)":/src \
 	-v rust-isa-target:/src/target \
 	-v rust-isa-cargo-registry:/root/.cargo/registry \
@@ -10,21 +19,93 @@ PODMAN_RUN := podman run --rm \
 	-w /src \
 	$(IMAGE)
 
-.PHONY: help image test test-wasip1
-
 .DEFAULT_GOAL := test
 
+.PHONY: help
 help:
 	@printf '%s\n' \
-		'image         開発イメージを作る' \
-		'test          cargo test（既定）' \
-		'test-wasip1   wasm32-wasip1 の値テストと doctest'
+		'image                        開発イメージを作る' \
+		'test                         すべてのテスト（test-host + wasm32）' \
+		'test-host                    x86_64 で実行する全テストと doctest' \
+		'test-x86_64                  x86_64 の値テスト・doctest・ゼロコスト検査' \
+		'test-check-static            シンボル・rustdoc・レーン即値の検査' \
+		'test-check-wasm-link         wasm32-unknown-unknown のリンク検査' \
+		'test-i686                    i686 の値テスト' \
+		'test-aarch64                 AArch64 の値テスト' \
+		'test-armv7                   ARMv7 の値テスト' \
+		'test-riscv64                 RISC-V の値テスト' \
+		'test-loongarch64             LoongArch の値テスト' \
+		'test-s390x                   s390x の値テスト' \
+		'test-powerpc64le             PowerPC の値テスト' \
+		'test-mips64                  MIPS64 の値テスト' \
+		'test-wasip1                  wasm32-wasip1 の nextest と doctest' \
+		'test-wasip1-wide-arithmetic  wide-arithmetic 有効時の nextest と doctest'
 
+.PHONY: image
 image:
-	podman build -t $(IMAGE) -f Containerfile .
+	$(PODMAN) build -t $(IMAGE) -f Containerfile .
 
-test:
-	$(PODMAN_RUN) cargo test $(CARGO_ARGS)
+.PHONY: test
+test: test-host test-wasip1 test-wasip1-wide-arithmetic
 
+.PHONY: test-host
+test-host:
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) $(CARGO_ARGS)
+	$(PODMAN_RUN) cargo test --target $(X86_64_TARGET) --doc $(CARGO_ARGS)
+
+.PHONY: test-x86_64
+test-x86_64:
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test x86 $(CARGO_ARGS)
+	$(PODMAN_RUN) cargo test --target $(X86_64_TARGET) --doc $(CARGO_ARGS)
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test x86_link $(CARGO_ARGS)
+
+.PHONY: test-check-static
+test-check-static:
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test checks $(CARGO_ARGS)
+
+.PHONY: test-check-wasm-link
+test-check-wasm-link:
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test wasm_link $(CARGO_ARGS)
+
+.PHONY: test-i686
+test-i686:
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test i686 $(CARGO_ARGS)
+
+.PHONY: test-aarch64
+test-aarch64:
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test aarch64 $(CARGO_ARGS)
+
+.PHONY: test-armv7
+test-armv7:
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test arm $(CARGO_ARGS)
+
+.PHONY: test-riscv64
+test-riscv64:
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test riscv $(CARGO_ARGS)
+
+.PHONY: test-loongarch64
+test-loongarch64:
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test loongarch $(CARGO_ARGS)
+
+.PHONY: test-s390x
+test-s390x:
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test s390x $(CARGO_ARGS)
+
+.PHONY: test-powerpc64le
+test-powerpc64le:
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test powerpc $(CARGO_ARGS)
+
+.PHONY: test-mips64
+test-mips64:
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test mips $(CARGO_ARGS)
+
+.PHONY: test-wasip1
 test-wasip1:
-	$(PODMAN_RUN) cargo test --target wasm32-wasip1 $(CARGO_ARGS)
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(WASIP1_TARGET) $(CARGO_ARGS)
+	$(PODMAN_RUN) cargo test --target $(WASIP1_TARGET) --doc $(CARGO_ARGS)
+
+.PHONY: test-wasip1-wide-arithmetic
+test-wasip1-wide-arithmetic:
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --features wide-arithmetic --target $(WASIP1_TARGET) $(CARGO_ARGS)
+	$(PODMAN_RUN) cargo test --features wide-arithmetic --target $(WASIP1_TARGET) --doc $(CARGO_ARGS)
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test wide_link $(CARGO_ARGS)

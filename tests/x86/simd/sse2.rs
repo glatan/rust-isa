@@ -1,7 +1,11 @@
 use rust_isa::x86::simd::sse2::{
-    V128, addpd, addps, paddb, paddd, pand, pcmpeqb, pcmpgtb, pmaddwd, pmullw, pmuludq, psadbw,
-    pshufd, pshufhw, pshuflw, pslld, psrad, punpcklbw, shufpd, shufps, sqrtpd, sqrtps, v128_load,
-    v128_store,
+    V128, addpd, addps, cmpeqpd, cmpeqps, cmplepd, cmpleps, cmpltpd, cmpltps, divpd, divps, maxpd,
+    maxps, minpd, minps, mulpd, mulps, paddb, paddd, paddq, paddw, pand, pavgb, pavgw, pcmpeqb,
+    pcmpeqd, pcmpeqw, pcmpgtb, pcmpgtd, pcmpgtw, pmaddwd, pmaxub, pmaxw, pminub, pminw, pmullw,
+    pmuludq, por, psadbw, pshufd, pshufhw, pshuflw, pslld, psllq, psllw, psrad, psraw, psrld,
+    psrlq, psrlw, psubb, psubd, psubq, psubw, punpckhbw, punpckhdq, punpckhqdq, punpckhwd,
+    punpcklbw, punpckldq, punpcklqdq, punpcklwd, pxor, shufpd, shufps, sqrtpd, sqrtps, subpd,
+    subps, v128_load, v128_store,
 };
 
 #[test]
@@ -242,4 +246,249 @@ fn lane_shuffles() {
     let out = shufpd::<0b11>(V128::from_bytes(a64), V128::from_bytes(b64)).to_bytes();
     assert_eq!(i64::from_le_bytes(out[0..8].try_into().unwrap()), 2);
     assert_eq!(i64::from_le_bytes(out[8..16].try_into().unwrap()), 4);
+}
+
+fn i16x8(values: [i16; 8]) -> V128 {
+    let mut bytes = [0u8; 16];
+    for (lane, value) in values.iter().enumerate() {
+        bytes[lane * 2..lane * 2 + 2].copy_from_slice(&value.to_le_bytes());
+    }
+    V128::from_bytes(bytes)
+}
+
+fn i16_lanes(value: V128) -> [i16; 8] {
+    let bytes = value.to_bytes();
+    core::array::from_fn(|lane| {
+        i16::from_le_bytes(bytes[lane * 2..lane * 2 + 2].try_into().unwrap())
+    })
+}
+
+fn i32x4(values: [i32; 4]) -> V128 {
+    let mut bytes = [0u8; 16];
+    for (lane, value) in values.iter().enumerate() {
+        bytes[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+    }
+    V128::from_bytes(bytes)
+}
+
+fn i32_lanes(value: V128) -> [i32; 4] {
+    let bytes = value.to_bytes();
+    core::array::from_fn(|lane| {
+        i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap())
+    })
+}
+
+fn i64x2(values: [i64; 2]) -> V128 {
+    let mut bytes = [0u8; 16];
+    bytes[..8].copy_from_slice(&values[0].to_le_bytes());
+    bytes[8..].copy_from_slice(&values[1].to_le_bytes());
+    V128::from_bytes(bytes)
+}
+
+fn i64_lanes(value: V128) -> [i64; 2] {
+    let bytes = value.to_bytes();
+    [
+        i64::from_le_bytes(bytes[..8].try_into().unwrap()),
+        i64::from_le_bytes(bytes[8..].try_into().unwrap()),
+    ]
+}
+
+fn f32x4(values: [f32; 4]) -> V128 {
+    let mut bytes = [0u8; 16];
+    for (lane, value) in values.iter().enumerate() {
+        bytes[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+    }
+    V128::from_bytes(bytes)
+}
+
+fn f32_lanes(value: V128) -> [f32; 4] {
+    let bytes = value.to_bytes();
+    core::array::from_fn(|lane| {
+        f32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap())
+    })
+}
+
+fn f64x2(values: [f64; 2]) -> V128 {
+    let mut bytes = [0u8; 16];
+    bytes[..8].copy_from_slice(&values[0].to_le_bytes());
+    bytes[8..].copy_from_slice(&values[1].to_le_bytes());
+    V128::from_bytes(bytes)
+}
+
+fn f64_lanes(value: V128) -> [f64; 2] {
+    let bytes = value.to_bytes();
+    [
+        f64::from_le_bytes(bytes[..8].try_into().unwrap()),
+        f64::from_le_bytes(bytes[8..].try_into().unwrap()),
+    ]
+}
+
+#[test]
+fn bitwise_or_and_xor() {
+    let a = V128::from_bytes([0b1010_1010; 16]);
+    let b = V128::from_bytes([0b1100_1100; 16]);
+    assert_eq!(por(a, b).to_bytes(), [0b1110_1110; 16]);
+    assert_eq!(pxor(a, b).to_bytes(), [0b0110_0110; 16]);
+}
+
+#[test]
+fn word_arithmetic_compare_and_minmax() {
+    let a = i16x8([1, 2, 3, 4, 5, 6, 7, 8]);
+    let b = i16x8([10, 20, 30, 40, 50, 60, 70, 80]);
+    assert_eq!(i16_lanes(paddw(a, b)), [11, 22, 33, 44, 55, 66, 77, 88]);
+    assert_eq!(i16_lanes(psubw(b, a)), [9, 18, 27, 36, 45, 54, 63, 72]);
+    assert_eq!(
+        pcmpeqw(
+            i16x8([5, 1, 5, 1, 5, 1, 5, 1]),
+            i16x8([5, 2, 5, 2, 5, 2, 5, 2])
+        )
+        .to_bytes(),
+        [
+            0xff, 0xff, 0, 0, 0xff, 0xff, 0, 0, 0xff, 0xff, 0, 0, 0xff, 0xff, 0, 0
+        ]
+    );
+    assert_eq!(
+        i16_lanes(pcmpgtw(i16x8([1, -1, 2, -2, 3, -3, 4, -4]), i16x8([0; 8]))),
+        [-1, 0, -1, 0, -1, 0, -1, 0]
+    );
+    assert_eq!(
+        i16_lanes(pminw(
+            i16x8([-1, 7, 3, 9, -5, 2, 8, 0]),
+            i16x8([1, 6, 4, 8, -4, 3, 7, 1])
+        )),
+        [-1, 6, 3, 8, -5, 2, 7, 0]
+    );
+    assert_eq!(
+        i16_lanes(pmaxw(
+            i16x8([-1, 7, 3, 9, -5, 2, 8, 0]),
+            i16x8([1, 6, 4, 8, -4, 3, 7, 1])
+        )),
+        [1, 7, 4, 9, -4, 3, 8, 1]
+    );
+    assert_eq!(i16_lanes(pavgw(i16x8([1; 8]), i16x8([2; 8]))), [2; 8]);
+}
+
+#[test]
+fn dword_arithmetic_and_compare() {
+    let a = i32x4([1, 2, 3, 4]);
+    let b = i32x4([10, 20, 30, 40]);
+    assert_eq!(i32_lanes(psubd(b, a)), [9, 18, 27, 36]);
+    assert_eq!(
+        pcmpeqd(i32x4([5, 1, 5, 1]), i32x4([5, 2, 5, 2])).to_bytes(),
+        [
+            0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0
+        ]
+    );
+    assert_eq!(
+        i32_lanes(pcmpgtd(i32x4([1, -1, 2, -2]), i32x4([0; 4]))),
+        [-1, 0, -1, 0]
+    );
+}
+
+#[test]
+fn qword_arithmetic_wraps() {
+    assert_eq!(
+        i64_lanes(paddq(i64x2([i64::MAX, 5]), i64x2([1, 2]))),
+        [i64::MIN, 7]
+    );
+    assert_eq!(i64_lanes(psubq(i64x2([0, 5]), i64x2([1, 2]))), [-1, 3]);
+}
+
+#[test]
+fn byte_subtract_and_unsigned_minmax() {
+    let a = V128::from_bytes([250; 16]);
+    let b = V128::from_bytes([10; 16]);
+    assert_eq!(psubb(a, b).to_bytes(), [240; 16]);
+    assert_eq!(pminub(a, b).to_bytes(), [10; 16]);
+    assert_eq!(pmaxub(a, b).to_bytes(), [250; 16]);
+    assert_eq!(
+        pavgb(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes(),
+        [2; 16]
+    );
+}
+
+#[test]
+fn word_and_qword_shifts() {
+    assert_eq!(
+        i16_lanes(psllw(i16x8([1, 2, 3, 4, 5, 6, 7, 8]), 1)),
+        [2, 4, 6, 8, 10, 12, 14, 16]
+    );
+    assert_eq!(i64_lanes(psllq(i64x2([1, 2]), 2)), [4, 8]);
+    assert_eq!(i16_lanes(psrlw(i16x8([i16::MIN; 8]), 1)), [0x4000; 8]);
+    assert_eq!(i32_lanes(psrld(i32x4([-1; 4]), 1)), [0x7fff_ffff; 4]);
+    assert_eq!(
+        i64_lanes(psrlq(i64x2([-1; 2]), 1)),
+        [0x7fff_ffff_ffff_ffff; 2]
+    );
+    assert_eq!(i16_lanes(psraw(i16x8([-2; 8]), 1)), [-1; 8]);
+}
+
+#[test]
+fn unpack_high_and_wide_lanes() {
+    let a = V128::from_bytes(core::array::from_fn(|index| index as u8 + 1));
+    let b = V128::from_bytes(core::array::from_fn(|index| index as u8 + 17));
+    assert_eq!(
+        punpckhbw(a, b).to_bytes(),
+        [
+            9, 25, 10, 26, 11, 27, 12, 28, 13, 29, 14, 30, 15, 31, 16, 32
+        ]
+    );
+
+    let a = i16x8([1, 2, 3, 4, 5, 6, 7, 8]);
+    let b = i16x8([11, 12, 13, 14, 15, 16, 17, 18]);
+    assert_eq!(i16_lanes(punpcklwd(a, b)), [1, 11, 2, 12, 3, 13, 4, 14]);
+    assert_eq!(i16_lanes(punpckhwd(a, b)), [5, 15, 6, 16, 7, 17, 8, 18]);
+
+    let a = i32x4([1, 2, 3, 4]);
+    let b = i32x4([11, 12, 13, 14]);
+    assert_eq!(i32_lanes(punpckldq(a, b)), [1, 11, 2, 12]);
+    assert_eq!(i32_lanes(punpckhdq(a, b)), [3, 13, 4, 14]);
+
+    let a = i64x2([1, 2]);
+    let b = i64x2([3, 4]);
+    assert_eq!(i64_lanes(punpcklqdq(a, b)), [1, 3]);
+    assert_eq!(i64_lanes(punpckhqdq(a, b)), [2, 4]);
+}
+
+#[test]
+fn f32_arithmetic_and_comparison() {
+    let a = f32x4([1.0, 6.0, 3.0, -2.0]);
+    let b = f32x4([2.0, 2.0, 4.0, -8.0]);
+    assert_eq!(f32_lanes(subps(a, b)), [-1.0, 4.0, -1.0, 6.0]);
+    assert_eq!(f32_lanes(mulps(a, b)), [2.0, 12.0, 12.0, 16.0]);
+    assert_eq!(f32_lanes(divps(a, b)), [0.5, 3.0, 0.75, 0.25]);
+    assert_eq!(f32_lanes(minps(a, b)), [1.0, 2.0, 3.0, -8.0]);
+    assert_eq!(f32_lanes(maxps(a, b)), [2.0, 6.0, 4.0, -2.0]);
+    assert_eq!(cmpeqps(a, a).to_bytes(), [0xff; 16]);
+    assert_eq!(
+        cmpltps(a, b).to_bytes(),
+        [
+            0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0
+        ]
+    );
+    assert_eq!(
+        cmpleps(a, b).to_bytes(),
+        [
+            0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0
+        ]
+    );
+}
+
+#[test]
+fn f64_arithmetic_and_comparison() {
+    let a = f64x2([1.0, 2.0]);
+    let b = f64x2([2.0, 2.0]);
+    assert_eq!(f64_lanes(subpd(a, b)), [-1.0, 0.0]);
+    assert_eq!(f64_lanes(mulpd(a, b)), [2.0, 4.0]);
+    assert_eq!(f64_lanes(divpd(a, b)), [0.5, 1.0]);
+    assert_eq!(f64_lanes(minpd(a, b)), [1.0, 2.0]);
+    assert_eq!(f64_lanes(maxpd(a, b)), [2.0, 2.0]);
+    assert_eq!(cmpeqpd(a, a).to_bytes(), [0xff; 16]);
+    assert_eq!(
+        cmpltpd(a, b).to_bytes(),
+        [
+            0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+    );
+    assert_eq!(cmplepd(a, b).to_bytes(), [0xff; 16]);
 }

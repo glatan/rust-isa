@@ -1,6 +1,6 @@
 target
 target-nested
-fixtures/native-values/target
+fixtures/i686-values/target
 fixtures/aarch64-values/target
 fixtures/riscv-values/target
 fixtures/loongarch-values/target

@@ -48,11 +48,11 @@
   - `CARGO_CFG_TARGET_FEATURE` を読み、C の feature 集合を Rust の部分集合に寄せる。
   - 対象外の arch では C をビルドしない。
 - 値の型を arch ごとに置く。最初は `V128`、必要になったら `V256`、`V512`。
-- `fixtures/native-values` を作る。
+- `fixtures/i686-values` を作る。
   - `no_std` の `_start`、終了コードで合否。
   - QEMU の runner を使う。
   - MIPS は lane ごとの関数、PowerPC は `.TOC.`、i686 は `-mstackrealign`。
-- `tests/driver.rs` に native のビルドと実行を追加する。`make test` を重くしすぎる場合は `make test-native` に分ける。
+- `tests/<arch>.rs` に native のビルドと実行を追加する。`make test` を重くしすぎる場合は arch 別の `test-*` に分ける。
 - 文書のテンプレートを `docs/<arch>/` に置く。
 
 完了条件:

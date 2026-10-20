@@ -6,6 +6,7 @@ RUN printf 'Server = https://archive.archlinux.org/repos/2026/10/18/$repo/os/$ar
     && pacman -Syu --noconfirm \
         rust \
         rust-wasm \
+        cargo-nextest \
         rust-analyzer \
         clang \
         llvm \
@@ -31,6 +32,7 @@ RUN rustc --version \
     && test -x /usr/bin/rust-analyzer \
     && clang --version \
     && llvm-ar --version \
+    && cargo nextest --version \
     && wasm-opt --version \
     && wasm2wat --version \
     && wasmtime --version \
