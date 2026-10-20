@@ -37,7 +37,7 @@ wasm32 では、モジュールが含む命令の feature を全体として要�
 
 | arch | 対象 | 既定の SIMD | 安定の例 | 実装 | ゼロコスト | 表 |
 | --- | --- | --- | --- | --- | --- | --- |
-| x86 | `x86_64-unknown-linux-gnu`、`i686-unknown-linux-gnu` | `sse`、`sse2` | `avx2`、`avx512f`、`aes`、`bmi2` | なし | x86_64、i686 の `sse2` で条件付き | [x86](x86/feasibility.md) |
+| x86 | `x86_64-unknown-linux-gnu`、`i686-unknown-linux-gnu` | `sse`、`sse2` | `avx2`、`avx512f`、`aes`、`bmi2` | なし | x86_64、i686 で条件付き | [x86](x86/feasibility.md) |
 | AArch64 | `aarch64-unknown-linux-gnu` | `neon` | `sve`、`sve2`、`dotprod`、`i8mm` | なし | `neon` で条件付き | [AArch64](aarch64/feasibility.md) |
 | 32-bit ARM | `armv7-unknown-linux-gnueabihf` | なし | 今回測った範囲ではなし | なし | `neon` で条件付き | [32-bit ARM](arm/feasibility.md) |
 | PowerPC | `powerpc64le-unknown-linux-gnu` | なし | 今回測った範囲ではなし | なし | 条件付き | [PowerPC](powerpc/feasibility.md) |
