@@ -6,7 +6,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 ## 実装状況
 
-`sse2` の `paddd`、`v128_load`、`v128_store` を実装してある。ほかの命令は未実装である。
+`sse2` の `v128_load` / `v128_store`、`paddb` / `psubb` / `pcmpeqb`、`paddw` / `psubw` / `pcmpeqw` / `pmullw`、`paddd` / `psubd` / `pcmpeqd`、`paddq` / `psubq`、`pand` / `por` / `pxor` を実装してある。ほかの命令は未実装である。
 
 ## 実装方式
 

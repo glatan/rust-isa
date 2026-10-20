@@ -70,7 +70,7 @@ fn x86_symbols_match() {
         "rust_isa_sse2_",
     );
     assert_eq!(rust_symbols, c_symbols);
-    assert_eq!(rust_symbols.len(), 3);
+    assert_eq!(rust_symbols.len(), 17);
 }
 
 #[test]
