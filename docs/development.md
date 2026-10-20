@@ -37,9 +37,10 @@ QEMU の runner は、静的にリンクしたテストバイナリを前提に�
 
 調査では、`no_std` の静的バイナリを作り、SIMD の値テストを QEMU で実行した。Rust の `_start` から C の関数を呼び、結果を Rust で比較し、終了コードで判定した。
 
-- AArch64、ARMv7、RISC-V、LoongArch、s390x、i686: 値テストが通った。
-- PowerPC: Rust から C を呼ぶ harness では lane 3 が一致しなかった。C 単体の値テストは通った。
-- MIPS: Rust から C を呼ぶ harness では lane 3 が一致しなかった。lane ごとの値テストでは、すべて 15 になった。
+- AArch64、ARMv7、RISC-V、LoongArch、s390x、PowerPC、i686: Rust から C を呼ぶ値テストが通った。
+- MIPS: lane ごとの値テストでは、すべて 15 になった。Rust から C を呼ぶ結合ハーネスは、まだ一致しない。
+
+終了コードのインライン asm は、レジスタを明示する。`in(reg)` と `li` を組み合わせると、宛先レジスタとオペランドが同じになって値が壊れることがある（PowerPC で発生した）。
 
 この値テストはリポジトリのテストにはまだ入っていない。native の実装を足すときに、`tests/` へ追加する。
 
