@@ -51,10 +51,10 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 | RISC-V | `v` | `vadd.vv`、`vmul.vv` | なし | なし | ゼロコスト |
 | LoongArch | `lasx` | `xvadd.w`、`xvmul.w` | なし | なし | ゼロコスト |
 | LoongArch | `lasx` shuffle | `xvshuf.b` | なし | あり | 往復が残る |
-| s390x | `vector` | `vaf`、`vmlf` | なし | なし | ゼロコスト |
+| s390x | `vector` | `vaf`、`vmlf`、`vperm` | なし | なし | ゼロコスト |
 | 32-bit ARM | `neon` | `vadd.i32`、`vmul.i32` | なし | なし | ゼロコスト |
 | PowerPC | `altivec` | `vadduwm`、`vmuluwm`、`vperm` | なし | なし | ゼロコスト |
-| MIPS | `msa` | `addv.w`、`mulv.w` | なし | なし | ゼロコスト |
+| MIPS | `msa` | `addv.w`、`mulv.w`、`vshf.w` | なし | なし | ゼロコスト |
 
 ## IR レベルの確認
 
@@ -94,8 +94,9 @@ shuffle は命令ごとに結果が違う。
 | PowerPC | `vperm` | zero-cost |
 | RISC-V | `vrgather` | store/load が残る |
 | LoongArch | `xvshuf.b` | store/load が残る |
-| s390x | `vec_perm` | 未確認（z13 の feature 集合で `call` が残る） |
-| MIPS | `vshf.w` | 未確認 |
+| s390x | `vec_perm` | zero-cost |
+| MIPS | `vshf.w` | zero-cost |
+
 
 `intrinsics` が必要な shuffle は、SROA が一時値を消せず、往復が残ることがある。命令ごとに disassembly を確認する。
 
@@ -139,7 +140,7 @@ GCC の vector 拡張に置き換えると、どちらも store/load が消え�
 ### target-cpu と feature 集合
 
 - **RISC-V**: `-mno-relax` を付けないと、C の関数がインラインされなかった。C は `-march=rv64gcv -mabi=lp64d -mno-relax`。
-- **s390x**: Rust の target-cpu は `z10` である。C を `-march=z10 -mzvector` でコンパイルすると一致した。`-march=z13 -mzvector` では `+vector-enhancements-1` と `+transactional-execution` が付き、インラインされなかった。
+- **s390x**: Rust の target-cpu は `z10` である。C を `-march=z10 -mzvector` でコンパイルすると一致した。`-march=z13 -mzvector` では `+vector-enhancements-1` と `+transactional-execution` が付き、インラインされなかった。`vec_perm` は z13 のヘッダが必要で、`-march=z13 -Xclang -target-cpu -Xclang z10 -Xclang -target-feature -Xclang +vector -mno-htm` で合わせた。
 - **AArch64**: `-march=armv8-a+simd` で一致した。
 - **LoongArch**: `-mlasx` で一致した。
 - **MIPS**: C は `-march=mips64r2 -mmsa -mabicalls -mxgot`、Rust は `-C target-feature=+msa,+fp64` を使う。`llvm-objdump` は MSA 命令を `<unknown>` と表示するため、バイト列を `llvm-mc --disassemble --triple=mips64-unknown-linux-gnuabi64 --mattr=+msa` でデコードする。
