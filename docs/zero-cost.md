@@ -48,6 +48,7 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 | x86_64 | `vaes` | `vaesenc` | なし | なし | ゼロコスト |
 | x86_64 | `vpclmulqdq` | `vpclmulqdq` | なし | なし | ゼロコスト |
 | AArch64 | `neon` | `add v0.4s`、`mul v0.4s`、`tbl` | なし | なし | ゼロコスト |
+| AArch64 | `dotprod` | `sdot` | なし | なし | ゼロコスト |
 | RISC-V | `v` | `vadd.vv`、`vmul.vv` | なし | なし | ゼロコスト |
 | LoongArch | `lasx` | `xvadd.w`、`xvmul.w` | なし | なし | ゼロコスト |
 | LoongArch | `lasx` shuffle | `xvshuf.b` | なし | あり | 往復が残る |
@@ -93,6 +94,7 @@ shuffle は命令ごとに結果が違う。
 | AArch64 | `tbl` | zero-cost |
 | PowerPC | `vperm` | zero-cost |
 | RISC-V | `vrgather` | store/load が残る |
+| RISC-V | `vcompress` | store/load が残る |
 | LoongArch | `xvshuf.b` | store/load が残る |
 | s390x | `vec_perm` | zero-cost |
 | MIPS | `vshf.w` | zero-cost |

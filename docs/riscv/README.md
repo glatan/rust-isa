@@ -23,7 +23,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 - 条件付きでゼロコストを確認した。`vadd.vv` と `vmul.vv` が並び、`call` と命令間の store/load が無かった。
 - C は `-march=rv64gcv -mabi=lp64d -mno-relax` を使う。`-mno-relax` が無いとインラインされなかった。
 - `__riscv_vle32_v_i32m1` / `__riscv_vse32_v_i32m1` の intrinsics では、インライン後も一時値の store/load が残った。GCC の vector 拡張と通常のロード・ストアを使う。
-- `vrgather` は intrinsics（`__riscv_vrgather_vv_i32m1`）が必要で、2 命令を合成すると `vrgather` の間に store/load が残った。shuffle 系は命令ごとに zero-cost を確認する。
+- `vrgather` は intrinsics（`__riscv_vrgather_vv_i32m1`）が必要で、2 命令を合成すると `vrgather` の間に store/load が残った。`vcompress` も同じだった。shuffle / compress 系は命令ごとに zero-cost を確認する。
 - `-C target-feature=+v` は不安定警告が出る。`#[target_feature]` は使えない。クレート全体を flag 付きでコンパイルする。
 - スケーラブルなスライス API も確認した。C のループが Rust のカーネルへインラインされ、`vsetvli`、`vle32.v`、`vadd.vv`、`vse32.v` が並び、`call` が無かった。
 - LTO モード、C の feature 集合、呼び出し側の feature を一致させる。条件を満たさない場合は `call` が残る。
