@@ -15,6 +15,15 @@ fn main() {
     let avx512vbmi_c = manifest.join("src/x86/simd/avx512vbmi/avx512vbmi.c");
     let avx512vnni_c = manifest.join("src/x86/simd/avx512vnni/avx512vnni.c");
     let avx512vl_c = manifest.join("src/x86/simd/avx512vl/avx512vl.c");
+    let aes_c = manifest.join("src/x86/crypto/aes/aes.c");
+    let sha_c = manifest.join("src/x86/crypto/sha/sha.c");
+    let gfni_c = manifest.join("src/x86/crypto/gfni/gfni.c");
+    let vaes_c = manifest.join("src/x86/crypto/vaes/vaes.c");
+    let vpclmulqdq_c = manifest.join("src/x86/crypto/vpclmulqdq/vpclmulqdq.c");
+    let fma_c = manifest.join("src/x86/simd/fma/fma.c");
+    let bmi1_c = manifest.join("src/x86/integer/bmi1/bmi1.c");
+    let bmi2_c = manifest.join("src/x86/integer/bmi2/bmi2.c");
+    let popcnt_c = manifest.join("src/x86/integer/popcnt/popcnt.c");
     for path in [
         &simd128_c,
         &relaxed_c,
@@ -27,6 +36,15 @@ fn main() {
         &avx512vbmi_c,
         &avx512vnni_c,
         &avx512vl_c,
+        &aes_c,
+        &sha_c,
+        &gfni_c,
+        &vaes_c,
+        &vpclmulqdq_c,
+        &fma_c,
+        &bmi1_c,
+        &bmi2_c,
+        &popcnt_c,
     ] {
         println!("cargo:rerun-if-changed={}", path.display());
     }
@@ -35,7 +53,7 @@ fn main() {
     let target = env::var("TARGET").unwrap_or_default();
     let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
 
-    if target == "x86_64-unknown-linux-gnu" {
+    if target == "x86_64-unknown-linux-gnu" || target == "i686-unknown-linux-gnu" {
         compile_native(&out_dir, &sse2_c, "rust_isa_sse2", &["-msse2"]);
         compile_native(
             &out_dir,
@@ -80,6 +98,20 @@ fn main() {
             "rust_isa_avx512vl",
             &["-mavx512f", "-mavx512dq", "-mavx512vl"],
         );
+        compile_native(&out_dir, &aes_c, "rust_isa_aes", &["-maes"]);
+        compile_native(&out_dir, &sha_c, "rust_isa_sha", &["-msha"]);
+        compile_native(&out_dir, &gfni_c, "rust_isa_gfni", &["-mgfni"]);
+        compile_native(&out_dir, &vaes_c, "rust_isa_vaes", &["-mvaes", "-mavx2"]);
+        compile_native(
+            &out_dir,
+            &vpclmulqdq_c,
+            "rust_isa_vpclmulqdq",
+            &["-mvpclmulqdq", "-mavx2", "-mavx512f", "-mavx512vl"],
+        );
+        compile_native(&out_dir, &fma_c, "rust_isa_fma", &["-mavx2", "-mfma"]);
+        compile_native(&out_dir, &bmi1_c, "rust_isa_bmi1", &["-mbmi"]);
+        compile_native(&out_dir, &bmi2_c, "rust_isa_bmi2", &["-mbmi2"]);
+        compile_native(&out_dir, &popcnt_c, "rust_isa_popcnt", &["-mpopcnt"]);
         return;
     }
 
@@ -116,9 +148,18 @@ fn has_feature(features: &str, name: &str) -> bool {
 }
 
 fn compile_native(out_dir: &Path, c_path: &Path, name: &str, flags: &[&str]) {
+    let target = env::var("TARGET").unwrap_or_default();
+    let clang_target = if target == "i686-unknown-linux-gnu" {
+        Some("i686-unknown-linux-gnu")
+    } else {
+        None
+    };
     let mut all_flags = vec!["-mno-mmx", "-mno-x87", "-mno-popcnt", "-mno-xsave"];
+    if clang_target.is_some() {
+        all_flags.push("-mstackrealign");
+    }
     all_flags.extend_from_slice(flags);
-    compile_archive(out_dir, c_path, name, &all_flags, None);
+    compile_archive(out_dir, c_path, name, &all_flags, clang_target);
 }
 
 fn compile_archive(

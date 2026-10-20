@@ -2,4 +2,6 @@
 
 mod avx2;
 mod avx512;
+mod crypto;
+mod integer;
 mod sse2;

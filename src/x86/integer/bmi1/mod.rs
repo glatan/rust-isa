@@ -1,0 +1,74 @@
+//! BMI1.
+
+unsafe extern "C" {
+    fn rust_isa_bmi1_andn(a: u32, b: u32) -> u32;
+    fn rust_isa_bmi1_bextr(a: u32, start: u32, len: u32) -> u32;
+    fn rust_isa_bmi1_blsi(a: u32) -> u32;
+    fn rust_isa_bmi1_blsmsk(a: u32) -> u32;
+    fn rust_isa_bmi1_blsr(a: u32) -> u32;
+}
+
+/// `andn`
+///
+/// Compute `!a & b`.
+///
+/// # Safety
+///
+/// The caller must enable BMI1.
+#[target_feature(enable = "bmi1")]
+#[inline]
+pub unsafe fn andn(a: u32, b: u32) -> u32 {
+    unsafe { rust_isa_bmi1_andn(a, b) }
+}
+
+/// `bextr`
+///
+/// Extract `len` bits starting at `start`.
+///
+/// # Safety
+///
+/// The caller must enable BMI1.
+#[target_feature(enable = "bmi1")]
+#[inline]
+pub unsafe fn bextr(a: u32, start: u32, len: u32) -> u32 {
+    unsafe { rust_isa_bmi1_bextr(a, start, len) }
+}
+
+/// `blsi`
+///
+/// Extract the lowest set bit.
+///
+/// # Safety
+///
+/// The caller must enable BMI1.
+#[target_feature(enable = "bmi1")]
+#[inline]
+pub unsafe fn blsi(a: u32) -> u32 {
+    unsafe { rust_isa_bmi1_blsi(a) }
+}
+
+/// `blsmsk`
+///
+/// Mask from the lowest set bit to bit 0.
+///
+/// # Safety
+///
+/// The caller must enable BMI1.
+#[target_feature(enable = "bmi1")]
+#[inline]
+pub unsafe fn blsmsk(a: u32) -> u32 {
+    unsafe { rust_isa_bmi1_blsmsk(a) }
+}
+
+/// `blsr`
+///
+/// Clear the lowest set bit.
+///
+/// # Safety
+///
+/// The caller must enable BMI1.
+#[target_feature(enable = "bmi1")]
+#[inline]
+pub unsafe fn blsr(a: u32) -> u32 {
+    unsafe { rust_isa_bmi1_blsr(a) }
+}

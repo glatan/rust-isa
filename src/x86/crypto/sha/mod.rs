@@ -1,0 +1,156 @@
+//! SHA-1 and SHA-256 instructions.
+
+use core::arch::asm;
+
+use crate::x86::simd::sse2::V128;
+
+unsafe extern "C" {
+    fn rust_isa_sha_sha1nexte(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `sha1nexte`
+///
+/// Calculate the SHA-1 state for the next four rounds.
+///
+/// # Safety
+///
+/// The caller must enable sha.
+#[target_feature(enable = "sha")]
+#[inline]
+pub unsafe fn sha1nexte(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sha_sha1nexte(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sha_sha1msg1(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `sha1msg1`
+///
+/// Perform the first SHA-1 message-schedule step.
+///
+/// # Safety
+///
+/// The caller must enable sha.
+#[target_feature(enable = "sha")]
+#[inline]
+pub unsafe fn sha1msg1(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sha_sha1msg1(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sha_sha1msg2(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `sha1msg2`
+///
+/// Perform the second SHA-1 message-schedule step.
+///
+/// # Safety
+///
+/// The caller must enable sha.
+#[target_feature(enable = "sha")]
+#[inline]
+pub unsafe fn sha1msg2(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sha_sha1msg2(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sha_sha256msg1(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `sha256msg1`
+///
+/// Perform the first SHA-256 message-schedule step.
+///
+/// # Safety
+///
+/// The caller must enable sha.
+#[target_feature(enable = "sha")]
+#[inline]
+pub unsafe fn sha256msg1(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sha_sha256msg1(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sha_sha256msg2(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `sha256msg2`
+///
+/// Perform the second SHA-256 message-schedule step.
+///
+/// # Safety
+///
+/// The caller must enable sha.
+#[target_feature(enable = "sha")]
+#[inline]
+pub unsafe fn sha256msg2(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sha_sha256msg2(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sha_sha256rnds2(a: *const u8, b: *const u8, k: *const u8, out: *mut u8);
+}
+
+/// `sha256rnds2`
+///
+/// Perform two SHA-256 rounds.
+///
+/// # Safety
+///
+/// The caller must enable SHA.
+#[target_feature(enable = "sha")]
+#[inline]
+pub unsafe fn sha256rnds2(a: V128, b: V128, k: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sha_sha256rnds2(a.as_ptr(), b.as_ptr(), k.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `sha1rnds4`
+///
+/// Perform four SHA-1 rounds with `IMM`.
+///
+/// # Safety
+///
+/// The caller must enable SHA.
+#[target_feature(enable = "sha")]
+#[inline]
+pub unsafe fn sha1rnds4<const IMM: u8>(a: V128, b: V128) -> V128 {
+    let a = u128::from_le_bytes(a.to_bytes());
+    let b = u128::from_le_bytes(b.to_bytes());
+    let output: u128;
+    unsafe {
+        asm!(
+            "sha1rnds4 {output}, {b}, {imm}",
+            output = inout(xmm_reg) a => output,
+            b = in(xmm_reg) b,
+            imm = const IMM,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(output.to_le_bytes())
+}

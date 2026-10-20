@@ -1,6 +1,6 @@
 # native の値テスト
 
-この文書は、native arch の値テストを `tests/` に追加するときの設計である。native の命令 API はまだ実装していないため、テストもまだない。
+この文書は、native arch の値テストを `tests/` に追加するときの設計である。i686 の SSE2 / AVX2 値テストを `fixtures/native-values` で実行している。
 
 ## 前提
 
@@ -50,5 +50,6 @@ native の API を実装したら、extension ごとに次を追加する。
 
 ## 現在の状態
 
-- 調査用の一時的なハーネスでは、全対象 arch の値テストが通った。
-- リポジトリの `tests/` にはまだ追加していない。native の API 実装後に追加する。
+- `fixtures/native-values` は `no_std` の `_start` を持ち、終了コードで合否を返す。
+- i686 は `cargo build -Z build-std=core --target i686-unknown-linux-gnu` でビルドし、QEMU-i386 で SSE2 と AVX2 の値テストを実行する。
+- ほかの arch は API の実装後に同じ形で追加する。

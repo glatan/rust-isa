@@ -17,6 +17,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "crypto-link"
+version = "0.1.0"
+dependencies = [
+ "rust-isa",
+]
+
+[[package]]
 name = "rust-isa"
 version = "0.1.0"
 

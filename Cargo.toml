@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = [".", "fixtures/simd128-link", "fixtures/sse2-link", "fixtures/avx2-link", "fixtures/avx512-link"]
+members = [".", "fixtures/simd128-link", "fixtures/sse2-link", "fixtures/avx2-link", "fixtures/avx512-link", "fixtures/crypto-link"]
 
 [package]
 name = "rust-isa"
