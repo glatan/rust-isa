@@ -59,9 +59,9 @@ PowerPC は ELF のリンクが `.TOC.` で失敗したため、最初は Rust �
 
 イメージには `qemu-user-static` を入れ、静的な `no_std` テストを QEMU で実行した。
 
-- AArch64、ARMv7、RISC-V、LoongArch、s390x、i686 は値テストが通った。
-- PowerPC は Rust から C を呼ぶ harness で lane 3 が一致しなかった。C 単体の値テストは通った。
-- MIPS は Rust から C を呼ぶ harness で lane 3 が一致しなかった。lane ごとの値テストでは、すべて 15 になった。
+- AArch64、ARMv7、RISC-V、LoongArch、s390x、PowerPC、i686 は値テストが通った。
+- MIPS は lane ごとの値テストでは、すべて 15 になった。Rust から C を呼ぶ結合ハーネスは、まだ一致しない。
+- 終了コードのインライン asm は、レジスタを明示する。`in(reg)` と `li` の組み合わせで、宛先レジスタとオペランドが同じになり、値が壊れることがあった。
 
 QEMU の runner と確認方法は [開発環境](development.md) に書く。
 
