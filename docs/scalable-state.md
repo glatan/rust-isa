@@ -1,6 +1,6 @@
-# スケーラブルベクタと状態を持つ拡張
+# スケーラブルベクタと状態を持つ拡張の設計
 
-この文書は、SVE、RVV、SME、AMX、PowerPC MMA の API 設計の検討案である。実装はまだない。
+この文書は、SVE、RVV、SME、AMX、PowerPC MMA の API 設計である。実装はまだない。
 
 ## 共通の考え方
 
@@ -17,40 +17,35 @@
 
 SVE のベクタ長は実行時に決まる。固定長の値型では表せない。
 
-検討案:
+**決定**: スライス API だけを提供する。命令ごとの API は出さない。
 
-1. **スライス API**（推奨）
-   - `fn svadd_f32(a: &[f32], b: &[f32], out: &mut [f32])` のように、スライスを受け取る。
-   - C は `svcntw()` で VL を得て、`svld1` / `svadd` / `svst1` を使う。
-   - 命令ごとの API ではなく、SVE のベクタ長に依存しない関数になる。
-   - AArch64 で確認した。C のループは `#[target_feature(enable = "sve")]` の Rust カーネルへインラインされ、`cntw`、`whilelt`、`ld1w`、`add z0.s`、`st1w` が並び、`call` が無かった。
-2. **不透明なレジスタ型**
-   - `SReg` を最大サイズのバイト列で表し、VL を別に持つ。
-   - ABI とゼロコストの保証が難しい。
-3. **命令ごとの関数 + ポインタ**
-   - 各命令がメモリを読み書きする。ゼロコストにはならない。
+```rust
+pub fn add_f32(a: &[f32], b: &[f32], out: &mut [f32])
+```
 
-SVE は 1 のスライス API を先に設計する。命令ごとの API は出さない。
+- C は `svcntw()` で VL を得て、`svld1` / `svadd` / `svst1` を使う。
+- Rust 側に VL やレジスタ型を出さない。VL は C が決める。
+- 引数の長さが揃っていない場合は panic する。境界の扱いは各関数の rustdoc に書く。
+- AArch64 で確認済み。C のループは `#[target_feature(enable = "sve")]` の Rust カーネルへインラインされ、`cntw`、`whilelt`、`ld1w`、`add z0.s`、`st1w` が並び、`call` が無かった。
+
+却下した案:
+
+- 不透明なレジスタ型: ABI とゼロコストの保証が難しい。
+- 命令ごとの関数 + ポインタ: 各命令がメモリを読み書きし、ゼロコストにならない。
 
 ## RVV
 
-RVV の固定長 `V128` 部分集合は、`vadd.vv` / `vmul.vv` でゼロコストを確認した。`v` は不安定なため、利用者はクレート全体を `-C target-feature=+v` でコンパイルする。
+**決定**: 固定長 `V128` の命令 API と、スケーラブルなスライス API を分ける。
 
-スケーラブルな API は別に設計する。
-
-- `Vl(usize)` と `Vtype` を引数に取る。
-- 値はスライスで渡し、C が `vle` / `vse` を使う。
-- 命令ごとの関数にする場合も、`vl` と `vtype` を明示する。
-- 固定長 `V128` とスケーラブル API は別のモジュールに分ける。
-- RISC-V で確認した。C のループは Rust のカーネルへインラインされ、`vsetvli`、`vle32.v`、`vadd.vv`、`vse32.v` が並び、`call` が無かった。
+- 固定長 `V128` は `vadd.vv` / `vmul.vv` でゼロコストを確認済み。
+- スケーラブル API はスライスを受け取り、VL は C が `vsetvl` で決める。
+- `Vtype` は公開しない。要素型と LMUL は関数ごとに固定する。
+- `v` は不安定なため、利用者はクレート全体を `-C target-feature=+v` でコンパイルする。
+- RISC-V で確認済み。C のループはカーネルへインラインされ、`vsetvli`、`vle32.v`、`vadd.vv`、`vse32.v` が並び、`call` が無かった。
 
 ## SME
 
-SME はストリーミングモードと ZA の状態を持つ。
-
-- `SMSTART` で入り、`SMSTOP` で出る。
-- clang の `__arm_streaming` は宣言子の後ろに置く。関数は `smstart` / `smstop` を出さないため、呼び出し側が guard を持つ。
-- 検討案:
+**決定**: `SmeGuard` でストリーミングモードを管理する。
 
 ```rust
 pub struct SmeGuard {
@@ -70,15 +65,12 @@ impl Drop for SmeGuard {
 pub unsafe fn add_f32(_guard: &SmeGuard, a: &[f32], b: &[f32], out: &mut [f32]) { /* ... */ }
 ```
 
-- ZA のタイルは `&mut SmeGuard` または別の型で表す。
+- `__arm_streaming` は宣言子の後ろに置く。関数は `smstart` / `smstop` を出さないため、呼び出し側が guard を持つ。
+- ZA のタイルは、将来 `SmeGuard` の中の不透明な型で表す。最初は ZA を使わない関数だけを提供する。
 
 ## AMX
 
-AMX はタイル設定とタイル解放の状態を持つ。
-
-- `LDTILECFG` で設定し、`TILERELEASE` で解放する。
-- OS がタイル状態を許可している必要がある。
-- 検討案:
+**決定**: `TileConfig` と `AmxGuard` でタイル状態を管理する。
 
 ```rust
 #[repr(C, align(64))]
@@ -99,15 +91,12 @@ impl Drop for AmxGuard {
 ```
 
 - タイル命令は `&AmxGuard` を引数に取る。
-- OS のタイル状態の許可は、クレートの外で設定する。
+- OS のタイル状態の許可は、クレートの外で設定する。クレートは許可を行わない。
+- `TileConfig` の構築は利用者が行う。最初は生のバイト列として扱う。
 
 ## PowerPC MMA
 
-PowerPC の MMA はアキュムレータの状態を持つ。
-
-- `xvi4ger8` などはアキュムレータを更新する。
-- `xxmfacc` でアキュムレータをベクタレジスタへ移す。
-- 検討案:
+**決定**: `MmaAccumulator` でアキュムレータを管理する。
 
 ```rust
 pub struct MmaAccumulator {
@@ -124,11 +113,16 @@ pub unsafe fn xvi4ger8(_acc: &mut MmaAccumulator, a: &[u8], b: &[u8]) { /* ... *
 ```
 
 - 命令は `&mut MmaAccumulator` を引数に取る。
+- `xxmfacc` に相当する値の取り出しは、別の関数にする。
+
+## 実装状況
+
+未実装。順序は、SVE / RVV のスライス API、SME / AMX / MMA の guard の順とする。
 
 ## 未決定
 
-- SVE のスライス API の形（VL を明示するか、C に任せるか）。
-- RVV の `Vtype` の表現。
-- SME の ZA タイルの型。
-- AMX のタイル設定の型と、OS サポートの確認方法。
+- SVE のスライス API の境界条件（長さが違う場合に panic するか、短い方に合わせるか）。
+- RVV のスライス API で、要素型ごとにどの LMUL を使うか。
+- SME の ZA タイルの型と操作。
+- AMX の `TileConfig` の構築 API。
 - guard を safe にできる範囲。
