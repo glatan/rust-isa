@@ -42,6 +42,7 @@ extension の `mod.rs` には、次を書く。
 - [ゼロコストの確認](zero-cost.md): 確認方法と arch ごとの結果
 - [スケーラブルベクタと状態](scalable-state.md): SVE、RVV、SME、AMX、MMA の API 設計
 - [native の値テスト](native-testing.md): QEMU を使う値テストの設計
+- [実装計画](implementation-plan.md): native arch の実装順序と完了条件
 - [ソースの置き方](source-layout.md): ディレクトリと公開パス
 - [開発環境](development.md): リポジトリのコマンド
 
