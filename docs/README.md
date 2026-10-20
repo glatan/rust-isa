@@ -10,6 +10,7 @@
 - [ゼロコストの確認](zero-cost.md)
 - [スケーラブルベクタと状態](scalable-state.md)
 - [native の値テスト](native-testing.md)
+- [実装計画](implementation-plan.md)
 - [ソースの置き方](source-layout.md)
 - [文書の位置](documentation.md)
 

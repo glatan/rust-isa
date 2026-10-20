@@ -229,6 +229,8 @@ clang 23.1.1 で確認したこと:
 
 ## arch と extension を追加する手順
 
+実装の順序と段階ごとの完了条件は [実装計画](implementation-plan.md) に置く。
+
 1. 対象 triple と既定の feature を決める。
 2. `docs/<arch>/feasibility.md` に cfg の観測表を置く。
 3. `docs/<arch>/README.md` に可用性、実装方式、ゼロコスト、ツールチェーン、未決定の設計を書く。
