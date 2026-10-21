@@ -21,11 +21,6 @@ void rust_isa_power10_vector_vclzd(const uint8_t *a, uint8_t *out) {
 }
 
 __attribute__((always_inline))
-void rust_isa_power10_vector_vctzd(const uint8_t *a, uint8_t *out) {
-    *(v2u64 *)(void *)out = vec_cnttz(*(const v2u64 *)(const void *)a);
-}
-
-__attribute__((always_inline))
 void rust_isa_power10_vector_vpopcntd(const uint8_t *a, uint8_t *out) {
     *(v2u64 *)(void *)out = vec_popcnt(*(const v2u64 *)(const void *)a);
 }

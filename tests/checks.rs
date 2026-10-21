@@ -189,6 +189,7 @@ fn check_native_symbols() {
             "power8_crypto.c",
             "rust_isa_power8_crypto_",
         ),
+        ("powerpc/matrix/mma", "mma.c", "rust_isa_mma_"),
         ("mips/simd/msa", "msa.c", "rust_isa_msa_"),
     ] {
         let root = PathBuf::from(env!("CARGO_MANIFEST_DIR"))

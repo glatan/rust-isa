@@ -3,7 +3,14 @@
 
 use core::arch::asm;
 use core::panic::PanicInfo;
-use rust_isa::powerpc::crypto::power8_crypto::{cipher, cipherlast, ncipher};
+use rust_isa::powerpc::crypto::power8_crypto::{
+    cipher, cipherlast, ncipher, ncipherlast, vcipher, vcipherlast, vncipher, vncipherlast, vsbox,
+    vshasigmad, vshasigmaw,
+};
+use rust_isa::powerpc::matrix::mma::{
+    MmaAccumulator, xvi4ger8, xvi4ger8pp, xvi8ger4, xvi8ger4pp, xvi8ger4spp, xvi16ger2,
+    xvi16ger2pp, xvi16ger2s, xvi16ger2spp, xxmfacc, xxmtacc, xxsetaccz,
+};
 use rust_isa::powerpc::simd::altivec::{
     V128, add, add_i8, add_i16, add_i64, and, cmpeq_i32, cmpgt_i32, fadd, fdiv, fmul, fsub, mul,
     mul_i16, mul_i32, or, permute, splat_i32, sub_i8, sub_i16, sub_i32, sub_i64, v128_load,
@@ -13,16 +20,17 @@ use rust_isa::powerpc::simd::altivec::{
     xor,
 };
 use rust_isa::powerpc::simd::power8_vector::{
-    add_u64, mul_even_u16, mul_u32, sub_u64, vclzd as p8_vclzd, vmaxsd, vmaxud, vminsd, vminud,
-    vmuleuw, vmulouw, vpksdss, vpksdus, vpkudum, vpopcntd as p8_vpopcntd, vupkhsw, vupklsw,
+    add_u64, mul_even_u16, mul_u32, sub_u64, vclzd as p8_vclzd, vctzd as p8_vctzd, vmaxsd, vmaxud,
+    vminsd, vminud, vmuleuw, vmulouw, vpksdss, vpksdus, vpkudum, vpopcntd as p8_vpopcntd, vupkhsw,
+    vupklsw,
 };
 use rust_isa::powerpc::simd::power8_vector::{
     vaddudm as p8_vaddudm, vmuleuh as p8_vmuleuh, vmuluwm as p8_vmuluwm, vsubudm as p8_vsubudm,
 };
-use rust_isa::powerpc::simd::power9_altivec::vnegw as altivec_vnegw;
+use rust_isa::powerpc::simd::power9_altivec::{vctzd as altivec_vctzd, vnegw as altivec_vnegw};
 use rust_isa::powerpc::simd::power9_vector::{
-    abs_i32 as p9_abs_i32, neg_i32 as p9_neg_i32, vabsd, vabsduw, vctzb, vctzh, vctzlsbb, vctzw,
-    vextsb2d, vextsb2w, vextsh2d, vextsh2w, vextsw2d, vnegd, vnegw,
+    abs_i32 as p9_abs_i32, neg_i32 as p9_neg_i32, vabsd, vabsduw, vctzb, vctzd as p9_vctzd, vctzh,
+    vctzlsbb, vctzw, vextsb2d, vextsb2w, vextsh2d, vextsh2w, vextsw2d, vnegd, vnegw,
 };
 use rust_isa::powerpc::simd::power10_vector::{
     cntlz_i32 as p10_cntlz_i32, popcnt_i32 as p10_popcnt_i32, vclzd, vctzd, vpopcntd, vpopcntw,
@@ -148,6 +156,9 @@ fn run() -> u32 {
     if !power10_ops() {
         return 10;
     }
+    if !mma_ops() {
+        return 12;
+    }
     if !altivec_ops() {
         return 11;
     }
@@ -168,6 +179,14 @@ fn power9_ops() -> bool {
             && vctzb(V128::from_bytes([0xff; 16])).to_bytes() == [0; 16]
             && vctzh(V128::from_bytes([0xff; 16])).to_bytes() == [0; 16]
             && vctzw(V128::from_bytes([0xff; 16])).to_bytes() == [0; 16]
+            && {
+                let bytes = p9_vctzd(V128::from_bytes([0x02; 16])).to_bytes();
+                bytes[0] == 1 && bytes[8] == 1
+            }
+            && {
+                let bytes = altivec_vctzd(V128::from_bytes([0x02; 16])).to_bytes();
+                bytes[0] == 1 && bytes[8] == 1
+            }
             && vctzlsbb(V128::from_bytes([0xff; 16])) == 0
             && vextsb2d(V128::from_bytes([0xff; 16])).to_bytes()
                 == V128::from_bytes([0xff; 16]).to_bytes()
@@ -307,6 +326,10 @@ fn power8_ops() -> bool {
             || vupklsw(i32x4([1, 2, 3, 4])).to_bytes() == [0; 16]
             || vmuleuw(i32x4([1, 2, 3, 4]), i32x4([1, 2, 3, 4])).to_bytes() == [0; 16]
             || vmulouw(i32x4([1, 2, 3, 4]), i32x4([1, 2, 3, 4])).to_bytes() == [0; 16]
+            || {
+                let bytes = p8_vctzd(V128::from_bytes([0x02; 16])).to_bytes();
+                bytes[0] != 1 || bytes[8] != 1
+            }
         {
             return false;
         }
@@ -330,14 +353,387 @@ fn power8_ops() -> bool {
     }
 }
 
+fn u32x4_logical(values: [u32; 4]) -> V128 {
+    let mut bytes = [0u8; 16];
+    for (lane, value) in values.iter().enumerate() {
+        let offset = (3 - lane) * 4;
+        bytes[offset..offset + 4].copy_from_slice(&value.to_le_bytes());
+    }
+    V128::from_bytes(bytes)
+}
+
+fn u32_logical_lanes(value: V128) -> [u32; 4] {
+    let bytes = value.to_bytes();
+    core::array::from_fn(|lane| {
+        let offset = (3 - lane) * 4;
+        u32::from_le_bytes(bytes[offset..offset + 4].try_into().unwrap())
+    })
+}
+
+fn u64x2_logical(values: [u64; 2]) -> V128 {
+    let mut bytes = [0u8; 16];
+    for (lane, value) in values.iter().enumerate() {
+        let offset = (1 - lane) * 8;
+        bytes[offset..offset + 8].copy_from_slice(&value.to_le_bytes());
+    }
+    V128::from_bytes(bytes)
+}
+
+fn u64_logical_lanes(value: V128) -> [u64; 2] {
+    let bytes = value.to_bytes();
+    core::array::from_fn(|lane| {
+        let offset = (1 - lane) * 8;
+        u64::from_le_bytes(bytes[offset..offset + 8].try_into().unwrap())
+    })
+}
+
+fn sha256_sigma<const ST: u32, const SIX: u32>(values: [u32; 4]) -> [u32; 4] {
+    core::array::from_fn(|lane| {
+        let value = values[lane];
+        let select = ((SIX >> (3 - lane)) & 1) != 0;
+        match (ST, select) {
+            (0, false) => value.rotate_right(7) ^ value.rotate_right(18) ^ (value >> 3),
+            (0, true) => value.rotate_right(17) ^ value.rotate_right(19) ^ (value >> 10),
+            (1, false) => value.rotate_right(2) ^ value.rotate_right(13) ^ value.rotate_right(22),
+            _ => value.rotate_right(6) ^ value.rotate_right(11) ^ value.rotate_right(25),
+        }
+    })
+}
+
+fn sha512_sigma<const ST: u32, const SIX: u32>(values: [u64; 2]) -> [u64; 2] {
+    core::array::from_fn(|lane| {
+        let value = values[lane];
+        let select = ((SIX >> (3 - lane * 2)) & 1) != 0;
+        match (ST, select) {
+            (0, false) => value.rotate_right(1) ^ value.rotate_right(8) ^ (value >> 7),
+            (0, true) => value.rotate_right(19) ^ value.rotate_right(61) ^ (value >> 6),
+            (1, false) => value.rotate_right(28) ^ value.rotate_right(34) ^ value.rotate_right(39),
+            _ => value.rotate_right(14) ^ value.rotate_right(18) ^ value.rotate_right(41),
+        }
+    })
+}
+
 fn crypto_ops() -> bool {
     let one = V128::from_bytes([1; 16]);
     let two = V128::from_bytes([2; 16]);
     let zero = V128::from_bytes([0; 16]);
     unsafe {
-        cipher(one, two).to_bytes() != zero.to_bytes()
-            && ncipher(one, two).to_bytes() != zero.to_bytes()
-            && cipherlast(one, two).to_bytes() != zero.to_bytes()
+        if cipher(one, two).to_bytes() == zero.to_bytes()
+            || ncipher(one, two).to_bytes() == zero.to_bytes()
+            || cipherlast(one, two).to_bytes() == zero.to_bytes()
+            || ncipherlast(one, two).to_bytes() == zero.to_bytes()
+        {
+            return false;
+        }
+        if vcipher(one, two) != cipher(one, two)
+            || vncipher(one, two) != ncipher(one, two)
+            || vcipherlast(one, two) != cipherlast(one, two)
+            || vncipherlast(one, two) != ncipherlast(one, two)
+        {
+            return false;
+        }
+        if vsbox(zero).to_bytes() != [0x63; 16]
+            || vsbox(V128::from_bytes([1; 16])).to_bytes() != [0x7c; 16]
+        {
+            return false;
+        }
+        let words = [0x0123_4567, 0x89ab_cdef, 0xfedc_ba98, 0x7654_3210];
+        let word_input = u32x4_logical(words);
+        if u32_logical_lanes(vshasigmaw::<0, 0>(word_input)) != sha256_sigma::<0, 0>(words)
+            || u32_logical_lanes(vshasigmaw::<0, 0xA>(word_input)) != sha256_sigma::<0, 0xA>(words)
+            || u32_logical_lanes(vshasigmaw::<1, 0>(word_input)) != sha256_sigma::<1, 0>(words)
+            || u32_logical_lanes(vshasigmaw::<1, 0xF>(word_input)) != sha256_sigma::<1, 0xF>(words)
+        {
+            return false;
+        }
+        let doublewords = [0x0123_4567_89ab_cdef, 0xfedc_ba98_7654_3210];
+        let doubleword_input = u64x2_logical(doublewords);
+        if u64_logical_lanes(vshasigmad::<0, 0>(doubleword_input))
+            != sha512_sigma::<0, 0>(doublewords)
+            || u64_logical_lanes(vshasigmad::<0, 0xF>(doubleword_input))
+                != sha512_sigma::<0, 0xF>(doublewords)
+            || u64_logical_lanes(vshasigmad::<0, 0x2>(doubleword_input))
+                != sha512_sigma::<0, 0x2>(doublewords)
+            || u64_logical_lanes(vshasigmad::<1, 0>(doubleword_input))
+                != sha512_sigma::<1, 0>(doublewords)
+            || u64_logical_lanes(vshasigmad::<1, 0xF>(doubleword_input))
+                != sha512_sigma::<1, 0xF>(doublewords)
+        {
+            return false;
+        }
+        true
+    }
+}
+
+fn mma_input_words(value: &[u8; 16]) -> [u32; 4] {
+    core::array::from_fn(|lane| {
+        let offset = (3 - lane) * 4;
+        u32::from_le_bytes(value[offset..offset + 4].try_into().unwrap())
+    })
+}
+
+fn mma_sign_extend(value: u32, bits: u32) -> i64 {
+    let shift = 64 - bits;
+    (((value as u64) << shift) as i64) >> shift
+}
+
+fn mma_clamp(value: i64) -> i32 {
+    if value > i32::MAX as i64 {
+        i32::MAX
+    } else if value < i32::MIN as i64 {
+        i32::MIN
+    } else {
+        value as i32
+    }
+}
+
+fn mma_ref_4(a: &[u8; 16], b: &[u8; 16], acc: [i32; 16], accumulate: bool) -> [i32; 16] {
+    let a_words = mma_input_words(a);
+    let b_words = mma_input_words(b);
+    let mut result = [0; 16];
+    for row in 0..4 {
+        for column in 0..4 {
+            let mut sum = 0;
+            for element in 0..8 {
+                let a_value = mma_sign_extend((a_words[row] >> (element * 4)) & 0xf, 4);
+                let b_value = mma_sign_extend((b_words[column] >> (element * 4)) & 0xf, 4);
+                sum += a_value * b_value;
+            }
+            let total = if accumulate {
+                sum + acc[row * 4 + column] as i64
+            } else {
+                sum
+            };
+            result[row * 4 + column] = total as i32;
+        }
+    }
+    result
+}
+
+fn mma_ref_8(
+    a: &[u8; 16],
+    b: &[u8; 16],
+    acc: [i32; 16],
+    accumulate: bool,
+    saturate: bool,
+) -> [i32; 16] {
+    let a_words = mma_input_words(a);
+    let b_words = mma_input_words(b);
+    let mut result = [0; 16];
+    for row in 0..4 {
+        for column in 0..4 {
+            let mut sum = 0;
+            for element in 0..4 {
+                let a_value = mma_sign_extend((a_words[row] >> (element * 8)) & 0xff, 8);
+                let b_value = ((b_words[column] >> (element * 8)) & 0xff) as i64;
+                sum += a_value * b_value;
+            }
+            let total = if accumulate {
+                sum + acc[row * 4 + column] as i64
+            } else {
+                sum
+            };
+            result[row * 4 + column] = if saturate {
+                mma_clamp(total)
+            } else {
+                total as i32
+            };
+        }
+    }
+    result
+}
+
+fn mma_ref_16(
+    a: &[u8; 16],
+    b: &[u8; 16],
+    acc: [i32; 16],
+    accumulate: bool,
+    saturate: bool,
+) -> [i32; 16] {
+    let a_words = mma_input_words(a);
+    let b_words = mma_input_words(b);
+    let mut result = [0; 16];
+    for row in 0..4 {
+        for column in 0..4 {
+            let mut sum = 0;
+            for element in 0..2 {
+                let a_value = mma_sign_extend((a_words[row] >> (element * 16)) & 0xffff, 16);
+                let b_value = mma_sign_extend((b_words[column] >> (element * 16)) & 0xffff, 16);
+                sum += a_value * b_value;
+            }
+            let total = if accumulate {
+                sum + acc[row * 4 + column] as i64
+            } else {
+                sum
+            };
+            result[row * 4 + column] = if saturate {
+                mma_clamp(total)
+            } else {
+                total as i32
+            };
+        }
+    }
+    result
+}
+
+fn mma_acc_from_i32(values: [i32; 16]) -> MmaAccumulator {
+    let mut bytes = [0u8; 64];
+    for row in 0..4 {
+        for column in 0..4 {
+            let offset = (3 - row) * 16 + (3 - column) * 4;
+            bytes[offset..offset + 4].copy_from_slice(&values[row * 4 + column].to_le_bytes());
+        }
+    }
+    MmaAccumulator::from_bytes(bytes)
+}
+
+fn mma_acc_i32(acc: &MmaAccumulator) -> [i32; 16] {
+    let bytes = acc.to_bytes();
+    core::array::from_fn(|index| {
+        let row = index / 4;
+        let column = index % 4;
+        let offset = (3 - row) * 16 + (3 - column) * 4;
+        i32::from_le_bytes(bytes[offset..offset + 4].try_into().unwrap())
+    })
+}
+
+fn mma_ops() -> bool {
+    if core::mem::size_of::<MmaAccumulator>() != 64 || core::mem::align_of::<MmaAccumulator>() != 16
+    {
+        return false;
+    }
+    unsafe {
+        let values = [
+            V128::from_bytes([1; 16]),
+            V128::from_bytes([2; 16]),
+            V128::from_bytes([3; 16]),
+            V128::from_bytes([4; 16]),
+        ];
+        let mut acc = MmaAccumulator::new();
+        if acc.to_bytes() != [0; 64] {
+            return false;
+        }
+        xxmtacc(&mut acc, values);
+        if xxmfacc(&acc) != values {
+            return false;
+        }
+        xxsetaccz(&mut acc);
+        if acc.to_bytes() != [0; 64] {
+            return false;
+        }
+
+        let init: [i32; 16] = core::array::from_fn(|index| index as i32 - 8);
+        let a4 = V128::from_bytes([
+            0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0x10, 0x32, 0x54, 0x76, 0x98, 0xba,
+            0xdc, 0xfe,
+        ]);
+        let b4 = V128::from_bytes([
+            0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee,
+            0xff, 0x00,
+        ]);
+        let mut acc = mma_acc_from_i32(init);
+        xvi4ger8(&mut acc, a4, b4);
+        if mma_acc_i32(&acc) != mma_ref_4(&a4.to_bytes(), &b4.to_bytes(), init, false) {
+            return false;
+        }
+        let mut acc = mma_acc_from_i32(init);
+        xvi4ger8pp(&mut acc, a4, b4);
+        if mma_acc_i32(&acc) != mma_ref_4(&a4.to_bytes(), &b4.to_bytes(), init, true) {
+            return false;
+        }
+
+        let a8 = V128::from_bytes([
+            0x02, 0xfe, 0x7f, 0x80, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xaa,
+            0xbb, 0xcc,
+        ]);
+        let b8 = V128::from_bytes([
+            0x03, 0xff, 0x01, 0x80, 0x21, 0x32, 0x43, 0x54, 0x65, 0x76, 0x87, 0x98, 0xa9, 0xba,
+            0xcb, 0xdc,
+        ]);
+        let mut acc = mma_acc_from_i32(init);
+        xvi8ger4(&mut acc, a8, b8);
+        if mma_acc_i32(&acc) != mma_ref_8(&a8.to_bytes(), &b8.to_bytes(), init, false, false) {
+            return false;
+        }
+        let mut acc = mma_acc_from_i32(init);
+        xvi8ger4pp(&mut acc, a8, b8);
+        if mma_acc_i32(&acc) != mma_ref_8(&a8.to_bytes(), &b8.to_bytes(), init, true, false) {
+            return false;
+        }
+        let mut acc = mma_acc_from_i32(init);
+        xvi8ger4spp(&mut acc, a8, b8);
+        if mma_acc_i32(&acc) != mma_ref_8(&a8.to_bytes(), &b8.to_bytes(), init, true, true) {
+            return false;
+        }
+
+        let a16 = V128::from_bytes([
+            0x01, 0x00, 0xff, 0xff, 0x02, 0x00, 0xfe, 0xff, 0x03, 0x00, 0xfd, 0xff, 0x04, 0x00,
+            0xfc, 0xff,
+        ]);
+        let b16 = V128::from_bytes([
+            0x05, 0x00, 0xfb, 0xff, 0x06, 0x00, 0xfa, 0xff, 0x07, 0x00, 0xf9, 0xff, 0x08, 0x00,
+            0xf8, 0xff,
+        ]);
+        let mut acc = mma_acc_from_i32(init);
+        xvi16ger2(&mut acc, a16, b16);
+        if mma_acc_i32(&acc) != mma_ref_16(&a16.to_bytes(), &b16.to_bytes(), init, false, false) {
+            return false;
+        }
+        let mut acc = mma_acc_from_i32(init);
+        xvi16ger2s(&mut acc, a16, b16);
+        if mma_acc_i32(&acc) != mma_ref_16(&a16.to_bytes(), &b16.to_bytes(), init, false, true) {
+            return false;
+        }
+        let mut acc = mma_acc_from_i32(init);
+        xvi16ger2pp(&mut acc, a16, b16);
+        if mma_acc_i32(&acc) != mma_ref_16(&a16.to_bytes(), &b16.to_bytes(), init, true, false) {
+            return false;
+        }
+        let mut acc = mma_acc_from_i32(init);
+        xvi16ger2spp(&mut acc, a16, b16);
+        if mma_acc_i32(&acc) != mma_ref_16(&a16.to_bytes(), &b16.to_bytes(), init, true, true) {
+            return false;
+        }
+
+        let max = [i32::MAX; 16];
+        let mut acc = mma_acc_from_i32(max);
+        xvi8ger4spp(
+            &mut acc,
+            V128::from_bytes([2; 16]),
+            V128::from_bytes([3; 16]),
+        );
+        if mma_acc_i32(&acc) != max {
+            return false;
+        }
+        let min = [i32::MIN; 16];
+        let mut acc = mma_acc_from_i32(min);
+        xvi8ger4spp(
+            &mut acc,
+            V128::from_bytes([0xfe; 16]),
+            V128::from_bytes([3; 16]),
+        );
+        if mma_acc_i32(&acc) != min {
+            return false;
+        }
+        let mut acc = mma_acc_from_i32(max);
+        xvi16ger2spp(
+            &mut acc,
+            V128::from_bytes([1; 16]),
+            V128::from_bytes([1; 16]),
+        );
+        if mma_acc_i32(&acc) != max {
+            return false;
+        }
+        let mut acc = mma_acc_from_i32(min);
+        xvi16ger2spp(
+            &mut acc,
+            V128::from_bytes([0xff; 16]),
+            V128::from_bytes([1; 16]),
+        );
+        if mma_acc_i32(&acc) != min {
+            return false;
+        }
+        true
     }
 }
 

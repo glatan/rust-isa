@@ -101,6 +101,7 @@ fn main() {
     let ppc_power9_c = manifest.join("src/powerpc/simd/power9_vector/power9_vector.c");
     let ppc_power10_c = manifest.join("src/powerpc/simd/power10_vector/power10_vector.c");
     let ppc_crypto_c = manifest.join("src/powerpc/crypto/power8_crypto/power8_crypto.c");
+    let ppc_mma_c = manifest.join("src/powerpc/matrix/mma/mma.c");
     let msa_c = manifest.join("src/mips/simd/msa/msa.c");
     let amx_tile_c = manifest.join("src/x86/matrix/amx_tile/amx_tile.c");
     for path in [
@@ -200,6 +201,7 @@ fn main() {
         &ppc_power9_c,
         &ppc_power10_c,
         &ppc_crypto_c,
+        &ppc_mma_c,
         &msa_c,
         &amx_tile_c,
     ] {
@@ -250,6 +252,11 @@ fn main() {
                 &ppc_crypto_c,
                 "rust_isa_power8_crypto",
                 &["-mcpu=power8", "-maltivec", "-mvsx"][..],
+            ),
+            (
+                &ppc_mma_c,
+                "rust_isa_mma",
+                &["-mcpu=power10", "-mmma", "-maltivec", "-mvsx"][..],
             ),
         ] {
             compile_archive(

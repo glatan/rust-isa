@@ -7,6 +7,10 @@
 //! The values are [`V128`]. The module contains the 64-bit integer add and
 //! subtract (`vaddudm`, `vsubudm`), 32-bit multiply (`vmuluwm`) and the even
 //! halfword widening multiply.
+//!
+//! `vctzd` was introduced by Power ISA 3.0. It is re-exported here because the
+//! Power8 extension table lists it, and calling it requires the Power9 vector
+//! feature set.
 
 use super::altivec::V128;
 
@@ -176,3 +180,5 @@ pub unsafe fn vmuluwm(a: V128, b: V128) -> V128 {
 pub unsafe fn vmuleuh(a: V128, b: V128) -> V128 {
     unsafe { mul_even_u16(a, b) }
 }
+
+pub use super::power9_vector::vctzd;

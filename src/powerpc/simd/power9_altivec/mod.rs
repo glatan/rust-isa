@@ -4,6 +4,6 @@
 //! module provides the Altivec-named entry points for the same operations.
 
 pub use super::power9_vector::{
-    vabsd, vabsduw, vctzb, vctzh, vctzlsbb, vctzw, vextsb2d, vextsb2w, vextsh2d, vextsh2w,
+    vabsd, vabsduw, vctzb, vctzd, vctzh, vctzlsbb, vctzw, vextsb2d, vextsb2w, vextsh2d, vextsh2w,
     vextsw2d, vnegd, vnegw,
 };
