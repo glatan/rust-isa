@@ -988,6 +988,24 @@ unsafe fn sve_ops() -> bool {
     if out != [11.0, 22.0, 33.0, 44.0, 55.0, 66.0, 77.0] {
         return false;
     }
+    unsafe { sve::sub_f32(&b, &a, &mut out) };
+    if out != [9.0, 18.0, 27.0, 36.0, 45.0, 54.0, 63.0] {
+        return false;
+    }
+    let ai = [1i32, 2, 3, 4, 5];
+    let bi = [10i32, 20, 30, 40, 50];
+    let mut oi = [0i32; 5];
+    unsafe { sve::sub_i32(&bi, &ai, &mut oi) };
+    if oi != [9, 18, 27, 36, 45] {
+        return false;
+    }
+    let ad = [1.0f64, 2.0, 3.0];
+    let bd = [10.0f64, 20.0, 30.0];
+    let mut od = [0.0f64; 3];
+    unsafe { sve::sub_f64(&bd, &ad, &mut od) };
+    if od != [9.0, 18.0, 27.0] {
+        return false;
+    }
     unsafe { sve::mul_f32(&a, &b, &mut out) };
     if out != [10.0, 40.0, 90.0, 160.0, 250.0, 360.0, 490.0] {
         return false;

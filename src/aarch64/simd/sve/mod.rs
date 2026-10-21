@@ -19,6 +19,9 @@ unsafe extern "C" {
     fn rust_isa_sve_mul_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
     fn rust_isa_sve_add_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
     fn rust_isa_sve_mul_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
+    fn rust_isa_sve_sub_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_sve_sub_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_sve_sub_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
 
 /// Add two `f32` slices.
@@ -132,5 +135,38 @@ pub unsafe fn mul_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     unsafe {
         rust_isa_sve_mul_f64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+/// Subtract two `f32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn sub_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_sub_f32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+/// Subtract two `i32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn sub_i32(a: &[i32], b: &[i32], out: &mut [i32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_sub_i32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+/// Subtract two `f64` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn sub_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_sub_f64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
     }
 }
