@@ -248,3 +248,30 @@ pub unsafe fn froundnx_h(a: u16) -> u16 {
 pub unsafe fn fcvtmod_w_h(a: u16) -> i32 {
     unsafe { rust_isa_riscv_zfh_fcvtmod_w_h(a) }
 }
+
+/// `fclass.h`.
+///
+/// Return the RISC-V floating-point class mask for a binary16 value.
+#[inline]
+pub fn fclass_h(value: u16) -> u32 {
+    let sign = value >> 15;
+    let exponent = (value >> 10) & 0x1f;
+    let mantissa = value & 0x03ff;
+    if exponent == 0x1f {
+        if mantissa == 0 {
+            return if sign == 0 { 1 << 7 } else { 1 << 0 };
+        }
+        return if mantissa & 0x0200 == 0 {
+            1 << 8
+        } else {
+            1 << 9
+        };
+    }
+    if exponent == 0 {
+        if mantissa == 0 {
+            return if sign == 0 { 1 << 4 } else { 1 << 3 };
+        }
+        return if sign == 0 { 1 << 5 } else { 1 << 2 };
+    }
+    if sign == 0 { 1 << 6 } else { 1 << 1 }
+}
