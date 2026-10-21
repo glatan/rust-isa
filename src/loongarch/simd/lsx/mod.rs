@@ -285,3 +285,9 @@ pub fn vmul_h(a: V128, b: V128) -> V128 {
 pub fn vadd_w(a: V128, b: V128) -> V128 {
     add(a, b)
 }
+
+/// `vsub.w`.
+#[inline(always)]
+pub fn vsub_w(a: V128, b: V128) -> V128 {
+    sub_i32(a, b)
+}
