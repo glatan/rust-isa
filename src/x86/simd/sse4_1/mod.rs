@@ -265,3 +265,201 @@ pub unsafe fn pmovzxbw(a: V128) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_sse41_pminsb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pminsd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmaxsb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmaxsd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmovsxbq(a: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmovsxwd(a: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmovsxwq(a: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmovsxdq(a: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmovzxbq(a: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmovzxwd(a: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmovzxwq(a: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmovzxdq(a: *const u8, out: *mut u8);
+    fn rust_isa_sse41_movntdqa(p: *const u8, out: *mut u8);
+}
+
+macro_rules! binary {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[target_feature(enable = "sse4.1")]
+        #[inline]
+        pub unsafe fn $name(a: V128, b: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe {
+                $c(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+            }
+            out
+        }
+    };
+}
+
+binary!(
+    /// `pminsb`
+    ///
+    /// Return the minimum of each signed 8-bit lane.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pminsb,
+    rust_isa_sse41_pminsb
+);
+binary!(
+    /// `pminsd`
+    ///
+    /// Return the minimum of each signed 32-bit lane.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pminsd,
+    rust_isa_sse41_pminsd
+);
+binary!(
+    /// `pmaxsb`
+    ///
+    /// Return the maximum of each signed 8-bit lane.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmaxsb,
+    rust_isa_sse41_pmaxsb
+);
+binary!(
+    /// `pmaxsd`
+    ///
+    /// Return the maximum of each signed 32-bit lane.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmaxsd,
+    rust_isa_sse41_pmaxsd
+);
+
+macro_rules! unary {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[target_feature(enable = "sse4.1")]
+        #[inline]
+        pub unsafe fn $name(a: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe {
+                $c(a.as_ptr(), out.as_mut_ptr());
+            }
+            out
+        }
+    };
+}
+
+unary!(
+    /// `pmovsxbq`
+    ///
+    /// Sign-extend the low two bytes to 64-bit lanes.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmovsxbq,
+    rust_isa_sse41_pmovsxbq
+);
+unary!(
+    /// `pmovsxwd`
+    ///
+    /// Sign-extend the low four words to 32-bit lanes.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmovsxwd,
+    rust_isa_sse41_pmovsxwd
+);
+unary!(
+    /// `pmovsxwq`
+    ///
+    /// Sign-extend the low two words to 64-bit lanes.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmovsxwq,
+    rust_isa_sse41_pmovsxwq
+);
+unary!(
+    /// `pmovsxdq`
+    ///
+    /// Sign-extend the low two dwords to 64-bit lanes.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmovsxdq,
+    rust_isa_sse41_pmovsxdq
+);
+unary!(
+    /// `pmovzxbq`
+    ///
+    /// Zero-extend the low two bytes to 64-bit lanes.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmovzxbq,
+    rust_isa_sse41_pmovzxbq
+);
+unary!(
+    /// `pmovzxwd`
+    ///
+    /// Zero-extend the low four words to 32-bit lanes.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmovzxwd,
+    rust_isa_sse41_pmovzxwd
+);
+unary!(
+    /// `pmovzxwq`
+    ///
+    /// Zero-extend the low two words to 64-bit lanes.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmovzxwq,
+    rust_isa_sse41_pmovzxwq
+);
+unary!(
+    /// `pmovzxdq`
+    ///
+    /// Zero-extend the low two dwords to 64-bit lanes.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmovzxdq,
+    rust_isa_sse41_pmovzxdq
+);
+
+/// `movntdqa`
+///
+/// Load 16 bytes with a non-temporal hint.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1. `p` must be valid for reading 16 bytes and
+/// should point to write-combining memory for the hint to take effect.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn movntdqa(p: *const u8) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse41_movntdqa(p, out.as_mut_ptr());
+    }
+    out
+}

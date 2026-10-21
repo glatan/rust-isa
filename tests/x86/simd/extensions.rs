@@ -9,8 +9,9 @@ use rust_isa::x86::simd::sse3::{
     addsubpd, addsubps, haddpd, haddps, hsubpd, hsubps, lddqu, movddup, movshdup, movsldup,
 };
 use rust_isa::x86::simd::sse4_1::{
-    blendvpd, blendvps, packusdw, pblendvb, phminposuw, pmaxud, pmaxuw, pminud, pminuw, pmovsxbd,
-    pmovsxbw, pmovzxbw, pmulld, ptest,
+    blendvpd, blendvps, movntdqa, packusdw, pblendvb, phminposuw, pmaxsb, pmaxsd, pmaxud, pmaxuw,
+    pminsb, pminsd, pminud, pminuw, pmovsxbd, pmovsxbq, pmovsxbw, pmovsxdq, pmovsxwd, pmovsxwq,
+    pmovzxbq, pmovzxbw, pmovzxdq, pmovzxwd, pmovzxwq, pmulld, ptest,
 };
 use rust_isa::x86::simd::sse4_2::{crc32_u8, pcmpgtq};
 use rust_isa::x86::simd::ssse3::{
@@ -76,6 +77,14 @@ fn i32_lanes(value: V128) -> [i32; 4] {
     core::array::from_fn(|lane| {
         i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap())
     })
+}
+
+fn i64_lanes(value: V128) -> [i64; 2] {
+    let bytes = value.to_bytes();
+    [
+        i64::from_le_bytes(bytes[..8].try_into().unwrap()),
+        i64::from_le_bytes(bytes[8..].try_into().unwrap()),
+    ]
 }
 
 fn u16x8(values: [u16; 8]) -> V128 {
@@ -502,4 +511,68 @@ fn optional_extension_api_surface() {
         core::mem::size_of::<rust_isa::x86::matrix::amx_tile::TileConfig>(),
         64
     );
+}
+
+#[test]
+fn sse41_signed_minmax_and_extend() {
+    if !is_x86_feature_detected!("sse4.1") {
+        return;
+    }
+
+    let a = V128::from_bytes([0x80, 0x7f, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+    let b = V128::from_bytes([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    let min = unsafe { pminsb(a, b) }.to_bytes();
+    let max = unsafe { pmaxsb(a, b) }.to_bytes();
+    assert_eq!(&min[..3], &[0x80, 0, 0]);
+    assert_eq!(&max[..3], &[0, 0x7f, 1]);
+
+    let a = i32x4([i32::MIN, -1, 1, i32::MAX]);
+    let b = i32x4([0, 0, 0, 0]);
+    assert_eq!(i32_lanes(unsafe { pminsd(a, b) }), [i32::MIN, -1, 0, 0]);
+    assert_eq!(i32_lanes(unsafe { pmaxsd(a, b) }), [0, 0, 1, i32::MAX]);
+
+    assert_eq!(
+        i64_lanes(unsafe {
+            pmovsxbq(V128::from_bytes([
+                0x80, 0x7f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            ]))
+        }),
+        [-128, 127]
+    );
+    assert_eq!(
+        i32_lanes(unsafe { pmovsxwd(i16x8([-32768, 32767, 1, -1, 0, 0, 0, 0])) }),
+        [-32768, 32767, 1, -1]
+    );
+    assert_eq!(
+        i64_lanes(unsafe { pmovsxwq(i16x8([-32768, 32767, 0, 0, 0, 0, 0, 0])) }),
+        [-32768, 32767]
+    );
+    assert_eq!(
+        i64_lanes(unsafe { pmovsxdq(i32x4([i32::MIN, i32::MAX, 0, 0])) }),
+        [i32::MIN as i64, i32::MAX as i64]
+    );
+
+    assert_eq!(
+        i64_lanes(unsafe {
+            pmovzxbq(V128::from_bytes([
+                0xff, 0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            ]))
+        }),
+        [255, 128]
+    );
+    assert_eq!(
+        i32_lanes(unsafe { pmovzxwd(u16x8([0xffff, 0x8000, 1, 2, 0, 0, 0, 0])) }),
+        [65535, 32768, 1, 2]
+    );
+    assert_eq!(
+        i64_lanes(unsafe { pmovzxwq(u16x8([0xffff, 0x8000, 0, 0, 0, 0, 0, 0])) }),
+        [65535, 32768]
+    );
+    assert_eq!(
+        i64_lanes(unsafe { pmovzxdq(i32x4([-1, i32::MIN, 0, 0])) }),
+        [u32::MAX as i64, 0x8000_0000]
+    );
+
+    let source = [1u8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+    assert_eq!(unsafe { movntdqa(source.as_ptr()) }.to_bytes(), source);
 }
