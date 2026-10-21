@@ -3,7 +3,7 @@
 
 use core::arch::asm;
 use core::panic::PanicInfo;
-use rust_isa::riscv::crypto::zkn::{aes64es, sha256sum0};
+use rust_isa::riscv::crypto::zkn::{aes64es, aes64ks1i, sha256sum0};
 use rust_isa::riscv::crypto::zks::{sm3p0, sm4ed};
 use rust_isa::riscv::integer::zba::{sh1add, sh2add, sh3add};
 use rust_isa::riscv::integer::zbb::{andn, clz, cpop, rol, sext_b, xnor};
@@ -207,7 +207,12 @@ fn slice_ops() -> bool {
 
 #[target_feature(enable = "zkn")]
 unsafe fn zkn_ops() -> bool {
-    unsafe { sha256sum0(1) != 1 && aes64es(1, 2) != 1 }
+    unsafe {
+        sha256sum0(1) != 1
+            && aes64es(1, 2) != 1
+            && aes64ks1i(1, 0) != 1
+            && aes64ks1i(1, 1) != aes64ks1i(1, 0)
+    }
 }
 
 #[target_feature(enable = "zks")]
