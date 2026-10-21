@@ -8,6 +8,7 @@ use rust_isa::riscv::crypto::zks::{sm3p0, sm4ed};
 use rust_isa::riscv::integer::zba::{sh1add, sh2add, sh3add};
 use rust_isa::riscv::integer::zbb::{andn, clz, cpop, rol, sext_b, xnor};
 use rust_isa::riscv::integer::zbc::clmul;
+use rust_isa::riscv::integer::zbkb::{brev8, pack, packh, xperm4, xperm8};
 use rust_isa::riscv::integer::zbs::{bclr, bext, binv, bset};
 use rust_isa::riscv::simd::rv_vector::{
     V128, add, add_i8, add_i16, and, cmpeq_i32, cmpgt_i32, fadd, fmul, mul, mul_i16, or, splat_i32,
@@ -174,6 +175,14 @@ fn scalar_integer_ops() -> bool {
             return false;
         }
         if bset(0, 3) != 8 || bclr(0xff, 0) != 0xfe || binv(0, 0) != 1 || bext(8, 3) != 1 {
+            return false;
+        }
+        if pack(0x1111_1111_2222_2222, 0x3333_3333_4444_4444) == 0
+            || packh(0xaa, 0xbb) == 0
+            || brev8(1) != 0x80
+            || xperm8(0x0123_4567_89ab_cdef, 0) == 0
+            || xperm4(0x0123_4567_89ab_cdef, 0) == 0
+        {
             return false;
         }
     }

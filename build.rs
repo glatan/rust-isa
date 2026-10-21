@@ -77,6 +77,7 @@ fn main() {
     let rv_zba_c = manifest.join("src/riscv/integer/zba/zba.c");
     let rv_zbb_c = manifest.join("src/riscv/integer/zbb/zbb.c");
     let rv_zbc_c = manifest.join("src/riscv/integer/zbc/zbc.c");
+    let rv_zbkb_c = manifest.join("src/riscv/integer/zbkb/zbkb.c");
     let rv_zbs_c = manifest.join("src/riscv/integer/zbs/zbs.c");
     let rv_zkn_c = manifest.join("src/riscv/crypto/zkn/zkn.c");
     let rv_zks_c = manifest.join("src/riscv/crypto/zks/zks.c");
@@ -172,6 +173,7 @@ fn main() {
         &rv_zba_c,
         &rv_zbb_c,
         &rv_zbc_c,
+        &rv_zbkb_c,
         &rv_zbs_c,
         &rv_zkn_c,
         &rv_zks_c,
@@ -396,6 +398,11 @@ fn main() {
             (&rv_zba_c, "rust_isa_rv_zba", &["-march=rv64gc_zba"][..]),
             (&rv_zbb_c, "rust_isa_rv_zbb", &["-march=rv64gc_zbb"][..]),
             (&rv_zbc_c, "rust_isa_rv_zbc", &["-march=rv64gc_zbc"][..]),
+            (
+                &rv_zbkb_c,
+                "rust_isa_rv_zbkb",
+                &["-march=rv64gc_zbkb_zbkx"][..],
+            ),
             (&rv_zbs_c, "rust_isa_rv_zbs", &["-march=rv64gc_zbs"][..]),
             (&rv_zkn_c, "rust_isa_rv_zkn", &["-march=rv64gc_zkn"][..]),
             (&rv_zks_c, "rust_isa_rv_zks", &["-march=rv64gc_zks"][..]),
