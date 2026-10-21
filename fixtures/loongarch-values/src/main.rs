@@ -24,6 +24,7 @@ use rust_isa::loongarch::simd::lasx::{
 use rust_isa::loongarch::simd::lasx::{
     xvabs, xvadd_b, xvadd_d, xvadd_h, xvdiv, xvmul_h, xvneg, xvsub_b, xvsub_d, xvsub_h,
 };
+use rust_isa::loongarch::simd::lsx::{vsll};
 use rust_isa::loongarch::simd::lsx::{vshuf4i};
 use rust_isa::loongarch::simd::lsx::{vshuf};
 use rust_isa::loongarch::simd::lsx::{vbitsel};
@@ -163,6 +164,7 @@ fn run() -> u32 {
     if !alias_vbitsel() { return 525; }
     if !alias_vshuf() { return 531; }
     if !alias_vshuf4i() { return 532; }
+    if !alias_vsll() { return 533; }
     0
 }
 
@@ -547,3 +549,5 @@ fn alias_vbitsel() -> bool { vbitsel(V128::from_bytes([1;16]),V128::from_bytes([
 fn alias_vshuf() -> bool { vshuf(V128::from_bytes([1;16]),V128::from_bytes([2;16]),V128::from_bytes([0;16])).to_bytes() == [1;16] }
 
 fn alias_vshuf4i() -> bool { vshuf4i::<0>(V128::from_bytes(core::array::from_fn(|i| i as u8))).to_bytes() == [0,0,0,0,4,4,4,4,8,8,8,8,12,12,12,12] }
+
+fn alias_vsll() -> bool { lanes(vsll(i32x4([1,2,3,4]),1)) == [2,4,6,8] }
