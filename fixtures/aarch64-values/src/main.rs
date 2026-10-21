@@ -1089,6 +1089,14 @@ unsafe fn sve_ops() -> bool {
     if oi[..2] != [0b0110, 0b0110] {
         return false;
     }
+    unsafe { sve::fma_f32(&[2.0, 3.0], &[4.0, 5.0], &[1.0, 2.0], &mut out[..2]) };
+    if out[..2] != [9.0, 17.0] {
+        return false;
+    }
+    unsafe { sve::fma_f64(&[2.0, 3.0], &[4.0, 5.0], &[1.0, 2.0], &mut od[..2]) };
+    if od[..2] != [9.0, 17.0] {
+        return false;
+    }
     unsafe { sve::mul_f32(&a, &b, &mut out) };
     if out != [10.0, 40.0, 90.0, 160.0, 250.0, 360.0, 490.0] {
         return false;
