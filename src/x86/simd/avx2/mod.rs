@@ -5,9 +5,21 @@
 //! global target feature.
 
 mod bitwise;
+mod blend;
+mod broadcast;
+mod gather;
+mod immediate;
 mod integer;
+mod permute;
+mod shift;
 mod v256;
 
 pub use bitwise::*;
+pub use blend::*;
+pub use broadcast::*;
+pub use gather::*;
+pub use immediate::*;
 pub use integer::*;
+pub use permute::*;
+pub use shift::*;
 pub use v256::*;
