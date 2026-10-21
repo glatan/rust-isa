@@ -8,12 +8,24 @@
 //! and return a [`V128`]; only the low lane is defined by the instruction and
 //! the upper lanes are copied from the first operand.
 //!
-//! The module contains representative floating-point, bitwise, broadcast and
-//! mask operations. The 128-bit lane insertion, extraction and permutation
-//! instructions that take an immediate are intentionally omitted.
+//! Immediate forms use const-generic inline assembly with memory operands.
 
-use super::avx2::V256;
-use super::sse2::V128;
+pub use super::avx2::V256;
+pub use super::sse2::V128;
+
+mod blend;
+mod mask;
+mod moves;
+mod permute;
+mod round;
+mod shuffle;
+
+pub use blend::*;
+pub use mask::*;
+pub use moves::*;
+pub use permute::*;
+pub use round::*;
+pub use shuffle::*;
 
 unsafe extern "C" {
     fn rust_isa_avx_vaddps(a: *const u8, b: *const u8, out: *mut u8);
