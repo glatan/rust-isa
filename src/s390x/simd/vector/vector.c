@@ -224,3 +224,41 @@ __attribute__((always_inline))
 void rust_isa_s390x_vector_vsr(const uint8_t *a, const uint8_t *b, uint8_t *out) {
     *(sv2u64 *)(void *)out = *(const sv2u64 *)(const void *)a >> *(const sv2u64 *)(const void *)b;
 }
+
+typedef float sv4f32 __attribute__((vector_size(16)));
+typedef double sv2f64 __attribute__((vector_size(16)));
+
+__attribute__((always_inline))
+void rust_isa_s390x_vector_vclf(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    for (int i = 0; i < 4; i++) {
+        float x = ((const float *)(const void *)a)[i];
+        float y = ((const float *)(const void *)b)[i];
+        ((uint32_t *)(void *)out)[i] = x < y ? 0xffffffffu : 0;
+    }
+}
+__attribute__((always_inline))
+void rust_isa_s390x_vector_vclg(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    for (int i = 0; i < 2; i++) {
+        double x = ((const double *)(const void *)a)[i];
+        double y = ((const double *)(const void *)b)[i];
+        ((uint64_t *)(void *)out)[i] = x < y ? 0xffffffffffffffffull : 0;
+    }
+}
+__attribute__((always_inline))
+void rust_isa_s390x_vector_vclh(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    *(sv8u16 *)(void *)out = (sv8u16)vec_cmplt(
+        *(const sv8i16 *)(const void *)a,
+        *(const sv8i16 *)(const void *)b);
+}
+__attribute__((always_inline))
+void rust_isa_s390x_vector_vchl(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    *(sv2u64 *)(void *)out = (sv2u64)vec_cmpgt(
+        *(const sv2u64 *)(const void *)a,
+        *(const sv2u64 *)(const void *)b);
+}
+__attribute__((always_inline))
+void rust_isa_s390x_vector_vpks(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    *(sv8i16 *)(void *)out = vec_packs(
+        *(const sv4i32 *)(const void *)a,
+        *(const sv4i32 *)(const void *)b);
+}

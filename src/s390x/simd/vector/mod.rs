@@ -320,3 +320,58 @@ pub unsafe fn vsel(a: V128, b: V128, c: V128) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_s390x_vector_vclf(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vclg(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vclh(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vchl(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vpks(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+binary!(
+    /// `vclf`.
+    vclf,
+    rust_isa_s390x_vector_vclf
+);
+binary!(
+    /// `vclg`.
+    vclg,
+    rust_isa_s390x_vector_vclg
+);
+binary!(
+    /// `vclh`.
+    vclh,
+    rust_isa_s390x_vector_vclh
+);
+binary!(
+    /// `vchl`.
+    vchl,
+    rust_isa_s390x_vector_vchl
+);
+binary!(
+    /// `vpks`.
+    vpks,
+    rust_isa_s390x_vector_vpks
+);
+
+/// `vperm`.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vperm(a: V128, b: V128, index: V128) -> V128 {
+    unsafe { permute(a, b, index) }
+}
+
+/// `vle`.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vle(p: *const u8) -> V128 {
+    unsafe { v128_load(p) }
+}
+
+/// `vst`.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vst(p: *mut u8, value: V128) {
+    unsafe { v128_store(p, value) }
+}
