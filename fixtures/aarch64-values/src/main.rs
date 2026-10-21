@@ -18,11 +18,14 @@ use rust_isa::aarch64::simd::neon::{
     cls_i16, cls_i32, cls_i8, clz_i16, clz_i32, clz_i8, cmge_i16, cmge_i32, cmge_i8, cmle_i16,
     cmle_i32, cmle_i8, cmlt_i16, cmlt_i32, cmlt_i8, cmpeq_i16, cmpeq_i32, cmpeq_i64, cmpeq_i8,
     cmpgt_i16, cmpgt_i32, cmpgt_i64, cmpgt_i8, cmtst_i16, cmtst_i32, cmtst_i8, cnt_i8, eor,
-    extract_i32, fabs, facge_f32, facge_f64, facgt_f32, facgt_f64, fadd, fcmeq_f32, fcmeq_f64,
-    fcmge_f32, fcmge_f64, fcmgt_f32, fcmgt_f64, fcmle_f32, fcmle_f64, fcmlt_f32, fcmlt_f64, fdiv,
-    fmax, fmin, fmul, fneg, fsqrt, fsub, max_i16, max_i32, max_i8, min_i16, min_i32, min_i8, mul,
-    mul_f64, mul_i16, mul_i32, mul_i8, neg_i32, not, orn, orr, rbit, replace_i32, rev16, rev32,
-    rev64, saddl_s16, saddl_s32, saddl_s8, saddw_s16, saddw_s32, saddw_s8, sar_i16, sar_i32,
+    extract_i32, fabd_f32, fabd_f64, fabs, facge_f32, facge_f64, facgt_f32, facgt_f64, fadd,
+    faddp_f32, faddp_f64, faddv_f32, faddv_f64, fcmeq_f32, fcmeq_f64, fcmge_f32, fcmge_f64,
+    fcmgt_f32, fcmgt_f64, fcmle_f32, fcmle_f64, fcmlt_f32, fcmlt_f64, fdiv, fmax, fmaxnm_f32,
+    fmaxnm_f64, fmaxnmv_f32, fmaxnmv_f64, fmaxv_f32, fmaxv_f64, fmin, fminnm_f32, fminnm_f64,
+    fminnmv_f32, fminnmv_f64, fminv_f32, fminv_f64, fmla_f32, fmla_f64, fmls_f32, fmls_f64, fmul,
+    fmulx_f32, fmulx_f64, fneg, fsqrt, fsub, max_i16, max_i32, max_i8, min_i16, min_i32, min_i8,
+    mul, mul_f64, mul_i16, mul_i32, mul_i8, neg_i32, not, orn, orr, rbit, replace_i32, rev16,
+    rev32, rev64, saddl_s16, saddl_s32, saddl_s8, saddw_s16, saddw_s32, saddw_s8, sar_i16, sar_i32,
     sar_i8, shl_i32, shr_i16, splat_i32, ssubl_s16, ssubl_s32, ssubl_s8, ssubw_s16, ssubw_s32,
     ssubw_s8, sub_i16, sub_i32, sub_i64, sub_i8, tbl, trn1, uaddl_u16, uaddl_u32, uaddl_u8,
     uaddw_u16, uaddw_u32, uaddw_u8, usubl_u16, usubl_u32, usubl_u8, usubw_u16, usubw_u32, usubw_u8,
@@ -579,6 +582,52 @@ fn float_ops() -> bool {
             != [
                 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
             ]
+
+    {
+        return false;
+    }
+    if f32_lanes(fabd_f32(
+        f32x4([1.0, 2.0, 3.0, 4.0]),
+        f32x4([2.0, 4.0, 6.0, 8.0]),
+    )) != [1.0, 2.0, 3.0, 4.0]
+        || f64_lanes(fabd_f64(f64x2([1.0, 2.0]), f64x2([3.0, 5.0]))) != [2.0, 3.0]
+        || f32_lanes(faddp_f32(
+            f32x4([1.0, 2.0, 3.0, 4.0]),
+            f32x4([5.0, 6.0, 7.0, 8.0]),
+        )) != [3.0, 7.0, 11.0, 15.0]
+        || f64_lanes(faddp_f64(f64x2([1.0, 2.0]), f64x2([3.0, 4.0]))) != [3.0, 7.0]
+        || faddv_f32(f32x4([1.0, 2.0, 3.0, 4.0])) != 10.0
+        || faddv_f64(f64x2([1.0, 2.0])) != 3.0
+        || f32_lanes(fmaxnm_f32(
+            f32x4([1.0, 5.0, 3.0, 4.0]),
+            f32x4([2.0, 4.0, 6.0, 3.0]),
+        )) != [2.0, 5.0, 6.0, 4.0]
+        || f64_lanes(fmaxnm_f64(f64x2([1.0, 5.0]), f64x2([2.0, 4.0]))) != [2.0, 5.0]
+        || f32_lanes(fminnm_f32(
+            f32x4([1.0, 5.0, 3.0, 4.0]),
+            f32x4([2.0, 4.0, 6.0, 3.0]),
+        )) != [1.0, 4.0, 3.0, 3.0]
+        || f64_lanes(fminnm_f64(f64x2([1.0, 5.0]), f64x2([2.0, 4.0]))) != [1.0, 4.0]
+        || fmaxnmv_f32(f32x4([1.0, 4.0, 2.0, 3.0])) != 4.0
+        || fmaxnmv_f64(f64x2([1.0, 4.0])) != 4.0
+        || fmaxv_f32(f32x4([1.0, 4.0, 2.0, 3.0])) != 4.0
+        || fmaxv_f64(f64x2([1.0, 4.0])) != 4.0
+        || fminnmv_f32(f32x4([2.0, 4.0, 1.0, 3.0])) != 1.0
+        || fminnmv_f64(f64x2([2.0, 1.0])) != 1.0
+        || fminv_f32(f32x4([2.0, 4.0, 1.0, 3.0])) != 1.0
+        || fminv_f64(f64x2([2.0, 1.0])) != 1.0
+    {
+        return false;
+    }
+    if f32_lanes(fmla_f32(f32x4([2.0; 4]), f32x4([3.0; 4]), f32x4([1.0; 4]))) != [5.0; 4]
+        || f64_lanes(fmla_f64(f64x2([2.0; 2]), f64x2([3.0; 2]), f64x2([1.0; 2]))) != [5.0; 2]
+        || f32_lanes(fmls_f32(f32x4([2.0; 4]), f32x4([3.0; 4]), f32x4([1.0; 4]))) != [-1.0; 4]
+        || f64_lanes(fmls_f64(f64x2([2.0; 2]), f64x2([3.0; 2]), f64x2([1.0; 2]))) != [-1.0; 2]
+        || f32_lanes(fmulx_f32(
+            f32x4([2.0, 3.0, 4.0, 5.0]),
+            f32x4([6.0, 7.0, 8.0, 9.0]),
+        )) != [12.0, 21.0, 32.0, 45.0]
+        || f64_lanes(fmulx_f64(f64x2([2.0, 3.0]), f64x2([4.0, 5.0]))) != [8.0, 15.0]
     {
         return false;
     }
