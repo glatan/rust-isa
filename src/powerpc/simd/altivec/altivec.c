@@ -374,3 +374,67 @@ void rust_isa_altivec_vsldoi(const uint8_t *a, const uint8_t *b, uint32_t imm, u
     }
     *(av16u8 *)(void *)out = r;
 }
+
+typedef vector signed short av8i16;
+typedef vector short av8s16;
+
+__attribute__((always_inline))
+void rust_isa_altivec_lvx(const uint8_t *p, uint8_t *out) {
+    *(av16u8 *)(void *)out = *(const av16u8 *)(const void *)p;
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_stvx(uint8_t *p, const uint8_t *a) {
+    *(av16u8 *)(void *)p = *(const av16u8 *)(const void *)a;
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_vmul(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    *(av8i16 *)(void *)out = vec_mul(
+        *(const av8i16 *)(const void *)a,
+        *(const av8i16 *)(const void *)b);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_vmla(const uint8_t *acc, const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    *(v4f32 *)(void *)out = vec_madd(
+        *(const v4f32 *)(const void *)a,
+        *(const v4f32 *)(const void *)b,
+        *(const v4f32 *)(const void *)acc);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_vmls(const uint8_t *acc, const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    *(v4f32 *)(void *)out = vec_msub(
+        *(const v4f32 *)(const void *)a,
+        *(const v4f32 *)(const void *)b,
+        *(const v4f32 *)(const void *)acc);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_vmadd(const uint8_t *acc, const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    *(v4f32 *)(void *)out = vec_madd(
+        *(const v4f32 *)(const void *)acc,
+        *(const v4f32 *)(const void *)a,
+        *(const v4f32 *)(const void *)b);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_vnmsub(const uint8_t *acc, const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    *(v4f32 *)(void *)out = vec_nmsub(
+        *(const v4f32 *)(const void *)a,
+        *(const v4f32 *)(const void *)b,
+        *(const v4f32 *)(const void *)acc);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_vpk(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    *(av8i16 *)(void *)out = vec_pack(
+        *(const v4i32 *)(const void *)a,
+        *(const v4i32 *)(const void *)b);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_vupk(const uint8_t *a, uint8_t *out) {
+    *(v4i32 *)(void *)out = vec_unpackh(*(const av8i16 *)(const void *)a);
+}
