@@ -24,6 +24,7 @@ use rust_isa::loongarch::simd::lasx::{
 use rust_isa::loongarch::simd::lasx::{
     xvabs, xvadd_b, xvadd_d, xvadd_h, xvdiv, xvmul_h, xvneg, xvsub_b, xvsub_d, xvsub_h,
 };
+use rust_isa::loongarch::simd::lsx::{vshuf4i};
 use rust_isa::loongarch::simd::lsx::{vshuf};
 use rust_isa::loongarch::simd::lsx::{vbitsel};
 use rust_isa::loongarch::simd::lsx::{vnor};
@@ -161,6 +162,7 @@ fn run() -> u32 {
     if !alias_vnor() { return 524; }
     if !alias_vbitsel() { return 525; }
     if !alias_vshuf() { return 531; }
+    if !alias_vshuf4i() { return 532; }
     0
 }
 
@@ -543,3 +545,5 @@ fn alias_vnor() -> bool { vnor(V128::from_bytes([0xaa;16]),V128::from_bytes([0xc
 fn alias_vbitsel() -> bool { vbitsel(V128::from_bytes([1;16]),V128::from_bytes([2;16]),V128::from_bytes([0xff;16])).to_bytes() == [1;16] }
 
 fn alias_vshuf() -> bool { vshuf(V128::from_bytes([1;16]),V128::from_bytes([2;16]),V128::from_bytes([0;16])).to_bytes() == [1;16] }
+
+fn alias_vshuf4i() -> bool { vshuf4i::<0>(V128::from_bytes(core::array::from_fn(|i| i as u8))).to_bytes() == [0,0,0,0,4,4,4,4,8,8,8,8,12,12,12,12] }
