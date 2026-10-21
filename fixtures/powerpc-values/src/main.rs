@@ -15,7 +15,7 @@ use rust_isa::powerpc::simd::power9_vector::{
     vextsb2d, vextsb2w, vextsh2d, vextsh2w, vextsw2d, vnegd, vnegw,
 };
 use rust_isa::powerpc::simd::power10_vector::{
-    cntlz_i32 as p10_cntlz_i32, popcnt_i32 as p10_popcnt_i32,
+    cntlz_i32 as p10_cntlz_i32, popcnt_i32 as p10_popcnt_i32, vclzd, vctzd, vpopcntd, vpopcntw,
 };
 use rust_isa::powerpc::simd::vsx::{
     abs_f64, add_f32 as vsx_add_f32, add_f64, div_f64, mul_f64, sqrt_f64, sub_f64,
@@ -161,6 +161,19 @@ fn power10_ops() -> bool {
     unsafe {
         lanes(p10_popcnt_i32(i32x4([-1; 4]))) == [32; 4]
             && lanes(p10_cntlz_i32(i32x4([1, 2, 4, 8]))) == [31, 30, 29, 28]
+            && lanes(vpopcntw(i32x4([-1; 4]))) == [32; 4]
+            && {
+                let bytes = vpopcntd(V128::from_bytes([0xff; 16])).to_bytes();
+                bytes[0] == 64 && bytes[8] == 64
+            }
+            && {
+                let bytes = vclzd(V128::from_bytes([0; 16])).to_bytes();
+                bytes[0] == 64 && bytes[8] == 64
+            }
+            && {
+                let bytes = vctzd(V128::from_bytes([0; 16])).to_bytes();
+                bytes[0] == 64 && bytes[8] == 64
+            }
     }
 }
 
