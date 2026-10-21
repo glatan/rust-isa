@@ -12,6 +12,9 @@ use rust_isa::riscv::float::zfh::{
     fcvt_d_h, fcvt_h_d, fcvt_h_s, fcvt_h_w, fcvt_h_wu, fcvt_s_h, fcvt_w_h, fcvt_wu_h, fmv_h_x,
     fmv_x_h,
 }; // conversions
+use rust_isa::riscv::float::zfh::{
+    fcvtmod_w_h, fleq_h, fltq_h, fmaxm_h, fminm_h, fround_h, froundnx_h,
+}; // zfa
 use rust_isa::riscv::integer::zba::{sh1add, sh2add, sh3add};
 use rust_isa::riscv::integer::zbb::{andn, clz, cpop, rol, sext_b, xnor};
 use rust_isa::riscv::integer::zbc::clmul;
@@ -335,5 +338,12 @@ unsafe fn zfh_ops() -> bool {
             && fcvt_h_wu(2) == two
             && fmv_x_h(0xffff) == -1
             && fmv_h_x(-1) == 0xffff
+            && fminm_h(one, two) == one
+            && fmaxm_h(one, two) == two
+            && fround_h(0x3e00) == two
+            && froundnx_h(0x3e00) == two
+            && fleq_h(one, two)
+            && fltq_h(one, two)
+            && fcvtmod_w_h(0x3e00) == 1
     }
 }

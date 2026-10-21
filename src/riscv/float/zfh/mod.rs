@@ -199,3 +199,52 @@ convert!(
     i16,
     u16
 );
+
+unsafe extern "C" {
+    fn rust_isa_riscv_zfh_fminm(a: u16, b: u16) -> u16;
+    fn rust_isa_riscv_zfh_fmaxm(a: u16, b: u16) -> u16;
+    fn rust_isa_riscv_zfh_fround(a: u16) -> u16;
+    fn rust_isa_riscv_zfh_froundnx(a: u16) -> u16;
+    fn rust_isa_riscv_zfh_fleq(a: u16, b: u16) -> u32;
+    fn rust_isa_riscv_zfh_fltq(a: u16, b: u16) -> u32;
+    fn rust_isa_riscv_zfh_fcvtmod_w_h(a: u16) -> i32;
+}
+
+binary!(
+    /// `fminm.h`.
+    fminm_h,
+    rust_isa_riscv_zfh_fminm
+);
+binary!(
+    /// `fmaxm.h`.
+    fmaxm_h,
+    rust_isa_riscv_zfh_fmaxm
+);
+compare!(
+    /// `fleq.h`.
+    fleq_h,
+    rust_isa_riscv_zfh_fleq
+);
+compare!(
+    /// `fltq.h`.
+    fltq_h,
+    rust_isa_riscv_zfh_fltq
+);
+
+/// `fround.h`.
+#[inline]
+pub unsafe fn fround_h(a: u16) -> u16 {
+    unsafe { rust_isa_riscv_zfh_fround(a) }
+}
+
+/// `froundnx.h`.
+#[inline]
+pub unsafe fn froundnx_h(a: u16) -> u16 {
+    unsafe { rust_isa_riscv_zfh_froundnx(a) }
+}
+
+/// `fcvtmod.w.h`.
+#[inline]
+pub unsafe fn fcvtmod_w_h(a: u16) -> i32 {
+    unsafe { rust_isa_riscv_zfh_fcvtmod_w_h(a) }
+}
