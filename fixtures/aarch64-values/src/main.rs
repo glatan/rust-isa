@@ -1135,6 +1135,22 @@ unsafe fn sve_ops() -> bool {
     if od != [2.0, -1.0, 3.0] {
         return false;
     }
+    unsafe { sve::trunc_f32(&[1.9, -1.9, 2.1], &mut out[..3]) };
+    if out[..3] != [1.0, -1.0, 2.0] {
+        return false;
+    }
+    unsafe { sve::rint_f32(&[1.5, 2.5, -1.5], &mut out[..3]) };
+    if out[..3] != [2.0, 2.0, -2.0] {
+        return false;
+    }
+    unsafe { sve::trunc_f64(&[1.9, -1.9, 2.1], &mut od) };
+    if od != [1.0, -1.0, 2.0] {
+        return false;
+    }
+    unsafe { sve::rint_f64(&[1.5, 2.5, -1.5], &mut od) };
+    if od != [2.0, 2.0, -2.0] {
+        return false;
+    }
     unsafe { sve::mul_f32(&a, &b, &mut out) };
     if out != [10.0, 40.0, 90.0, 160.0, 250.0, 360.0, 490.0] {
         return false;
