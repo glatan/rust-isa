@@ -8,7 +8,10 @@ use rust_isa::s390x::simd::vector::{
     mul_i16, mul_i32, or, permute, splat_i32, sub_i8, sub_i16, sub_i32, sub_i64, v128_load,
     v128_store, xor,
 };
-use rust_isa::s390x::simd::vector_enhancements::{cntlz_i32, fma, popcnt_i8, popcnt_i32};
+use rust_isa::s390x::simd::vector_enhancements::{
+    cntlz_i32, fma, popcnt_i8, popcnt_i32, vclz, vctz, vfa, vfce, vfch, vfche, vfd, vfm, vfma,
+    vfms, vfnma, vfnms, vfs, vfsq, vpopct,
+};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {
@@ -85,7 +88,26 @@ fn enhancement_ops() -> bool {
         let acc = f32x4([1.0; 4]);
         let a = f32x4([2.0; 4]);
         let b = f32x4([3.0; 4]);
-        f32_lanes(fma(acc, a, b)) == [7.0; 4]
+        if f32_lanes(fma(acc, a, b)) != [7.0; 4]
+            || f32_lanes(vfa(a, b)) != [5.0; 4]
+            || f32_lanes(vfs(b, a)) != [1.0; 4]
+            || f32_lanes(vfm(a, b)) != [6.0; 4]
+            || f32_lanes(vfd(b, a)) != [1.5; 4]
+            || f32_lanes(vfma(acc, a, b)) != [7.0; 4]
+            || vfms(acc, a, b).to_bytes() == [0; 16]
+            || vfnma(acc, a, b).to_bytes() == [0; 16]
+            || vfnms(acc, a, b).to_bytes() == [0; 16]
+            || f32_lanes(vfsq(f32x4([4.0; 4]))) != [2.0; 4]
+            || vfce(a, a).to_bytes() != [0xff; 16]
+            || vfch(b, a).to_bytes() != [0xff; 16]
+            || vfche(a, a).to_bytes() != [0xff; 16]
+            || vclz(V128::from_bytes([1; 16])).to_bytes() != [7; 16]
+            || vctz(V128::from_bytes([2; 16])).to_bytes() != [1; 16]
+            || vpopct(V128::from_bytes([0xff; 16])).to_bytes() != [8; 16]
+        {
+            return false;
+        }
+        true
     }
 }
 
