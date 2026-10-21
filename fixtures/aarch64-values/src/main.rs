@@ -14,11 +14,13 @@ use rust_isa::aarch64::simd::fhm::fmla_f16;
 use rust_isa::aarch64::simd::fp16::{fadd_f16, fmul_f16};
 use rust_isa::aarch64::simd::i8mm::{smmla, usmmla};
 use rust_isa::aarch64::simd::neon::{
-    V128, abs_i32, add, add_f64, add_i8, add_i16, add_i32, add_i64, and, bic, cmpeq_i8, cmpeq_i16,
-    cmpeq_i32, cmpgt_i8, cmpgt_i16, cmpgt_i32, eor, extract_i32, fabs, fadd, fdiv, fmax, fmin,
-    fmul, fneg, fsqrt, fsub, max_i8, max_i16, max_i32, min_i8, min_i16, min_i32, mul, mul_f64,
-    mul_i8, mul_i16, mul_i32, neg_i32, not, orn, orr, replace_i32, sar_i8, sar_i16, sar_i32,
-    shl_i32, shr_i16, splat_i32, sub_i8, sub_i16, sub_i32, sub_i64, tbl, trn1, uzp1, v128_load,
+    V128, abs_i32, add, add_f64, add_i8, add_i16, add_i32, add_i64, addp_s8, addp_s16, addp_s32,
+    addv_s8, addv_s16, addv_s32, and, bic, cmpeq_i8, cmpeq_i16, cmpeq_i32, cmpgt_i8, cmpgt_i16,
+    cmpgt_i32, eor, extract_i32, fabs, fadd, fdiv, fmax, fmin, fmul, fneg, fsqrt, fsub, max_i8,
+    max_i16, max_i32, min_i8, min_i16, min_i32, mul, mul_f64, mul_i8, mul_i16, mul_i32, neg_i32,
+    not, orn, orr, replace_i32, sar_i8, sar_i16, sar_i32, shl_i32, shr_i16, smaxv_s8, smaxv_s16,
+    smaxv_s32, sminv_s8, sminv_s16, sminv_s32, splat_i32, sub_i8, sub_i16, sub_i32, sub_i64, tbl,
+    trn1, umaxv_u8, umaxv_u16, umaxv_u32, uminv_u8, uminv_u16, uminv_u32, uzp1, v128_load,
     v128_store, zip1,
 };
 use rust_isa::aarch64::simd::sve;
@@ -330,6 +332,41 @@ fn integer_ops() -> bool {
         || cmpgt_i8(V128::from_bytes([2; 16]), V128::from_bytes([1; 16])).to_bytes() != [0xff; 16]
         || cmpgt_i16(i16x8([1; 8]), i16x8([2; 8])).to_bytes() != [0; 16]
         || cmpgt_i32(i32x4([2; 4]), i32x4([1; 4])).to_bytes() != [0xff; 16]
+    {
+        return false;
+    }
+    if addp_s8(
+        V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]),
+        V128::from_bytes([0; 16]),
+    )
+    .to_bytes()
+        != [3, 7, 11, 15, 19, 23, 27, 31, 0, 0, 0, 0, 0, 0, 0, 0]
+        || i16_lanes(addp_s16(i16x8([1, 2, 3, 4, 5, 6, 7, 8]), i16x8([0; 8])))
+            != [3, 7, 11, 15, 0, 0, 0, 0]
+        || lanes(addp_s32(i32x4([1, 2, 3, 4]), i32x4([0; 4]))) != [3, 7, 0, 0]
+        || addv_s8(V128::from_bytes([1; 16])) != 16
+        || addv_s16(i16x8([1; 8])) != 8
+        || addv_s32(i32x4([1; 4])) != 4
+        || smaxv_s8(V128::from_bytes([
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        ])) != 16
+        || sminv_s8(V128::from_bytes([
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        ])) != 1
+        || smaxv_s16(i16x8([1, 2, 3, 4, 5, 6, 7, 8])) != 8
+        || sminv_s16(i16x8([1, 2, 3, 4, 5, 6, 7, 8])) != 1
+        || smaxv_s32(i32x4([1, 2, 3, 4])) != 4
+        || sminv_s32(i32x4([1, 2, 3, 4])) != 1
+        || umaxv_u8(V128::from_bytes([
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        ])) != 16
+        || uminv_u8(V128::from_bytes([
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        ])) != 1
+        || umaxv_u16(i16x8([1, 2, 3, 4, 5, 6, 7, 8])) != 8
+        || uminv_u16(i16x8([1, 2, 3, 4, 5, 6, 7, 8])) != 1
+        || umaxv_u32(i32x4([1, 2, 3, 4])) != 4
+        || uminv_u32(i32x4([1, 2, 3, 4])) != 1
     {
         return false;
     }
