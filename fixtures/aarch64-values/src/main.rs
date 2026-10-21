@@ -15,15 +15,16 @@ use rust_isa::aarch64::simd::fp16::{fadd_f16, fmul_f16};
 use rust_isa::aarch64::simd::i8mm::{smmla, usmmla};
 use rust_isa::aarch64::simd::neon::{
     V128, abs_i32, add, add_f64, add_i16, add_i32, add_i64, add_i8, and, bic, bif, bit, bsl,
-    cls_i16, cls_i32, cls_i8, clz_i16, clz_i32, clz_i8, cmpeq_i16, cmpeq_i32, cmpeq_i64, cmpeq_i8,
-    cmpgt_i16, cmpgt_i32, cmpgt_i64, cmpgt_i8, cnt_i8, eor, extract_i32, fabs, fadd, fdiv, fmax,
-    fmin, fmul, fneg, fsqrt, fsub, max_i16, max_i32, max_i8, min_i16, min_i32, min_i8, mul,
-    mul_f64, mul_i16, mul_i32, mul_i8, neg_i32, not, orn, orr, rbit, replace_i32, rev16, rev32,
-    rev64, saddl_s16, saddl_s32, saddl_s8, saddw_s16, saddw_s32, saddw_s8, sar_i16, sar_i32,
-    sar_i8, shl_i32, shr_i16, splat_i32, ssubl_s16, ssubl_s32, ssubl_s8, ssubw_s16, ssubw_s32,
-    ssubw_s8, sub_i16, sub_i32, sub_i64, sub_i8, tbl, trn1, uaddl_u16, uaddl_u32, uaddl_u8,
-    uaddw_u16, uaddw_u32, uaddw_u8, usubl_u16, usubl_u32, usubl_u8, usubw_u16, usubw_u32, usubw_u8,
-    uzp1, v128_load, v128_store, zip1,
+    cls_i16, cls_i32, cls_i8, clz_i16, clz_i32, clz_i8, cmge_i16, cmge_i32, cmge_i8, cmle_i16,
+    cmle_i32, cmle_i8, cmlt_i16, cmlt_i32, cmlt_i8, cmpeq_i16, cmpeq_i32, cmpeq_i64, cmpeq_i8,
+    cmpgt_i16, cmpgt_i32, cmpgt_i64, cmpgt_i8, cmtst_i16, cmtst_i32, cmtst_i8, cnt_i8, eor,
+    extract_i32, fabs, fadd, fdiv, fmax, fmin, fmul, fneg, fsqrt, fsub, max_i16, max_i32, max_i8,
+    min_i16, min_i32, min_i8, mul, mul_f64, mul_i16, mul_i32, mul_i8, neg_i32, not, orn, orr, rbit,
+    replace_i32, rev16, rev32, rev64, saddl_s16, saddl_s32, saddl_s8, saddw_s16, saddw_s32,
+    saddw_s8, sar_i16, sar_i32, sar_i8, shl_i32, shr_i16, splat_i32, ssubl_s16, ssubl_s32,
+    ssubl_s8, ssubw_s16, ssubw_s32, ssubw_s8, sub_i16, sub_i32, sub_i64, sub_i8, tbl, trn1,
+    uaddl_u16, uaddl_u32, uaddl_u8, uaddw_u16, uaddw_u32, uaddw_u8, usubl_u16, usubl_u32, usubl_u8,
+    usubw_u16, usubw_u32, usubw_u8, uzp1, v128_load, v128_store, zip1,
 };
 use rust_isa::aarch64::simd::sve;
 
@@ -435,6 +436,26 @@ fn integer_ops() -> bool {
         || !i64_ok(uaddw_u32(i64x2([1, 2]), i32x4([10, 20, 30, 40])), [11, 22])
         || !i64_ok(ssubw_s32(i64x2([100, 200]), i32x4([1, 2, 3, 4])), [99, 198])
         || !i64_ok(usubw_u32(i64x2([100, 200]), i32x4([1, 2, 3, 4])), [99, 198])
+
+    {
+        return false;
+    }
+    if cmge_i8(V128::from_bytes([2; 16]), V128::from_bytes([1; 16])).to_bytes() != [0xff; 16]
+        || cmge_i8(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [0; 16]
+        || cmge_i16(i16x8([2; 8]), i16x8([1; 8])).to_bytes() != [0xff; 16]
+        || cmge_i32(i32x4([2; 4]), i32x4([1; 4])).to_bytes() != [0xff; 16]
+        || cmle_i8(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [0xff; 16]
+        || cmle_i16(i16x8([1; 8]), i16x8([2; 8])).to_bytes() != [0xff; 16]
+        || cmle_i32(i32x4([1; 4]), i32x4([2; 4])).to_bytes() != [0xff; 16]
+        || cmlt_i8(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [0xff; 16]
+        || cmlt_i16(i16x8([1; 8]), i16x8([2; 8])).to_bytes() != [0xff; 16]
+        || cmlt_i32(i32x4([1; 4]), i32x4([2; 4])).to_bytes() != [0xff; 16]
+        || cmtst_i8(V128::from_bytes([0xff; 16]), V128::from_bytes([1; 16])).to_bytes()
+            != [0xff; 16]
+        || cmtst_i8(V128::from_bytes([0x0f; 16]), V128::from_bytes([0xf0; 16])).to_bytes()
+            != [0; 16]
+        || cmtst_i16(i16x8([1; 8]), i16x8([3; 8])).to_bytes() != [0xff; 16]
+        || cmtst_i32(i32x4([1; 4]), i32x4([3; 4])).to_bytes() != [0xff; 16]
     {
         return false;
     }
