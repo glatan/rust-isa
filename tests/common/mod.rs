@@ -14,11 +14,13 @@ pub fn check_x86_symbols(module: &str, c_file: &str, prefix: &str) {
 }
 
 pub fn check_symbols(root: &Path, c_file: &str, prefix: &str) {
+    let c_path = root.join(c_file);
+    assert!(c_path.is_file(), "missing C source {}", c_path.display());
     let mut rust_symbols = BTreeSet::new();
     for path in rust_sources(root) {
         rust_symbols.extend(rust_symbols_in(&fs::read_to_string(&path).unwrap(), prefix));
     }
-    let c_symbols = c_symbols_in(&fs::read_to_string(root.join(c_file)).unwrap(), prefix);
+    let c_symbols = c_symbols_in(&fs::read_to_string(c_path).unwrap(), prefix);
     assert_eq!(rust_symbols, c_symbols, "{}", root.display());
     assert!(!rust_symbols.is_empty(), "{}", root.display());
 }

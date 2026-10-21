@@ -14,8 +14,8 @@
 | `fp16`     | SIMD   | 不安定 | 一部   |
 | `d32`      | SIMD   | 不安定 | 対象外 |
 | `fpregs`   | SIMD   | 不安定 | 対象外 |
-| `mve`      | SIMD   | 不安定 | 対象外 |
-| `mve.fp`   | SIMD   | 不安定 | 対象外 |
+| `mve`      | SIMD   | 不安定 | 一部   |
+| `mve.fp`   | SIMD   | 不安定 | 一部   |
 | `dotprod`  | SIMD   | 不安定 | 一部   |
 | `i8mm`     | SIMD   | 不安定 | 一部   |
 | `aes`      | 暗号   | 不安定 | 一部   |
@@ -35,3 +35,5 @@
 
 - `-C target-feature=+neon` は警告を出し、`neon` の cfg は立たなかった。
 - `-mfpu=neon -mfloat-abi=hard` の C は `vadd.i32 q0` を出した。
+- `-march=armv8.1-m.main+mve` の C は MVE の `vadd.i8 q0` を出し、`armv7-unknown-linux-gnueabihf` の Rust とリンクできた。
+- QEMU の `-cpu cortex-m55` は MVE を実行できる。`-cpu max` は MVE を実行できない。

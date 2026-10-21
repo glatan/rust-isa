@@ -6,6 +6,9 @@ edition = "2024"
 [dependencies]
 rust-isa = { path = "../.." }
 
+[features]
+mve = []
+
 [profile.release]
 panic = "abort"
 lto = "thin"

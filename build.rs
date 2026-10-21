@@ -92,6 +92,8 @@ fn main() {
     let arm_dotprod_c = manifest.join("src/arm/simd/dotprod/dotprod.c");
     let arm_fp16_c = manifest.join("src/arm/simd/fp16/fp16.c");
     let arm_i8mm_c = manifest.join("src/arm/simd/i8mm/i8mm.c");
+    let arm_mve_c = manifest.join("src/arm/simd/mve/mve.c");
+    let arm_mve_fp_c = manifest.join("src/arm/simd/mve_fp/mve_fp.c");
     let arm_aes_c = manifest.join("src/arm/crypto/aes/aes.c");
     let arm_sha2_c = manifest.join("src/arm/crypto/sha2/sha2.c");
     let arm_crc_c = manifest.join("src/arm/crypto/crc/crc.c");
@@ -192,6 +194,8 @@ fn main() {
         &arm_dotprod_c,
         &arm_fp16_c,
         &arm_i8mm_c,
+        &arm_mve_c,
+        &arm_mve_fp_c,
         &arm_aes_c,
         &arm_sha2_c,
         &arm_crc_c,
@@ -311,6 +315,26 @@ fn main() {
                     "-mthumb",
                     "-march=armv8.6-a+i8mm",
                     "-mfpu=neon",
+                    "-mfloat-abi=hard",
+                ][..],
+            ),
+            (
+                &arm_mve_c,
+                "rust_isa_arm_mve",
+                &[
+                    "-mthumb",
+                    "-march=armv8.1-m.main+mve",
+                    "-mfpu=fp-armv8",
+                    "-mfloat-abi=hard",
+                ][..],
+            ),
+            (
+                &arm_mve_fp_c,
+                "rust_isa_arm_mve_fp",
+                &[
+                    "-mthumb",
+                    "-march=armv8.1-m.main+mve.fp+fp.dp",
+                    "-mfpu=fp-armv8",
                     "-mfloat-abi=hard",
                 ][..],
             ),
