@@ -335,3 +335,11 @@ pub fn vabs_d(a: V128) -> V128 {
     }
     V128::from_bytes(o)
 }
+
+/// `vneg.b`.
+#[inline(always)]
+pub fn vneg_b(a: V128) -> V128 {
+    V128::from_bytes(core::array::from_fn(|i| {
+        (a.to_bytes()[i] as i8).wrapping_neg() as u8
+    }))
+}
