@@ -280,3 +280,79 @@ pub unsafe fn xvsldoi<const IMM: u8>(a: V128, b: V128) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_vsx_xscvdpsp(a: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xscvdpspn(a: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xscvspdp(a: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xscvspdpn(a: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvcvsxdsp(a: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvcvuxdsp(a: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvcvsxwsp(a: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvcvuxwsp(a: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvcvdpsxds(a: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvcvdpsxws(a: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvcvdpuxds(a: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvcvdpuxws(a: *const u8, out: *mut u8);
+}
+
+vun!(
+    /// `xscvdpsp`.
+    xscvdpsp,
+    rust_isa_vsx_xscvdpsp
+);
+vun!(
+    /// `xscvdpspn`.
+    xscvdpspn,
+    rust_isa_vsx_xscvdpspn
+);
+vun!(
+    /// `xscvspdp`.
+    xscvspdp,
+    rust_isa_vsx_xscvspdp
+);
+vun!(
+    /// `xscvspdpn`.
+    xscvspdpn,
+    rust_isa_vsx_xscvspdpn
+);
+vun!(
+    /// `xvcvsxdsp`.
+    xvcvsxdsp,
+    rust_isa_vsx_xvcvsxdsp
+);
+vun!(
+    /// `xvcvuxdsp`.
+    xvcvuxdsp,
+    rust_isa_vsx_xvcvuxdsp
+);
+vun!(
+    /// `xvcvsxwsp`.
+    xvcvsxwsp,
+    rust_isa_vsx_xvcvsxwsp
+);
+vun!(
+    /// `xvcvuxwsp`.
+    xvcvuxwsp,
+    rust_isa_vsx_xvcvuxwsp
+);
+vun!(
+    /// `xvcvdpsxds`.
+    xvcvdpsxds,
+    rust_isa_vsx_xvcvdpsxds
+);
+vun!(
+    /// `xvcvdpsxws`.
+    xvcvdpsxws,
+    rust_isa_vsx_xvcvdpsxws
+);
+vun!(
+    /// `xvcvdpuxds`.
+    xvcvdpuxds,
+    rust_isa_vsx_xvcvdpuxds
+);
+vun!(
+    /// `xvcvdpuxws`.
+    xvcvdpuxws,
+    rust_isa_vsx_xvcvdpuxws
+);

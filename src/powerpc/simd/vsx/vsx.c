@@ -161,3 +161,69 @@ void rust_isa_vsx_xvsldoi(const uint8_t *a, const uint8_t *b, uint32_t imm, uint
     }
     *(v16u8 *)(void *)out = r;
 }
+
+#define VSX_LOAD(T, p) ({ T v; __builtin_memcpy(&v, (p), sizeof(T)); v; })
+#define VSX_STORE(T, p, v) do { T t = (v); __builtin_memcpy((p), &t, sizeof(T)); } while (0)
+
+__attribute__((always_inline))
+void rust_isa_vsx_xscvdpsp(const uint8_t *a, uint8_t *out) {
+    VSX_STORE(float, out, (float)VSX_LOAD(double, a));
+}
+__attribute__((always_inline))
+void rust_isa_vsx_xscvdpspn(const uint8_t *a, uint8_t *out) {
+    VSX_STORE(float, out, (float)VSX_LOAD(double, a));
+}
+__attribute__((always_inline))
+void rust_isa_vsx_xscvspdp(const uint8_t *a, uint8_t *out) {
+    VSX_STORE(double, out, (double)VSX_LOAD(float, a));
+}
+__attribute__((always_inline))
+void rust_isa_vsx_xscvspdpn(const uint8_t *a, uint8_t *out) {
+    VSX_STORE(double, out, (double)VSX_LOAD(float, a));
+}
+__attribute__((always_inline))
+void rust_isa_vsx_xvcvsxdsp(const uint8_t *a, uint8_t *out) {
+    int64_t x0 = VSX_LOAD(int64_t, a);
+    int64_t x1 = VSX_LOAD(int64_t, (const uint8_t *)a + 8);
+    VSX_STORE(float, out, (float)x0);
+    VSX_STORE(float, (uint8_t *)out + 4, (float)x1);
+}
+__attribute__((always_inline))
+void rust_isa_vsx_xvcvuxdsp(const uint8_t *a, uint8_t *out) {
+    uint64_t x0 = VSX_LOAD(uint64_t, a);
+    uint64_t x1 = VSX_LOAD(uint64_t, (const uint8_t *)a + 8);
+    VSX_STORE(float, out, (float)x0);
+    VSX_STORE(float, (uint8_t *)out + 4, (float)x1);
+}
+__attribute__((always_inline))
+void rust_isa_vsx_xvcvsxwsp(const uint8_t *a, uint8_t *out) {
+    for (int i = 0; i < 4; i++) {
+        VSX_STORE(float, (uint8_t *)out + i * 4, (float)VSX_LOAD(int32_t, (const uint8_t *)a + i * 4));
+    }
+}
+__attribute__((always_inline))
+void rust_isa_vsx_xvcvuxwsp(const uint8_t *a, uint8_t *out) {
+    for (int i = 0; i < 4; i++) {
+        VSX_STORE(float, (uint8_t *)out + i * 4, (float)VSX_LOAD(uint32_t, (const uint8_t *)a + i * 4));
+    }
+}
+__attribute__((always_inline))
+void rust_isa_vsx_xvcvdpsxds(const uint8_t *a, uint8_t *out) {
+    VSX_STORE(int64_t, out, (int64_t)VSX_LOAD(double, a));
+    VSX_STORE(int64_t, (uint8_t *)out + 8, (int64_t)VSX_LOAD(double, (const uint8_t *)a + 8));
+}
+__attribute__((always_inline))
+void rust_isa_vsx_xvcvdpsxws(const uint8_t *a, uint8_t *out) {
+    VSX_STORE(int32_t, out, (int32_t)VSX_LOAD(double, a));
+    VSX_STORE(int32_t, (uint8_t *)out + 4, (int32_t)VSX_LOAD(double, (const uint8_t *)a + 8));
+}
+__attribute__((always_inline))
+void rust_isa_vsx_xvcvdpuxds(const uint8_t *a, uint8_t *out) {
+    VSX_STORE(uint64_t, out, (uint64_t)VSX_LOAD(double, a));
+    VSX_STORE(uint64_t, (uint8_t *)out + 8, (uint64_t)VSX_LOAD(double, (const uint8_t *)a + 8));
+}
+__attribute__((always_inline))
+void rust_isa_vsx_xvcvdpuxws(const uint8_t *a, uint8_t *out) {
+    VSX_STORE(uint32_t, out, (uint32_t)VSX_LOAD(double, a));
+    VSX_STORE(uint32_t, (uint8_t *)out + 4, (uint32_t)VSX_LOAD(double, (const uint8_t *)a + 8));
+}
