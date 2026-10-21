@@ -438,3 +438,33 @@ __attribute__((always_inline))
 void rust_isa_altivec_vupk(const uint8_t *a, uint8_t *out) {
     *(v4i32 *)(void *)out = vec_unpackh(*(const av8i16 *)(const void *)a);
 }
+
+__attribute__((always_inline))
+void rust_isa_altivec_lvebx(const uint8_t *p, uint32_t index, uint8_t *out) {
+    *(av16u8 *)(void *)out = vec_lde((long)index, p);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_lvehx(const uint8_t *p, uint32_t index, uint8_t *out) {
+    *(av8u16 *)(void *)out = vec_lde((long)index, (const unsigned short *)(const void *)p);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_lvewx(const uint8_t *p, uint32_t index, uint8_t *out) {
+    *(av4u32 *)(void *)out = vec_lde((long)index, (const unsigned int *)(const void *)p);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_stvebx(uint8_t *p, uint32_t index, const uint8_t *a) {
+    vec_ste(*(const av16u8 *)(const void *)a, (long)index, (unsigned char *)(void *)p);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_stvehx(uint8_t *p, uint32_t index, const uint8_t *a) {
+    vec_ste(*(const av8u16 *)(const void *)a, (long)index, (unsigned short *)(void *)p);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_stvewx(uint8_t *p, uint32_t index, const uint8_t *a) {
+    vec_ste(*(const av4u32 *)(const void *)a, (long)index, (unsigned int *)(void *)p);
+}
