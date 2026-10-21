@@ -120,8 +120,7 @@ pub unsafe fn xvi4ger8(_acc: &mut MmaAccumulator, a: &[u8], b: &[u8]) { /* ... *
 - SVE のスライス API: 実装済み。`add` / `mul` の f32 / f64 / i32。QEMU-AArch64 で
   値テストを実行する。C のループは `#[target_feature(enable = "sve")]` の
   カーネルへインラインされる。
-- RVV のスライス API: 実装済み。`add` / `mul` の f32 / i32。QEMU-RISC-V で
-  値テストを実行する。VL は C の `vsetvl` が決める。
+- RVV のスライス API: 実装済み。`add` / `mul` / `sub` / `div` / `min` / `max`、比較、load / store の f32 / i32。QEMU-RISC-V で値テストを実行する。VL は C の `vsetvl` が決める。
 - SME: `SmeGuard` とストリーミングの `add` / `mul` (f32) を実装した。ZA は未実装。 no_std の fixture は Arm SME ABI ランタイムの `__arm_get_current_vg` をリンク
   しないため、SME の値テストはまだない。
 - AMX: `TileConfig`、`AmxGuard`、`tilezero` を実装した。タイル load / store と matrix multiply は未実装。OS のタイル状態の許可が必要なため、値テストはまだない。
