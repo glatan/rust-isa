@@ -6,7 +6,8 @@ use core::panic::PanicInfo;
 use rust_isa::s390x::simd::vector::{
     V128, add, add_i8, add_i16, add_i64, and, cmpeq_i32, cmpgt_i32, fadd, fdiv, fmul, fsub, mul,
     mul_i16, mul_i32, or, permute, splat_i32, sub_i8, sub_i16, sub_i32, sub_i64, v128_load,
-    v128_store, xor,
+    v128_store, vab, vaf, vag, vah, vavg, vavgl, vceq, vch, vcl, vmax, vmin, vsb, vsel, vsf, vsg,
+    vsh, vsl, vsr, xor,
 };
 use rust_isa::s390x::simd::vector_enhancements::{
     cntlz_i32, fma, popcnt_i8, popcnt_i32, vclz, vctz, vfa, vfce, vfch, vfche, vfd, vfm, vfma,
@@ -70,6 +71,9 @@ fn run() -> u32 {
     }
     if !enhancement_ops() {
         return 6;
+    }
+    if !vector_more_ops() {
+        return 7;
     }
     0
 }
@@ -246,5 +250,44 @@ fn integer() -> bool {
             && lanes(mul(a, b)) == [10, 40, 90, 160]
             && lanes(kernel_add(&a, &b)) == [21, 42, 63, 84]
             && lanes(kernel_mul(&a, &b)) == [100, 800, 2700, 6400]
+    }
+}
+
+fn vector_more_ops() -> bool {
+    unsafe {
+        vab(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() == [3; 16]
+            && vah(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() == [3; 16]
+            && vaf(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() == [3; 16]
+            && vag(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() == [3; 16]
+            && vsb(V128::from_bytes([3; 16]), V128::from_bytes([2; 16])).to_bytes() == [1; 16]
+            && vsh(V128::from_bytes([3; 16]), V128::from_bytes([2; 16])).to_bytes() == [1; 16]
+            && vsf(V128::from_bytes([3; 16]), V128::from_bytes([2; 16])).to_bytes() == [1; 16]
+            && vsg(V128::from_bytes([3; 16]), V128::from_bytes([2; 16])).to_bytes() == [1; 16]
+            && vmin(i32x4([1; 4]), i32x4([2; 4])).to_bytes() != [0; 16]
+            && vmax(i32x4([1; 4]), i32x4([2; 4])).to_bytes() != [0; 16]
+            && vavg(V128::from_bytes([1; 16]), V128::from_bytes([3; 16])).to_bytes() != [0; 16]
+            && vavgl(V128::from_bytes([1; 16]), V128::from_bytes([3; 16])).to_bytes() != [0; 16]
+            && vceq(i32x4([1; 4]), i32x4([1; 4])).to_bytes() == [0xff; 16]
+            && vch(i32x4([2; 4]), i32x4([1; 4])).to_bytes() == [0xff; 16]
+            && vcl(i32x4([1; 4]), i32x4([2; 4])).to_bytes() == [0xff; 16]
+            && vsel(
+                V128::from_bytes([1; 16]),
+                V128::from_bytes([2; 16]),
+                V128::from_bytes([0xff; 16]),
+            )
+            .to_bytes()
+                == [1; 16]
+            && vsl(
+                V128::from_bytes([1; 16]),
+                V128::from_bytes([1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]),
+            )
+            .to_bytes()
+                != [0; 16]
+            && vsr(
+                V128::from_bytes([2; 16]),
+                V128::from_bytes([1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]),
+            )
+            .to_bytes()
+                != [0; 16]
     }
 }
