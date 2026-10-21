@@ -2,8 +2,21 @@
 
 /// A 128-bit value.
 #[repr(C, align(16))]
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq)]
 pub struct V128([u8; 16]);
+
+impl PartialEq for V128 {
+    fn eq(&self, other: &Self) -> bool {
+        let mut lane = 0;
+        while lane < 16 {
+            if self.0[lane] != other.0[lane] {
+                return false;
+            }
+            lane += 1;
+        }
+        true
+    }
+}
 
 impl V128 {
     /// Keep the 16 bytes unchanged.
