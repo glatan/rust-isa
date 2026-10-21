@@ -303,3 +303,11 @@ pub fn vmul_w(a: V128, b: V128) -> V128 {
 pub fn vneg_w(a: V128) -> V128 {
     vneg(a)
 }
+
+/// `vabs.b`.
+#[inline(always)]
+pub fn vabs_b(a: V128) -> V128 {
+    V128::from_bytes(core::array::from_fn(|i| {
+        (a.to_bytes()[i] as i8).wrapping_abs() as u8
+    }))
+}
