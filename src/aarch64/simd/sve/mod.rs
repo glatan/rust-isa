@@ -31,6 +31,12 @@ unsafe extern "C" {
     fn rust_isa_sve_max_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
     fn rust_isa_sve_min_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
     fn rust_isa_sve_max_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
+    fn rust_isa_sve_abs_f32(a: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_sve_neg_f32(a: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_sve_abs_i32(a: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_sve_neg_i32(a: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_sve_abs_f64(a: *const f64, out: *mut f64, len: usize);
+    fn rust_isa_sve_neg_f64(a: *const f64, out: *mut f64, len: usize);
 }
 
 /// Add two `f32` slices.
@@ -271,5 +277,65 @@ pub unsafe fn max_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     unsafe {
         rust_isa_sve_max_f64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+/// `abs` on `f32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn abs_f32(a: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_abs_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+/// `neg` on `f32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn neg_f32(a: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_neg_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+/// `abs` on `i32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn abs_i32(a: &[i32], out: &mut [i32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_abs_i32(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+/// `neg` on `i32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn neg_i32(a: &[i32], out: &mut [i32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_neg_i32(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+/// `abs` on `f64` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn abs_f64(a: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_abs_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+/// `neg` on `f64` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn neg_f64(a: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_neg_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
     }
 }

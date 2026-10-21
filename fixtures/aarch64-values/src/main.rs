@@ -1044,6 +1044,31 @@ unsafe fn sve_ops() -> bool {
     if od != [10.0, 20.0, 30.0] {
         return false;
     }
+    let neg = [-1.0f32, -2.0, 3.0, -4.0, 5.0, -6.0, 7.0];
+    unsafe { sve::abs_f32(&neg, &mut out) };
+    if out != [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0] {
+        return false;
+    }
+    unsafe { sve::neg_f32(&a, &mut out) };
+    if out != [-1.0, -2.0, -3.0, -4.0, -5.0, -6.0, -7.0] {
+        return false;
+    }
+    unsafe { sve::abs_i32(&[-1, -2, -3, -4, -5], &mut oi) };
+    if oi != [1, 2, 3, 4, 5] {
+        return false;
+    }
+    unsafe { sve::neg_i32(&ai, &mut oi) };
+    if oi != [-1, -2, -3, -4, -5] {
+        return false;
+    }
+    unsafe { sve::abs_f64(&[-1.0, -2.0, -3.0], &mut od) };
+    if od != [1.0, 2.0, 3.0] {
+        return false;
+    }
+    unsafe { sve::neg_f64(&ad, &mut od) };
+    if od != [-1.0, -2.0, -3.0] {
+        return false;
+    }
     unsafe { sve::mul_f32(&a, &b, &mut out) };
     if out != [10.0, 40.0, 90.0, 160.0, 250.0, 360.0, 490.0] {
         return false;
