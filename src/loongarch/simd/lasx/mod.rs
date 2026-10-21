@@ -343,3 +343,10 @@ pub unsafe fn xvneg_d(a: V256) -> V256 {
 pub unsafe fn xvadd_w(a: V256, b: V256) -> V256 {
     unsafe { add(a, b) }
 }
+
+/// `xvsub.w`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvsub_w(a: V256, b: V256) -> V256 {
+    unsafe { sub(a, b) }
+}
