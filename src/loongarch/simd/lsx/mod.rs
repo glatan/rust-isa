@@ -473,3 +473,11 @@ pub fn vslti(a: V128, imm: i32) -> V128 {
     }
     V128::from_bytes(o)
 }
+
+/// `vnor.v`.
+#[inline(always)]
+pub fn vnor(a: V128, b: V128) -> V128 {
+    V128::from_bytes(core::array::from_fn(|i| {
+        !(a.to_bytes()[i] | b.to_bytes()[i])
+    }))
+}
