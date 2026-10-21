@@ -343,3 +343,15 @@ pub fn vneg_b(a: V128) -> V128 {
         (a.to_bytes()[i] as i8).wrapping_neg() as u8
     }))
 }
+
+/// `vneg.h`.
+#[inline(always)]
+pub fn vneg_h(a: V128) -> V128 {
+    let b = a.to_bytes();
+    let mut o = [0u8; 16];
+    for i in 0..8 {
+        let v = i16::from_le_bytes([b[i * 2], b[i * 2 + 1]]);
+        o[i * 2..i * 2 + 2].copy_from_slice(&v.wrapping_neg().to_le_bytes());
+    }
+    V128::from_bytes(o)
+}
