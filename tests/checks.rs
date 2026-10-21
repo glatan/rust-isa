@@ -147,6 +147,8 @@ fn check_native_symbols() {
         ("arm/simd/dotprod", "dotprod.c", "rust_isa_arm_dotprod_"),
         ("arm/simd/fp16", "fp16.c", "rust_isa_arm_fp16_"),
         ("arm/simd/i8mm", "i8mm.c", "rust_isa_arm_i8mm_"),
+        ("arm/simd/mve", "mve.c", "rust_isa_arm_mve_"),
+        ("arm/simd/mve_fp", "mve_fp.c", "rust_isa_arm_mve_fp_"),
         ("arm/crypto/aes", "aes.c", "rust_isa_arm_aes_"),
         ("arm/crypto/sha2", "sha2.c", "rust_isa_arm_sha2_"),
         ("arm/crypto/crc", "crc.c", "rust_isa_arm_crc_"),
