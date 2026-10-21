@@ -2,12 +2,15 @@
 //!
 //! The vector-enhancement facilities are not part of the s390x baseline. Every
 //! operation is `unsafe` and the caller must compile with the corresponding
-//! enhancement enabled. The C file is compiled with `-march=z14`.
+//! enhancement enabled. The C file is compiled with `-march=z14`. The
+//! instructions without a clang intrinsic use `asm!` with the
+//! `vector-enhancements-1` target feature.
 //!
 //! The values are [`V128`]. `cntlz` and `popcnt` operate on the lane type in
 //! the function name. The byte order is big-endian.
 
 use super::vector::V128;
+use core::arch::asm;
 
 unsafe extern "C" {
     fn rust_isa_s390x_enh_cntlz_i32(a: *const u8, out: *mut u8);
@@ -233,3 +236,147 @@ un_enh2!(
     rust_isa_s390x_enh_vpopcntd
 );
 pub use self::{vclzd as vclzg, vctzd as vctzg, vpopcntd as vpopcntg};
+
+/// `vftci` on single-precision lanes.
+///
+/// Test each binary floating-point element against the 12-bit data class
+/// mask `MASK` and set a true lane to all bits one. The condition code is
+/// not returned.
+///
+/// # Safety
+///
+/// The caller must enable the vector-enhancement facility.
+#[target_feature(enable = "vector-enhancements-1")]
+#[inline]
+pub unsafe fn vftci_f32<const MASK: u16>(a: V128) -> V128 {
+    const { assert!(MASK <= 0x0fff, "vftci class mask must be in 0..=4095") };
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vftcisb {out}, {input}, {mask}",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
+            mask = const MASK,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
+
+/// `vfi` on single-precision lanes.
+///
+/// Round each binary floating-point element to an integral
+/// floating-point value using rounding mode `M5`. `M4` must have bits 0-1
+/// clear; bit 2 suppresses the inexact exception. The condition code is
+/// not returned.
+///
+/// # Safety
+///
+/// The caller must enable the vector-enhancement facility.
+#[target_feature(enable = "vector-enhancements-1")]
+#[inline]
+pub unsafe fn vfi_f32<const M4: u8, const M5: u8>(a: V128) -> V128 {
+    const {
+        assert!(M4 <= 0x0f, "vfi M4 must be in 0..=15");
+        assert!(M4 & 0x03 == 0, "vfi M4 bits 0-1 must be zero");
+        assert!(M5 <= 0x0f, "vfi M5 must be in 0..=15");
+    }
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vfisb {out}, {input}, {m4}, {m5}",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
+            m4 = const M4,
+            m5 = const M5,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
+
+/// `vfll` on single-precision lanes.
+///
+/// Convert the even-numbered single-precision elements to
+/// double-precision elements. Element 0 and element 2 become element 0
+/// and element 1 of the result.
+///
+/// # Safety
+///
+/// The caller must enable the vector-enhancement facility.
+#[target_feature(enable = "vector-enhancements-1")]
+#[inline]
+pub unsafe fn vfll(a: V128) -> V128 {
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vflls {out}, {input}",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
+
+/// `vflr`.
+///
+/// Convert the double-precision elements to single-precision elements
+/// using rounding mode `M5`. Element 0 and element 1 become element 0 and
+/// element 2; the other elements are zero. `M4` must have bits 0-1 clear;
+/// bit 2 suppresses the inexact exception. The condition code is not
+/// returned.
+///
+/// # Safety
+///
+/// The caller must enable the vector-enhancement facility.
+#[target_feature(enable = "vector-enhancements-1")]
+#[inline]
+pub unsafe fn vflr<const M4: u8, const M5: u8>(a: V128) -> V128 {
+    const {
+        assert!(M4 <= 0x0f, "vflr M4 must be in 0..=15");
+        assert!(M4 & 0x03 == 0, "vflr M4 bits 0-1 must be zero");
+        assert!(M5 <= 0x0f, "vflr M5 must be in 0..=15");
+    }
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vflrd {out}, {input}, {m4}, {m5}",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
+            m4 = const M4,
+            m5 = const M5,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
+
+/// `vnn`.
+///
+/// Bitwise NAND of `a` and `b`.
+///
+/// # Safety
+///
+/// The caller must enable the vector-enhancement facility.
+#[target_feature(enable = "vector-enhancements-1")]
+#[inline]
+pub unsafe fn vnn(a: V128, b: V128) -> V128 {
+    let a = u128::from_be_bytes(a.to_bytes());
+    let b = u128::from_be_bytes(b.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vnn {out}, {a}, {b}",
+            out = lateout(vreg) out,
+            a = in(vreg) a,
+            b = in(vreg) b,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
