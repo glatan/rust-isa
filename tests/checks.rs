@@ -3,6 +3,7 @@
 mod common;
 
 use common::*;
+use std::collections::BTreeMap;
 
 const SYMBOL_COUNT: usize = 374;
 
@@ -224,6 +225,40 @@ fn check_rustdoc_is_english() {
                 number + 1
             );
         }
+    }
+}
+
+#[test]
+fn check_all_c_symbols_match() {
+    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("src");
+    let mut by_dir: BTreeMap<PathBuf, Vec<PathBuf>> = BTreeMap::new();
+    for path in files_under(&root) {
+        if path.extension().and_then(|ext| ext.to_str()) != Some("c") {
+            continue;
+        }
+        by_dir
+            .entry(path.parent().unwrap().to_path_buf())
+            .or_default()
+            .push(path);
+    }
+
+    assert!(!by_dir.is_empty(), "no C sources under {}", root.display());
+    for (dir, c_files) in by_dir {
+        let mut rust_symbols = BTreeSet::new();
+        for path in rust_sources(&dir) {
+            rust_symbols.extend(rust_symbols_in(
+                &fs::read_to_string(&path).unwrap(),
+                "rust_isa_",
+            ));
+        }
+        let mut c_symbols = BTreeSet::new();
+        for path in c_files {
+            c_symbols.extend(c_symbols_in(
+                &fs::read_to_string(&path).unwrap(),
+                "rust_isa_",
+            ));
+        }
+        assert_eq!(rust_symbols, c_symbols, "{}", dir.display());
     }
 }
 

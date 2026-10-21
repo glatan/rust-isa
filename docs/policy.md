@@ -9,6 +9,18 @@
 - 公開パスは `{arch}::{family}::{extension}::{instruction}` とする。
 - 命令の動作は各 arch の仕様に従い、rustdoc に英語で書く。
 
+## 網羅の単位
+
+固定長の extension は、命令ごとに API を公開し、arch の表の命令を網羅する。
+
+SVE、RVV、SME、AMX、PowerPC MMA は、固定長の値型と1命令1関数の形に当てはまらない。これらは操作単位で API を公開する。
+
+- SVE と RVV は、スライス API の操作を単位とする。
+- SME、AMX、PowerPC MMA は、guard 型または状態型と、その状態を要求する操作を単位とする。
+- ISA 命令と API の対応表を `docs/<arch>/` に置く。
+- 対応表の各命令は「APIで提供」「別APIでカバー」「対象外」「延期」のいずれかに分類する。
+- 対応表にない命令を残さない。全体の対応表が揃うまで、coverage の blocking 検査を有効にしない。
+
 ## 非目標
 
 - 高水準の SIMD ライブラリにはしない。命令ごとの API だけを置く。
@@ -16,7 +28,8 @@
 - 自動ベクトル化には依存しない。
 - C の ABI や C シンボルを公開 API にしない。
 - `core::arch` の型や intrinsic を再エクスポートしない。
-- 対象とする extension の命令を網羅する。即値や状態の都合で出せない命令は、その理由を arch の表と rustdoc に書く。
+- 固定長 extension の命令を網羅する。即値や状態の都合で出せない命令は、その理由を arch の表と rustdoc に書く。
+- スケーラブル・状態付き extension は、操作単位で網羅する。ISA 命令と API の対応を arch の文書に書く。
 
 ## `core::arch` を使わない
 
@@ -257,5 +270,5 @@ clang 23.1.1 で確認したこと:
 - unstable feature のゼロコストを利用者が設定する方法。
 - Cargo feature による opt-in。
 - 実行時ディスパッチを提供する `std` feature。
-- native の全命令の網羅。未実装命令は arch の表で管理する。
+- native の全命令の網羅。固定長 extension の未実装命令は arch の表で管理し、スケーラブル・状態付き extension は操作単位の対応表で管理する。
 - 追加した命令のゼロコスト確認。確認できるまでは zero-cost を主張しない。

@@ -7,6 +7,7 @@ IMAGE ?= localhost/rust-isa-dev:$(IMAGE_TAG)
 PODMAN ?= podman
 NEXTEST ?= cargo nextest run
 NEXTEST_FLAGS ?= --no-tests=fail
+COVERAGE_ARGS ?= --todo
 
 X86_64_TARGET ?= x86_64-unknown-linux-gnu
 WASIP1_TARGET ?= wasm32-wasip1
@@ -41,11 +42,16 @@ help:
 		'test-powerpc64le             PowerPC の値テスト' \
 		'test-mips64                  MIPS64 の値テスト' \
 		'test-wasip1                  wasm32-wasip1 の nextest と doctest' \
-		'test-wasip1-wide-arithmetic  wide-arithmetic 有効時の nextest と doctest'
+		'test-wasip1-wide-arithmetic  wide-arithmetic 有効時の nextest と doctest' \
+		'coverage                     arch/extension ごとの実装状況を表示する'
 
 .PHONY: image
 image:
 	$(PODMAN) build -t $(IMAGE) -f Containerfile .
+
+.PHONY: coverage
+coverage:
+	$(PODMAN_RUN) python3 tools/coverage.py $(COVERAGE_ARGS)
 
 .PHONY: fmt
 fmt:

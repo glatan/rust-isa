@@ -1,6 +1,6 @@
 # スケーラブルベクタと状態を持つ拡張の設計
 
-この文書は、SVE、RVV、SME、AMX、PowerPC MMA の API 設計である。実装はまだない。
+この文書は、SVE、RVV、SME、AMX、PowerPC MMA の API 設計である。実装状況は末尾に書く。
 
 ## 共通の考え方
 
