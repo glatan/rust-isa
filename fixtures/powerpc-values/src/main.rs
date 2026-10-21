@@ -16,6 +16,9 @@ use rust_isa::powerpc::simd::power8_vector::{
     add_u64, mul_even_u16, mul_u32, sub_u64, vclzd as p8_vclzd, vmaxsd, vmaxud, vminsd, vminud,
     vmuleuw, vmulouw, vpksdss, vpksdus, vpkudum, vpopcntd as p8_vpopcntd, vupkhsw, vupklsw,
 };
+use rust_isa::powerpc::simd::power8_vector::{
+    vaddudm as p8_vaddudm, vmuleuh as p8_vmuleuh, vmuluwm as p8_vmuluwm, vsubudm as p8_vsubudm,
+};
 use rust_isa::powerpc::simd::power9_altivec::vnegw as altivec_vnegw;
 use rust_isa::powerpc::simd::power9_vector::{
     abs_i32 as p9_abs_i32, neg_i32 as p9_neg_i32, vabsd, vabsduw, vctzb, vctzh, vctzlsbb, vctzw,
@@ -304,6 +307,15 @@ fn power8_ops() -> bool {
             || vupklsw(i32x4([1, 2, 3, 4])).to_bytes() == [0; 16]
             || vmuleuw(i32x4([1, 2, 3, 4]), i32x4([1, 2, 3, 4])).to_bytes() == [0; 16]
             || vmulouw(i32x4([1, 2, 3, 4]), i32x4([1, 2, 3, 4])).to_bytes() == [0; 16]
+        {
+            return false;
+        }
+        if p8_vaddudm(a, b) != add_u64(a, b)
+            || p8_vsubudm(b, a) != sub_u64(b, a)
+            || p8_vmuluwm(i32x4([1, 2, 3, 4]), i32x4([5, 6, 7, 8]))
+                != mul_u32(i32x4([1, 2, 3, 4]), i32x4([5, 6, 7, 8]))
+            || p8_vmuleuh(V128::from_bytes([1; 16]), V128::from_bytes([2; 16]))
+                != mul_even_u16(V128::from_bytes([1; 16]), V128::from_bytes([2; 16]))
         {
             return false;
         }
