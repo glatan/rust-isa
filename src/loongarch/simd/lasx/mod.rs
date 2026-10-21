@@ -288,3 +288,16 @@ pub unsafe fn xvabs_h(a: V256) -> V256 {
     }
     V256::from_bytes(o)
 }
+
+/// `xvabs.d`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvabs_d(a: V256) -> V256 {
+    let b = a.to_bytes();
+    let mut o = [0u8; 32];
+    for i in 0..4 {
+        let v = i64::from_le_bytes(b[i * 8..i * 8 + 8].try_into().unwrap());
+        o[i * 8..i * 8 + 8].copy_from_slice(&v.wrapping_abs().to_le_bytes());
+    }
+    V256::from_bytes(o)
+}
