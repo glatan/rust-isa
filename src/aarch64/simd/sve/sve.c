@@ -427,3 +427,22 @@ void rust_isa_sve_mls_f64(const double *a, const double *b, const double *acc, d
         svst1_f64(pg, out + i, svmls_f64_z(pg, vc, va, vb));
     }
 }
+
+void rust_isa_sve_clz_i32(const int32_t *a, int32_t *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svst1_u32(pg, (uint32_t *)(void *)(out + i), svclz_u32_z(pg, svld1_u32(pg, (const uint32_t *)(const void *)(a + i))));
+    }
+}
+void rust_isa_sve_cnt_i32(const int32_t *a, int32_t *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svst1_u32(pg, (uint32_t *)(void *)(out + i), svcnt_u32_z(pg, svld1_u32(pg, (const uint32_t *)(const void *)(a + i))));
+    }
+}
+void rust_isa_sve_not_i32(const int32_t *a, int32_t *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svst1_u32(pg, (uint32_t *)(void *)(out + i), svnot_u32_z(pg, svld1_u32(pg, (const uint32_t *)(const void *)(a + i))));
+    }
+}

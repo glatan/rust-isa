@@ -1187,6 +1187,18 @@ unsafe fn sve_ops() -> bool {
     if od[..2] != [2.0, 5.0] {
         return false;
     }
+    unsafe { sve::clz_i32(&[1, 2, 4], &mut oi[..3]) };
+    if oi[..3] != [31, 30, 29] {
+        return false;
+    }
+    unsafe { sve::cnt_i32(&[0, 1, 3], &mut oi[..3]) };
+    if oi[..3] != [0, 1, 2] {
+        return false;
+    }
+    unsafe { sve::not_i32(&[0, -1], &mut oi[..2]) };
+    if oi[..2] != [-1, 0] {
+        return false;
+    }
     unsafe { sve::mul_f32(&a, &b, &mut out) };
     if out != [10.0, 40.0, 90.0, 160.0, 250.0, 360.0, 490.0] {
         return false;
