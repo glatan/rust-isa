@@ -491,3 +491,46 @@ pub unsafe fn rsqrt_f64(a: &[f64], out: &mut [f64]) {
         rust_isa_sve_rsqrt_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
     }
 }
+
+unsafe extern "C" {
+    fn rust_isa_sve_floor_f32(a: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_sve_ceil_f32(a: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_sve_floor_f64(a: *const f64, out: *mut f64, len: usize);
+    fn rust_isa_sve_ceil_f64(a: *const f64, out: *mut f64, len: usize);
+}
+/// Floor of `f32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn floor_f32(a: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_floor_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+/// Ceiling of `f32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn ceil_f32(a: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_ceil_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+/// Floor of `f64` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn floor_f64(a: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_floor_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+/// Ceiling of `f64` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn ceil_f64(a: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_ceil_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}

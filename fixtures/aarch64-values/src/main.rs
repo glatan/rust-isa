@@ -1119,6 +1119,22 @@ unsafe fn sve_ops() -> bool {
     if od.iter().any(|value| *value == 0.0 || !value.is_finite()) {
         return false;
     }
+    unsafe { sve::floor_f32(&[1.5, -1.5, 2.9], &mut out[..3]) };
+    if out[..3] != [1.0, -2.0, 2.0] {
+        return false;
+    }
+    unsafe { sve::ceil_f32(&[1.5, -1.5, 2.9], &mut out[..3]) };
+    if out[..3] != [2.0, -1.0, 3.0] {
+        return false;
+    }
+    unsafe { sve::floor_f64(&[1.5, -1.5, 2.9], &mut od) };
+    if od != [1.0, -2.0, 2.0] {
+        return false;
+    }
+    unsafe { sve::ceil_f64(&[1.5, -1.5, 2.9], &mut od) };
+    if od != [2.0, -1.0, 3.0] {
+        return false;
+    }
     unsafe { sve::mul_f32(&a, &b, &mut out) };
     if out != [10.0, 40.0, 90.0, 160.0, 250.0, 360.0, 490.0] {
         return false;
