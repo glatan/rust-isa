@@ -515,3 +515,61 @@ void rust_isa_neon_usubw_u32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
     vst1q_u64((uint64_t *)(void *)out, vsubw_u32(vld1q_u64((const uint64_t *)(const void *)a), vld1_u32((const uint32_t *)(const void *)b)));
 }
 
+__attribute__((always_inline))
+void rust_isa_neon_bsl(const uint8_t *mask, const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u8(out, vbslq_u8(vld1q_u8(mask), vld1q_u8(a), vld1q_u8(b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_bit(const uint8_t *a, const uint8_t *b, const uint8_t *mask, uint8_t *out) {
+    vst1q_u8(out, vbslq_u8(vld1q_u8(mask), vld1q_u8(b), vld1q_u8(a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_bif(const uint8_t *a, const uint8_t *b, const uint8_t *mask, uint8_t *out) {
+    vst1q_u8(out, vbslq_u8(vld1q_u8(mask), vld1q_u8(a), vld1q_u8(b)));
+}
+
+#define RUST_ISA_NEON_UNARY(NAME, VLD, TYPE, INTRIN) \
+__attribute__((always_inline)) \
+void rust_isa_neon_##NAME(const uint8_t *a, uint8_t *out) { \
+    vst1q_u8(out, (uint8x16_t)INTRIN(vld1q_##VLD((const TYPE *)(const void *)a))); \
+}
+
+RUST_ISA_NEON_UNARY(cls_i8, s8, int8_t, vclsq_s8)
+RUST_ISA_NEON_UNARY(cls_i16, s16, int16_t, vclsq_s16)
+RUST_ISA_NEON_UNARY(cls_i32, s32, int32_t, vclsq_s32)
+RUST_ISA_NEON_UNARY(clz_i8, s8, int8_t, vclzq_s8)
+RUST_ISA_NEON_UNARY(clz_i16, s16, int16_t, vclzq_s16)
+RUST_ISA_NEON_UNARY(clz_i32, s32, int32_t, vclzq_s32)
+RUST_ISA_NEON_UNARY(cnt_i8, u8, uint8_t, vcntq_u8)
+RUST_ISA_NEON_UNARY(rbit, u8, uint8_t, vrbitq_u8)
+RUST_ISA_NEON_UNARY(rev16, u8, uint8_t, vrev16q_u8)
+RUST_ISA_NEON_UNARY(rev32, u8, uint8_t, vrev32q_u8)
+RUST_ISA_NEON_UNARY(rev64, u8, uint8_t, vrev64q_u8)
+
+__attribute__((always_inline))
+void rust_isa_neon_cmpeq_i64(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u8(out, (uint8x16_t)vceqq_s64(
+        vld1q_s64((const int64_t *)(const void *)a),
+        vld1q_s64((const int64_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_cmpgt_i64(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u8(out, (uint8x16_t)vcgtq_s64(
+        vld1q_s64((const int64_t *)(const void *)a),
+        vld1q_s64((const int64_t *)(const void *)b)));
+}
+
+void rust_isa_neon_cls_i8(const uint8_t *a, uint8_t *out);
+void rust_isa_neon_cls_i16(const uint8_t *a, uint8_t *out);
+void rust_isa_neon_cls_i32(const uint8_t *a, uint8_t *out);
+void rust_isa_neon_clz_i8(const uint8_t *a, uint8_t *out);
+void rust_isa_neon_clz_i16(const uint8_t *a, uint8_t *out);
+void rust_isa_neon_clz_i32(const uint8_t *a, uint8_t *out);
+void rust_isa_neon_cnt_i8(const uint8_t *a, uint8_t *out);
+void rust_isa_neon_rbit(const uint8_t *a, uint8_t *out);
+void rust_isa_neon_rev16(const uint8_t *a, uint8_t *out);
+void rust_isa_neon_rev32(const uint8_t *a, uint8_t *out);
+void rust_isa_neon_rev64(const uint8_t *a, uint8_t *out);

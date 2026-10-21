@@ -14,14 +14,16 @@ use rust_isa::aarch64::simd::fhm::fmla_f16;
 use rust_isa::aarch64::simd::fp16::{fadd_f16, fmul_f16};
 use rust_isa::aarch64::simd::i8mm::{smmla, usmmla};
 use rust_isa::aarch64::simd::neon::{
-    V128, abs_i32, add, add_f64, add_i8, add_i16, add_i32, add_i64, and, bic, cmpeq_i8, cmpeq_i16,
-    cmpeq_i32, cmpgt_i8, cmpgt_i16, cmpgt_i32, eor, extract_i32, fabs, fadd, fdiv, fmax, fmin,
-    fmul, fneg, fsqrt, fsub, max_i8, max_i16, max_i32, min_i8, min_i16, min_i32, mul, mul_f64,
-    mul_i8, mul_i16, mul_i32, neg_i32, not, orn, orr, replace_i32, saddl_s8, saddl_s16, saddl_s32,
-    saddw_s8, saddw_s16, saddw_s32, sar_i8, sar_i16, sar_i32, shl_i32, shr_i16, splat_i32,
-    ssubl_s8, ssubl_s16, ssubl_s32, ssubw_s8, ssubw_s16, ssubw_s32, sub_i8, sub_i16, sub_i32,
-    sub_i64, tbl, trn1, uaddl_u8, uaddl_u16, uaddl_u32, uaddw_u8, uaddw_u16, uaddw_u32, usubl_u8,
-    usubl_u16, usubl_u32, usubw_u8, usubw_u16, usubw_u32, uzp1, v128_load, v128_store, zip1,
+    V128, abs_i32, add, add_f64, add_i16, add_i32, add_i64, add_i8, and, bic, bif, bit, bsl,
+    cls_i16, cls_i32, cls_i8, clz_i16, clz_i32, clz_i8, cmpeq_i16, cmpeq_i32, cmpeq_i64, cmpeq_i8,
+    cmpgt_i16, cmpgt_i32, cmpgt_i64, cmpgt_i8, cnt_i8, eor, extract_i32, fabs, fadd, fdiv, fmax,
+    fmin, fmul, fneg, fsqrt, fsub, max_i16, max_i32, max_i8, min_i16, min_i32, min_i8, mul,
+    mul_f64, mul_i16, mul_i32, mul_i8, neg_i32, not, orn, orr, rbit, replace_i32, rev16, rev32,
+    rev64, saddl_s16, saddl_s32, saddl_s8, saddw_s16, saddw_s32, saddw_s8, sar_i16, sar_i32,
+    sar_i8, shl_i32, shr_i16, splat_i32, ssubl_s16, ssubl_s32, ssubl_s8, ssubw_s16, ssubw_s32,
+    ssubw_s8, sub_i16, sub_i32, sub_i64, sub_i8, tbl, trn1, uaddl_u16, uaddl_u32, uaddl_u8,
+    uaddw_u16, uaddw_u32, uaddw_u8, usubl_u16, usubl_u32, usubl_u8, usubw_u16, usubw_u32, usubw_u8,
+    uzp1, v128_load, v128_store, zip1,
 };
 use rust_isa::aarch64::simd::sve;
 
@@ -124,6 +126,9 @@ fn run() -> u32 {
     }
     if !unsafe { crypto_crc_ops() } {
         return 20;
+    }
+    if !neon_bitwise_ops() {
+        return 21;
     }
     if !unsafe { sve_ops() } {
         return 17;
@@ -654,6 +659,62 @@ unsafe fn crypto_crc_ops() -> bool {
         crc = unsafe { crc32b(crc, *byte) };
     }
     crc == 0x340b_c6d9
+}
+
+fn neon_bitwise_ops() -> bool {
+    let ones = V128::from_bytes([0xff; 16]);
+    let zeros = V128::from_bytes([0; 16]);
+    let a = V128::from_bytes([0xaa; 16]);
+    let b = V128::from_bytes([0x55; 16]);
+    if bsl(ones, a, b) != a || bsl(zeros, a, b) != b {
+        return false;
+    }
+    if bit(zeros, ones, V128::from_bytes([0x0f; 16])) != V128::from_bytes([0x0f; 16]) {
+        return false;
+    }
+    if bif(a, b, V128::from_bytes([0x0f; 16])) != V128::from_bytes([0x5a; 16]) {
+        return false;
+    }
+    if cls_i8(zeros).to_bytes() != [7; 16]
+        || cls_i16(zeros).to_bytes() != [15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0]
+        || cls_i32(zeros).to_bytes() != [31, 0, 0, 0, 31, 0, 0, 0, 31, 0, 0, 0, 31, 0, 0, 0]
+    {
+        return false;
+    }
+    if clz_i8(V128::from_bytes([1; 16])).to_bytes() != [7; 16] {
+        return false;
+    }
+    if cnt_i8(ones).to_bytes() != [8; 16] {
+        return false;
+    }
+    let mut single = [0u8; 16];
+    single[0] = 1;
+    if rbit(V128::from_bytes(single)).to_bytes()[0] != 0x80 {
+        return false;
+    }
+    let source = V128::from_bytes(core::array::from_fn(|index| index as u8));
+    if rev16(source).to_bytes() != [1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14] {
+        return false;
+    }
+    if rev32(source).to_bytes() != [3, 2, 1, 0, 7, 6, 5, 4, 11, 10, 9, 8, 15, 14, 13, 12] {
+        return false;
+    }
+    if rev64(source).to_bytes() != [7, 6, 5, 4, 3, 2, 1, 0, 15, 14, 13, 12, 11, 10, 9, 8] {
+        return false;
+    }
+    if cmpeq_i64(ones, ones) != ones {
+        return false;
+    }
+    let mut low = [0u8; 16];
+    low[0] = 1;
+    if cmpgt_i64(V128::from_bytes(low), zeros)
+        != V128::from_bytes([
+            0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+        ])
+    {
+        return false;
+    }
+    true
 }
 
 #[target_feature(enable = "sve")]
