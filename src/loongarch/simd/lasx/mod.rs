@@ -207,3 +207,62 @@ pub unsafe fn xvadd_d(a: V256, b: V256) -> V256 {
 pub unsafe fn xvsub_d(a: V256, b: V256) -> V256 {
     unsafe { sub_i64(a, b) }
 }
+
+/// `xvadd.b`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvadd_b(a: V256, b: V256) -> V256 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    V256::from_bytes(core::array::from_fn(|i| a[i].wrapping_add(b[i])))
+}
+/// `xvadd.h`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvadd_h(a: V256, b: V256) -> V256 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    let mut out = [0u8; 32];
+    for i in 0..16 {
+        let value = u16::from_le_bytes([a[i * 2], a[i * 2 + 1]])
+            .wrapping_add(u16::from_le_bytes([b[i * 2], b[i * 2 + 1]]));
+        out[i * 2..i * 2 + 2].copy_from_slice(&value.to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+/// `xvsub.b`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvsub_b(a: V256, b: V256) -> V256 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    V256::from_bytes(core::array::from_fn(|i| a[i].wrapping_sub(b[i])))
+}
+/// `xvsub.h`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvsub_h(a: V256, b: V256) -> V256 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    let mut out = [0u8; 32];
+    for i in 0..16 {
+        let value = u16::from_le_bytes([a[i * 2], a[i * 2 + 1]])
+            .wrapping_sub(u16::from_le_bytes([b[i * 2], b[i * 2 + 1]]));
+        out[i * 2..i * 2 + 2].copy_from_slice(&value.to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+/// `xvmul.h`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvmul_h(a: V256, b: V256) -> V256 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    let mut out = [0u8; 32];
+    for i in 0..16 {
+        let value = u16::from_le_bytes([a[i * 2], a[i * 2 + 1]])
+            .wrapping_mul(u16::from_le_bytes([b[i * 2], b[i * 2 + 1]]));
+        out[i * 2..i * 2 + 2].copy_from_slice(&value.to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
