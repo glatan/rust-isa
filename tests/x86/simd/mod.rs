@@ -3,6 +3,7 @@ mod avx2_integer;
 mod avx2_remaining;
 mod avx512;
 mod avx512_extensions;
+mod avx512_full;
 mod avx_compare;
 mod avx_permute;
 mod extensions;
