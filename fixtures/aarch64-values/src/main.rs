@@ -15,11 +15,13 @@ use rust_isa::aarch64::simd::fp16::{fadd_f16, fmul_f16};
 use rust_isa::aarch64::simd::i8mm::{smmla, usmmla};
 use rust_isa::aarch64::simd::neon::{
     V128, abs_i32, add, add_f64, add_i8, add_i16, add_i32, add_i64, and, bic, cmpeq_i8, cmpeq_i16,
-    cmpeq_i32, cmpgt_i8, cmpgt_i16, cmpgt_i32, eor, extract_i32, fabs, fadd, fdiv, fmax, fmin,
-    fmul, fneg, fsqrt, fsub, max_i8, max_i16, max_i32, min_i8, min_i16, min_i32, mul, mul_f64,
-    mul_i8, mul_i16, mul_i32, neg_i32, not, orn, orr, replace_i32, sar_i8, sar_i16, sar_i32,
-    shl_i32, shr_i16, splat_i32, sub_i8, sub_i16, sub_i32, sub_i64, tbl, trn1, uzp1, v128_load,
-    v128_store, zip1,
+    cmpeq_i32, cmpgt_i8, cmpgt_i16, cmpgt_i32, eor, extract_i32, fabd_f32, fabd_f64, fabs, fadd,
+    faddp_f32, faddp_f64, faddv_f32, faddv_f64, fdiv, fmax, fmaxnm_f32, fmaxnm_f64, fmaxnmv_f32,
+    fmaxnmv_f64, fmaxv_f32, fmaxv_f64, fmin, fminnm_f32, fminnm_f64, fminnmv_f32, fminnmv_f64,
+    fminv_f32, fminv_f64, fmla_f32, fmla_f64, fmls_f32, fmls_f64, fmul, fmulx_f32, fmulx_f64, fneg,
+    fsqrt, fsub, max_i8, max_i16, max_i32, min_i8, min_i16, min_i32, mul, mul_f64, mul_i8, mul_i16,
+    mul_i32, neg_i32, not, orn, orr, replace_i32, sar_i8, sar_i16, sar_i32, shl_i32, shr_i16,
+    splat_i32, sub_i8, sub_i16, sub_i32, sub_i64, tbl, trn1, uzp1, v128_load, v128_store, zip1,
 };
 use rust_isa::aarch64::simd::sve;
 
@@ -389,6 +391,51 @@ fn float_ops() -> bool {
     }
     if f64_lanes(add_f64(f64x2([1.0, 2.0]), f64x2([3.0, 4.0]))) != [4.0, 6.0]
         || f64_lanes(mul_f64(f64x2([2.0, 3.0]), f64x2([4.0, 5.0]))) != [8.0, 15.0]
+    {
+        return false;
+    }
+    if f32_lanes(fabd_f32(
+        f32x4([1.0, 2.0, 3.0, 4.0]),
+        f32x4([2.0, 4.0, 6.0, 8.0]),
+    )) != [1.0, 2.0, 3.0, 4.0]
+        || f64_lanes(fabd_f64(f64x2([1.0, 2.0]), f64x2([3.0, 5.0]))) != [2.0, 3.0]
+        || f32_lanes(faddp_f32(
+            f32x4([1.0, 2.0, 3.0, 4.0]),
+            f32x4([5.0, 6.0, 7.0, 8.0]),
+        )) != [3.0, 7.0, 11.0, 15.0]
+        || f64_lanes(faddp_f64(f64x2([1.0, 2.0]), f64x2([3.0, 4.0]))) != [3.0, 7.0]
+        || faddv_f32(f32x4([1.0, 2.0, 3.0, 4.0])) != 10.0
+        || faddv_f64(f64x2([1.0, 2.0])) != 3.0
+        || f32_lanes(fmaxnm_f32(
+            f32x4([1.0, 5.0, 3.0, 4.0]),
+            f32x4([2.0, 4.0, 6.0, 3.0]),
+        )) != [2.0, 5.0, 6.0, 4.0]
+        || f64_lanes(fmaxnm_f64(f64x2([1.0, 5.0]), f64x2([2.0, 4.0]))) != [2.0, 5.0]
+        || f32_lanes(fminnm_f32(
+            f32x4([1.0, 5.0, 3.0, 4.0]),
+            f32x4([2.0, 4.0, 6.0, 3.0]),
+        )) != [1.0, 4.0, 3.0, 3.0]
+        || f64_lanes(fminnm_f64(f64x2([1.0, 5.0]), f64x2([2.0, 4.0]))) != [1.0, 4.0]
+        || fmaxnmv_f32(f32x4([1.0, 4.0, 2.0, 3.0])) != 4.0
+        || fmaxnmv_f64(f64x2([1.0, 4.0])) != 4.0
+        || fmaxv_f32(f32x4([1.0, 4.0, 2.0, 3.0])) != 4.0
+        || fmaxv_f64(f64x2([1.0, 4.0])) != 4.0
+        || fminnmv_f32(f32x4([2.0, 4.0, 1.0, 3.0])) != 1.0
+        || fminnmv_f64(f64x2([2.0, 1.0])) != 1.0
+        || fminv_f32(f32x4([2.0, 4.0, 1.0, 3.0])) != 1.0
+        || fminv_f64(f64x2([2.0, 1.0])) != 1.0
+    {
+        return false;
+    }
+    if f32_lanes(fmla_f32(f32x4([2.0; 4]), f32x4([3.0; 4]), f32x4([1.0; 4]))) != [5.0; 4]
+        || f64_lanes(fmla_f64(f64x2([2.0; 2]), f64x2([3.0; 2]), f64x2([1.0; 2]))) != [5.0; 2]
+        || f32_lanes(fmls_f32(f32x4([2.0; 4]), f32x4([3.0; 4]), f32x4([1.0; 4]))) != [-1.0; 4]
+        || f64_lanes(fmls_f64(f64x2([2.0; 2]), f64x2([3.0; 2]), f64x2([1.0; 2]))) != [-1.0; 2]
+        || f32_lanes(fmulx_f32(
+            f32x4([2.0, 3.0, 4.0, 5.0]),
+            f32x4([6.0, 7.0, 8.0, 9.0]),
+        )) != [12.0, 21.0, 32.0, 45.0]
+        || f64_lanes(fmulx_f64(f64x2([2.0, 3.0]), f64x2([4.0, 5.0]))) != [8.0, 15.0]
     {
         return false;
     }
