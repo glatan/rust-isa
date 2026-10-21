@@ -5,6 +5,7 @@
 
 mod compare;
 mod float;
+mod float_compare;
 mod integer;
 mod lane;
 mod shift;
@@ -13,6 +14,7 @@ mod v128;
 
 pub use compare::*;
 pub use float::*;
+pub use float_compare::*;
 pub use integer::*;
 pub use lane::*;
 pub use shift::*;
