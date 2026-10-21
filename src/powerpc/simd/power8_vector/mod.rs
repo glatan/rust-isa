@@ -155,3 +155,24 @@ un8!(
     vpopcntd,
     rust_isa_power8_vector_vpopcntd
 );
+
+/// `vaddudm`.
+#[inline(always)]
+pub unsafe fn vaddudm(a: V128, b: V128) -> V128 {
+    unsafe { add_u64(a, b) }
+}
+/// `vsubudm`.
+#[inline(always)]
+pub unsafe fn vsubudm(a: V128, b: V128) -> V128 {
+    unsafe { sub_u64(a, b) }
+}
+/// `vmuluwm`.
+#[inline(always)]
+pub unsafe fn vmuluwm(a: V128, b: V128) -> V128 {
+    unsafe { mul_u32(a, b) }
+}
+/// `vmuleuh`.
+#[inline(always)]
+pub unsafe fn vmuleuh(a: V128, b: V128) -> V128 {
+    unsafe { mul_even_u16(a, b) }
+}
