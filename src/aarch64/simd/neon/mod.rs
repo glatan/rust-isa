@@ -5,6 +5,7 @@
 
 mod compare;
 mod compare_ext;
+mod ext;
 mod float;
 mod float_arith;
 mod float_compare;
@@ -14,11 +15,13 @@ mod minmax;
 mod reduce;
 mod shift;
 mod shuffle;
+mod structure;
 mod v128;
 mod widen;
 
 pub use compare::*;
 pub use compare_ext::*;
+pub use ext::*;
 pub use float::*;
 pub use float_arith::*;
 pub use float_compare::*;
@@ -28,6 +31,7 @@ pub use minmax::*;
 pub use reduce::*;
 pub use shift::*;
 pub use shuffle::*;
+pub use structure::*;
 pub use v128::*;
 pub use widen::*;
 
