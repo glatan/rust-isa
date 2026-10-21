@@ -447,7 +447,7 @@ fn main() {
             (
                 &a64_fp16_c,
                 "rust_isa_a64_fp16",
-                &["-march=armv8.2-a+fp16"][..],
+                &["-march=armv8.2-a+fp16+fp16fml"][..],
             ),
             (
                 &a64_bf16_c,

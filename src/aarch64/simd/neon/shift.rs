@@ -6,6 +6,7 @@ unsafe extern "C" {
     fn rust_isa_neon_shl_i8(a: *const u8, count: i32, out: *mut u8);
     fn rust_isa_neon_shl_i16(a: *const u8, count: i32, out: *mut u8);
     fn rust_isa_neon_shl_i32(a: *const u8, count: i32, out: *mut u8);
+    fn rust_isa_neon_shl_i64(a: *const u8, count: i32, out: *mut u8);
     fn rust_isa_neon_shr_i8(a: *const u8, count: i32, out: *mut u8);
     fn rust_isa_neon_shr_i16(a: *const u8, count: i32, out: *mut u8);
     fn rust_isa_neon_shr_i32(a: *const u8, count: i32, out: *mut u8);
@@ -42,6 +43,11 @@ shift!(
     /// Shift 32-bit lanes left by `count` bits. `count` must be less than 32.
     shl_i32,
     rust_isa_neon_shl_i32
+);
+shift!(
+    /// Shift 64-bit lanes left by `count` bits. `count` must be less than 64.
+    shl_i64,
+    rust_isa_neon_shl_i64
 );
 shift!(
     /// Shift 8-bit lanes right by `count` bits, filling with zero.
