@@ -490,3 +490,15 @@ pub fn vbitsel(a: V128, b: V128, mask: V128) -> V128 {
     let m = mask.to_bytes();
     V128::from_bytes(core::array::from_fn(|i| (a[i] & m[i]) | (b[i] & !m[i])))
 }
+
+/// `vshuf.b`.
+#[inline(always)]
+pub fn vshuf(a: V128, b: V128, control: V128) -> V128 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    let c = control.to_bytes();
+    V128::from_bytes(core::array::from_fn(|i| {
+        let idx = (c[i] & 31) as usize;
+        if idx < 16 { a[idx] } else { b[idx - 16] }
+    }))
+}
