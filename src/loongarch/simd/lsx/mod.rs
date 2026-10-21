@@ -437,3 +437,15 @@ pub fn vslt(a: V128, b: V128) -> V128 {
     }
     V128::from_bytes(o)
 }
+
+/// `vseqi.w`.
+#[inline(always)]
+pub fn vseqi(a: V128, imm: i32) -> V128 {
+    let a = a.to_bytes();
+    let mut o = [0u8; 16];
+    for i in 0..4 {
+        let x = i32::from_le_bytes(a[i * 4..i * 4 + 4].try_into().unwrap());
+        o[i * 4..i * 4 + 4].copy_from_slice(&(if x == imm { -1i32 } else { 0 }).to_le_bytes());
+    }
+    V128::from_bytes(o)
+}
