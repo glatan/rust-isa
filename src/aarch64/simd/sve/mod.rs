@@ -577,3 +577,50 @@ pub unsafe fn rint_f64(a: &[f64], out: &mut [f64]) {
         rust_isa_sve_rint_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
     }
 }
+
+unsafe extern "C" {
+    fn rust_isa_sve_minnm_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_sve_maxnm_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_sve_minnm_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
+    fn rust_isa_sve_maxnm_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
+}
+/// IEEE minimumNumber on `f32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn minnm_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_minnm_f32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+/// IEEE maximumNumber on `f32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn maxnm_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_maxnm_f32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+/// IEEE minimumNumber on `f64` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn minnm_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_minnm_f64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+/// IEEE maximumNumber on `f64` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn maxnm_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_maxnm_f64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
