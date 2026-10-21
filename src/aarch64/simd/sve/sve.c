@@ -465,3 +465,22 @@ void rust_isa_sve_asr_i32(const int32_t *a, int32_t shift, int32_t *out, size_t 
         svst1_s32(pg, out + i, svasr_s32_z(pg, svld1_s32(pg, a + i), svdup_u32((uint32_t)shift)));
     }
 }
+
+void rust_isa_sve_mla_i32(const int32_t *a, const int32_t *b, const int32_t *acc, int32_t *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svint32_t va = svld1_s32(pg, a + i);
+        svint32_t vb = svld1_s32(pg, b + i);
+        svint32_t vc = svld1_s32(pg, acc + i);
+        svst1_s32(pg, out + i, svmla_s32_z(pg, vc, va, vb));
+    }
+}
+void rust_isa_sve_mls_i32(const int32_t *a, const int32_t *b, const int32_t *acc, int32_t *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svint32_t va = svld1_s32(pg, a + i);
+        svint32_t vb = svld1_s32(pg, b + i);
+        svint32_t vc = svld1_s32(pg, acc + i);
+        svst1_s32(pg, out + i, svmls_s32_z(pg, vc, va, vb));
+    }
+}
