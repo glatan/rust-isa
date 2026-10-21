@@ -777,3 +777,36 @@ pub unsafe fn not_i32(a: &[i32], out: &mut [i32]) {
         rust_isa_sve_not_i32(a.as_ptr(), out.as_mut_ptr(), a.len());
     }
 }
+
+unsafe extern "C" {
+    fn rust_isa_sve_lsl_i32(a: *const i32, shift: i32, out: *mut i32, len: usize);
+    fn rust_isa_sve_lsr_i32(a: *const i32, shift: i32, out: *mut i32, len: usize);
+    fn rust_isa_sve_asr_i32(a: *const i32, shift: i32, out: *mut i32, len: usize);
+}
+/// Logical left shift of `i32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn lsl_i32(a: &[i32], shift: i32, out: &mut [i32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_lsl_i32(a.as_ptr(), shift, out.as_mut_ptr(), a.len());
+    }
+}
+/// Logical right shift of `i32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn lsr_i32(a: &[i32], shift: i32, out: &mut [i32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_lsr_i32(a.as_ptr(), shift, out.as_mut_ptr(), a.len());
+    }
+}
+/// Arithmetic right shift of `i32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn asr_i32(a: &[i32], shift: i32, out: &mut [i32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_asr_i32(a.as_ptr(), shift, out.as_mut_ptr(), a.len());
+    }
+}
