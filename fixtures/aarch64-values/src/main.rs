@@ -1179,6 +1179,14 @@ unsafe fn sve_ops() -> bool {
     {
         return false;
     }
+    unsafe { sve::mls_f32(&[2.0, 3.0], &[4.0, 5.0], &[10.0, 20.0], &mut out[..2]) };
+    if out[..2] != [2.0, 5.0] {
+        return false;
+    }
+    unsafe { sve::mls_f64(&[2.0, 3.0], &[4.0, 5.0], &[10.0, 20.0], &mut od[..2]) };
+    if od[..2] != [2.0, 5.0] {
+        return false;
+    }
     unsafe { sve::mul_f32(&a, &b, &mut out) };
     if out != [10.0, 40.0, 90.0, 160.0, 250.0, 360.0, 490.0] {
         return false;

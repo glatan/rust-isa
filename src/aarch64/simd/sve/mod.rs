@@ -693,3 +693,54 @@ pub unsafe fn reduce_min_f64(a: &[f64]) -> f64 {
 pub unsafe fn reduce_max_f64(a: &[f64]) -> f64 {
     unsafe { rust_isa_sve_maxv_f64(a.as_ptr(), a.len()) }
 }
+
+unsafe extern "C" {
+    fn rust_isa_sve_mls_f32(
+        a: *const f32,
+        b: *const f32,
+        acc: *const f32,
+        out: *mut f32,
+        len: usize,
+    );
+    fn rust_isa_sve_mls_f64(
+        a: *const f64,
+        b: *const f64,
+        acc: *const f64,
+        out: *mut f64,
+        len: usize,
+    );
+}
+/// Fused multiply-subtract on `f32` slices: `acc - a * b`.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn mls_f32(a: &[f32], b: &[f32], acc: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), acc.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_mls_f32(
+            a.as_ptr(),
+            b.as_ptr(),
+            acc.as_ptr(),
+            out.as_mut_ptr(),
+            a.len(),
+        );
+    }
+}
+/// Fused multiply-subtract on `f64` slices: `acc - a * b`.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn mls_f64(a: &[f64], b: &[f64], acc: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), acc.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_mls_f64(
+            a.as_ptr(),
+            b.as_ptr(),
+            acc.as_ptr(),
+            out.as_mut_ptr(),
+            a.len(),
+        );
+    }
+}
