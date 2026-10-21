@@ -214,3 +214,22 @@ void rust_isa_sve_xor_i32(const int32_t *a, const int32_t *b, int32_t *out, size
         svst1_s32(pg, out + i, sveor_s32_z(pg, svld1_s32(pg, a + i), svld1_s32(pg, b + i)));
     }
 }
+
+void rust_isa_sve_fma_f32(const float *a, const float *b, const float *acc, float *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svfloat32_t va = svld1_f32(pg, a + i);
+        svfloat32_t vb = svld1_f32(pg, b + i);
+        svfloat32_t vc = svld1_f32(pg, acc + i);
+        svst1_f32(pg, out + i, svmla_f32_z(pg, vc, va, vb));
+    }
+}
+void rust_isa_sve_fma_f64(const double *a, const double *b, const double *acc, double *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntd()) {
+        svbool_t pg = svwhilelt_b64_u64(i, len);
+        svfloat64_t va = svld1_f64(pg, a + i);
+        svfloat64_t vb = svld1_f64(pg, b + i);
+        svfloat64_t vc = svld1_f64(pg, acc + i);
+        svst1_f64(pg, out + i, svmla_f64_z(pg, vc, va, vb));
+    }
+}
