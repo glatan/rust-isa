@@ -10,7 +10,10 @@ use rust_isa::powerpc::simd::altivec::{
     v128_store, xor,
 };
 use rust_isa::powerpc::simd::power8_vector::{add_u64, mul_even_u16, mul_u32, sub_u64};
-use rust_isa::powerpc::simd::power9_vector::{abs_i32 as p9_abs_i32, neg_i32 as p9_neg_i32};
+use rust_isa::powerpc::simd::power9_vector::{
+    abs_i32 as p9_abs_i32, neg_i32 as p9_neg_i32, vabsd, vabsduw, vctzb, vctzh, vctzlsbb, vctzw,
+    vextsb2d, vextsb2w, vextsh2d, vextsh2w, vextsw2d, vnegd, vnegw,
+};
 use rust_isa::powerpc::simd::power10_vector::{
     cntlz_i32 as p10_cntlz_i32, popcnt_i32 as p10_popcnt_i32,
 };
@@ -135,6 +138,22 @@ fn power9_ops() -> bool {
     unsafe {
         lanes(p9_neg_i32(i32x4([1, -2, 3, -4]))) == [-1, 2, -3, 4]
             && lanes(p9_abs_i32(i32x4([-1, 2, -3, 4]))) == [1, 2, 3, 4]
+            && lanes(vnegw(i32x4([1, -2, 3, -4]))) == [-1, 2, -3, 4]
+            && vnegd(V128::from_bytes([0; 16])).to_bytes() == [0; 16]
+            && lanes(vabsduw(i32x4([1, 4, 10, 20]), i32x4([4, 1, 12, 30]))) == [3, 3, 2, 10]
+            && lanes(vabsd(i32x4([1, 4, 10, 20]), i32x4([4, 1, 12, 30]))) == [3, 3, 2, 10]
+            && lanes(vextsb2w(V128::from_bytes([0xff; 16]))) == [-1; 4]
+            && lanes(vextsh2w(V128::from_bytes([0xff; 16]))) == [-1; 4]
+            && vctzb(V128::from_bytes([0xff; 16])).to_bytes() == [0; 16]
+            && vctzh(V128::from_bytes([0xff; 16])).to_bytes() == [0; 16]
+            && vctzw(V128::from_bytes([0xff; 16])).to_bytes() == [0; 16]
+            && vctzlsbb(V128::from_bytes([0xff; 16])) == 0
+            && vextsb2d(V128::from_bytes([0xff; 16])).to_bytes()
+                == V128::from_bytes([0xff; 16]).to_bytes()
+            && vextsh2d(V128::from_bytes([0xff; 16])).to_bytes()
+                == V128::from_bytes([0xff; 16]).to_bytes()
+            && vextsw2d(V128::from_bytes([0xff; 16])).to_bytes()
+                == V128::from_bytes([0xff; 16]).to_bytes()
     }
 }
 
