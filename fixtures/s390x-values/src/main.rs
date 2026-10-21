@@ -9,6 +9,7 @@ use rust_isa::s390x::simd::vector::{
     v128_store, vab, vaf, vag, vah, vavg, vavgl, vceq, vch, vcl, vmax, vmin, vsb, vsel, vsf, vsg,
     vsh, vsl, vsr, xor,
 };
+use rust_isa::s390x::simd::vector::{vchl, vclf, vclg, vclh, vle, vperm, vpks, vst};
 use rust_isa::s390x::simd::vector_enhancements::{
     cntlz_i32, fma, popcnt_i8, popcnt_i32, vclz, vctz, vfa, vfce, vfch, vfche, vfd, vfm, vfma,
     vfms, vfnma, vfnms, vfs, vfsq, vpopct,
@@ -128,6 +129,14 @@ fn i16_lanes(value: V128) -> [i16; 8] {
     core::array::from_fn(|lane| {
         i16::from_be_bytes(bytes[lane * 2..lane * 2 + 2].try_into().unwrap())
     })
+}
+
+fn f64x2(values: [f64; 2]) -> V128 {
+    let mut bytes = [0u8; 16];
+    for (index, value) in values.iter().enumerate() {
+        bytes[index * 8..index * 8 + 8].copy_from_slice(&value.to_be_bytes());
+    }
+    V128::from_bytes(bytes)
 }
 
 fn f32x4(values: [f32; 4]) -> V128 {
@@ -286,6 +295,30 @@ fn vector_more_ops() -> bool {
             && vsr(
                 V128::from_bytes([2; 16]),
                 V128::from_bytes([1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]),
+            )
+            .to_bytes()
+                != [0; 16]
+            && vclf(f32x4([1.0, 4.0, 2.0, 8.0]), f32x4([3.0, 2.0, 6.0, 4.0])).to_bytes() != [0; 16]
+            && vclg(f64x2([1.0, 4.0]), f64x2([3.0, 2.0])).to_bytes() != [0; 16]
+            && vclh(i16x8([1; 8]), i16x8([2; 8])).to_bytes() == [0xff; 16]
+            && vchl(
+                V128::from_bytes([1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]),
+                V128::from_bytes([0; 16]),
+            )
+            .to_bytes()
+                == [0xff; 16]
+            && vpks(i32x4([1; 4]), i32x4([0; 4])).to_bytes() != [0; 16]
+            && {
+                let source = [1u8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+                let loaded = vle(source.as_ptr());
+                let mut output = [0u8; 16];
+                vst(output.as_mut_ptr(), loaded);
+                output == source
+            }
+            && vperm(
+                V128::from_bytes([1; 16]),
+                V128::from_bytes([2; 16]),
+                V128::from_bytes([0; 16]),
             )
             .to_bytes()
                 != [0; 16]
