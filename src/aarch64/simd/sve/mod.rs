@@ -861,3 +861,66 @@ pub unsafe fn mls_i32(a: &[i32], b: &[i32], acc: &[i32], out: &mut [i32]) {
         );
     }
 }
+
+unsafe extern "C" {
+    fn rust_isa_sve_rinta_f32(a: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_sve_rintx_f32(a: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_sve_rinti_f32(a: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_sve_rinta_f64(a: *const f64, out: *mut f64, len: usize);
+    fn rust_isa_sve_rintx_f64(a: *const f64, out: *mut f64, len: usize);
+    fn rust_isa_sve_rinti_f64(a: *const f64, out: *mut f64, len: usize);
+}
+/// Round `f32` slices to nearest, ties away from zero.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn rinta_f32(a: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_rinta_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+/// Round `f32` slices to nearest, current mode.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn rintx_f32(a: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_rintx_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+/// Round `f32` slices using the current rounding mode.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn rinti_f32(a: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_rinti_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+/// Round `f64` slices to nearest, ties away from zero.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn rinta_f64(a: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_rinta_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+/// Round `f64` slices to nearest, current mode.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn rintx_f64(a: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_rintx_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+/// Round `f64` slices using the current rounding mode.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn rinti_f64(a: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_rinti_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
