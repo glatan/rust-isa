@@ -1219,6 +1219,30 @@ unsafe fn sve_ops() -> bool {
     if oi[..2] != [2, 5] {
         return false;
     }
+    unsafe { sve::rinta_f32(&[1.5, 2.5, -1.5], &mut out[..3]) };
+    if out[..3] != [2.0, 3.0, -2.0] {
+        return false;
+    }
+    unsafe { sve::rinta_f64(&[1.5, 2.5, -1.5], &mut od) };
+    if od != [2.0, 3.0, -2.0] {
+        return false;
+    }
+    unsafe { sve::rintx_f32(&[1.5, 2.5, -1.5], &mut out[..3]) };
+    if out[..3] != [2.0, 2.0, -2.0] {
+        return false;
+    }
+    unsafe { sve::rintx_f64(&[1.5, 2.5, -1.5], &mut od) };
+    if od != [2.0, 2.0, -2.0] {
+        return false;
+    }
+    unsafe { sve::rinti_f32(&[1.5, 2.5, -1.5], &mut out[..3]) };
+    if out[..3] != [2.0, 2.0, -2.0] {
+        return false;
+    }
+    unsafe { sve::rinti_f64(&[1.5, 2.5, -1.5], &mut od) };
+    if od != [2.0, 2.0, -2.0] {
+        return false;
+    }
     unsafe { sve::mul_f32(&a, &b, &mut out) };
     if out != [10.0, 40.0, 90.0, 160.0, 250.0, 360.0, 490.0] {
         return false;

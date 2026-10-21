@@ -484,3 +484,40 @@ void rust_isa_sve_mls_i32(const int32_t *a, const int32_t *b, const int32_t *acc
         svst1_s32(pg, out + i, svmls_s32_z(pg, vc, va, vb));
     }
 }
+
+void rust_isa_sve_rinta_f32(const float *a, float *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svst1_f32(pg, out + i, svrinta_f32_z(pg, svld1_f32(pg, a + i)));
+    }
+}
+void rust_isa_sve_rintx_f32(const float *a, float *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svst1_f32(pg, out + i, svrintx_f32_z(pg, svld1_f32(pg, a + i)));
+    }
+}
+void rust_isa_sve_rinti_f32(const float *a, float *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svst1_f32(pg, out + i, svrinti_f32_z(pg, svld1_f32(pg, a + i)));
+    }
+}
+void rust_isa_sve_rinta_f64(const double *a, double *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntd()) {
+        svbool_t pg = svwhilelt_b64_u64(i, len);
+        svst1_f64(pg, out + i, svrinta_f64_z(pg, svld1_f64(pg, a + i)));
+    }
+}
+void rust_isa_sve_rintx_f64(const double *a, double *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntd()) {
+        svbool_t pg = svwhilelt_b64_u64(i, len);
+        svst1_f64(pg, out + i, svrintx_f64_z(pg, svld1_f64(pg, a + i)));
+    }
+}
+void rust_isa_sve_rinti_f64(const double *a, double *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntd()) {
+        svbool_t pg = svwhilelt_b64_u64(i, len);
+        svst1_f64(pg, out + i, svrinti_f64_z(pg, svld1_f64(pg, a + i)));
+    }
+}
