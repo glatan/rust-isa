@@ -14,6 +14,7 @@ use rust_isa::loongarch::simd::lasx::{
 use rust_isa::loongarch::simd::lasx::{
     xvabs, xvadd_b, xvadd_d, xvadd_h, xvdiv, xvmul_h, xvneg, xvsub_b, xvsub_d, xvsub_h,
 };
+use rust_isa::loongarch::simd::lsx::{vneg_d};
 use rust_isa::loongarch::simd::lsx::{vneg_h};
 use rust_isa::loongarch::simd::lsx::{vneg_b};
 use rust_isa::loongarch::simd::lsx::{vabs_d};
@@ -117,6 +118,7 @@ fn run() -> u32 {
     if !alias_vabs_d() { return 202; }
     if !alias_vneg_b() { return 203; }
     if !alias_vneg_h() { return 204; }
+    if !alias_vneg_d() { return 205; }
     0
 }
 
@@ -455,3 +457,5 @@ fn alias_vabs_d() -> bool { vabs_d(V128::from_bytes([0xff;16])).to_bytes() == { 
 fn alias_vneg_b() -> bool { vneg_b(V128::from_bytes([1;16])).to_bytes() == [0xff;16] }
 
 fn alias_vneg_h() -> bool { i16_lanes(vneg_h(i16x8([1;8]))) == [-1;8] }
+
+fn alias_vneg_d() -> bool { { let mut x=[0u8;16]; x[0]=1; let mut e=[0u8;16]; for i in 0..8 { e[i]=0xff; } vneg_d(V128::from_bytes(x)).to_bytes() == e } }
