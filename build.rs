@@ -411,7 +411,7 @@ fn main() {
             ),
             (&rv_zbs_c, "rust_isa_rv_zbs", &["-march=rv64gc_zbs"][..]),
             (&rv_zkn_c, "rust_isa_rv_zkn", &["-march=rv64gc_zkn"][..]),
-            (&rv_zfh_c, "rust_isa_rv_zfh", &["-march=rv64gc_zfh"][..]),
+            (&rv_zfh_c, "rust_isa_rv_zfh", &["-march=rv64gc_zfh_zfa"][..]),
             (&rv_zks_c, "rust_isa_rv_zks", &["-march=rv64gc_zks"][..]),
         ] {
             let mut flags = march.to_vec();

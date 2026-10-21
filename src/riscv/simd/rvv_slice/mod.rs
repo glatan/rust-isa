@@ -13,8 +13,32 @@
 unsafe extern "C" {
     fn rust_isa_rvv_slice_add_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
     fn rust_isa_rvv_slice_mul_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_rvv_slice_sub_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_rvv_slice_div_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_rvv_slice_min_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_rvv_slice_max_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
     fn rust_isa_rvv_slice_add_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
     fn rust_isa_rvv_slice_mul_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_rvv_slice_sub_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_rvv_slice_div_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_rvv_slice_min_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_rvv_slice_max_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_rvv_slice_cmpeq_f32(a: *const f32, b: *const f32, out: *mut i32, len: usize);
+    fn rust_isa_rvv_slice_cmpne_f32(a: *const f32, b: *const f32, out: *mut i32, len: usize);
+    fn rust_isa_rvv_slice_cmplt_f32(a: *const f32, b: *const f32, out: *mut i32, len: usize);
+    fn rust_isa_rvv_slice_cmple_f32(a: *const f32, b: *const f32, out: *mut i32, len: usize);
+    fn rust_isa_rvv_slice_cmpgt_f32(a: *const f32, b: *const f32, out: *mut i32, len: usize);
+    fn rust_isa_rvv_slice_cmpge_f32(a: *const f32, b: *const f32, out: *mut i32, len: usize);
+    fn rust_isa_rvv_slice_cmpeq_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_rvv_slice_cmpne_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_rvv_slice_cmplt_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_rvv_slice_cmple_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_rvv_slice_cmpgt_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_rvv_slice_cmpge_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_rvv_slice_load_f32(src: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_rvv_slice_load_i32(src: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_rvv_slice_store_f32(dst: *mut f32, src: *const f32, len: usize);
+    fn rust_isa_rvv_slice_store_i32(dst: *mut i32, src: *const i32, len: usize);
 }
 
 /// Add two `f32` slices.
@@ -86,5 +110,235 @@ pub unsafe fn mul_i32(a: &[i32], b: &[i32], out: &mut [i32]) {
     assert_eq!(a.len(), out.len(), "RVV slices must have the same length");
     unsafe {
         rust_isa_rvv_slice_mul_i32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+macro_rules! binary {
+    ($(#[$meta:meta])* $name:ident, $c:ident, $ty:ty) => {
+        $(#[$meta])*
+        ///
+        /// # Panics
+        ///
+        /// Panics when the slice lengths differ.
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with the V extension enabled.
+        #[inline(always)]
+        pub unsafe fn $name(a: &[$ty], b: &[$ty], out: &mut [$ty]) {
+            assert_eq!(a.len(), b.len(), "RVV slices must have the same length");
+            assert_eq!(a.len(), out.len(), "RVV slices must have the same length");
+            unsafe {
+                $c(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+            }
+        }
+    };
+}
+
+macro_rules! compare {
+    ($(#[$meta:meta])* $name:ident, $c:ident, $ty:ty) => {
+        $(#[$meta])*
+        ///
+        /// A true lane is all bits one.
+        ///
+        /// # Panics
+        ///
+        /// Panics when the slice lengths differ.
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with the V extension enabled.
+        #[inline(always)]
+        pub unsafe fn $name(a: &[$ty], b: &[$ty], out: &mut [i32]) {
+            assert_eq!(a.len(), b.len(), "RVV slices must have the same length");
+            assert_eq!(a.len(), out.len(), "RVV slices must have the same length");
+            unsafe {
+                $c(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+            }
+        }
+    };
+}
+
+binary!(
+    /// `vfsub.vv` on `f32` lanes.
+    sub_f32,
+    rust_isa_rvv_slice_sub_f32,
+    f32
+);
+binary!(
+    /// `vfdiv.vv` on `f32` lanes.
+    div_f32,
+    rust_isa_rvv_slice_div_f32,
+    f32
+);
+binary!(
+    /// `vfmin.vv` on `f32` lanes.
+    min_f32,
+    rust_isa_rvv_slice_min_f32,
+    f32
+);
+binary!(
+    /// `vfmax.vv` on `f32` lanes.
+    max_f32,
+    rust_isa_rvv_slice_max_f32,
+    f32
+);
+binary!(
+    /// `vsub.vv` on `i32` lanes.
+    sub_i32,
+    rust_isa_rvv_slice_sub_i32,
+    i32
+);
+binary!(
+    /// `vdiv.vv` on `i32` lanes.
+    div_i32,
+    rust_isa_rvv_slice_div_i32,
+    i32
+);
+binary!(
+    /// `vmin.vv` on signed `i32` lanes.
+    min_i32,
+    rust_isa_rvv_slice_min_i32,
+    i32
+);
+binary!(
+    /// `vmax.vv` on signed `i32` lanes.
+    max_i32,
+    rust_isa_rvv_slice_max_i32,
+    i32
+);
+
+compare!(
+    /// `vmfeq.vv` on `f32` lanes.
+    cmpeq_f32,
+    rust_isa_rvv_slice_cmpeq_f32,
+    f32
+);
+compare!(
+    /// `vmfne.vv` on `f32` lanes. Ordered; a NaN lane compares false.
+    cmpne_f32,
+    rust_isa_rvv_slice_cmpne_f32,
+    f32
+);
+compare!(
+    /// `vmflt.vv` on `f32` lanes.
+    cmplt_f32,
+    rust_isa_rvv_slice_cmplt_f32,
+    f32
+);
+compare!(
+    /// `vmfle.vv` on `f32` lanes.
+    cmple_f32,
+    rust_isa_rvv_slice_cmple_f32,
+    f32
+);
+compare!(
+    /// `vmfgt.vv` on `f32` lanes.
+    cmpgt_f32,
+    rust_isa_rvv_slice_cmpgt_f32,
+    f32
+);
+compare!(
+    /// `vmfge.vv` on `f32` lanes.
+    cmpge_f32,
+    rust_isa_rvv_slice_cmpge_f32,
+    f32
+);
+compare!(
+    /// `vmseq.vv` on `i32` lanes.
+    cmpeq_i32,
+    rust_isa_rvv_slice_cmpeq_i32,
+    i32
+);
+compare!(
+    /// `vmsne.vv` on `i32` lanes.
+    cmpne_i32,
+    rust_isa_rvv_slice_cmpne_i32,
+    i32
+);
+compare!(
+    /// `vmslt.vv` on signed `i32` lanes.
+    cmplt_i32,
+    rust_isa_rvv_slice_cmplt_i32,
+    i32
+);
+compare!(
+    /// `vmsle.vv` on signed `i32` lanes.
+    cmple_i32,
+    rust_isa_rvv_slice_cmple_i32,
+    i32
+);
+compare!(
+    /// `vmsgt.vv` on signed `i32` lanes.
+    cmpgt_i32,
+    rust_isa_rvv_slice_cmpgt_i32,
+    i32
+);
+compare!(
+    /// `vmsge.vv` on signed `i32` lanes.
+    cmpge_i32,
+    rust_isa_rvv_slice_cmpge_i32,
+    i32
+);
+
+/// `vle32.v` and `vse32.v` on `f32` lanes.
+///
+/// Copy `out.len()` elements from `src` into `out` with vector loads and
+/// stores.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled. `src` must be valid
+/// for reading `out.len()` elements.
+#[inline(always)]
+pub unsafe fn load_f32(src: *const f32, out: &mut [f32]) {
+    unsafe {
+        rust_isa_rvv_slice_load_f32(src, out.as_mut_ptr(), out.len());
+    }
+}
+
+/// `vle32.v` and `vse32.v` on `i32` lanes.
+///
+/// Copy `out.len()` elements from `src` into `out` with vector loads and
+/// stores.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled. `src` must be valid
+/// for reading `out.len()` elements.
+#[inline(always)]
+pub unsafe fn load_i32(src: *const i32, out: &mut [i32]) {
+    unsafe {
+        rust_isa_rvv_slice_load_i32(src, out.as_mut_ptr(), out.len());
+    }
+}
+
+/// `vle32.v` and `vse32.v` on `f32` lanes.
+///
+/// Copy `src` into `dst` with vector loads and stores.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled. `dst` must be valid
+/// for writing `src.len()` elements.
+#[inline(always)]
+pub unsafe fn store_f32(dst: *mut f32, src: &[f32]) {
+    unsafe {
+        rust_isa_rvv_slice_store_f32(dst, src.as_ptr(), src.len());
+    }
+}
+
+/// `vle32.v` and `vse32.v` on `i32` lanes.
+///
+/// Copy `src` into `dst` with vector loads and stores.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled. `dst` must be valid
+/// for writing `src.len()` elements.
+#[inline(always)]
+pub unsafe fn store_i32(dst: *mut i32, src: &[i32]) {
+    unsafe {
+        rust_isa_rvv_slice_store_i32(dst, src.as_ptr(), src.len());
     }
 }
