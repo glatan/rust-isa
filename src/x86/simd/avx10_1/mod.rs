@@ -1001,6 +1001,7 @@ pub unsafe fn vpcmpb_v256<const IMM: u8>(a: V256, b: V256) -> u32 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
+#[cfg(target_arch = "x86_64")]
 pub unsafe fn vpcmpb_v512<const IMM: u8>(a: V512, b: V512) -> u64 {
     let out: u64;
     unsafe {
@@ -1008,7 +1009,7 @@ pub unsafe fn vpcmpb_v512<const IMM: u8>(a: V512, b: V512) -> u64 {
             "vmovdqu64 zmm0, [{a}]",
             "vmovdqu64 zmm1, [{b}]",
             "vpcmpb k1, zmm0, zmm1, {imm}",
-            "kmovq {out:e}, k1",
+            "kmovq {out:r}, k1",
             a = in(reg) a.as_ptr(),
             b = in(reg) b.as_ptr(),
             imm = const IMM,
@@ -1057,6 +1058,7 @@ pub unsafe fn vpcmpub_v256<const IMM: u8>(a: V256, b: V256) -> u32 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
+#[cfg(target_arch = "x86_64")]
 pub unsafe fn vpcmpub_v512<const IMM: u8>(a: V512, b: V512) -> u64 {
     let out: u64;
     unsafe {
@@ -1064,7 +1066,7 @@ pub unsafe fn vpcmpub_v512<const IMM: u8>(a: V512, b: V512) -> u64 {
             "vmovdqu64 zmm0, [{a}]",
             "vmovdqu64 zmm1, [{b}]",
             "vpcmpub k1, zmm0, zmm1, {imm}",
-            "kmovq {out:e}, k1",
+            "kmovq {out:r}, k1",
             a = in(reg) a.as_ptr(),
             b = in(reg) b.as_ptr(),
             imm = const IMM,

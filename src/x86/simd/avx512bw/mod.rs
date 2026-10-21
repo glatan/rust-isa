@@ -1137,6 +1137,7 @@ pub unsafe fn vpmovusqb(a: V512) -> V128 {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512bw")]
 #[inline]
+#[cfg(target_arch = "x86_64")]
 pub unsafe fn vpcmpb<const IMM: u8>(a: V512, b: V512) -> u64 {
     let out: u64;
     unsafe {
@@ -1197,6 +1198,7 @@ pub unsafe fn vpcmpw<const IMM: u8>(a: V512, b: V512) -> u32 {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512bw")]
 #[inline]
+#[cfg(target_arch = "x86_64")]
 pub unsafe fn vpcmpub<const IMM: u8>(a: V512, b: V512) -> u64 {
     let out: u64;
     unsafe {
