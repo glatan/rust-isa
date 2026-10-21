@@ -11,6 +11,7 @@ use rust_isa::loongarch::simd::lasx::{
     sub_i64 as lasx_sub_i64, v256_load, v256_store, xor as lasx_xor, xvadd, xvand, xvmul, xvor,
     xvsub, xvxor,
 };
+use rust_isa::loongarch::simd::lasx::{xvabs, xvneg};
 use rust_isa::loongarch::simd::lsx::{
     V128, add, add_i8, and, cmpeq_i32, cmpgt_i32, fadd, fdiv, fmul, fsub, mul, mul_i16, or,
     splat_i32, sub_i16, sub_i32, v128_load, v128_store, vabs, vadd, vand, vmul, vneg, vor, vsub,
@@ -75,6 +76,9 @@ fn run() -> u32 {
     }
     if !lsx_abs_ops() {
         return 7;
+    }
+    if !lasx_abs_ops() {
+        return 8;
     }
     if !lsx_alias_ops() {
         return 6;
@@ -312,6 +316,14 @@ fn integer() -> bool {
         && lanes(mul(a, b)) == [10, 40, 90, 160]
         && lanes(kernel_add(&a, &b)) == [21, 42, 63, 84]
         && lanes(kernel_mul(&a, &b)) == [100, 800, 2700, 6400]
+}
+
+fn lasx_abs_ops() -> bool {
+    let a = i32x8([-1, 2, -3, 4, -5, 6, -7, 8]);
+    unsafe {
+        i32x8_lanes(xvabs(a)) == [1, 2, 3, 4, 5, 6, 7, 8]
+            && i32x8_lanes(xvneg(a)) == [1, -2, 3, -4, 5, -6, 7, -8]
+    }
 }
 
 fn lsx_abs_ops() -> bool {
