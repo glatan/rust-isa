@@ -310,3 +310,16 @@ pub unsafe fn xvneg_b(a: V256) -> V256 {
         (a.to_bytes()[i] as i8).wrapping_neg() as u8
     }))
 }
+
+/// `xvneg.h`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvneg_h(a: V256) -> V256 {
+    let b = a.to_bytes();
+    let mut o = [0u8; 32];
+    for i in 0..16 {
+        let v = i16::from_le_bytes([b[i * 2], b[i * 2 + 1]]);
+        o[i * 2..i * 2 + 2].copy_from_slice(&v.wrapping_neg().to_le_bytes());
+    }
+    V256::from_bytes(o)
+}

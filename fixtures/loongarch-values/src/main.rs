@@ -4,6 +4,7 @@
 use core::arch::asm;
 use core::panic::PanicInfo;
 use rust_isa::loongarch::integer::lbt::{bitrev, bstrins, bstrpick, ext, ins, revb, revh, revw};
+use rust_isa::loongarch::simd::lasx::{xvneg_h};
 use rust_isa::loongarch::simd::lasx::{xvneg_b};
 use rust_isa::loongarch::simd::lasx::{xvabs_d};
 use rust_isa::loongarch::simd::lasx::{xvabs_h};
@@ -127,6 +128,7 @@ fn run() -> u32 {
     if !alias_xvabs_h() { return 302; }
     if !alias_xvabs_d() { return 303; }
     if !alias_xvneg_b() { return 304; }
+    if !alias_xvneg_h() { return 305; }
     0
 }
 
@@ -475,3 +477,5 @@ fn alias_xvabs_h() -> bool { unsafe { xvabs_h(V256::from_bytes([0xff;32])).to_by
 fn alias_xvabs_d() -> bool { unsafe { xvabs_d(V256::from_bytes([0xff;32])).to_bytes() == V256::from_bytes(core::array::from_fn(|i| (i%8==0) as u8)).to_bytes() } }
 
 fn alias_xvneg_b() -> bool { unsafe { xvneg_b(V256::from_bytes([1;32])).to_bytes() == [0xff;32] } }
+
+fn alias_xvneg_h() -> bool { unsafe { xvneg_h(V256::from_bytes([1;32])).to_bytes() == V256::from_bytes(core::array::from_fn(|i| if i%2==0 {0xff} else {0xfe})).to_bytes() } }
