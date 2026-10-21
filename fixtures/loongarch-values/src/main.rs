@@ -24,6 +24,7 @@ use rust_isa::loongarch::simd::lasx::{
 use rust_isa::loongarch::simd::lasx::{
     xvabs, xvadd_b, xvadd_d, xvadd_h, xvdiv, xvmul_h, xvneg, xvsub_b, xvsub_d, xvsub_h,
 };
+use rust_isa::loongarch::simd::lsx::{vsle};
 use rust_isa::loongarch::simd::lsx::{vseq};
 use rust_isa::loongarch::simd::lsx::{vmin};
 use rust_isa::loongarch::simd::lsx::{vmax};
@@ -145,6 +146,7 @@ fn run() -> u32 {
     if !alias_vmax() { return 501; }
     if !alias_vmin() { return 511; }
     if !alias_vseq() { return 512; }
+    if !alias_vsle() { return 513; }
     0
 }
 
@@ -511,3 +513,5 @@ fn alias_vmax() -> bool { lanes(vmax(i32x4([1,4,2,8]),i32x4([3,2,6,4]))) == [3,4
 fn alias_vmin() -> bool { lanes(vmin(i32x4([1,4,2,8]),i32x4([3,2,6,4]))) == [1,2,2,4] }
 
 fn alias_vseq() -> bool { vseq(i32x4([1,2,3,4]),i32x4([1,0,3,4])).to_bytes() == [0xff,0xff,0xff,0xff,0,0,0,0,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff] }
+
+fn alias_vsle() -> bool { vsle(i32x4([1,4,2,8]),i32x4([3,2,6,4])).to_bytes() == [0xff,0xff,0xff,0xff,0,0,0,0,0xff,0xff,0xff,0xff,0,0,0,0] }
