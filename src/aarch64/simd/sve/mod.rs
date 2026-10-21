@@ -9,8 +9,9 @@
 //! length at run time. All slices must have the same length; a different length
 //! panics. The functions do not allocate.
 //!
-//! The per-instruction API is intentionally omitted because a fixed-length
+//! The per-register API is intentionally omitted because a fixed-length
 //! [`V128`](crate::aarch64::simd::neon::V128) cannot represent an SVE register.
+//! Each instruction is exposed as a slice operation instead.
 
 unsafe extern "C" {
     fn rust_isa_sve_add_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
@@ -947,3 +948,6 @@ pub unsafe fn frecpx_f64(a: &[f64], out: &mut [f64]) {
         rust_isa_sve_frecpx_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
     }
 }
+
+mod generated;
+pub use generated::*;

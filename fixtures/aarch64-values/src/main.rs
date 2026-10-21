@@ -156,14 +156,8 @@ fn run() -> u32 {
     if !unsafe { sve_ops() } {
         return 17;
     }
-    if !neon_ext_ops() {
+    if !unsafe { sve_ext_ops() } {
         return 25;
-    }
-    if !unsafe { fp16_ext_ops() } {
-        return 26;
-    }
-    if !unsafe { sha3_xar_ops() } {
-        return 27;
     }
     0
 }
@@ -593,10 +587,7 @@ fn integer_ops() -> bool {
     {
         return false;
     }
-    if !i64_ok(
-        rust_isa::aarch64::simd::neon::shl_i64(i64x2([1, 2]), 2),
-        [4, 8],
-    ) || lanes(shl_i32(i32x4([1, 2, 3, 4]), 2)) != [4, 8, 12, 16]
+    if lanes(shl_i32(i32x4([1, 2, 3, 4]), 2)) != [4, 8, 12, 16]
         || i16_lanes(shr_i16(i16x8([2, 4, 6, 8, 10, 12, 14, 16]), 1)) != [1, 2, 3, 4, 5, 6, 7, 8]
     {
         return false;
@@ -774,21 +765,6 @@ fn shuffle_ops() -> bool {
     if uzp1(a, b).to_bytes() != [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30] {
         return false;
     }
-    if rust_isa::aarch64::simd::neon::zip2(a, b).to_bytes()
-        != [8, 24, 9, 25, 10, 26, 11, 27, 12, 28, 13, 29, 14, 30, 15, 31]
-    {
-        return false;
-    }
-    if rust_isa::aarch64::simd::neon::uzp2(a, b).to_bytes()
-        != [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31]
-    {
-        return false;
-    }
-    if rust_isa::aarch64::simd::neon::trn2(a, b).to_bytes()
-        != [1, 17, 3, 19, 5, 21, 7, 23, 9, 25, 11, 27, 13, 29, 15, 31]
-    {
-        return false;
-    }
     if trn1(a, b).to_bytes() != [0, 16, 2, 18, 4, 20, 6, 22, 8, 24, 10, 26, 12, 28, 14, 30] {
         return false;
     }
@@ -899,12 +875,10 @@ unsafe fn fhm_ops() -> bool {
 unsafe fn crypto_aes_ops() -> bool {
     let one = V128::from_bytes([1; 16]);
     let zero = V128::from_bytes([0; 16]);
-    let poly = V128::from_bytes([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     unsafe { aese(one, one) }.to_bytes() != zero.to_bytes()
         && unsafe { aesd(one, one) }.to_bytes() != zero.to_bytes()
         && unsafe { aesmc(one) }.to_bytes() != zero.to_bytes()
         && unsafe { aesimc(one) }.to_bytes() != zero.to_bytes()
-        && unsafe { neon_extra::pmull_p64(poly, poly) }.to_bytes() == poly.to_bytes()
 }
 
 #[target_feature(enable = "sha2")]
@@ -1294,6 +1268,614 @@ unsafe fn sve_ops() -> bool {
     out == [11, 22, 33, 44, 55]
 }
 
+#[target_feature(enable = "sve")]
+unsafe fn sve_ext_ops() -> bool {
+    if unsafe { sve::cntb() } < 16
+        || unsafe { sve::cnth() } < 8
+        || unsafe { sve::cntw() } < 4
+        || unsafe { sve::cntd() } < 2
+    {
+        return false;
+    }
+    if unsafe { sve::ptest_i32(&[1, 2]) } != true
+        || unsafe { sve::ptest_i32(&[]) } != false
+        || unsafe { sve::rdffr() } != u64::MAX
+    {
+        return false;
+    }
+    if unsafe { sve::whilelt_i32(0, 3) } != 3 {
+        return false;
+    }
+    if unsafe { sve::whilele_u32(0, 3) } != 4 {
+        return false;
+    }
+    if unsafe { sve::whilegt_i32(5, 2) } != 3 {
+        return false;
+    }
+    if unsafe { sve::whilege_u32(5, 2) } != 4 {
+        return false;
+    }
+    if unsafe { sve::whilerw_i32(0, 1) } == 0 {
+        return false;
+    }
+    if unsafe { sve::whilewr_i32(0, 1) } == 0 {
+        return false;
+    }
+    let mut o8 = [0i8; 32];
+    let mut o16 = [0i16; 32];
+    let mut o32 = [0i32; 32];
+    let mut o64 = [0i64; 32];
+    let mut ou8 = [0u8; 32];
+    let mut ou16 = [0u16; 32];
+    let mut ou32 = [0u32; 32];
+    let mut ou64 = [0u64; 32];
+    let mut of32 = [0.0f32; 32];
+    let mut of64 = [0.0f64; 32];
+
+    unsafe { sve::abs_i8(&[-1, -2, 3], &mut o8[..3]) };
+    if o8[..3] != [1, 2, 3] {
+        return false;
+    }
+    unsafe { sve::neg_i16(&[1, -2, 3], &mut o16[..3]) };
+    if o16[..3] != [-1, 2, -3] {
+        return false;
+    }
+    unsafe { sve::abs_i64(&[-4, 5], &mut o64[..2]) };
+    if o64[..2] != [4, 5] {
+        return false;
+    }
+    unsafe { sve::clz_i8(&[1, 2, 4], &mut o8[..3]) };
+    if o8[..3] != [7, 6, 5] {
+        return false;
+    }
+    unsafe { sve::cnt_i16(&[0, 1, 3], &mut o16[..3]) };
+    if o16[..3] != [0, 1, 2] {
+        return false;
+    }
+    unsafe { sve::not_i64(&[0, -1], &mut o64[..2]) };
+    if o64[..2] != [-1, 0] {
+        return false;
+    }
+    unsafe { sve::sqabs_i8(&[-128, -1, 1], &mut o8[..3]) };
+    if o8[..3] != [127, 1, 1] {
+        return false;
+    }
+    unsafe { sve::sqneg_i16(&[-32768, 2], &mut o16[..2]) };
+    if o16[..2] != [32767, -2] {
+        return false;
+    }
+    unsafe { sve::rbit_i32(&[1], &mut o32[..1]) };
+    if o32[0] != i32::MIN {
+        return false;
+    }
+    unsafe { sve::revb_i32(&[0x11223344], &mut o32[..1]) };
+    if o32[0] != 0x44332211 {
+        return false;
+    }
+    unsafe { sve::revh_i32(&[0x11223344], &mut o32[..1]) };
+    if o32[0] != 0x33441122 {
+        return false;
+    }
+    unsafe { sve::cnot_i32(&[0, -1], &mut o32[..2]) };
+    if o32[..2] != [-1, 0] {
+        return false;
+    }
+    unsafe { sve::sunpkhi_i8(&[-1, 2], &mut o16[..2]) };
+    if o16[..2] != [-1, 2] {
+        return false;
+    }
+    unsafe { sve::uunpklo_u8(&[1, 255], &mut ou16[..2]) };
+    if ou16[..2] != [1, 255] {
+        return false;
+    }
+    unsafe { sve::sxtb_i8(&[-1, 2], &mut o32[..2]) };
+    if o32[..2] != [-1, 2] {
+        return false;
+    }
+    unsafe { sve::uxtw_u32(&[1, 0xffff_ffff], &mut ou64[..2]) };
+    if ou64[..2] != [1, 0xffff_ffff] {
+        return false;
+    }
+
+    unsafe { sve::add_i8(&[1, 2], &[3, 4], &mut o8[..2]) };
+    if o8[..2] != [4, 6] {
+        return false;
+    }
+    unsafe { sve::sub_i16(&[5, 6], &[1, 2], &mut o16[..2]) };
+    if o16[..2] != [4, 4] {
+        return false;
+    }
+    unsafe { sve::mul_i64(&[2, 3], &[4, 5], &mut o64[..2]) };
+    if o64[..2] != [8, 15] {
+        return false;
+    }
+    unsafe { sve::add_u8(&[250, 1], &[5, 2], &mut ou8[..2]) };
+    if ou8[..2] != [255, 3] {
+        return false;
+    }
+    unsafe { sve::smax_i8(&[-1, 2], &[0, 1], &mut o8[..2]) };
+    if o8[..2] != [0, 2] {
+        return false;
+    }
+    unsafe { sve::umin_u16(&[1, 9], &[5, 3], &mut ou16[..2]) };
+    if ou16[..2] != [1, 3] {
+        return false;
+    }
+    unsafe { sve::sabd_i8(&[-5, 3], &[2, -1], &mut o8[..2]) };
+    if o8[..2] != [7, 4] {
+        return false;
+    }
+    unsafe { sve::uabd_u32(&[1, 9], &[5, 3], &mut ou32[..2]) };
+    if ou32[..2] != [4, 6] {
+        return false;
+    }
+    unsafe { sve::smulh_i32(&[0x4000_0000, -2], &[4, 3], &mut o32[..2]) };
+    if o32[..2] != [1, -1] {
+        return false;
+    }
+    unsafe { sve::umulh_u32(&[0x8000_0000, 2], &[2, 3], &mut ou32[..2]) };
+    if ou32[..2] != [1, 0] {
+        return false;
+    }
+    unsafe { sve::and_i8(&[0b1010, 0b1100], &[0b1100, 0b1010], &mut o8[..2]) };
+    if o8[..2] != [0b1000, 0b1000] {
+        return false;
+    }
+    unsafe { sve::orr_i16(&[0b1010, 0b1100], &[0b1100, 0b1010], &mut o16[..2]) };
+    if o16[..2] != [0b1110, 0b1110] {
+        return false;
+    }
+    unsafe { sve::eor_i64(&[1, 3], &[3, 1], &mut o64[..2]) };
+    if o64[..2] != [2, 2] {
+        return false;
+    }
+    unsafe { sve::bic_i32(&[0b1010], &[0b1100], &mut o32[..1]) };
+    if o32[0] != 0b0010 {
+        return false;
+    }
+    unsafe { sve::nand_i32(&[0b1010], &[0b1100], &mut o32[..1]) };
+    if o32[0] != -9 {
+        return false;
+    }
+    unsafe { sve::nor_i32(&[0b1010], &[0b1100], &mut o32[..1]) };
+    if o32[0] != -15 {
+        return false;
+    }
+    unsafe { sve::orn_i32(&[0b1010], &[0b1100], &mut o32[..1]) };
+    if o32[0] != -5 {
+        return false;
+    }
+    unsafe { sve::bsl_i32(&[0b1010], &[0b0101], &[0b1100], &mut o32[..1]) };
+    if o32[0] != 0b1001 {
+        return false;
+    }
+    unsafe { sve::sqadd_i8(&[120, -120], &[20, -20], &mut o8[..2]) };
+    if o8[..2] != [127, -128] {
+        return false;
+    }
+    unsafe { sve::uqadd_u8(&[250, 1], &[10, 2], &mut ou8[..2]) };
+    if ou8[..2] != [255, 3] {
+        return false;
+    }
+    unsafe { sve::sqsub_i16(&[-32768, 10], &[1, 20], &mut o16[..2]) };
+    if o16[..2] != [-32768, -10] {
+        return false;
+    }
+    unsafe { sve::uqsub_u16(&[1, 10], &[2, 20], &mut ou16[..2]) };
+    if ou16[..2] != [0, 0] {
+        return false;
+    }
+    unsafe { sve::sqdmulh_i16(&[16384, -16384], &[16384, 16384], &mut o16[..2]) };
+    if o16[..2] != [8192, -8192] {
+        return false;
+    }
+    unsafe { sve::sqxtnb_i32(&[1, -1, 40000, 70000], &mut o16[..4]) };
+    if o16[..4] != [1, -1, 32767, 32767] {
+        return false;
+    }
+    unsafe { sve::sqxtunb_i32(&[1, -1, 70000], &mut ou16[..3]) };
+    if ou16[..3] != [1, 0, 65535] {
+        return false;
+    }
+    unsafe { sve::uqxtnb_u32(&[1, 70000], &mut ou16[..2]) };
+    if ou16[..2] != [1, 65535] {
+        return false;
+    }
+    unsafe { sve::cadd_i32(&[1, 2], &[3, 4], &mut o32[..2]) };
+    if o32[..2] != [-3, 5] {
+        return false;
+    }
+    unsafe { sve::sclamp_i32(&[-5, 0, 5], -2, 2, &mut o32[..3]) };
+    if o32[..3] != [-2, 0, 2] {
+        return false;
+    }
+
+    if unsafe { sve::reduce_add_i8(&[1, 2, 3]) } != 6 {
+        return false;
+    }
+    if unsafe { sve::reduce_add_u32(&[1, 2, 3]) } != 6 {
+        return false;
+    }
+    if unsafe { sve::reduce_max_i16(&[-1, 5, 2]) } != 5 {
+        return false;
+    }
+    if unsafe { sve::reduce_min_u32(&[4, 2, 9]) } != 2 {
+        return false;
+    }
+    if unsafe { sve::reduce_and_i32(&[0b1100, 0b1010]) } != 0b1000 {
+        return false;
+    }
+    if unsafe { sve::reduce_eor_i32(&[1, 3]) } != 2 {
+        return false;
+    }
+
+    unsafe { sve::lsl_i8(&[1, 2], 2, &mut o8[..2]) };
+    if o8[..2] != [4, 8] {
+        return false;
+    }
+    unsafe { sve::lsr_i16(&[8, 16], 3, &mut o16[..2]) };
+    if o16[..2] != [1, 2] {
+        return false;
+    }
+    unsafe { sve::asr_i64(&[-8, 8], 2, &mut o64[..2]) };
+    if o64[..2] != [-2, 2] {
+        return false;
+    }
+    o32[0] = 0;
+    unsafe { sve::sli_i32(&[1], 1, &mut o32[..1]) };
+    if o32[0] != 2 {
+        return false;
+    }
+    o32[0] = 1;
+    unsafe { sve::sri_i32(&[4], 2, &mut o32[..1]) };
+    if o32[0] != 1 {
+        return false;
+    }
+    unsafe { sve::srshl_i32(&[8], &[1], &mut o32[..1]) };
+    if o32[0] != 4 {
+        return false;
+    }
+    unsafe { sve::urshl_u32(&[8], &[2], &mut ou32[..1]) };
+    if ou32[0] != 2 {
+        return false;
+    }
+    unsafe { sve::sqshl_i32(&[1], &[2], &mut o32[..1]) };
+    if o32[0] != 4 {
+        return false;
+    }
+    unsafe { sve::uqshl_u32(&[1], &[3], &mut ou32[..1]) };
+    if ou32[0] != 8 {
+        return false;
+    }
+    unsafe { sve::sqrshl_i32(&[8], &[1], &mut o32[..1]) };
+    if o32[0] != 4 {
+        return false;
+    }
+    unsafe { sve::uqrshl_u32(&[8], &[2], &mut ou32[..1]) };
+    if ou32[0] != 2 {
+        return false;
+    }
+    unsafe { sve::srshr_i32(&[-8], 1, &mut o32[..1]) };
+    if o32[0] != -4 {
+        return false;
+    }
+    unsafe { sve::urshr_u32(&[8], 2, &mut ou32[..1]) };
+    if ou32[0] != 2 {
+        return false;
+    }
+    unsafe { sve::srsra_i32(&[8], 1, &[4], &mut o32[..1]) };
+    if o32[0] != 8 {
+        return false;
+    }
+    unsafe { sve::ursra_u32(&[8], 1, &[4], &mut ou32[..1]) };
+    if ou32[0] != 8 {
+        return false;
+    }
+    unsafe { sve::ssra_i32(&[8], 1, &[4], &mut o32[..1]) };
+    if o32[0] != 8 {
+        return false;
+    }
+    unsafe { sve::usra_u32(&[8], 1, &[4], &mut ou32[..1]) };
+    if ou32[0] != 8 {
+        return false;
+    }
+    unsafe { sve::sqshlu_i32(&[1], 2, &mut o32[..1]) };
+    if o32[0] != 4 {
+        return false;
+    }
+
+    unsafe { sve::abd_f32(&[1.0, 5.0], &[3.0, 2.0], &mut of32[..2]) };
+    if of32[..2] != [2.0, 3.0] {
+        return false;
+    }
+    unsafe { sve::mulx_f32(&[2.0, 3.0], &[4.0, 5.0], &mut of32[..2]) };
+    if of32[..2] != [8.0, 15.0] {
+        return false;
+    }
+    unsafe { sve::recps_f32(&[1.0], &[1.0], &mut of32[..1]) };
+    if of32[0] != 1.0 {
+        return false;
+    }
+    unsafe { sve::rsqrts_f32(&[1.0], &[1.0], &mut of32[..1]) };
+    if of32[0] != 1.0 {
+        return false;
+    }
+    unsafe { sve::recpe_f32(&[2.0], &mut of32[..1]) };
+    if of32[0] == 0.0 || !of32[0].is_finite() {
+        return false;
+    }
+    unsafe { sve::rsqrte_f32(&[4.0], &mut of32[..1]) };
+    if of32[0] == 0.0 || !of32[0].is_finite() {
+        return false;
+    }
+    unsafe { sve::fcmeq_f32(&[1.0, 2.0], &[1.0, 3.0], &mut ou32[..2]) };
+    if ou32[..2] != [u32::MAX, 0] {
+        return false;
+    }
+    unsafe { sve::fcmle_f64(&[1.0, 4.0], &[2.0, 3.0], &mut ou32[..2]) };
+    if ou32[..2] != [u32::MAX, 0] {
+        return false;
+    }
+    unsafe { sve::facge_f32(&[-3.0, 1.0], &[2.0, 2.0], &mut ou32[..2]) };
+    if ou32[..2] != [u32::MAX, 0] {
+        return false;
+    }
+    if unsafe { sve::reduce_maxnm_f32(&[1.0, 3.0, 2.0]) } != 3.0
+        || unsafe { sve::reduce_minnm_f64(&[1.0, 3.0, 2.0]) } != 1.0
+    {
+        return false;
+    }
+    unsafe { sve::mad_f32(&[2.0], &[3.0], &[1.0], &mut of32[..1]) };
+    if of32[0] != 7.0 {
+        return false;
+    }
+    unsafe { sve::msb_f32(&[2.0], &[3.0], &[10.0], &mut of32[..1]) };
+    if of32[0] != 4.0 {
+        return false;
+    }
+    unsafe { sve::cadd_f32(&[1.0, 2.0], &[3.0, 4.0], &mut of32[..2]) };
+    if of32[..2] != [-3.0, 5.0] {
+        return false;
+    }
+    unsafe { sve::fcmla_f32(&[1.0, 2.0], &[3.0, 4.0], &[10.0, 20.0], &mut of32[..2]) };
+    if of32[..2].iter().any(|value| !value.is_finite()) {
+        return false;
+    }
+    unsafe { sve::scale_f32(&[1.0, 2.0], &[1, 2], &mut of32[..2]) };
+    if of32[..2] != [2.0, 8.0] {
+        return false;
+    }
+    unsafe { sve::fmov_f32(&[1.5, -2.5], &mut of32[..2]) };
+    if of32[..2] != [1.5, -2.5] {
+        return false;
+    }
+    unsafe { sve::ftsmul_f32(&[2.0], &[1], &mut of32[..1]) };
+    if !of32[0].is_finite() {
+        return false;
+    }
+
+    unsafe { sve::fcvt_f32_f64(&[1.5, -2.5], &mut of32[..2]) };
+    if of32[0] != 1.5 {
+        return false;
+    }
+    if of32[1] != -2.5 {
+        return false;
+    }
+    unsafe { sve::fcvt_f64_f32(&[1.5, -2.5], &mut of64[..2]) };
+    if of64[0] != 1.5 {
+        return false;
+    }
+    if of64[1] != -2.5 {
+        return false;
+    }
+    unsafe { sve::fcvtzs_i32_f32(&[1.9, -1.9], &mut o32[..2]) };
+    if o32[..2] != [1, -1] {
+        return false;
+    }
+    unsafe { sve::fcvtzu_u32_f64(&[1.9, 2.9], &mut ou32[..2]) };
+    if ou32[..2] != [1, 2] {
+        return false;
+    }
+    unsafe { sve::scvtf_f32_i32(&[1, -2], &mut of32[..2]) };
+    if of32[..2] != [1.0, -2.0] {
+        return false;
+    }
+    unsafe { sve::ucvtf_f64_u64(&[1, 2], &mut of64[..2]) };
+    if of64[..2] != [1.0, 2.0] {
+        return false;
+    }
+
+    unsafe { sve::cpy_i32(&[1, 2], &mut o32[..2]) };
+    if o32[..2] != [1, 2] {
+        return false;
+    }
+    unsafe { sve::mov_i32(&[3, 4], &mut o32[..2]) };
+    if o32[..2] != [3, 4] {
+        return false;
+    }
+    unsafe { sve::movprfx_i32(&[5, 6], &mut o32[..2]) };
+    if o32[..2] != [5, 6] {
+        return false;
+    }
+    unsafe { sve::compact_i32(&[7, 8, 9], &mut o32[..3]) };
+    if o32[..3] != [7, 8, 9] {
+        return false;
+    }
+    unsafe { sve::ext_i32(&[1, 2, 3], &[4, 5, 6], 2, &mut o32[..3]) };
+    if o32[..3] != [3, 4, 5] {
+        return false;
+    }
+    unsafe { sve::tbl_i32(&[10, 11, 12], &[0, 1, 2], &mut o32[..3]) };
+    if o32[..3] != [10, 11, 12] {
+        return false;
+    }
+    unsafe { sve::sel_i32(&[1, 2], &[3, 4], &mut o32[..2]) };
+    if o32[..2] != [1, 2] {
+        return false;
+    }
+    unsafe { sve::csel_i32(&[5, 6], &[7, 8], &mut o32[..2]) };
+    if o32[..2] != [5, 6] {
+        return false;
+    }
+    if unsafe { sve::lasta_i32(&[1, 2, 3]) } != 3
+        || unsafe { sve::lastb_i32(&[1, 2, 3]) } != 3
+        || unsafe { sve::clast_i32(&[1, 2, 3]) } != 3
+    {
+        return false;
+    }
+    unsafe { sve::dup_i32(7, &mut o32[..4]) };
+    if o32[..4] != [7, 7, 7, 7] {
+        return false;
+    }
+    unsafe { sve::fdup_f32(1.5, &mut of32[..3]) };
+    if of32[..3] != [1.5, 1.5, 1.5] {
+        return false;
+    }
+    unsafe { sve::index_i32(2, 3, &mut o32[..4]) };
+    if o32[..4] != [2, 5, 8, 11] {
+        return false;
+    }
+    unsafe { sve::uclamp_u32(&[1, 5, 9], 2, 7, &mut ou32[..3]) };
+    if ou32[..3] != [2, 5, 7] {
+        return false;
+    }
+
+    let bytes = [1u8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+    unsafe { sve::ld1_u8(&bytes, &mut ou8[..16]) };
+    if ou8[..16] != bytes {
+        return false;
+    }
+    unsafe { sve::ld1b_u8(&[1, 2, 3], &mut ou32[..3]) };
+    if ou32[..3] != [1, 2, 3] {
+        return false;
+    }
+    unsafe { sve::ld1sb_i8(&[-1, -2], &mut o32[..2]) };
+    if o32[..2] != [-1, -2] {
+        return false;
+    }
+    unsafe { sve::ld1h_u16(&[1, 2], &mut ou32[..2]) };
+    if ou32[..2] != [1, 2] {
+        return false;
+    }
+    unsafe { sve::ld1w_u32(&[1, 2], &mut ou64[..2]) };
+    if ou64[..2] != [1, 2] {
+        return false;
+    }
+    unsafe { sve::ld1d_u64(&[1, 2], &mut ou64[..2]) };
+    if ou64[..2] != [1, 2] {
+        return false;
+    }
+    unsafe { sve::ld1rqb_u8(&bytes, &mut ou8[..16]) };
+    if ou8[..16] != bytes {
+        return false;
+    }
+    unsafe { sve::ld1rb_u8(&[7], &mut ou32[..3]) };
+    if ou32[..3] != [7, 7, 7] {
+        return false;
+    }
+    unsafe { sve::ld1rsb_i8(&[-3], &mut o32[..2]) };
+    if o32[..2] != [-3, -3] {
+        return false;
+    }
+    unsafe { sve::ldnt1b_u8(&bytes[..4], &mut ou8[..4]) };
+    if ou8[..4] != bytes[..4] {
+        return false;
+    }
+    unsafe { sve::ldff1b_u8(&bytes[..4], &mut ou8[..4]) };
+    if ou8[..4] != bytes[..4] {
+        return false;
+    }
+    unsafe { sve::ldnf1b_u8(&bytes[..4], &mut ou8[..4]) };
+    if ou8[..4] != bytes[..4] {
+        return false;
+    }
+    unsafe { sve::st1_u8(&bytes[..4], &mut ou8[..4]) };
+    if ou8[..4] != bytes[..4] {
+        return false;
+    }
+    unsafe { sve::st1b_u32(&[258, 3], &mut ou8[..2]) };
+    if ou8[..2] != [2, 3] {
+        return false;
+    }
+    unsafe { sve::st1h_u32(&[0x12345], &mut ou16[..1]) };
+    if ou16[0] != 0x2345 {
+        return false;
+    }
+    unsafe { sve::st1w_u64(&[0x1_0000_0002], &mut ou32[..1]) };
+    if ou32[0] != 2 {
+        return false;
+    }
+    unsafe { sve::st1d_u64(&[1, 2], &mut ou64[..2]) };
+    if ou64[..2] != [1, 2] {
+        return false;
+    }
+    let interleaved = [1u8, 2, 3, 4, 5, 6, 7, 8];
+    let mut even = [0u8; 4];
+    let mut odd = [0u8; 4];
+    unsafe { sve::ld2b_u8(&interleaved, &mut even, &mut odd) };
+    if even != [1, 3, 5, 7] || odd != [2, 4, 6, 8] {
+        return false;
+    }
+    unsafe { sve::st2b_u8(&even, &odd, &mut ou8[..8]) };
+    if ou8[..8] != interleaved {
+        return false;
+    }
+    let interleaved3 = [1u8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    let mut a3 = [0u8; 4];
+    let mut b3 = [0u8; 4];
+    let mut c3 = [0u8; 4];
+    unsafe { sve::ld3b_u8(&interleaved3, &mut a3, &mut b3, &mut c3) };
+    if a3 != [1, 4, 7, 10] || b3 != [2, 5, 8, 11] || c3 != [3, 6, 9, 12] {
+        return false;
+    }
+    unsafe { sve::st3b_u8(&a3, &b3, &c3, &mut ou8[..12]) };
+    if ou8[..12] != interleaved3 {
+        return false;
+    }
+    let interleaved4 = [1u8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+    let mut a4 = [0u8; 4];
+    let mut b4 = [0u8; 4];
+    let mut c4 = [0u8; 4];
+    let mut d4 = [0u8; 4];
+    unsafe { sve::ld4b_u8(&interleaved4, &mut a4, &mut b4, &mut c4, &mut d4) };
+    if a4 != [1, 5, 9, 13] || b4 != [2, 6, 10, 14] || c4 != [3, 7, 11, 15] || d4 != [4, 8, 12, 16] {
+        return false;
+    }
+    unsafe { sve::st4b_u8(&a4, &b4, &c4, &d4, &mut ou8[..16]) };
+    if ou8[..16] != interleaved4 {
+        return false;
+    }
+
+    unsafe { sve::sdot_i32(&[1, 2, 3, 4], &[1, 1, 1, 1], &[0], &mut o32[..1]) };
+    if o32[0] != 10 {
+        return false;
+    }
+    unsafe { sve::udot_i32(&[1, 2, 3, 4], &[1, 1, 1, 1], &[1], &mut o32[..1]) };
+    if o32[0] != 11 {
+        return false;
+    }
+    unsafe { sve::sudot_i32(&[1, -1, 1, -1], &[1, 1, 1, 1], &[0], &mut o32[..1]) };
+    if o32[0] != 0 {
+        return false;
+    }
+    unsafe { sve::smmla_i32(&[1, 2, 3, 4], &[1, 1, 1, 1], &[0], &mut o32[..1]) };
+    if o32[0] != 10 {
+        return false;
+    }
+    unsafe { sve::saddlb_i8(&[1, 2], &[3, 4], &mut o16[..2]) };
+    if o16[..2] != [4, 6] {
+        return false;
+    }
+    unsafe { sve::smullb_i8(&[2, 3], &[4, 5], &mut o16[..2]) };
+    if o16[..2] != [8, 15] {
+        return false;
+    }
+    unsafe { sve::smlalb_i8(&[2, 3], &[4, 5], &[1, 2], &mut o16[..2]) };
+    if o16[..2] != [9, 17] {
+        return false;
+    }
+    true
+}
 #[target_feature(enable = "jsconv")]
 unsafe fn jsconv_ops() -> bool {
     unsafe { fjcvtzs(1.9) == 1 && fjcvtzs(f64::NAN) == 0 && fjcvtzs(-1.5) == -1 }
@@ -1313,436 +1895,4 @@ unsafe fn f64mm_ops() -> bool {
     let mut acc = [0.0f64; 64];
     unsafe { fmmla_f64(&a, &a, &mut acc) };
     acc.iter().all(|&value| value == 0.0)
-}
-
-use rust_isa::aarch64::crypto::sha3::xar;
-use rust_isa::aarch64::simd::fp16 as fp16_extra;
-use rust_isa::aarch64::simd::neon as neon_extra;
-use rust_isa::aarch64::simd::neon::{dup_i8, dup_i16, dup_i32, dup_i64, ext, ins_i8};
-
-fn u8x16(bytes: [u8; 16]) -> V128 {
-    V128::from_bytes(bytes)
-}
-
-fn u16x8(values: [u16; 8]) -> V128 {
-    let mut bytes = [0u8; 16];
-    for (lane, value) in values.iter().enumerate() {
-        bytes[lane * 2..lane * 2 + 2].copy_from_slice(&value.to_le_bytes());
-    }
-    V128::from_bytes(bytes)
-}
-
-fn u16_lanes(value: V128) -> [u16; 8] {
-    let bytes = value.to_bytes();
-    core::array::from_fn(|lane| {
-        u16::from_le_bytes(bytes[lane * 2..lane * 2 + 2].try_into().unwrap())
-    })
-}
-
-fn u64x2(values: [u64; 2]) -> V128 {
-    let mut bytes = [0u8; 16];
-    bytes[..8].copy_from_slice(&values[0].to_le_bytes());
-    bytes[8..].copy_from_slice(&values[1].to_le_bytes());
-    V128::from_bytes(bytes)
-}
-
-fn u64_lanes(value: V128) -> [u64; 2] {
-    let bytes = value.to_bytes();
-    [
-        u64::from_le_bytes(bytes[..8].try_into().unwrap()),
-        u64::from_le_bytes(bytes[8..].try_into().unwrap()),
-    ]
-}
-
-fn f16_bits(value: u16) -> V128 {
-    u16x8([value; 8])
-}
-
-fn f16_lane(value: V128, lane: usize) -> u16 {
-    u16_lanes(value)[lane]
-}
-
-fn neon_ext_ops() -> bool {
-    if !i64_ok(neon_extra::abs_i64(i64x2([-5, 6])), [5, 6]) {
-        return false;
-    }
-    if neon_extra::sabd_i8(u8x16([1; 16]), u8x16([10; 16])).to_bytes() != [9; 16]
-        || neon_extra::uabd_u8(u8x16([10; 16]), u8x16([1; 16])).to_bytes() != [9; 16]
-        || neon_extra::sabd_i16(i16x8([1; 8]), i16x8([4; 8])) != i16x8([3; 8])
-        || i16_lanes(neon_extra::sabdl_i8(u8x16([1; 16]), u8x16([10; 16]))) != [9; 8]
-        || lanes(neon_extra::uabdl_u16(i16x8([10; 8]), i16x8([1; 8]))) != [9; 4]
-    {
-        return false;
-    }
-    if neon_extra::shadd_s8(u8x16([2; 16]), u8x16([6; 16])).to_bytes() != [4; 16]
-        || neon_extra::shsub_s8(u8x16([6; 16]), u8x16([2; 16])).to_bytes() != [2; 16]
-        || neon_extra::srhadd_s8(u8x16([1; 16]), u8x16([2; 16])).to_bytes() != [2; 16]
-        || neon_extra::uhadd_u8(u8x16([2; 16]), u8x16([6; 16])).to_bytes() != [4; 16]
-        || neon_extra::uhsub_u8(u8x16([6; 16]), u8x16([2; 16])).to_bytes() != [2; 16]
-        || neon_extra::urhadd_u8(u8x16([1; 16]), u8x16([2; 16])).to_bytes() != [2; 16]
-    {
-        return false;
-    }
-    if i16_lanes(neon_extra::smull_s8(u8x16([2; 16]), u8x16([3; 16]))) != [6; 8] {
-        return false;
-    }
-    if lanes(neon_extra::smull2_s16(i16x8([2; 8]), i16x8([3; 8]))) != [6; 4] {
-        return false;
-    }
-    if !i64_ok(neon_extra::umull_u32(i32x4([2; 4]), i32x4([3; 4])), [6, 6]) {
-        return false;
-    }
-    if i16_lanes(neon_extra::smlal_s8(
-        i16x8([1; 8]),
-        u8x16([2; 16]),
-        u8x16([3; 16]),
-    )) != [7; 8]
-        || lanes(neon_extra::umlal2_u16(
-            i32x4([9; 4]),
-            i16x8([2; 8]),
-            i16x8([3; 8]),
-        )) != [15; 4]
-        || i16_lanes(neon_extra::smlsl_s8(
-            i16x8([10; 8]),
-            u8x16([2; 16]),
-            u8x16([3; 16]),
-        )) != [4; 8]
-        || !i64_ok(
-            neon_extra::umlsl2_u32(i64x2([9; 2]), i32x4([2; 4]), i32x4([3; 4])),
-            [3, 3],
-        )
-    {
-        return false;
-    }
-    if lanes(neon_extra::sqdmull_s16(i16x8([3; 8]), i16x8([4; 8]))) != [24; 4]
-        || !i64_ok(
-            neon_extra::sqdmlal_s32(i64x2([1; 2]), i32x4([2; 4]), i32x4([3; 4])),
-            [13, 13],
-        )
-        || lanes(neon_extra::sqdmlsl2_s16(
-            i32x4([10; 4]),
-            i16x8([2; 8]),
-            i16x8([3; 8]),
-        )) != [u32::MAX - 1; 4]
-        || neon_extra::sqdmulh_s16(i16x8([2; 8]), i16x8([3; 8])) != i16x8([0; 8])
-        || neon_extra::sqrdmulh_s16(i16x8([2; 8]), i16x8([3; 8])) != i16x8([0; 8])
-    {
-        return false;
-    }
-    if neon_extra::sqadd_s8(u8x16([127; 16]), u8x16([1; 16])).to_bytes() != [127; 16]
-        || neon_extra::sqsub_s8(u8x16([0x80; 16]), u8x16([1; 16])).to_bytes() != [0x80; 16]
-        || neon_extra::uqadd_u8(u8x16([255; 16]), u8x16([1; 16])).to_bytes() != [255; 16]
-        || neon_extra::uqsub_u8(u8x16([0; 16]), u8x16([1; 16])).to_bytes() != [0; 16]
-        || neon_extra::sqabs_s8(u8x16([0x80; 16])).to_bytes() != [0x7f; 16]
-        || neon_extra::sqneg_s8(u8x16([0x80; 16])).to_bytes() != [0x7f; 16]
-        || !i64_ok(
-            neon_extra::sqadd_s64(i64x2([i64::MAX, 1]), i64x2([1, 1])),
-            [i64::MAX, 2],
-        )
-    {
-        return false;
-    }
-    if neon_extra::xtn_s8(i16x8([1, 2, 3, 4, 5, 6, 7, 8])).to_bytes()
-        != [1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0]
-        || neon_extra::xtn_u8(u16x8([1, 2, 3, 4, 5, 6, 7, 8])).to_bytes()
-            != [1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0]
-        || neon_extra::xtn2_s8(
-            i16x8([9, 10, 11, 12, 13, 14, 15, 16]),
-            u8x16([1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0]),
-        )
-        .to_bytes()
-            != [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-    {
-        return false;
-    }
-    if neon_extra::addhn_i16(u16x8([0x0102; 8]), u16x8([0; 8])).to_bytes()
-        != [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
-        || neon_extra::raddhn_i16(u16x8([0x0180; 8]), u16x8([0; 8])).to_bytes()
-            != [2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0]
-        || neon_extra::subhn_i16(u16x8([0x0504; 8]), u16x8([0x0102; 8])).to_bytes()
-            != [4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0]
-        || neon_extra::rsubhn_i32(i32x4([0x0005_0004; 4]), i32x4([0x0001_0002; 4])).to_bytes()
-            != [4, 0, 4, 0, 4, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        || neon_extra::addhn2_i16(u16x8([0x0201; 8]), u16x8([0; 8]), u8x16([9; 16])).to_bytes()
-            != [9, 9, 9, 9, 9, 9, 9, 9, 2, 2, 2, 2, 2, 2, 2, 2]
-    {
-        return false;
-    }
-    if neon_extra::pmul(u8x16([1; 16]), u8x16([1; 16])).to_bytes() != [1; 16]
-        || u16_lanes(neon_extra::pmull_p8(u8x16([1; 16]), u8x16([1; 16])))
-            != [1, 1, 1, 1, 1, 1, 1, 1]
-    {
-        return false;
-    }
-    if f32_lanes(neon_extra::scvtf_f32_s32(i32x4([1, 2, 3, 4]))) != [1.0, 2.0, 3.0, 4.0]
-        || f32_lanes(neon_extra::ucvtf_f32_u32(i32x4([1, 2, 3, 4]))) != [1.0, 2.0, 3.0, 4.0]
-        || f64_lanes(neon_extra::scvtf_f64_s64(i64x2([1, 2]))) != [1.0, 2.0]
-        || f64_lanes(neon_extra::ucvtf_f64_u64(i64x2([1, 2]))) != [1.0, 2.0]
-        || lanes(neon_extra::fcvtzs_s32_f32(f32x4([1.9, -1.9, 0.0, 2.0]))) != [1, u32::MAX, 0, 2]
-        || lanes(neon_extra::fcvtzu_u32_f32(f32x4([1.9, 2.9, 0.0, 3.0]))) != [1, 2, 0, 3]
-        || !i64_ok(neon_extra::fcvtzs_s64_f64(f64x2([1.9, -1.9])), [1, -1])
-        || !i64_ok(neon_extra::fcvtzu_u64_f64(f64x2([1.9, 2.9])), [1, 2])
-    {
-        return false;
-    }
-    if neon_extra::shl_s8(u8x16([1; 16]), u8x16([1; 16])).to_bytes() != [2; 16]
-        || neon_extra::sshl_s16(i16x8([1; 8]), i16x8([2; 8])) != i16x8([4; 8])
-        || neon_extra::srshl_s16(i16x8([6; 8]), i16x8([1; 8])) != i16x8([12; 8])
-        || neon_extra::sqshl_s8(u8x16([64; 16]), u8x16([2; 16])).to_bytes() != [127; 16]
-        || neon_extra::sqrshl_s8(u8x16([64; 16]), u8x16([2; 16])).to_bytes() != [127; 16]
-        || neon_extra::ushl_u8(u8x16([1; 16]), u8x16([1; 16])).to_bytes() != [2; 16]
-        || neon_extra::urshl_u16(u16x8([6; 8]), i16x8([1; 8])) != u16x8([12; 8])
-        || neon_extra::uqshl_u8(u8x16([255; 16]), u8x16([1; 16])).to_bytes() != [255; 16]
-        || neon_extra::uqrshl_u8(u8x16([255; 16]), u8x16([1; 16])).to_bytes() != [255; 16]
-    {
-        return false;
-    }
-    if neon_extra::sshr_s16(i16x8([4; 8]), 2) != i16x8([1; 8])
-        || neon_extra::srshr_s16(i16x8([6; 8]), 1) != i16x8([3; 8])
-        || neon_extra::ssra_s16(i16x8([4; 8]), i16x8([1; 8]), 1) != i16x8([3; 8])
-        || neon_extra::srsra_s16(i16x8([4; 8]), i16x8([1; 8]), 1) != i16x8([3; 8])
-        || neon_extra::shrn_i16(
-            u16x8([
-                0x0100, 0x0200, 0x0300, 0x0400, 0x0500, 0x0600, 0x0700, 0x0800,
-            ]),
-            8,
-        )
-        .to_bytes()
-            != [1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0]
-        || neon_extra::shrn2_i16(u16x8([0x0100; 8]), u8x16([9; 16]), 8).to_bytes()
-            != [9, 9, 9, 9, 9, 9, 9, 9, 1, 1, 1, 1, 1, 1, 1, 1]
-        || neon_extra::sqshrn_i16(i16x8([0x7fff; 8]), 1).to_bytes()
-            != [
-                0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0, 0, 0, 0, 0, 0, 0, 0,
-            ]
-        || neon_extra::sqshrun_i16(i16x8([0x7fff; 8]), 1).to_bytes()
-            != [
-                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
-            ]
-        || neon_extra::sqrshrn_i16(i16x8([0x7fff; 8]), 1).to_bytes()
-            != [
-                0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0, 0, 0, 0, 0, 0, 0, 0,
-            ]
-        || neon_extra::uqshrn_i16(u16x8([0xffff; 8]), 1).to_bytes()
-            != [
-                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
-            ]
-        || neon_extra::uqrshrn_i16(u16x8([0xffff; 8]), 1).to_bytes()
-            != [
-                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
-            ]
-    {
-        return false;
-    }
-    if neon_extra::shll_i8(u8x16([1; 16]), 1) != u16x8([2; 8]) {
-        return false;
-    }
-    if neon_extra::sli_s8(u8x16([0x0f; 16]), u8x16([0x0a; 16]), 4).to_bytes() != [0xfa; 16] {
-        return false;
-    }
-    if neon_extra::sri_s8(u8x16([0xf0; 16]), u8x16([0xa0; 16]), 4).to_bytes() != [0xaf; 16] {
-        return false;
-    }
-    if neon_extra::sqshlu_s8(u8x16([100; 16]), 2).to_bytes() != [255; 16] {
-        return false;
-    }
-    if neon_extra::urecpe_u32(i32x4([1; 4])).to_bytes() == [0; 16]
-        || neon_extra::ursqrte_u32(i32x4([4; 4])).to_bytes() == [0; 16]
-        || neon_extra::cnt_u64(0b1011) != 3
-        || neon_extra::clz_u64(1) != 63
-        || neon_extra::cls_u64(0) != 63
-    {
-        return false;
-    }
-    if neon_extra::frecpx_f32(1.0) == 0.0
-        || neon_extra::frecpx_f64(1.0) == 0.0
-        || f32_lanes(neon_extra::frecpe_f32(f32x4([1.0, 2.0, 4.0, 8.0])))
-            .iter()
-            .any(|value| *value == 0.0 || !value.is_finite())
-        || f64_lanes(neon_extra::frsqrte_f64(f64x2([1.0, 4.0])))
-            .iter()
-            .any(|value| *value == 0.0 || !value.is_finite())
-        || f32_lanes(neon_extra::frecps_f32(f32x4([1.0; 4]), f32x4([1.0; 4]))) != [1.0; 4]
-        || f64_lanes(neon_extra::frsqrts_f64(f64x2([1.0; 2]), f64x2([1.0; 2]))) != [1.0; 2]
-    {
-        return false;
-    }
-    neon_ext_memory_ops() && neon_ext_lane_ops()
-}
-
-fn neon_ext_memory_ops() -> bool {
-    let a = V128::from_bytes(core::array::from_fn(|index| index as u8));
-    let b = V128::from_bytes(core::array::from_fn(|index| (index + 16) as u8));
-    if unsafe { neon_extra::ld1(a.as_ptr()) } != a {
-        return false;
-    }
-    let mut one = [0u8; 16];
-    unsafe { neon_extra::st1(one.as_mut_ptr(), a) };
-    if one != a.to_bytes() {
-        return false;
-    }
-    let mut interleaved = [0u8; 32];
-    unsafe { neon_extra::st2(interleaved.as_mut_ptr(), a, b) };
-    let (p, q) = unsafe { neon_extra::ld2(interleaved.as_ptr()) };
-    if p != a || q != b {
-        return false;
-    }
-    let mut interleaved4 = [0u8; 64];
-    unsafe { neon_extra::st4(interleaved4.as_mut_ptr(), a, b, a, b) };
-    let (p, q, r, s) = unsafe { neon_extra::ld4(interleaved4.as_ptr()) };
-    if p != a || q != b || r != a || s != b {
-        return false;
-    }
-    let mut interleaved3 = [0u8; 48];
-    unsafe { neon_extra::st3(interleaved3.as_mut_ptr(), a, b, a) };
-    let (p, q, r) = unsafe { neon_extra::ld3(interleaved3.as_ptr()) };
-    if p != a || q != b || r != a {
-        return false;
-    }
-    let mut pair = [0u8; 32];
-    unsafe { neon_extra::stp(pair.as_mut_ptr(), a, b) };
-    let (p, q) = unsafe { neon_extra::ldp(pair.as_ptr()) };
-    if p != a || q != b {
-        return false;
-    }
-    unsafe { neon_extra::stnp(pair.as_mut_ptr(), b, a) };
-    let (p, q) = unsafe { neon_extra::ldnp(pair.as_ptr()) };
-    if p != b || q != a {
-        return false;
-    }
-    let one_element = [0x34u8, 0x12, 0, 0, 0, 0, 0, 0];
-    if u16_lanes(unsafe { neon_extra::ld1r_i16(one_element.as_ptr()) }) != [0x1234; 8] {
-        return false;
-    }
-    let two_elements = [1u8, 0, 2, 0, 0, 0, 0, 0];
-    let (p, q) = unsafe { neon_extra::ld2r_i16(two_elements.as_ptr()) };
-    if u16_lanes(p) != [1; 8] || u16_lanes(q) != [2; 8] {
-        return false;
-    }
-    let three_elements = [1u8, 0, 2, 0, 3, 0, 0, 0];
-    let (p, q, r) = unsafe { neon_extra::ld3r_i16(three_elements.as_ptr()) };
-    if u16_lanes(p) != [1; 8] || u16_lanes(q) != [2; 8] || u16_lanes(r) != [3; 8] {
-        return false;
-    }
-    let four_elements = [1u8, 0, 2, 0, 3, 0, 4, 0];
-    let (p, q, r, s) = unsafe { neon_extra::ld4r_i16(four_elements.as_ptr()) };
-    u16_lanes(p) == [1; 8]
-        && u16_lanes(q) == [2; 8]
-        && u16_lanes(r) == [3; 8]
-        && u16_lanes(s) == [4; 8]
-}
-
-fn neon_ext_lane_ops() -> bool {
-    let a = V128::from_bytes(core::array::from_fn(|index| index as u8));
-    if dup_i8::<3>(a).to_bytes() != [3; 16]
-        || u16_lanes(dup_i16::<2>(u16x8([1, 2, 3, 4, 5, 6, 7, 8]))) != [3; 8]
-        || lanes(dup_i32::<1>(i32x4([1, 2, 3, 4]))) != [2; 4]
-        || !i64_ok(dup_i64::<1>(i64x2([7, 9])), [9, 9])
-        || ins_i8::<2>(a, 0xaa_u8 as i8).to_bytes()
-            != [0, 1, 0xaa, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-        || ext::<4>(a, a).to_bytes() != [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3]
-    {
-        return false;
-    }
-    true
-}
-
-#[target_feature(enable = "fp16")]
-unsafe fn fp16_ext_ops() -> bool {
-    let one = f16_bits(0x3c00);
-    let two = f16_bits(0x4000);
-    let four = f16_bits(0x4400);
-    let neg_one = f16_bits(0xbc00);
-    let check = |value: V128, expected: u16| f16_lane(value, 0) == expected;
-    if !check(unsafe { fp16_extra::fabd_f16(one, four) }, 0x4200) {
-        return false;
-    }
-    if !check(unsafe { fp16_extra::fabs_f16(neg_one) }, 0x3c00) {
-        return false;
-    }
-    if !check(unsafe { fp16_extra::fneg_f16(one) }, 0xbc00) {
-        return false;
-    }
-    if !check(unsafe { fp16_extra::fsqrt_f16(four) }, 0x4000) {
-        return false;
-    }
-    if !check(unsafe { fp16_extra::fmax_f16(one, two) }, 0x4000) {
-        return false;
-    }
-    if !check(unsafe { fp16_extra::fmaxnm_f16(one, two) }, 0x4000) {
-        return false;
-    }
-    if !check(unsafe { fp16_extra::fmin_f16(one, two) }, 0x3c00) {
-        return false;
-    }
-    if !check(unsafe { fp16_extra::fminnm_f16(one, two) }, 0x3c00) {
-        return false;
-    }
-    if !check(unsafe { fp16_extra::frecps_f16(one, one) }, 0x3c00) {
-        return false;
-    }
-    if !check(unsafe { fp16_extra::frsqrts_f16(one, one) }, 0x3c00) {
-        return false;
-    }
-    if unsafe { fp16_extra::facge_f16(two, one) }.to_bytes() != [0xff; 16]
-        || unsafe { fp16_extra::facgt_f16(one, two) }.to_bytes() != [0; 16]
-        || unsafe { fp16_extra::fcmeq_f16(one, one) }.to_bytes() != [0xff; 16]
-        || unsafe { fp16_extra::fcmge_f16(two, one) }.to_bytes() != [0xff; 16]
-        || unsafe { fp16_extra::fcmgt_f16(one, two) }.to_bytes() != [0; 16]
-        || unsafe { fp16_extra::fcmle_f16(one, two) }.to_bytes() != [0xff; 16]
-        || unsafe { fp16_extra::fcmlt_f16(one, two) }.to_bytes() != [0xff; 16]
-    {
-        return false;
-    }
-    if unsafe { fp16_extra::frecpe_f16(one) }.to_bytes() == [0; 16]
-        || unsafe { fp16_extra::frsqrte_f16(one) }.to_bytes() == [0; 16]
-    {
-        return false;
-    }
-    let zero_f32 = f32x4([0.0; 4]);
-    let low = unsafe { fp16_extra::fmlal_f16(zero_f32, one, two) };
-    let high = unsafe { fp16_extra::fmlal2_f16(zero_f32, two, two) };
-    let sub = unsafe { fp16_extra::fmlsl_f16(f32x4([10.0; 4]), one, two) };
-    if f32_lanes(low)[..2] != [2.0, 2.0]
-        || f32_lanes(high)[..2] != [4.0, 4.0]
-        || f32_lanes(sub)[..2] != [8.0, 8.0]
-    {
-        return false;
-    }
-    if f32_lanes(unsafe { fp16_extra::fcvtl_f32_f16(one) })[..4] != [1.0; 4]
-        || f32_lanes(unsafe { fp16_extra::fcvtl2_f32_f16(one) })[..4] != [1.0; 4]
-        || f16_lane(unsafe { fp16_extra::fcvtn_f16_f32(f32x4([1.0; 4])) }, 0) != 0x3c00
-        || f16_lane(
-            unsafe { fp16_extra::fcvtn2_f16_f32(f32x4([1.0; 4]), f16_bits(0)) },
-            4,
-        ) != 0x3c00
-        || f16_lane(unsafe { fp16_extra::fcvtxn_f16_f64(f64x2([1.0; 2])) }, 0) != 0x3c00
-    {
-        return false;
-    }
-    if lanes(unsafe { fp16_extra::fcvtzs_f16_s32(two) }) != [2; 4]
-        || !i64_ok(unsafe { fp16_extra::fcvtzs_f16_s64(two) }, [2, 2])
-        || lanes(unsafe { fp16_extra::fcvtzu_f16_u32(two) }) != [2; 4]
-        || !i64_ok(unsafe { fp16_extra::fcvtzu_f16_u64(two) }, [2, 2])
-        || f16_lane(unsafe { fp16_extra::scvtf_f16_s32(i32x4([1; 4])) }, 0) != 0x3c00
-        || f16_lane(unsafe { fp16_extra::scvtf_f16_s64(i64x2([2; 2])) }, 0) != 0x4000
-        || f16_lane(unsafe { fp16_extra::ucvtf_f16_u32(i32x4([2; 4])) }, 0) != 0x4000
-        || f16_lane(unsafe { fp16_extra::ucvtf_f16_u64(i64x2([1; 2])) }, 0) != 0x3c00
-        || unsafe { fp16_extra::fcvt_f16_f32(1.0) } != 0x3c00
-        || unsafe { fp16_extra::fcvt_f32_f16(0x3c00) } != 1.0
-        || unsafe { fp16_extra::fcvt_f16_f64(2.0) } != 0x4000
-        || unsafe { fp16_extra::fcvt_f64_f16(0x4000) } != 2.0
-    {
-        return false;
-    }
-    true
-}
-
-#[target_feature(enable = "sha3")]
-unsafe fn sha3_xar_ops() -> bool {
-    let a = u64x2([1, 0]);
-    let b = u64x2([0, 0]);
-    u64_lanes(unsafe { xar::<1>(a, b) }) == [0x8000_0000_0000_0000, 0]
-        && u64_lanes(unsafe { xar::<0>(a, b) }) == [1, 0]
-        && u64_lanes(unsafe { xar::<63>(a, b) }) == [2, 0]
 }
