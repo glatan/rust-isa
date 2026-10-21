@@ -27,3 +27,32 @@ void rust_isa_riscv_zfh_flh(const uint8_t *p, uint8_t *out) {
 void rust_isa_riscv_zfh_fsh(uint8_t *p, const uint8_t *a) {
     __builtin_memcpy(p, a, 2);
 }
+
+uint16_t rust_isa_riscv_zfh_fcvt_h_s(uint32_t value) {
+    float f;
+    __builtin_memcpy(&f, &value, 4);
+    return bits((_Float16)f);
+}
+uint32_t rust_isa_riscv_zfh_fcvt_s_h(uint16_t value) {
+    float f = (float)from_bits(value);
+    uint32_t out;
+    __builtin_memcpy(&out, &f, 4);
+    return out;
+}
+uint16_t rust_isa_riscv_zfh_fcvt_h_d(uint64_t value) {
+    double d;
+    __builtin_memcpy(&d, &value, 8);
+    return bits((_Float16)d);
+}
+uint64_t rust_isa_riscv_zfh_fcvt_d_h(uint16_t value) {
+    double d = (double)from_bits(value);
+    uint64_t out;
+    __builtin_memcpy(&out, &d, 8);
+    return out;
+}
+int32_t rust_isa_riscv_zfh_fcvt_w_h(uint16_t value) { return (int32_t)from_bits(value); }
+uint32_t rust_isa_riscv_zfh_fcvt_wu_h(uint16_t value) { return (uint32_t)from_bits(value); }
+uint16_t rust_isa_riscv_zfh_fcvt_h_w(int32_t value) { return bits((_Float16)value); }
+uint16_t rust_isa_riscv_zfh_fcvt_h_wu(uint32_t value) { return bits((_Float16)value); }
+int16_t rust_isa_riscv_zfh_fmv_x_h(uint16_t value) { return (int16_t)value; }
+uint16_t rust_isa_riscv_zfh_fmv_h_x(int16_t value) { return (uint16_t)value; }
