@@ -29,6 +29,10 @@ use rust_isa::powerpc::simd::vsx::{
     xvor, xvperm, xvrdpi, xvrdpic, xvrdpim, xvrdpip, xvrdpiz, xvsel, xvsl, xvsldoi, xvsr, xvsub,
     xvxor,
 };
+use rust_isa::powerpc::simd::vsx::{
+    xscvdpsp, xscvdpspn, xscvspdp, xscvspdpn, xvcvdpsxds, xvcvdpsxws, xvcvdpuxds, xvcvdpuxws,
+    xvcvsxdsp, xvcvsxwsp, xvcvuxdsp, xvcvuxwsp,
+};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {
@@ -257,6 +261,18 @@ fn vsx_ops() -> bool {
             && xvcpsgn(f64x2([1.0, 1.0]), f64x2([-2.0, 2.0])).to_bytes() != [0; 16]
             && xvsldoi::<4>(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes()
                 != [0; 16]
+            && f32_lanes(xscvdpsp(f64x2([1.5, 2.5])))[0] == 1.5
+            && f32_lanes(xscvdpspn(f64x2([1.5, 2.5])))[0] == 1.5
+            && f64_lanes(xscvspdp(f32x4([1.5, 2.5, 3.5, 4.5])))[0] == 1.5
+            && f64_lanes(xscvspdpn(f32x4([1.5, 2.5, 3.5, 4.5])))[0] == 1.5
+            && xvcvsxdsp(V128::from_bytes([1; 16])).to_bytes() != [0; 16]
+            && xvcvuxdsp(V128::from_bytes([1; 16])).to_bytes() != [0; 16]
+            && xvcvsxwsp(V128::from_bytes([1; 16])).to_bytes() != [0; 16]
+            && xvcvuxwsp(V128::from_bytes([1; 16])).to_bytes() != [0; 16]
+            && xvcvdpsxds(f64x2([1.0, 2.0])).to_bytes() != [0; 16]
+            && xvcvdpsxws(f64x2([1.0, 2.0])).to_bytes() != [0; 16]
+            && xvcvdpuxds(f64x2([1.0, 2.0])).to_bytes() != [0; 16]
+            && xvcvdpuxws(f64x2([1.0, 2.0])).to_bytes() != [0; 16]
     }
 }
 
