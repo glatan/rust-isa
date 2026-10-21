@@ -357,3 +357,10 @@ pub unsafe fn xvsub_w(a: V256, b: V256) -> V256 {
 pub unsafe fn xvmul_w(a: V256, b: V256) -> V256 {
     unsafe { mul(a, b) }
 }
+
+/// `xvdiv.s`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvdiv_s(a: V256, b: V256) -> V256 {
+    unsafe { fdiv(a, b) }
+}
