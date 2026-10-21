@@ -262,3 +262,52 @@ void rust_isa_s390x_vector_vpks(const uint8_t *a, const uint8_t *b, uint8_t *out
         *(const sv4i32 *)(const void *)a,
         *(const sv4i32 *)(const void *)b);
 }
+
+__attribute__((always_inline))
+void rust_isa_s390x_vector_vcksm(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    *(sv4u32 *)(void *)out = vec_checksum(
+        *(const sv4u32 *)(const void *)a,
+        *(const sv4u32 *)(const void *)b);
+}
+__attribute__((always_inline))
+void rust_isa_s390x_vector_vme(const uint8_t *a, const uint8_t *b, const uint8_t *c, uint8_t *out) {
+    *(sv2u64 *)(void *)out = vec_meadd(
+        *(const sv4u32 *)(const void *)a,
+        *(const sv4u32 *)(const void *)b,
+        *(const sv2u64 *)(const void *)c);
+}
+__attribute__((always_inline))
+void rust_isa_s390x_vector_vmh(const uint8_t *a, const uint8_t *b, const uint8_t *c, uint8_t *out) {
+    *(sv4u32 *)(void *)out = vec_mhadd(
+        *(const sv4u32 *)(const void *)a,
+        *(const sv4u32 *)(const void *)b,
+        *(const sv4u32 *)(const void *)c);
+}
+__attribute__((always_inline))
+void rust_isa_s390x_vector_vml(const uint8_t *a, const uint8_t *b, const uint8_t *c, uint8_t *out) {
+    *(sv4u32 *)(void *)out = vec_mladd(
+        *(const sv4u32 *)(const void *)a,
+        *(const sv4u32 *)(const void *)b,
+        *(const sv4u32 *)(const void *)c);
+}
+__attribute__((always_inline))
+void rust_isa_s390x_vector_vmo(const uint8_t *a, const uint8_t *b, const uint8_t *c, uint8_t *out) {
+    *(sv2u64 *)(void *)out = vec_moadd(
+        *(const sv4u32 *)(const void *)a,
+        *(const sv4u32 *)(const void *)b,
+        *(const sv2u64 *)(const void *)c);
+}
+__attribute__((always_inline))
+void rust_isa_s390x_vector_vpkls(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    *(sv8i16 *)(void *)out = vec_packs(
+        *(const sv4i32 *)(const void *)a,
+        *(const sv4i32 *)(const void *)b);
+}
+__attribute__((always_inline))
+void rust_isa_s390x_vector_vlef(const uint8_t *p, uint8_t *out) {
+    *(sv4u32 *)(void *)out = *(const sv4u32 *)(const void *)p;
+}
+__attribute__((always_inline))
+void rust_isa_s390x_vector_vstef(uint8_t *p, const uint8_t *a) {
+    *(sv4u32 *)(void *)p = *(const sv4u32 *)(const void *)a;
+}

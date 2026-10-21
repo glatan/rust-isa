@@ -375,3 +375,80 @@ pub unsafe fn vle(p: *const u8) -> V128 {
 pub unsafe fn vst(p: *mut u8, value: V128) {
     unsafe { v128_store(p, value) }
 }
+
+unsafe extern "C" {
+    fn rust_isa_s390x_vector_vcksm(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vme(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vmh(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vml(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vmo(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vpkls(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vlef(p: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vstef(p: *mut u8, a: *const u8);
+}
+
+binary!(
+    /// `vcksm`.
+    vcksm,
+    rust_isa_s390x_vector_vcksm
+);
+binary!(
+    /// `vpkls`.
+    vpkls,
+    rust_isa_s390x_vector_vpkls
+);
+macro_rules! tern_vec {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[target_feature(enable = "vector")]
+        #[inline]
+        pub unsafe fn $name(a: V128, b: V128, c: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe { $c(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr()); }
+            out
+        }
+    };
+}
+
+tern_vec!(
+    /// `vme`.
+    vme,
+    rust_isa_s390x_vector_vme
+);
+tern_vec!(
+    /// `vmh`.
+    vmh,
+    rust_isa_s390x_vector_vmh
+);
+tern_vec!(
+    /// `vml`.
+    vml,
+    rust_isa_s390x_vector_vml
+);
+tern_vec!(
+    /// `vmo`.
+    vmo,
+    rust_isa_s390x_vector_vmo
+);
+
+/// `vlef`.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vlef(p: *const f32) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_s390x_vector_vlef(p.cast(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vstef`.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vstef(p: *mut f32, a: V128) {
+    unsafe {
+        rust_isa_s390x_vector_vstef(p.cast(), a.as_ptr());
+    }
+}
+
+pub use super::vector_enhancements::{vfa, vfce, vfch, vfche, vfd, vfm, vfs, vfsq};
