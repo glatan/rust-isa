@@ -17,6 +17,7 @@ use rust_isa::loongarch::simd::lsx::{
     splat_i32, sub_i16, sub_i32, v128_load, v128_store, vabs, vadd, vand, vmul, vneg, vor, vsub,
     vxor, xor,
 };
+use rust_isa::loongarch::simd::lsx::{add_i16, sub_i8, vadd_b, vadd_h, vmul_h, vsub_b, vsub_h};
 use rust_isa::loongarch::simd::lsx::{add_i64, sub_i64, vadd_d, vdiv, vsub_d};
 
 #[unsafe(no_mangle)]
@@ -71,6 +72,9 @@ fn run() -> u32 {
     }
     if !lbt_ops() {
         return 5;
+    }
+    if !lsx_width_ops() {
+        return 6;
     }
     if !lasx_alias_ops() {
         return 6;
@@ -352,6 +356,16 @@ fn lsx_div_ops() -> bool {
     let a = V128::from_bytes(core::array::from_fn(|i| i as u8));
     let b = V128::from_bytes(core::array::from_fn(|i| (i + 1) as u8));
     vdiv(a, b) == fdiv(a, b) && vadd_d(a, b) == add_i64(a, b) && vsub_d(b, a) == sub_i64(b, a)
+}
+
+fn lsx_width_ops() -> bool {
+    let a = V128::from_bytes([1; 16]);
+    let b = V128::from_bytes([2; 16]);
+    vadd_b(a, b) == add_i8(a, b)
+        && vadd_h(a, b) == add_i16(a, b)
+        && vsub_b(b, a) == sub_i8(b, a)
+        && vsub_h(b, a) == sub_i16(b, a)
+        && vmul_h(a, b) == mul_i16(a, b)
 }
 
 fn lbt_ops() -> bool {
