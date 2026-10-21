@@ -11,7 +11,7 @@ use rust_isa::loongarch::simd::lasx::{
     sub_i64 as lasx_sub_i64, v256_load, v256_store, xor as lasx_xor, xvadd, xvand, xvmul, xvor,
     xvsub, xvxor,
 };
-use rust_isa::loongarch::simd::lasx::{xvabs, xvneg};
+use rust_isa::loongarch::simd::lasx::{xvabs, xvadd_d, xvdiv, xvneg, xvsub_d};
 use rust_isa::loongarch::simd::lsx::{
     V128, add, add_i8, and, cmpeq_i32, cmpgt_i32, fadd, fdiv, fmul, fsub, mul, mul_i16, or,
     splat_i32, sub_i16, sub_i32, v128_load, v128_store, vabs, vadd, vand, vmul, vneg, vor, vsub,
@@ -83,6 +83,9 @@ fn run() -> u32 {
     }
     if !lsx_div_ops() {
         return 9;
+    }
+    if !lasx_div_ops() {
+        return 10;
     }
     if !lsx_alias_ops() {
         return 6;
@@ -333,6 +336,16 @@ fn lasx_abs_ops() -> bool {
 fn lsx_abs_ops() -> bool {
     lanes(vabs(i32x4([-1, 2, -3, 4]))) == [1, 2, 3, 4]
         && lanes(vneg(i32x4([1, -2, 3, -4]))) == [-1, 2, -3, 4]
+}
+
+fn lasx_div_ops() -> bool {
+    let a = V256::from_bytes(core::array::from_fn(|i| i as u8));
+    let b = V256::from_bytes(core::array::from_fn(|i| (i + 1) as u8));
+    unsafe {
+        xvdiv(a, b) == lasx_fdiv(a, b)
+            && xvadd_d(a, b) == lasx_add_i64(a, b)
+            && xvsub_d(b, a) == lasx_sub_i64(b, a)
+    }
 }
 
 fn lsx_div_ops() -> bool {

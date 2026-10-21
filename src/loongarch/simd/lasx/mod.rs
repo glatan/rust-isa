@@ -188,3 +188,22 @@ pub unsafe fn xvneg(a: V256) -> V256 {
     }
     V256::from_bytes(out)
 }
+
+/// `xvdiv.s`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvdiv(a: V256, b: V256) -> V256 {
+    unsafe { fdiv(a, b) }
+}
+/// `xvadd.d`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvadd_d(a: V256, b: V256) -> V256 {
+    unsafe { add_i64(a, b) }
+}
+/// `xvsub.d`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvsub_d(a: V256, b: V256) -> V256 {
+    unsafe { sub_i64(a, b) }
+}
