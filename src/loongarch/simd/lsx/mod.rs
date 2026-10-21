@@ -231,3 +231,21 @@ pub fn vneg(a: V128) -> V128 {
     }
     V128::from_bytes(out)
 }
+
+/// `vdiv.s`.
+#[inline(always)]
+pub fn vdiv(a: V128, b: V128) -> V128 {
+    fdiv(a, b)
+}
+
+/// `vadd.d`.
+#[inline(always)]
+pub fn vadd_d(a: V128, b: V128) -> V128 {
+    add_i64(a, b)
+}
+
+/// `vsub.d`.
+#[inline(always)]
+pub fn vsub_d(a: V128, b: V128) -> V128 {
+    sub_i64(a, b)
+}

@@ -17,6 +17,7 @@ use rust_isa::loongarch::simd::lsx::{
     splat_i32, sub_i16, sub_i32, v128_load, v128_store, vabs, vadd, vand, vmul, vneg, vor, vsub,
     vxor, xor,
 };
+use rust_isa::loongarch::simd::lsx::{add_i64, sub_i64, vadd_d, vdiv, vsub_d};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {
@@ -79,6 +80,9 @@ fn run() -> u32 {
     }
     if !lasx_abs_ops() {
         return 8;
+    }
+    if !lsx_div_ops() {
+        return 9;
     }
     if !lsx_alias_ops() {
         return 6;
@@ -329,6 +333,12 @@ fn lasx_abs_ops() -> bool {
 fn lsx_abs_ops() -> bool {
     lanes(vabs(i32x4([-1, 2, -3, 4]))) == [1, 2, 3, 4]
         && lanes(vneg(i32x4([1, -2, 3, -4]))) == [-1, 2, -3, 4]
+}
+
+fn lsx_div_ops() -> bool {
+    let a = V128::from_bytes(core::array::from_fn(|i| i as u8));
+    let b = V128::from_bytes(core::array::from_fn(|i| (i + 1) as u8));
+    vdiv(a, b) == fdiv(a, b) && vadd_d(a, b) == add_i64(a, b) && vsub_d(b, a) == sub_i64(b, a)
 }
 
 fn lbt_ops() -> bool {
