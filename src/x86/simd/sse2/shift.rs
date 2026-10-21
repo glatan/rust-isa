@@ -129,3 +129,82 @@ pub fn psrad(a: V128, count: u32) -> V128 {
     }
     out
 }
+
+macro_rules! byte_shift {
+    ($(#[$meta:meta])* $name:ident, $prefix:ident, [$($imm:literal => $f:ident),* $(,)?]) => {
+        unsafe extern "C" {
+            $(fn $f(a: *const u8, out: *mut u8);)*
+        }
+
+        $(#[$meta])*
+        #[inline(always)]
+        pub fn $name<const IMM: u8>(a: V128) -> V128 {
+            const { assert!(IMM <= 15, "SSE2 byte shift must be in 0..=15") };
+            let mut out = V128::from_bytes([0; 16]);
+            macro_rules! call {
+                ($func:ident) => {
+                    unsafe { $func(a.as_ptr(), out.as_mut_ptr()) }
+                };
+            }
+            match IMM {
+                $($imm => call!($f),)*
+                _ => unreachable!(),
+            }
+            out
+        }
+    };
+}
+
+byte_shift!(
+    /// `pslldq`
+    ///
+    /// Shift the 16 bytes left by `IMM` bytes, filling with zero. `IMM` must
+    /// be in `0..=15`.
+    pslldq,
+    pslldq,
+    [
+        0 => rust_isa_sse2_pslldq_0,
+        1 => rust_isa_sse2_pslldq_1,
+        2 => rust_isa_sse2_pslldq_2,
+        3 => rust_isa_sse2_pslldq_3,
+        4 => rust_isa_sse2_pslldq_4,
+        5 => rust_isa_sse2_pslldq_5,
+        6 => rust_isa_sse2_pslldq_6,
+        7 => rust_isa_sse2_pslldq_7,
+        8 => rust_isa_sse2_pslldq_8,
+        9 => rust_isa_sse2_pslldq_9,
+        10 => rust_isa_sse2_pslldq_10,
+        11 => rust_isa_sse2_pslldq_11,
+        12 => rust_isa_sse2_pslldq_12,
+        13 => rust_isa_sse2_pslldq_13,
+        14 => rust_isa_sse2_pslldq_14,
+        15 => rust_isa_sse2_pslldq_15,
+    ]
+);
+
+byte_shift!(
+    /// `psrldq`
+    ///
+    /// Shift the 16 bytes right by `IMM` bytes, filling with zero. `IMM` must
+    /// be in `0..=15`.
+    psrldq,
+    psrldq,
+    [
+        0 => rust_isa_sse2_psrldq_0,
+        1 => rust_isa_sse2_psrldq_1,
+        2 => rust_isa_sse2_psrldq_2,
+        3 => rust_isa_sse2_psrldq_3,
+        4 => rust_isa_sse2_psrldq_4,
+        5 => rust_isa_sse2_psrldq_5,
+        6 => rust_isa_sse2_psrldq_6,
+        7 => rust_isa_sse2_psrldq_7,
+        8 => rust_isa_sse2_psrldq_8,
+        9 => rust_isa_sse2_psrldq_9,
+        10 => rust_isa_sse2_psrldq_10,
+        11 => rust_isa_sse2_psrldq_11,
+        12 => rust_isa_sse2_psrldq_12,
+        13 => rust_isa_sse2_psrldq_13,
+        14 => rust_isa_sse2_psrldq_14,
+        15 => rust_isa_sse2_psrldq_15,
+    ]
+);
