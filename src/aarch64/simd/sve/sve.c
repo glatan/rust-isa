@@ -246,3 +246,16 @@ void rust_isa_sve_recip_f64(const double *a, double *out, size_t len) {
         svst1_f64(pg, out + i, svrecpe_f64(svld1_f64(pg, a + i)));
     }
 }
+
+void rust_isa_sve_rsqrt_f32(const float *a, float *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svst1_f32(pg, out + i, svrsqrte_f32(svld1_f32(pg, a + i)));
+    }
+}
+void rust_isa_sve_rsqrt_f64(const double *a, double *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntd()) {
+        svbool_t pg = svwhilelt_b64_u64(i, len);
+        svst1_f64(pg, out + i, svrsqrte_f64(svld1_f64(pg, a + i)));
+    }
+}

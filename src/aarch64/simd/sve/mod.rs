@@ -467,3 +467,27 @@ unsafe extern "C" {
     fn rust_isa_sve_recip_f32(a: *const f32, out: *mut f32, len: usize);
     fn rust_isa_sve_recip_f64(a: *const f64, out: *mut f64, len: usize);
 }
+
+unsafe extern "C" {
+    fn rust_isa_sve_rsqrt_f32(a: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_sve_rsqrt_f64(a: *const f64, out: *mut f64, len: usize);
+}
+
+/// Reciprocal square-root estimate on `f32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn rsqrt_f32(a: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_rsqrt_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+/// Reciprocal square-root estimate on `f64` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn rsqrt_f64(a: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_rsqrt_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
