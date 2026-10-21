@@ -107,3 +107,78 @@ pub fn pavgb(a: V128, b: V128) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_sse2_paddsb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_paddusb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_psubsb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_psubusb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_packsswb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_packuswb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pmovmskb(a: *const u8) -> i32;
+}
+
+macro_rules! binary {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[inline(always)]
+        pub fn $name(a: V128, b: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe {
+                $c(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+            }
+            out
+        }
+    };
+}
+
+binary!(
+    /// `paddsb`
+    ///
+    /// Add the 16 signed byte lanes with signed saturation.
+    paddsb,
+    rust_isa_sse2_paddsb
+);
+binary!(
+    /// `paddusb`
+    ///
+    /// Add the 16 unsigned byte lanes with unsigned saturation.
+    paddusb,
+    rust_isa_sse2_paddusb
+);
+binary!(
+    /// `psubsb`
+    ///
+    /// Subtract the 16 signed byte lanes with signed saturation.
+    psubsb,
+    rust_isa_sse2_psubsb
+);
+binary!(
+    /// `psubusb`
+    ///
+    /// Subtract the 16 unsigned byte lanes with unsigned saturation.
+    psubusb,
+    rust_isa_sse2_psubusb
+);
+binary!(
+    /// `packsswb`
+    ///
+    /// Pack 16-bit lanes from `a` and `b` into signed bytes with saturation.
+    packsswb,
+    rust_isa_sse2_packsswb
+);
+binary!(
+    /// `packuswb`
+    ///
+    /// Pack 16-bit lanes from `a` and `b` into unsigned bytes with saturation.
+    packuswb,
+    rust_isa_sse2_packuswb
+);
+
+/// `pmovmskb`
+///
+/// Collect the most significant bit of each byte into the low 16 bits.
+#[inline(always)]
+pub fn pmovmskb(a: V128) -> u32 {
+    unsafe { rust_isa_sse2_pmovmskb(a.as_ptr()) as u32 }
+}

@@ -1,11 +1,12 @@
 use rust_isa::x86::simd::sse2::{
     V128, addpd, addps, cmpeqpd, cmpeqps, cmplepd, cmpleps, cmpltpd, cmpltps, divpd, divps, maxpd,
-    maxps, minpd, minps, mulpd, mulps, paddb, paddd, paddq, paddw, pand, pavgb, pavgw, pcmpeqb,
-    pcmpeqd, pcmpeqw, pcmpgtb, pcmpgtd, pcmpgtw, pmaddwd, pmaxub, pmaxw, pminub, pminw, pmullw,
-    pmuludq, por, psadbw, pshufd, pshufhw, pshuflw, pslld, psllq, psllw, psrad, psraw, psrld,
-    psrlq, psrlw, psubb, psubd, psubq, psubw, punpckhbw, punpckhdq, punpckhqdq, punpckhwd,
-    punpcklbw, punpckldq, punpcklqdq, punpcklwd, pxor, shufpd, shufps, sqrtpd, sqrtps, subpd,
-    subps, v128_load, v128_store,
+    maxps, minpd, minps, movmskpd, movmskps, mulpd, mulps, packssdw, packsswb, packuswb, paddb,
+    paddd, paddq, paddsb, paddsw, paddusb, paddusw, paddw, pand, pavgb, pavgw, pcmpeqb, pcmpeqd,
+    pcmpeqw, pcmpgtb, pcmpgtd, pcmpgtw, pmaddwd, pmaxub, pmaxw, pminub, pminw, pmovmskb, pmulhuw,
+    pmulhw, pmullw, pmuludq, por, psadbw, pshufd, pshufhw, pshuflw, pslld, psllq, psllw, psrad,
+    psraw, psrld, psrlq, psrlw, psubb, psubd, psubq, psubsb, psubsw, psubusb, psubusw, psubw,
+    punpckhbw, punpckhdq, punpckhqdq, punpckhwd, punpcklbw, punpckldq, punpcklqdq, punpcklwd, pxor,
+    shufpd, shufps, sqrtpd, sqrtps, subpd, subps, v128_load, v128_store,
 };
 
 #[test]
@@ -263,6 +264,21 @@ fn i16_lanes(value: V128) -> [i16; 8] {
     })
 }
 
+fn u16x8(values: [u16; 8]) -> V128 {
+    let mut bytes = [0u8; 16];
+    for (lane, value) in values.iter().enumerate() {
+        bytes[lane * 2..lane * 2 + 2].copy_from_slice(&value.to_le_bytes());
+    }
+    V128::from_bytes(bytes)
+}
+
+fn u16_lanes(value: V128) -> [u16; 8] {
+    let bytes = value.to_bytes();
+    core::array::from_fn(|lane| {
+        u16::from_le_bytes(bytes[lane * 2..lane * 2 + 2].try_into().unwrap())
+    })
+}
+
 fn i32x4(values: [i32; 4]) -> V128 {
     let mut bytes = [0u8; 16];
     for (lane, value) in values.iter().enumerate() {
@@ -491,4 +507,75 @@ fn f64_arithmetic_and_comparison() {
         ]
     );
     assert_eq!(cmplepd(a, b).to_bytes(), [0xff; 16]);
+}
+
+#[test]
+fn saturating_arithmetic() {
+    assert_eq!(
+        paddsb(V128::from_bytes([120; 16]), V128::from_bytes([20; 16])).to_bytes(),
+        [127; 16]
+    );
+    assert_eq!(
+        paddsb(V128::from_bytes([0x88; 16]), V128::from_bytes([0xec; 16])).to_bytes(),
+        [0x80; 16]
+    );
+    assert_eq!(
+        paddusb(V128::from_bytes([250; 16]), V128::from_bytes([10; 16])).to_bytes(),
+        [255; 16]
+    );
+    assert_eq!(
+        psubsb(V128::from_bytes([0x88; 16]), V128::from_bytes([20; 16])).to_bytes(),
+        [0x80; 16]
+    );
+    assert_eq!(
+        psubusb(V128::from_bytes([5; 16]), V128::from_bytes([10; 16])).to_bytes(),
+        [0; 16]
+    );
+
+    assert_eq!(
+        i16_lanes(paddsw(i16x8([30_000; 8]), i16x8([10_000; 8]))),
+        [32_767; 8]
+    );
+    assert_eq!(
+        u16_lanes(paddusw(u16x8([60_000; 8]), u16x8([10_000; 8]))),
+        [65_535; 8]
+    );
+    assert_eq!(
+        i16_lanes(psubsw(i16x8([-30_000; 8]), i16x8([10_000; 8]))),
+        [-32_768; 8]
+    );
+    assert_eq!(u16_lanes(psubusw(u16x8([5; 8]), u16x8([10; 8]))), [0; 8]);
+}
+
+#[test]
+fn pack_and_high_multiply() {
+    let packed = packsswb(i16x8([300, -300, 1, 2, 3, 4, 5, 6]), i16x8([7; 8])).to_bytes();
+    assert_eq!(&packed[..3], &[127, 0x80, 1]);
+
+    let packed = packssdw(i32x4([70_000, -70_000, 1, 2]), i32x4([3; 4])).to_bytes();
+    assert_eq!(
+        &i16_lanes(V128::from_bytes(packed))[..3],
+        &[32_767, -32_768, 1]
+    );
+
+    let packed = packuswb(i16x8([-1, 300, 1, 2, 3, 4, 5, 6]), i16x8([7; 8])).to_bytes();
+    assert_eq!(&packed[..2], &[0, 255]);
+
+    let a = i16x8([0x4000; 8]);
+    assert_eq!(i16_lanes(pmulhw(a, a)), [0x1000; 8]);
+    assert_eq!(
+        u16_lanes(pmulhuw(u16x8([0x4000; 8]), u16x8([0x4000; 8]))),
+        [0x1000; 8]
+    );
+}
+
+#[test]
+fn mask_extraction() {
+    let mut bytes = [0u8; 16];
+    bytes[0] = 0x80;
+    bytes[2] = 0x80;
+    assert_eq!(pmovmskb(V128::from_bytes(bytes)), 0b101);
+
+    assert_eq!(movmskps(f32x4([-1.0, 1.0, -0.0, 1.0])), 0b0101);
+    assert_eq!(movmskpd(f64x2([-1.0, 1.0])), 0b01);
 }

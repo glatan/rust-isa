@@ -161,3 +161,15 @@ pub fn sqrtps(a: V128) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_sse2_movmskps(a: *const u8) -> i32;
+}
+
+/// `movmskps`
+///
+/// Collect the sign bit of each 32-bit float lane into the low four bits.
+#[inline(always)]
+pub fn movmskps(a: V128) -> u32 {
+    unsafe { rust_isa_sse2_movmskps(a.as_ptr()) as u32 }
+}

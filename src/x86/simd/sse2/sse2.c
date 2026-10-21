@@ -329,3 +329,83 @@ __attribute__((always_inline))
 void rust_isa_sse2_psrad(const uint8_t *a, uint32_t count, uint8_t *out) {
     _mm_storeu_si128((__m128i *)(void *)out, _mm_sra_epi32(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_cvtsi32_si128((int)count)));
 }
+
+__attribute__((always_inline))
+void rust_isa_sse2_paddsb(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_adds_epi8(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse2_paddsw(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_adds_epi16(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse2_paddusb(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_adds_epu8(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse2_paddusw(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_adds_epu16(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse2_psubsb(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_subs_epi8(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse2_psubsw(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_subs_epi16(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse2_psubusb(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_subs_epu8(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse2_psubusw(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_subs_epu16(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse2_packsswb(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_packs_epi16(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse2_packssdw(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_packs_epi32(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse2_packuswb(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_packus_epi16(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse2_pmulhw(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_mulhi_epi16(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse2_pmulhuw(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_mulhi_epu16(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+int rust_isa_sse2_pmovmskb(const uint8_t *a) {
+    return _mm_movemask_epi8(_mm_loadu_si128((const __m128i *)(const void *)a));
+}
+
+__attribute__((always_inline))
+int rust_isa_sse2_movmskps(const uint8_t *a) {
+    return _mm_movemask_ps(_mm_loadu_ps((const float *)(const void *)a));
+}
+
+__attribute__((always_inline))
+int rust_isa_sse2_movmskpd(const uint8_t *a) {
+    return _mm_movemask_pd(_mm_loadu_pd((const double *)(const void *)a));
+}
