@@ -4,6 +4,7 @@
 //! Loads and stores take raw pointers and are `unsafe`.
 
 mod compare;
+mod compare_ext;
 mod float;
 mod integer;
 mod lane;
@@ -12,6 +13,7 @@ mod shuffle;
 mod v128;
 
 pub use compare::*;
+pub use compare_ext::*;
 pub use float::*;
 pub use integer::*;
 pub use lane::*;
