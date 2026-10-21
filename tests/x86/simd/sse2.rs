@@ -1,12 +1,15 @@
 use rust_isa::x86::simd::sse2::{
-    V128, addpd, addps, cmpeqpd, cmpeqps, cmplepd, cmpleps, cmpltpd, cmpltps, divpd, divps, maxpd,
-    maxps, minpd, minps, movmskpd, movmskps, mulpd, mulps, packssdw, packsswb, packuswb, paddb,
-    paddd, paddq, paddsb, paddsw, paddusb, paddusw, paddw, pand, pavgb, pavgw, pcmpeqb, pcmpeqd,
-    pcmpeqw, pcmpgtb, pcmpgtd, pcmpgtw, pmaddwd, pmaxub, pmaxw, pminub, pminw, pmovmskb, pmulhuw,
-    pmulhw, pmullw, pmuludq, por, psadbw, pshufd, pshufhw, pshuflw, pslld, psllq, psllw, psrad,
-    psraw, psrld, psrlq, psrlw, psubb, psubd, psubq, psubsb, psubsw, psubusb, psubusw, psubw,
-    punpckhbw, punpckhdq, punpckhqdq, punpckhwd, punpcklbw, punpckldq, punpcklqdq, punpcklwd, pxor,
-    shufpd, shufps, sqrtpd, sqrtps, subpd, subps, v128_load, v128_store,
+    V128, addpd, addps, andnps, andps, cmpeqpd, cmpeqps, cmplepd, cmpleps, cmpltpd, cmpltps,
+    cvtdq2ps, cvtpd2ps, cvtps2dq, cvtps2pd, cvtsd2si, cvtsi2sd, cvtsi2ss, cvtss2si, cvttps2dq,
+    cvttsd2si, cvttss2si, divpd, divps, maskmovdqu, maxpd, maxps, minpd, minps, movd, movmskpd,
+    movmskps, movq, mulpd, mulps, orps, packssdw, packsswb, packuswb, paddb, paddd, paddq, paddsb,
+    paddsw, paddusb, paddusw, paddw, pand, pavgb, pavgw, pcmpeqb, pcmpeqd, pcmpeqw, pcmpgtb,
+    pcmpgtd, pcmpgtw, pmaddwd, pmaxsw, pmaxub, pmaxw, pminsw, pminub, pminw, pmovmskb, pmulhuw,
+    pmulhw, pmullw, pmuludq, por, psadbw, pshufd, pshufhw, pshuflw, pslld, pslldq, psllq, psllw,
+    psrad, psraw, psrld, psrldq, psrlq, psrlw, psubb, psubd, psubq, psubsb, psubsw, psubusb,
+    psubusw, psubw, punpckhbw, punpckhdq, punpckhqdq, punpckhwd, punpcklbw, punpckldq, punpcklqdq,
+    punpcklwd, pxor, shufpd, shufps, sqrtpd, sqrtps, subpd, subps, unpckhpd, unpckhps, unpcklpd,
+    unpcklps, v128_load, v128_store, xorps,
 };
 
 #[test]
@@ -578,4 +581,89 @@ fn mask_extraction() {
 
     assert_eq!(movmskps(f32x4([-1.0, 1.0, -0.0, 1.0])), 0b0101);
     assert_eq!(movmskpd(f64x2([-1.0, 1.0])), 0b01);
+}
+
+#[test]
+fn signed_word_minmax_alias() {
+    let a = i16x8([1, -2, 3, -4, 5, -6, 7, -8]);
+    let b = i16x8([-1, 2, -3, 4, -5, 6, -7, 8]);
+    assert_eq!(i16_lanes(pminsw(a, b)), [-1, -2, -3, -4, -5, -6, -7, -8]);
+    assert_eq!(i16_lanes(pmaxsw(a, b)), [1, 2, 3, 4, 5, 6, 7, 8]);
+}
+
+#[test]
+fn float_logical_and_unpack() {
+    let a = V128::from_bytes([0b1010_1010; 16]);
+    let b = V128::from_bytes([0b1100_1100; 16]);
+    assert_eq!(andps(a, b).to_bytes(), [0b1000_1000; 16]);
+    assert_eq!(andnps(a, b).to_bytes(), [0b0100_0100; 16]);
+    assert_eq!(orps(a, b).to_bytes(), [0b1110_1110; 16]);
+    assert_eq!(xorps(a, b).to_bytes(), [0b0110_0110; 16]);
+
+    let a = f32x4([1.0, 2.0, 3.0, 4.0]);
+    let b = f32x4([10.0, 20.0, 30.0, 40.0]);
+    assert_eq!(f32_lanes(unpcklps(a, b)), [1.0, 10.0, 2.0, 20.0]);
+    assert_eq!(f32_lanes(unpckhps(a, b)), [3.0, 30.0, 4.0, 40.0]);
+    let a = f64x2([1.0, 2.0]);
+    let b = f64x2([10.0, 20.0]);
+    assert_eq!(f64_lanes(unpcklpd(a, b)), [1.0, 10.0]);
+    assert_eq!(f64_lanes(unpckhpd(a, b)), [2.0, 20.0]);
+}
+
+#[test]
+fn scalar_and_vector_conversions() {
+    assert_eq!(f32_lanes(cvtsi2ss(-7))[0], -7.0);
+    assert_eq!(f64_lanes(cvtsi2sd(-7))[0], -7.0);
+    assert_eq!(cvtss2si(f32x4([3.7, 0.0, 0.0, 0.0])), 4);
+    assert_eq!(cvttss2si(f32x4([3.7, 0.0, 0.0, 0.0])), 3);
+    assert_eq!(cvtsd2si(f64x2([3.7, 0.0])), 4);
+    assert_eq!(cvttsd2si(f64x2([3.7, 0.0])), 3);
+
+    assert_eq!(f64_lanes(cvtps2pd(f32x4([1.5, 2.5, 3.5, 4.5]))), [1.5, 2.5]);
+    assert_eq!(f32_lanes(cvtpd2ps(f64x2([1.5, 2.5]))), [1.5, 2.5, 0.0, 0.0]);
+    assert_eq!(
+        f32_lanes(cvtdq2ps(i32x4([1, 2, 3, 4]))),
+        [1.0, 2.0, 3.0, 4.0]
+    );
+    assert_eq!(
+        i32_lanes(cvtps2dq(f32x4([1.4, 2.6, -1.4, -2.6]))),
+        [1, 3, -1, -3]
+    );
+    assert_eq!(
+        i32_lanes(cvttps2dq(f32x4([1.4, 2.6, -1.4, -2.6]))),
+        [1, 2, -1, -2]
+    );
+}
+
+#[test]
+fn byte_shifts_and_mask_store() {
+    let source = V128::from_bytes(core::array::from_fn(|index| index as u8));
+    assert_eq!(
+        pslldq::<1>(source).to_bytes(),
+        [0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    );
+    assert_eq!(
+        psrldq::<1>(source).to_bytes(),
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0]
+    );
+
+    let source = V128::from_bytes(core::array::from_fn(|index| index as u8 + 1));
+    let mut mask = [0u8; 16];
+    for index in [0usize, 4, 8, 12] {
+        mask[index] = 0x80;
+    }
+    let mut out = [0u8; 16];
+    unsafe {
+        maskmovdqu(source, V128::from_bytes(mask), out.as_mut_ptr());
+    }
+    assert_eq!(out, [1, 0, 0, 0, 5, 0, 0, 0, 9, 0, 0, 0, 13, 0, 0, 0]);
+}
+
+#[test]
+fn movd_and_movq_extract_low_bits() {
+    let value = V128::from_bytes([
+        0x78, 0x56, 0x34, 0x12, 0xef, 0xcd, 0xab, 0x89, 1, 2, 3, 4, 5, 6, 7, 8,
+    ]);
+    assert_eq!(movd(value), 0x1234_5678);
+    assert_eq!(movq(value), 0x89ab_cdef_1234_5678);
 }

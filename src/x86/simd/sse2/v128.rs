@@ -64,3 +64,44 @@ pub unsafe fn v128_store(p: *mut u8, value: V128) {
         rust_isa_sse2_v128_store(p, value.as_ptr());
     }
 }
+
+unsafe extern "C" {
+    fn rust_isa_sse2_maskmovdqu(a: *const u8, mask: *const u8, p: *mut u8);
+}
+
+/// `maskmovdqu`
+///
+/// Store each byte of `a` to `p` when the corresponding byte of `mask` has its
+/// most significant bit set.
+///
+/// # Safety
+///
+/// `p` must be valid for writing 16 bytes. Bytes whose mask bit is not set are
+/// not written.
+#[inline(always)]
+pub unsafe fn maskmovdqu(a: V128, mask: V128, p: *mut u8) {
+    unsafe {
+        rust_isa_sse2_maskmovdqu(a.as_ptr(), mask.as_ptr(), p);
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse2_movd(a: *const u8) -> u32;
+    fn rust_isa_sse2_movq(a: *const u8) -> u64;
+}
+
+/// `movd`
+///
+/// Return the low 32 bits of the value.
+#[inline(always)]
+pub fn movd(a: V128) -> u32 {
+    unsafe { rust_isa_sse2_movd(a.as_ptr()) }
+}
+
+/// `movq`
+///
+/// Return the low 64 bits of the value.
+#[inline(always)]
+pub fn movq(a: V128) -> u64 {
+    unsafe { rust_isa_sse2_movq(a.as_ptr()) }
+}

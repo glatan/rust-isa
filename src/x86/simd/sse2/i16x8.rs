@@ -210,3 +210,19 @@ binary!(
     pmulhuw,
     rust_isa_sse2_pmulhuw
 );
+
+/// `pminsw`
+///
+/// Take the minimum of the eight signed 16-bit integer lanes.
+#[inline(always)]
+pub fn pminsw(a: V128, b: V128) -> V128 {
+    pminw(a, b)
+}
+
+/// `pmaxsw`
+///
+/// Take the maximum of the eight signed 16-bit integer lanes.
+#[inline(always)]
+pub fn pmaxsw(a: V128, b: V128) -> V128 {
+    pmaxw(a, b)
+}
