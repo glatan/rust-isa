@@ -14,6 +14,7 @@ use rust_isa::loongarch::simd::lasx::{
 use rust_isa::loongarch::simd::lasx::{
     xvabs, xvadd_b, xvadd_d, xvadd_h, xvdiv, xvmul_h, xvneg, xvsub_b, xvsub_d, xvsub_h,
 };
+use rust_isa::loongarch::simd::lsx::{vmul_w};
 use rust_isa::loongarch::simd::lsx::{vsub_w};
 use rust_isa::loongarch::simd::lsx::{vadd_w};
 use rust_isa::loongarch::simd::lsx::{
@@ -103,6 +104,7 @@ fn run() -> u32 {
     }
     if !alias_vadd_w() { return 101; }
     if !alias_vsub_w() { return 102; }
+    if !alias_vmul_w() { return 103; }
     0
 }
 
@@ -427,3 +429,5 @@ fn lasx_alias_ops() -> bool {
 fn alias_vadd_w() -> bool { vadd_w(i32x4([1,2,3,4]), i32x4([5,6,7,8])) == add(i32x4([1,2,3,4]), i32x4([5,6,7,8])) }
 
 fn alias_vsub_w() -> bool { vsub_w(i32x4([5,6,7,8]), i32x4([1,2,3,4])) == sub_i32(i32x4([5,6,7,8]), i32x4([1,2,3,4])) }
+
+fn alias_vmul_w() -> bool { vmul_w(i32x4([1,2,3,4]), i32x4([5,6,7,8])) == mul(i32x4([1,2,3,4]), i32x4([5,6,7,8])) }
