@@ -18,13 +18,15 @@ use rust_isa::aarch64::simd::neon::{
     cls_i16, cls_i32, cls_i8, clz_i16, clz_i32, clz_i8, cmge_i16, cmge_i32, cmge_i8, cmle_i16,
     cmle_i32, cmle_i8, cmlt_i16, cmlt_i32, cmlt_i8, cmpeq_i16, cmpeq_i32, cmpeq_i64, cmpeq_i8,
     cmpgt_i16, cmpgt_i32, cmpgt_i64, cmpgt_i8, cmtst_i16, cmtst_i32, cmtst_i8, cnt_i8, eor,
-    extract_i32, fabs, fadd, fdiv, fmax, fmin, fmul, fneg, fsqrt, fsub, max_i16, max_i32, max_i8,
-    min_i16, min_i32, min_i8, mul, mul_f64, mul_i16, mul_i32, mul_i8, neg_i32, not, orn, orr, rbit,
-    replace_i32, rev16, rev32, rev64, saddl_s16, saddl_s32, saddl_s8, saddw_s16, saddw_s32,
-    saddw_s8, sar_i16, sar_i32, sar_i8, shl_i32, shr_i16, splat_i32, ssubl_s16, ssubl_s32,
-    ssubl_s8, ssubw_s16, ssubw_s32, ssubw_s8, sub_i16, sub_i32, sub_i64, sub_i8, tbl, trn1,
-    uaddl_u16, uaddl_u32, uaddl_u8, uaddw_u16, uaddw_u32, uaddw_u8, usubl_u16, usubl_u32, usubl_u8,
-    usubw_u16, usubw_u32, usubw_u8, uzp1, v128_load, v128_store, zip1,
+    extract_i32, fabs, facge_f32, facge_f64, facgt_f32, facgt_f64, fadd, fcmeq_f32, fcmeq_f64,
+    fcmge_f32, fcmge_f64, fcmgt_f32, fcmgt_f64, fcmle_f32, fcmle_f64, fcmlt_f32, fcmlt_f64, fdiv,
+    fmax, fmin, fmul, fneg, fsqrt, fsub, max_i16, max_i32, max_i8, min_i16, min_i32, min_i8, mul,
+    mul_f64, mul_i16, mul_i32, mul_i8, neg_i32, not, orn, orr, rbit, replace_i32, rev16, rev32,
+    rev64, saddl_s16, saddl_s32, saddl_s8, saddw_s16, saddw_s32, saddw_s8, sar_i16, sar_i32,
+    sar_i8, shl_i32, shr_i16, splat_i32, ssubl_s16, ssubl_s32, ssubl_s8, ssubw_s16, ssubw_s32,
+    ssubw_s8, sub_i16, sub_i32, sub_i64, sub_i8, tbl, trn1, uaddl_u16, uaddl_u32, uaddl_u8,
+    uaddw_u16, uaddw_u32, uaddw_u8, usubl_u16, usubl_u32, usubl_u8, usubw_u16, usubw_u32, usubw_u8,
+    uzp1, v128_load, v128_store, zip1,
 };
 use rust_isa::aarch64::simd::sve;
 
@@ -515,6 +517,68 @@ fn float_ops() -> bool {
     }
     if f64_lanes(add_f64(f64x2([1.0, 2.0]), f64x2([3.0, 4.0]))) != [4.0, 6.0]
         || f64_lanes(mul_f64(f64x2([2.0, 3.0]), f64x2([4.0, 5.0]))) != [8.0, 15.0]
+    {
+        return false;
+    }
+    if fcmeq_f32(f32x4([1.0, 2.0, 3.0, 4.0]), f32x4([1.0, 0.0, 3.0, 0.0])).to_bytes()
+        != [
+            0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0,
+        ]
+        || fcmge_f32(f32x4([2.0, 1.0, 3.0, 0.0]), f32x4([1.0, 1.0, 4.0, 1.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+            ]
+        || fcmgt_f32(f32x4([2.0, 1.0, 3.0, 0.0]), f32x4([1.0, 1.0, 2.0, 1.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0,
+            ]
+        || fcmle_f32(f32x4([1.0, 1.0, 3.0, 0.0]), f32x4([1.0, 2.0, 2.0, 1.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff,
+            ]
+        || fcmlt_f32(f32x4([1.0, 2.0, 1.0, 0.0]), f32x4([2.0, 2.0, 0.0, 1.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff,
+            ]
+        || facge_f32(f32x4([-2.0, 1.0, -3.0, 0.0]), f32x4([1.0, 1.0, 4.0, 1.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+            ]
+        || facgt_f32(f32x4([-2.0, 1.0, -3.0, 0.0]), f32x4([1.0, 1.0, 2.0, 1.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0,
+            ]
+    {
+        return false;
+    }
+    if fcmeq_f64(f64x2([1.0, 2.0]), f64x2([1.0, 0.0])).to_bytes()
+        != [
+            0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+        ]
+        || fcmge_f64(f64x2([2.0, 1.0]), f64x2([1.0, 2.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+            ]
+        || fcmgt_f64(f64x2([2.0, 1.0]), f64x2([1.0, 2.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+            ]
+        || fcmle_f64(f64x2([1.0, 2.0]), f64x2([1.0, 1.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+            ]
+        || fcmlt_f64(f64x2([1.0, 2.0]), f64x2([2.0, 2.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+            ]
+        || facge_f64(f64x2([-2.0, 1.0]), f64x2([1.0, 2.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+            ]
+        || facgt_f64(f64x2([-2.0, 1.0]), f64x2([1.0, 2.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+            ]
     {
         return false;
     }
