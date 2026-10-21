@@ -201,3 +201,254 @@ pub unsafe fn splat_i32(value: i32) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_altivec_vaddubm(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vadduhm(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vadduwm(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vaddudm(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vsububm(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vsubuhm(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vsubuwm(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vsubudm(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vand(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vor(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vxor(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vandc(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vnor(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vmuleub(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vmuleuh(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vmuleuw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vmuloub(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vmulouh(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vmulouw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vmin(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vmax(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vavg(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vavgl(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vcmpeq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vcmpgt(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vcmp(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vsl(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vsr(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vslo(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vsro(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vnot(a: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vsel(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vperm(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vsldoi(a: *const u8, b: *const u8, imm: u32, out: *mut u8);
+}
+
+macro_rules! abin {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[inline(always)]
+        pub unsafe fn $name(a: V128, b: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe { $c(a.as_ptr(), b.as_ptr(), out.as_mut_ptr()); }
+            out
+        }
+    };
+}
+macro_rules! aun {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[inline(always)]
+        pub unsafe fn $name(a: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe { $c(a.as_ptr(), out.as_mut_ptr()); }
+            out
+        }
+    };
+}
+macro_rules! atern {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[inline(always)]
+        pub unsafe fn $name(a: V128, b: V128, c: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe { $c(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr()); }
+            out
+        }
+    };
+}
+abin!(
+    /// `vaddubm`.
+    vaddubm,
+    rust_isa_altivec_vaddubm
+);
+abin!(
+    /// `vadduhm`.
+    vadduhm,
+    rust_isa_altivec_vadduhm
+);
+abin!(
+    /// `vadduwm`.
+    vadduwm,
+    rust_isa_altivec_vadduwm
+);
+abin!(
+    /// `vaddudm`.
+    vaddudm,
+    rust_isa_altivec_vaddudm
+);
+abin!(
+    /// `vsububm`.
+    vsububm,
+    rust_isa_altivec_vsububm
+);
+abin!(
+    /// `vsubuhm`.
+    vsubuhm,
+    rust_isa_altivec_vsubuhm
+);
+abin!(
+    /// `vsubuwm`.
+    vsubuwm,
+    rust_isa_altivec_vsubuwm
+);
+abin!(
+    /// `vsubudm`.
+    vsubudm,
+    rust_isa_altivec_vsubudm
+);
+abin!(
+    /// `vand`.
+    vand,
+    rust_isa_altivec_vand
+);
+abin!(
+    /// `vor`.
+    vor,
+    rust_isa_altivec_vor
+);
+abin!(
+    /// `vxor`.
+    vxor,
+    rust_isa_altivec_vxor
+);
+abin!(
+    /// `vandc`.
+    vandc,
+    rust_isa_altivec_vandc
+);
+abin!(
+    /// `vnor`.
+    vnor,
+    rust_isa_altivec_vnor
+);
+abin!(
+    /// `vmuleub`.
+    vmuleub,
+    rust_isa_altivec_vmuleub
+);
+abin!(
+    /// `vmuleuh`.
+    vmuleuh,
+    rust_isa_altivec_vmuleuh
+);
+abin!(
+    /// `vmuleuw`.
+    vmuleuw,
+    rust_isa_altivec_vmuleuw
+);
+abin!(
+    /// `vmuloub`.
+    vmuloub,
+    rust_isa_altivec_vmuloub
+);
+abin!(
+    /// `vmulouh`.
+    vmulouh,
+    rust_isa_altivec_vmulouh
+);
+abin!(
+    /// `vmulouw`.
+    vmulouw,
+    rust_isa_altivec_vmulouw
+);
+abin!(
+    /// `vmin`.
+    vmin,
+    rust_isa_altivec_vmin
+);
+abin!(
+    /// `vmax`.
+    vmax,
+    rust_isa_altivec_vmax
+);
+abin!(
+    /// `vavg`.
+    vavg,
+    rust_isa_altivec_vavg
+);
+abin!(
+    /// `vavgl`.
+    vavgl,
+    rust_isa_altivec_vavgl
+);
+abin!(
+    /// `vcmpeq`.
+    vcmpeq,
+    rust_isa_altivec_vcmpeq
+);
+abin!(
+    /// `vcmpgt`.
+    vcmpgt,
+    rust_isa_altivec_vcmpgt
+);
+abin!(
+    /// `vcmp`.
+    vcmp,
+    rust_isa_altivec_vcmp
+);
+abin!(
+    /// `vsl`.
+    vsl,
+    rust_isa_altivec_vsl
+);
+abin!(
+    /// `vsr`.
+    vsr,
+    rust_isa_altivec_vsr
+);
+abin!(
+    /// `vslo`.
+    vslo,
+    rust_isa_altivec_vslo
+);
+abin!(
+    /// `vsro`.
+    vsro,
+    rust_isa_altivec_vsro
+);
+aun!(
+    /// `vnot`.
+    vnot,
+    rust_isa_altivec_vnot
+);
+atern!(
+    /// `vsel`.
+    vsel,
+    rust_isa_altivec_vsel
+);
+atern!(
+    /// `vperm`.
+    vperm,
+    rust_isa_altivec_vperm
+);
+
+/// `vsldoi` with an immediate shift count.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
+#[inline(always)]
+pub unsafe fn vsldoi<const IMM: u8>(a: V128, b: V128) -> V128 {
+    const { assert!(IMM <= 15, "vsldoi immediate must be in 0..=15") };
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_altivec_vsldoi(a.as_ptr(), b.as_ptr(), u32::from(IMM), out.as_mut_ptr());
+    }
+    out
+}

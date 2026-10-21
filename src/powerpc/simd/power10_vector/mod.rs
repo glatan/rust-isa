@@ -100,5 +100,5 @@ pub unsafe fn vpopcntd(a: V128) -> V128 {
 /// The caller must enable the Power10 vector feature set.
 #[inline(always)]
 pub unsafe fn vpopcntw(a: V128) -> V128 {
-    popcnt_i32(a)
+    unsafe { popcnt_i32(a) }
 }
