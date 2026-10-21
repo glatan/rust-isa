@@ -8,6 +8,10 @@ use rust_isa::riscv::crypto::zks::{sm3p0, sm4ed};
 use rust_isa::riscv::float::zfh::{
     fadd_h, fdiv_h, feq_h, fle_h, flh, flt_h, fmax_h, fmin_h, fmul_h, fsh, fsqrt_h, fsub_h,
 };
+use rust_isa::riscv::float::zfh::{
+    fcvt_d_h, fcvt_h_d, fcvt_h_s, fcvt_h_w, fcvt_h_wu, fcvt_s_h, fcvt_w_h, fcvt_wu_h, fmv_h_x,
+    fmv_x_h,
+}; // conversions
 use rust_isa::riscv::integer::zba::{sh1add, sh2add, sh3add};
 use rust_isa::riscv::integer::zbb::{andn, clz, cpop, rol, sext_b, xnor};
 use rust_isa::riscv::integer::zbc::clmul;
@@ -321,5 +325,15 @@ unsafe fn zfh_ops() -> bool {
                 fsh(bytes.as_mut_ptr(), two);
                 flh(bytes.as_ptr()) == two
             }
+            && fcvt_h_s(0x3fc0_0000) == 0x3e00
+            && fcvt_s_h(0x3e00) == 0x3fc0_0000
+            && fcvt_h_d(0x3ff8_0000_0000_0000) == 0x3e00
+            && fcvt_d_h(0x3e00) == 0x3ff8_0000_0000_0000
+            && fcvt_w_h(two) == 2
+            && fcvt_wu_h(two) == 2
+            && fcvt_h_w(2) == two
+            && fcvt_h_wu(2) == two
+            && fmv_x_h(0xffff) == -1
+            && fmv_h_x(-1) == 0xffff
     }
 }
