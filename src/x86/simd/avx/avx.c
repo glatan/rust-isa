@@ -111,3 +111,98 @@ __attribute__((always_inline))
 void rust_isa_avx_vzeroupper(void) {
     _mm256_zeroupper();
 }
+
+__attribute__((always_inline))
+void rust_isa_avx_vunpcklps(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm256_storeu_ps((float *)(void *)out, _mm256_unpacklo_ps(_mm256_loadu_ps((const float *)(const void *)a), _mm256_loadu_ps((const float *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx_vunpckhps(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm256_storeu_ps((float *)(void *)out, _mm256_unpackhi_ps(_mm256_loadu_ps((const float *)(const void *)a), _mm256_loadu_ps((const float *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx_vunpcklpd(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm256_storeu_pd((double *)(void *)out, _mm256_unpacklo_pd(_mm256_loadu_pd((const double *)(const void *)a), _mm256_loadu_pd((const double *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx_vunpckhpd(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm256_storeu_pd((double *)(void *)out, _mm256_unpackhi_pd(_mm256_loadu_pd((const double *)(const void *)a), _mm256_loadu_pd((const double *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx_vpsadbw(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_sad_epu8(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx_vblendvps(const uint8_t *a, const uint8_t *b, const uint8_t *mask, uint8_t *out) {
+    _mm256_storeu_ps((float *)(void *)out, _mm256_blendv_ps(_mm256_loadu_ps((const float *)(const void *)a), _mm256_loadu_ps((const float *)(const void *)b), _mm256_loadu_ps((const float *)(const void *)mask)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx_vblendvpd(const uint8_t *a, const uint8_t *b, const uint8_t *mask, uint8_t *out) {
+    _mm256_storeu_pd((double *)(void *)out, _mm256_blendv_pd(_mm256_loadu_pd((const double *)(const void *)a), _mm256_loadu_pd((const double *)(const void *)b), _mm256_loadu_pd((const double *)(const void *)mask)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx_vbroadcastf128(const uint8_t *p, uint8_t *out) {
+    _mm256_storeu_si256((__m256i *)(void *)out, _mm256_castps_si256(_mm256_broadcast_ps((const __m128 *)(const void *)p)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx_vmaskmovps_load(const uint8_t *p, const uint8_t *mask, uint8_t *out) {
+    _mm256_storeu_ps((float *)(void *)out, _mm256_maskload_ps((const float *)(const void *)p, _mm256_loadu_ps((const float *)(const void *)mask)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx_vmaskmovps_store(uint8_t *p, const uint8_t *mask, const uint8_t *value) {
+    _mm256_maskstore_ps((float *)(void *)p, _mm256_loadu_ps((const float *)(const void *)mask), _mm256_loadu_ps((const float *)(const void *)value));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx_vmaskmovpd_load(const uint8_t *p, const uint8_t *mask, uint8_t *out) {
+    _mm256_storeu_pd((double *)(void *)out, _mm256_maskload_pd((const double *)(const void *)p, _mm256_loadu_pd((const double *)(const void *)mask)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx_vmaskmovpd_store(uint8_t *p, const uint8_t *mask, const uint8_t *value) {
+    _mm256_maskstore_pd((double *)(void *)p, _mm256_loadu_pd((const double *)(const void *)mask), _mm256_loadu_pd((const double *)(const void *)value));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx_vmovd(uint32_t value, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_cvtsi32_si128((int)value));
+}
+
+__attribute__((always_inline))
+uint32_t rust_isa_avx_vmovd_to_u32(const uint8_t *a) {
+    return (uint32_t)_mm_cvtsi128_si32(_mm_loadu_si128((const __m128i *)(const void *)a));
+}
+
+__attribute__((always_inline))
+uint32_t rust_isa_avx_vmovmskpd(const uint8_t *a) {
+    return (uint32_t)_mm256_movemask_pd(_mm256_loadu_pd((const double *)(const void *)a));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx_vmovshdup(const uint8_t *a, uint8_t *out) {
+    _mm256_storeu_ps((float *)(void *)out, _mm256_movehdup_ps(_mm256_loadu_ps((const float *)(const void *)a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx_vmovsldup(const uint8_t *a, uint8_t *out) {
+    _mm256_storeu_ps((float *)(void *)out, _mm256_moveldup_ps(_mm256_loadu_ps((const float *)(const void *)a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx_vmovddup(const uint8_t *a, uint8_t *out) {
+    _mm256_storeu_pd((double *)(void *)out, _mm256_movedup_pd(_mm256_loadu_pd((const double *)(const void *)a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx_vlddqu(const uint8_t *p, uint8_t *out) {
+    _mm256_storeu_si256((__m256i *)(void *)out, _mm256_lddqu_si256((const __m256i *)(const void *)p));
+}
