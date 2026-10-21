@@ -394,3 +394,124 @@ RUST_ISA_NEON_REPLACE_I32(0)
 RUST_ISA_NEON_REPLACE_I32(1)
 RUST_ISA_NEON_REPLACE_I32(2)
 RUST_ISA_NEON_REPLACE_I32(3)
+
+__attribute__((always_inline))
+void rust_isa_neon_saddl_s8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s16((int16_t *)(void *)out, vaddl_s8(vld1_s8((const int8_t *)(const void *)a), vld1_s8((const int8_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_saddl_s16(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s32((int32_t *)(void *)out, vaddl_s16(vld1_s16((const int16_t *)(const void *)a), vld1_s16((const int16_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_saddl_s32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s64((int64_t *)(void *)out, vaddl_s32(vld1_s32((const int32_t *)(const void *)a), vld1_s32((const int32_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_uaddl_u8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u16((uint16_t *)(void *)out, vaddl_u8(vld1_u8((const uint8_t *)(const void *)a), vld1_u8((const uint8_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_uaddl_u16(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u32((uint32_t *)(void *)out, vaddl_u16(vld1_u16((const uint16_t *)(const void *)a), vld1_u16((const uint16_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_uaddl_u32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u64((uint64_t *)(void *)out, vaddl_u32(vld1_u32((const uint32_t *)(const void *)a), vld1_u32((const uint32_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_ssubl_s8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s16((int16_t *)(void *)out, vsubl_s8(vld1_s8((const int8_t *)(const void *)a), vld1_s8((const int8_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_ssubl_s16(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s32((int32_t *)(void *)out, vsubl_s16(vld1_s16((const int16_t *)(const void *)a), vld1_s16((const int16_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_ssubl_s32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s64((int64_t *)(void *)out, vsubl_s32(vld1_s32((const int32_t *)(const void *)a), vld1_s32((const int32_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_usubl_u8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u16((uint16_t *)(void *)out, vsubl_u8(vld1_u8((const uint8_t *)(const void *)a), vld1_u8((const uint8_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_usubl_u16(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u32((uint32_t *)(void *)out, vsubl_u16(vld1_u16((const uint16_t *)(const void *)a), vld1_u16((const uint16_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_usubl_u32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u64((uint64_t *)(void *)out, vsubl_u32(vld1_u32((const uint32_t *)(const void *)a), vld1_u32((const uint32_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_saddw_s8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s16((int16_t *)(void *)out, vaddw_s8(vld1q_s16((const int16_t *)(const void *)a), vld1_s8((const int8_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_saddw_s16(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s32((int32_t *)(void *)out, vaddw_s16(vld1q_s32((const int32_t *)(const void *)a), vld1_s16((const int16_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_saddw_s32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s64((int64_t *)(void *)out, vaddw_s32(vld1q_s64((const int64_t *)(const void *)a), vld1_s32((const int32_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_uaddw_u8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u16((uint16_t *)(void *)out, vaddw_u8(vld1q_u16((const uint16_t *)(const void *)a), vld1_u8((const uint8_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_uaddw_u16(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u32((uint32_t *)(void *)out, vaddw_u16(vld1q_u32((const uint32_t *)(const void *)a), vld1_u16((const uint16_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_uaddw_u32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u64((uint64_t *)(void *)out, vaddw_u32(vld1q_u64((const uint64_t *)(const void *)a), vld1_u32((const uint32_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_ssubw_s8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s16((int16_t *)(void *)out, vsubw_s8(vld1q_s16((const int16_t *)(const void *)a), vld1_s8((const int8_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_ssubw_s16(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s32((int32_t *)(void *)out, vsubw_s16(vld1q_s32((const int32_t *)(const void *)a), vld1_s16((const int16_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_ssubw_s32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s64((int64_t *)(void *)out, vsubw_s32(vld1q_s64((const int64_t *)(const void *)a), vld1_s32((const int32_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_usubw_u8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u16((uint16_t *)(void *)out, vsubw_u8(vld1q_u16((const uint16_t *)(const void *)a), vld1_u8((const uint8_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_usubw_u16(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u32((uint32_t *)(void *)out, vsubw_u16(vld1q_u32((const uint32_t *)(const void *)a), vld1_u16((const uint16_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_usubw_u32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u64((uint64_t *)(void *)out, vsubw_u32(vld1q_u64((const uint64_t *)(const void *)a), vld1_u32((const uint32_t *)(const void *)b)));
+}
+

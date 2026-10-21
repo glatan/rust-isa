@@ -10,6 +10,7 @@ mod lane;
 mod shift;
 mod shuffle;
 mod v128;
+mod widen;
 
 pub use compare::*;
 pub use float::*;
@@ -18,6 +19,7 @@ pub use lane::*;
 pub use shift::*;
 pub use shuffle::*;
 pub use v128::*;
+pub use widen::*;
 
 unsafe extern "C" {
     fn rust_isa_neon_add(a: *const u8, b: *const u8, out: *mut u8);
