@@ -2,6 +2,8 @@
 
 pub mod bf16;
 pub mod dotprod;
+pub mod f32mm;
+pub mod f64mm;
 pub mod fcma;
 pub mod fhm;
 pub mod fp16;
