@@ -9,7 +9,10 @@ use rust_isa::powerpc::simd::altivec::{
     mul_i16, mul_i32, or, permute, splat_i32, sub_i8, sub_i16, sub_i32, sub_i64, v128_load,
     v128_store, xor,
 };
-use rust_isa::powerpc::simd::power8_vector::{add_u64, mul_even_u16, mul_u32, sub_u64};
+use rust_isa::powerpc::simd::power8_vector::{
+    add_u64, mul_even_u16, mul_u32, sub_u64, vclzd as p8_vclzd, vmaxsd, vmaxud, vminsd, vminud,
+    vmuleuw, vmulouw, vpksdss, vpksdus, vpkudum, vpopcntd as p8_vpopcntd, vupkhsw, vupklsw,
+};
 use rust_isa::powerpc::simd::power9_vector::{
     abs_i32 as p9_abs_i32, neg_i32 as p9_neg_i32, vabsd, vabsduw, vctzb, vctzh, vctzlsbb, vctzw,
     vextsb2d, vextsb2w, vextsh2d, vextsh2w, vextsw2d, vnegd, vnegw,
@@ -218,6 +221,22 @@ fn power8_ops() -> bool {
             || i64::from_le_bytes(sum[8..].try_into().unwrap()) != 5
             || i64::from_le_bytes(diff[..8].try_into().unwrap()) != 1
             || i64::from_le_bytes(diff[8..].try_into().unwrap()) != 1
+        {
+            return false;
+        }
+        if lanes(vmaxud(i32x4([1, 4, 2, 8]), i32x4([3, 2, 6, 4]))) != [3, 4, 6, 8]
+            || lanes(vminud(i32x4([1, 4, 2, 8]), i32x4([3, 2, 6, 4]))) != [1, 2, 2, 4]
+            || lanes(vmaxsd(i32x4([-1, 4, -2, 8]), i32x4([-3, 2, -6, 4]))) != [-1, 4, -2, 8]
+            || lanes(vminsd(i32x4([-1, 4, -2, 8]), i32x4([-3, 2, -6, 4]))) != [-3, 2, -6, 4]
+            || p8_vclzd(V128::from_bytes([0; 16])).to_bytes()[0] != 64
+            || p8_vpopcntd(V128::from_bytes([0xff; 16])).to_bytes()[0] != 64
+            || vpkudum(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() == [0; 16]
+            || vpksdus(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() == [0; 16]
+            || vpksdss(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() == [0; 16]
+            || vupkhsw(i32x4([1, 2, 3, 4])).to_bytes() == [0; 16]
+            || vupklsw(i32x4([1, 2, 3, 4])).to_bytes() == [0; 16]
+            || vmuleuw(i32x4([1, 2, 3, 4]), i32x4([1, 2, 3, 4])).to_bytes() == [0; 16]
+            || vmulouw(i32x4([1, 2, 3, 4]), i32x4([1, 2, 3, 4])).to_bytes() == [0; 16]
         {
             return false;
         }
