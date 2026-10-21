@@ -82,6 +82,7 @@ fn main() {
     let rv_zbkb_c = manifest.join("src/riscv/integer/zbkb/zbkb.c");
     let rv_zbs_c = manifest.join("src/riscv/integer/zbs/zbs.c");
     let rv_zkn_c = manifest.join("src/riscv/crypto/zkn/zkn.c");
+    let rv_zfh_c = manifest.join("src/riscv/float/zfh/zfh.c");
     let rv_zks_c = manifest.join("src/riscv/crypto/zks/zks.c");
     let lsx_c = manifest.join("src/loongarch/simd/lsx/lsx.c");
     let lasx_c = manifest.join("src/loongarch/simd/lasx/lasx.c");
@@ -180,6 +181,7 @@ fn main() {
         &rv_zbkb_c,
         &rv_zbs_c,
         &rv_zkn_c,
+        &rv_zfh_c,
         &rv_zks_c,
         &lsx_c,
         &lasx_c,
@@ -409,6 +411,7 @@ fn main() {
             ),
             (&rv_zbs_c, "rust_isa_rv_zbs", &["-march=rv64gc_zbs"][..]),
             (&rv_zkn_c, "rust_isa_rv_zkn", &["-march=rv64gc_zkn"][..]),
+            (&rv_zfh_c, "rust_isa_rv_zfh", &["-march=rv64gc_zfh"][..]),
             (&rv_zks_c, "rust_isa_rv_zks", &["-march=rv64gc_zks"][..]),
         ] {
             let mut flags = march.to_vec();
