@@ -9,8 +9,9 @@ use rust_isa::x86::simd::sse3::{
     addsubpd, addsubps, haddpd, haddps, hsubpd, hsubps, lddqu, movddup, movshdup, movsldup,
 };
 use rust_isa::x86::simd::sse4_1::{
-    blendvpd, blendvps, packusdw, pblendvb, phminposuw, pmaxud, pmaxuw, pminud, pminuw, pmovsxbd,
-    pmovsxbw, pmovzxbw, pmulld, ptest,
+    blendpd, blendps, blendvpd, blendvps, dppd, dpps, insertps, mpsadbw, packusdw, pblendvb,
+    pblendw, phminposuw, pmaxud, pmaxuw, pminud, pminuw, pmovsxbd, pmovsxbw, pmovzxbw, pmulld,
+    ptest, roundpd, roundps, roundsd, roundss,
 };
 use rust_isa::x86::simd::sse4_2::{crc32_u8, pcmpgtq};
 use rust_isa::x86::simd::ssse3::{
@@ -501,5 +502,67 @@ fn optional_extension_api_surface() {
     assert_eq!(
         core::mem::size_of::<rust_isa::x86::matrix::amx_tile::TileConfig>(),
         64
+    );
+}
+
+#[test]
+fn sse41_immediate_operations() {
+    if !is_x86_feature_detected!("sse4.1") {
+        return;
+    }
+
+    let a = f32x4([1.0, 2.0, 3.0, 4.0]);
+    let b = f32x4([10.0, 20.0, 30.0, 40.0]);
+    assert_eq!(
+        f32_lanes(unsafe { blendps::<0b0101>(a, b) }),
+        [10.0, 2.0, 30.0, 4.0]
+    );
+    let a = f64x2([1.0, 2.0]);
+    let b = f64x2([10.0, 20.0]);
+    assert_eq!(f64_lanes(unsafe { blendpd::<0b01>(a, b) }), [10.0, 2.0]);
+
+    let a = i16x8([1, 2, 3, 4, 5, 6, 7, 8]);
+    let b = i16x8([10, 20, 30, 40, 50, 60, 70, 80]);
+    assert_eq!(
+        i16_lanes(unsafe { pblendw::<0x55>(a, b) }),
+        [10, 2, 30, 4, 50, 6, 70, 8]
+    );
+
+    let a = f32x4([1.0, 2.0, 3.0, 4.0]);
+    let b = f32x4([10.0, 20.0, 30.0, 40.0]);
+    assert_eq!(
+        f32_lanes(unsafe { insertps::<0x00>(a, b) }),
+        [10.0, 2.0, 3.0, 4.0]
+    );
+
+    let a = f32x4([1.7, 2.2, 3.8, 4.1]);
+    assert_eq!(f32_lanes(unsafe { roundps::<0>(a) }), [2.0, 2.0, 4.0, 4.0]);
+    assert_eq!(f32_lanes(unsafe { roundps::<1>(a) }), [1.0, 2.0, 3.0, 4.0]);
+    assert_eq!(f32_lanes(unsafe { roundps::<2>(a) }), [2.0, 3.0, 4.0, 5.0]);
+    assert_eq!(f32_lanes(unsafe { roundps::<3>(a) }), [1.0, 2.0, 3.0, 4.0]);
+
+    let a = f64x2([1.7, 2.2]);
+    assert_eq!(f64_lanes(unsafe { roundpd::<0>(a) }), [2.0, 2.0]);
+
+    let a = f32x4([9.0; 4]);
+    let b = f32x4([1.7, 2.2, 3.8, 4.1]);
+    assert_eq!(
+        f32_lanes(unsafe { roundss::<0>(a, b) }),
+        [2.0, 9.0, 9.0, 9.0]
+    );
+    let a = f64x2([9.0, 9.0]);
+    let b = f64x2([1.7, 2.2]);
+    assert_eq!(f64_lanes(unsafe { roundsd::<0>(a, b) }), [2.0, 9.0]);
+
+    let a = f32x4([1.0, 2.0, 3.0, 4.0]);
+    let b = f32x4([1.0; 4]);
+    assert_eq!(f32_lanes(unsafe { dpps::<0xff>(a, b) }), [10.0; 4]);
+    let a = f64x2([1.0, 2.0]);
+    let b = f64x2([1.0; 2]);
+    assert_eq!(f64_lanes(unsafe { dppd::<0xff>(a, b) }), [3.0; 2]);
+
+    assert_eq!(
+        unsafe { mpsadbw::<0>(V128::from_bytes([0; 16]), V128::from_bytes([0; 16])) }.to_bytes(),
+        [0; 16]
     );
 }
