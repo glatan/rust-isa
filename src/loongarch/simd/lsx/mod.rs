@@ -297,3 +297,9 @@ pub fn vsub_w(a: V128, b: V128) -> V128 {
 pub fn vmul_w(a: V128, b: V128) -> V128 {
     mul(a, b)
 }
+
+/// `vneg.w`.
+#[inline(always)]
+pub fn vneg_w(a: V128) -> V128 {
+    vneg(a)
+}
