@@ -11,6 +11,7 @@ use crate::aarch64::simd::neon::V128;
 
 unsafe extern "C" {
     fn rust_isa_fhm_vfmaq_f16(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_fhm_vfmsq_f16(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `fmla` on binary16 lanes.
@@ -24,6 +25,21 @@ pub unsafe fn fmla_f16(acc: V128, a: V128, b: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
         rust_isa_fhm_vfmaq_f16(acc.as_ptr(), a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `fmls` on binary16 lanes.
+///
+/// # Safety
+///
+/// The caller must enable FHM.
+#[target_feature(enable = "fhm")]
+#[inline]
+pub unsafe fn fmls_f16(acc: V128, a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_fhm_vfmsq_f16(acc.as_ptr(), a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
 }

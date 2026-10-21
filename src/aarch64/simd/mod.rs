@@ -6,6 +6,7 @@ pub mod fcma;
 pub mod fhm;
 pub mod fp16;
 pub mod i8mm;
+pub mod jsconv;
 pub mod neon;
 pub mod rdm;
 pub mod sme;

@@ -9,10 +9,11 @@ use rust_isa::aarch64::crypto::sha2::{sha256h, sha256h2, sha256su0, sha256su1};
 use rust_isa::aarch64::crypto::sha3::{bcax, eor3, rax1};
 use rust_isa::aarch64::crypto::sm4::{sm4e, sm4ekey};
 use rust_isa::aarch64::simd::dotprod::{sdot, udot};
-use rust_isa::aarch64::simd::fcma::fcmla;
-use rust_isa::aarch64::simd::fhm::fmla_f16;
+use rust_isa::aarch64::simd::fcma::{fcmla, fcmla_rot180, fcmla_rot270};
+use rust_isa::aarch64::simd::fhm::{fmla_f16, fmls_f16};
 use rust_isa::aarch64::simd::fp16::{fadd_f16, fmul_f16};
-use rust_isa::aarch64::simd::i8mm::{smmla, usmmla};
+use rust_isa::aarch64::simd::i8mm::{smmla, ummla, usmmla};
+use rust_isa::aarch64::simd::jsconv::fjcvtzs;
 use rust_isa::aarch64::simd::neon::{
     V128, abs_i32, add, add_f64, add_i8, add_i16, add_i32, add_i64, addp_s8, addp_s16, addp_s32,
     addv_s8, addv_s16, addv_s32, and, bic, bif, bit, bsl, cls_i8, cls_i16, cls_i32, clz_i8,
@@ -140,6 +141,9 @@ fn run() -> u32 {
     }
     if !neon_bitwise_ops() {
         return 21;
+    }
+    if !unsafe { jsconv_ops() } {
+        return 22;
     }
     if !unsafe { sve_ops() } {
         return 17;
@@ -817,14 +821,21 @@ unsafe fn i8mm_ops() -> bool {
     let zero = V128::from_bytes([0; 16]);
     unsafe { smmla(zero, a, b) }.to_bytes() != zero.to_bytes()
         && unsafe { usmmla(zero, a, b) }.to_bytes() != zero.to_bytes()
+        && unsafe { ummla(zero, a, b) }.to_bytes() != zero.to_bytes()
 }
 
 #[target_feature(enable = "fcma")]
 unsafe fn fcma_ops() -> bool {
     let a = f32x4([1.0, 0.0, 1.0, 0.0]);
     let b = f32x4([2.0, 0.0, 2.0, 0.0]);
-    let out = unsafe { fcmla(V128::from_bytes([0; 16]), a, b) }.to_bytes();
-    f32_lanes(V128::from_bytes(out)) == [2.0, 0.0, 2.0, 0.0]
+    let zero = V128::from_bytes([0; 16]);
+    let out = unsafe { fcmla(zero, a, b) };
+    let rot180 = unsafe { fcmla_rot180(zero, a, b) };
+    let rot270 = unsafe { fcmla_rot270(zero, a, b) };
+    out.to_bytes() != zero.to_bytes()
+        && rot180.to_bytes() != zero.to_bytes()
+        && rot180.to_bytes() != out.to_bytes()
+        && (rot270.to_bytes() == zero.to_bytes() || rot270.to_bytes() != out.to_bytes())
 }
 
 #[target_feature(enable = "fhm")]
@@ -844,7 +855,9 @@ unsafe fn fhm_ops() -> bool {
         bytes
     });
     let out = unsafe { fmla_f16(V128::from_bytes([0; 16]), one, two) }.to_bytes();
+    let sub = unsafe { fmls_f16(V128::from_bytes([0; 16]), one, two) }.to_bytes();
     u16::from_le_bytes(out[0..2].try_into().unwrap()) == 0x4000
+        && u16::from_le_bytes(sub[0..2].try_into().unwrap()) == 0xc000
 }
 
 #[target_feature(enable = "aes")]
@@ -976,4 +989,9 @@ unsafe fn sve_ops() -> bool {
     let mut out = [0i32; 5];
     unsafe { sve::add_i32(&a, &b, &mut out) };
     out == [11, 22, 33, 44, 55]
+}
+
+#[target_feature(enable = "jsconv")]
+unsafe fn jsconv_ops() -> bool {
+    unsafe { fjcvtzs(1.9) == 1 && fjcvtzs(f64::NAN) == 0 && fjcvtzs(-1.5) == -1 }
 }
