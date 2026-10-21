@@ -162,3 +162,29 @@ pub unsafe fn xvor(a: V256, b: V256) -> V256 {
 pub unsafe fn xvxor(a: V256, b: V256) -> V256 {
     unsafe { xor(a, b) }
 }
+
+/// `xvabs.w`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvabs(a: V256) -> V256 {
+    let bytes = a.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..8 {
+        let value = i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.wrapping_abs().to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvneg.w`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvneg(a: V256) -> V256 {
+    let bytes = a.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..8 {
+        let value = i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.wrapping_neg().to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
