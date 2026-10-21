@@ -1006,6 +1006,20 @@ unsafe fn sve_ops() -> bool {
     if od != [9.0, 18.0, 27.0] {
         return false;
     }
+    unsafe { sve::div_f32(&b, &a, &mut out[..7]) };
+    if out != [10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0] {
+        return false;
+    }
+    let mut oi = [0i32; 5];
+    unsafe { sve::div_i32(&bi, &ai, &mut oi) };
+    if oi != [10, 10, 10, 10, 10] {
+        return false;
+    }
+    let mut od = [0.0f64; 3];
+    unsafe { sve::div_f64(&bd, &ad, &mut od) };
+    if od != [10.0, 10.0, 10.0] {
+        return false;
+    }
     unsafe { sve::mul_f32(&a, &b, &mut out) };
     if out != [10.0, 40.0, 90.0, 160.0, 250.0, 360.0, 490.0] {
         return false;
