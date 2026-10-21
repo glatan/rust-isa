@@ -3,7 +3,6 @@
 
 use core::arch::asm;
 use core::panic::PanicInfo;
-use rust_isa::s390x::simd::vector::vgbm;
 use rust_isa::s390x::simd::vector::{
     V128, add, add_i8, add_i16, add_i64, and, cmpeq_i32, cmpgt_i32, fadd, fdiv, fmul, fsub, mul,
     mul_i16, mul_i32, or, permute, splat_i32, sub_i8, sub_i16, sub_i32, sub_i64, v128_load,
@@ -12,6 +11,7 @@ use rust_isa::s390x::simd::vector::{
 };
 use rust_isa::s390x::simd::vector::{vchl, vclf, vclg, vclh, vle, vperm, vpks, vst};
 use rust_isa::s390x::simd::vector::{vcksm, vlef, vme, vmh, vml, vmo, vpkls, vstef};
+use rust_isa::s390x::simd::vector::{vgbm, vrepb, vrepf, vrepg, vreph};
 use rust_isa::s390x::simd::vector_enhancements::{
     cntlz_i32, fma, popcnt_i8, popcnt_i32, vclz, vclzd, vctz, vctzd, vfa, vfce, vfch, vfche, vfd,
     vfm, vfma, vfms, vfnma, vfnms, vfs, vfsq, vpopcntd, vpopct,
@@ -375,5 +375,21 @@ fn vector_more_ops() -> bool {
             }
             && vgbm::<0xffff>().to_bytes() == [0xff; 16]
             && vgbm::<0x0000>().to_bytes() == [0; 16]
+            && {
+                let b = vrepb::<0>(V128::from_bytes(core::array::from_fn(|i| i as u8))).to_bytes();
+                b.iter().all(|&x| x == b[0])
+            }
+            && {
+                let b = vreph::<0>(V128::from_bytes(core::array::from_fn(|i| i as u8))).to_bytes();
+                b.chunks_exact(2).all(|c| c == &b[..2])
+            }
+            && {
+                let b = vrepf::<0>(V128::from_bytes(core::array::from_fn(|i| i as u8))).to_bytes();
+                b.chunks_exact(4).all(|c| c == &b[..4])
+            }
+            && {
+                let b = vrepg::<0>(V128::from_bytes(core::array::from_fn(|i| i as u8))).to_bytes();
+                b.chunks_exact(8).all(|c| c == &b[..8])
+            }
     }
 }

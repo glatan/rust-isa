@@ -472,3 +472,79 @@ pub unsafe fn vgbm<const IMM: u16>() -> V128 {
     }
     V128::from_bytes(out.to_be_bytes())
 }
+
+/// `vrepb`.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vrepb<const INDEX: u8>(a: V128) -> V128 {
+    const { assert!(INDEX <= 15, "vrepb index must be in 0..=15") };
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vrepb {out}, {input}, {index}",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
+            index = const INDEX,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
+
+/// `vreph`.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vreph<const INDEX: u8>(a: V128) -> V128 {
+    const { assert!(INDEX <= 7, "vreph index must be in 0..=7") };
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vreph {out}, {input}, {index}",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
+            index = const INDEX,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
+
+/// `vrepf`.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vrepf<const INDEX: u8>(a: V128) -> V128 {
+    const { assert!(INDEX <= 3, "vrepf index must be in 0..=3") };
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vrepf {out}, {input}, {index}",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
+            index = const INDEX,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
+
+/// `vrepg`.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vrepg<const INDEX: u8>(a: V128) -> V128 {
+    const { assert!(INDEX <= 1, "vrepg index must be in 0..=1") };
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vrepg {out}, {input}, {index}",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
+            index = const INDEX,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
