@@ -311,3 +311,20 @@ __attribute__((always_inline))
 void rust_isa_s390x_vector_vstef(uint8_t *p, const uint8_t *a) {
     *(sv4u32 *)(void *)p = *(const sv4u32 *)(const void *)a;
 }
+
+__attribute__((always_inline))
+void rust_isa_s390x_vector_vuph(const uint8_t *a, uint8_t *out) {
+    *(sv8u16 *)(void *)out = vec_unpackh(*(const sv16u8 *)(const void *)a);
+}
+__attribute__((always_inline))
+void rust_isa_s390x_vector_vupl(const uint8_t *a, uint8_t *out) {
+    *(sv8u16 *)(void *)out = vec_unpackl(*(const sv16u8 *)(const void *)a);
+}
+__attribute__((always_inline))
+void rust_isa_s390x_vector_vuplh(const uint8_t *a, uint8_t *out) {
+    *(sv4u32 *)(void *)out = vec_unpackh(*(const sv8u16 *)(const void *)a);
+}
+__attribute__((always_inline))
+void rust_isa_s390x_vector_vupll(const uint8_t *a, uint8_t *out) {
+    *(sv4u32 *)(void *)out = vec_unpackl(*(const sv8u16 *)(const void *)a);
+}

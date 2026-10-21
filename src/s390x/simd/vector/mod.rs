@@ -548,3 +548,42 @@ pub unsafe fn vrepg<const INDEX: u8>(a: V128) -> V128 {
     }
     V128::from_bytes(out.to_be_bytes())
 }
+
+unsafe extern "C" {
+    fn rust_isa_s390x_vector_vuph(a: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vupl(a: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vuplh(a: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vupll(a: *const u8, out: *mut u8);
+}
+macro_rules! un_vec {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[target_feature(enable = "vector")]
+        #[inline]
+        pub unsafe fn $name(a: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe { $c(a.as_ptr(), out.as_mut_ptr()); }
+            out
+        }
+    };
+}
+un_vec!(
+    /// `vuph`.
+    vuph,
+    rust_isa_s390x_vector_vuph
+);
+un_vec!(
+    /// `vupl`.
+    vupl,
+    rust_isa_s390x_vector_vupl
+);
+un_vec!(
+    /// `vuplh`.
+    vuplh,
+    rust_isa_s390x_vector_vuplh
+);
+un_vec!(
+    /// `vupll`.
+    vupll,
+    rust_isa_s390x_vector_vupll
+);
