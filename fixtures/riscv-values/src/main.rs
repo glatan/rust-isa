@@ -10,7 +10,7 @@ use rust_isa::riscv::float::zfh::{
 };
 use rust_isa::riscv::float::zfh::{
     fclass_h, fcvt_d_h, fcvt_h_d, fcvt_h_s, fcvt_h_w, fcvt_h_wu, fcvt_s_h, fcvt_w_h, fcvt_wu_h,
-    fmv_h_x, fmv_x_h,
+    fli_h, fmv_h_x, fmv_x_h,
 }; // conversions
 use rust_isa::riscv::float::zfh::{
     fcvtmod_w_h, fleq_h, fltq_h, fmaxm_h, fminm_h, fround_h, froundnx_h,
@@ -355,5 +355,12 @@ unsafe fn zfh_ops() -> bool {
             && fclass_h(0xbc00) == 1 << 1
             && fclass_h(0x0001) == 1 << 5
             && fclass_h(0x8001) == 1 << 2
+            && fli_h(0) == 0xbc00
+            && fli_h(1) == 0x0400
+            && fli_h(2) == 0x0100
+            && fli_h(16) == 0x3c00
+            && fli_h(20) == 0x4000
+            && fli_h(30) == 0x7c00
+            && fli_h(31) == 0x7e00
     }
 }
