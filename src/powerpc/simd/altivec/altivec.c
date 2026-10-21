@@ -468,3 +468,93 @@ __attribute__((always_inline))
 void rust_isa_altivec_stvewx(uint8_t *p, uint32_t index, const uint8_t *a) {
     vec_ste(*(const av4u32 *)(const void *)a, (long)index, (unsigned int *)(void *)p);
 }
+
+typedef vector signed char av16i8;
+typedef vector unsigned char av16u8;
+typedef vector signed short av8i16;
+typedef vector unsigned short av8u16;
+typedef vector signed int av4i32;
+typedef vector unsigned int av4u32;
+
+__attribute__((always_inline))
+void rust_isa_altivec_vmsumubm(const uint8_t *a, const uint8_t *b, const uint8_t *c, uint8_t *out) {
+    av16u8 va = *(const av16u8 *)(const void *)a;
+    av16u8 vb = *(const av16u8 *)(const void *)b;
+    av4u32 vc = *(const av4u32 *)(const void *)c;
+    *(av4u32 *)(void *)out = __builtin_altivec_vmsumubm(va, vb, vc);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_vmsummbm(const uint8_t *a, const uint8_t *b, const uint8_t *c, uint8_t *out) {
+    av16i8 va = *(const av16i8 *)(const void *)a;
+    av16u8 vb = *(const av16u8 *)(const void *)b;
+    av4i32 vc = *(const av4i32 *)(const void *)c;
+    *(av4i32 *)(void *)out = __builtin_altivec_vmsummbm(va, vb, vc);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_vmsumuhm(const uint8_t *a, const uint8_t *b, const uint8_t *c, uint8_t *out) {
+    av8u16 va = *(const av8u16 *)(const void *)a;
+    av8u16 vb = *(const av8u16 *)(const void *)b;
+    av4u32 vc = *(const av4u32 *)(const void *)c;
+    *(av4u32 *)(void *)out = __builtin_altivec_vmsumuhm(va, vb, vc);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_vmsumshm(const uint8_t *a, const uint8_t *b, const uint8_t *c, uint8_t *out) {
+    av8i16 va = *(const av8i16 *)(const void *)a;
+    av8i16 vb = *(const av8i16 *)(const void *)b;
+    av4i32 vc = *(const av4i32 *)(const void *)c;
+    *(av4i32 *)(void *)out = __builtin_altivec_vmsumshm(va, vb, vc);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_vmsumuhs(const uint8_t *a, const uint8_t *b, const uint8_t *c, uint8_t *out) {
+    av8u16 va = *(const av8u16 *)(const void *)a;
+    av8u16 vb = *(const av8u16 *)(const void *)b;
+    av4u32 vc = *(const av4u32 *)(const void *)c;
+    *(av4u32 *)(void *)out = __builtin_altivec_vmsumuhs(va, vb, vc);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_vmsumshs(const uint8_t *a, const uint8_t *b, const uint8_t *c, uint8_t *out) {
+    av8i16 va = *(const av8i16 *)(const void *)a;
+    av8i16 vb = *(const av8i16 *)(const void *)b;
+    av4i32 vc = *(const av4i32 *)(const void *)c;
+    *(av4i32 *)(void *)out = __builtin_altivec_vmsumshs(va, vb, vc);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_vsum4ubs(const uint8_t *a, const uint8_t *c, uint8_t *out) {
+    av16u8 va = *(const av16u8 *)(const void *)a;
+    av4u32 vc = *(const av4u32 *)(const void *)c;
+    *(av4u32 *)(void *)out = __builtin_altivec_vsum4ubs(va, vc);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_vsum4sbs(const uint8_t *a, const uint8_t *c, uint8_t *out) {
+    av16i8 va = *(const av16i8 *)(const void *)a;
+    av4i32 vc = *(const av4i32 *)(const void *)c;
+    *(av4i32 *)(void *)out = __builtin_altivec_vsum4sbs(va, vc);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_vsum4shs(const uint8_t *a, const uint8_t *c, uint8_t *out) {
+    av8i16 va = *(const av8i16 *)(const void *)a;
+    av4i32 vc = *(const av4i32 *)(const void *)c;
+    *(av4i32 *)(void *)out = __builtin_altivec_vsum4shs(va, vc);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_vsum2sws(const uint8_t *a, const uint8_t *c, uint8_t *out) {
+    av4i32 va = *(const av4i32 *)(const void *)a;
+    av4i32 vc = *(const av4i32 *)(const void *)c;
+    *(av4i32 *)(void *)out = __builtin_altivec_vsum2sws(va, vc);
+}
+
+__attribute__((always_inline))
+void rust_isa_altivec_vsumsws(const uint8_t *a, const uint8_t *c, uint8_t *out) {
+    av4i32 va = *(const av4i32 *)(const void *)a;
+    av4i32 vc = *(const av4i32 *)(const void *)c;
+    *(av4i32 *)(void *)out = __builtin_altivec_vsumsws(va, vc);
+}

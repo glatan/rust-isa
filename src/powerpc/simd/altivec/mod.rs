@@ -617,3 +617,95 @@ stve!(
     stvewx,
     rust_isa_altivec_stvewx
 );
+
+unsafe extern "C" {
+    fn rust_isa_altivec_vmsumubm(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vmsummbm(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vmsumuhm(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vmsumshm(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vmsumuhs(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vmsumshs(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vsum4ubs(a: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vsum4sbs(a: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vsum4shs(a: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vsum2sws(a: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vsumsws(a: *const u8, c: *const u8, out: *mut u8);
+}
+
+macro_rules! asum3 {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[inline(always)]
+        pub unsafe fn $name(a: V128, b: V128, c: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe { $c(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr()); }
+            out
+        }
+    };
+}
+macro_rules! asum2 {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[inline(always)]
+        pub unsafe fn $name(a: V128, c: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe { $c(a.as_ptr(), c.as_ptr(), out.as_mut_ptr()); }
+            out
+        }
+    };
+}
+asum3!(
+    /// `vmsumubm`.
+    vmsumubm,
+    rust_isa_altivec_vmsumubm
+);
+asum3!(
+    /// `vmsummbm`.
+    vmsummbm,
+    rust_isa_altivec_vmsummbm
+);
+asum3!(
+    /// `vmsumuhm`.
+    vmsumuhm,
+    rust_isa_altivec_vmsumuhm
+);
+asum3!(
+    /// `vmsumshm`.
+    vmsumshm,
+    rust_isa_altivec_vmsumshm
+);
+asum3!(
+    /// `vmsumuhs`.
+    vmsumuhs,
+    rust_isa_altivec_vmsumuhs
+);
+asum3!(
+    /// `vmsumshs`.
+    vmsumshs,
+    rust_isa_altivec_vmsumshs
+);
+asum2!(
+    /// `vsum4ubs`.
+    vsum4ubs,
+    rust_isa_altivec_vsum4ubs
+);
+asum2!(
+    /// `vsum4sbs`.
+    vsum4sbs,
+    rust_isa_altivec_vsum4sbs
+);
+asum2!(
+    /// `vsum4shs`.
+    vsum4shs,
+    rust_isa_altivec_vsum4shs
+);
+asum2!(
+    /// `vsum2sws`.
+    vsum2sws,
+    rust_isa_altivec_vsum2sws
+);
+asum2!(
+    /// `vsumsws`.
+    vsumsws,
+    rust_isa_altivec_vsumsws
+);
