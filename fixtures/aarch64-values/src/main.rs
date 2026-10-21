@@ -1108,6 +1108,17 @@ unsafe fn sve_ops() -> bool {
     if od.iter().any(|value| *value == 0.0 || !value.is_finite()) {
         return false;
     }
+    unsafe { sve::rsqrt_f32(&[1.0, 4.0, 16.0], &mut out[..3]) };
+    if out[..3]
+        .iter()
+        .any(|value| *value == 0.0 || !value.is_finite())
+    {
+        return false;
+    }
+    unsafe { sve::rsqrt_f64(&[1.0, 4.0, 16.0], &mut od) };
+    if od.iter().any(|value| *value == 0.0 || !value.is_finite()) {
+        return false;
+    }
     unsafe { sve::mul_f32(&a, &b, &mut out) };
     if out != [10.0, 40.0, 90.0, 160.0, 250.0, 360.0, 490.0] {
         return false;
