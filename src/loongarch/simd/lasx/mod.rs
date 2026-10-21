@@ -125,3 +125,40 @@ pub unsafe fn splat_i32(value: i32) -> V256 {
     }
     out
 }
+
+/// `xvadd.w`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvadd(a: V256, b: V256) -> V256 {
+    unsafe { add(a, b) }
+}
+/// `xvsub.w`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvsub(a: V256, b: V256) -> V256 {
+    unsafe { sub(a, b) }
+}
+/// `xvmul.w`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvmul(a: V256, b: V256) -> V256 {
+    unsafe { mul(a, b) }
+}
+/// `xvand.v`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvand(a: V256, b: V256) -> V256 {
+    unsafe { and(a, b) }
+}
+/// `xvor.v`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvor(a: V256, b: V256) -> V256 {
+    unsafe { or(a, b) }
+}
+/// `xvxor.v`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvxor(a: V256, b: V256) -> V256 {
+    unsafe { xor(a, b) }
+}

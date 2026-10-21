@@ -8,7 +8,8 @@ use rust_isa::loongarch::simd::lasx::{
     V256, add as lasx_add, add_i64 as lasx_add_i64, and as lasx_and, fadd as lasx_fadd,
     fdiv as lasx_fdiv, fmul as lasx_fmul, fsub as lasx_fsub, mul as lasx_mul,
     mul_i32 as lasx_mul_i32, or as lasx_or, splat_i32 as lasx_splat_i32, sub as lasx_sub,
-    sub_i64 as lasx_sub_i64, v256_load, v256_store, xor as lasx_xor,
+    sub_i64 as lasx_sub_i64, v256_load, v256_store, xor as lasx_xor, xvadd, xvand, xvmul, xvor,
+    xvsub, xvxor,
 };
 use rust_isa::loongarch::simd::lsx::{
     V128, add, add_i8, and, cmpeq_i32, cmpgt_i32, fadd, fdiv, fmul, fsub, mul, mul_i16, or,
@@ -67,6 +68,9 @@ fn run() -> u32 {
     }
     if !lbt_ops() {
         return 5;
+    }
+    if !lasx_alias_ops() {
+        return 6;
     }
     if !lsx_alias_ops() {
         return 6;
@@ -326,4 +330,17 @@ fn lsx_alias_ops() -> bool {
         && vand(a, b) == and(a, b)
         && vor(a, b) == or(a, b)
         && vxor(a, b) == xor(a, b)
+}
+
+fn lasx_alias_ops() -> bool {
+    let a = V256::from_bytes([1; 32]);
+    let b = V256::from_bytes([2; 32]);
+    unsafe {
+        xvadd(a, b) == lasx_add(a, b)
+            && xvsub(b, a) == lasx_sub(b, a)
+            && xvmul(a, b) == lasx_mul(a, b)
+            && xvand(a, b) == lasx_and(a, b)
+            && xvor(a, b) == lasx_or(a, b)
+            && xvxor(a, b) == lasx_xor(a, b)
+    }
 }
