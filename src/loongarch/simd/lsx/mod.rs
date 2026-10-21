@@ -323,3 +323,15 @@ pub fn vabs_h(a: V128) -> V128 {
     }
     V128::from_bytes(o)
 }
+
+/// `vabs.d`.
+#[inline(always)]
+pub fn vabs_d(a: V128) -> V128 {
+    let b = a.to_bytes();
+    let mut o = [0u8; 16];
+    for i in 0..2 {
+        let v = i64::from_le_bytes(b[i * 8..i * 8 + 8].try_into().unwrap());
+        o[i * 8..i * 8 + 8].copy_from_slice(&v.wrapping_abs().to_le_bytes());
+    }
+    V128::from_bytes(o)
+}
