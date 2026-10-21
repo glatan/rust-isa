@@ -1,8 +1,5 @@
 #include <stdint.h>
-
-typedef int v8i32 __attribute__((vector_size(32)));
-typedef long long v4i64 __attribute__((vector_size(32)));
-typedef float v8f32 __attribute__((vector_size(32)));
+#include <lasxintrin.h>
 
 __attribute__((always_inline))
 void rust_isa_lasx_v256_load(const uint8_t *p, uint8_t *out) {
@@ -82,4 +79,32 @@ void rust_isa_lasx_fdiv(const uint8_t *a, const uint8_t *b, uint8_t *out) {
 __attribute__((always_inline))
 void rust_isa_lasx_splat_i32(int32_t value, uint8_t *out) {
     *(v8i32 *)(void *)out = (v8i32){value, value, value, value, value, value, value, value};
+}
+
+__attribute__((always_inline))
+void rust_isa_lasx_fmax_s(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    *(__m256 *)(void *)out = __lasx_xvfmax_s(*(const __m256 *)(const void *)a,
+                                             *(const __m256 *)(const void *)b);
+}
+
+__attribute__((always_inline))
+void rust_isa_lasx_fmin_s(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    *(__m256 *)(void *)out = __lasx_xvfmin_s(*(const __m256 *)(const void *)a,
+                                             *(const __m256 *)(const void *)b);
+}
+
+__attribute__((always_inline))
+void rust_isa_lasx_fcvt_s_d(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    *(__m256 *)(void *)out = __lasx_xvfcvt_s_d(*(const __m256d *)(const void *)a,
+                                               *(const __m256d *)(const void *)b);
+}
+
+__attribute__((always_inline))
+void rust_isa_lasx_ftint_w_s(const uint8_t *a, uint8_t *out) {
+    *(__m256i *)(void *)out = __lasx_xvftint_w_s(*(const __m256 *)(const void *)a);
+}
+
+__attribute__((always_inline))
+void rust_isa_lasx_ffint_s_w(const uint8_t *a, uint8_t *out) {
+    *(__m256 *)(void *)out = __lasx_xvffint_s_w(*(const __m256i *)(const void *)a);
 }
