@@ -1069,6 +1069,14 @@ unsafe fn sve_ops() -> bool {
     if od != [-1.0, -2.0, -3.0] {
         return false;
     }
+    unsafe { sve::sqrt_f32(&[4.0, 9.0, 16.0], &mut out[..3]) };
+    if out[..3] != [2.0, 3.0, 4.0] {
+        return false;
+    }
+    unsafe { sve::sqrt_f64(&[4.0, 9.0, 16.0], &mut od) };
+    if od != [2.0, 3.0, 4.0] {
+        return false;
+    }
     unsafe { sve::mul_f32(&a, &b, &mut out) };
     if out != [10.0, 40.0, 90.0, 160.0, 250.0, 360.0, 490.0] {
         return false;
