@@ -178,3 +178,16 @@ __attribute__((always_inline))
 void rust_isa_sse41_movntdqa(const uint8_t *p, uint8_t *out) {
     _mm_storeu_si128((__m128i *)(void *)out, _mm_stream_load_si128((const __m128i *)(const void *)p));
 }
+
+__attribute__((always_inline))
+void rust_isa_sse41_pmovzxbd(const uint8_t *a, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_cvtepu8_epi32(
+        _mm_loadu_si128((const __m128i *)(const void *)a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse41_pmuldq(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_mul_epi32(
+        _mm_loadu_si128((const __m128i *)(const void *)a),
+        _mm_loadu_si128((const __m128i *)(const void *)b)));
+}

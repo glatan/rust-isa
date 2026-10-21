@@ -13,11 +13,40 @@ use rust_isa::x86::simd::sse4_1::{
     pblendw, phminposuw, pmaxud, pmaxuw, pminud, pminuw, pmovsxbd, pmovsxbw, pmovzxbw, pmulld,
     ptest, roundpd, roundps, roundsd, roundss,
 };
-use rust_isa::x86::simd::sse4_2::{crc32_u8, pcmpgtq};
+use rust_isa::x86::simd::sse4_1::{
+    movntdqa, pextrb, pextrd, pextrq, pextrw, pinsrb, pinsrd, pinsrq, pinsrw, pmaxsb, pmaxsd,
+    pminsb, pminsd, pmovsxbq, pmovsxdq, pmovsxwd, pmovsxwq, pmovzxbd, pmovzxbq, pmovzxdq, pmovzxwd,
+    pmovzxwq, pmuldq,
+};
+use rust_isa::x86::simd::sse4_2::{crc32_u8, pcmpestri, pcmpestrm, pcmpgtq, pcmpistri, pcmpistrm};
+use rust_isa::x86::simd::sse4a::{extrq, extrq_imm, insertq, insertq_imm, movntsd, movntss};
 use rust_isa::x86::simd::ssse3::{
     pabsb, pabsd, pabsw, palignr, phaddd, phaddsw, phaddw, phsubd, phsubsw, phsubw, pmaddubsw,
     pmulhrsw, pshufb, psignb, psignd, psignw,
 };
+
+fn i64x2(values: [i64; 2]) -> V128 {
+    let mut bytes = [0u8; 16];
+    bytes[..8].copy_from_slice(&values[0].to_le_bytes());
+    bytes[8..].copy_from_slice(&values[1].to_le_bytes());
+    V128::from_bytes(bytes)
+}
+
+fn i64_lanes(value: V128) -> [i64; 2] {
+    let bytes = value.to_bytes();
+    [
+        i64::from_le_bytes(bytes[..8].try_into().unwrap()),
+        i64::from_le_bytes(bytes[8..].try_into().unwrap()),
+    ]
+}
+
+fn u64_lanes(value: V128) -> [u64; 2] {
+    let bytes = value.to_bytes();
+    [
+        u64::from_le_bytes(bytes[..8].try_into().unwrap()),
+        u64::from_le_bytes(bytes[8..].try_into().unwrap()),
+    ]
+}
 
 fn f32x4(values: [f32; 4]) -> V128 {
     let mut bytes = [0u8; 16];
@@ -627,6 +656,13 @@ fn sse41_signed_minmax_and_extend() {
         [u32::MAX as i64, 0x8000_0000]
     );
 
+    let bytes = V128::from_bytes([0xff, 2, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    assert_eq!(i32_lanes(unsafe { pmovzxbd(bytes) }), [255, 2, 3, 4]);
+    assert_eq!(
+        i64_lanes(unsafe { pmuldq(i32x4([-1, 2, -3, 4]), i32x4([2, 2, 4, 4])) }),
+        [-2, -12]
+    );
+
     let source = [1u8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
     assert_eq!(unsafe { movntdqa(source.as_ptr()) }.to_bytes(), source);
 }
@@ -640,6 +676,10 @@ fn sse41_insert_and_extract() {
     let value = unsafe { pinsrb::<3>(zero, 0xab) }.to_bytes();
     assert_eq!(value[3], 0xab);
     assert_eq!(unsafe { pextrb::<3>(V128::from_bytes(value)) }, 0xab);
+
+    let value = unsafe { pinsrw::<2>(zero, 0x1234) }.to_bytes();
+    assert_eq!(&value[4..6], &[0x34, 0x12]);
+    assert_eq!(unsafe { pextrw::<2>(V128::from_bytes(value)) }, 0x1234);
 
     let value = unsafe { pinsrd::<2>(zero, 0x1234_5678) }.to_bytes();
     assert_eq!(&value[8..12], &[0x78, 0x56, 0x34, 0x12]);
@@ -658,4 +698,66 @@ fn sse41_insert_and_extract() {
             0x0123_4567_89ab_cdef
         );
     }
+}
+
+#[test]
+fn sse42_string_comparisons() {
+    if !is_x86_feature_detected!("sse4.2") {
+        return;
+    }
+    let mut needle = [0u8; 16];
+    needle[..2].copy_from_slice(b"lo");
+    let mut haystack = [0u8; 16];
+    haystack[..5].copy_from_slice(b"hello");
+    let needle = V128::from_bytes(needle);
+    let haystack = V128::from_bytes(haystack);
+
+    assert_eq!(unsafe { pcmpistri(needle, haystack, 0x00) }, 2);
+    assert_eq!(unsafe { pcmpestri(needle, 2, haystack, 5, 0x00) }, 2);
+    assert_eq!(
+        &unsafe { pcmpistrm(needle, haystack, 0x00) }.to_bytes()[..2],
+        &[0x1c, 0x00]
+    );
+    assert_eq!(
+        &unsafe { pcmpestrm(needle, 2, haystack, 5, 0x00) }.to_bytes()[..2],
+        &[0x1c, 0x00]
+    );
+}
+
+#[test]
+fn sse4a_immediate_forms_and_stores() {
+    if !is_x86_feature_detected!("sse4a") {
+        return;
+    }
+    let mut value_bytes = [0u8; 16];
+    value_bytes[..8].copy_from_slice(&0x0123_4567_89ab_cdefu64.to_le_bytes());
+    let value = V128::from_bytes(value_bytes);
+    let mut control_bytes = [0u8; 16];
+    control_bytes[0] = 8;
+    control_bytes[1] = 8;
+    let control = V128::from_bytes(control_bytes);
+    assert_eq!(unsafe { extrq_imm::<8, 8>(value) }, unsafe {
+        extrq(value, control)
+    });
+
+    let mut inserted_bytes = [0u8; 16];
+    inserted_bytes[0] = 0xab;
+    inserted_bytes[8] = 8;
+    inserted_bytes[9] = 8;
+    let inserted = V128::from_bytes(inserted_bytes);
+    assert_eq!(unsafe { insertq_imm::<8, 8>(value, inserted) }, unsafe {
+        insertq(value, inserted)
+    });
+
+    let mut sd = 0.0f64;
+    let mut sd_bytes = [0u8; 16];
+    sd_bytes[..8].copy_from_slice(&1.5f64.to_le_bytes());
+    unsafe { movntsd(&mut sd, V128::from_bytes(sd_bytes)) };
+    assert_eq!(sd, 1.5);
+
+    let mut ss = 0.0f32;
+    let mut ss_bytes = [0u8; 16];
+    ss_bytes[..4].copy_from_slice(&2.5f32.to_le_bytes());
+    unsafe { movntss(&mut ss, V128::from_bytes(ss_bytes)) };
+    assert_eq!(ss, 2.5);
 }

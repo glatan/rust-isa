@@ -895,3 +895,92 @@ pub unsafe fn pextrq<const IMM: u8>(a: V128) -> u64 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_sse41_pmovzxbd(a: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmuldq(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `pmovzxbd`
+///
+/// Zero-extend the low four bytes to four 32-bit lanes.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pmovzxbd(a: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse41_pmovzxbd(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `pmuldq`
+///
+/// Multiply the low signed 32-bit value of each 64-bit lane and return 64-bit
+/// products.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pmuldq(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse41_pmuldq(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `pinsrw`
+///
+/// Insert `value` into 16-bit lane `IMM`. `IMM` must be in `0..=7`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pinsrw<const IMM: u8>(a: V128, value: u16) -> V128 {
+    const { assert!(IMM <= 7, "pinsrw lane must be in 0..=7") };
+    let mut out = u128::from_le_bytes(a.to_bytes());
+    unsafe {
+        asm!(
+            "pinsrw {out}, {value:e}, {imm}",
+            out = inout(xmm_reg) out,
+            value = in(reg) u32::from(value),
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+/// `pextrw`
+///
+/// Extract 16-bit lane `IMM`. `IMM` must be in `0..=7`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pextrw<const IMM: u8>(a: V128) -> u16 {
+    const { assert!(IMM <= 7, "pextrw lane must be in 0..=7") };
+    let a = u128::from_le_bytes(a.to_bytes());
+    let out: u32;
+    unsafe {
+        asm!(
+            "pextrw {out:e}, {a}, {imm}",
+            out = lateout(reg) out,
+            a = in(xmm_reg) a,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    out as u16
+}

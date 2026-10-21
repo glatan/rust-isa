@@ -11,6 +11,10 @@ use rust_isa::x86::simd::sse2::{
     punpcklwd, pxor, shufpd, shufps, sqrtpd, sqrtps, subpd, subps, unpckhpd, unpckhps, unpcklpd,
     unpcklps, v128_load, v128_store, xorps,
 };
+use rust_isa::x86::simd::sse2::{
+    comisd, comiss, cvtdq2pd, cvtpd2dq, cvttpd2dq, movhlps, movhps, movlhps, movlps, movntdq,
+    movnti, movntpd, movntps, movntq, movsd, movss, pandn, ucomisd, ucomiss,
+};
 
 #[test]
 fn paddd_adds_each_i32_lane() {
@@ -666,4 +670,57 @@ fn movd_and_movq_extract_low_bits() {
     ]);
     assert_eq!(movd(value), 0x1234_5678);
     assert_eq!(movq(value), 0x89ab_cdef_1234_5678);
+}
+
+#[test]
+fn scalar_moves_comparisons_and_non_temporal_stores() {
+    let a = f32x4([1.0, 2.0, 3.0, 4.0]);
+    let b = f32x4([10.0, 20.0, 30.0, 40.0]);
+    assert_eq!(f32_lanes(movss(a, b)), [10.0, 2.0, 3.0, 4.0]);
+    assert_eq!(
+        f64_lanes(movsd(f64x2([1.0, 2.0]), f64x2([10.0, 20.0]))),
+        [10.0, 2.0]
+    );
+    assert_eq!(f32_lanes(movlps(a, b)), [10.0, 20.0, 3.0, 4.0]);
+    assert_eq!(f32_lanes(movhps(a, b)), [1.0, 2.0, 10.0, 20.0]);
+    assert_eq!(f32_lanes(movlhps(a, b)), [1.0, 2.0, 10.0, 20.0]);
+    assert_eq!(f32_lanes(movhlps(a, b)), [30.0, 40.0, 3.0, 4.0]);
+    assert_eq!(
+        pandn(V128::from_bytes([0xaa; 16]), V128::from_bytes([0xcc; 16])).to_bytes(),
+        [0x44; 16]
+    );
+
+    assert_eq!(comiss(a, b), -1);
+    assert_eq!(comiss(b, a), 1);
+    assert_eq!(comiss(a, a), 0);
+    assert_eq!(comiss(f32x4([f32::NAN, 0.0, 0.0, 0.0]), a), 2);
+    assert_eq!(comisd(f64x2([1.0, 0.0]), f64x2([2.0, 0.0])), -1);
+    assert_eq!(ucomiss(a, b), -1);
+    assert_eq!(ucomiss(f32x4([f32::NAN, 0.0, 0.0, 0.0]), a), 2);
+    assert_eq!(ucomisd(f64x2([f64::NAN, 0.0]), f64x2([1.0, 0.0])), 2);
+
+    assert_eq!(f64_lanes(cvtdq2pd(i32x4([1, -2, 3, 4]))), [1.0, -2.0]);
+    assert_eq!(&i32_lanes(cvtpd2dq(f64x2([1.5, 2.5])))[..2], &[2, 2]);
+    assert_eq!(&i32_lanes(cvttpd2dq(f64x2([1.9, -1.9])))[..2], &[1, -1]);
+
+    #[repr(align(16))]
+    struct Aligned([u8; 16]);
+    let mut output = Aligned([0; 16]);
+    unsafe { movntps(output.0.as_mut_ptr().cast::<f32>(), a) };
+    assert_eq!(output.0, a.to_bytes());
+    unsafe { movntpd(output.0.as_mut_ptr().cast::<f64>(), f64x2([1.5, 2.5])) };
+    assert_eq!(
+        f64_lanes(unsafe { v128_load(output.0.as_ptr()) }),
+        [1.5, 2.5]
+    );
+    unsafe { movntdq(output.0.as_mut_ptr(), V128::from_bytes([7; 16])) };
+    assert_eq!(output.0, [7; 16]);
+    let mut integer = 0i32;
+    unsafe { movnti(&mut integer, 1234) };
+    assert_eq!(integer, 1234);
+    #[cfg(target_arch = "x86_64")]
+    {
+        unsafe { movntq(output.0.as_mut_ptr(), V128::from_bytes([9; 16])) };
+        assert_eq!(&output.0[..8], &[9; 8]);
+    }
 }

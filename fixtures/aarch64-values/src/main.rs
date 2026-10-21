@@ -14,27 +14,27 @@ use rust_isa::aarch64::simd::fhm::fmla_f16;
 use rust_isa::aarch64::simd::fp16::{fadd_f16, fmul_f16};
 use rust_isa::aarch64::simd::i8mm::{smmla, usmmla};
 use rust_isa::aarch64::simd::neon::{
-    V128, abs_i32, add, add_f64, add_i16, add_i32, add_i64, add_i8, addp_s16, addp_s32, addp_s8,
-    addv_s16, addv_s32, addv_s8, and, bic, bif, bit, bsl, cls_i16, cls_i32, cls_i8, clz_i16,
-    clz_i32, clz_i8, cmge_i16, cmge_i32, cmge_i8, cmle_i16, cmle_i32, cmle_i8, cmlt_i16, cmlt_i32,
-    cmlt_i8, cmpeq_i16, cmpeq_i32, cmpeq_i64, cmpeq_i8, cmpgt_i16, cmpgt_i32, cmpgt_i64, cmpgt_i8,
-    cmtst_i16, cmtst_i32, cmtst_i8, cnt_i8, eor, extract_i32, fabd_f32, fabd_f64, fabs, facge_f32,
+    V128, abs_i32, add, add_f64, add_i8, add_i16, add_i32, add_i64, addp_s8, addp_s16, addp_s32,
+    addv_s8, addv_s16, addv_s32, and, bic, bif, bit, bsl, cls_i8, cls_i16, cls_i32, clz_i8,
+    clz_i16, clz_i32, cmge_i8, cmge_i16, cmge_i32, cmle_i8, cmle_i16, cmle_i32, cmlt_i8, cmlt_i16,
+    cmlt_i32, cmpeq_i8, cmpeq_i16, cmpeq_i32, cmpeq_i64, cmpgt_i8, cmpgt_i16, cmpgt_i32, cmpgt_i64,
+    cmtst_i8, cmtst_i16, cmtst_i32, cnt_i8, eor, extract_i32, fabd_f32, fabd_f64, fabs, facge_f32,
     facge_f64, facgt_f32, facgt_f64, fadd, faddp_f32, faddp_f64, faddv_f32, faddv_f64, fcmeq_f32,
     fcmeq_f64, fcmge_f32, fcmge_f64, fcmgt_f32, fcmgt_f64, fcmle_f32, fcmle_f64, fcmlt_f32,
     fcmlt_f64, fdiv, fmax, fmaxnm_f32, fmaxnm_f64, fmaxnmv_f32, fmaxnmv_f64, fmaxv_f32, fmaxv_f64,
     fmin, fminnm_f32, fminnm_f64, fminnmv_f32, fminnmv_f64, fminv_f32, fminv_f64, fmla_f32,
-    fmla_f64, fmls_f32, fmls_f64, fmul, fmulx_f32, fmulx_f64, fneg, fsqrt, fsub, max_i16, max_i32,
-    max_i8, min_i16, min_i32, min_i8, mla_s16, mla_s32, mla_s8, mls_s16, mls_s32, mls_s8, mul,
-    mul_f64, mul_i16, mul_i32, mul_i8, neg_i32, not, orn, orr, rbit, replace_i32, rev16, rev32,
-    rev64, saddl_s16, saddl_s32, saddl_s8, saddw_s16, saddw_s32, saddw_s8, sar_i16, sar_i32,
-    sar_i8, shl_i32, shr_i16, smax_s16, smax_s32, smax_s8, smaxp_s16, smaxp_s32, smaxp_s8,
-    smaxv_s16, smaxv_s32, smaxv_s8, smin_s16, smin_s32, smin_s8, sminp_s16, sminp_s32, sminp_s8,
-    sminv_s16, sminv_s32, sminv_s8, splat_i32, ssubl_s16, ssubl_s32, ssubl_s8, ssubw_s16,
-    ssubw_s32, ssubw_s8, sub_i16, sub_i32, sub_i64, sub_i8, tbl, trn1, uaddl_u16, uaddl_u32,
-    uaddl_u8, uaddw_u16, uaddw_u32, uaddw_u8, umax_u16, umax_u32, umax_u8, umaxp_u16, umaxp_u32,
-    umaxp_u8, umaxv_u16, umaxv_u32, umaxv_u8, umin_u16, umin_u32, umin_u8, uminp_u16, uminp_u32,
-    uminp_u8, uminv_u16, uminv_u32, uminv_u8, usubl_u16, usubl_u32, usubl_u8, usubw_u16, usubw_u32,
-    usubw_u8, uzp1, v128_load, v128_store, zip1,
+    fmla_f64, fmls_f32, fmls_f64, fmul, fmulx_f32, fmulx_f64, fneg, fsqrt, fsub, max_i8, max_i16,
+    max_i32, min_i8, min_i16, min_i32, mla_s8, mla_s16, mla_s32, mls_s8, mls_s16, mls_s32, mul,
+    mul_f64, mul_i8, mul_i16, mul_i32, neg_i32, not, orn, orr, rbit, replace_i32, rev16, rev32,
+    rev64, saddl_s8, saddl_s16, saddl_s32, saddw_s8, saddw_s16, saddw_s32, sar_i8, sar_i16,
+    sar_i32, shl_i32, shr_i16, smax_s8, smax_s16, smax_s32, smaxp_s8, smaxp_s16, smaxp_s32,
+    smaxv_s8, smaxv_s16, smaxv_s32, smin_s8, smin_s16, smin_s32, sminp_s8, sminp_s16, sminp_s32,
+    sminv_s8, sminv_s16, sminv_s32, splat_i32, ssubl_s8, ssubl_s16, ssubl_s32, ssubw_s8, ssubw_s16,
+    ssubw_s32, sub_i8, sub_i16, sub_i32, sub_i64, tbl, trn1, uaddl_u8, uaddl_u16, uaddl_u32,
+    uaddw_u8, uaddw_u16, uaddw_u32, umax_u8, umax_u16, umax_u32, umaxp_u8, umaxp_u16, umaxp_u32,
+    umaxv_u8, umaxv_u16, umaxv_u32, umin_u8, umin_u16, umin_u32, uminp_u8, uminp_u16, uminp_u32,
+    uminv_u8, uminv_u16, uminv_u32, usubl_u8, usubl_u16, usubl_u32, usubw_u8, usubw_u16, usubw_u32,
+    uzp1, v128_load, v128_store, zip1,
 };
 use rust_isa::aarch64::simd::sve;
 
@@ -446,7 +446,6 @@ fn integer_ops() -> bool {
         || !i64_ok(uaddw_u32(i64x2([1, 2]), i32x4([10, 20, 30, 40])), [11, 22])
         || !i64_ok(ssubw_s32(i64x2([100, 200]), i32x4([1, 2, 3, 4])), [99, 198])
         || !i64_ok(usubw_u32(i64x2([100, 200]), i32x4([1, 2, 3, 4])), [99, 198])
-
     {
         return false;
     }
@@ -466,7 +465,6 @@ fn integer_ops() -> bool {
             != [0; 16]
         || cmtst_i16(i16x8([1; 8]), i16x8([3; 8])).to_bytes() != [0xff; 16]
         || cmtst_i32(i32x4([1; 4]), i32x4([3; 4])).to_bytes() != [0xff; 16]
-
     {
         return false;
     }
@@ -502,7 +500,6 @@ fn integer_ops() -> bool {
         || uminv_u16(i16x8([1, 2, 3, 4, 5, 6, 7, 8])) != 1
         || umaxv_u32(i32x4([1, 2, 3, 4])) != 4
         || uminv_u32(i32x4([1, 2, 3, 4])) != 1
-
     {
         return false;
     }
@@ -693,7 +690,6 @@ fn float_ops() -> bool {
             != [
                 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
             ]
-
     {
         return false;
     }

@@ -165,3 +165,31 @@ pub unsafe fn vpermilpd<const IMM: u8>(a: V256) -> V256 {
     }
     out
 }
+
+/// `vmpsadbw`
+///
+/// Compute multiple packed sums of absolute differences with the immediate.
+///
+/// # Safety
+///
+/// The caller must enable AVX.
+#[target_feature(enable = "avx")]
+#[inline]
+pub unsafe fn vmpsadbw<const IMM: u8>(a: V256, b: V256) -> V256 {
+    const { assert!(IMM <= 7, "vmpsadbw immediate must be in 0..=7") };
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        asm!(
+            "vmovdqu ymm0, [{a}]",
+            "vmpsadbw ymm0, ymm0, [{b}], {imm}",
+            "vmovdqu [{out}], ymm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            out = in(reg) out.as_mut_ptr(),
+            imm = const IMM,
+            out("ymm0") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}

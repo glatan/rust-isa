@@ -1,9 +1,9 @@
 use rust_isa::x86::simd::avx::{
     V256, vblendpd, vblendps, vblendvpd, vblendvps, vbroadcastf128, vextractf128, vinsertf128,
     vlddqu, vmaskmovpd_load, vmaskmovpd_store, vmaskmovps_load, vmaskmovps_store, vmovd,
-    vmovd_to_u32, vmovddup, vmovmskpd, vmovshdup, vmovsldup, vperm2f128, vpermilpd, vpermilps,
-    vpsadbw, vroundpd, vroundps, vroundsd, vroundss, vshufpd, vshufps, vunpckhpd, vunpckhps,
-    vunpcklpd, vunpcklps,
+    vmovd_to_u32, vmovddup, vmovmskpd, vmovshdup, vmovsldup, vmpsadbw, vperm2f128, vpermilpd,
+    vpermilps, vpsadbw, vroundpd, vroundps, vroundsd, vroundss, vshufpd, vshufps, vunpckhpd,
+    vunpckhps, vunpcklpd, vunpcklps,
 };
 use rust_isa::x86::simd::sse2::V128;
 
@@ -306,6 +306,15 @@ fn masked_memory_and_duplicates() {
         f64_lanes(unsafe { vmovddup(f64x4([1.0, 2.0, 3.0, 4.0])) }),
         [1.0, 1.0, 3.0, 3.0]
     );
+
+    let sad = unsafe { vmpsadbw::<0>(V256::from_bytes([1; 32]), V256::from_bytes([0; 32])) };
+    let sad_bytes = sad.to_bytes();
+    for lane in 0..16 {
+        assert_eq!(
+            i16::from_le_bytes(sad_bytes[lane * 2..lane * 2 + 2].try_into().unwrap()),
+            4
+        );
+    }
 
     let source = [0u8; 33];
     assert_eq!(

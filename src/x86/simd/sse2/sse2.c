@@ -564,3 +564,90 @@ __attribute__((always_inline))
 uint64_t rust_isa_sse2_movq(const uint8_t *a) {
     return (uint64_t)_mm_cvtsi128_si64(_mm_loadu_si128((const __m128i *)(const void *)a));
 }
+
+__attribute__((always_inline))
+void rust_isa_sse2_pandn(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_andnot_si128(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+int32_t rust_isa_sse2_comiss(const uint8_t *a, const uint8_t *b) {
+    const __m128 va = _mm_loadu_ps((const float *)(const void *)a);
+    const __m128 vb = _mm_loadu_ps((const float *)(const void *)b);
+    if (_mm_comilt_ss(va, vb)) return -1;
+    if (_mm_comigt_ss(va, vb)) return 1;
+    if (_mm_comieq_ss(va, vb)) return 0;
+    return 2;
+}
+
+__attribute__((always_inline))
+int32_t rust_isa_sse2_comisd(const uint8_t *a, const uint8_t *b) {
+    const __m128d va = _mm_loadu_pd((const double *)(const void *)a);
+    const __m128d vb = _mm_loadu_pd((const double *)(const void *)b);
+    if (_mm_comilt_sd(va, vb)) return -1;
+    if (_mm_comigt_sd(va, vb)) return 1;
+    if (_mm_comieq_sd(va, vb)) return 0;
+    return 2;
+}
+
+__attribute__((always_inline))
+int32_t rust_isa_sse2_ucomiss(const uint8_t *a, const uint8_t *b) {
+    const __m128 va = _mm_loadu_ps((const float *)(const void *)a);
+    const __m128 vb = _mm_loadu_ps((const float *)(const void *)b);
+    if (_mm_ucomilt_ss(va, vb)) return -1;
+    if (_mm_ucomigt_ss(va, vb)) return 1;
+    if (_mm_ucomieq_ss(va, vb)) return 0;
+    return 2;
+}
+
+__attribute__((always_inline))
+int32_t rust_isa_sse2_ucomisd(const uint8_t *a, const uint8_t *b) {
+    const __m128d va = _mm_loadu_pd((const double *)(const void *)a);
+    const __m128d vb = _mm_loadu_pd((const double *)(const void *)b);
+    if (_mm_ucomilt_sd(va, vb)) return -1;
+    if (_mm_ucomigt_sd(va, vb)) return 1;
+    if (_mm_ucomieq_sd(va, vb)) return 0;
+    return 2;
+}
+
+__attribute__((always_inline))
+void rust_isa_sse2_movntps(float *p, const uint8_t *a) {
+    _mm_stream_ps(p, _mm_loadu_ps((const float *)(const void *)a));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse2_movntpd(double *p, const uint8_t *a) {
+    _mm_stream_pd(p, _mm_loadu_pd((const double *)(const void *)a));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse2_movntdq(uint8_t *p, const uint8_t *a) {
+    _mm_stream_si128((__m128i *)(void *)p, _mm_loadu_si128((const __m128i *)(const void *)a));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse2_movnti(int32_t *p, int32_t value) {
+    _mm_stream_si32(p, value);
+}
+
+#if defined(__x86_64__)
+__attribute__((always_inline))
+void rust_isa_sse2_movntq(uint8_t *p, const uint8_t *a) {
+    _mm_stream_si64((long long *)(void *)p, _mm_cvtsi128_si64(_mm_loadu_si128((const __m128i *)(const void *)a)));
+}
+#endif
+
+__attribute__((always_inline))
+void rust_isa_sse2_cvtdq2pd(const uint8_t *a, uint8_t *out) {
+    _mm_storeu_pd((double *)(void *)out, _mm_cvtepi32_pd(_mm_loadu_si128((const __m128i *)(const void *)a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse2_cvtpd2dq(const uint8_t *a, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_cvtpd_epi32(_mm_loadu_pd((const double *)(const void *)a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse2_cvttpd2dq(const uint8_t *a, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_cvttpd_epi32(_mm_loadu_pd((const double *)(const void *)a)));
+}
