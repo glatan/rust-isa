@@ -10,6 +10,7 @@ use rust_isa::s390x::simd::vector::{
     vsh, vsl, vsr, xor,
 };
 use rust_isa::s390x::simd::vector::{vchl, vclf, vclg, vclh, vle, vperm, vpks, vst};
+use rust_isa::s390x::simd::vector::{vcksm, vlef, vme, vmh, vml, vmo, vpkls, vstef};
 use rust_isa::s390x::simd::vector_enhancements::{
     cntlz_i32, fma, popcnt_i8, popcnt_i32, vclz, vctz, vfa, vfce, vfch, vfche, vfd, vfm, vfma,
     vfms, vfnma, vfnms, vfs, vfsq, vpopct,
@@ -322,5 +323,42 @@ fn vector_more_ops() -> bool {
             )
             .to_bytes()
                 != [0; 16]
+            && vcksm(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [0; 16]
+            && vme(
+                V128::from_bytes([1; 16]),
+                V128::from_bytes([1; 16]),
+                V128::from_bytes([0; 16]),
+            )
+            .to_bytes()
+                != [0; 16]
+            && vmh(
+                V128::from_bytes([1; 16]),
+                V128::from_bytes([1; 16]),
+                V128::from_bytes([0; 16]),
+            )
+            .to_bytes()
+                != [0; 16]
+            && vml(
+                V128::from_bytes([1; 16]),
+                V128::from_bytes([1; 16]),
+                V128::from_bytes([0; 16]),
+            )
+            .to_bytes()
+                != [0; 16]
+            && vmo(
+                V128::from_bytes([1; 16]),
+                V128::from_bytes([1; 16]),
+                V128::from_bytes([0; 16]),
+            )
+            .to_bytes()
+                != [0; 16]
+            && vpkls(i32x4([1; 4]), i32x4([0; 4])).to_bytes() != [0; 16]
+            && {
+                let source = [1.0f32, 2.0, 3.0, 4.0];
+                let loaded = vlef(source.as_ptr());
+                let mut output = [0.0f32; 4];
+                vstef(output.as_mut_ptr(), loaded);
+                output == source
+            }
     }
 }
