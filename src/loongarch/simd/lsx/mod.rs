@@ -207,3 +207,27 @@ pub fn vor(a: V128, b: V128) -> V128 {
 pub fn vxor(a: V128, b: V128) -> V128 {
     xor(a, b)
 }
+
+/// `vabs.w`.
+#[inline(always)]
+pub fn vabs(a: V128) -> V128 {
+    let bytes = a.to_bytes();
+    let mut out = [0u8; 16];
+    for lane in 0..4 {
+        let value = i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.wrapping_abs().to_le_bytes());
+    }
+    V128::from_bytes(out)
+}
+
+/// `vneg.w`.
+#[inline(always)]
+pub fn vneg(a: V128) -> V128 {
+    let bytes = a.to_bytes();
+    let mut out = [0u8; 16];
+    for lane in 0..4 {
+        let value = i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.wrapping_neg().to_le_bytes());
+    }
+    V128::from_bytes(out)
+}
