@@ -394,3 +394,154 @@ RUST_ISA_NEON_REPLACE_I32(0)
 RUST_ISA_NEON_REPLACE_I32(1)
 RUST_ISA_NEON_REPLACE_I32(2)
 RUST_ISA_NEON_REPLACE_I32(3)
+
+__attribute__((always_inline))
+void rust_isa_neon_smax_s8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s8((int8_t *)(void *)out, vmaxq_s8(vld1q_s8((const int8_t *)(const void *)a), vld1q_s8((const int8_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_smax_s16(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s16((int16_t *)(void *)out, vmaxq_s16(vld1q_s16((const int16_t *)(const void *)a), vld1q_s16((const int16_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_smax_s32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s32((int32_t *)(void *)out, vmaxq_s32(vld1q_s32((const int32_t *)(const void *)a), vld1q_s32((const int32_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_smin_s8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s8((int8_t *)(void *)out, vminq_s8(vld1q_s8((const int8_t *)(const void *)a), vld1q_s8((const int8_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_smin_s16(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s16((int16_t *)(void *)out, vminq_s16(vld1q_s16((const int16_t *)(const void *)a), vld1q_s16((const int16_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_smin_s32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s32((int32_t *)(void *)out, vminq_s32(vld1q_s32((const int32_t *)(const void *)a), vld1q_s32((const int32_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_umax_u8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u8((uint8_t *)(void *)out, vmaxq_u8(vld1q_u8((const uint8_t *)(const void *)a), vld1q_u8((const uint8_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_umax_u16(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u16((uint16_t *)(void *)out, vmaxq_u16(vld1q_u16((const uint16_t *)(const void *)a), vld1q_u16((const uint16_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_umax_u32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u32((uint32_t *)(void *)out, vmaxq_u32(vld1q_u32((const uint32_t *)(const void *)a), vld1q_u32((const uint32_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_umin_u8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u8((uint8_t *)(void *)out, vminq_u8(vld1q_u8((const uint8_t *)(const void *)a), vld1q_u8((const uint8_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_umin_u16(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u16((uint16_t *)(void *)out, vminq_u16(vld1q_u16((const uint16_t *)(const void *)a), vld1q_u16((const uint16_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_umin_u32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u32((uint32_t *)(void *)out, vminq_u32(vld1q_u32((const uint32_t *)(const void *)a), vld1q_u32((const uint32_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_smaxp_s8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s8((int8_t *)(void *)out, vpmaxq_s8(vld1q_s8((const int8_t *)(const void *)a), vld1q_s8((const int8_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_smaxp_s16(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s16((int16_t *)(void *)out, vpmaxq_s16(vld1q_s16((const int16_t *)(const void *)a), vld1q_s16((const int16_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_smaxp_s32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s32((int32_t *)(void *)out, vpmaxq_s32(vld1q_s32((const int32_t *)(const void *)a), vld1q_s32((const int32_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_sminp_s8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s8((int8_t *)(void *)out, vpminq_s8(vld1q_s8((const int8_t *)(const void *)a), vld1q_s8((const int8_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_sminp_s16(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s16((int16_t *)(void *)out, vpminq_s16(vld1q_s16((const int16_t *)(const void *)a), vld1q_s16((const int16_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_sminp_s32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_s32((int32_t *)(void *)out, vpminq_s32(vld1q_s32((const int32_t *)(const void *)a), vld1q_s32((const int32_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_umaxp_u8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u8((uint8_t *)(void *)out, vpmaxq_u8(vld1q_u8((const uint8_t *)(const void *)a), vld1q_u8((const uint8_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_umaxp_u16(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u16((uint16_t *)(void *)out, vpmaxq_u16(vld1q_u16((const uint16_t *)(const void *)a), vld1q_u16((const uint16_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_umaxp_u32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u32((uint32_t *)(void *)out, vpmaxq_u32(vld1q_u32((const uint32_t *)(const void *)a), vld1q_u32((const uint32_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_uminp_u8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u8((uint8_t *)(void *)out, vpminq_u8(vld1q_u8((const uint8_t *)(const void *)a), vld1q_u8((const uint8_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_uminp_u16(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u16((uint16_t *)(void *)out, vpminq_u16(vld1q_u16((const uint16_t *)(const void *)a), vld1q_u16((const uint16_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_uminp_u32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vst1q_u32((uint32_t *)(void *)out, vpminq_u32(vld1q_u32((const uint32_t *)(const void *)a), vld1q_u32((const uint32_t *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_mla_s8(const uint8_t *a, const uint8_t *b, const uint8_t *c, uint8_t *out) {
+    vst1q_s8((int8_t *)(void *)out, vmlaq_s8(vld1q_s8((const int8_t *)(const void *)a), vld1q_s8((const int8_t *)(const void *)b), vld1q_s8((const int8_t *)(const void *)c)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_mla_s16(const uint8_t *a, const uint8_t *b, const uint8_t *c, uint8_t *out) {
+    vst1q_s16((int16_t *)(void *)out, vmlaq_s16(vld1q_s16((const int16_t *)(const void *)a), vld1q_s16((const int16_t *)(const void *)b), vld1q_s16((const int16_t *)(const void *)c)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_mla_s32(const uint8_t *a, const uint8_t *b, const uint8_t *c, uint8_t *out) {
+    vst1q_s32((int32_t *)(void *)out, vmlaq_s32(vld1q_s32((const int32_t *)(const void *)a), vld1q_s32((const int32_t *)(const void *)b), vld1q_s32((const int32_t *)(const void *)c)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_mls_s8(const uint8_t *a, const uint8_t *b, const uint8_t *c, uint8_t *out) {
+    vst1q_s8((int8_t *)(void *)out, vmlsq_s8(vld1q_s8((const int8_t *)(const void *)a), vld1q_s8((const int8_t *)(const void *)b), vld1q_s8((const int8_t *)(const void *)c)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_mls_s16(const uint8_t *a, const uint8_t *b, const uint8_t *c, uint8_t *out) {
+    vst1q_s16((int16_t *)(void *)out, vmlsq_s16(vld1q_s16((const int16_t *)(const void *)a), vld1q_s16((const int16_t *)(const void *)b), vld1q_s16((const int16_t *)(const void *)c)));
+}
+
+__attribute__((always_inline))
+void rust_isa_neon_mls_s32(const uint8_t *a, const uint8_t *b, const uint8_t *c, uint8_t *out) {
+    vst1q_s32((int32_t *)(void *)out, vmlsq_s32(vld1q_s32((const int32_t *)(const void *)a), vld1q_s32((const int32_t *)(const void *)b), vld1q_s32((const int32_t *)(const void *)c)));
+}
+
