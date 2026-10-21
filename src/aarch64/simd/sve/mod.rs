@@ -924,3 +924,26 @@ pub unsafe fn rinti_f64(a: &[f64], out: &mut [f64]) {
         rust_isa_sve_rinti_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
     }
 }
+
+unsafe extern "C" {
+    fn rust_isa_sve_frecpx_f32(a: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_sve_frecpx_f64(a: *const f64, out: *mut f64, len: usize);
+}
+/// Reciprocal exponent on `f32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn frecpx_f32(a: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_frecpx_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+/// Reciprocal exponent on `f64` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn frecpx_f64(a: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_frecpx_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
