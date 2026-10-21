@@ -249,3 +249,33 @@ pub fn vadd_d(a: V128, b: V128) -> V128 {
 pub fn vsub_d(a: V128, b: V128) -> V128 {
     sub_i64(a, b)
 }
+
+/// `vadd.b`.
+#[inline(always)]
+pub fn vadd_b(a: V128, b: V128) -> V128 {
+    add_i8(a, b)
+}
+
+/// `vadd.h`.
+#[inline(always)]
+pub fn vadd_h(a: V128, b: V128) -> V128 {
+    add_i16(a, b)
+}
+
+/// `vsub.b`.
+#[inline(always)]
+pub fn vsub_b(a: V128, b: V128) -> V128 {
+    sub_i8(a, b)
+}
+
+/// `vsub.h`.
+#[inline(always)]
+pub fn vsub_h(a: V128, b: V128) -> V128 {
+    sub_i16(a, b)
+}
+
+/// `vmul.h`.
+#[inline(always)]
+pub fn vmul_h(a: V128, b: V128) -> V128 {
+    mul_i16(a, b)
+}
