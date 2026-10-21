@@ -14,6 +14,10 @@
 //! matrix-multiply instructions require tile numbers and memory strides; they
 //! are intentionally omitted until the tile-state API is extended.
 
+mod instructions;
+
+pub use instructions::*;
+
 use core::marker::PhantomData;
 
 /// The 64-byte tile configuration used by `ldtilecfg`.
@@ -30,6 +34,16 @@ impl TileConfig {
     /// Return the 64 bytes.
     pub const fn to_bytes(self) -> [u8; 64] {
         self.0
+    }
+
+    /// Pointer to the first byte. The alignment is 64.
+    pub fn as_ptr(&self) -> *const u8 {
+        self.0.as_ptr()
+    }
+
+    /// Mutable pointer to the first byte. The alignment is 64.
+    pub fn as_mut_ptr(&mut self) -> *mut u8 {
+        self.0.as_mut_ptr()
     }
 }
 

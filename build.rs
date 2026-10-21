@@ -652,7 +652,19 @@ fn main() {
             &out_dir,
             &avx512vl_c,
             "rust_isa_avx512vl",
-            &["-mavx512f", "-mavx512dq", "-mavx512vl"],
+            &[
+                "-mavx512f",
+                "-mavx512bw",
+                "-mavx512dq",
+                "-mavx512vl",
+                "-mavx512ifma",
+                "-mavx512vbmi",
+                "-mavx512vbmi2",
+                "-mavx512vnni",
+                "-mavx512bitalg",
+                "-mavx512vpopcntdq",
+                "-mavx512vp2intersect",
+            ],
         );
         compile_native(&out_dir, &aes_c, "rust_isa_aes", &["-maes"]);
         compile_native(&out_dir, &sha_c, "rust_isa_sha", &["-msha"]);
