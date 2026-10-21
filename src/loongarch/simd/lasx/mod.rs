@@ -301,3 +301,12 @@ pub unsafe fn xvabs_d(a: V256) -> V256 {
     }
     V256::from_bytes(o)
 }
+
+/// `xvneg.b`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvneg_b(a: V256) -> V256 {
+    V256::from_bytes(core::array::from_fn(|i| {
+        (a.to_bytes()[i] as i8).wrapping_neg() as u8
+    }))
+}
