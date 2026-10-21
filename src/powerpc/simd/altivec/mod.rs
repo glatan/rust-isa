@@ -539,3 +539,13 @@ afma!(
     vnmsub,
     rust_isa_altivec_vnmsub
 );
+
+/// `vmuluwm`.
+///
+/// # Safety
+///
+/// The caller must compile with Altivec and VSX enabled.
+#[inline(always)]
+pub unsafe fn vmuluwm(a: V128, b: V128) -> V128 {
+    unsafe { mul_i32(a, b) }
+}
