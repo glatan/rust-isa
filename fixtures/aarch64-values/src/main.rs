@@ -1211,6 +1211,14 @@ unsafe fn sve_ops() -> bool {
     if oi[..3] != [-1, -2, 2] {
         return false;
     }
+    unsafe { sve::mla_i32(&[2, 3], &[4, 5], &[1, 2], &mut oi[..2]) };
+    if oi[..2] != [9, 17] {
+        return false;
+    }
+    unsafe { sve::mls_i32(&[2, 3], &[4, 5], &[10, 20], &mut oi[..2]) };
+    if oi[..2] != [2, 5] {
+        return false;
+    }
     unsafe { sve::mul_f32(&a, &b, &mut out) };
     if out != [10.0, 40.0, 90.0, 160.0, 250.0, 360.0, 490.0] {
         return false;

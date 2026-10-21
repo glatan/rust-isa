@@ -810,3 +810,54 @@ pub unsafe fn asr_i32(a: &[i32], shift: i32, out: &mut [i32]) {
         rust_isa_sve_asr_i32(a.as_ptr(), shift, out.as_mut_ptr(), a.len());
     }
 }
+
+unsafe extern "C" {
+    fn rust_isa_sve_mla_i32(
+        a: *const i32,
+        b: *const i32,
+        acc: *const i32,
+        out: *mut i32,
+        len: usize,
+    );
+    fn rust_isa_sve_mls_i32(
+        a: *const i32,
+        b: *const i32,
+        acc: *const i32,
+        out: *mut i32,
+        len: usize,
+    );
+}
+/// `acc + a * b` on `i32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn mla_i32(a: &[i32], b: &[i32], acc: &[i32], out: &mut [i32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), acc.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_mla_i32(
+            a.as_ptr(),
+            b.as_ptr(),
+            acc.as_ptr(),
+            out.as_mut_ptr(),
+            a.len(),
+        );
+    }
+}
+/// `acc - a * b` on `i32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn mls_i32(a: &[i32], b: &[i32], acc: &[i32], out: &mut [i32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), acc.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_mls_i32(
+            a.as_ptr(),
+            b.as_ptr(),
+            acc.as_ptr(),
+            out.as_mut_ptr(),
+            a.len(),
+        );
+    }
+}
