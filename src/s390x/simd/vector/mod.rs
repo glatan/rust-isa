@@ -451,7 +451,9 @@ pub unsafe fn vstef(p: *mut f32, a: V128) {
     }
 }
 
-pub use super::vector_enhancements::{vfa, vfce, vfch, vfche, vfd, vfm, vfs, vfsq};
+pub use super::vector_enhancements::{
+    vfa, vfce, vfch, vfche, vfd, vfi_f32, vfll, vflr, vfm, vfs, vfsq, vftci_f32, vnn,
+};
 
 use core::arch::asm;
 
@@ -587,3 +589,425 @@ un_vec!(
     vupll,
     rust_isa_s390x_vector_vupll
 );
+
+/// `vrep`.
+///
+/// Replicate one element of `a` to every element. `SIZE` selects the
+/// element size: 0 is byte, 1 is halfword, 2 is word, and 3 is doubleword.
+/// `INDEX` selects the source element in that size.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vrep<const SIZE: u8, const INDEX: u8>(a: V128) -> V128 {
+    const {
+        assert!(SIZE <= 3, "vrep element size must be in 0..=3");
+        assert!(
+            (INDEX as u16) < (16u16 >> SIZE),
+            "vrep element index is out of range"
+        );
+    }
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vrep {out}, {input}, {index}, {size}",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
+            index = const INDEX,
+            size = const SIZE,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
+
+/// `vseg`.
+///
+/// Sign-extend the rightmost two elements of `a` to doublewords. `SIZE`
+/// selects the source element size: 0 is byte, 1 is halfword, and 2 is
+/// word.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vseg<const SIZE: u8>(a: V128) -> V128 {
+    const { assert!(SIZE <= 2, "vseg element size must be in 0..=2") };
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vseg {out}, {input}, {size}",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
+            size = const SIZE,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
+
+macro_rules! vmul_lane {
+    ($(#[$meta:meta])* $name:ident, $instruction:literal) => {
+        $(#[$meta])*
+        ///
+        /// `SIZE` selects the source element size: 0 is byte, 1 is
+        /// halfword, and 2 is word.
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable the vector facility.
+        #[target_feature(enable = "vector")]
+        #[inline]
+        pub unsafe fn $name<const SIZE: u8>(a: V128, b: V128) -> V128 {
+            const { assert!(SIZE <= 2, "element size must be in 0..=2") };
+            let a = u128::from_be_bytes(a.to_bytes());
+            let b = u128::from_be_bytes(b.to_bytes());
+            let out: u128;
+            unsafe {
+                asm!(
+                    concat!($instruction, " {out}, {a}, {b}, {size}"),
+                    out = lateout(vreg) out,
+                    a = in(vreg) a,
+                    b = in(vreg) b,
+                    size = const SIZE,
+                    options(nostack, nomem, pure)
+                );
+            }
+            V128::from_bytes(out.to_be_bytes())
+        }
+    };
+}
+
+vmul_lane!(
+    /// `vmle`.
+    ///
+    /// Multiply corresponding even-numbered elements as unsigned values
+    /// and place each full product in the next larger lane.
+    vmle,
+    "vmle"
+);
+vmul_lane!(
+    /// `vmlh`.
+    ///
+    /// Multiply corresponding elements as unsigned values and place the
+    /// high half of each product in the same lane size.
+    vmlh,
+    "vmlh"
+);
+vmul_lane!(
+    /// `vmlo`.
+    ///
+    /// Multiply corresponding odd-numbered elements as unsigned values
+    /// and place each full product in the next larger lane.
+    vmlo,
+    "vmlo"
+);
+
+/// `vistr`.
+///
+/// Copy the elements of `a` up to the first zero element and set the
+/// remaining elements to zero. `SIZE` selects the element size: 0 is byte,
+/// 1 is halfword, and 2 is word. The condition code is not returned.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vistr<const SIZE: u8>(a: V128) -> V128 {
+    const { assert!(SIZE <= 2, "vistr element size must be in 0..=2") };
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vistr {out}, {input}, {size}, 0",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
+            size = const SIZE,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
+
+/// `vstrc`.
+///
+/// Compare the string in `a` with the ranges in `b` and the per-range
+/// comparison controls in `c`. `CONTROL` selects the result form and the
+/// zero-search and inversion controls; bit 2 selects a byte mask, and
+/// without it the byte index of the first match is placed in doubleword 0.
+/// `SIZE` selects the element size: 0 is byte, 1 is halfword, and 2 is
+/// word. The condition code is not returned.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vstrc<const SIZE: u8, const CONTROL: u8>(a: V128, b: V128, c: V128) -> V128 {
+    const {
+        assert!(SIZE <= 2, "vstrc element size must be in 0..=2");
+        assert!(CONTROL <= 0x0f, "vstrc control must be in 0..=15");
+    }
+    let a = u128::from_be_bytes(a.to_bytes());
+    let b = u128::from_be_bytes(b.to_bytes());
+    let c = u128::from_be_bytes(c.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vstrc {out}, {a}, {b}, {c}, {size}, {control}",
+            out = lateout(vreg) out,
+            a = in(vreg) a,
+            b = in(vreg) b,
+            c = in(vreg) c,
+            size = const SIZE,
+            control = const CONTROL,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
+
+macro_rules! find_element {
+    ($(#[$meta:meta])* $name:ident, $instruction:literal) => {
+        $(#[$meta])*
+        ///
+        /// `SIZE` selects the element size: 0 is byte, 1 is halfword,
+        /// and 2 is word. For `vfae`, bit 2 of `CONTROL` selects a byte
+        /// mask; otherwise the byte index of the first match is placed in
+        /// doubleword 0. `vfee` and `vfene` always return the index, and
+        /// `CONTROL` selects the zero-search and condition-code controls.
+        /// The condition code is not returned.
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable the vector facility.
+        #[target_feature(enable = "vector")]
+        #[inline]
+        pub unsafe fn $name<const SIZE: u8, const CONTROL: u8>(a: V128, b: V128) -> V128 {
+            const {
+                assert!(SIZE <= 2, "element size must be in 0..=2");
+                assert!(CONTROL <= 0x0f, "control must be in 0..=15");
+            }
+            let a = u128::from_be_bytes(a.to_bytes());
+            let b = u128::from_be_bytes(b.to_bytes());
+            let out: u128;
+            unsafe {
+                asm!(
+                    concat!($instruction, " {out}, {a}, {b}, {size}, {control}"),
+                    out = lateout(vreg) out,
+                    a = in(vreg) a,
+                    b = in(vreg) b,
+                    size = const SIZE,
+                    control = const CONTROL,
+                    options(nostack, nomem, pure)
+                );
+            }
+            V128::from_bytes(out.to_be_bytes())
+        }
+    };
+}
+
+find_element!(
+    /// `vfae`.
+    ///
+    /// Find any element of `a` that equals an element of `b`.
+    vfae,
+    "vfae"
+);
+find_element!(
+    /// `vfee`.
+    ///
+    /// Find the first element of `a` that equals the corresponding
+    /// element of `b`.
+    vfee,
+    "vfee"
+);
+find_element!(
+    /// `vfene`.
+    ///
+    /// Find the first element of `a` that is not equal to the
+    /// corresponding element of `b`.
+    vfene,
+    "vfene"
+);
+
+/// `vscbi`.
+///
+/// Subtract `b` from `a` and return the borrow indication. Each lane is 0
+/// when a borrow occurred and 1 otherwise. `SIZE` selects the element size:
+/// 0 is byte, 1 is halfword, 2 is word, and 3 is doubleword.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vscbi<const SIZE: u8>(a: V128, b: V128) -> V128 {
+    const { assert!(SIZE <= 3, "vscbi element size must be in 0..=3") };
+    let a = u128::from_be_bytes(a.to_bytes());
+    let b = u128::from_be_bytes(b.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vscbi {out}, {a}, {b}, {size}",
+            out = lateout(vreg) out,
+            a = in(vreg) a,
+            b = in(vreg) b,
+            size = const SIZE,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
+
+/// `vlgv`.
+///
+/// Load one element of `a` into a general-purpose register. `SIZE` selects
+/// the element size: 0 is byte, 1 is halfword, 2 is word, and 3 is
+/// doubleword. The result is zero-extended to 64 bits.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vlgv<const SIZE: u8, const INDEX: u8>(a: V128) -> u64 {
+    const {
+        assert!(SIZE <= 3, "vlgv element size must be in 0..=3");
+        assert!(
+            (INDEX as u16) < (16u16 >> SIZE),
+            "vlgv element index is out of range"
+        );
+    }
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u64;
+    unsafe {
+        asm!(
+            "vlgv {out}, {input}, {index}, {size}",
+            out = lateout(reg) out,
+            input = in(vreg) input,
+            index = const INDEX,
+            size = const SIZE,
+            options(nostack, nomem, pure)
+        );
+    }
+    out
+}
+
+macro_rules! gather_element {
+    ($(#[$meta:meta])* $name:ident, $instruction:literal, $max:literal) => {
+        $(#[$meta])*
+        ///
+        /// `INDEX` selects the element to replace and must be in
+        /// `0..=$max`. `base` must be valid for reading one element at
+        /// `base` plus the selected offset.
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable the vector facility. `base` must be
+        /// valid for the gathered access.
+        #[target_feature(enable = "vector")]
+        #[inline]
+        pub unsafe fn $name<const INDEX: u8>(a: V128, offsets: V128, base: *const u8) -> V128 {
+            const { assert!(INDEX <= $max, "gather element index is out of range") };
+            let mut out = u128::from_be_bytes(a.to_bytes());
+            let offsets = u128::from_be_bytes(offsets.to_bytes());
+            unsafe {
+                asm!(
+                    concat!($instruction, " {out}, 0({offsets}, %r1), {index}"),
+                    out = inout(vreg) out,
+                    offsets = in(vreg) offsets,
+                    in("r1") base,
+                    index = const INDEX,
+                    options(nostack)
+                );
+            }
+            V128::from_bytes(out.to_be_bytes())
+        }
+    };
+}
+
+gather_element!(
+    /// `vgef`.
+    ///
+    /// Gather one 32-bit element from `base` plus the offset in the
+    /// selected element of `offsets` and replace the same element of `a`.
+    vgef,
+    "vgef",
+    3
+);
+gather_element!(
+    /// `vgeg`.
+    ///
+    /// Gather one 64-bit element from `base` plus the offset in the
+    /// selected element of `offsets` and replace the same element of `a`.
+    vgeg,
+    "vgeg",
+    1
+);
+
+/// `vftci` on double-precision lanes.
+///
+/// Test each binary floating-point element against the 12-bit data class
+/// mask `MASK` and set a true lane to all bits one. The condition code is
+/// not returned.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vftci_f64<const MASK: u16>(a: V128) -> V128 {
+    const { assert!(MASK <= 0x0fff, "vftci class mask must be in 0..=4095") };
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vftcidb {out}, {input}, {mask}",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
+            mask = const MASK,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
+
+/// `vfi` on double-precision lanes.
+///
+/// Round each binary floating-point element to an integral
+/// floating-point value using rounding mode `M5`. `M4` must have bits 0-1
+/// clear; bit 2 suppresses the inexact exception. The condition code is
+/// not returned.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vfi_f64<const M4: u8, const M5: u8>(a: V128) -> V128 {
+    const {
+        assert!(M4 <= 0x0f, "vfi M4 must be in 0..=15");
+        assert!(M4 & 0x03 == 0, "vfi M4 bits 0-1 must be zero");
+        assert!(M5 <= 0x0f, "vfi M5 must be in 0..=15");
+    }
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vfidb {out}, {input}, {m4}, {m5}",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
+            m4 = const M4,
+            m5 = const M5,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}

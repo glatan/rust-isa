@@ -6,15 +6,15 @@
 
 | feature                               | 種別   | 判定   | 実装   |
 | ------------------------------------- | ------ | ------ | ------ |
-| `vector`                              | SIMD   | 安定   | 一部   |
-| `vector-enhancements-1`               | SIMD   | 安定   | 一部   |
-| `vector-enhancements-2`               | SIMD   | 安定   | 未     |
+| `vector`                              | SIMD   | 安定   | 済     |
+| `vector-enhancements-1`               | SIMD   | 安定   | 済     |
+| `vector-enhancements-2`               | SIMD   | 安定   | 一部   |
 | `vector-enhancements-3`               | SIMD   | 安定   | 未     |
-| `vector-packed-decimal`               | SIMD   | 安定   | 未     |
+| `vector-packed-decimal`               | SIMD   | 安定   | 一部   |
 | `vector-packed-decimal-enhancement`   | SIMD   | 安定   | 未     |
-| `vector-packed-decimal-enhancement-2` | SIMD   | 安定   | 未     |
+| `vector-packed-decimal-enhancement-2` | SIMD   | 安定   | 一部   |
 | `vector-packed-decimal-enhancement-3` | SIMD   | 安定   | 未     |
-| `nnp-assist`                          | その他 | 安定   | 未     |
+| `nnp-assist`                          | その他 | 安定   | 済     |
 | `message-security-assist-extension3`  | 暗号   | 不安定 | 未     |
 | `message-security-assist-extension4`  | 暗号   | 不安定 | 未     |
 | `message-security-assist-extension5`  | 暗号   | 不安定 | 未     |
@@ -28,3 +28,5 @@
 
 - `-C target-feature=+vector` は警告を出さず、`vector` の cfg が立った。
 - `-march=z14 -mzvector` の C はコンパイルできた。`llvm-objdump` は命令名を表示しなかった。
+- `vector-enhancements-2`、`vector-packed-decimal`、`nnp-assist` は `#[target_feature]` と `asm!` で実装した。
+- `vpkz`、`vupkz`、`vupkzh`、`vupkzl`、`vstrl`、`vcvd`、`vcvb`、`vcfn`、`vclfnh`、`vclfnl`、`vcnf`、`vcrnf` は QEMU が実行できないため、値テストは未実行である。
