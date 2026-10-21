@@ -31,6 +31,7 @@ fn mips_values() {
     let binary = dir.join("mips64-unknown-linux-gnuabi64/release/mips-values");
     assert!(binary.is_file(), "missing {}", binary.display());
     let output = Command::new("qemu-mips64-static")
+        .args(["-cpu", "Loongson-3A4000"])
         .arg(&binary)
         .output()
         .expect("qemu-mips64-static");
