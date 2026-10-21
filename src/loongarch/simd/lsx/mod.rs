@@ -583,3 +583,13 @@ pub fn vsrai<const SHIFT: u32>(a: V128) -> V128 {
     }
     V128::from_bytes(o)
 }
+
+/// `vpackev.b`.
+#[inline(always)]
+pub fn vpackev(a: V128, b: V128) -> V128 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    V128::from_bytes(core::array::from_fn(|i| {
+        if i % 2 == 0 { a[i] } else { b[i - 1] }
+    }))
+}
