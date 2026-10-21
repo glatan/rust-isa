@@ -4,16 +4,16 @@
 use core::arch::asm;
 use core::panic::PanicInfo;
 use rust_isa::loongarch::integer::lbt::{bitrev, bstrins, bstrpick, ext, ins, revb, revh, revw};
-use rust_isa::loongarch::simd::lasx::{xvdiv_s};
-use rust_isa::loongarch::simd::lasx::{xvmul_w};
-use rust_isa::loongarch::simd::lasx::{xvsub_w};
-use rust_isa::loongarch::simd::lasx::{xvadd_w};
-use rust_isa::loongarch::simd::lasx::{xvneg_d};
-use rust_isa::loongarch::simd::lasx::{xvneg_h};
-use rust_isa::loongarch::simd::lasx::{xvneg_b};
-use rust_isa::loongarch::simd::lasx::{xvabs_d};
-use rust_isa::loongarch::simd::lasx::{xvabs_h};
-use rust_isa::loongarch::simd::lasx::{xvabs_b};
+use rust_isa::loongarch::simd::lasx::xvabs_b;
+use rust_isa::loongarch::simd::lasx::xvabs_d;
+use rust_isa::loongarch::simd::lasx::xvabs_h;
+use rust_isa::loongarch::simd::lasx::xvadd_w;
+use rust_isa::loongarch::simd::lasx::xvdiv_s;
+use rust_isa::loongarch::simd::lasx::xvmul_w;
+use rust_isa::loongarch::simd::lasx::xvneg_b;
+use rust_isa::loongarch::simd::lasx::xvneg_d;
+use rust_isa::loongarch::simd::lasx::xvneg_h;
+use rust_isa::loongarch::simd::lasx::xvsub_w;
 use rust_isa::loongarch::simd::lasx::{
     V256, add as lasx_add, add_i64 as lasx_add_i64, and as lasx_and, fadd as lasx_fadd,
     fdiv as lasx_fdiv, fmul as lasx_fmul, fsub as lasx_fsub, mul as lasx_mul,
@@ -24,36 +24,42 @@ use rust_isa::loongarch::simd::lasx::{
 use rust_isa::loongarch::simd::lasx::{
     xvabs, xvadd_b, xvadd_d, xvadd_h, xvdiv, xvmul_h, xvneg, xvsub_b, xvsub_d, xvsub_h,
 };
-use rust_isa::loongarch::simd::lsx::{vpackod};
-use rust_isa::loongarch::simd::lsx::{vpackev};
-use rust_isa::loongarch::simd::lsx::{vsrai};
-use rust_isa::loongarch::simd::lsx::{vsrli};
-use rust_isa::loongarch::simd::lsx::{vslli};
-use rust_isa::loongarch::simd::lsx::{vsra};
-use rust_isa::loongarch::simd::lsx::{vsrl};
-use rust_isa::loongarch::simd::lsx::{vsll};
-use rust_isa::loongarch::simd::lsx::{vshuf4i};
-use rust_isa::loongarch::simd::lsx::{vshuf};
-use rust_isa::loongarch::simd::lsx::{vbitsel};
-use rust_isa::loongarch::simd::lsx::{vnor};
-use rust_isa::loongarch::simd::lsx::{vslti};
-use rust_isa::loongarch::simd::lsx::{vslei};
-use rust_isa::loongarch::simd::lsx::{vseqi};
-use rust_isa::loongarch::simd::lsx::{vslt};
-use rust_isa::loongarch::simd::lsx::{vsle};
-use rust_isa::loongarch::simd::lsx::{vseq};
-use rust_isa::loongarch::simd::lsx::{vmin};
-use rust_isa::loongarch::simd::lsx::{vmax};
-use rust_isa::loongarch::simd::lsx::{vneg_d};
-use rust_isa::loongarch::simd::lsx::{vneg_h};
-use rust_isa::loongarch::simd::lsx::{vneg_b};
-use rust_isa::loongarch::simd::lsx::{vabs_d};
-use rust_isa::loongarch::simd::lsx::{vabs_h};
-use rust_isa::loongarch::simd::lsx::{vabs_b};
-use rust_isa::loongarch::simd::lsx::{vneg_w};
-use rust_isa::loongarch::simd::lsx::{vmul_w};
-use rust_isa::loongarch::simd::lsx::{vsub_w};
-use rust_isa::loongarch::simd::lsx::{vadd_w};
+use rust_isa::loongarch::simd::lasx::{
+    xvavgr, xvbitsel, xvext, xvexth, xvextl, xvfadd, xvfcmp, xvfcvt, xvfdiv, xvffint, xvfmax,
+    xvfmin, xvfmul, xvfsub, xvftint, xvld, xvldi, xvmax, xvmin, xvnor, xvpackev, xvpackod, xvrepl,
+    xvsat, xvseq, xvseqi, xvshuf, xvshuf4i, xvsle, xvslei, xvsll, xvslli, xvslt, xvslti, xvsra,
+    xvsrai, xvsrl, xvsrli, xvssr, xvst,
+};
+use rust_isa::loongarch::simd::lsx::vabs_b;
+use rust_isa::loongarch::simd::lsx::vabs_d;
+use rust_isa::loongarch::simd::lsx::vabs_h;
+use rust_isa::loongarch::simd::lsx::vadd_w;
+use rust_isa::loongarch::simd::lsx::vbitsel;
+use rust_isa::loongarch::simd::lsx::vmax;
+use rust_isa::loongarch::simd::lsx::vmin;
+use rust_isa::loongarch::simd::lsx::vmul_w;
+use rust_isa::loongarch::simd::lsx::vneg_b;
+use rust_isa::loongarch::simd::lsx::vneg_d;
+use rust_isa::loongarch::simd::lsx::vneg_h;
+use rust_isa::loongarch::simd::lsx::vneg_w;
+use rust_isa::loongarch::simd::lsx::vnor;
+use rust_isa::loongarch::simd::lsx::vpackev;
+use rust_isa::loongarch::simd::lsx::vpackod;
+use rust_isa::loongarch::simd::lsx::vseq;
+use rust_isa::loongarch::simd::lsx::vseqi;
+use rust_isa::loongarch::simd::lsx::vshuf;
+use rust_isa::loongarch::simd::lsx::vshuf4i;
+use rust_isa::loongarch::simd::lsx::vsle;
+use rust_isa::loongarch::simd::lsx::vslei;
+use rust_isa::loongarch::simd::lsx::vsll;
+use rust_isa::loongarch::simd::lsx::vslli;
+use rust_isa::loongarch::simd::lsx::vslt;
+use rust_isa::loongarch::simd::lsx::vslti;
+use rust_isa::loongarch::simd::lsx::vsra;
+use rust_isa::loongarch::simd::lsx::vsrai;
+use rust_isa::loongarch::simd::lsx::vsrl;
+use rust_isa::loongarch::simd::lsx::vsrli;
+use rust_isa::loongarch::simd::lsx::vsub_w;
 use rust_isa::loongarch::simd::lsx::{
     V128, add, add_i8, and, cmpeq_i32, cmpgt_i32, fadd, fdiv, fmul, fsub, mul, mul_i16, or,
     splat_i32, sub_i16, sub_i32, v128_load, v128_store, vabs, vadd, vand, vmul, vneg, vor, vsub,
@@ -139,46 +145,171 @@ fn run() -> u32 {
     if !lsx_alias_ops() {
         return 6;
     }
-    if !alias_vadd_w() { return 101; }
-    if !alias_vsub_w() { return 102; }
-    if !alias_vmul_w() { return 103; }
-    if !alias_vneg_w() { return 104; }
-    if !alias_vabs_b() { return 105; }
-    if !alias_vabs_h() { return 201; }
-    if !alias_vabs_d() { return 202; }
-    if !alias_vneg_b() { return 203; }
-    if !alias_vneg_h() { return 204; }
-    if !alias_vneg_d() { return 205; }
-    if !alias_xvabs_b() { return 301; }
-    if !alias_xvabs_h() { return 302; }
-    if !alias_xvabs_d() { return 303; }
-    if !alias_xvneg_b() { return 304; }
-    if !alias_xvneg_h() { return 305; }
-    if !alias_xvneg_d() { return 401; }
-    if !alias_xvadd_w() { return 402; }
-    if !alias_xvsub_w() { return 421; }
-    if !alias_xvmul_w() { return 422; }
-    if !alias_xvdiv_s() { return 423; }
-    if !alias_vmax() { return 501; }
-    if !alias_vmin() { return 511; }
-    if !alias_vseq() { return 512; }
-    if !alias_vsle() { return 513; }
-    if !alias_vslt() { return 514; }
-    if !alias_vseqi() { return 521; }
-    if !alias_vslei() { return 522; }
-    if !alias_vslti() { return 523; }
-    if !alias_vnor() { return 524; }
-    if !alias_vbitsel() { return 525; }
-    if !alias_vshuf() { return 531; }
-    if !alias_vshuf4i() { return 532; }
-    if !alias_vsll() { return 533; }
-    if !alias_vsrl() { return 534; }
-    if !alias_vsra() { return 535; }
-    if !alias_vslli() { return 541; }
-    if !alias_vsrli() { return 542; }
-    if !alias_vsrai() { return 543; }
-    if !alias_vpackev() { return 544; }
-    if !alias_vpackod() { return 545; }
+    if !alias_vadd_w() {
+        return 101;
+    }
+    if !alias_vsub_w() {
+        return 102;
+    }
+    if !alias_vmul_w() {
+        return 103;
+    }
+    if !alias_vneg_w() {
+        return 104;
+    }
+    if !alias_vabs_b() {
+        return 105;
+    }
+    if !alias_vabs_h() {
+        return 201;
+    }
+    if !alias_vabs_d() {
+        return 202;
+    }
+    if !alias_vneg_b() {
+        return 203;
+    }
+    if !alias_vneg_h() {
+        return 204;
+    }
+    if !alias_vneg_d() {
+        return 205;
+    }
+    if !alias_xvabs_b() {
+        return 301;
+    }
+    if !alias_xvabs_h() {
+        return 302;
+    }
+    if !alias_xvabs_d() {
+        return 303;
+    }
+    if !alias_xvneg_b() {
+        return 304;
+    }
+    if !alias_xvneg_h() {
+        return 305;
+    }
+    if !alias_xvneg_d() {
+        return 401;
+    }
+    if !alias_xvadd_w() {
+        return 402;
+    }
+    if !alias_xvsub_w() {
+        return 421;
+    }
+    if !alias_xvmul_w() {
+        return 422;
+    }
+    if !alias_xvdiv_s() {
+        return 423;
+    }
+    if !alias_vmax() {
+        return 501;
+    }
+    if !alias_vmin() {
+        return 511;
+    }
+    if !alias_vseq() {
+        return 512;
+    }
+    if !alias_vsle() {
+        return 513;
+    }
+    if !alias_vslt() {
+        return 514;
+    }
+    if !alias_vseqi() {
+        return 521;
+    }
+    if !alias_vslei() {
+        return 522;
+    }
+    if !alias_vslti() {
+        return 523;
+    }
+    if !alias_vnor() {
+        return 524;
+    }
+    if !alias_vbitsel() {
+        return 525;
+    }
+    if !alias_vshuf() {
+        return 531;
+    }
+    if !alias_vshuf4i() {
+        return 532;
+    }
+    if !alias_vsll() {
+        return 533;
+    }
+    if !alias_vsrl() {
+        return 534;
+    }
+    if !alias_vsra() {
+        return 535;
+    }
+    if !alias_vslli() {
+        return 541;
+    }
+    if !alias_vsrli() {
+        return 542;
+    }
+    if !alias_vsrai() {
+        return 543;
+    }
+    if !alias_vpackev() {
+        return 544;
+    }
+    if !alias_vpackod() {
+        return 545;
+    }
+    if !lasx_minmax_ops() {
+        return 601;
+    }
+    if !lasx_compare_ops() {
+        return 602;
+    }
+    if !lasx_bitwise_ops() {
+        return 603;
+    }
+    if !lasx_shuffle_ops() {
+        return 604;
+    }
+    if !lasx_shift_ops() {
+        return 605;
+    }
+    if !lasx_pack_ops() {
+        return 606;
+    }
+    if !lasx_extend_ops() {
+        return 607;
+    }
+    if !lasx_saturate_ops() {
+        return 608;
+    }
+    if !lasx_average_ops() {
+        return 609;
+    }
+    if !lasx_float_ops() {
+        return 610;
+    }
+    if !lasx_convert_fcvt() {
+        return 611;
+    }
+    if !lasx_convert_ftint() {
+        return 612;
+    }
+    if !lasx_convert_ffint() {
+        return 613;
+    }
+    if !lasx_memory_ops() {
+        return 614;
+    }
+    if !lasx_immediate_ops() {
+        return 615;
+    }
     0
 }
 
@@ -500,82 +631,543 @@ fn lasx_alias_ops() -> bool {
     }
 }
 
-fn alias_vadd_w() -> bool { vadd_w(i32x4([1,2,3,4]), i32x4([5,6,7,8])) == add(i32x4([1,2,3,4]), i32x4([5,6,7,8])) }
+fn alias_vadd_w() -> bool {
+    vadd_w(i32x4([1, 2, 3, 4]), i32x4([5, 6, 7, 8]))
+        == add(i32x4([1, 2, 3, 4]), i32x4([5, 6, 7, 8]))
+}
 
-fn alias_vsub_w() -> bool { vsub_w(i32x4([5,6,7,8]), i32x4([1,2,3,4])) == sub_i32(i32x4([5,6,7,8]), i32x4([1,2,3,4])) }
+fn alias_vsub_w() -> bool {
+    vsub_w(i32x4([5, 6, 7, 8]), i32x4([1, 2, 3, 4]))
+        == sub_i32(i32x4([5, 6, 7, 8]), i32x4([1, 2, 3, 4]))
+}
 
-fn alias_vmul_w() -> bool { vmul_w(i32x4([1,2,3,4]), i32x4([5,6,7,8])) == mul(i32x4([1,2,3,4]), i32x4([5,6,7,8])) }
+fn alias_vmul_w() -> bool {
+    vmul_w(i32x4([1, 2, 3, 4]), i32x4([5, 6, 7, 8]))
+        == mul(i32x4([1, 2, 3, 4]), i32x4([5, 6, 7, 8]))
+}
 
-fn alias_vneg_w() -> bool { vneg_w(i32x4([1,-2,3,-4])) == vneg(i32x4([1,-2,3,-4])) }
+fn alias_vneg_w() -> bool {
+    vneg_w(i32x4([1, -2, 3, -4])) == vneg(i32x4([1, -2, 3, -4]))
+}
 
-fn alias_vabs_b() -> bool { vabs_b(V128::from_bytes([0xff; 16])) == V128::from_bytes([1; 16]) }
+fn alias_vabs_b() -> bool {
+    vabs_b(V128::from_bytes([0xff; 16])) == V128::from_bytes([1; 16])
+}
 
-fn alias_vabs_h() -> bool { i16_lanes(vabs_h(i16x8([-1;8]))) == [1;8] }
+fn alias_vabs_h() -> bool {
+    i16_lanes(vabs_h(i16x8([-1; 8]))) == [1; 8]
+}
 
-fn alias_vabs_d() -> bool { vabs_d(V128::from_bytes([0xff;16])).to_bytes() == { let mut b=[0u8;16]; b[0]=1; b[8]=1; b } }
+fn alias_vabs_d() -> bool {
+    vabs_d(V128::from_bytes([0xff; 16])).to_bytes() == {
+        let mut b = [0u8; 16];
+        b[0] = 1;
+        b[8] = 1;
+        b
+    }
+}
 
-fn alias_vneg_b() -> bool { vneg_b(V128::from_bytes([1;16])).to_bytes() == [0xff;16] }
+fn alias_vneg_b() -> bool {
+    vneg_b(V128::from_bytes([1; 16])).to_bytes() == [0xff; 16]
+}
 
-fn alias_vneg_h() -> bool { i16_lanes(vneg_h(i16x8([1;8]))) == [-1;8] }
+fn alias_vneg_h() -> bool {
+    i16_lanes(vneg_h(i16x8([1; 8]))) == [-1; 8]
+}
 
-fn alias_vneg_d() -> bool { { let mut x=[0u8;16]; x[0]=1; let mut e=[0u8;16]; for i in 0..8 { e[i]=0xff; } vneg_d(V128::from_bytes(x)).to_bytes() == e } }
+fn alias_vneg_d() -> bool {
+    {
+        let mut x = [0u8; 16];
+        x[0] = 1;
+        let mut e = [0u8; 16];
+        for i in 0..8 {
+            e[i] = 0xff;
+        }
+        vneg_d(V128::from_bytes(x)).to_bytes() == e
+    }
+}
 
-fn alias_xvabs_b() -> bool { unsafe { xvabs_b(V256::from_bytes([0xff;32])).to_bytes() == [1;32] } }
+fn alias_xvabs_b() -> bool {
+    unsafe { xvabs_b(V256::from_bytes([0xff; 32])).to_bytes() == [1; 32] }
+}
 
-fn alias_xvabs_h() -> bool { unsafe { xvabs_h(V256::from_bytes([0xff;32])).to_bytes() == V256::from_bytes(core::array::from_fn(|i| (i%2==0) as u8)).to_bytes() } }
+fn alias_xvabs_h() -> bool {
+    unsafe {
+        xvabs_h(V256::from_bytes([0xff; 32])).to_bytes()
+            == V256::from_bytes(core::array::from_fn(|i| (i % 2 == 0) as u8)).to_bytes()
+    }
+}
 
-fn alias_xvabs_d() -> bool { unsafe { xvabs_d(V256::from_bytes([0xff;32])).to_bytes() == V256::from_bytes(core::array::from_fn(|i| (i%8==0) as u8)).to_bytes() } }
+fn alias_xvabs_d() -> bool {
+    unsafe {
+        xvabs_d(V256::from_bytes([0xff; 32])).to_bytes()
+            == V256::from_bytes(core::array::from_fn(|i| (i % 8 == 0) as u8)).to_bytes()
+    }
+}
 
-fn alias_xvneg_b() -> bool { unsafe { xvneg_b(V256::from_bytes([1;32])).to_bytes() == [0xff;32] } }
+fn alias_xvneg_b() -> bool {
+    unsafe { xvneg_b(V256::from_bytes([1; 32])).to_bytes() == [0xff; 32] }
+}
 
-fn alias_xvneg_h() -> bool { unsafe { xvneg_h(V256::from_bytes([1;32])).to_bytes() == V256::from_bytes(core::array::from_fn(|i| if i%2==0 {0xff} else {0xfe})).to_bytes() } }
+fn alias_xvneg_h() -> bool {
+    unsafe {
+        xvneg_h(V256::from_bytes([1; 32])).to_bytes()
+            == V256::from_bytes(core::array::from_fn(
+                |i| if i % 2 == 0 { 0xff } else { 0xfe },
+            ))
+            .to_bytes()
+    }
+}
 
-fn alias_xvneg_d() -> bool { unsafe { { let mut x=[0u8;32]; x[0]=1; let mut e=[0u8;32]; for i in 0..8 { e[i]=0xff; } xvneg_d(V256::from_bytes(x)).to_bytes()==e } } }
+fn alias_xvneg_d() -> bool {
+    unsafe {
+        {
+            let mut x = [0u8; 32];
+            x[0] = 1;
+            let mut e = [0u8; 32];
+            for i in 0..8 {
+                e[i] = 0xff;
+            }
+            xvneg_d(V256::from_bytes(x)).to_bytes() == e
+        }
+    }
+}
 
-fn alias_xvadd_w() -> bool { unsafe { xvadd_w(V256::from_bytes([1;32]), V256::from_bytes([2;32])) == lasx_add(V256::from_bytes([1;32]), V256::from_bytes([2;32])) } }
+fn alias_xvadd_w() -> bool {
+    unsafe {
+        xvadd_w(V256::from_bytes([1; 32]), V256::from_bytes([2; 32]))
+            == lasx_add(V256::from_bytes([1; 32]), V256::from_bytes([2; 32]))
+    }
+}
 
-fn alias_xvsub_w() -> bool { unsafe { xvsub_w(V256::from_bytes([3;32]), V256::from_bytes([2;32])) == lasx_sub(V256::from_bytes([3;32]), V256::from_bytes([2;32])) } }
+fn alias_xvsub_w() -> bool {
+    unsafe {
+        xvsub_w(V256::from_bytes([3; 32]), V256::from_bytes([2; 32]))
+            == lasx_sub(V256::from_bytes([3; 32]), V256::from_bytes([2; 32]))
+    }
+}
 
-fn alias_xvmul_w() -> bool { unsafe { xvmul_w(V256::from_bytes([1;32]), V256::from_bytes([2;32])) == lasx_mul(V256::from_bytes([1;32]), V256::from_bytes([2;32])) } }
+fn alias_xvmul_w() -> bool {
+    unsafe {
+        xvmul_w(V256::from_bytes([1; 32]), V256::from_bytes([2; 32]))
+            == lasx_mul(V256::from_bytes([1; 32]), V256::from_bytes([2; 32]))
+    }
+}
 
-fn alias_xvdiv_s() -> bool { unsafe { xvdiv_s(V256::from_bytes([1;32]), V256::from_bytes([2;32])) == lasx_fdiv(V256::from_bytes([1;32]), V256::from_bytes([2;32])) } }
+fn alias_xvdiv_s() -> bool {
+    unsafe {
+        xvdiv_s(V256::from_bytes([1; 32]), V256::from_bytes([2; 32]))
+            == lasx_fdiv(V256::from_bytes([1; 32]), V256::from_bytes([2; 32]))
+    }
+}
 
-fn alias_vmax() -> bool { lanes(vmax(i32x4([1,4,2,8]),i32x4([3,2,6,4]))) == [3,4,6,8] }
+fn alias_vmax() -> bool {
+    lanes(vmax(i32x4([1, 4, 2, 8]), i32x4([3, 2, 6, 4]))) == [3, 4, 6, 8]
+}
 
-fn alias_vmin() -> bool { lanes(vmin(i32x4([1,4,2,8]),i32x4([3,2,6,4]))) == [1,2,2,4] }
+fn alias_vmin() -> bool {
+    lanes(vmin(i32x4([1, 4, 2, 8]), i32x4([3, 2, 6, 4]))) == [1, 2, 2, 4]
+}
 
-fn alias_vseq() -> bool { vseq(i32x4([1,2,3,4]),i32x4([1,0,3,4])).to_bytes() == [0xff,0xff,0xff,0xff,0,0,0,0,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff] }
+fn alias_vseq() -> bool {
+    vseq(i32x4([1, 2, 3, 4]), i32x4([1, 0, 3, 4])).to_bytes()
+        == [
+            0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+        ]
+}
 
-fn alias_vsle() -> bool { vsle(i32x4([1,4,2,8]),i32x4([3,2,6,4])).to_bytes() == [0xff,0xff,0xff,0xff,0,0,0,0,0xff,0xff,0xff,0xff,0,0,0,0] }
+fn alias_vsle() -> bool {
+    vsle(i32x4([1, 4, 2, 8]), i32x4([3, 2, 6, 4])).to_bytes()
+        == [
+            0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0,
+        ]
+}
 
-fn alias_vslt() -> bool { vslt(i32x4([1,4,2,8]),i32x4([3,2,6,4])).to_bytes() == [0xff,0xff,0xff,0xff,0,0,0,0,0xff,0xff,0xff,0xff,0,0,0,0] }
+fn alias_vslt() -> bool {
+    vslt(i32x4([1, 4, 2, 8]), i32x4([3, 2, 6, 4])).to_bytes()
+        == [
+            0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0,
+        ]
+}
 
-fn alias_vseqi() -> bool { vseqi(i32x4([1,2,3,4]),2).to_bytes() == [0,0,0,0,0xff,0xff,0xff,0xff,0,0,0,0,0,0,0,0] }
+fn alias_vseqi() -> bool {
+    vseqi(i32x4([1, 2, 3, 4]), 2).to_bytes()
+        == [0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0]
+}
 
-fn alias_vslei() -> bool { vslei(i32x4([1,2,3,4]),2).to_bytes() == [0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0,0,0,0,0,0,0,0] }
+fn alias_vslei() -> bool {
+    vslei(i32x4([1, 2, 3, 4]), 2).to_bytes()
+        == [
+            0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+        ]
+}
 
-fn alias_vslti() -> bool { vslti(i32x4([1,2,3,4]),2).to_bytes() == [0xff,0xff,0xff,0xff,0,0,0,0,0,0,0,0,0,0,0,0] }
+fn alias_vslti() -> bool {
+    vslti(i32x4([1, 2, 3, 4]), 2).to_bytes()
+        == [0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+}
 
-fn alias_vnor() -> bool { vnor(V128::from_bytes([0xaa;16]),V128::from_bytes([0xcc;16])).to_bytes() == [0x11;16] }
+fn alias_vnor() -> bool {
+    vnor(V128::from_bytes([0xaa; 16]), V128::from_bytes([0xcc; 16])).to_bytes() == [0x11; 16]
+}
 
-fn alias_vbitsel() -> bool { vbitsel(V128::from_bytes([1;16]),V128::from_bytes([2;16]),V128::from_bytes([0xff;16])).to_bytes() == [1;16] }
+fn alias_vbitsel() -> bool {
+    vbitsel(
+        V128::from_bytes([1; 16]),
+        V128::from_bytes([2; 16]),
+        V128::from_bytes([0xff; 16]),
+    )
+    .to_bytes()
+        == [1; 16]
+}
 
-fn alias_vshuf() -> bool { vshuf(V128::from_bytes([1;16]),V128::from_bytes([2;16]),V128::from_bytes([0;16])).to_bytes() == [1;16] }
+fn alias_vshuf() -> bool {
+    vshuf(
+        V128::from_bytes([1; 16]),
+        V128::from_bytes([2; 16]),
+        V128::from_bytes([0; 16]),
+    )
+    .to_bytes()
+        == [1; 16]
+}
 
-fn alias_vshuf4i() -> bool { vshuf4i::<0>(V128::from_bytes(core::array::from_fn(|i| i as u8))).to_bytes() == [0,0,0,0,4,4,4,4,8,8,8,8,12,12,12,12] }
+fn alias_vshuf4i() -> bool {
+    vshuf4i::<0>(V128::from_bytes(core::array::from_fn(|i| i as u8))).to_bytes()
+        == [0, 0, 0, 0, 4, 4, 4, 4, 8, 8, 8, 8, 12, 12, 12, 12]
+}
 
-fn alias_vsll() -> bool { lanes(vsll(i32x4([1,2,3,4]),1)) == [2,4,6,8] }
+fn alias_vsll() -> bool {
+    lanes(vsll(i32x4([1, 2, 3, 4]), 1)) == [2, 4, 6, 8]
+}
 
-fn alias_vsrl() -> bool { lanes(vsrl(i32x4([2,4,6,8]),1)) == [1,2,3,4] }
+fn alias_vsrl() -> bool {
+    lanes(vsrl(i32x4([2, 4, 6, 8]), 1)) == [1, 2, 3, 4]
+}
 
-fn alias_vsra() -> bool { lanes(vsra(i32x4([-2,-4,4,8]),1)) == [-1,-2,2,4] }
+fn alias_vsra() -> bool {
+    lanes(vsra(i32x4([-2, -4, 4, 8]), 1)) == [-1, -2, 2, 4]
+}
 
-fn alias_vslli() -> bool { lanes(vslli::<1>(i32x4([1,2,3,4]))) == [2,4,6,8] }
+fn alias_vslli() -> bool {
+    lanes(vslli::<1>(i32x4([1, 2, 3, 4]))) == [2, 4, 6, 8]
+}
 
-fn alias_vsrli() -> bool { lanes(vsrli::<1>(i32x4([2,4,6,8]))) == [1,2,3,4] }
+fn alias_vsrli() -> bool {
+    lanes(vsrli::<1>(i32x4([2, 4, 6, 8]))) == [1, 2, 3, 4]
+}
 
-fn alias_vsrai() -> bool { lanes(vsrai::<1>(i32x4([-2,-4,4,8]))) == [-1,-2,2,4] }
+fn alias_vsrai() -> bool {
+    lanes(vsrai::<1>(i32x4([-2, -4, 4, 8]))) == [-1, -2, 2, 4]
+}
 
-fn alias_vpackev() -> bool { vpackev(V128::from_bytes(core::array::from_fn(|i| i as u8)),V128::from_bytes(core::array::from_fn(|i| (i+16) as u8))).to_bytes() == [0,16,2,18,4,20,6,22,8,24,10,26,12,28,14,30] }
+fn alias_vpackev() -> bool {
+    vpackev(
+        V128::from_bytes(core::array::from_fn(|i| i as u8)),
+        V128::from_bytes(core::array::from_fn(|i| (i + 16) as u8)),
+    )
+    .to_bytes()
+        == [0, 16, 2, 18, 4, 20, 6, 22, 8, 24, 10, 26, 12, 28, 14, 30]
+}
 
-fn alias_vpackod() -> bool { vpackod(V128::from_bytes(core::array::from_fn(|i| i as u8)),V128::from_bytes(core::array::from_fn(|i| (i+16) as u8))).to_bytes() == [1,17,3,19,5,21,7,23,9,25,11,27,13,29,15,31] }
+fn alias_vpackod() -> bool {
+    vpackod(
+        V128::from_bytes(core::array::from_fn(|i| i as u8)),
+        V128::from_bytes(core::array::from_fn(|i| (i + 16) as u8)),
+    )
+    .to_bytes()
+        == [1, 17, 3, 19, 5, 21, 7, 23, 9, 25, 11, 27, 13, 29, 15, 31]
+}
+
+fn i16x16(values: [i16; 16]) -> V256 {
+    let mut bytes = [0u8; 32];
+    for (lane, value) in values.iter().enumerate() {
+        bytes[lane * 2..lane * 2 + 2].copy_from_slice(&value.to_le_bytes());
+    }
+    V256::from_bytes(bytes)
+}
+
+fn i16x16_lanes(value: V256) -> [i16; 16] {
+    let bytes = value.to_bytes();
+    core::array::from_fn(|lane| {
+        i16::from_le_bytes(bytes[lane * 2..lane * 2 + 2].try_into().unwrap())
+    })
+}
+
+fn i64x4_lanes(value: V256) -> [i64; 4] {
+    let bytes = value.to_bytes();
+    core::array::from_fn(|lane| {
+        i64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap())
+    })
+}
+
+fn f64x4(values: [f64; 4]) -> V256 {
+    let mut bytes = [0u8; 32];
+    for (lane, value) in values.iter().enumerate() {
+        bytes[lane * 8..lane * 8 + 8].copy_from_slice(&value.to_le_bytes());
+    }
+    V256::from_bytes(bytes)
+}
+
+fn lasx_minmax_ops() -> bool {
+    let a = i32x8([1, 4, -2, 8, -9, 0, 7, -1]);
+    let b = i32x8([3, 2, 6, -4, 5, 0, -7, 8]);
+    unsafe {
+        i32x8_lanes(xvmax(a, b)) == [3, 4, 6, 8, 5, 0, 7, 8]
+            && i32x8_lanes(xvmin(a, b)) == [1, 2, -2, -4, -9, 0, -7, -1]
+    }
+}
+
+fn lasx_compare_ops() -> bool {
+    let a = i32x8([1, 2, 3, 4, 5, 6, 7, 8]);
+    let b = i32x8([2, 2, 3, 4, 3, 6, 9, 8]);
+    unsafe {
+        i32x8_lanes(xvseq(a, b)) == [0, -1, -1, -1, 0, -1, 0, -1]
+            && i32x8_lanes(xvsle(a, b)) == [-1, -1, -1, -1, 0, -1, -1, -1]
+            && i32x8_lanes(xvslt(a, b)) == [-1, 0, 0, 0, 0, 0, -1, 0]
+            && i32x8_lanes(xvseqi(a, 4)) == [0, 0, 0, -1, 0, 0, 0, 0]
+            && i32x8_lanes(xvslei(a, 4)) == [-1, -1, -1, -1, 0, 0, 0, 0]
+            && i32x8_lanes(xvslti(a, 4)) == [-1, -1, -1, 0, 0, 0, 0, 0]
+    }
+}
+
+fn lasx_bitwise_ops() -> bool {
+    let a = V256::from_bytes([0xaa; 32]);
+    let b = V256::from_bytes([0xcc; 32]);
+    unsafe {
+        xvnor(a, b).to_bytes() == [0x11; 32]
+            && xvbitsel(
+                V256::from_bytes([1; 32]),
+                V256::from_bytes([2; 32]),
+                V256::from_bytes([0xff; 32]),
+            )
+            .to_bytes()
+                == [1; 32]
+            && xvbitsel(
+                V256::from_bytes([1; 32]),
+                V256::from_bytes([2; 32]),
+                V256::from_bytes([0; 32]),
+            )
+            .to_bytes()
+                == [2; 32]
+    }
+}
+
+fn lasx_shuffle_ops() -> bool {
+    let a = V256::from_bytes(core::array::from_fn(|i| i as u8));
+    let b = V256::from_bytes(core::array::from_fn(|i| (i + 32) as u8));
+    let control = V256::from_bytes(core::array::from_fn(|i| (i + 1) as u8));
+    let expected: [u8; 32] = core::array::from_fn(|i| if i < 31 { (i + 1) as u8 } else { 32 });
+    let identity: [u8; 32] = core::array::from_fn(|i| ((i / 4) * 4) as u8);
+    unsafe {
+        xvshuf(a, b, control).to_bytes() == expected
+            && xvshuf4i::<0>(a).to_bytes() == identity
+            && xvshuf4i::<0xe4>(a).to_bytes() == a.to_bytes()
+    }
+}
+
+fn lasx_shift_ops() -> bool {
+    let a = i32x8([1, -2, 3, -4, 5, -6, 7, -8]);
+    unsafe {
+        i32x8_lanes(xvsll(a, 1)) == [2, -4, 6, -8, 10, -12, 14, -16]
+            && i32x8_lanes(xvsrl(a, 1))
+                == [
+                    0,
+                    0x7fff_ffff,
+                    1,
+                    0x7fff_fffe,
+                    2,
+                    0x7fff_fffd,
+                    3,
+                    0x7fff_fffc,
+                ]
+            && i32x8_lanes(xvsra(a, 1)) == [0, -1, 1, -2, 2, -3, 3, -4]
+            && i32x8_lanes(xvslli::<1>(a)) == [2, -4, 6, -8, 10, -12, 14, -16]
+            && i32x8_lanes(xvsrli::<1>(a))
+                == [
+                    0,
+                    0x7fff_ffff,
+                    1,
+                    0x7fff_fffe,
+                    2,
+                    0x7fff_fffd,
+                    3,
+                    0x7fff_fffc,
+                ]
+            && i32x8_lanes(xvsrai::<1>(a)) == [0, -1, 1, -2, 2, -3, 3, -4]
+    }
+}
+
+fn lasx_pack_ops() -> bool {
+    let a = V256::from_bytes(core::array::from_fn(|i| i as u8));
+    let b = V256::from_bytes(core::array::from_fn(|i| (i + 32) as u8));
+    let even: [u8; 32] =
+        core::array::from_fn(|i| if i % 2 == 0 { i as u8 } else { (i + 31) as u8 });
+    let odd: [u8; 32] = core::array::from_fn(|i| {
+        if i % 2 == 0 {
+            (i + 1) as u8
+        } else {
+            (i + 32) as u8
+        }
+    });
+    unsafe { xvpackev(a, b).to_bytes() == even && xvpackod(a, b).to_bytes() == odd }
+}
+
+fn lasx_extend_ops() -> bool {
+    let mut bytes = [0u8; 32];
+    bytes[0] = 0x80;
+    bytes[1] = 0x7f;
+    bytes[8] = 0xff;
+    bytes[9] = 0x01;
+    bytes[24] = 0x80;
+    bytes[25] = 0x7f;
+    let a = V256::from_bytes(bytes);
+
+    let mut low = [0i16; 16];
+    low[0] = -128;
+    low[1] = 127;
+    low[8] = -1;
+    low[9] = 1;
+
+    let mut high = [0i16; 16];
+    high[0] = -1;
+    high[1] = 1;
+    high[8] = -128;
+    high[9] = 127;
+
+    let mut wide = [0u8; 32];
+    wide[0..8].copy_from_slice(&(-2i64).to_le_bytes());
+    wide[16..24].copy_from_slice(&(-3i64).to_le_bytes());
+    let mut wide_expected = [0u8; 32];
+    wide_expected[0..8].copy_from_slice(&(-2i64).to_le_bytes());
+    wide_expected[8..16].fill(0xff);
+    wide_expected[16..24].copy_from_slice(&(-3i64).to_le_bytes());
+    wide_expected[24..32].fill(0xff);
+
+    unsafe {
+        i16x16_lanes(xvext(a)) == low
+            && i16x16_lanes(xvexth(a)) == high
+            && xvextl(V256::from_bytes(wide)).to_bytes() == wide_expected
+    }
+}
+
+fn lasx_saturate_ops() -> bool {
+    unsafe {
+        i32x8_lanes(xvsat::<7>(i32x8([-200, -128, -1, 0, 1, 127, 128, 200])))
+            == [-128, -128, -1, 0, 1, 127, 127, 127]
+    }
+}
+
+fn lasx_average_ops() -> bool {
+    let a = V256::from_bytes(core::array::from_fn(|i| i as u8));
+    let b = V256::from_bytes(core::array::from_fn(|i| (31 - i) as u8));
+    let highs = V256::from_bytes([255; 32]);
+    let zero = V256::from_bytes([0; 32]);
+    unsafe {
+        xvavgr(a, b).to_bytes() == [16; 32]
+            && xvavgr(highs, highs).to_bytes() == [255; 32]
+            && xvssr(
+                i16x16([256, -1, 256, -1, 0, 0, 0, 0, 256, -1, 256, -1, 0, 0, 0, 0]),
+                i16x16([0, 0, 4, 8, 0, 0, 0, 0, 0, 0, 4, 8, 0, 0, 0, 0]),
+            )
+            .to_bytes()
+                == {
+                    let mut out = [0u8; 32];
+                    out[0] = 255;
+                    out[1] = 255;
+                    out[2] = 16;
+                    out[3] = 255;
+                    out[16] = 255;
+                    out[17] = 255;
+                    out[18] = 16;
+                    out[19] = 255;
+                    out
+                }
+            && xvssr(zero, zero).to_bytes() == [0; 32]
+    }
+}
+
+fn lasx_float_ops() -> bool {
+    let a = f32x8([1.0, 5.0, -2.0, f32::NAN, 3.0, -6.0, 7.0, 8.0]);
+    let b = f32x8([4.0, 2.0, -2.0, 6.0, f32::NAN, -2.0, 7.0, -8.0]);
+    let left = f32x8([1.0, 2.0, f32::NAN, 4.0, 5.0, 6.0, 7.0, 8.0]);
+    let right = f32x8([2.0, 2.0, 3.0, 4.0, 3.0, 6.0, 9.0, 8.0]);
+    let x = f32x8([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]);
+    let y = f32x8([10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0]);
+    unsafe {
+        f32x8_lanes(xvfmax(a, b)) == [4.0, 5.0, -2.0, 6.0, 3.0, -2.0, 7.0, 8.0]
+            && f32x8_lanes(xvfmin(a, b)) == [1.0, 2.0, -2.0, 6.0, 3.0, -6.0, 7.0, -8.0]
+            && i32x8_lanes(xvfcmp::<4>(left, right)) == [0, -1, 0, -1, 0, -1, 0, -1]
+            && i32x8_lanes(xvfcmp::<2>(left, right)) == [-1, 0, 0, 0, 0, 0, -1, 0]
+            && i32x8_lanes(xvfcmp::<6>(left, right)) == [-1, -1, 0, -1, 0, -1, -1, -1]
+            && i32x8_lanes(xvfcmp::<16>(left, right)) == [-1, 0, 0, 0, -1, 0, -1, 0]
+            && i32x8_lanes(xvfcmp::<24>(left, right)) == [-1, 0, -1, 0, -1, 0, -1, 0]
+            && i32x8_lanes(xvfcmp::<0>(left, right)) == [0; 8]
+            && i32x8_lanes(xvfcmp::<20>(left, right)) == [-1, -1, 0, -1, -1, -1, -1, -1]
+            && f32x8_lanes(xvfadd(x, y)) == [11.0, 22.0, 33.0, 44.0, 55.0, 66.0, 77.0, 88.0]
+            && f32x8_lanes(xvfsub(y, x)) == [9.0, 18.0, 27.0, 36.0, 45.0, 54.0, 63.0, 72.0]
+            && f32x8_lanes(xvfmul(x, y)) == [10.0, 40.0, 90.0, 160.0, 250.0, 360.0, 490.0, 640.0]
+            && f32x8_lanes(xvfdiv(y, x)) == [10.0; 8]
+    }
+}
+
+fn lasx_convert_fcvt() -> bool {
+    let a = f64x4([1.5, 2.5, -3.5, 4.5]);
+    let b = f64x4([10.5, 20.5, 30.5, 40.5]);
+    unsafe { f32x8_lanes(xvfcvt(a, b)) == [10.5, 20.5, 1.5, 2.5, 30.5, 40.5, -3.5, 4.5] }
+}
+
+fn lasx_convert_ftint() -> bool {
+    let floats = f32x8([1.0, -2.0, 3.0, -4.0, 5.0, -6.0, 7.0, -8.0]);
+    unsafe { i32x8_lanes(xvftint(floats)) == [1, -2, 3, -4, 5, -6, 7, -8] }
+}
+
+fn lasx_convert_ffint() -> bool {
+    let integers = i32x8([1, -2, 3, -4, 5, -6, 7, -8]);
+    unsafe { f32x8_lanes(xvffint(integers)) == [1.0, -2.0, 3.0, -4.0, 5.0, -6.0, 7.0, -8.0] }
+}
+
+fn lasx_memory_ops() -> bool {
+    let mut buffer: [u8; 96] = core::array::from_fn(|index| (index * 3) as u8);
+    let mut expected = [0u8; 32];
+    expected.copy_from_slice(&buffer[9..41]);
+    let loaded = unsafe { xvld(buffer.as_ptr(), 9) };
+    if loaded.to_bytes() != expected {
+        return false;
+    }
+    let negative = unsafe { xvld(buffer.as_ptr().add(41), -32) };
+    if negative.to_bytes() != expected {
+        return false;
+    }
+    unsafe { xvst(buffer.as_mut_ptr(), 5, loaded) };
+    let mut stored = [0u8; 32];
+    stored.copy_from_slice(&buffer[5..37]);
+    stored == expected
+}
+
+fn lasx_immediate_ops() -> bool {
+    let mut expand = [0u8; 32];
+    for index in 0..32 {
+        expand[index] = if index % 2 == 0 { 0x00 } else { 0xff };
+    }
+    let mut mode4 = [0u8; 32];
+    for index in 0..32 {
+        mode4[index] = if index % 2 == 0 { 0x12 } else { 0x00 };
+    }
+    let mut mode0 = [0u8; 32];
+    for index in 0..32 {
+        if index % 8 == 0 || index % 8 == 4 {
+            mode0[index] = 0x12;
+        }
+    }
+    unsafe {
+        xvldi::<0x3ff>().to_bytes() == [0xff; 32]
+            && xvldi::<0xbfe>().to_bytes() == i32x8([-2; 8]).to_bytes()
+            && xvldi::<0x523>().to_bytes() == i16x16([291; 16]).to_bytes()
+            && i64x4_lanes(xvldi::<0xffd>()) == [-3; 4]
+            && xvldi::<0x185a>().to_bytes() == [0x5a; 32]
+            && xvldi::<0x19aa>().to_bytes() == expand
+            && xvldi::<0x1412>().to_bytes() == mode4
+            && xvldi::<0x1012>().to_bytes() == mode0
+            && i32x8_lanes(xvrepl(7)) == [7; 8]
+    }
+}

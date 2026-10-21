@@ -5,9 +5,10 @@
 //! global target feature.
 //!
 //! The values are [`V256`]. The C implementation uses GCC vector extensions and
-//! ordinary loads and stores so that LTO can keep values in registers. The
-//! byte-shuffle instruction is intentionally omitted because intrinsics leave a
-//! store/load round trip.
+//! ordinary loads and stores so that LTO can keep values in registers.
+//! Comparison, shift, shuffle, and bit operations are written in Rust on the
+//! byte representation. Float conversions, max, and min call the clang
+//! intrinsics; zero cost is not claimed for those.
 
 mod v256;
 
@@ -27,6 +28,11 @@ unsafe extern "C" {
     fn rust_isa_lasx_fsub(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_lasx_fmul(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_lasx_fdiv(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lasx_fmax_s(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lasx_fmin_s(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lasx_fcvt_s_d(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lasx_ftint_w_s(a: *const u8, out: *mut u8);
+    fn rust_isa_lasx_ffint_s_w(a: *const u8, out: *mut u8);
     fn rust_isa_lasx_splat_i32(value: i32, out: *mut u8);
 }
 
@@ -363,4 +369,679 @@ pub unsafe fn xvmul_w(a: V256, b: V256) -> V256 {
 #[inline]
 pub unsafe fn xvdiv_s(a: V256, b: V256) -> V256 {
     unsafe { fdiv(a, b) }
+}
+
+/// `xvmax.w` on signed 32-bit lanes.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvmax(a: V256, b: V256) -> V256 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..8 {
+        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+        let y = i32::from_le_bytes(b[lane * 4..lane * 4 + 4].try_into().unwrap());
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&x.max(y).to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvmin.w` on signed 32-bit lanes.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvmin(a: V256, b: V256) -> V256 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..8 {
+        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+        let y = i32::from_le_bytes(b[lane * 4..lane * 4 + 4].try_into().unwrap());
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&x.min(y).to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvseq.w` on 32-bit lanes. A true lane is all bits one.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvseq(a: V256, b: V256) -> V256 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..8 {
+        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+        let y = i32::from_le_bytes(b[lane * 4..lane * 4 + 4].try_into().unwrap());
+        let value = if x == y { -1i32 } else { 0 };
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvsle.w` on signed 32-bit lanes. A true lane is all bits one.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvsle(a: V256, b: V256) -> V256 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..8 {
+        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+        let y = i32::from_le_bytes(b[lane * 4..lane * 4 + 4].try_into().unwrap());
+        let value = if x <= y { -1i32 } else { 0 };
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvslt.w` on signed 32-bit lanes. A true lane is all bits one.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvslt(a: V256, b: V256) -> V256 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..8 {
+        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+        let y = i32::from_le_bytes(b[lane * 4..lane * 4 + 4].try_into().unwrap());
+        let value = if x < y { -1i32 } else { 0 };
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvseqi.w`. A true lane is all bits one.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvseqi(a: V256, imm: i32) -> V256 {
+    let a = a.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..8 {
+        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+        let value = if x == imm { -1i32 } else { 0 };
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvslei.w` on signed 32-bit lanes. A true lane is all bits one.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvslei(a: V256, imm: i32) -> V256 {
+    let a = a.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..8 {
+        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+        let value = if x <= imm { -1i32 } else { 0 };
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvslti.w` on signed 32-bit lanes. A true lane is all bits one.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvslti(a: V256, imm: i32) -> V256 {
+    let a = a.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..8 {
+        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+        let value = if x < imm { -1i32 } else { 0 };
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvnor.v`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvnor(a: V256, b: V256) -> V256 {
+    V256::from_bytes(core::array::from_fn(|i| {
+        !(a.to_bytes()[i] | b.to_bytes()[i])
+    }))
+}
+
+/// `xvbitsel.v`.
+///
+/// Where a mask bit is one the result takes the bit from `a`, otherwise from
+/// `b`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvbitsel(a: V256, b: V256, mask: V256) -> V256 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    let m = mask.to_bytes();
+    V256::from_bytes(core::array::from_fn(|i| (a[i] & m[i]) | (b[i] & !m[i])))
+}
+
+/// `xvshuf.b`.
+///
+/// Each control byte selects a byte from the concatenation of `a` and `b`. The
+/// low 6 bits are the index; indices 0 to 31 select `a` and indices 32 to 63
+/// select `b`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvshuf(a: V256, b: V256, control: V256) -> V256 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    let c = control.to_bytes();
+    V256::from_bytes(core::array::from_fn(|i| {
+        let index = (c[i] & 63) as usize;
+        if index < 32 { a[index] } else { b[index - 32] }
+    }))
+}
+
+/// `xvshuf4i.b`.
+///
+/// `IMM` holds four 2-bit selectors, one for each byte of a 4-byte group.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvshuf4i<const IMM: u8>(a: V256) -> V256 {
+    let a = a.to_bytes();
+    V256::from_bytes(core::array::from_fn(|i| {
+        a[(i / 4) * 4 + (((IMM >> ((i % 4) * 2)) & 3) as usize)]
+    }))
+}
+
+/// `xvsll.w`.
+///
+/// Shift each 32-bit integer lane left by `shift & 31`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvsll(a: V256, shift: i32) -> V256 {
+    let a = a.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..8 {
+        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&(x << ((shift as u32) & 31)).to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvsrl.w`.
+///
+/// Shift each 32-bit integer lane right by `shift & 31`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvsrl(a: V256, shift: i32) -> V256 {
+    let a = a.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..8 {
+        let x = u32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&(x >> ((shift as u32) & 31)).to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvsra.w`.
+///
+/// Shift each signed 32-bit integer lane right by `shift & 31`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvsra(a: V256, shift: i32) -> V256 {
+    let a = a.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..8 {
+        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&(x >> ((shift as u32) & 31)).to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvslli.w`. `SHIFT` is masked to 5 bits.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvslli<const SHIFT: u32>(a: V256) -> V256 {
+    let a = a.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..8 {
+        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&(x << (SHIFT & 31)).to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvsrli.w`. `SHIFT` is masked to 5 bits.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvsrli<const SHIFT: u32>(a: V256) -> V256 {
+    let a = a.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..8 {
+        let x = u32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&(x >> (SHIFT & 31)).to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvsrai.w`. `SHIFT` is masked to 5 bits.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvsrai<const SHIFT: u32>(a: V256) -> V256 {
+    let a = a.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..8 {
+        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&(x >> (SHIFT & 31)).to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvpackev.b`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvpackev(a: V256, b: V256) -> V256 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    V256::from_bytes(core::array::from_fn(|i| {
+        if i % 2 == 0 { a[i] } else { b[i - 1] }
+    }))
+}
+
+/// `xvpackod.b`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvpackod(a: V256, b: V256) -> V256 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    V256::from_bytes(core::array::from_fn(|i| {
+        if i % 2 == 0 { a[i + 1] } else { b[i] }
+    }))
+}
+
+/// `xvext2xv.h.b`.
+///
+/// Sign-extend the low 16 bytes of `a` to 16-bit lanes. The high half of `a`
+/// is ignored.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvext(a: V256) -> V256 {
+    let a = a.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..16 {
+        let value = (a[lane] as i8 as i16).to_le_bytes();
+        out[lane * 2..lane * 2 + 2].copy_from_slice(&value);
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvexth.h.b`.
+///
+/// Sign-extend the high 8 bytes of each 128-bit half to 16-bit lanes.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvexth(a: V256) -> V256 {
+    let a = a.to_bytes();
+    let mut out = [0u8; 32];
+    for half in 0..2 {
+        for lane in 0..8 {
+            let value = (a[half * 16 + 8 + lane] as i8 as i16).to_le_bytes();
+            out[half * 16 + lane * 2..half * 16 + lane * 2 + 2].copy_from_slice(&value);
+        }
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvextl.q.d`.
+///
+/// Sign-extend the even 64-bit lanes to 128-bit lanes, one per 128-bit half.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvextl(a: V256) -> V256 {
+    let a = a.to_bytes();
+    let mut out = [0u8; 32];
+    for half in 0..2 {
+        let value = i64::from_le_bytes(a[half * 16..half * 16 + 8].try_into().unwrap());
+        out[half * 16..half * 16 + 16].copy_from_slice(&(value as i128).to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvsat.w`.
+///
+/// Saturate each signed 32-bit lane to the signed `SAT`-bit range. `SAT` must
+/// be in `0..=31`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvsat<const SAT: u32>(a: V256) -> V256 {
+    const { assert!(SAT <= 31) };
+    let max = (1i64 << SAT) - 1;
+    let min = -(1i64 << SAT);
+    let a = a.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..8 {
+        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+        let value = (x as i64).clamp(min, max) as i32;
+        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvssrln.b.h`.
+///
+/// Shift the 16-bit lanes of `a` right by the low 4 bits of the corresponding
+/// lanes of `b`, saturate to unsigned 8 bits, and write the result to the low
+/// 8 bytes of each 128-bit half. The high 8 bytes of each half are zero.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvssr(a: V256, b: V256) -> V256 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    let mut out = [0u8; 32];
+    for half in 0..2 {
+        for lane in 0..8 {
+            let offset = half * 16 + lane * 2;
+            let source = u16::from_le_bytes([a[offset], a[offset + 1]]);
+            let shift = u16::from_le_bytes([b[offset], b[offset + 1]]) % 16;
+            let value = (source >> shift).min(0xff) as u8;
+            out[half * 16 + lane] = value;
+        }
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvavgr.bu`.
+///
+/// Rounding average of the unsigned 8-bit lanes: `(a + b + 1) >> 1`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvavgr(a: V256, b: V256) -> V256 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    V256::from_bytes(core::array::from_fn(|i| {
+        ((a[i] as u16 + b[i] as u16 + 1) >> 1) as u8
+    }))
+}
+
+/// `xvfadd.s`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvfadd(a: V256, b: V256) -> V256 {
+    unsafe { fadd(a, b) }
+}
+
+/// `xvfsub.s`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvfsub(a: V256, b: V256) -> V256 {
+    unsafe { fsub(a, b) }
+}
+
+/// `xvfmul.s`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvfmul(a: V256, b: V256) -> V256 {
+    unsafe { fmul(a, b) }
+}
+
+/// `xvfdiv.s`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvfdiv(a: V256, b: V256) -> V256 {
+    unsafe { fdiv(a, b) }
+}
+
+/// `xvfmax.s`.
+///
+/// A NaN operand selects the other operand. The result for two NaNs is the
+/// instruction's NaN.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvfmax(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_lasx_fmax_s(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `xvfmin.s`.
+///
+/// A NaN operand selects the other operand. The result for two NaNs is the
+/// instruction's NaN.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvfmin(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_lasx_fmin_s(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `xvfcmp.<COND>.s`.
+///
+/// `COND` is the 5-bit condition field. The low bit selects the signaling
+/// form; only the result mask is exposed, so the quiet and signaling forms
+/// return the same lanes. Valid values and mnemonics:
+///
+/// | `COND` | quiet  | signaling |
+/// | ------ | ------ | --------- |
+/// | 0      | `caf`  | `saf`     |
+/// | 2      | `clt`  | `slt`     |
+/// | 4      | `ceq`  | `seq`     |
+/// | 6      | `cle`  | `sle`     |
+/// | 8      | `cun`  | `sun`     |
+/// | 10     | `cult` | `sult`    |
+/// | 12     | `cueq` | `sueq`    |
+/// | 14     | `cule` | `sule`    |
+/// | 16     | `cne`  | `sne`     |
+/// | 20     | `cor`  | `sor`     |
+/// | 24     | `cune` | `sune`    |
+///
+/// A true lane is all bits one. Unordered comparisons are true when either
+/// lane is NaN.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvfcmp<const COND: u32>(a: V256, b: V256) -> V256 {
+    const { assert!(matches!(COND, 0..=17 | 20 | 21 | 24 | 25)) };
+    let less = (COND >> 1) & 1 != 0;
+    let equal = (COND >> 1) & 2 != 0;
+    let unordered = (COND >> 1) & 4 != 0;
+    let ordered_ne = (COND >> 1) & 8 != 0;
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    let mut out = [0u8; 32];
+    for lane in 0..8 {
+        let offset = lane * 4;
+        let x = f32::from_le_bytes(a[offset..offset + 4].try_into().unwrap());
+        let y = f32::from_le_bytes(b[offset..offset + 4].try_into().unwrap());
+        let hit = (less && x < y)
+            || (equal && x == y)
+            || (unordered && (x.is_nan() || y.is_nan()))
+            || (ordered_ne && (x < y || x > y));
+        let value = if hit { -1i32 } else { 0 };
+        out[offset..offset + 4].copy_from_slice(&value.to_le_bytes());
+    }
+    V256::from_bytes(out)
+}
+
+/// `xvfcvt.s.d`.
+///
+/// Convert the f64 lanes to f32 lanes. In each 128-bit half the first two
+/// 32-bit result lanes come from `b` and the last two come from `a`, matching
+/// the instruction's two-source layout.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvfcvt(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_lasx_fcvt_s_d(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `xvftint.w.s`.
+///
+/// Convert f32 lanes to signed 32-bit lanes using the current floating-point
+/// rounding mode from FCSR.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvftint(a: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_lasx_ftint_w_s(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `xvffint.s.w`.
+///
+/// Convert signed 32-bit lanes to f32 lanes.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvffint(a: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_lasx_ffint_s_w(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `xvld`.
+///
+/// Load 32 bytes from `p + offset`.
+///
+/// # Safety
+///
+/// The caller must enable LASX. `offset` must be in `-2048..=2047` and the
+/// range must be valid for reading 32 bytes. The load does not require
+/// alignment.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvld(p: *const u8, offset: i32) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        core::ptr::copy_nonoverlapping(p.offset(offset as isize), out.as_mut_ptr(), 32);
+    }
+    out
+}
+
+/// `xvst`.
+///
+/// Store 32 bytes to `p + offset`.
+///
+/// # Safety
+///
+/// The caller must enable LASX. `offset` must be in `-2048..=2047` and the
+/// range must be valid for writing 32 bytes. The store does not require
+/// alignment.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvst(p: *mut u8, offset: i32, value: V256) {
+    unsafe {
+        core::ptr::copy_nonoverlapping(value.as_ptr(), p.offset(offset as isize), 32);
+    }
+}
+
+/// `xvldi`.
+///
+/// Build the immediate value of the instruction. `IMM` is the 13-bit encoding,
+/// not the loaded scalar.
+///
+/// When bit 12 is clear, bits 9 to 0 are sign-extended and replicated as lanes
+/// of the width selected by bits 11 and 10 (`0` is 8-bit, `1` is 16-bit, `2` is
+/// 32-bit, `3` is 64-bit).
+///
+/// When bit 12 is set, bits 11 to 8 select one of the 13 constant patterns and
+/// bits 7 to 0 supply the pattern data. The 64-bit pattern is replicated four
+/// times.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvldi<const IMM: i32>() -> V256 {
+    const { V256::from_bytes(vldi_bytes(IMM as u32)) }
+}
+
+/// `xvreplgr2vr.w`.
+///
+/// Broadcast a 32-bit value to all eight lanes.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvrepl(value: i32) -> V256 {
+    unsafe { splat_i32(value) }
+}
+
+const fn vldi_bytes(imm: u32) -> [u8; 32] {
+    let mut out = [0u8; 32];
+    if imm & 0x1000 == 0 {
+        let lane = 1usize << ((imm >> 10) & 3);
+        let value = (((imm & 0x3ff) << 22) as i32 >> 22) as i64 as u64;
+        let bytes = value.to_le_bytes();
+        let mut i = 0;
+        while i < 32 {
+            out[i] = bytes[i % lane];
+            i += 1;
+        }
+    } else {
+        let data = vldi_pattern(imm).to_le_bytes();
+        let mut i = 0;
+        while i < 32 {
+            out[i] = data[i % 8];
+            i += 1;
+        }
+    }
+    out
+}
+
+const fn vldi_pattern(imm: u32) -> u64 {
+    let mode = (imm >> 8) & 0xf;
+    let t = (imm & 0xff) as u64;
+    match mode {
+        0 => (t << 32) | t,
+        1 => (t << 40) | (t << 8),
+        2 => (t << 48) | (t << 16),
+        3 => (t << 56) | (t << 24),
+        4 => (t << 48) | (t << 32) | (t << 16) | t,
+        5 => (t << 56) | (t << 40) | (t << 24) | (t << 8),
+        6 => (t << 40) | (0xff << 32) | (t << 8) | 0xff,
+        7 => (t << 48) | (0xffff << 32) | (t << 16) | 0xffff,
+        8 => {
+            let mut data = 0u64;
+            let mut i = 0;
+            while i < 8 {
+                data |= t << (i * 8);
+                i += 1;
+            }
+            data
+        }
+        9 => {
+            let mut data = 0u64;
+            let mut i = 0;
+            while i < 8 {
+                if (t >> i) & 1 != 0 {
+                    data |= 0xffu64 << (i * 8);
+                }
+                i += 1;
+            }
+            data
+        }
+        10 => {
+            let b6 = (imm & 0x40) >> 6;
+            let b7 = (imm & 0x80) >> 7;
+            let low = (imm & 0x3f) as u64;
+            let high =
+                ((b7 as u64) << 6) | (((1 - b6) as u64) << 5) | if b6 != 0 { 0x1f } else { 0 };
+            (high << 57) | (low << 51) | (high << 25) | (low << 19)
+        }
+        11 => {
+            let b6 = (imm & 0x40) >> 6;
+            let b7 = (imm & 0x80) >> 7;
+            let low = (imm & 0x3f) as u64;
+            let high =
+                ((b7 as u64) << 6) | (((1 - b6) as u64) << 5) | if b6 != 0 { 0x1f } else { 0 };
+            (high << 25) | (low << 19)
+        }
+        12 => {
+            let b6 = (imm & 0x40) >> 6;
+            let b7 = (imm & 0x80) >> 7;
+            let low = (imm & 0x3f) as u64;
+            let high =
+                ((b7 as u64) << 9) | (((1 - b6) as u64) << 8) | if b6 != 0 { 0xff } else { 0 };
+            (high << 54) | (low << 48)
+        }
+        _ => panic!("invalid xvldi immediate"),
+    }
 }
