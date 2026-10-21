@@ -11,7 +11,9 @@ use rust_isa::loongarch::simd::lasx::{
     sub_i64 as lasx_sub_i64, v256_load, v256_store, xor as lasx_xor, xvadd, xvand, xvmul, xvor,
     xvsub, xvxor,
 };
-use rust_isa::loongarch::simd::lasx::{xvabs, xvadd_d, xvdiv, xvneg, xvsub_d};
+use rust_isa::loongarch::simd::lasx::{
+    xvabs, xvadd_b, xvadd_d, xvadd_h, xvdiv, xvmul_h, xvneg, xvsub_b, xvsub_d, xvsub_h,
+};
 use rust_isa::loongarch::simd::lsx::{
     V128, add, add_i8, and, cmpeq_i32, cmpgt_i32, fadd, fdiv, fmul, fsub, mul, mul_i16, or,
     splat_i32, sub_i16, sub_i32, v128_load, v128_store, vabs, vadd, vand, vmul, vneg, vor, vsub,
@@ -75,6 +77,9 @@ fn run() -> u32 {
     }
     if !lsx_width_ops() {
         return 6;
+    }
+    if !lasx_width_ops() {
+        return 7;
     }
     if !lasx_alias_ops() {
         return 6;
@@ -356,6 +361,18 @@ fn lsx_div_ops() -> bool {
     let a = V128::from_bytes(core::array::from_fn(|i| i as u8));
     let b = V128::from_bytes(core::array::from_fn(|i| (i + 1) as u8));
     vdiv(a, b) == fdiv(a, b) && vadd_d(a, b) == add_i64(a, b) && vsub_d(b, a) == sub_i64(b, a)
+}
+
+fn lasx_width_ops() -> bool {
+    let a = V256::from_bytes([1; 32]);
+    let b = V256::from_bytes([2; 32]);
+    unsafe {
+        xvadd_b(a, b).to_bytes() == [3; 32]
+            && xvadd_h(a, b).to_bytes() == [3; 32]
+            && xvsub_b(b, a).to_bytes() == [1; 32]
+            && xvsub_h(b, a).to_bytes() == [1; 32]
+            && xvmul_h(b, b).to_bytes() != [0; 32]
+    }
 }
 
 fn lsx_width_ops() -> bool {
