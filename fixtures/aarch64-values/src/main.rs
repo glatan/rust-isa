@@ -1151,6 +1151,22 @@ unsafe fn sve_ops() -> bool {
     if od != [2.0, 2.0, -2.0] {
         return false;
     }
+    unsafe { sve::minnm_f32(&a, &b, &mut out) };
+    if out != [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0] {
+        return false;
+    }
+    unsafe { sve::maxnm_f32(&a, &b, &mut out) };
+    if out != [10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0] {
+        return false;
+    }
+    unsafe { sve::minnm_f64(&ad, &bd, &mut od) };
+    if od != [1.0, 2.0, 3.0] {
+        return false;
+    }
+    unsafe { sve::maxnm_f64(&ad, &bd, &mut od) };
+    if od != [10.0, 20.0, 30.0] {
+        return false;
+    }
     unsafe { sve::mul_f32(&a, &b, &mut out) };
     if out != [10.0, 40.0, 90.0, 160.0, 250.0, 360.0, 490.0] {
         return false;
