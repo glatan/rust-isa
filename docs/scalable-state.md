@@ -25,7 +25,7 @@ pub fn add_f32(a: &[f32], b: &[f32], out: &mut [f32])
 
 - C は `svcntw()` で VL を得て、`svld1` / `svadd` / `svst1` を使う。
 - Rust 側に VL やレジスタ型を出さない。VL は C が決める。
-- 引数の長さが揃っていない場合は panic する。境界の扱いは各関数の rustdoc に書く。
+- 引数の長さが揃っていない場合は panic する。短い方に合わせない。境界の扱いは各関数の rustdoc に書く。
 - AArch64 で確認済み。C のループは `#[target_feature(enable = "sve")]` の Rust カーネルへインラインされ、`cntw`、`whilelt`、`ld1w`、`add z0.s`、`st1w` が並び、`call` が無かった。
 
 却下した案:
@@ -40,6 +40,7 @@ pub fn add_f32(a: &[f32], b: &[f32], out: &mut [f32])
 - 固定長 `V128` は `vadd.vv` / `vmul.vv` でゼロコストを確認済み。
 - スケーラブル API はスライスを受け取り、VL は C が `vsetvl` で決める。
 - `Vtype` は公開しない。要素型と LMUL は関数ごとに固定する。
+- 32-bit 要素の `f32` / `i32` は LMUL=1 を使う。ほかの要素型を追加するときは、その関数の LMUL を rustdoc と C のコメントに書く。
 - `v` は不安定なため、利用者はクレート全体を `-C target-feature=+v` でコンパイルする。
 - RISC-V で確認済み。C のループはカーネルへインラインされ、`vsetvli`、`vle32.v`、`vadd.vv`、`vse32.v` が並び、`call` が無かった。
 
@@ -92,7 +93,7 @@ impl Drop for AmxGuard {
 
 - タイル命令は `&AmxGuard` を引数に取る。
 - OS のタイル状態の許可は、クレートの外で設定する。クレートは許可を行わない。
-- `TileConfig` の構築は利用者が行う。最初は生のバイト列として扱う。
+- `TileConfig` の構築は利用者が行う。生の64バイトとして扱い、クレートは解釈しない。構築用のビルダーは、必要になった時点で追加する。
 
 ## PowerPC MMA
 
@@ -136,3 +137,8 @@ pub unsafe fn xvi4ger8(_acc: &mut MmaAccumulator, a: &[u8], b: &[u8]) { /* ... *
 - RVV のスライス API で、要素型ごとにどの LMUL を使うか。
 - AMX の `TileConfig` の構築 API。
 - guard を safe にできる範囲。
+
+## 対象外
+
+- SME の ZA タイル、SME2、`smstart`/`smstop` の直接 API は状態・制御専用のため対象外とする。
+- guard の作成は `unsafe` のままにする。CPU の対応と状態の初期化をクレートが保証できないためである。
