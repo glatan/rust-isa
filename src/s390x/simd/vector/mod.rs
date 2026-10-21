@@ -452,3 +452,23 @@ pub unsafe fn vstef(p: *mut f32, a: V128) {
 }
 
 pub use super::vector_enhancements::{vfa, vfce, vfch, vfche, vfd, vfm, vfs, vfsq};
+
+use core::arch::asm;
+
+/// `vgbm`.
+///
+/// Generate a vector by expanding each of the 16 immediate bits to a byte.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vgbm<const IMM: u16>() -> V128 {
+    let out: u128;
+    unsafe {
+        asm!(
+            "vgbm {out}, {imm}",
+            out = lateout(vreg) out,
+            imm = const IMM,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}

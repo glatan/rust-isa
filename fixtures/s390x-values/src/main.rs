@@ -3,6 +3,7 @@
 
 use core::arch::asm;
 use core::panic::PanicInfo;
+use rust_isa::s390x::simd::vector::vgbm;
 use rust_isa::s390x::simd::vector::{
     V128, add, add_i8, add_i16, add_i64, and, cmpeq_i32, cmpgt_i32, fadd, fdiv, fmul, fsub, mul,
     mul_i16, mul_i32, or, permute, splat_i32, sub_i8, sub_i16, sub_i32, sub_i64, v128_load,
@@ -372,5 +373,7 @@ fn vector_more_ops() -> bool {
                 vstef(output.as_mut_ptr(), loaded);
                 output == source
             }
+            && vgbm::<0xffff>().to_bytes() == [0xff; 16]
+            && vgbm::<0x0000>().to_bytes() == [0; 16]
     }
 }
