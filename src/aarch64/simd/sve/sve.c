@@ -408,3 +408,22 @@ double rust_isa_sve_maxv_f64(const double *a, size_t len) {
     }
     return svmaxv_f64(svptrue_b64(), acc);
 }
+
+void rust_isa_sve_mls_f32(const float *a, const float *b, const float *acc, float *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svfloat32_t va = svld1_f32(pg, a + i);
+        svfloat32_t vb = svld1_f32(pg, b + i);
+        svfloat32_t vc = svld1_f32(pg, acc + i);
+        svst1_f32(pg, out + i, svmls_f32_z(pg, vc, va, vb));
+    }
+}
+void rust_isa_sve_mls_f64(const double *a, const double *b, const double *acc, double *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntd()) {
+        svbool_t pg = svwhilelt_b64_u64(i, len);
+        svfloat64_t va = svld1_f64(pg, a + i);
+        svfloat64_t vb = svld1_f64(pg, b + i);
+        svfloat64_t vc = svld1_f64(pg, acc + i);
+        svst1_f64(pg, out + i, svmls_f64_z(pg, vc, va, vb));
+    }
+}
