@@ -24,6 +24,7 @@ use rust_isa::loongarch::simd::lasx::{
 use rust_isa::loongarch::simd::lasx::{
     xvabs, xvadd_b, xvadd_d, xvadd_h, xvdiv, xvmul_h, xvneg, xvsub_b, xvsub_d, xvsub_h,
 };
+use rust_isa::loongarch::simd::lsx::{vsra};
 use rust_isa::loongarch::simd::lsx::{vsrl};
 use rust_isa::loongarch::simd::lsx::{vsll};
 use rust_isa::loongarch::simd::lsx::{vshuf4i};
@@ -167,6 +168,7 @@ fn run() -> u32 {
     if !alias_vshuf4i() { return 532; }
     if !alias_vsll() { return 533; }
     if !alias_vsrl() { return 534; }
+    if !alias_vsra() { return 535; }
     0
 }
 
@@ -555,3 +557,5 @@ fn alias_vshuf4i() -> bool { vshuf4i::<0>(V128::from_bytes(core::array::from_fn(
 fn alias_vsll() -> bool { lanes(vsll(i32x4([1,2,3,4]),1)) == [2,4,6,8] }
 
 fn alias_vsrl() -> bool { lanes(vsrl(i32x4([2,4,6,8]),1)) == [1,2,3,4] }
+
+fn alias_vsra() -> bool { lanes(vsra(i32x4([-2,-4,4,8]),1)) == [-1,-2,2,4] }
