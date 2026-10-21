@@ -744,3 +744,36 @@ pub unsafe fn mls_f64(a: &[f64], b: &[f64], acc: &[f64], out: &mut [f64]) {
         );
     }
 }
+
+unsafe extern "C" {
+    fn rust_isa_sve_clz_i32(a: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_sve_cnt_i32(a: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_sve_not_i32(a: *const i32, out: *mut i32, len: usize);
+}
+/// Count leading zeros of each `i32` lane.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn clz_i32(a: &[i32], out: &mut [i32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_clz_i32(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+/// Count set bits of each `i32` lane.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn cnt_i32(a: &[i32], out: &mut [i32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_cnt_i32(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+/// Bitwise NOT of each `i32` lane.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn not_i32(a: &[i32], out: &mut [i32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_not_i32(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
