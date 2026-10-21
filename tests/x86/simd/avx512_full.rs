@@ -168,6 +168,13 @@ fn i32x8(values: [i32; 8]) -> V256 {
     V256::from_bytes(bytes)
 }
 
+fn i32x8_lanes(value: V256) -> [i32; 8] {
+    let bytes = value.to_bytes();
+    core::array::from_fn(|lane| {
+        i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap())
+    })
+}
+
 fn f32x8(values: [f32; 8]) -> V256 {
     let mut bytes = [0u8; 32];
     for (lane, value) in values.iter().enumerate() {
@@ -639,6 +646,44 @@ fn avx10_1_integer_and_float() {
     );
     let doubles = unsafe { vcvtps2pd_v256(v256_from_f32x16_prefix(f32x16([2.0; 16]))) };
     assert_eq!(f64_lanes(doubles)[0], 2.0);
+
+    use rust_isa::x86::simd::avx10_1::{
+        vcvtpd2qq_v512, vgatherdps_v256, vpdpbusds_v512, vpshldd_v256, vptestnmd_v512,
+    };
+    assert_eq!(
+        i64_lanes(unsafe { vcvtpd2qq_v512(f64x8([3.0; 8])) }),
+        [3; 8]
+    );
+    assert_eq!(
+        unsafe { vptestnmd_v512(i32x16([0; 16]), i32x16([0; 16])) },
+        0xffff
+    );
+    let words = i16x32([1; 32]);
+    assert_eq!(
+        i32_lanes(unsafe {
+            vpdpbusds_v512(
+                V512::from_bytes([0; 64]),
+                V512::from_bytes([1; 64]),
+                V512::from_bytes([1; 64]),
+            )
+        }),
+        [4; 16]
+    );
+    let shifted = unsafe { vpshldd_v256::<4>(i32x8([0x12; 8]), i32x8([0; 8])) };
+    assert_eq!(i32x8_lanes(shifted)[0], 0x120);
+    let _ = words;
+    if is_x86_feature_detected!("avx512f") {
+        let data = [1.0f32, 2.0, 3.0, 4.0];
+        let gathered = unsafe {
+            vgatherdps_v256(
+                f32x8([0.0; 8]),
+                data.as_ptr().cast(),
+                i32x8([0, 1, 2, 3, 0, 0, 0, 0]),
+                0x0f,
+            )
+        };
+        assert_eq!(f32x8_lanes(gathered)[..4], [1.0, 2.0, 3.0, 4.0]);
+    }
 }
 
 #[test]

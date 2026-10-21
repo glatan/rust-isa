@@ -1775,3 +1775,407 @@ unsafe extern "C" {
 pub unsafe fn vcomisd_v128(a: V128, b: V128) -> u32 {
     unsafe { rust_isa_avx10_2_vcomisd_v128(a.as_ptr(), b.as_ptr()) }
 }
+
+unsafe extern "C" {
+    fn rust_isa_avx10_2_vucomiss_v128(a: *const u8, b: *const u8) -> u32;
+}
+
+/// `vucomiss_v128`
+/// Compare the low 32-bit float lanes without signaling on quiet NaN and return CF, PF, and ZF.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.2 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vucomiss_v128(a: V128, b: V128) -> u32 {
+    unsafe { rust_isa_avx10_2_vucomiss_v128(a.as_ptr(), b.as_ptr()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_2_vucomisd_v128(a: *const u8, b: *const u8) -> u32;
+}
+
+/// `vucomisd_v128`
+/// Compare the low 64-bit float lanes without signaling on quiet NaN and return CF, PF, and ZF.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.2 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vucomisd_v128(a: V128, b: V128) -> u32 {
+    unsafe { rust_isa_avx10_2_vucomisd_v128(a.as_ptr(), b.as_ptr()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_2_vrcp14ss_v128(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `vrcp14ss_v128`
+/// Compute a 14-bit approximate reciprocal of the low 32-bit float lane.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.2 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vrcp14ss_v128(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_avx10_2_vrcp14ss_v128(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_2_vrcp14sd_v128(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `vrcp14sd_v128`
+/// Compute a 14-bit approximate reciprocal of the low 64-bit float lane.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.2 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vrcp14sd_v128(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_avx10_2_vrcp14sd_v128(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_2_vrsqrt14ss_v128(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `vrsqrt14ss_v128`
+/// Compute a 14-bit approximate reciprocal square root of the low 32-bit float lane.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.2 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vrsqrt14ss_v128(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_avx10_2_vrsqrt14ss_v128(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_2_vrsqrt14sd_v128(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `vrsqrt14sd_v128`
+/// Compute a 14-bit approximate reciprocal square root of the low 64-bit float lane.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.2 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vrsqrt14sd_v128(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_avx10_2_vrsqrt14sd_v128(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_2_vscalefss_v128(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `vscalefss_v128`
+/// Scale the low 32-bit float lane by a power of two.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.2 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vscalefss_v128(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_avx10_2_vscalefss_v128(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_2_vscalefsd_v128(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `vscalefsd_v128`
+/// Scale the low 64-bit float lane by a power of two.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.2 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vscalefsd_v128(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_avx10_2_vscalefsd_v128(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_2_vsqrtss_v128(a: *const u8, out: *mut u8);
+}
+
+/// `vsqrtss_v128`
+/// Compute the square root of the low 32-bit float lane.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.2 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vsqrtss_v128(a: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_avx10_2_vsqrtss_v128(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_2_vsqrtsd_v128(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `vsqrtsd_v128`
+/// Compute the square root of the low 64-bit float lane.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.2 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vsqrtsd_v128(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_avx10_2_vsqrtsd_v128(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vgetmantss_v128_v128`
+/// Extract the mantissa of the low 32-bit float lane. `IMM` selects the interval and sign control.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.2 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vgetmantss_v128_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        asm!(
+            "vmovdqu xmm0, [{a}]",
+            "vmovdqu xmm1, [{b}]",
+            "vgetmantss xmm0, xmm0, xmm1, {imm}",
+            "vmovdqu [{out}], xmm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("xmm0") _,
+            out("xmm1") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+/// `vgetmantsd_v128_v128`
+/// Extract the mantissa of the low 64-bit float lane. `IMM` selects the interval and sign control.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.2 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vgetmantsd_v128_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        asm!(
+            "vmovdqu xmm0, [{a}]",
+            "vmovdqu xmm1, [{b}]",
+            "vgetmantsd xmm0, xmm0, xmm1, {imm}",
+            "vmovdqu [{out}], xmm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("xmm0") _,
+            out("xmm1") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+/// `vreducess_v128_v128`
+/// Reduce the low 32-bit float lane to the precision in `IMM`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.2 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vreducess_v128_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        asm!(
+            "vmovdqu xmm0, [{a}]",
+            "vmovdqu xmm1, [{b}]",
+            "vreducess xmm0, xmm0, xmm1, {imm}",
+            "vmovdqu [{out}], xmm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("xmm0") _,
+            out("xmm1") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+/// `vreducesd_v128_v128`
+/// Reduce the low 64-bit float lane to the precision in `IMM`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.2 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vreducesd_v128_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        asm!(
+            "vmovdqu xmm0, [{a}]",
+            "vmovdqu xmm1, [{b}]",
+            "vreducesd xmm0, xmm0, xmm1, {imm}",
+            "vmovdqu [{out}], xmm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("xmm0") _,
+            out("xmm1") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+/// `vrangess_v128_v128`
+/// Apply the range operation selected by `IMM` to the low 32-bit float lane.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.2 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vrangess_v128_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        asm!(
+            "vmovdqu xmm0, [{a}]",
+            "vmovdqu xmm1, [{b}]",
+            "vrangess xmm0, xmm0, xmm1, {imm}",
+            "vmovdqu [{out}], xmm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("xmm0") _,
+            out("xmm1") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+/// `vrangesd_v128_v128`
+/// Apply the range operation selected by `IMM` to the low 64-bit float lane.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.2 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vrangesd_v128_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        asm!(
+            "vmovdqu xmm0, [{a}]",
+            "vmovdqu xmm1, [{b}]",
+            "vrangesd xmm0, xmm0, xmm1, {imm}",
+            "vmovdqu [{out}], xmm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("xmm0") _,
+            out("xmm1") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+/// `vfixupimmss_v128`
+/// Fix up the low 32-bit float lane selected by the table in `IMM`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.2 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfixupimmss_v128<const IMM: u8>(a: V128, b: V128, c: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        asm!(
+            "vmovdqu xmm0, [{a}]",
+            "vmovdqu xmm1, [{b}]",
+            "vmovdqu xmm2, [{c}]",
+            "vfixupimmss xmm0, xmm1, xmm2, {imm}",
+            "vmovdqu [{out}], xmm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            c = in(reg) c.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("xmm0") _,
+            out("xmm1") _,
+            out("xmm2") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+/// `vfixupimmsd_v128`
+/// Fix up the low 64-bit float lane selected by the table in `IMM`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.2 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfixupimmsd_v128<const IMM: u8>(a: V128, b: V128, c: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        asm!(
+            "vmovdqu xmm0, [{a}]",
+            "vmovdqu xmm1, [{b}]",
+            "vmovdqu xmm2, [{c}]",
+            "vfixupimmsd xmm0, xmm1, xmm2, {imm}",
+            "vmovdqu [{out}], xmm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            c = in(reg) c.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("xmm0") _,
+            out("xmm1") _,
+            out("xmm2") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}

@@ -178,3 +178,71 @@ uint32_t rust_isa_avx10_2_vcomisd_v128(const uint8_t *a, const uint8_t *b) {
         : "cc");
     return (cf & 1) | ((pf & 1) << 1) | ((zf & 1) << 2);
 }
+
+__attribute__((always_inline))
+uint32_t rust_isa_avx10_2_vucomiss_v128(const uint8_t *a, const uint8_t *b) {
+    uint32_t cf, pf, zf;
+    __asm__ volatile(
+        "vucomiss %4, %3\n\t"
+        "setc %b0\n\t"
+        "setp %b1\n\t"
+        "sete %b2"
+        : "=r"(cf), "=r"(pf), "=r"(zf)
+        : "x"(_mm_loadu_ps((const float *)(const void *)a)), "x"(_mm_loadu_ps((const float *)(const void *)b))
+        : "cc");
+    return (cf & 1) | ((pf & 1) << 1) | ((zf & 1) << 2);
+}
+
+__attribute__((always_inline))
+uint32_t rust_isa_avx10_2_vucomisd_v128(const uint8_t *a, const uint8_t *b) {
+    uint32_t cf, pf, zf;
+    __asm__ volatile(
+        "vucomisd %4, %3\n\t"
+        "setc %b0\n\t"
+        "setp %b1\n\t"
+        "sete %b2"
+        : "=r"(cf), "=r"(pf), "=r"(zf)
+        : "x"(_mm_loadu_pd((const double *)(const void *)a)), "x"(_mm_loadu_pd((const double *)(const void *)b))
+        : "cc");
+    return (cf & 1) | ((pf & 1) << 1) | ((zf & 1) << 2);
+}
+
+__attribute__((always_inline))
+void rust_isa_avx10_2_vrcp14ss_v128(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_ps((float *)(void *)out, _mm_rcp14_ss(_mm_loadu_ps((const float *)(const void *)a), _mm_loadu_ps((const float *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx10_2_vrcp14sd_v128(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_pd((double *)(void *)out, _mm_rcp14_sd(_mm_loadu_pd((const double *)(const void *)a), _mm_loadu_pd((const double *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx10_2_vrsqrt14ss_v128(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_ps((float *)(void *)out, _mm_rsqrt14_ss(_mm_loadu_ps((const float *)(const void *)a), _mm_loadu_ps((const float *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx10_2_vrsqrt14sd_v128(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_pd((double *)(void *)out, _mm_rsqrt14_sd(_mm_loadu_pd((const double *)(const void *)a), _mm_loadu_pd((const double *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx10_2_vscalefss_v128(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_ps((float *)(void *)out, _mm_scalef_ss(_mm_loadu_ps((const float *)(const void *)a), _mm_loadu_ps((const float *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx10_2_vscalefsd_v128(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_pd((double *)(void *)out, _mm_scalef_sd(_mm_loadu_pd((const double *)(const void *)a), _mm_loadu_pd((const double *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx10_2_vsqrtss_v128(const uint8_t *a, uint8_t *out) {
+    _mm_storeu_ps((float *)(void *)out, _mm_sqrt_ss(_mm_loadu_ps((const float *)(const void *)a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx10_2_vsqrtsd_v128(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_pd((double *)(void *)out, _mm_sqrt_sd(_mm_loadu_pd((const double *)(const void *)a), _mm_loadu_pd((const double *)(const void *)b)));
+}

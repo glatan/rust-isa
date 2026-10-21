@@ -6,13 +6,14 @@
 //! AVX10.1. The wrappers do not carry `#[target_feature]`.
 //!
 //! The values are [`V256`] and [`V512`]. The module covers the integer, mask,
-//! permute, compress/expand, conversion, reciprocal, square-root, FMA, VNNI,
-//! IFMA, population-count, leading-zero, and conflict instructions that were
-//! previously listed as missing. Embedded rounding control and the
-//! vector-length selection bits are omitted.
+//! permute, compress/expand, gather/scatter, conversion, reciprocal,
+//! square-root, FMA, VNNI, IFMA, population-count, leading-zero, and conflict
+//! instructions that were previously listed as missing. Embedded rounding
+//! control and the vector-length selection bits are omitted.
 
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;
+use crate::x86::simd::sse2::V128;
 use core::arch::asm;
 
 unsafe extern "C" {
@@ -2482,82 +2483,6 @@ pub unsafe fn vfmadd132pd_v512(a: V512, b: V512, c: V512) -> V512 {
 }
 
 unsafe extern "C" {
-    fn rust_isa_avx10_1_vfmsub132ps_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
-}
-
-/// `vfmsub132ps_v256`
-/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
-///
-/// # Safety
-///
-/// The caller must compile with AVX10.1 enabled and the CPU must support it.
-#[inline]
-pub unsafe fn vfmsub132ps_v256(a: V256, b: V256, c: V256) -> V256 {
-    let mut out = V256::from_bytes([0; 32]);
-    unsafe {
-        rust_isa_avx10_1_vfmsub132ps_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
-    }
-    out
-}
-
-unsafe extern "C" {
-    fn rust_isa_avx10_1_vfmsub132ps_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
-}
-
-/// `vfmsub132ps_v512`
-/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
-///
-/// # Safety
-///
-/// The caller must compile with AVX10.1 enabled and the CPU must support it.
-#[inline]
-pub unsafe fn vfmsub132ps_v512(a: V512, b: V512, c: V512) -> V512 {
-    let mut out = V512::from_bytes([0; 64]);
-    unsafe {
-        rust_isa_avx10_1_vfmsub132ps_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
-    }
-    out
-}
-
-unsafe extern "C" {
-    fn rust_isa_avx10_1_vfmsub132pd_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
-}
-
-/// `vfmsub132pd_v256`
-/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
-///
-/// # Safety
-///
-/// The caller must compile with AVX10.1 enabled and the CPU must support it.
-#[inline]
-pub unsafe fn vfmsub132pd_v256(a: V256, b: V256, c: V256) -> V256 {
-    let mut out = V256::from_bytes([0; 32]);
-    unsafe {
-        rust_isa_avx10_1_vfmsub132pd_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
-    }
-    out
-}
-
-unsafe extern "C" {
-    fn rust_isa_avx10_1_vfmsub132pd_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
-}
-
-/// `vfmsub132pd_v512`
-/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
-///
-/// # Safety
-///
-/// The caller must compile with AVX10.1 enabled and the CPU must support it.
-#[inline]
-pub unsafe fn vfmsub132pd_v512(a: V512, b: V512, c: V512) -> V512 {
-    let mut out = V512::from_bytes([0; 64]);
-    unsafe {
-        rust_isa_avx10_1_vfmsub132pd_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
-    }
-    out
-}
-
-unsafe extern "C" {
     fn rust_isa_avx10_1_vfnmadd132ps_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
 }
 
@@ -3085,6 +3010,2875 @@ pub unsafe fn vpconflictq_v512(a: V512) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
         rust_isa_avx10_1_vpconflictq_v512(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vgatherdps_v256(
+        src: *const u8,
+        base: *const u8,
+        indices: *const u8,
+        mask: u8,
+        out: *mut u8,
+    );
+}
+
+/// `vgatherdps_v256`
+/// Gather the 32-bit float lanes selected by `mask`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vgatherdps_v256(src: V256, base: *const u8, indices: V256, mask: u8) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vgatherdps_v256(
+            src.as_ptr(),
+            base,
+            indices.as_ptr(),
+            mask,
+            out.as_mut_ptr(),
+        );
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vgatherdps_v512(
+        src: *const u8,
+        base: *const u8,
+        indices: *const u8,
+        mask: u16,
+        out: *mut u8,
+    );
+}
+
+/// `vgatherdps_v512`
+/// Gather the 32-bit float lanes selected by `mask`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vgatherdps_v512(src: V512, base: *const u8, indices: V512, mask: u16) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vgatherdps_v512(
+            src.as_ptr(),
+            base,
+            indices.as_ptr(),
+            mask,
+            out.as_mut_ptr(),
+        );
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vgatherdpd_v256(
+        src: *const u8,
+        base: *const u8,
+        indices: *const u8,
+        mask: u8,
+        out: *mut u8,
+    );
+}
+
+/// `vgatherdpd_v256`
+/// Gather the 64-bit float lanes selected by `mask`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vgatherdpd_v256(src: V256, base: *const u8, indices: V128, mask: u8) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vgatherdpd_v256(
+            src.as_ptr(),
+            base,
+            indices.as_ptr(),
+            mask,
+            out.as_mut_ptr(),
+        );
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vgatherdpd_v512(
+        src: *const u8,
+        base: *const u8,
+        indices: *const u8,
+        mask: u8,
+        out: *mut u8,
+    );
+}
+
+/// `vgatherdpd_v512`
+/// Gather the 64-bit float lanes selected by `mask`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vgatherdpd_v512(src: V512, base: *const u8, indices: V256, mask: u8) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vgatherdpd_v512(
+            src.as_ptr(),
+            base,
+            indices.as_ptr(),
+            mask,
+            out.as_mut_ptr(),
+        );
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vgatherqpd_v256(
+        src: *const u8,
+        base: *const u8,
+        indices: *const u8,
+        mask: u8,
+        out: *mut u8,
+    );
+}
+
+/// `vgatherqpd_v256`
+/// Gather the 64-bit float lanes selected by `mask`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vgatherqpd_v256(src: V256, base: *const u8, indices: V256, mask: u8) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vgatherqpd_v256(
+            src.as_ptr(),
+            base,
+            indices.as_ptr(),
+            mask,
+            out.as_mut_ptr(),
+        );
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vgatherqpd_v512(
+        src: *const u8,
+        base: *const u8,
+        indices: *const u8,
+        mask: u8,
+        out: *mut u8,
+    );
+}
+
+/// `vgatherqpd_v512`
+/// Gather the 64-bit float lanes selected by `mask`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vgatherqpd_v512(src: V512, base: *const u8, indices: V512, mask: u8) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vgatherqpd_v512(
+            src.as_ptr(),
+            base,
+            indices.as_ptr(),
+            mask,
+            out.as_mut_ptr(),
+        );
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vgatherqps_v256(
+        src: *const u8,
+        base: *const u8,
+        indices: *const u8,
+        mask: u8,
+        out: *mut u8,
+    );
+}
+
+/// `vgatherqps_v256`
+/// Gather four 32-bit float lanes selected by `mask`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vgatherqps_v256(src: V128, base: *const u8, indices: V256, mask: u8) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_avx10_1_vgatherqps_v256(
+            src.as_ptr(),
+            base,
+            indices.as_ptr(),
+            mask,
+            out.as_mut_ptr(),
+        );
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vgatherqps_v512(
+        src: *const u8,
+        base: *const u8,
+        indices: *const u8,
+        mask: u8,
+        out: *mut u8,
+    );
+}
+
+/// `vgatherqps_v512`
+/// Gather eight 32-bit float lanes selected by `mask`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vgatherqps_v512(src: V256, base: *const u8, indices: V512, mask: u8) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vgatherqps_v512(
+            src.as_ptr(),
+            base,
+            indices.as_ptr(),
+            mask,
+            out.as_mut_ptr(),
+        );
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vscatterdps_v256(base: *mut u8, indices: *const u8, a: *const u8, mask: u8);
+}
+
+/// `vscatterdps_v256`
+/// Scatter the 32-bit float lanes selected by `mask`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vscatterdps_v256(base: *mut u8, indices: V256, a: V256, mask: u8) {
+    unsafe { rust_isa_avx10_1_vscatterdps_v256(base, indices.as_ptr(), a.as_ptr(), mask) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vscatterdps_v512(
+        base: *mut u8,
+        indices: *const u8,
+        a: *const u8,
+        mask: u16,
+    );
+}
+
+/// `vscatterdps_v512`
+/// Scatter the 32-bit float lanes selected by `mask`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vscatterdps_v512(base: *mut u8, indices: V512, a: V512, mask: u16) {
+    unsafe { rust_isa_avx10_1_vscatterdps_v512(base, indices.as_ptr(), a.as_ptr(), mask) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vscatterdpd_v256(base: *mut u8, indices: *const u8, a: *const u8, mask: u8);
+}
+
+/// `vscatterdpd_v256`
+/// Scatter the 64-bit float lanes selected by `mask`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vscatterdpd_v256(base: *mut u8, indices: V128, a: V256, mask: u8) {
+    unsafe { rust_isa_avx10_1_vscatterdpd_v256(base, indices.as_ptr(), a.as_ptr(), mask) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vscatterdpd_v512(base: *mut u8, indices: *const u8, a: *const u8, mask: u8);
+}
+
+/// `vscatterdpd_v512`
+/// Scatter the 64-bit float lanes selected by `mask`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vscatterdpd_v512(base: *mut u8, indices: V256, a: V512, mask: u8) {
+    unsafe { rust_isa_avx10_1_vscatterdpd_v512(base, indices.as_ptr(), a.as_ptr(), mask) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vscatterqpd_v256(base: *mut u8, indices: *const u8, a: *const u8, mask: u8);
+}
+
+/// `vscatterqpd_v256`
+/// Scatter the 64-bit float lanes selected by `mask`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vscatterqpd_v256(base: *mut u8, indices: V256, a: V256, mask: u8) {
+    unsafe { rust_isa_avx10_1_vscatterqpd_v256(base, indices.as_ptr(), a.as_ptr(), mask) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vscatterqpd_v512(base: *mut u8, indices: *const u8, a: *const u8, mask: u8);
+}
+
+/// `vscatterqpd_v512`
+/// Scatter the 64-bit float lanes selected by `mask`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vscatterqpd_v512(base: *mut u8, indices: V512, a: V512, mask: u8) {
+    unsafe { rust_isa_avx10_1_vscatterqpd_v512(base, indices.as_ptr(), a.as_ptr(), mask) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vscatterqps_v256(base: *mut u8, indices: *const u8, a: *const u8, mask: u8);
+}
+
+/// `vscatterqps_v256`
+/// Scatter four 32-bit float lanes selected by `mask`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vscatterqps_v256(base: *mut u8, indices: V256, a: V128, mask: u8) {
+    unsafe { rust_isa_avx10_1_vscatterqps_v256(base, indices.as_ptr(), a.as_ptr(), mask) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vscatterqps_v512(base: *mut u8, indices: *const u8, a: *const u8, mask: u8);
+}
+
+/// `vscatterqps_v512`
+/// Scatter eight 32-bit float lanes selected by `mask`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vscatterqps_v512(base: *mut u8, indices: V512, a: V256, mask: u8) {
+    unsafe { rust_isa_avx10_1_vscatterqps_v512(base, indices.as_ptr(), a.as_ptr(), mask) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcompressb_v256(a: *const u8, mask: u32, out: *mut u8);
+}
+
+/// `vcompressb_v256`
+/// Pack or expand the selected lanes and zero the rest.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcompressb_v256(a: V256, mask: u32) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vcompressb_v256(a.as_ptr(), mask, out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcompressb_v512(a: *const u8, mask: u64, out: *mut u8);
+}
+
+/// `vcompressb_v512`
+/// Pack or expand the selected lanes and zero the rest.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcompressb_v512(a: V512, mask: u64) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vcompressb_v512(a.as_ptr(), mask, out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcompressw_v256(a: *const u8, mask: u16, out: *mut u8);
+}
+
+/// `vcompressw_v256`
+/// Pack or expand the selected lanes and zero the rest.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcompressw_v256(a: V256, mask: u16) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vcompressw_v256(a.as_ptr(), mask, out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcompressw_v512(a: *const u8, mask: u32, out: *mut u8);
+}
+
+/// `vcompressw_v512`
+/// Pack or expand the selected lanes and zero the rest.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcompressw_v512(a: V512, mask: u32) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vcompressw_v512(a.as_ptr(), mask, out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vpexpandb_v256(a: *const u8, mask: u32, out: *mut u8);
+}
+
+/// `vpexpandb_v256`
+/// Pack or expand the selected lanes and zero the rest.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpexpandb_v256(a: V256, mask: u32) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vpexpandb_v256(a.as_ptr(), mask, out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vpexpandb_v512(a: *const u8, mask: u64, out: *mut u8);
+}
+
+/// `vpexpandb_v512`
+/// Pack or expand the selected lanes and zero the rest.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpexpandb_v512(a: V512, mask: u64) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vpexpandb_v512(a.as_ptr(), mask, out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vexpandw_v256(a: *const u8, mask: u16, out: *mut u8);
+}
+
+/// `vexpandw_v256`
+/// Pack or expand the selected lanes and zero the rest.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vexpandw_v256(a: V256, mask: u16) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vexpandw_v256(a.as_ptr(), mask, out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vexpandw_v512(a: *const u8, mask: u32, out: *mut u8);
+}
+
+/// `vexpandw_v512`
+/// Pack or expand the selected lanes and zero the rest.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vexpandw_v512(a: V512, mask: u32) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vexpandw_v512(a.as_ptr(), mask, out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpshldw_v256`
+/// Shift and merge the lanes by the count in `IMM`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpshldw_v256<const IMM: u8>(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        asm!(
+            "vmovdqu ymm0, [{a}]",
+            "vmovdqu ymm1, [{b}]",
+            "vpshldw ymm0, ymm0, ymm1, {imm}",
+            "vmovdqu [{out}], ymm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("ymm0") _,
+            out("ymm1") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+/// `vpshldw_v512`
+/// Shift and merge the lanes by the count in `IMM`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpshldw_v512<const IMM: u8>(a: V512, b: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        asm!(
+            "vmovdqu64 zmm0, [{a}]",
+            "vmovdqu64 zmm1, [{b}]",
+            "vpshldw zmm0, zmm0, zmm1, {imm}",
+            "vmovdqu64 [{out}], zmm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("zmm0") _,
+            out("zmm1") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+/// `vpshldd_v256`
+/// Shift and merge the lanes by the count in `IMM`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpshldd_v256<const IMM: u8>(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        asm!(
+            "vmovdqu ymm0, [{a}]",
+            "vmovdqu ymm1, [{b}]",
+            "vpshldd ymm0, ymm0, ymm1, {imm}",
+            "vmovdqu [{out}], ymm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("ymm0") _,
+            out("ymm1") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+/// `vpshldd_v512`
+/// Shift and merge the lanes by the count in `IMM`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpshldd_v512<const IMM: u8>(a: V512, b: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        asm!(
+            "vmovdqu64 zmm0, [{a}]",
+            "vmovdqu64 zmm1, [{b}]",
+            "vpshldd zmm0, zmm0, zmm1, {imm}",
+            "vmovdqu64 [{out}], zmm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("zmm0") _,
+            out("zmm1") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+/// `vpshldq_v256`
+/// Shift and merge the lanes by the count in `IMM`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpshldq_v256<const IMM: u8>(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        asm!(
+            "vmovdqu ymm0, [{a}]",
+            "vmovdqu ymm1, [{b}]",
+            "vpshldq ymm0, ymm0, ymm1, {imm}",
+            "vmovdqu [{out}], ymm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("ymm0") _,
+            out("ymm1") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+/// `vpshldq_v512`
+/// Shift and merge the lanes by the count in `IMM`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpshldq_v512<const IMM: u8>(a: V512, b: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        asm!(
+            "vmovdqu64 zmm0, [{a}]",
+            "vmovdqu64 zmm1, [{b}]",
+            "vpshldq zmm0, zmm0, zmm1, {imm}",
+            "vmovdqu64 [{out}], zmm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("zmm0") _,
+            out("zmm1") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+/// `vpshrdw_v256`
+/// Shift and merge the lanes by the count in `IMM`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpshrdw_v256<const IMM: u8>(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        asm!(
+            "vmovdqu ymm0, [{a}]",
+            "vmovdqu ymm1, [{b}]",
+            "vpshrdw ymm0, ymm0, ymm1, {imm}",
+            "vmovdqu [{out}], ymm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("ymm0") _,
+            out("ymm1") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+/// `vpshrdw_v512`
+/// Shift and merge the lanes by the count in `IMM`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpshrdw_v512<const IMM: u8>(a: V512, b: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        asm!(
+            "vmovdqu64 zmm0, [{a}]",
+            "vmovdqu64 zmm1, [{b}]",
+            "vpshrdw zmm0, zmm0, zmm1, {imm}",
+            "vmovdqu64 [{out}], zmm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("zmm0") _,
+            out("zmm1") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+/// `vpshrdd_v256`
+/// Shift and merge the lanes by the count in `IMM`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpshrdd_v256<const IMM: u8>(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        asm!(
+            "vmovdqu ymm0, [{a}]",
+            "vmovdqu ymm1, [{b}]",
+            "vpshrdd ymm0, ymm0, ymm1, {imm}",
+            "vmovdqu [{out}], ymm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("ymm0") _,
+            out("ymm1") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+/// `vpshrdd_v512`
+/// Shift and merge the lanes by the count in `IMM`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpshrdd_v512<const IMM: u8>(a: V512, b: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        asm!(
+            "vmovdqu64 zmm0, [{a}]",
+            "vmovdqu64 zmm1, [{b}]",
+            "vpshrdd zmm0, zmm0, zmm1, {imm}",
+            "vmovdqu64 [{out}], zmm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("zmm0") _,
+            out("zmm1") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+/// `vpshrdq_v256`
+/// Shift and merge the lanes by the count in `IMM`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpshrdq_v256<const IMM: u8>(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        asm!(
+            "vmovdqu ymm0, [{a}]",
+            "vmovdqu ymm1, [{b}]",
+            "vpshrdq ymm0, ymm0, ymm1, {imm}",
+            "vmovdqu [{out}], ymm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("ymm0") _,
+            out("ymm1") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+/// `vpshrdq_v512`
+/// Shift and merge the lanes by the count in `IMM`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpshrdq_v512<const IMM: u8>(a: V512, b: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        asm!(
+            "vmovdqu64 zmm0, [{a}]",
+            "vmovdqu64 zmm1, [{b}]",
+            "vpshrdq zmm0, zmm0, zmm1, {imm}",
+            "vmovdqu64 [{out}], zmm0",
+            a = in(reg) a.as_ptr(),
+            b = in(reg) b.as_ptr(),
+            imm = const IMM,
+            out = in(reg) out.as_mut_ptr(),
+            out("zmm0") _,
+            out("zmm1") _,
+            options(nostack, preserves_flags),
+        );
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vpermi2w_v256(a: *const u8, b: *const u8, idx: *const u8, out: *mut u8);
+}
+
+/// `vpermi2w_v256`
+/// Select lanes from `a` and `b` with the indices in `idx`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpermi2w_v256(a: V256, b: V256, idx: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vpermi2w_v256(a.as_ptr(), b.as_ptr(), idx.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vpermi2w_v512(a: *const u8, b: *const u8, idx: *const u8, out: *mut u8);
+}
+
+/// `vpermi2w_v512`
+/// Select lanes from `a` and `b` with the indices in `idx`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpermi2w_v512(a: V512, b: V512, idx: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vpermi2w_v512(a.as_ptr(), b.as_ptr(), idx.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vpermt2w_v256(a: *const u8, b: *const u8, idx: *const u8, out: *mut u8);
+}
+
+/// `vpermt2w_v256`
+/// Select lanes from `a` and `b` with the indices in `idx`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpermt2w_v256(a: V256, b: V256, idx: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vpermt2w_v256(a.as_ptr(), b.as_ptr(), idx.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vpermt2w_v512(a: *const u8, b: *const u8, idx: *const u8, out: *mut u8);
+}
+
+/// `vpermt2w_v512`
+/// Select lanes from `a` and `b` with the indices in `idx`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpermt2w_v512(a: V512, b: V512, idx: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vpermt2w_v512(a.as_ptr(), b.as_ptr(), idx.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vpermi2d_v256(a: *const u8, b: *const u8, idx: *const u8, out: *mut u8);
+}
+
+/// `vpermi2d_v256`
+/// Select lanes from `a` and `b` with the indices in `idx`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpermi2d_v256(a: V256, b: V256, idx: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vpermi2d_v256(a.as_ptr(), b.as_ptr(), idx.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vpermi2d_v512(a: *const u8, b: *const u8, idx: *const u8, out: *mut u8);
+}
+
+/// `vpermi2d_v512`
+/// Select lanes from `a` and `b` with the indices in `idx`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpermi2d_v512(a: V512, b: V512, idx: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vpermi2d_v512(a.as_ptr(), b.as_ptr(), idx.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vpermt2d_v256(a: *const u8, b: *const u8, idx: *const u8, out: *mut u8);
+}
+
+/// `vpermt2d_v256`
+/// Select lanes from `a` and `b` with the indices in `idx`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpermt2d_v256(a: V256, b: V256, idx: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vpermt2d_v256(a.as_ptr(), b.as_ptr(), idx.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vpermt2d_v512(a: *const u8, b: *const u8, idx: *const u8, out: *mut u8);
+}
+
+/// `vpermt2d_v512`
+/// Select lanes from `a` and `b` with the indices in `idx`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpermt2d_v512(a: V512, b: V512, idx: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vpermt2d_v512(a.as_ptr(), b.as_ptr(), idx.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vpermi2q_v256(a: *const u8, b: *const u8, idx: *const u8, out: *mut u8);
+}
+
+/// `vpermi2q_v256`
+/// Select lanes from `a` and `b` with the indices in `idx`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpermi2q_v256(a: V256, b: V256, idx: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vpermi2q_v256(a.as_ptr(), b.as_ptr(), idx.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vpermi2q_v512(a: *const u8, b: *const u8, idx: *const u8, out: *mut u8);
+}
+
+/// `vpermi2q_v512`
+/// Select lanes from `a` and `b` with the indices in `idx`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpermi2q_v512(a: V512, b: V512, idx: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vpermi2q_v512(a.as_ptr(), b.as_ptr(), idx.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vpermt2q_v256(a: *const u8, b: *const u8, idx: *const u8, out: *mut u8);
+}
+
+/// `vpermt2q_v256`
+/// Select lanes from `a` and `b` with the indices in `idx`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpermt2q_v256(a: V256, b: V256, idx: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vpermt2q_v256(a.as_ptr(), b.as_ptr(), idx.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vpermt2q_v512(a: *const u8, b: *const u8, idx: *const u8, out: *mut u8);
+}
+
+/// `vpermt2q_v512`
+/// Select lanes from `a` and `b` with the indices in `idx`.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpermt2q_v512(a: V512, b: V512, idx: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vpermt2q_v512(a.as_ptr(), b.as_ptr(), idx.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vptestnmb_v256(a: *const u8, b: *const u8) -> u32;
+}
+
+/// `vptestnmb_v256`
+/// Test the bitwise AND of the lanes and return the zero-lane mask.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vptestnmb_v256(a: V256, b: V256) -> u32 {
+    unsafe { rust_isa_avx10_1_vptestnmb_v256(a.as_ptr(), b.as_ptr()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vptestnmb_v512(a: *const u8, b: *const u8) -> u64;
+}
+
+/// `vptestnmb_v512`
+/// Test the bitwise AND of the lanes and return the zero-lane mask.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vptestnmb_v512(a: V512, b: V512) -> u64 {
+    unsafe { rust_isa_avx10_1_vptestnmb_v512(a.as_ptr(), b.as_ptr()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vptestnmw_v256(a: *const u8, b: *const u8) -> u16;
+}
+
+/// `vptestnmw_v256`
+/// Test the bitwise AND of the lanes and return the zero-lane mask.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vptestnmw_v256(a: V256, b: V256) -> u16 {
+    unsafe { rust_isa_avx10_1_vptestnmw_v256(a.as_ptr(), b.as_ptr()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vptestnmw_v512(a: *const u8, b: *const u8) -> u32;
+}
+
+/// `vptestnmw_v512`
+/// Test the bitwise AND of the lanes and return the zero-lane mask.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vptestnmw_v512(a: V512, b: V512) -> u32 {
+    unsafe { rust_isa_avx10_1_vptestnmw_v512(a.as_ptr(), b.as_ptr()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vptestnmd_v256(a: *const u8, b: *const u8) -> u8;
+}
+
+/// `vptestnmd_v256`
+/// Test the bitwise AND of the lanes and return the zero-lane mask.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vptestnmd_v256(a: V256, b: V256) -> u8 {
+    unsafe { rust_isa_avx10_1_vptestnmd_v256(a.as_ptr(), b.as_ptr()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vptestnmd_v512(a: *const u8, b: *const u8) -> u16;
+}
+
+/// `vptestnmd_v512`
+/// Test the bitwise AND of the lanes and return the zero-lane mask.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vptestnmd_v512(a: V512, b: V512) -> u16 {
+    unsafe { rust_isa_avx10_1_vptestnmd_v512(a.as_ptr(), b.as_ptr()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vptestnmq_v256(a: *const u8, b: *const u8) -> u8;
+}
+
+/// `vptestnmq_v256`
+/// Test the bitwise AND of the lanes and return the zero-lane mask.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vptestnmq_v256(a: V256, b: V256) -> u8 {
+    unsafe { rust_isa_avx10_1_vptestnmq_v256(a.as_ptr(), b.as_ptr()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vptestnmq_v512(a: *const u8, b: *const u8) -> u8;
+}
+
+/// `vptestnmq_v512`
+/// Test the bitwise AND of the lanes and return the zero-lane mask.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vptestnmq_v512(a: V512, b: V512) -> u8 {
+    unsafe { rust_isa_avx10_1_vptestnmq_v512(a.as_ptr(), b.as_ptr()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmadd213ps_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmadd213ps_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmadd213ps_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmadd213ps_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmadd213ps_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmadd213ps_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmadd213ps_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmadd213ps_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmadd213pd_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmadd213pd_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmadd213pd_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmadd213pd_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmadd213pd_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmadd213pd_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmadd213pd_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmadd213pd_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmadd231ps_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmadd231ps_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmadd231ps_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmadd231ps_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmadd231ps_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmadd231ps_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmadd231ps_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmadd231ps_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmadd231pd_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmadd231pd_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmadd231pd_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmadd231pd_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmadd231pd_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmadd231pd_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmadd231pd_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmadd231pd_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsub213ps_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsub213ps_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsub213ps_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmsub213ps_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsub213ps_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsub213ps_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsub213ps_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmsub213ps_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsub213pd_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsub213pd_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsub213pd_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmsub213pd_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsub213pd_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsub213pd_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsub213pd_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmsub213pd_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsub231ps_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsub231ps_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsub231ps_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmsub231ps_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsub231ps_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsub231ps_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsub231ps_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmsub231ps_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsub231pd_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsub231pd_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsub231pd_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmsub231pd_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsub231pd_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsub231pd_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsub231pd_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmsub231pd_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmadd213ps_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmadd213ps_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmadd213ps_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfnmadd213ps_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmadd213ps_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmadd213ps_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmadd213ps_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfnmadd213ps_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmadd213pd_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmadd213pd_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmadd213pd_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfnmadd213pd_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmadd213pd_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmadd213pd_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmadd213pd_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfnmadd213pd_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmadd231ps_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmadd231ps_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmadd231ps_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfnmadd231ps_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmadd231ps_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmadd231ps_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmadd231ps_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfnmadd231ps_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmadd231pd_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmadd231pd_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmadd231pd_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfnmadd231pd_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmadd231pd_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmadd231pd_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmadd231pd_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfnmadd231pd_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmsub132ps_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmsub132ps_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmsub132ps_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfnmsub132ps_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmsub132ps_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmsub132ps_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmsub132ps_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfnmsub132ps_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmsub132pd_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmsub132pd_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmsub132pd_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfnmsub132pd_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmsub132pd_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmsub132pd_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmsub132pd_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfnmsub132pd_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmsub213ps_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmsub213ps_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmsub213ps_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfnmsub213ps_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmsub213ps_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmsub213ps_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmsub213ps_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfnmsub213ps_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmsub213pd_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmsub213pd_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmsub213pd_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfnmsub213pd_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmsub213pd_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmsub213pd_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmsub213pd_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfnmsub213pd_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmsub231ps_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmsub231ps_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmsub231ps_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfnmsub231ps_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmsub231ps_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmsub231ps_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmsub231ps_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfnmsub231ps_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmsub231pd_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmsub231pd_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmsub231pd_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfnmsub231pd_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfnmsub231pd_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfnmsub231pd_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfnmsub231pd_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfnmsub231pd_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmaddsub132ps_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmaddsub132ps_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmaddsub132ps_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmaddsub132ps_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmaddsub132ps_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmaddsub132ps_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmaddsub132ps_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmaddsub132ps_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmaddsub132pd_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmaddsub132pd_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmaddsub132pd_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmaddsub132pd_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmaddsub132pd_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmaddsub132pd_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmaddsub132pd_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmaddsub132pd_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmaddsub213ps_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmaddsub213ps_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmaddsub213ps_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmaddsub213ps_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmaddsub213ps_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmaddsub213ps_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmaddsub213ps_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmaddsub213ps_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmaddsub213pd_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmaddsub213pd_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmaddsub213pd_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmaddsub213pd_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmaddsub213pd_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmaddsub213pd_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmaddsub213pd_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmaddsub213pd_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmaddsub231ps_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmaddsub231ps_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmaddsub231ps_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmaddsub231ps_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmaddsub231ps_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmaddsub231ps_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmaddsub231ps_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmaddsub231ps_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmaddsub231pd_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmaddsub231pd_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmaddsub231pd_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmaddsub231pd_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmaddsub231pd_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmaddsub231pd_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmaddsub231pd_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmaddsub231pd_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsubadd132ps_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsubadd132ps_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsubadd132ps_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmsubadd132ps_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsubadd132ps_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsubadd132ps_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsubadd132ps_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmsubadd132ps_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsubadd132pd_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsubadd132pd_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsubadd132pd_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmsubadd132pd_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsubadd132pd_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsubadd132pd_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsubadd132pd_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmsubadd132pd_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsubadd213ps_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsubadd213ps_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsubadd213ps_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmsubadd213ps_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsubadd213ps_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsubadd213ps_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsubadd213ps_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmsubadd213ps_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsubadd213pd_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsubadd213pd_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsubadd213pd_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmsubadd213pd_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsubadd213pd_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsubadd213pd_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsubadd213pd_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmsubadd213pd_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsubadd231ps_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsubadd231ps_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsubadd231ps_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmsubadd231ps_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsubadd231ps_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsubadd231ps_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsubadd231ps_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmsubadd231ps_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsubadd231pd_v256(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsubadd231pd_v256`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsubadd231pd_v256(a: V256, b: V256, c: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vfmsubadd231pd_v256(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vfmsubadd231pd_v512(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+/// `vfmsubadd231pd_v512`
+/// Multiply `a` and `b`, then add or subtract `c` according to the operation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vfmsubadd231pd_v512(a: V512, b: V512, c: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vfmsubadd231pd_v512(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vpdpbusds_v256(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `vpdpbusds_v256`
+/// Multiply lane pairs and accumulate into `acc` with saturation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpdpbusds_v256(acc: V256, a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vpdpbusds_v256(acc.as_ptr(), a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vpdpbusds_v512(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `vpdpbusds_v512`
+/// Multiply lane pairs and accumulate into `acc` with saturation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpdpbusds_v512(acc: V512, a: V512, b: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vpdpbusds_v512(acc.as_ptr(), a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vpdpwssds_v256(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `vpdpwssds_v256`
+/// Multiply lane pairs and accumulate into `acc` with saturation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpdpwssds_v256(acc: V256, a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vpdpwssds_v256(acc.as_ptr(), a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vpdpwssds_v512(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `vpdpwssds_v512`
+/// Multiply lane pairs and accumulate into `acc` with saturation.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vpdpwssds_v512(acc: V512, a: V512, b: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vpdpwssds_v512(acc.as_ptr(), a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvtpd2qq_v512(a: *const u8, out: *mut u8);
+}
+
+/// `vcvtpd2qq_v512`
+/// Convert 64-bit float lanes to 64-bit integer lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvtpd2qq_v512(a: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vcvtpd2qq_v512(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvtpd2uqq_v512(a: *const u8, out: *mut u8);
+}
+
+/// `vcvtpd2uqq_v512`
+/// Convert 64-bit float lanes to 64-bit integer lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvtpd2uqq_v512(a: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vcvtpd2uqq_v512(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvtpd2qq_v256(a: *const u8, out: *mut u8);
+}
+
+/// `vcvtpd2qq_v256`
+/// Convert four 64-bit float lanes to signed 64-bit integers.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvtpd2qq_v256(a: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vcvtpd2qq_v256(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvtpd2uqq_v256(a: *const u8, out: *mut u8);
+}
+
+/// `vcvtpd2uqq_v256`
+/// Convert four 64-bit float lanes to unsigned 64-bit integers.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvtpd2uqq_v256(a: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vcvtpd2uqq_v256(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvtps2qq_v256(a: *const u8, out: *mut u8);
+}
+
+/// `vcvtps2qq_v256`
+/// Convert 32-bit float lanes to 64-bit integer lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvtps2qq_v256(a: V128) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vcvtps2qq_v256(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvtps2qq_v512(a: *const u8, out: *mut u8);
+}
+
+/// `vcvtps2qq_v512`
+/// Convert 32-bit float lanes to 64-bit integer lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvtps2qq_v512(a: V256) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vcvtps2qq_v512(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvtps2uqq_v256(a: *const u8, out: *mut u8);
+}
+
+/// `vcvtps2uqq_v256`
+/// Convert 32-bit float lanes to 64-bit integer lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvtps2uqq_v256(a: V128) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vcvtps2uqq_v256(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvtps2uqq_v512(a: *const u8, out: *mut u8);
+}
+
+/// `vcvtps2uqq_v512`
+/// Convert 32-bit float lanes to 64-bit integer lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvtps2uqq_v512(a: V256) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vcvtps2uqq_v512(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvttps2qq_v256(a: *const u8, out: *mut u8);
+}
+
+/// `vcvttps2qq_v256`
+/// Convert 32-bit float lanes to 64-bit integer lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvttps2qq_v256(a: V128) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vcvttps2qq_v256(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvttps2qq_v512(a: *const u8, out: *mut u8);
+}
+
+/// `vcvttps2qq_v512`
+/// Convert 32-bit float lanes to 64-bit integer lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvttps2qq_v512(a: V256) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vcvttps2qq_v512(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvttps2uqq_v256(a: *const u8, out: *mut u8);
+}
+
+/// `vcvttps2uqq_v256`
+/// Convert 32-bit float lanes to 64-bit integer lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvttps2uqq_v256(a: V128) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vcvttps2uqq_v256(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvttps2uqq_v512(a: *const u8, out: *mut u8);
+}
+
+/// `vcvttps2uqq_v512`
+/// Convert 32-bit float lanes to 64-bit integer lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvttps2uqq_v512(a: V256) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vcvttps2uqq_v512(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvtqq2pd_v256(a: *const u8, out: *mut u8);
+}
+
+/// `vcvtqq2pd_v256`
+/// Convert 64-bit integer lanes to 64-bit float lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvtqq2pd_v256(a: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vcvtqq2pd_v256(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvtqq2pd_v512(a: *const u8, out: *mut u8);
+}
+
+/// `vcvtqq2pd_v512`
+/// Convert 64-bit integer lanes to 64-bit float lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvtqq2pd_v512(a: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vcvtqq2pd_v512(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvtuqq2pd_v256(a: *const u8, out: *mut u8);
+}
+
+/// `vcvtuqq2pd_v256`
+/// Convert 64-bit integer lanes to 64-bit float lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvtuqq2pd_v256(a: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vcvtuqq2pd_v256(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvtuqq2pd_v512(a: *const u8, out: *mut u8);
+}
+
+/// `vcvtuqq2pd_v512`
+/// Convert 64-bit integer lanes to 64-bit float lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvtuqq2pd_v512(a: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vcvtuqq2pd_v512(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvttpd2qq_v256(a: *const u8, out: *mut u8);
+}
+
+/// `vcvttpd2qq_v256`
+/// Convert 64-bit integer lanes to 64-bit float lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvttpd2qq_v256(a: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vcvttpd2qq_v256(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvttpd2qq_v512(a: *const u8, out: *mut u8);
+}
+
+/// `vcvttpd2qq_v512`
+/// Convert 64-bit integer lanes to 64-bit float lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvttpd2qq_v512(a: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vcvttpd2qq_v512(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvttpd2uqq_v256(a: *const u8, out: *mut u8);
+}
+
+/// `vcvttpd2uqq_v256`
+/// Convert 64-bit integer lanes to 64-bit float lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvttpd2uqq_v256(a: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vcvttpd2uqq_v256(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvttpd2uqq_v512(a: *const u8, out: *mut u8);
+}
+
+/// `vcvttpd2uqq_v512`
+/// Convert 64-bit integer lanes to 64-bit float lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvttpd2uqq_v512(a: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx10_1_vcvttpd2uqq_v512(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvtqq2ps_v256(a: *const u8, out: *mut u8);
+}
+
+/// `vcvtqq2ps_v256`
+/// Convert signed 64-bit integer lanes to 32-bit float lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvtqq2ps_v256(a: V256) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_avx10_1_vcvtqq2ps_v256(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvtqq2ps_v512(a: *const u8, out: *mut u8);
+}
+
+/// `vcvtqq2ps_v512`
+/// Convert signed 64-bit integer lanes to 32-bit float lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvtqq2ps_v512(a: V512) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vcvtqq2ps_v512(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvtuqq2ps_v256(a: *const u8, out: *mut u8);
+}
+
+/// `vcvtuqq2ps_v256`
+/// Convert unsigned 64-bit integer lanes to 32-bit float lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvtuqq2ps_v256(a: V256) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_avx10_1_vcvtuqq2ps_v256(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_avx10_1_vcvtuqq2ps_v512(a: *const u8, out: *mut u8);
+}
+
+/// `vcvtuqq2ps_v512`
+/// Convert unsigned 64-bit integer lanes to 32-bit float lanes.
+///
+/// # Safety
+///
+/// The caller must compile with AVX10.1 enabled and the CPU must support it.
+#[inline]
+pub unsafe fn vcvtuqq2ps_v512(a: V512) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx10_1_vcvtuqq2ps_v512(a.as_ptr(), out.as_mut_ptr());
     }
     out
 }
