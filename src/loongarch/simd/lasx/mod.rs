@@ -266,3 +266,12 @@ pub unsafe fn xvmul_h(a: V256, b: V256) -> V256 {
     }
     V256::from_bytes(out)
 }
+
+/// `xvabs.b`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvabs_b(a: V256) -> V256 {
+    V256::from_bytes(core::array::from_fn(|i| {
+        (a.to_bytes()[i] as i8).wrapping_abs() as u8
+    }))
+}
