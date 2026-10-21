@@ -12,7 +12,7 @@ use rust_isa::loongarch::simd::lasx::{
 };
 use rust_isa::loongarch::simd::lsx::{
     V128, add, add_i8, and, cmpeq_i32, cmpgt_i32, fadd, fdiv, fmul, fsub, mul, mul_i16, or,
-    splat_i32, sub_i16, sub_i32, v128_load, v128_store, xor,
+    splat_i32, sub_i16, sub_i32, v128_load, v128_store, vadd, vand, vmul, vor, vsub, vxor, xor,
 };
 
 #[unsafe(no_mangle)]
@@ -67,6 +67,9 @@ fn run() -> u32 {
     }
     if !lbt_ops() {
         return 5;
+    }
+    if !lsx_alias_ops() {
+        return 6;
     }
     0
 }
@@ -312,4 +315,15 @@ fn lbt_ops() -> bool {
         && bstrins::<7, 4>(0, 0xa) == 0xa0
         && ext::<7, 4>(0xab) == 0xa
         && ins::<7, 4>(0, 0xa) == 0xa0
+}
+
+fn lsx_alias_ops() -> bool {
+    let a = i32x4([1, 2, 3, 4]);
+    let b = i32x4([5, 6, 7, 8]);
+    vadd(a, b) == add(a, b)
+        && vsub(b, a) == sub_i32(b, a)
+        && vmul(a, b) == mul(a, b)
+        && vand(a, b) == and(a, b)
+        && vor(a, b) == or(a, b)
+        && vxor(a, b) == xor(a, b)
 }

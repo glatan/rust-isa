@@ -171,3 +171,39 @@ pub fn splat_i32(value: i32) -> V128 {
     }
     out
 }
+
+/// `vadd.w`.
+#[inline(always)]
+pub fn vadd(a: V128, b: V128) -> V128 {
+    add(a, b)
+}
+
+/// `vsub.w`.
+#[inline(always)]
+pub fn vsub(a: V128, b: V128) -> V128 {
+    sub_i32(a, b)
+}
+
+/// `vmul.w`.
+#[inline(always)]
+pub fn vmul(a: V128, b: V128) -> V128 {
+    mul(a, b)
+}
+
+/// `vand.v`.
+#[inline(always)]
+pub fn vand(a: V128, b: V128) -> V128 {
+    and(a, b)
+}
+
+/// `vor.v`.
+#[inline(always)]
+pub fn vor(a: V128, b: V128) -> V128 {
+    or(a, b)
+}
+
+/// `vxor.v`.
+#[inline(always)]
+pub fn vxor(a: V128, b: V128) -> V128 {
+    xor(a, b)
+}
