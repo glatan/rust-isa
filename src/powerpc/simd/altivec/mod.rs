@@ -549,3 +549,71 @@ afma!(
 pub unsafe fn vmuluwm(a: V128, b: V128) -> V128 {
     unsafe { mul_i32(a, b) }
 }
+
+unsafe extern "C" {
+    fn rust_isa_altivec_lvebx(p: *const u8, index: u32, out: *mut u8);
+    fn rust_isa_altivec_lvehx(p: *const u8, index: u32, out: *mut u8);
+    fn rust_isa_altivec_lvewx(p: *const u8, index: u32, out: *mut u8);
+    fn rust_isa_altivec_stvebx(p: *mut u8, index: u32, a: *const u8);
+    fn rust_isa_altivec_stvehx(p: *mut u8, index: u32, a: *const u8);
+    fn rust_isa_altivec_stvewx(p: *mut u8, index: u32, a: *const u8);
+}
+
+macro_rules! lve {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// `p` must be valid for reading the selected element.
+        #[inline(always)]
+        pub unsafe fn $name(p: *const u8, index: u32) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe { $c(p, index, out.as_mut_ptr()); }
+            out
+        }
+    };
+}
+macro_rules! stve {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// `p` must be valid for writing the selected element.
+        #[inline(always)]
+        pub unsafe fn $name(p: *mut u8, index: u32, a: V128) {
+            unsafe { $c(p, index, a.as_ptr()); }
+        }
+    };
+}
+lve!(
+    /// `lvebx`.
+    lvebx,
+    rust_isa_altivec_lvebx
+);
+lve!(
+    /// `lvehx`.
+    lvehx,
+    rust_isa_altivec_lvehx
+);
+lve!(
+    /// `lvewx`.
+    lvewx,
+    rust_isa_altivec_lvewx
+);
+stve!(
+    /// `stvebx`.
+    stvebx,
+    rust_isa_altivec_stvebx
+);
+stve!(
+    /// `stvehx`.
+    stvehx,
+    rust_isa_altivec_stvehx
+);
+stve!(
+    /// `stvewx`.
+    stvewx,
+    rust_isa_altivec_stvewx
+);
