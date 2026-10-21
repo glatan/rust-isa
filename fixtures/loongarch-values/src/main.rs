@@ -24,6 +24,7 @@ use rust_isa::loongarch::simd::lasx::{
 use rust_isa::loongarch::simd::lasx::{
     xvabs, xvadd_b, xvadd_d, xvadd_h, xvdiv, xvmul_h, xvneg, xvsub_b, xvsub_d, xvsub_h,
 };
+use rust_isa::loongarch::simd::lsx::{vslti};
 use rust_isa::loongarch::simd::lsx::{vslei};
 use rust_isa::loongarch::simd::lsx::{vseqi};
 use rust_isa::loongarch::simd::lsx::{vslt};
@@ -153,6 +154,7 @@ fn run() -> u32 {
     if !alias_vslt() { return 514; }
     if !alias_vseqi() { return 521; }
     if !alias_vslei() { return 522; }
+    if !alias_vslti() { return 523; }
     0
 }
 
@@ -527,3 +529,5 @@ fn alias_vslt() -> bool { vslt(i32x4([1,4,2,8]),i32x4([3,2,6,4])).to_bytes() == 
 fn alias_vseqi() -> bool { vseqi(i32x4([1,2,3,4]),2).to_bytes() == [0,0,0,0,0xff,0xff,0xff,0xff,0,0,0,0,0,0,0,0] }
 
 fn alias_vslei() -> bool { vslei(i32x4([1,2,3,4]),2).to_bytes() == [0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0,0,0,0,0,0,0,0] }
+
+fn alias_vslti() -> bool { vslti(i32x4([1,2,3,4]),2).to_bytes() == [0xff,0xff,0xff,0xff,0,0,0,0,0,0,0,0,0,0,0,0] }
