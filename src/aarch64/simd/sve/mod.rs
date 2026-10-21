@@ -624,3 +624,27 @@ pub unsafe fn maxnm_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
         rust_isa_sve_maxnm_f64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
     }
 }
+
+unsafe extern "C" {
+    fn rust_isa_sve_addv_f32(a: *const f32, len: usize) -> f32;
+    fn rust_isa_sve_addv_i32(a: *const i32, len: usize) -> i32;
+    fn rust_isa_sve_addv_f64(a: *const f64, len: usize) -> f64;
+}
+/// Sum an `f32` slice.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn reduce_add_f32(a: &[f32]) -> f32 {
+    unsafe { rust_isa_sve_addv_f32(a.as_ptr(), a.len()) }
+}
+/// Sum an `i32` slice.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn reduce_add_i32(a: &[i32]) -> i32 {
+    unsafe { rust_isa_sve_addv_i32(a.as_ptr(), a.len()) }
+}
+/// Sum an `f64` slice.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn reduce_add_f64(a: &[f64]) -> f64 {
+    unsafe { rust_isa_sve_addv_f64(a.as_ptr(), a.len()) }
+}

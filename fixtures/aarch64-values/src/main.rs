@@ -1167,6 +1167,12 @@ unsafe fn sve_ops() -> bool {
     if od != [10.0, 20.0, 30.0] {
         return false;
     }
+    if unsafe { sve::reduce_add_f32(&a) } != 28.0
+        || unsafe { sve::reduce_add_i32(&ai) } != 15
+        || unsafe { sve::reduce_add_f64(&ad) } != 6.0
+    {
+        return false;
+    }
     unsafe { sve::mul_f32(&a, &b, &mut out) };
     if out != [10.0, 40.0, 90.0, 160.0, 250.0, 360.0, 490.0] {
         return false;
