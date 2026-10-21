@@ -1170,6 +1170,12 @@ unsafe fn sve_ops() -> bool {
     if unsafe { sve::reduce_add_f32(&a) } != 28.0
         || unsafe { sve::reduce_add_i32(&ai) } != 15
         || unsafe { sve::reduce_add_f64(&ad) } != 6.0
+        || unsafe { sve::reduce_min_f32(&a) } != 1.0
+        || unsafe { sve::reduce_max_f32(&a) } != 7.0
+        || unsafe { sve::reduce_min_i32(&ai) } != 1
+        || unsafe { sve::reduce_max_i32(&ai) } != 5
+        || unsafe { sve::reduce_min_f64(&ad) } != 1.0
+        || unsafe { sve::reduce_max_f64(&ad) } != 3.0
     {
         return false;
     }

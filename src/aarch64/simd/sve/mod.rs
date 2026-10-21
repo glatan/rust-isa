@@ -648,3 +648,48 @@ pub unsafe fn reduce_add_i32(a: &[i32]) -> i32 {
 pub unsafe fn reduce_add_f64(a: &[f64]) -> f64 {
     unsafe { rust_isa_sve_addv_f64(a.as_ptr(), a.len()) }
 }
+
+unsafe extern "C" {
+    fn rust_isa_sve_minv_f32(a: *const f32, len: usize) -> f32;
+    fn rust_isa_sve_maxv_f32(a: *const f32, len: usize) -> f32;
+    fn rust_isa_sve_minv_i32(a: *const i32, len: usize) -> i32;
+    fn rust_isa_sve_maxv_i32(a: *const i32, len: usize) -> i32;
+    fn rust_isa_sve_minv_f64(a: *const f64, len: usize) -> f64;
+    fn rust_isa_sve_maxv_f64(a: *const f64, len: usize) -> f64;
+}
+/// Minimum of an `f32` slice.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn reduce_min_f32(a: &[f32]) -> f32 {
+    unsafe { rust_isa_sve_minv_f32(a.as_ptr(), a.len()) }
+}
+/// Maximum of an `f32` slice.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn reduce_max_f32(a: &[f32]) -> f32 {
+    unsafe { rust_isa_sve_maxv_f32(a.as_ptr(), a.len()) }
+}
+/// Minimum of an `i32` slice.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn reduce_min_i32(a: &[i32]) -> i32 {
+    unsafe { rust_isa_sve_minv_i32(a.as_ptr(), a.len()) }
+}
+/// Maximum of an `i32` slice.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn reduce_max_i32(a: &[i32]) -> i32 {
+    unsafe { rust_isa_sve_maxv_i32(a.as_ptr(), a.len()) }
+}
+/// Minimum of an `f64` slice.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn reduce_min_f64(a: &[f64]) -> f64 {
+    unsafe { rust_isa_sve_minv_f64(a.as_ptr(), a.len()) }
+}
+/// Maximum of an `f64` slice.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn reduce_max_f64(a: &[f64]) -> f64 {
+    unsafe { rust_isa_sve_maxv_f64(a.as_ptr(), a.len()) }
+}
