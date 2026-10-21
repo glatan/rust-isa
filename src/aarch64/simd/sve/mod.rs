@@ -39,6 +39,9 @@ unsafe extern "C" {
     fn rust_isa_sve_neg_f64(a: *const f64, out: *mut f64, len: usize);
     fn rust_isa_sve_sqrt_f32(a: *const f32, out: *mut f32, len: usize);
     fn rust_isa_sve_sqrt_f64(a: *const f64, out: *mut f64, len: usize);
+    fn rust_isa_sve_and_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_sve_or_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
+    fn rust_isa_sve_xor_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
 }
 
 /// Add two `f32` slices.
@@ -358,5 +361,36 @@ pub unsafe fn sqrt_f64(a: &[f64], out: &mut [f64]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     unsafe {
         rust_isa_sve_sqrt_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+/// Bitwise AND of two `i32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn and_i32(a: &[i32], b: &[i32], out: &mut [i32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_and_i32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+/// Bitwise OR of two `i32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn or_i32(a: &[i32], b: &[i32], out: &mut [i32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_or_i32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+/// Bitwise XOR of two `i32` slices.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn xor_i32(a: &[i32], b: &[i32], out: &mut [i32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_xor_i32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
     }
 }

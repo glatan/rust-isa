@@ -195,3 +195,22 @@ void rust_isa_sve_sqrt_f64(const double *a, double *out, size_t len) {
         svst1_f64(pg, out + i, svsqrt_f64_z(pg, svld1_f64(pg, a + i)));
     }
 }
+
+void rust_isa_sve_and_i32(const int32_t *a, const int32_t *b, int32_t *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svst1_s32(pg, out + i, svand_s32_z(pg, svld1_s32(pg, a + i), svld1_s32(pg, b + i)));
+    }
+}
+void rust_isa_sve_or_i32(const int32_t *a, const int32_t *b, int32_t *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svst1_s32(pg, out + i, svorr_s32_z(pg, svld1_s32(pg, a + i), svld1_s32(pg, b + i)));
+    }
+}
+void rust_isa_sve_xor_i32(const int32_t *a, const int32_t *b, int32_t *out, size_t len) {
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svst1_s32(pg, out + i, sveor_s32_z(pg, svld1_s32(pg, a + i), svld1_s32(pg, b + i)));
+    }
+}
