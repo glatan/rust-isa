@@ -5,6 +5,9 @@ use core::arch::asm;
 use core::panic::PanicInfo;
 use rust_isa::riscv::crypto::zkn::{aes64es, aes64ks1i, sha256sum0};
 use rust_isa::riscv::crypto::zks::{sm3p0, sm4ed};
+use rust_isa::riscv::float::zfh::{
+    fadd_h, fdiv_h, feq_h, fle_h, flh, flt_h, fmax_h, fmin_h, fmul_h, fsh, fsqrt_h, fsub_h,
+};
 use rust_isa::riscv::integer::zba::{sh1add, sh2add, sh3add};
 use rust_isa::riscv::integer::zbb::{andn, clz, cpop, rol, sext_b, xnor};
 use rust_isa::riscv::integer::zbc::clmul;
@@ -71,6 +74,9 @@ fn run() -> u32 {
     }
     if !crypto_ops() {
         return 6;
+    }
+    if !unsafe { zfh_ops() } {
+        return 7;
     }
     0
 }
@@ -293,4 +299,27 @@ pub unsafe extern "C" fn bcmp(a: *const u8, b: *const u8, n: usize) -> i32 {
         index += 1;
     }
     0
+}
+
+unsafe fn zfh_ops() -> bool {
+    let one = 0x3c00u16;
+    let two = 0x4000u16;
+    let four = 0x4400u16;
+    unsafe {
+        fadd_h(one, two) == 0x4200
+            && fsub_h(two, one) == one
+            && fmul_h(two, two) == four
+            && fdiv_h(four, two) == two
+            && fsqrt_h(four) == two
+            && fmin_h(one, two) == one
+            && fmax_h(one, two) == two
+            && feq_h(one, one)
+            && flt_h(one, two)
+            && fle_h(one, one)
+            && {
+                let mut bytes = [0u8; 2];
+                fsh(bytes.as_mut_ptr(), two);
+                flh(bytes.as_ptr()) == two
+            }
+    }
 }
