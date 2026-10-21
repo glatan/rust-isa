@@ -1,0 +1,37 @@
+//! LZCNT.
+//!
+//! LZCNT is not part of the x86-64 baseline. Every operation is `unsafe` and
+//! the caller must enable LZCNT with `#[target_feature(enable = "lzcnt")]` or a
+//! global target feature.
+//!
+//! The result is the number of leading zero bits. A zero input returns the
+//! operand width.
+
+unsafe extern "C" {
+    fn rust_isa_lzcnt_u32(value: u32) -> u32;
+    #[cfg(target_arch = "x86_64")]
+    fn rust_isa_lzcnt_u64(value: u64) -> u64;
+}
+
+/// `lzcnt` with a 32-bit value.
+///
+/// # Safety
+///
+/// The caller must enable LZCNT.
+#[target_feature(enable = "lzcnt")]
+#[inline]
+pub unsafe fn lzcnt_u32(value: u32) -> u32 {
+    unsafe { rust_isa_lzcnt_u32(value) }
+}
+
+/// `lzcnt` with a 64-bit value.
+///
+/// # Safety
+///
+/// The caller must enable LZCNT.
+#[cfg(target_arch = "x86_64")]
+#[target_feature(enable = "lzcnt")]
+#[inline]
+pub unsafe fn lzcnt_u64(value: u64) -> u64 {
+    unsafe { rust_isa_lzcnt_u64(value) }
+}

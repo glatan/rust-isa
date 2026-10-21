@@ -24,12 +24,13 @@ extension の `mod.rs` には、次を書く。
 
 - 対象の triple
 - 既定の feature と、実装の順序
-- 実装状況
+- 実装状況（extension ごとの実装済み命令と未実装命令の表）
 - 実装方式（C、`asm!`、純 Rust）
 - 値の型と C との受け渡し
 - ゼロコストの条件と、測定したかどうか
 - ツールチェーンと、確認した clang のバージョン
 - 未決定の設計（スケーラブルベクタ、状態管理など）
+- 対象外とする命令と、その理由
 
 ゼロコストを確認した arch は、リンクの条件と確認手順を `linking.md` に分ける。例は [x86](x86/linking.md) にある。
 
@@ -42,7 +43,6 @@ extension の `mod.rs` には、次を書く。
 - [ゼロコストの確認](zero-cost.md): 確認方法と arch ごとの結果
 - [スケーラブルベクタと状態](scalable-state.md): SVE、RVV、SME、AMX、MMA の API 設計
 - [native の値テスト](native-testing.md): QEMU を使う値テストの設計
-- [実装計画](implementation-plan.md): native arch の実装順序と完了条件
 - [ソースの置き方](source-layout.md): ディレクトリと公開パス
 - [開発環境](development.md): リポジトリのコマンド
 

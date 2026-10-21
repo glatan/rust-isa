@@ -4,4 +4,5 @@
 
 pub mod crypto;
 pub mod integer;
+pub mod matrix;
 pub mod simd;

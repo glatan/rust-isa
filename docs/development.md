@@ -4,6 +4,8 @@
 
 ```sh
 make image
+make fmt
+make fmt-check
 make test
 make test-host
 make test-x86_64
@@ -13,7 +15,7 @@ make test-wasip1
 make test-wasip1-wide-arithmetic
 ```
 
-`make test` が既定で、`test-host`、`test-wasip1`、`test-wasip1-wide-arithmetic` を実行する。すべてのテストはイメージ内で、対象 triple を明示して実行する。
+`make test` が既定で、`fmt-check`、`test-host`、`test-wasip1`、`test-wasip1-wide-arithmetic` を実行する。すべてのテストはイメージ内で、対象 triple を明示して実行する。
 
 - `make test-host`: `x86_64-unknown-linux-gnu` で実行する全テストと doctest。新しい統合テストも自動的に対象になる
 - `make test-x86_64`: x86_64 の値テスト、doctest、x86 のゼロコスト検査だけを実行する
@@ -25,6 +27,24 @@ make test-wasip1-wide-arithmetic
 arch ごとの `test-i686`、`test-aarch64`、`test-armv7`、`test-riscv64`、`test-loongarch64`、`test-s390x`、`test-powerpc64le`、`test-mips64` は、対応する `tests/<arch>.rs` のテストだけを実行する。`make test` は `test-host` 経由でこれらも実行する。
 
 テストの実行には `cargo nextest run` を使い、`--no-tests=fail` を付ける。テストターゲットにテストが 0 件の場合は失敗する。doctest は nextest の対象外なので、`cargo test --doc` で別に実行する。
+
+## 整形
+
+整形はイメージ内の dprint と cargo fmt で行う。dprint の設定はリポジトリ直下の `dprint.json` にあり、プラグインのバージョンも固定している。イメージをビルドすると
+プラグインをキャッシュするため、整形時にネットワークへ接続しない。
+
+```sh
+make fmt
+make fmt-check
+```
+
+`make fmt` は次を実行する。
+
+- `dprint fmt`: Markdown、JSON、TOML、Dockerfile
+- `cargo fmt --all`: ルートワークスペースの Rust
+- `fixtures/*-values` の `cargo fmt`
+
+Rust は dprint ではなく rustfmt を使う。`make test` は最初に `fmt-check` を実行する。
 
 ## arch ごとの確認
 

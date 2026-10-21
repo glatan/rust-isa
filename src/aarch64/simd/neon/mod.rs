@@ -3,8 +3,20 @@
 //! NEON is part of the AArch64 baseline. The arithmetic operations are safe.
 //! Loads and stores take raw pointers and are `unsafe`.
 
+mod compare;
+mod float;
+mod integer;
+mod lane;
+mod shift;
+mod shuffle;
 mod v128;
 
+pub use compare::*;
+pub use float::*;
+pub use integer::*;
+pub use lane::*;
+pub use shift::*;
+pub use shuffle::*;
 pub use v128::*;
 
 unsafe extern "C" {

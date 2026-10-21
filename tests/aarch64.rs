@@ -31,6 +31,8 @@ fn aarch64_pipeline() {
     let binary = dir.join("aarch64-unknown-linux-gnu/release/aarch64-values");
     assert!(binary.is_file(), "missing {}", binary.display());
     let output = Command::new("qemu-aarch64-static")
+        .arg("-cpu")
+        .arg("max")
         .arg(&binary)
         .output()
         .expect("qemu-aarch64-static");

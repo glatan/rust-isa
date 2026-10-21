@@ -1,0 +1,66 @@
+//! AVX-512 BITALG.
+//!
+//! AVX-512 BITALG is not part of the x86-64 baseline. Every operation is
+//! `unsafe` and the caller must enable AVX-512 BITALG with
+//! `#[target_feature(enable = "avx512bitalg")]` (which implies AVX-512 F and BW)
+//! or a global target feature.
+//!
+//! The values are [`V512`]. The population-count instructions return the count
+//! in each lane. `vpshufbitqmb` selects one bit from each 64-bit group and
+//! returns the selected bits as a mask.
+
+use super::avx512f::V512;
+
+unsafe extern "C" {
+    fn rust_isa_avx512bitalg_vpopcntb(a: *const u8, out: *mut u8);
+    fn rust_isa_avx512bitalg_vpopcntw(a: *const u8, out: *mut u8);
+    fn rust_isa_avx512bitalg_vpshufbitqmb(a: *const u8, idx: *const u8) -> u64;
+}
+
+/// `vpopcntb`
+///
+/// Count the set bits in each byte lane.
+///
+/// # Safety
+///
+/// The caller must enable AVX-512 BITALG.
+#[target_feature(enable = "avx512bitalg")]
+#[inline]
+pub unsafe fn vpopcntb(a: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx512bitalg_vpopcntb(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpopcntw`
+///
+/// Count the set bits in each 16-bit lane.
+///
+/// # Safety
+///
+/// The caller must enable AVX-512 BITALG.
+#[target_feature(enable = "avx512bitalg")]
+#[inline]
+pub unsafe fn vpopcntw(a: V512) -> V512 {
+    let mut out = V512::from_bytes([0; 64]);
+    unsafe {
+        rust_isa_avx512bitalg_vpopcntw(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpshufbitqmb`
+///
+/// Select one bit from each 64-bit group using `idx` and return the selected
+/// bits as a 64-bit mask.
+///
+/// # Safety
+///
+/// The caller must enable AVX-512 BITALG.
+#[target_feature(enable = "avx512bitalg")]
+#[inline]
+pub unsafe fn vpshufbitqmb(a: V512, idx: V512) -> u64 {
+    unsafe { rust_isa_avx512bitalg_vpshufbitqmb(a.as_ptr(), idx.as_ptr()) }
+}

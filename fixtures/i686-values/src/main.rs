@@ -3,8 +3,8 @@
 
 use core::arch::asm;
 use core::panic::PanicInfo;
-use rust_isa::x86::simd::avx2::{vpaddd, V256};
-use rust_isa::x86::simd::sse2::{paddd, pslld, punpcklbw, v128_load, v128_store, V128};
+use rust_isa::x86::simd::avx2::{V256, vpaddd};
+use rust_isa::x86::simd::sse2::{V128, paddd, pslld, punpcklbw, v128_load, v128_store};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {
@@ -96,6 +96,8 @@ fn integer() -> bool {
 
 fn shuffle() -> bool {
     let a = V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]);
-    let b = V128::from_bytes([11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]);
+    let b = V128::from_bytes([
+        11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
+    ]);
     punpcklbw(a, b).to_bytes() == [1, 11, 2, 12, 3, 13, 4, 14, 5, 15, 6, 16, 7, 17, 8, 18]
 }

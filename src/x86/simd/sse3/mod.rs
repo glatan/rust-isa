@@ -1,0 +1,194 @@
+//! SSE3.
+//!
+//! SSE3 is not part of the x86-64 baseline. Every operation is `unsafe` and the
+//! caller must enable SSE3 with `#[target_feature(enable = "sse3")]` or a global
+//! target feature.
+//!
+//! The values are [`V128`]. The instruction decides what the lanes mean.
+//! The `*ps` functions use four 32-bit float lanes and the `*pd` functions use
+//! two 64-bit float lanes. Memory operations do not require alignment.
+
+use super::sse2::V128;
+
+unsafe extern "C" {
+    fn rust_isa_sse3_addsubps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse3_addsubpd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse3_haddps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse3_haddpd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse3_hsubps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse3_hsubpd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse3_lddqu(p: *const u8, out: *mut u8);
+    fn rust_isa_sse3_movsldup(a: *const u8, out: *mut u8);
+    fn rust_isa_sse3_movshdup(a: *const u8, out: *mut u8);
+    fn rust_isa_sse3_movddup(a: *const u8, out: *mut u8);
+}
+
+/// `addsubps`
+///
+/// Subtract the even 32-bit float lanes and add the odd lanes.
+///
+/// # Safety
+///
+/// The caller must enable SSE3.
+#[target_feature(enable = "sse3")]
+#[inline]
+pub unsafe fn addsubps(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse3_addsubps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `addsubpd`
+///
+/// Subtract the low 64-bit float lane and add the high lane.
+///
+/// # Safety
+///
+/// The caller must enable SSE3.
+#[target_feature(enable = "sse3")]
+#[inline]
+pub unsafe fn addsubpd(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse3_addsubpd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `haddps`
+///
+/// Add adjacent 32-bit float lanes.
+///
+/// # Safety
+///
+/// The caller must enable SSE3.
+#[target_feature(enable = "sse3")]
+#[inline]
+pub unsafe fn haddps(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse3_haddps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `haddpd`
+///
+/// Add adjacent 64-bit float lanes.
+///
+/// # Safety
+///
+/// The caller must enable SSE3.
+#[target_feature(enable = "sse3")]
+#[inline]
+pub unsafe fn haddpd(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse3_haddpd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `hsubps`
+///
+/// Subtract adjacent 32-bit float lanes.
+///
+/// # Safety
+///
+/// The caller must enable SSE3.
+#[target_feature(enable = "sse3")]
+#[inline]
+pub unsafe fn hsubps(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse3_hsubps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `hsubpd`
+///
+/// Subtract adjacent 64-bit float lanes.
+///
+/// # Safety
+///
+/// The caller must enable SSE3.
+#[target_feature(enable = "sse3")]
+#[inline]
+pub unsafe fn hsubpd(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse3_hsubpd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `lddqu`
+///
+/// Load 16 bytes from an unaligned address.
+///
+/// # Safety
+///
+/// The caller must enable SSE3. `p` must be valid for reading 16 bytes.
+#[target_feature(enable = "sse3")]
+#[inline]
+pub unsafe fn lddqu(p: *const u8) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse3_lddqu(p, out.as_mut_ptr());
+    }
+    out
+}
+
+/// `movsldup`
+///
+/// Duplicate the even 32-bit float lanes into both halves.
+///
+/// # Safety
+///
+/// The caller must enable SSE3.
+#[target_feature(enable = "sse3")]
+#[inline]
+pub unsafe fn movsldup(a: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse3_movsldup(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `movshdup`
+///
+/// Duplicate the odd 32-bit float lanes into both halves.
+///
+/// # Safety
+///
+/// The caller must enable SSE3.
+#[target_feature(enable = "sse3")]
+#[inline]
+pub unsafe fn movshdup(a: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse3_movshdup(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `movddup`
+///
+/// Duplicate the low 64-bit float lane.
+///
+/// # Safety
+///
+/// The caller must enable SSE3.
+#[target_feature(enable = "sse3")]
+#[inline]
+pub unsafe fn movddup(a: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse3_movddup(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}

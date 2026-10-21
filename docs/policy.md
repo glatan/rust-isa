@@ -16,7 +16,7 @@
 - 自動ベクトル化には依存しない。
 - C の ABI や C シンボルを公開 API にしない。
 - `core::arch` の型や intrinsic を再エクスポートしない。
-- すべての命令を網羅しない。即値や状態の都合で出せない命令は、その理由を rustdoc に書く。
+- 対象とする extension の命令を網羅する。即値や状態の都合で出せない命令は、その理由を arch の表と rustdoc に書く。
 
 ## `core::arch` を使わない
 
@@ -56,11 +56,11 @@
 
 ## 実装方式
 
-| 方式 | 用途 | 長所 | 制約 |
-| --- | --- | --- | --- |
-| C + clang + LTO | ベクタ命令の主方式 | `core::arch` なしで、LLVM の feature と vector 型を使える。rustc が unstable とする feature も clang は扱える | clang が必要。値の受け渡しはポインタ。native のゼロコストは LTO の条件付き |
-| `asm!` | 補助 | cfg に依存しない。C ツールチェーンが不要 | 256/512-bit の値型がない。wasm と MIPS では unstable。vector operand の型が限られる。AArch64 の `vreg` と ARMv7 の `qreg` は `u128` を受け付けない |
-| 純 Rust | 値の構築、ビット操作 | ツールチェーンが不要 | 命令の意味論には使わない。自動ベクトル化に依存しない |
+| 方式            | 用途                 | 長所                                                                                                          | 制約                                                                                                                                               |
+| --------------- | -------------------- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| C + clang + LTO | ベクタ命令の主方式   | `core::arch` なしで、LLVM の feature と vector 型を使える。rustc が unstable とする feature も clang は扱える | clang が必要。値の受け渡しはポインタ。native のゼロコストは LTO の条件付き                                                                         |
+| `asm!`          | 補助                 | cfg に依存しない。C ツールチェーンが不要                                                                      | 256/512-bit の値型がない。wasm と MIPS では unstable。vector operand の型が限られる。AArch64 の `vreg` と ARMv7 の `qreg` は `u128` を受け付けない |
+| 純 Rust         | 値の構築、ビット操作 | ツールチェーンが不要                                                                                          | 命令の意味論には使わない。自動ベクトル化に依存しない                                                                                               |
 
 - C は extension ごとにリポジトリへコミットする。生成物は同梱しない。
 - C は、可能なら GCC の vector 拡張と通常のロード・ストアで書く。intrinsics は SROA を妨げ、一時値の store/load を残すことがある。wasm32 は `<wasm_simd128.h>` の intrinsics を使う。
@@ -81,12 +81,12 @@
 
 ## ゼロコストの現状
 
-| 対象 | 方式 | 状態 |
-| --- | --- | --- |
-| wasm32 の `simd128`、`relaxed-simd` | cfg ゲート、C + clang + LTO | 往復が消えることを `tests/wasm_link.rs` で確認済み |
-| native の x86_64 / i686 | 無条件公開、`#[target_feature]`、C + clang + LTO | 条件付きで確認済み（i686 は SSE2 / AVX2） |
-| native の AArch64 / RISC-V / LoongArch / s390x / 32-bit ARM / PowerPC / MIPS | 無条件公開、`#[target_feature]` または global flag、C + clang + LTO | 条件付きで確認済み |
-| native の 128-bit `asm!` | `u128` と `xmm_reg` | x86_64 で確認済み |
+| 対象                                                                         | 方式                                                                | 状態                                               |
+| ---------------------------------------------------------------------------- | ------------------------------------------------------------------- | -------------------------------------------------- |
+| wasm32 の `simd128`、`relaxed-simd`                                          | cfg ゲート、C + clang + LTO                                         | 往復が消えることを `tests/wasm_link.rs` で確認済み |
+| native の x86_64 / i686                                                      | 無条件公開、`#[target_feature]`、C + clang + LTO                    | 条件付きで確認済み（i686 は SSE2 / AVX2）          |
+| native の AArch64 / RISC-V / LoongArch / s390x / 32-bit ARM / PowerPC / MIPS | 無条件公開、`#[target_feature]` または global flag、C + clang + LTO | 条件付きで確認済み                                 |
+| native の 128-bit `asm!`                                                     | `u128` と `xmm_reg`                                                 | x86_64 で確認済み                                  |
 
 確認の方法と arch ごとの結果は [ゼロコストの確認](zero-cost.md) に書く。
 
@@ -219,17 +219,17 @@ clang 23.1.1 で確認したこと:
 
 ## 対象の階層
 
-| 階層 | 意味 | arch |
-| --- | --- | --- |
-| 1 | ホストまたは wasmtime で値テストを実行する | x86_64、wasm32 |
-| 2 | クロスコンパイルだけ確認する。値テストは未整備 | AArch64、32-bit ARM、PowerPC、RISC-V、LoongArch、s390x |
-| 3 | rustc の標準ライブラリが無い、または実行環境が未整備 | MIPS |
+| 階層 | 意味                                                 | arch                                                   |
+| ---- | ---------------------------------------------------- | ------------------------------------------------------ |
+| 1    | ホストまたは wasmtime で値テストを実行する           | x86_64、wasm32                                         |
+| 2    | クロスコンパイルだけ確認する。値テストは未整備       | AArch64、32-bit ARM、PowerPC、RISC-V、LoongArch、s390x |
+| 3    | rustc の標準ライブラリが無い、または実行環境が未整備 | MIPS                                                   |
 
 階層は実装の可否ではない。テストと検証の度合いである。
 
 ## arch と extension を追加する手順
 
-実装の順序と段階ごとの完了条件は [実装計画](implementation-plan.md) に置く。
+実装の順序と命令ごとの状態は、各 arch の `README.md` と `feasibility.md` に置く。
 
 1. 対象 triple と既定の feature を決める。
 2. `docs/<arch>/feasibility.md` に cfg の観測表を置く。
@@ -257,5 +257,5 @@ clang 23.1.1 で確認したこと:
 - unstable feature のゼロコストを利用者が設定する方法。
 - Cargo feature による opt-in。
 - 実行時ディスパッチを提供する `std` feature。
-- native の命令 API の実装。
-- native の値テストの追加。
+- native の全命令の網羅。未実装命令は arch の表で管理する。
+- 追加した命令のゼロコスト確認。確認できるまでは zero-cost を主張しない。

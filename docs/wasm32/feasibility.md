@@ -4,23 +4,23 @@
 
 wasm32 では、モジュールが含む命令の feature を全体として要求する。このため、cfg ゲートを外して関数を無条件に置くと、feature が無効なビルドにも feature を要求する。`simd128` と `relaxed-simd` は cfg ゲート方式で実装してある。
 
-| feature | 種別 | 判定 | 実装 | 備考 |
-| --- | --- | --- | --- | --- |
-| `simd128` | SIMD | 安定 | 済み | 既定ではない |
-| `relaxed-simd` | SIMD | 安定 | 済み | 既定ではない |
-| `bulk-memory` | 制御 | 既定 | 未 | rustc がコピーから出す。命令 API にはしない |
-| `multivalue` | 制御 | 既定 | 未 | 命令 API にはしない |
-| `mutable-globals` | 制御 | 既定 | 未 | 命令 API にはしない |
-| `nontrapping-fptoint` | 制御 | 既定 | 未 | rustc がキャストから出す。命令 API にはしない |
-| `reference-types` | 制御 | 既定 | 未 | 命令 API にはしない |
-| `sign-ext` | 制御 | 既定 | 未 | rustc がキャストから出す。命令 API にはしない |
-| `tail-call` | 制御 | 安定 | 未 | 命令 API にはしない |
-| `extended-const` | 制御 | 安定 | 未 | 命令 API にはしない |
-| `wide-arithmetic` | 整数 | 不安定 | 済み | Cargo feature `wide-arithmetic` で opt-in |
-| `atomics` | その他 | 不安定 | 未 |  |
-| `exception-handling` | 制御 | 不安定 | 未 | 命令 API にはしない |
-| `gc` | 制御 | 不安定 | 未 | 命令 API にはしない |
-| `fp16` | SIMD | LLVM のみ | 未 |  |
+| feature               | 種別   | 判定      | 実装   | 備考                                          |
+| --------------------- | ------ | --------- | ------ | --------------------------------------------- |
+| `simd128`             | SIMD   | 安定      | 済み   | 既定ではない                                  |
+| `relaxed-simd`        | SIMD   | 安定      | 済み   | 既定ではない                                  |
+| `bulk-memory`         | 制御   | 既定      | 対象外 | rustc がコピーから出す。命令 API にはしない   |
+| `multivalue`          | 制御   | 既定      | 対象外 | 命令 API にはしない                           |
+| `mutable-globals`     | 制御   | 既定      | 対象外 | 命令 API にはしない                           |
+| `nontrapping-fptoint` | 制御   | 既定      | 対象外 | rustc がキャストから出す。命令 API にはしない |
+| `reference-types`     | 制御   | 既定      | 対象外 | 命令 API にはしない                           |
+| `sign-ext`            | 制御   | 既定      | 対象外 | rustc がキャストから出す。命令 API にはしない |
+| `tail-call`           | 制御   | 安定      | 対象外 | 命令 API にはしない                           |
+| `extended-const`      | 制御   | 安定      | 対象外 | 命令 API にはしない                           |
+| `wide-arithmetic`     | 整数   | 不安定    | 済み   | Cargo feature `wide-arithmetic` で opt-in     |
+| `atomics`             | その他 | 不安定    | 対象外 |                                               |
+| `exception-handling`  | 制御   | 不安定    | 対象外 | 命令 API にはしない                           |
+| `gc`                  | 制御   | 不安定    | 対象外 | 命令 API にはしない                           |
+| `fp16`                | SIMD   | LLVM のみ | 対象外 |                                               |
 
 ## 確認したこと
 

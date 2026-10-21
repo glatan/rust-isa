@@ -2,9 +2,9 @@
 name = "simd128-link"
 version = "0.0.0"
 edition = "2024"
-rust-version = "1.99.1"
-publish = false
 license = "MIT OR Apache-2.0"
+publish = false
+rust-version = "1.99.1"
 
 [lib]
 crate-type = ["cdylib"]

@@ -33,14 +33,14 @@ C は `-flto=thin` でコンパイルする。`lto = "fat"` の場合は C も `
 
 `-C linker-plugin-lto` を付けたときの LTO モードの組み合わせは次のとおりである。
 
-| Rust の profile | C のフラグ | カーネル内の `call` |
-| --- | --- | --- |
-| `lto = "off"` | なし | 残る |
-| `lto = "off"` | `-flto=thin` | 消える |
-| `lto = "thin"` | `-flto=thin` | 消える |
-| `lto = "thin"` | `-flto` | 残る |
-| `lto = "fat"` | `-flto` | 消える |
-| `lto = "fat"` | `-flto=thin` | 残る |
+| Rust の profile | C のフラグ   | カーネル内の `call` |
+| --------------- | ------------ | ------------------- |
+| `lto = "off"`   | なし         | 残る                |
+| `lto = "off"`   | `-flto=thin` | 消える              |
+| `lto = "thin"`  | `-flto=thin` | 消える              |
+| `lto = "thin"`  | `-flto`      | 残る                |
+| `lto = "fat"`   | `-flto`      | 消える              |
+| `lto = "fat"`   | `-flto=thin` | 残る                |
 
 `-C linker-plugin-lto` が無い場合は、C が `-flto=thin` でも `call` が残る。
 
@@ -82,24 +82,24 @@ llvm-objdump -d --no-show-raw-insn target/release/app | sed -n "/<$sym>:/,/^$/p"
 
 確認した feature と命令は次のとおりである。すべて `-mno-mmx -mno-x87 -mno-popcnt -mno-xsave` を付けた。
 
-| feature | C のフラグ | 確認した命令 |
-| --- | --- | --- |
-| `sse2` | `-msse2` | `paddd` |
-| `avx2` | `-mavx2` | `vpaddd`、`vpmulld`、`vpshufb` |
-| `avx512f` | `-mavx512f` | `vpaddd` |
-| `aes` | `-maes` | `aesenc` |
-| `fma` | `-mfma` | `vfmadd` |
-| `avx10.1` | `-mavx10.1` | `vpaddd`、`vpmulld` |
-| `sha` | `-msha` | `sha256rnds2` |
-| `avx512bw` | `-mavx512bw` | `vpaddb` |
-| `avx512vl` | `-mavx512vl -mavx512bw` | `vpaddb` |
-| `avx512dq` | `-mavx512dq -mavx512f` | `vpmullq` |
-| `avx512ifma` | `-mavx512ifma -mavx512f` | `vpmadd52luq` |
-| `avx512vbmi` | `-mavx512vbmi -mavx512bw` | `vpermb` |
-| `avx512vnni` | `-mavx512vnni -mavx512f` | `vpdpbusd` |
-| `gfni` | `-mgfni` | `gf2p8affineqb` |
-| `vaes` | `-mvaes -mavx2` | `vaesenc` |
-| `vpclmulqdq` | `-mvpclmulqdq -mavx2 -mavx512f -mavx512vl` | `vpclmulqdq` |
+| feature      | C のフラグ                                 | 確認した命令                   |
+| ------------ | ------------------------------------------ | ------------------------------ |
+| `sse2`       | `-msse2`                                   | `paddd`                        |
+| `avx2`       | `-mavx2`                                   | `vpaddd`、`vpmulld`、`vpshufb` |
+| `avx512f`    | `-mavx512f`                                | `vpaddd`                       |
+| `aes`        | `-maes`                                    | `aesenc`                       |
+| `fma`        | `-mfma`                                    | `vfmadd`                       |
+| `avx10.1`    | `-mavx10.1`                                | `vpaddd`、`vpmulld`            |
+| `sha`        | `-msha`                                    | `sha256rnds2`                  |
+| `avx512bw`   | `-mavx512bw`                               | `vpaddb`                       |
+| `avx512vl`   | `-mavx512vl -mavx512bw`                    | `vpaddb`                       |
+| `avx512dq`   | `-mavx512dq -mavx512f`                     | `vpmullq`                      |
+| `avx512ifma` | `-mavx512ifma -mavx512f`                   | `vpmadd52luq`                  |
+| `avx512vbmi` | `-mavx512vbmi -mavx512bw`                  | `vpermb`                       |
+| `avx512vnni` | `-mavx512vnni -mavx512f`                   | `vpdpbusd`                     |
+| `gfni`       | `-mgfni`                                   | `gf2p8affineqb`                |
+| `vaes`       | `-mvaes -mavx2`                            | `vaesenc`                      |
+| `vpclmulqdq` | `-mvpclmulqdq -mavx2 -mavx512f -mavx512vl` | `vpclmulqdq`                   |
 
 ## unstable feature
 

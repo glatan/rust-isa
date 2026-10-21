@@ -31,6 +31,8 @@ fn arm_values() {
     let binary = dir.join("armv7-unknown-linux-gnueabihf/release/arm-values");
     assert!(binary.is_file(), "missing {}", binary.display());
     let output = Command::new("qemu-arm-static")
+        .arg("-cpu")
+        .arg("max")
         .arg(&binary)
         .output()
         .expect("qemu-arm-static");

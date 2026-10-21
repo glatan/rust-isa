@@ -1,0 +1,109 @@
+//! AMX tile state.
+//!
+//! AMX is not part of the x86-64 baseline and rustc does not allow
+//! `#[target_feature(enable = "amx-tile")]` on stable. The caller must compile
+//! the whole crate with the AMX features enabled, and the CPU and operating
+//! system must allow AMX tile state.
+//!
+//! [`TileConfig`] is the 64-byte tile configuration consumed by
+//! [`AmxGuard::enter`]. The caller builds it; this crate does not interpret it.
+//! [`AmxGuard`] releases the tile state in its `Drop` implementation and is not
+//! `Send` or `Sync`. Nested guards are not allowed.
+//!
+//! The module contains the guard and `tilezero`. Tile loads, stores and
+//! matrix-multiply instructions require tile numbers and memory strides; they
+//! are intentionally omitted until the tile-state API is extended.
+
+use core::marker::PhantomData;
+
+/// The 64-byte tile configuration used by `ldtilecfg`.
+#[repr(C, align(64))]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct TileConfig([u8; 64]);
+
+impl TileConfig {
+    /// Keep the 64 bytes unchanged.
+    pub const fn from_bytes(bytes: [u8; 64]) -> Self {
+        Self(bytes)
+    }
+
+    /// Return the 64 bytes.
+    pub const fn to_bytes(self) -> [u8; 64] {
+        self.0
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_amx_tile_load_config(config: *const u8);
+    fn rust_isa_amx_tile_release();
+    fn rust_isa_amx_tile_zero_0();
+    fn rust_isa_amx_tile_zero_1();
+    fn rust_isa_amx_tile_zero_2();
+    fn rust_isa_amx_tile_zero_3();
+    fn rust_isa_amx_tile_zero_4();
+    fn rust_isa_amx_tile_zero_5();
+    fn rust_isa_amx_tile_zero_6();
+    fn rust_isa_amx_tile_zero_7();
+}
+
+/// An active AMX tile state.
+///
+/// The guard is created by [`AmxGuard::enter`] and releases the tile state when
+/// dropped. It is neither `Send` nor `Sync`.
+pub struct AmxGuard {
+    _not_send_or_sync: PhantomData<*const ()>,
+}
+
+impl AmxGuard {
+    /// Load `config` and enter the AMX tile state.
+    ///
+    /// # Safety
+    ///
+    /// The CPU must support AMX tile state, the operating system must allow it,
+    /// and `config` must describe a valid tile configuration. The caller must
+    /// not create a nested guard.
+    pub unsafe fn enter(config: &TileConfig) -> Self {
+        unsafe {
+            rust_isa_amx_tile_load_config(config.0.as_ptr());
+        }
+        Self {
+            _not_send_or_sync: PhantomData,
+        }
+    }
+}
+
+impl Drop for AmxGuard {
+    fn drop(&mut self) {
+        unsafe {
+            rust_isa_amx_tile_release();
+        }
+    }
+}
+
+/// `tilezero::<TILE>`
+///
+/// Set all bytes of the selected tile to zero. `TILE` must be in `0..=7`; a
+/// larger value is a compile-time error.
+///
+/// # Safety
+///
+/// The caller must hold an [`AmxGuard`] and enable AMX.
+pub unsafe fn tilezero<const TILE: u8>() {
+    const { assert!(TILE <= 7, "AMX tile number must be in 0..=7") };
+    macro_rules! call {
+        ($f:ident) => {
+            unsafe { $f() }
+        };
+    }
+    match TILE {
+        0 => call!(rust_isa_amx_tile_zero_0),
+        1 => call!(rust_isa_amx_tile_zero_1),
+        2 => call!(rust_isa_amx_tile_zero_2),
+        3 => call!(rust_isa_amx_tile_zero_3),
+        4 => call!(rust_isa_amx_tile_zero_4),
+        5 => call!(rust_isa_amx_tile_zero_5),
+        6 => call!(rust_isa_amx_tile_zero_6),
+        7 => call!(rust_isa_amx_tile_zero_7),
+        _ => unreachable!(),
+    }
+}

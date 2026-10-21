@@ -1,0 +1,29 @@
+//! AArch64 FHM.
+//!
+//! FHM is not part of the AArch64 baseline. Every operation is `unsafe` and the
+//! caller must enable FHM with `#[target_feature(enable = "fhm")]` or a global
+//! target feature.
+//!
+//! The values are [`V128`] of binary16 lanes. The fused multiply-add rounds only
+//! once, at the end.
+
+use crate::aarch64::simd::neon::V128;
+
+unsafe extern "C" {
+    fn rust_isa_fhm_vfmaq_f16(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `fmla` on binary16 lanes.
+///
+/// # Safety
+///
+/// The caller must enable FHM.
+#[target_feature(enable = "fhm")]
+#[inline]
+pub unsafe fn fmla_f16(acc: V128, a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_fhm_vfmaq_f16(acc.as_ptr(), a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}

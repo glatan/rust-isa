@@ -3,7 +3,12 @@
 
 use core::arch::asm;
 use core::panic::PanicInfo;
-use rust_isa::s390x::simd::vector::{add, mul, v128_load, v128_store, V128};
+use rust_isa::s390x::simd::vector::{
+    V128, add, add_i8, add_i16, add_i64, and, cmpeq_i32, cmpgt_i32, fadd, fdiv, fmul, fsub, mul,
+    mul_i16, mul_i32, or, permute, splat_i32, sub_i8, sub_i16, sub_i32, sub_i64, v128_load,
+    v128_store, xor,
+};
+use rust_isa::s390x::simd::vector_enhancements::{cntlz_i32, fma, popcnt_i8, popcnt_i32};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {
@@ -51,7 +56,136 @@ fn run() -> u32 {
     if !integer() {
         return 2;
     }
+    if !integer_ops() {
+        return 3;
+    }
+    if !float_ops() {
+        return 4;
+    }
+    if !permute_ops() {
+        return 5;
+    }
+    if !enhancement_ops() {
+        return 6;
+    }
     0
+}
+
+fn enhancement_ops() -> bool {
+    unsafe {
+        if lanes(cntlz_i32(i32x4([1, 2, 3, 4]))) != [31, 30, 30, 29] {
+            return false;
+        }
+        if popcnt_i8(V128::from_bytes([0xff; 16])).to_bytes() != [8; 16] {
+            return false;
+        }
+        if lanes(popcnt_i32(i32x4([-1; 4]))) != [32; 4] {
+            return false;
+        }
+        let acc = f32x4([1.0; 4]);
+        let a = f32x4([2.0; 4]);
+        let b = f32x4([3.0; 4]);
+        f32_lanes(fma(acc, a, b)) == [7.0; 4]
+    }
+}
+
+fn i16x8(values: [i16; 8]) -> V128 {
+    let mut bytes = [0u8; 16];
+    for (lane, value) in values.iter().enumerate() {
+        bytes[lane * 2..lane * 2 + 2].copy_from_slice(&value.to_be_bytes());
+    }
+    V128::from_bytes(bytes)
+}
+
+fn i16_lanes(value: V128) -> [i16; 8] {
+    let bytes = value.to_bytes();
+    core::array::from_fn(|lane| {
+        i16::from_be_bytes(bytes[lane * 2..lane * 2 + 2].try_into().unwrap())
+    })
+}
+
+fn f32x4(values: [f32; 4]) -> V128 {
+    let mut bytes = [0u8; 16];
+    for (lane, value) in values.iter().enumerate() {
+        bytes[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_be_bytes());
+    }
+    V128::from_bytes(bytes)
+}
+
+fn f32_lanes(value: V128) -> [f32; 4] {
+    let bytes = value.to_bytes();
+    core::array::from_fn(|lane| {
+        f32::from_be_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap())
+    })
+}
+
+fn integer_ops() -> bool {
+    unsafe {
+        if add_i8(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [3; 16] {
+            return false;
+        }
+        if i16_lanes(add_i16(i16x8([1; 8]), i16x8([2; 8]))) != [3; 8] {
+            return false;
+        }
+        if i16_lanes(sub_i16(i16x8([5; 8]), i16x8([2; 8]))) != [3; 8] {
+            return false;
+        }
+        if lanes(sub_i32(i32x4([10, 20, 30, 40]), i32x4([1, 2, 3, 4]))) != [9, 18, 27, 36] {
+            return false;
+        }
+        if i16_lanes(mul_i16(i16x8([3; 8]), i16x8([4; 8]))) != [12; 8] {
+            return false;
+        }
+        if lanes(mul_i32(i32x4([2, 3, 4, 5]), i32x4([6, 7, 8, 9]))) != [12, 21, 32, 45] {
+            return false;
+        }
+        let a = V128::from_bytes([0b1010_1010; 16]);
+        let b = V128::from_bytes([0b1100_1100; 16]);
+        if and(a, b).to_bytes() != [0b1000_1000; 16]
+            || or(a, b).to_bytes() != [0b1110_1110; 16]
+            || xor(a, b).to_bytes() != [0b0110_0110; 16]
+        {
+            return false;
+        }
+        if cmpeq_i32(i32x4([1; 4]), i32x4([1; 4])).to_bytes() != [0xff; 16]
+            || cmpgt_i32(i32x4([2; 4]), i32x4([1; 4])).to_bytes() != [0xff; 16]
+        {
+            return false;
+        }
+        let a = V128::from_bytes([0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2]);
+        let b = V128::from_bytes([0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 3]);
+        let sum = add_i64(a, b).to_bytes();
+        let diff = sub_i64(b, a).to_bytes();
+        if i64::from_be_bytes(sum[..8].try_into().unwrap()) != 3
+            || i64::from_be_bytes(sum[8..].try_into().unwrap()) != 5
+            || i64::from_be_bytes(diff[..8].try_into().unwrap()) != 1
+            || i64::from_be_bytes(diff[8..].try_into().unwrap()) != 1
+        {
+            return false;
+        }
+        lanes(splat_i32(7)) == [7; 4]
+    }
+}
+
+fn float_ops() -> bool {
+    let a = f32x4([1.0, 2.0, 3.0, 4.0]);
+    let b = f32x4([10.0, 20.0, 30.0, 40.0]);
+    unsafe {
+        f32_lanes(fadd(a, b)) == [11.0, 22.0, 33.0, 44.0]
+            && f32_lanes(fsub(b, a)) == [9.0, 18.0, 27.0, 36.0]
+            && f32_lanes(fmul(a, b)) == [10.0, 40.0, 90.0, 160.0]
+            && f32_lanes(fdiv(b, a)) == [10.0; 4]
+    }
+}
+
+fn permute_ops() -> bool {
+    let a = V128::from_bytes(core::array::from_fn(|index| index as u8));
+    let b = V128::from_bytes(core::array::from_fn(|index| index as u8 + 16));
+    let identity = V128::from_bytes(core::array::from_fn(|index| index as u8));
+    unsafe {
+        permute(a, b, identity).to_bytes() == a.to_bytes()
+            && permute(a, b, V128::from_bytes([0x10; 16])).to_bytes() == [16; 16]
+    }
 }
 
 fn i32x4(values: [i32; 4]) -> V128 {

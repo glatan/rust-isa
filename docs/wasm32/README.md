@@ -9,7 +9,19 @@ family は `simd` である。extension は次である。
 
 ## 実装状況
 
-`simd128` と `relaxed-simd` を実装してある。`wide-arithmetic` は Cargo feature で opt-in し、`i64.add128`、`i64.sub128`、`i64.mul_wide_u`、`i64.mul_wide_s` を提供する。
+対象は各 extension の全命令である。次の表は、現在公開している命令と、
+まだ公開していない命令の一覧である。値テストの列は、その extension の
+値テストを実行する環境を示す。未実装命令も同じ表で管理する。
+
+### SIMD と整数
+
+| extension         | 実装済み命令                                                                   | 未実装命令                                      | 値テスト |
+| ----------------- | ------------------------------------------------------------------------------ | ----------------------------------------------- | -------- |
+| `simd128`         | 236 命令（`i8x16` / `i16x8` / `i32x4` / `i64x2` / `f32x4` / `f64x2` / `v128`） | なし                                            | wasmtime |
+| `relaxed-simd`    | 20 命令                                                                        | なし                                            | wasmtime |
+| `wide-arithmetic` | `add128` / `sub128` / `mul_wide_u` / `mul_wide_s`                              | なし                                            | wasmtime |
+| `atomics`         | なし                                                                           | 共有メモリ・スレッド前提のため命令 API にしない | 対象外   |
+| `fp16`            | なし                                                                           | LLVM のみで rustc の cfg が立たないため対象外   | 対象外   |
 
 ## 実装方式
 
@@ -36,10 +48,12 @@ family は `simd` である。extension は次である。
 - この feature を有効にした wasm モジュールは、`wide-arithmetic` を要求する。利用者はこの条件を受け入れる場合だけ有効にする。
 - `docs.rs` のメタデータで all-features を使う場合も、この条件を rustdoc に書く。
 
-## 未決定
+## 未対応
 
+- `atomics`。共有メモリとスレッドを要求するため、値 API にしない。
+- `fp16`。LLVM のみで rustc の cfg が立たないため、対象外にする。
 - Cargo feature を有効にしたときの docs.rs の表示。
-- `wide-arithmetic` の命令のうち、API にする範囲。
+- `wide-arithmetic` の命令のうち、API にする範囲は 4 命令に限定している。
 
 ## 文書
 

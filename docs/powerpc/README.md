@@ -6,7 +6,28 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 ## 実装状況
 
-Altivec の `V128`、load / store、`vadduwm`、`vmuluwm` を実装してある。`fixtures/powerpc-values` を QEMU-PowerPC で実行し、zero-cost を確認する。LTO のリンクには `.TOC.` を参照する `toc.s` を加える。
+対象は各 extension の全命令である。次の表は、現在公開している命令と、
+まだ公開していない命令の一覧である。値テストの列は、その extension の
+値テストを実行する環境を示す。未実装命令も同じ表で管理する。
+
+### SIMD
+
+| extension                                       | 実装済み命令                                                                                                                                                                                                                                   | 未実装命令                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | 値テスト |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `altivec`                                       | `add`, `add_i16`, `add_i64`, `add_i8`, `and`, `cmpeq_i32`, `cmpgt_i32`, `fadd`, `fdiv`, `fmul`, `fsub`, `mul`, `mul_i16`, `mul_i32`, `or`, `permute`, `splat_i32`, `sub_i16`, `sub_i32`, `sub_i64`, `sub_i8`, `v128_load`, `v128_store`, `xor` | `vaddubm`, `vadduhm`, `vadduwm`, `vaddudm`, `vsububm`, `vsubuhm`, `vsubuwm`, `vsubudm`, `vmul`, `vmuleub`, `vmuleuh`, `vmuleuw`, `vmuloub`, `vmulouh`, `vmulouw`, `vmuluwm`, `vand`, `vandc`, `vor`, `vxor`, `vnor`, `vnot`, `vsel`, `vperm`, `vsldoi`, `vsl`, `vsr`, `vslo`, `vsro`, `vcmpeq`, `vcmpgt`, `vcmp`, `vmin`, `vmax`, `vavg`, `vsum`, `vpk`, `vupk`, `vmla`, `vmls`, `vmadd`, `vnmsub`, `vmsum`, `lvx`, `stvx`, `lvebx`, `lvehx`, `lvewx`, `stvebx`, `stvehx`, `stvewx` | QEMU     |
+| `vsx`                                           | `abs_f64`, `add_f32`, `add_f64`, `div_f64`, `mul_f64`, `sqrt_f64`, `sub_f64`                                                                                                                                                                   | `xvadd`, `xvsub`, `xvmul`, `xvdiv`, `xvabs`, `xvneg`, `xvmax`, `xvmin`, `xvcmpeq`, `vcmpgt`, `xvand`, `xvor`, `xvxor`, `xvsel`, `xvperm`, `xvsldoi`, `xvsl`, `xvsr`, `xvrdpi`, `xvrdpic`, `xvrdpim`, `xvrdpip`, `xvrdpiz`, `xvcpsgn`, `xvcpsgn`, `xscvdpsp`, `xscvdpspn`, `xscvspdp`, `xscvspdpn`, `xvcvsxdsp`, `xvcvuxdsp`, `xvcvsxwsp`, `xvcvuxwsp`, `xvcvdpsxds`, `xvcvdpsxws`, `xvcvdpuxds`, `xvcvdpuxws`                                                                       | QEMU     |
+| `power8-vector`                                 | `add_u64`, `mul_even_u16`, `mul_u32`, `sub_u64`                                                                                                                                                                                                | `vaddudm`, `vsubudm`, `vmuluwm`, `vmuleuw`, `vmulouw`, `vmaxud`, `vmaxsd`, `vminud`, `vminsd`, `vpkudum`, `vpkudus`, `vpksdus`, `vpksdss`, `vupkhsw`, `vupklsw`, `vclzd`, `vctzd`, `vpopcntd`                                                                                                                                                                                                                                                                                       | QEMU     |
+| `power9-vector`                                 | `abs_i32`, `neg_i32`, `neg_i64`                                                                                                                                                                                                                | `vnegw`, `vnegd`, `vabsduw`, `vabsd`, `vctzlsbb`, `vextsb2w`, `vextsh2w`, `vextsb2d`, `vextsh2d`, `vextsw2d`, `vctzb`, `vctzh`, `vctzw`                                                                                                                                                                                                                                                                                                                                             | QEMU     |
+| `power10-vector`                                | `cntlz_i32`, `popcnt_i32`                                                                                                                                                                                                                      | `vclzd`, `vctzd`, `vpopcntd`, `vpopcntw`, `vnegw`, `vnegd`, `vextsb2w`, `vextsh2w`, `vextsb2d`, `vextsh2d`, `vextsw2d`                                                                                                                                                                                                                                                                                                                                                              | QEMU     |
+| `mma`                                           | なし                                                                                                                                                                                                                                           | `xvi4ger8`, `xvi8ger4`, `xvi4ger8pp`, `xvi8ger4pp`, `xvi8ger4spp`, `xvi16ger2`, `xvi16ger2s`, `xvi16ger2pp`, `xvi16ger2spp`, `xxmfacc`, `xxmtacc`, `xxsetaccz`                                                                                                                                                                                                                                                                                                                      | 未実行   |
+| `quadword-atomics` / `partword-atomics` / `htm` | なし                                                                                                                                                                                                                                           | 同期・制御命令のため命令 API にしない                                                                                                                                                                                                                                                                                                                                                                                                                                               | 対象外   |
+
+### 暗号
+
+| extension        | 実装済み命令                                     | 未実装命令                                                                                                                     | 値テスト |
+| ---------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | -------- |
+| `power8-crypto`  | `cipher`, `cipherlast`, `ncipher`, `ncipherlast` | `vcipher`, `vncipher`, `vcipherlast`, `vncipherlast`, `vsha256h`, `vsha256h2`, `vsha256su0`, `vsha256su1`                      | QEMU     |
+| `power9-altivec` | なし                                             | `vabsduw`, `vabsd`, `vclzd`, `vctzd`, `vnegw`, `vnegd`, `vextsb2w`, `vextsh2w`, `vextsb2d`, `vextsh2d`, `vextsw2d`, `vctzlsbb` | 未実行   |
 
 ## 実装方式
 
@@ -38,10 +59,15 @@ Altivec の `V128`、load / store、`vadduwm`、`vmuluwm` を実装してある�
 4. `quadword-atomics`、`partword-atomics`
 5. `mma`（LLVM のみ。型と状態の設計が必要）
 
-## 未決定
+## 未対応
 
-- ELFv2 のベクタ引数と戻り値の ABI。
-- MMA のタイル状態を API に出すか。
+- `mma`。`MmaAccumulator` の設計はあるが、アキュムレータの状態と OS の
+  サポートを確認していない。
+- `quadword-atomics`、`partword-atomics`、`htm`。同期・制御命令のため、
+  値 API にしない。
+- 追加した VSX / Power8 の命令のゼロコスト確認。現在の zero-cost は `vadduwm`、`vmuluwm`、`vperm` だけである。
+- ELFv2 のベクタ引数と戻り値の ABI は、C の境界ではポインタだけを使う現在の
+  方式で回避している。
 
 ## 文書
 
