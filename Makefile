@@ -8,6 +8,7 @@ PODMAN ?= podman
 NEXTEST ?= cargo nextest run
 NEXTEST_FLAGS ?= --no-tests=fail
 COVERAGE_ARGS ?= --todo
+DUPLICATES_ARGS ?=
 
 X86_64_TARGET ?= x86_64-unknown-linux-gnu
 WASIP1_TARGET ?= wasm32-wasip1
@@ -44,7 +45,8 @@ help:
 		'test-wasip1                  wasm32-wasip1 の nextest と doctest' \
 		'test-wasip1-wide-arithmetic  wide-arithmetic 有効時の nextest と doctest' \
 		'coverage                     arch/extension ごとの実装状況を表示する' \
-		'coverage-check               README の表の形式を検査する'
+		'coverage-check               README の表の形式を検査する' \
+		'duplicates                   同じ arch で重複する命令名を表示する'
 
 .PHONY: image
 image:
@@ -57,6 +59,10 @@ coverage:
 .PHONY: coverage-check
 coverage-check:
 	$(PODMAN_RUN) python3 tools/coverage.py --check
+
+.PHONY: duplicates
+duplicates:
+	$(PODMAN_RUN) python3 tools/duplicates.py $(DUPLICATES_ARGS)
 
 .PHONY: fmt
 fmt:

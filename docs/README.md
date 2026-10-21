@@ -13,6 +13,8 @@
 - [スケーラブルベクタと状態](scalable-state.md)
 - [スケーラブル・状態付き extension の対応表](scalable-coverage.md)
 - [native の値テスト](native-testing.md)
+- [値テストの fixture](fixture-matrix.md)
+- [重複する命令名](dedup.md)
 - [ソースの置き方](source-layout.md)
 - [文書の位置](documentation.md)
 
