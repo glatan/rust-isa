@@ -5,8 +5,8 @@
 //! `zknh`) with `#[target_feature]` or a global target feature.
 //!
 //! The functions operate on scalar registers. The caller combines them with the
-//! AES or SHA specification. The AES key-schedule instruction that takes a
-//! round number immediate is intentionally omitted.
+//! AES or SHA specification. `aes64ks1i` accepts the round number as a runtime
+//! argument.
 
 unsafe extern "C" {
     fn rust_isa_riscv_zkn_sha256sig0(value: u32) -> u32;
@@ -23,6 +23,7 @@ unsafe extern "C" {
     fn rust_isa_riscv_zkn_aes64dsm(a: u64, b: u64) -> u64;
     fn rust_isa_riscv_zkn_aes64im(value: u64) -> u64;
     fn rust_isa_riscv_zkn_aes64ks2(a: u64, b: u64) -> u64;
+    fn rust_isa_riscv_zkn_aes64ks1i(value: u64, round: u32) -> u64;
 }
 
 macro_rules! sha {
@@ -126,3 +127,16 @@ aes!(
     aes64ks2,
     rust_isa_riscv_zkn_aes64ks2
 );
+
+/// `aes64ks1i`
+///
+/// Perform one AES key-schedule round with the round number `round`.
+///
+/// # Safety
+///
+/// The caller must enable ZKN.
+#[target_feature(enable = "zkn")]
+#[inline]
+pub unsafe fn aes64ks1i(value: u64, round: u8) -> u64 {
+    unsafe { rust_isa_riscv_zkn_aes64ks1i(value, u32::from(round)) }
+}
