@@ -24,6 +24,7 @@ use rust_isa::loongarch::simd::lasx::{
 use rust_isa::loongarch::simd::lasx::{
     xvabs, xvadd_b, xvadd_d, xvadd_h, xvdiv, xvmul_h, xvneg, xvsub_b, xvsub_d, xvsub_h,
 };
+use rust_isa::loongarch::simd::lsx::{vpackod};
 use rust_isa::loongarch::simd::lsx::{vpackev};
 use rust_isa::loongarch::simd::lsx::{vsrai};
 use rust_isa::loongarch::simd::lsx::{vsrli};
@@ -177,6 +178,7 @@ fn run() -> u32 {
     if !alias_vsrli() { return 542; }
     if !alias_vsrai() { return 543; }
     if !alias_vpackev() { return 544; }
+    if !alias_vpackod() { return 545; }
     0
 }
 
@@ -575,3 +577,5 @@ fn alias_vsrli() -> bool { lanes(vsrli::<1>(i32x4([2,4,6,8]))) == [1,2,3,4] }
 fn alias_vsrai() -> bool { lanes(vsrai::<1>(i32x4([-2,-4,4,8]))) == [-1,-2,2,4] }
 
 fn alias_vpackev() -> bool { vpackev(V128::from_bytes(core::array::from_fn(|i| i as u8)),V128::from_bytes(core::array::from_fn(|i| (i+16) as u8))).to_bytes() == [0,16,2,18,4,20,6,22,8,24,10,26,12,28,14,30] }
+
+fn alias_vpackod() -> bool { vpackod(V128::from_bytes(core::array::from_fn(|i| i as u8)),V128::from_bytes(core::array::from_fn(|i| (i+16) as u8))).to_bytes() == [1,17,3,19,5,21,7,23,9,25,11,27,13,29,15,31] }

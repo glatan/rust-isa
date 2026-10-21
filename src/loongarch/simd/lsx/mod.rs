@@ -593,3 +593,13 @@ pub fn vpackev(a: V128, b: V128) -> V128 {
         if i % 2 == 0 { a[i] } else { b[i - 1] }
     }))
 }
+
+/// `vpackod.b`.
+#[inline(always)]
+pub fn vpackod(a: V128, b: V128) -> V128 {
+    let a = a.to_bytes();
+    let b = b.to_bytes();
+    V128::from_bytes(core::array::from_fn(|i| {
+        if i % 2 == 0 { a[i + 1] } else { b[i] }
+    }))
+}
