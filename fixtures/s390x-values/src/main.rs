@@ -11,7 +11,7 @@ use rust_isa::s390x::simd::vector::{
 };
 use rust_isa::s390x::simd::vector::{vchl, vclf, vclg, vclh, vle, vperm, vpks, vst};
 use rust_isa::s390x::simd::vector::{vcksm, vlef, vme, vmh, vml, vmo, vpkls, vstef};
-use rust_isa::s390x::simd::vector::{vgbm, vrepb, vrepf, vrepg, vreph};
+use rust_isa::s390x::simd::vector::{vgbm, vrepb, vrepf, vrepg, vreph, vuph, vupl, vuplh, vupll};
 use rust_isa::s390x::simd::vector_enhancements::{
     cntlz_i32, fma, popcnt_i8, popcnt_i32, vclz, vclzd, vctz, vctzd, vfa, vfce, vfch, vfche, vfd,
     vfm, vfma, vfms, vfnma, vfnms, vfs, vfsq, vpopcntd, vpopct,
@@ -391,5 +391,9 @@ fn vector_more_ops() -> bool {
                 let b = vrepg::<0>(V128::from_bytes(core::array::from_fn(|i| i as u8))).to_bytes();
                 b.chunks_exact(8).all(|c| c == &b[..8])
             }
+            && vuph(V128::from_bytes([1; 16])).to_bytes() != [0; 16]
+            && vupl(V128::from_bytes([1; 16])).to_bytes() != [0; 16]
+            && vuplh(V128::from_bytes([1; 16])).to_bytes() != [0; 16]
+            && vupll(V128::from_bytes([1; 16])).to_bytes() != [0; 16]
     }
 }
