@@ -3,6 +3,7 @@
 
 use core::arch::asm;
 use core::panic::PanicInfo;
+use rust_isa::loongarch::integer::lbt::{bitrev, bstrins, bstrpick, ext, ins, revb, revh, revw};
 use rust_isa::loongarch::simd::lasx::{
     V256, add as lasx_add, add_i64 as lasx_add_i64, and as lasx_and, fadd as lasx_fadd,
     fdiv as lasx_fdiv, fmul as lasx_fmul, fsub as lasx_fsub, mul as lasx_mul,
@@ -63,6 +64,9 @@ fn run() -> u32 {
     }
     if !unsafe { lasx_ops() } {
         return 4;
+    }
+    if !lbt_ops() {
+        return 5;
     }
     0
 }
@@ -297,4 +301,15 @@ fn integer() -> bool {
         && lanes(mul(a, b)) == [10, 40, 90, 160]
         && lanes(kernel_add(&a, &b)) == [21, 42, 63, 84]
         && lanes(kernel_mul(&a, &b)) == [100, 800, 2700, 6400]
+}
+
+fn lbt_ops() -> bool {
+    revb(0x0102_0304_0506_0708) == 0x0807_0605_0403_0201
+        && revh(0x0102_0304_0506_0708) == 0x0708_0506_0304_0102
+        && revw(0x0102_0304_0506_0708) == 0x0506_0708_0102_0304
+        && bitrev(1) == 1u64 << 63
+        && bstrpick::<7, 4>(0xab) == 0xa
+        && bstrins::<7, 4>(0, 0xa) == 0xa0
+        && ext::<7, 4>(0xab) == 0xa
+        && ins::<7, 4>(0, 0xa) == 0xa0
 }
