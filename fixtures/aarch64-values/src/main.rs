@@ -14,12 +14,27 @@ use rust_isa::aarch64::simd::fhm::fmla_f16;
 use rust_isa::aarch64::simd::fp16::{fadd_f16, fmul_f16};
 use rust_isa::aarch64::simd::i8mm::{smmla, usmmla};
 use rust_isa::aarch64::simd::neon::{
-    V128, abs_i32, add, add_f64, add_i8, add_i16, add_i32, add_i64, and, bic, cmpeq_i8, cmpeq_i16,
-    cmpeq_i32, cmpgt_i8, cmpgt_i16, cmpgt_i32, eor, extract_i32, fabs, fadd, fdiv, fmax, fmin,
-    fmul, fneg, fsqrt, fsub, max_i8, max_i16, max_i32, min_i8, min_i16, min_i32, mul, mul_f64,
-    mul_i8, mul_i16, mul_i32, neg_i32, not, orn, orr, replace_i32, sar_i8, sar_i16, sar_i32,
-    shl_i32, shr_i16, splat_i32, sub_i8, sub_i16, sub_i32, sub_i64, tbl, trn1, uzp1, v128_load,
-    v128_store, zip1,
+    V128, abs_i32, add, add_f64, add_i8, add_i16, add_i32, add_i64, addp_s8, addp_s16, addp_s32,
+    addv_s8, addv_s16, addv_s32, and, bic, bif, bit, bsl, cls_i8, cls_i16, cls_i32, clz_i8,
+    clz_i16, clz_i32, cmge_i8, cmge_i16, cmge_i32, cmle_i8, cmle_i16, cmle_i32, cmlt_i8, cmlt_i16,
+    cmlt_i32, cmpeq_i8, cmpeq_i16, cmpeq_i32, cmpeq_i64, cmpgt_i8, cmpgt_i16, cmpgt_i32, cmpgt_i64,
+    cmtst_i8, cmtst_i16, cmtst_i32, cnt_i8, eor, extract_i32, fabd_f32, fabd_f64, fabs, facge_f32,
+    facge_f64, facgt_f32, facgt_f64, fadd, faddp_f32, faddp_f64, faddv_f32, faddv_f64, fcmeq_f32,
+    fcmeq_f64, fcmge_f32, fcmge_f64, fcmgt_f32, fcmgt_f64, fcmle_f32, fcmle_f64, fcmlt_f32,
+    fcmlt_f64, fdiv, fmax, fmaxnm_f32, fmaxnm_f64, fmaxnmv_f32, fmaxnmv_f64, fmaxv_f32, fmaxv_f64,
+    fmin, fminnm_f32, fminnm_f64, fminnmv_f32, fminnmv_f64, fminv_f32, fminv_f64, fmla_f32,
+    fmla_f64, fmls_f32, fmls_f64, fmul, fmulx_f32, fmulx_f64, fneg, fsqrt, fsub, max_i8, max_i16,
+    max_i32, min_i8, min_i16, min_i32, mla_s8, mla_s16, mla_s32, mls_s8, mls_s16, mls_s32, mul,
+    mul_f64, mul_i8, mul_i16, mul_i32, neg_i32, not, orn, orr, rbit, replace_i32, rev16, rev32,
+    rev64, saddl_s8, saddl_s16, saddl_s32, saddw_s8, saddw_s16, saddw_s32, sar_i8, sar_i16,
+    sar_i32, shl_i32, shr_i16, smax_s8, smax_s16, smax_s32, smaxp_s8, smaxp_s16, smaxp_s32,
+    smaxv_s8, smaxv_s16, smaxv_s32, smin_s8, smin_s16, smin_s32, sminp_s8, sminp_s16, sminp_s32,
+    sminv_s8, sminv_s16, sminv_s32, splat_i32, ssubl_s8, ssubl_s16, ssubl_s32, ssubw_s8, ssubw_s16,
+    ssubw_s32, sub_i8, sub_i16, sub_i32, sub_i64, tbl, trn1, uaddl_u8, uaddl_u16, uaddl_u32,
+    uaddw_u8, uaddw_u16, uaddw_u32, umax_u8, umax_u16, umax_u32, umaxp_u8, umaxp_u16, umaxp_u32,
+    umaxv_u8, umaxv_u16, umaxv_u32, umin_u8, umin_u16, umin_u32, uminp_u8, uminp_u16, uminp_u32,
+    uminv_u8, uminv_u16, uminv_u32, usubl_u8, usubl_u16, usubl_u32, usubw_u8, usubw_u16, usubw_u32,
+    uzp1, v128_load, v128_store, zip1,
 };
 use rust_isa::aarch64::simd::sve;
 
@@ -123,6 +138,9 @@ fn run() -> u32 {
     if !unsafe { crypto_crc_ops() } {
         return 20;
     }
+    if !neon_bitwise_ops() {
+        return 21;
+    }
     if !unsafe { sve_ops() } {
         return 17;
     }
@@ -155,6 +173,14 @@ fn i32x4(values: [i32; 4]) -> V128 {
     let mut bytes = [0u8; 16];
     for (index, value) in values.iter().enumerate() {
         bytes[index * 4..index * 4 + 4].copy_from_slice(&value.to_le_bytes());
+    }
+    V128::from_bytes(bytes)
+}
+
+fn i64x2(values: [i64; 2]) -> V128 {
+    let mut bytes = [0u8; 16];
+    for (lane, value) in values.iter().enumerate() {
+        bytes[lane * 8..lane * 8 + 8].copy_from_slice(&value.to_le_bytes());
     }
     V128::from_bytes(bytes)
 }
@@ -333,6 +359,219 @@ fn integer_ops() -> bool {
     {
         return false;
     }
+    if i16_lanes(saddl_s8(
+        V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0]),
+        V128::from_bytes([10, 20, 30, 40, 50, 60, 70, 80, 0, 0, 0, 0, 0, 0, 0, 0]),
+    )) != [11, 22, 33, 44, 55, 66, 77, 88]
+        || i16_lanes(uaddl_u8(
+            V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0]),
+            V128::from_bytes([10, 20, 30, 40, 50, 60, 70, 80, 0, 0, 0, 0, 0, 0, 0, 0]),
+        )) != [11, 22, 33, 44, 55, 66, 77, 88]
+        || i16_lanes(ssubl_s8(
+            V128::from_bytes([10, 20, 30, 40, 50, 60, 70, 80, 0, 0, 0, 0, 0, 0, 0, 0]),
+            V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0]),
+        )) != [9, 18, 27, 36, 45, 54, 63, 72]
+        || i16_lanes(usubl_u8(
+            V128::from_bytes([10, 20, 30, 40, 50, 60, 70, 80, 0, 0, 0, 0, 0, 0, 0, 0]),
+            V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0]),
+        )) != [9, 18, 27, 36, 45, 54, 63, 72]
+        || lanes(saddl_s16(
+            i16x8([1, 2, 3, 4, 0, 0, 0, 0]),
+            i16x8([10, 20, 30, 40, 0, 0, 0, 0]),
+        )) != [11, 22, 33, 44]
+        || lanes(uaddl_u16(
+            i16x8([1, 2, 3, 4, 0, 0, 0, 0]),
+            i16x8([10, 20, 30, 40, 0, 0, 0, 0]),
+        )) != [11, 22, 33, 44]
+        || lanes(ssubl_s16(
+            i16x8([10, 20, 30, 40, 0, 0, 0, 0]),
+            i16x8([1, 2, 3, 4, 0, 0, 0, 0]),
+        )) != [9, 18, 27, 36]
+        || lanes(usubl_u16(
+            i16x8([10, 20, 30, 40, 0, 0, 0, 0]),
+            i16x8([1, 2, 3, 4, 0, 0, 0, 0]),
+        )) != [9, 18, 27, 36]
+        || !i64_ok(
+            saddl_s32(i32x4([1, 2, 3, 4]), i32x4([10, 20, 30, 40])),
+            [11, 22],
+        )
+        || !i64_ok(
+            uaddl_u32(i32x4([1, 2, 3, 4]), i32x4([10, 20, 30, 40])),
+            [11, 22],
+        )
+        || !i64_ok(
+            ssubl_s32(i32x4([10, 20, 30, 40]), i32x4([1, 2, 3, 4])),
+            [9, 18],
+        )
+        || !i64_ok(
+            usubl_u32(i32x4([10, 20, 30, 40]), i32x4([1, 2, 3, 4])),
+            [9, 18],
+        )
+    {
+        return false;
+    }
+    if i16_lanes(saddw_s8(
+        i16x8([1, 2, 3, 4, 5, 6, 7, 8]),
+        V128::from_bytes([10, 20, 30, 40, 50, 60, 70, 80, 0, 0, 0, 0, 0, 0, 0, 0]),
+    )) != [11, 22, 33, 44, 55, 66, 77, 88]
+        || i16_lanes(uaddw_u8(
+            i16x8([1, 2, 3, 4, 5, 6, 7, 8]),
+            V128::from_bytes([10, 20, 30, 40, 50, 60, 70, 80, 0, 0, 0, 0, 0, 0, 0, 0]),
+        )) != [11, 22, 33, 44, 55, 66, 77, 88]
+        || i16_lanes(ssubw_s8(
+            i16x8([100, 200, 300, 400, 500, 600, 700, 800]),
+            V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0]),
+        )) != [99, 198, 297, 396, 495, 594, 693, 792]
+        || i16_lanes(usubw_u8(
+            i16x8([100, 200, 300, 400, 500, 600, 700, 800]),
+            V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0]),
+        )) != [99, 198, 297, 396, 495, 594, 693, 792]
+        || lanes(saddw_s16(
+            i32x4([1, 2, 3, 4]),
+            i16x8([10, 20, 30, 40, 0, 0, 0, 0]),
+        )) != [11, 22, 33, 44]
+        || lanes(uaddw_u16(
+            i32x4([1, 2, 3, 4]),
+            i16x8([10, 20, 30, 40, 0, 0, 0, 0]),
+        )) != [11, 22, 33, 44]
+        || lanes(ssubw_s16(
+            i32x4([100, 200, 300, 400]),
+            i16x8([1, 2, 3, 4, 0, 0, 0, 0]),
+        )) != [99, 198, 297, 396]
+        || lanes(usubw_u16(
+            i32x4([100, 200, 300, 400]),
+            i16x8([1, 2, 3, 4, 0, 0, 0, 0]),
+        )) != [99, 198, 297, 396]
+        || !i64_ok(saddw_s32(i64x2([1, 2]), i32x4([10, 20, 30, 40])), [11, 22])
+        || !i64_ok(uaddw_u32(i64x2([1, 2]), i32x4([10, 20, 30, 40])), [11, 22])
+        || !i64_ok(ssubw_s32(i64x2([100, 200]), i32x4([1, 2, 3, 4])), [99, 198])
+        || !i64_ok(usubw_u32(i64x2([100, 200]), i32x4([1, 2, 3, 4])), [99, 198])
+    {
+        return false;
+    }
+    if cmge_i8(V128::from_bytes([2; 16]), V128::from_bytes([1; 16])).to_bytes() != [0xff; 16]
+        || cmge_i8(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [0; 16]
+        || cmge_i16(i16x8([2; 8]), i16x8([1; 8])).to_bytes() != [0xff; 16]
+        || cmge_i32(i32x4([2; 4]), i32x4([1; 4])).to_bytes() != [0xff; 16]
+        || cmle_i8(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [0xff; 16]
+        || cmle_i16(i16x8([1; 8]), i16x8([2; 8])).to_bytes() != [0xff; 16]
+        || cmle_i32(i32x4([1; 4]), i32x4([2; 4])).to_bytes() != [0xff; 16]
+        || cmlt_i8(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [0xff; 16]
+        || cmlt_i16(i16x8([1; 8]), i16x8([2; 8])).to_bytes() != [0xff; 16]
+        || cmlt_i32(i32x4([1; 4]), i32x4([2; 4])).to_bytes() != [0xff; 16]
+        || cmtst_i8(V128::from_bytes([0xff; 16]), V128::from_bytes([1; 16])).to_bytes()
+            != [0xff; 16]
+        || cmtst_i8(V128::from_bytes([0x0f; 16]), V128::from_bytes([0xf0; 16])).to_bytes()
+            != [0; 16]
+        || cmtst_i16(i16x8([1; 8]), i16x8([3; 8])).to_bytes() != [0xff; 16]
+        || cmtst_i32(i32x4([1; 4]), i32x4([3; 4])).to_bytes() != [0xff; 16]
+    {
+        return false;
+    }
+    if addp_s8(
+        V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]),
+        V128::from_bytes([0; 16]),
+    )
+    .to_bytes()
+        != [3, 7, 11, 15, 19, 23, 27, 31, 0, 0, 0, 0, 0, 0, 0, 0]
+        || i16_lanes(addp_s16(i16x8([1, 2, 3, 4, 5, 6, 7, 8]), i16x8([0; 8])))
+            != [3, 7, 11, 15, 0, 0, 0, 0]
+        || lanes(addp_s32(i32x4([1, 2, 3, 4]), i32x4([0; 4]))) != [3, 7, 0, 0]
+        || addv_s8(V128::from_bytes([1; 16])) != 16
+        || addv_s16(i16x8([1; 8])) != 8
+        || addv_s32(i32x4([1; 4])) != 4
+        || smaxv_s8(V128::from_bytes([
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        ])) != 16
+        || sminv_s8(V128::from_bytes([
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        ])) != 1
+        || smaxv_s16(i16x8([1, 2, 3, 4, 5, 6, 7, 8])) != 8
+        || sminv_s16(i16x8([1, 2, 3, 4, 5, 6, 7, 8])) != 1
+        || smaxv_s32(i32x4([1, 2, 3, 4])) != 4
+        || sminv_s32(i32x4([1, 2, 3, 4])) != 1
+        || umaxv_u8(V128::from_bytes([
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        ])) != 16
+        || uminv_u8(V128::from_bytes([
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        ])) != 1
+        || umaxv_u16(i16x8([1, 2, 3, 4, 5, 6, 7, 8])) != 8
+        || uminv_u16(i16x8([1, 2, 3, 4, 5, 6, 7, 8])) != 1
+        || umaxv_u32(i32x4([1, 2, 3, 4])) != 4
+        || uminv_u32(i32x4([1, 2, 3, 4])) != 1
+    {
+        return false;
+    }
+    if smax_s8(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [2; 16]
+        || smin_s8(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [1; 16]
+        || i16_lanes(smax_s16(i16x8([1; 8]), i16x8([2; 8]))) != [2; 8]
+        || i16_lanes(smin_s16(i16x8([1; 8]), i16x8([2; 8]))) != [1; 8]
+        || lanes(smax_s32(i32x4([1; 4]), i32x4([2; 4]))) != [2; 4]
+        || lanes(smin_s32(i32x4([1; 4]), i32x4([2; 4]))) != [1; 4]
+        || umax_u8(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [2; 16]
+        || umin_u8(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [1; 16]
+        || i16_lanes(umax_u16(i16x8([1; 8]), i16x8([2; 8]))) != [2; 8]
+        || i16_lanes(umin_u16(i16x8([1; 8]), i16x8([2; 8]))) != [1; 8]
+        || lanes(umax_u32(i32x4([1; 4]), i32x4([2; 4]))) != [2; 4]
+        || lanes(umin_u32(i32x4([1; 4]), i32x4([2; 4]))) != [1; 4]
+        || smaxp_s8(
+            V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]),
+            V128::from_bytes([0; 16]),
+        )
+        .to_bytes()
+            != [2, 4, 6, 8, 10, 12, 14, 16, 0, 0, 0, 0, 0, 0, 0, 0]
+        || sminp_s8(
+            V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]),
+            V128::from_bytes([0; 16]),
+        )
+        .to_bytes()
+            != [1, 3, 5, 7, 9, 11, 13, 15, 0, 0, 0, 0, 0, 0, 0, 0]
+        || i16_lanes(smaxp_s16(i16x8([1, 2, 3, 4, 5, 6, 7, 8]), i16x8([0; 8])))
+            != [2, 4, 6, 8, 0, 0, 0, 0]
+        || i16_lanes(sminp_s16(i16x8([1, 2, 3, 4, 5, 6, 7, 8]), i16x8([0; 8])))
+            != [1, 3, 5, 7, 0, 0, 0, 0]
+        || lanes(smaxp_s32(i32x4([1, 2, 3, 4]), i32x4([0; 4]))) != [2, 4, 0, 0]
+        || lanes(sminp_s32(i32x4([1, 2, 3, 4]), i32x4([0; 4]))) != [1, 3, 0, 0]
+        || umaxp_u8(
+            V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]),
+            V128::from_bytes([0; 16]),
+        )
+        .to_bytes()
+            != [2, 4, 6, 8, 10, 12, 14, 16, 0, 0, 0, 0, 0, 0, 0, 0]
+        || uminp_u8(
+            V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]),
+            V128::from_bytes([0; 16]),
+        )
+        .to_bytes()
+            != [1, 3, 5, 7, 9, 11, 13, 15, 0, 0, 0, 0, 0, 0, 0, 0]
+        || i16_lanes(umaxp_u16(i16x8([1, 2, 3, 4, 5, 6, 7, 8]), i16x8([0; 8])))
+            != [2, 4, 6, 8, 0, 0, 0, 0]
+        || i16_lanes(uminp_u16(i16x8([1, 2, 3, 4, 5, 6, 7, 8]), i16x8([0; 8])))
+            != [1, 3, 5, 7, 0, 0, 0, 0]
+        || lanes(umaxp_u32(i32x4([1, 2, 3, 4]), i32x4([0; 4]))) != [2, 4, 0, 0]
+        || lanes(uminp_u32(i32x4([1, 2, 3, 4]), i32x4([0; 4]))) != [1, 3, 0, 0]
+        || mla_s8(
+            V128::from_bytes([1; 16]),
+            V128::from_bytes([2; 16]),
+            V128::from_bytes([3; 16]),
+        )
+        .to_bytes()
+            != [7; 16]
+        || mls_s8(
+            V128::from_bytes([1; 16]),
+            V128::from_bytes([2; 16]),
+            V128::from_bytes([3; 16]),
+        )
+        .to_bytes()
+            != [0xfb; 16]
+        || i16_lanes(mla_s16(i16x8([1; 8]), i16x8([2; 8]), i16x8([3; 8]))) != [7; 8]
+        || i16_lanes(mls_s16(i16x8([1; 8]), i16x8([2; 8]), i16x8([3; 8]))) != [-5; 8]
+        || lanes(mla_s32(i32x4([1; 4]), i32x4([2; 4]), i32x4([3; 4]))) != [7; 4]
+        || lanes(mls_s32(i32x4([1; 4]), i32x4([2; 4]), i32x4([3; 4]))) != [u32::MAX - 4; 4]
+    {
+        return false;
+    }
     if lanes(shl_i32(i32x4([1, 2, 3, 4]), 2)) != [4, 8, 12, 16]
         || i16_lanes(shr_i16(i16x8([2, 4, 6, 8, 10, 12, 14, 16]), 1)) != [1, 2, 3, 4, 5, 6, 7, 8]
     {
@@ -389,6 +628,113 @@ fn float_ops() -> bool {
     }
     if f64_lanes(add_f64(f64x2([1.0, 2.0]), f64x2([3.0, 4.0]))) != [4.0, 6.0]
         || f64_lanes(mul_f64(f64x2([2.0, 3.0]), f64x2([4.0, 5.0]))) != [8.0, 15.0]
+    {
+        return false;
+    }
+    if fcmeq_f32(f32x4([1.0, 2.0, 3.0, 4.0]), f32x4([1.0, 0.0, 3.0, 0.0])).to_bytes()
+        != [
+            0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0,
+        ]
+        || fcmge_f32(f32x4([2.0, 1.0, 3.0, 0.0]), f32x4([1.0, 1.0, 4.0, 1.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+            ]
+        || fcmgt_f32(f32x4([2.0, 1.0, 3.0, 0.0]), f32x4([1.0, 1.0, 2.0, 1.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0,
+            ]
+        || fcmle_f32(f32x4([1.0, 1.0, 3.0, 0.0]), f32x4([1.0, 2.0, 2.0, 1.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff,
+            ]
+        || fcmlt_f32(f32x4([1.0, 2.0, 1.0, 0.0]), f32x4([2.0, 2.0, 0.0, 1.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff,
+            ]
+        || facge_f32(f32x4([-2.0, 1.0, -3.0, 0.0]), f32x4([1.0, 1.0, 4.0, 1.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+            ]
+        || facgt_f32(f32x4([-2.0, 1.0, -3.0, 0.0]), f32x4([1.0, 1.0, 2.0, 1.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0,
+            ]
+    {
+        return false;
+    }
+    if fcmeq_f64(f64x2([1.0, 2.0]), f64x2([1.0, 0.0])).to_bytes()
+        != [
+            0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+        ]
+        || fcmge_f64(f64x2([2.0, 1.0]), f64x2([1.0, 2.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+            ]
+        || fcmgt_f64(f64x2([2.0, 1.0]), f64x2([1.0, 2.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+            ]
+        || fcmle_f64(f64x2([1.0, 2.0]), f64x2([1.0, 1.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+            ]
+        || fcmlt_f64(f64x2([1.0, 2.0]), f64x2([2.0, 2.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+            ]
+        || facge_f64(f64x2([-2.0, 1.0]), f64x2([1.0, 2.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+            ]
+        || facgt_f64(f64x2([-2.0, 1.0]), f64x2([1.0, 2.0])).to_bytes()
+            != [
+                0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+            ]
+    {
+        return false;
+    }
+    if f32_lanes(fabd_f32(
+        f32x4([1.0, 2.0, 3.0, 4.0]),
+        f32x4([2.0, 4.0, 6.0, 8.0]),
+    )) != [1.0, 2.0, 3.0, 4.0]
+        || f64_lanes(fabd_f64(f64x2([1.0, 2.0]), f64x2([3.0, 5.0]))) != [2.0, 3.0]
+        || f32_lanes(faddp_f32(
+            f32x4([1.0, 2.0, 3.0, 4.0]),
+            f32x4([5.0, 6.0, 7.0, 8.0]),
+        )) != [3.0, 7.0, 11.0, 15.0]
+        || f64_lanes(faddp_f64(f64x2([1.0, 2.0]), f64x2([3.0, 4.0]))) != [3.0, 7.0]
+        || faddv_f32(f32x4([1.0, 2.0, 3.0, 4.0])) != 10.0
+        || faddv_f64(f64x2([1.0, 2.0])) != 3.0
+        || f32_lanes(fmaxnm_f32(
+            f32x4([1.0, 5.0, 3.0, 4.0]),
+            f32x4([2.0, 4.0, 6.0, 3.0]),
+        )) != [2.0, 5.0, 6.0, 4.0]
+        || f64_lanes(fmaxnm_f64(f64x2([1.0, 5.0]), f64x2([2.0, 4.0]))) != [2.0, 5.0]
+        || f32_lanes(fminnm_f32(
+            f32x4([1.0, 5.0, 3.0, 4.0]),
+            f32x4([2.0, 4.0, 6.0, 3.0]),
+        )) != [1.0, 4.0, 3.0, 3.0]
+        || f64_lanes(fminnm_f64(f64x2([1.0, 5.0]), f64x2([2.0, 4.0]))) != [1.0, 4.0]
+        || fmaxnmv_f32(f32x4([1.0, 4.0, 2.0, 3.0])) != 4.0
+        || fmaxnmv_f64(f64x2([1.0, 4.0])) != 4.0
+        || fmaxv_f32(f32x4([1.0, 4.0, 2.0, 3.0])) != 4.0
+        || fmaxv_f64(f64x2([1.0, 4.0])) != 4.0
+        || fminnmv_f32(f32x4([2.0, 4.0, 1.0, 3.0])) != 1.0
+        || fminnmv_f64(f64x2([2.0, 1.0])) != 1.0
+        || fminv_f32(f32x4([2.0, 4.0, 1.0, 3.0])) != 1.0
+        || fminv_f64(f64x2([2.0, 1.0])) != 1.0
+    {
+        return false;
+    }
+    if f32_lanes(fmla_f32(f32x4([2.0; 4]), f32x4([3.0; 4]), f32x4([1.0; 4]))) != [5.0; 4]
+        || f64_lanes(fmla_f64(f64x2([2.0; 2]), f64x2([3.0; 2]), f64x2([1.0; 2]))) != [5.0; 2]
+        || f32_lanes(fmls_f32(f32x4([2.0; 4]), f32x4([3.0; 4]), f32x4([1.0; 4]))) != [-1.0; 4]
+        || f64_lanes(fmls_f64(f64x2([2.0; 2]), f64x2([3.0; 2]), f64x2([1.0; 2]))) != [-1.0; 2]
+        || f32_lanes(fmulx_f32(
+            f32x4([2.0, 3.0, 4.0, 5.0]),
+            f32x4([6.0, 7.0, 8.0, 9.0]),
+        )) != [12.0, 21.0, 32.0, 45.0]
+        || f64_lanes(fmulx_f64(f64x2([2.0, 3.0]), f64x2([4.0, 5.0]))) != [8.0, 15.0]
     {
         return false;
     }
@@ -554,6 +900,62 @@ unsafe fn crypto_crc_ops() -> bool {
         crc = unsafe { crc32b(crc, *byte) };
     }
     crc == 0x340b_c6d9
+}
+
+fn neon_bitwise_ops() -> bool {
+    let ones = V128::from_bytes([0xff; 16]);
+    let zeros = V128::from_bytes([0; 16]);
+    let a = V128::from_bytes([0xaa; 16]);
+    let b = V128::from_bytes([0x55; 16]);
+    if bsl(ones, a, b) != a || bsl(zeros, a, b) != b {
+        return false;
+    }
+    if bit(zeros, ones, V128::from_bytes([0x0f; 16])) != V128::from_bytes([0x0f; 16]) {
+        return false;
+    }
+    if bif(a, b, V128::from_bytes([0x0f; 16])) != V128::from_bytes([0x5a; 16]) {
+        return false;
+    }
+    if cls_i8(zeros).to_bytes() != [7; 16]
+        || cls_i16(zeros).to_bytes() != [15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0]
+        || cls_i32(zeros).to_bytes() != [31, 0, 0, 0, 31, 0, 0, 0, 31, 0, 0, 0, 31, 0, 0, 0]
+    {
+        return false;
+    }
+    if clz_i8(V128::from_bytes([1; 16])).to_bytes() != [7; 16] {
+        return false;
+    }
+    if cnt_i8(ones).to_bytes() != [8; 16] {
+        return false;
+    }
+    let mut single = [0u8; 16];
+    single[0] = 1;
+    if rbit(V128::from_bytes(single)).to_bytes()[0] != 0x80 {
+        return false;
+    }
+    let source = V128::from_bytes(core::array::from_fn(|index| index as u8));
+    if rev16(source).to_bytes() != [1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14] {
+        return false;
+    }
+    if rev32(source).to_bytes() != [3, 2, 1, 0, 7, 6, 5, 4, 11, 10, 9, 8, 15, 14, 13, 12] {
+        return false;
+    }
+    if rev64(source).to_bytes() != [7, 6, 5, 4, 3, 2, 1, 0, 15, 14, 13, 12, 11, 10, 9, 8] {
+        return false;
+    }
+    if cmpeq_i64(ones, ones) != ones {
+        return false;
+    }
+    let mut low = [0u8; 16];
+    low[0] = 1;
+    if cmpgt_i64(V128::from_bytes(low), zeros)
+        != V128::from_bytes([
+            0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,
+        ])
+    {
+        return false;
+    }
+    true
 }
 
 #[target_feature(enable = "sve")]

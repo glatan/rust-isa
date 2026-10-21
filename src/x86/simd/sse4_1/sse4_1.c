@@ -97,3 +97,97 @@ void rust_isa_sse41_pmovzxbw(const uint8_t *a, uint8_t *out) {
     _mm_storeu_si128((__m128i *)(void *)out, _mm_cvtepu8_epi16(
         _mm_loadu_si128((const __m128i *)(const void *)a)));
 }
+
+__attribute__((always_inline))
+void rust_isa_sse41_pminsb(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_min_epi8(
+        _mm_loadu_si128((const __m128i *)(const void *)a),
+        _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse41_pminsd(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_min_epi32(
+        _mm_loadu_si128((const __m128i *)(const void *)a),
+        _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse41_pmaxsb(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_max_epi8(
+        _mm_loadu_si128((const __m128i *)(const void *)a),
+        _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse41_pmaxsd(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_max_epi32(
+        _mm_loadu_si128((const __m128i *)(const void *)a),
+        _mm_loadu_si128((const __m128i *)(const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse41_pmovsxbq(const uint8_t *a, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_cvtepi8_epi64(
+        _mm_loadu_si128((const __m128i *)(const void *)a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse41_pmovsxwd(const uint8_t *a, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_cvtepi16_epi32(
+        _mm_loadu_si128((const __m128i *)(const void *)a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse41_pmovsxwq(const uint8_t *a, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_cvtepi16_epi64(
+        _mm_loadu_si128((const __m128i *)(const void *)a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse41_pmovsxdq(const uint8_t *a, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_cvtepi32_epi64(
+        _mm_loadu_si128((const __m128i *)(const void *)a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse41_pmovzxbq(const uint8_t *a, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_cvtepu8_epi64(
+        _mm_loadu_si128((const __m128i *)(const void *)a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse41_pmovzxwd(const uint8_t *a, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_cvtepu16_epi32(
+        _mm_loadu_si128((const __m128i *)(const void *)a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse41_pmovzxwq(const uint8_t *a, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_cvtepu16_epi64(
+        _mm_loadu_si128((const __m128i *)(const void *)a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse41_pmovzxdq(const uint8_t *a, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_cvtepu32_epi64(
+        _mm_loadu_si128((const __m128i *)(const void *)a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse41_movntdqa(const uint8_t *p, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_stream_load_si128((const __m128i *)(const void *)p));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse41_pmovzxbd(const uint8_t *a, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_cvtepu8_epi32(
+        _mm_loadu_si128((const __m128i *)(const void *)a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_sse41_pmuldq(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_mul_epi32(
+        _mm_loadu_si128((const __m128i *)(const void *)a),
+        _mm_loadu_si128((const __m128i *)(const void *)b)));
+}

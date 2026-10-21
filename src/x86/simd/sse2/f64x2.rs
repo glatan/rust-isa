@@ -161,3 +161,82 @@ pub fn sqrtpd(a: V128) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_sse2_movmskpd(a: *const u8) -> i32;
+}
+
+/// `movmskpd`
+///
+/// Collect the sign bit of each 64-bit float lane into the low two bits.
+#[inline(always)]
+pub fn movmskpd(a: V128) -> u32 {
+    unsafe { rust_isa_sse2_movmskpd(a.as_ptr()) as u32 }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse2_unpcklpd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_unpckhpd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_cvtsi2sd(value: i32, out: *mut u8);
+    fn rust_isa_sse2_cvtsd2si(a: *const u8) -> i32;
+    fn rust_isa_sse2_cvttsd2si(a: *const u8) -> i32;
+}
+
+macro_rules! binary {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[inline(always)]
+        pub fn $name(a: V128, b: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe {
+                $c(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+            }
+            out
+        }
+    };
+}
+
+binary!(
+    /// `unpcklpd`
+    ///
+    /// Interleave the low 64-bit float lane of `a` and `b`.
+    unpcklpd,
+    rust_isa_sse2_unpcklpd
+);
+binary!(
+    /// `unpckhpd`
+    ///
+    /// Interleave the high 64-bit float lane of `a` and `b`.
+    unpckhpd,
+    rust_isa_sse2_unpckhpd
+);
+
+/// `cvtsi2sd`
+///
+/// Convert a signed 32-bit integer to the low 64-bit float lane.
+#[inline(always)]
+pub fn cvtsi2sd(value: i32) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_cvtsi2sd(value, out.as_mut_ptr());
+    }
+    out
+}
+
+/// `cvtsd2si`
+///
+/// Convert the low 64-bit float lane to a signed 32-bit integer, rounding
+/// according to the current rounding mode.
+#[inline(always)]
+pub fn cvtsd2si(a: V128) -> i32 {
+    unsafe { rust_isa_sse2_cvtsd2si(a.as_ptr()) }
+}
+
+/// `cvttsd2si`
+///
+/// Convert the low 64-bit float lane to a signed 32-bit integer, truncating
+/// toward zero.
+#[inline(always)]
+pub fn cvttsd2si(a: V128) -> i32 {
+    unsafe { rust_isa_sse2_cvttsd2si(a.as_ptr()) }
+}

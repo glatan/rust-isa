@@ -4,20 +4,32 @@
 //! Loads and stores take raw pointers and are `unsafe`.
 
 mod compare;
+mod compare_ext;
 mod float;
+mod float_arith;
+mod float_compare;
 mod integer;
 mod lane;
+mod minmax;
+mod reduce;
 mod shift;
 mod shuffle;
 mod v128;
+mod widen;
 
 pub use compare::*;
+pub use compare_ext::*;
 pub use float::*;
+pub use float_arith::*;
+pub use float_compare::*;
 pub use integer::*;
 pub use lane::*;
+pub use minmax::*;
+pub use reduce::*;
 pub use shift::*;
 pub use shuffle::*;
 pub use v128::*;
+pub use widen::*;
 
 unsafe extern "C" {
     fn rust_isa_neon_add(a: *const u8, b: *const u8, out: *mut u8);

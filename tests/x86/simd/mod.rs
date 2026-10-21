@@ -1,6 +1,10 @@
 mod avx2;
+mod avx2_integer;
+mod avx2_remaining;
 mod avx512;
 mod avx512_extensions;
+mod avx_compare;
+mod avx_permute;
 mod extensions;
 mod fma;
 mod sse2;

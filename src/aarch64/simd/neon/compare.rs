@@ -55,3 +55,19 @@ compare!(
     cmpgt_i32,
     rust_isa_neon_cmpgt_i32
 );
+
+unsafe extern "C" {
+    fn rust_isa_neon_cmpeq_i64(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_cmpgt_i64(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+compare!(
+    /// Compare 64-bit lanes for equality. A true lane is all bits one.
+    cmpeq_i64,
+    rust_isa_neon_cmpeq_i64
+);
+compare!(
+    /// Compare signed 64-bit lanes with greater-than.
+    cmpgt_i64,
+    rust_isa_neon_cmpgt_i64
+);

@@ -10,6 +10,7 @@
 //! an immediate are intentionally omitted.
 
 use super::sse2::V128;
+use core::arch::asm;
 
 unsafe extern "C" {
     fn rust_isa_sse41_pmulld(a: *const u8, b: *const u8, out: *mut u8);
@@ -264,4 +265,722 @@ pub unsafe fn pmovzxbw(a: V128) -> V128 {
         rust_isa_sse41_pmovzxbw(a.as_ptr(), out.as_mut_ptr());
     }
     out
+}
+
+/// `pblendw`
+///
+/// Select 16-bit lanes from `a` and `b` with the immediate mask. Bit `i` of
+/// `IMM` selects `b` for lane `i`; a clear bit selects `a`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pblendw<const IMM: u8>(a: V128, b: V128) -> V128 {
+    let mut out = u128::from_le_bytes(a.to_bytes());
+    let b = u128::from_le_bytes(b.to_bytes());
+    unsafe {
+        asm!(
+            "pblendw {out}, {b}, {imm}",
+            out = inout(xmm_reg) out,
+            b = in(xmm_reg) b,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+/// `blendps`
+///
+/// Select 32-bit float lanes from `a` and `b` with the immediate mask. Bit `i`
+/// of `IMM` selects `b` for lane `i`; a clear bit selects `a`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn blendps<const IMM: u8>(a: V128, b: V128) -> V128 {
+    const { assert!(IMM <= 0x0f, "blendps immediate must be in 0..=15") };
+    let mut out = u128::from_le_bytes(a.to_bytes());
+    let b = u128::from_le_bytes(b.to_bytes());
+    unsafe {
+        asm!(
+            "blendps {out}, {b}, {imm}",
+            out = inout(xmm_reg) out,
+            b = in(xmm_reg) b,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+/// `blendpd`
+///
+/// Select 64-bit float lanes from `a` and `b` with the immediate mask. Bit `i`
+/// of `IMM` selects `b` for lane `i`; a clear bit selects `a`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn blendpd<const IMM: u8>(a: V128, b: V128) -> V128 {
+    const { assert!(IMM <= 0x03, "blendpd immediate must be in 0..=3") };
+    let mut out = u128::from_le_bytes(a.to_bytes());
+    let b = u128::from_le_bytes(b.to_bytes());
+    unsafe {
+        asm!(
+            "blendpd {out}, {b}, {imm}",
+            out = inout(xmm_reg) out,
+            b = in(xmm_reg) b,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+/// `dpps`
+///
+/// Compute the dot product of 32-bit float lanes. The immediate selects the
+/// products and the destination lanes.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn dpps<const IMM: u8>(a: V128, b: V128) -> V128 {
+    let mut out = u128::from_le_bytes(a.to_bytes());
+    let b = u128::from_le_bytes(b.to_bytes());
+    unsafe {
+        asm!(
+            "dpps {out}, {b}, {imm}",
+            out = inout(xmm_reg) out,
+            b = in(xmm_reg) b,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+/// `dppd`
+///
+/// Compute the dot product of 64-bit float lanes. The immediate selects the
+/// products and the destination lanes.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn dppd<const IMM: u8>(a: V128, b: V128) -> V128 {
+    let mut out = u128::from_le_bytes(a.to_bytes());
+    let b = u128::from_le_bytes(b.to_bytes());
+    unsafe {
+        asm!(
+            "dppd {out}, {b}, {imm}",
+            out = inout(xmm_reg) out,
+            b = in(xmm_reg) b,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+/// `insertps`
+///
+/// Insert one 32-bit float lane from `b` into `a`. The immediate controls the
+/// source lane, destination lane, and zeroing.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn insertps<const IMM: u8>(a: V128, b: V128) -> V128 {
+    let mut out = u128::from_le_bytes(a.to_bytes());
+    let b = u128::from_le_bytes(b.to_bytes());
+    unsafe {
+        asm!(
+            "insertps {out}, {b}, {imm}",
+            out = inout(xmm_reg) out,
+            b = in(xmm_reg) b,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+/// `roundps`
+///
+/// Round four 32-bit float lanes. The low two bits of `IMM` select the
+/// rounding mode.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn roundps<const IMM: u8>(a: V128) -> V128 {
+    const { assert!(IMM <= 0x0f, "roundps immediate must be in 0..=15") };
+    let a = u128::from_le_bytes(a.to_bytes());
+    let mut out: u128 = 0;
+    unsafe {
+        asm!(
+            "roundps {out}, {a}, {imm}",
+            out = lateout(xmm_reg) out,
+            a = in(xmm_reg) a,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+/// `roundpd`
+///
+/// Round two 64-bit float lanes. The low two bits of `IMM` select the rounding
+/// mode.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn roundpd<const IMM: u8>(a: V128) -> V128 {
+    const { assert!(IMM <= 0x03, "roundpd immediate must be in 0..=3") };
+    let a = u128::from_le_bytes(a.to_bytes());
+    let mut out: u128 = 0;
+    unsafe {
+        asm!(
+            "roundpd {out}, {a}, {imm}",
+            out = lateout(xmm_reg) out,
+            a = in(xmm_reg) a,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+/// `roundss`
+///
+/// Round the low 32-bit float lane of `b` and keep the upper lanes of `a`. The
+/// low two bits of `IMM` select the rounding mode.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn roundss<const IMM: u8>(a: V128, b: V128) -> V128 {
+    const { assert!(IMM <= 0x0f, "roundss immediate must be in 0..=15") };
+    let mut out = u128::from_le_bytes(a.to_bytes());
+    let b = u128::from_le_bytes(b.to_bytes());
+    unsafe {
+        asm!(
+            "roundss {out}, {b}, {imm}",
+            out = inout(xmm_reg) out,
+            b = in(xmm_reg) b,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+/// `roundsd`
+///
+/// Round the low 64-bit float lane of `b` and keep the upper lane of `a`. The
+/// low two bits of `IMM` select the rounding mode.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn roundsd<const IMM: u8>(a: V128, b: V128) -> V128 {
+    const { assert!(IMM <= 0x0f, "roundsd immediate must be in 0..=15") };
+    let mut out = u128::from_le_bytes(a.to_bytes());
+    let b = u128::from_le_bytes(b.to_bytes());
+    unsafe {
+        asm!(
+            "roundsd {out}, {b}, {imm}",
+            out = inout(xmm_reg) out,
+            b = in(xmm_reg) b,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+/// `mpsadbw`
+///
+/// Compute multiple packed sums of absolute differences. The low three bits of
+/// `IMM` select the source offsets.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn mpsadbw<const IMM: u8>(a: V128, b: V128) -> V128 {
+    const { assert!(IMM <= 0x07, "mpsadbw immediate must be in 0..=7") };
+    let mut out = u128::from_le_bytes(a.to_bytes());
+    let b = u128::from_le_bytes(b.to_bytes());
+    unsafe {
+        asm!(
+            "mpsadbw {out}, {b}, {imm}",
+            out = inout(xmm_reg) out,
+            b = in(xmm_reg) b,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse41_pminsb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pminsd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmaxsb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmaxsd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmovsxbq(a: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmovsxwd(a: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmovsxwq(a: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmovsxdq(a: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmovzxbq(a: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmovzxwd(a: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmovzxwq(a: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmovzxdq(a: *const u8, out: *mut u8);
+    fn rust_isa_sse41_movntdqa(p: *const u8, out: *mut u8);
+}
+
+macro_rules! binary {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[target_feature(enable = "sse4.1")]
+        #[inline]
+        pub unsafe fn $name(a: V128, b: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe {
+                $c(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+            }
+            out
+        }
+    };
+}
+
+binary!(
+    /// `pminsb`
+    ///
+    /// Return the minimum of each signed 8-bit lane.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pminsb,
+    rust_isa_sse41_pminsb
+);
+binary!(
+    /// `pminsd`
+    ///
+    /// Return the minimum of each signed 32-bit lane.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pminsd,
+    rust_isa_sse41_pminsd
+);
+binary!(
+    /// `pmaxsb`
+    ///
+    /// Return the maximum of each signed 8-bit lane.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmaxsb,
+    rust_isa_sse41_pmaxsb
+);
+binary!(
+    /// `pmaxsd`
+    ///
+    /// Return the maximum of each signed 32-bit lane.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmaxsd,
+    rust_isa_sse41_pmaxsd
+);
+
+macro_rules! unary {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[target_feature(enable = "sse4.1")]
+        #[inline]
+        pub unsafe fn $name(a: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe {
+                $c(a.as_ptr(), out.as_mut_ptr());
+            }
+            out
+        }
+    };
+}
+
+unary!(
+    /// `pmovsxbq`
+    ///
+    /// Sign-extend the low two bytes to 64-bit lanes.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmovsxbq,
+    rust_isa_sse41_pmovsxbq
+);
+unary!(
+    /// `pmovsxwd`
+    ///
+    /// Sign-extend the low four words to 32-bit lanes.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmovsxwd,
+    rust_isa_sse41_pmovsxwd
+);
+unary!(
+    /// `pmovsxwq`
+    ///
+    /// Sign-extend the low two words to 64-bit lanes.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmovsxwq,
+    rust_isa_sse41_pmovsxwq
+);
+unary!(
+    /// `pmovsxdq`
+    ///
+    /// Sign-extend the low two dwords to 64-bit lanes.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmovsxdq,
+    rust_isa_sse41_pmovsxdq
+);
+unary!(
+    /// `pmovzxbq`
+    ///
+    /// Zero-extend the low two bytes to 64-bit lanes.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmovzxbq,
+    rust_isa_sse41_pmovzxbq
+);
+unary!(
+    /// `pmovzxwd`
+    ///
+    /// Zero-extend the low four words to 32-bit lanes.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmovzxwd,
+    rust_isa_sse41_pmovzxwd
+);
+unary!(
+    /// `pmovzxwq`
+    ///
+    /// Zero-extend the low two words to 64-bit lanes.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmovzxwq,
+    rust_isa_sse41_pmovzxwq
+);
+unary!(
+    /// `pmovzxdq`
+    ///
+    /// Zero-extend the low two dwords to 64-bit lanes.
+    ///
+    /// # Safety
+    ///
+    /// The caller must enable SSE4.1.
+    pmovzxdq,
+    rust_isa_sse41_pmovzxdq
+);
+
+/// `movntdqa`
+///
+/// Load 16 bytes with a non-temporal hint.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1. `p` must be valid for reading 16 bytes and
+/// should point to write-combining memory for the hint to take effect.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn movntdqa(p: *const u8) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse41_movntdqa(p, out.as_mut_ptr());
+    }
+    out
+}
+
+/// `pinsrb`
+///
+/// Insert the low byte of `value` into lane `IMM`. `IMM` must be in `0..=15`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pinsrb<const IMM: u8>(a: V128, value: u8) -> V128 {
+    const { assert!(IMM <= 15, "pinsrb lane must be in 0..=15") };
+    let mut out = u128::from_le_bytes(a.to_bytes());
+    unsafe {
+        asm!(
+            "pinsrb {out}, {value:e}, {imm}",
+            out = inout(xmm_reg) out,
+            value = in(reg) value as u32,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+/// `pinsrd`
+///
+/// Insert `value` into 32-bit lane `IMM`. `IMM` must be in `0..=3`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pinsrd<const IMM: u8>(a: V128, value: u32) -> V128 {
+    const { assert!(IMM <= 3, "pinsrd lane must be in 0..=3") };
+    let mut out = u128::from_le_bytes(a.to_bytes());
+    unsafe {
+        asm!(
+            "pinsrd {out}, {value:e}, {imm}",
+            out = inout(xmm_reg) out,
+            value = in(reg) value,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+/// `pextrb`
+///
+/// Extract lane `IMM` as a byte. `IMM` must be in `0..=15`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pextrb<const IMM: u8>(a: V128) -> u8 {
+    const { assert!(IMM <= 15, "pextrb lane must be in 0..=15") };
+    let a = u128::from_le_bytes(a.to_bytes());
+    let out: u32;
+    unsafe {
+        asm!(
+            "pextrb {out:e}, {a}, {imm}",
+            out = lateout(reg) out,
+            a = in(xmm_reg) a,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    out as u8
+}
+
+/// `pextrd`
+///
+/// Extract 32-bit lane `IMM`. `IMM` must be in `0..=3`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pextrd<const IMM: u8>(a: V128) -> u32 {
+    const { assert!(IMM <= 3, "pextrd lane must be in 0..=3") };
+    let a = u128::from_le_bytes(a.to_bytes());
+    let out: u32;
+    unsafe {
+        asm!(
+            "pextrd {out:e}, {a}, {imm}",
+            out = lateout(reg) out,
+            a = in(xmm_reg) a,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    out
+}
+
+/// `pinsrq`
+///
+/// Insert `value` into 64-bit lane `IMM`. `IMM` must be in `0..=1`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1 and target x86-64.
+#[cfg(target_arch = "x86_64")]
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pinsrq<const IMM: u8>(a: V128, value: u64) -> V128 {
+    const { assert!(IMM <= 1, "pinsrq lane must be in 0..=1") };
+    let mut out = u128::from_le_bytes(a.to_bytes());
+    unsafe {
+        asm!(
+            "pinsrq {out}, {value}, {imm}",
+            out = inout(xmm_reg) out,
+            value = in(reg) value,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+/// `pextrq`
+///
+/// Extract 64-bit lane `IMM`. `IMM` must be in `0..=1`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1 and target x86-64.
+#[cfg(target_arch = "x86_64")]
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pextrq<const IMM: u8>(a: V128) -> u64 {
+    const { assert!(IMM <= 1, "pextrq lane must be in 0..=1") };
+    let a = u128::from_le_bytes(a.to_bytes());
+    let out: u64;
+    unsafe {
+        asm!(
+            "pextrq {out}, {a}, {imm}",
+            out = lateout(reg) out,
+            a = in(xmm_reg) a,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse41_pmovzxbd(a: *const u8, out: *mut u8);
+    fn rust_isa_sse41_pmuldq(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `pmovzxbd`
+///
+/// Zero-extend the low four bytes to four 32-bit lanes.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pmovzxbd(a: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse41_pmovzxbd(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `pmuldq`
+///
+/// Multiply the low signed 32-bit value of each 64-bit lane and return 64-bit
+/// products.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pmuldq(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse41_pmuldq(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `pinsrw`
+///
+/// Insert `value` into 16-bit lane `IMM`. `IMM` must be in `0..=7`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pinsrw<const IMM: u8>(a: V128, value: u16) -> V128 {
+    const { assert!(IMM <= 7, "pinsrw lane must be in 0..=7") };
+    let mut out = u128::from_le_bytes(a.to_bytes());
+    unsafe {
+        asm!(
+            "pinsrw {out}, {value:e}, {imm}",
+            out = inout(xmm_reg) out,
+            value = in(reg) u32::from(value),
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+/// `pextrw`
+///
+/// Extract 16-bit lane `IMM`. `IMM` must be in `0..=7`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pextrw<const IMM: u8>(a: V128) -> u16 {
+    const { assert!(IMM <= 7, "pextrw lane must be in 0..=7") };
+    let a = u128::from_le_bytes(a.to_bytes());
+    let out: u32;
+    unsafe {
+        asm!(
+            "pextrw {out:e}, {a}, {imm}",
+            out = lateout(reg) out,
+            a = in(xmm_reg) a,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    out as u16
 }

@@ -207,3 +207,113 @@ unary!(
     neg_i32,
     rust_isa_neon_neg_i32
 );
+
+unsafe extern "C" {
+    fn rust_isa_neon_bsl(mask: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_bit(a: *const u8, b: *const u8, mask: *const u8, out: *mut u8);
+    fn rust_isa_neon_bif(a: *const u8, b: *const u8, mask: *const u8, out: *mut u8);
+    fn rust_isa_neon_cls_i8(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_cls_i16(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_cls_i32(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_clz_i8(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_clz_i16(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_clz_i32(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_cnt_i8(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_rbit(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_rev16(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_rev32(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_rev64(a: *const u8, out: *mut u8);
+}
+
+/// `bsl`
+///
+/// Select bytes from `a` where the corresponding bit of `mask` is one, and
+/// from `b` where it is zero.
+#[inline(always)]
+pub fn bsl(mask: V128, a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_neon_bsl(mask.as_ptr(), a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `bit`
+///
+/// Insert bytes from `b` into `a` where the corresponding bit of `mask` is one.
+#[inline(always)]
+pub fn bit(a: V128, b: V128, mask: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_neon_bit(a.as_ptr(), b.as_ptr(), mask.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `bif`
+///
+/// Insert bytes from `b` into `a` where the corresponding bit of `mask` is zero.
+#[inline(always)]
+pub fn bif(a: V128, b: V128, mask: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_neon_bif(a.as_ptr(), b.as_ptr(), mask.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unary!(
+    /// Count leading sign bits in each 8-bit lane.
+    cls_i8,
+    rust_isa_neon_cls_i8
+);
+unary!(
+    /// Count leading sign bits in each 16-bit lane.
+    cls_i16,
+    rust_isa_neon_cls_i16
+);
+unary!(
+    /// Count leading sign bits in each 32-bit lane.
+    cls_i32,
+    rust_isa_neon_cls_i32
+);
+unary!(
+    /// Count leading zero bits in each 8-bit lane.
+    clz_i8,
+    rust_isa_neon_clz_i8
+);
+unary!(
+    /// Count leading zero bits in each 16-bit lane.
+    clz_i16,
+    rust_isa_neon_clz_i16
+);
+unary!(
+    /// Count leading zero bits in each 32-bit lane.
+    clz_i32,
+    rust_isa_neon_clz_i32
+);
+unary!(
+    /// Count set bits in each byte.
+    cnt_i8,
+    rust_isa_neon_cnt_i8
+);
+unary!(
+    /// Reverse the bits in each byte.
+    rbit,
+    rust_isa_neon_rbit
+);
+unary!(
+    /// Reverse the bytes in each 16-bit lane.
+    rev16,
+    rust_isa_neon_rev16
+);
+unary!(
+    /// Reverse the bytes in each 32-bit lane.
+    rev32,
+    rust_isa_neon_rev32
+);
+unary!(
+    /// Reverse the bytes in each 64-bit lane.
+    rev64,
+    rust_isa_neon_rev64
+);
