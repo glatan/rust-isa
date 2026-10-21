@@ -12,8 +12,8 @@ use rust_isa::s390x::simd::vector::{
 use rust_isa::s390x::simd::vector::{vchl, vclf, vclg, vclh, vle, vperm, vpks, vst};
 use rust_isa::s390x::simd::vector::{vcksm, vlef, vme, vmh, vml, vmo, vpkls, vstef};
 use rust_isa::s390x::simd::vector_enhancements::{
-    cntlz_i32, fma, popcnt_i8, popcnt_i32, vclz, vctz, vfa, vfce, vfch, vfche, vfd, vfm, vfma,
-    vfms, vfnma, vfnms, vfs, vfsq, vpopct,
+    cntlz_i32, fma, popcnt_i8, popcnt_i32, vclz, vclzd, vctz, vctzd, vfa, vfce, vfch, vfche, vfd,
+    vfm, vfma, vfms, vfnma, vfnms, vfs, vfsq, vpopcntd, vpopct,
 };
 
 #[unsafe(no_mangle)]
@@ -110,6 +110,18 @@ fn enhancement_ops() -> bool {
             || vclz(V128::from_bytes([1; 16])).to_bytes() != [7; 16]
             || vctz(V128::from_bytes([2; 16])).to_bytes() != [1; 16]
             || vpopct(V128::from_bytes([0xff; 16])).to_bytes() != [8; 16]
+            || {
+                let b = vclzd(V128::from_bytes([0; 16])).to_bytes();
+                b[7] != 64 || b[15] != 64
+            }
+            || {
+                let b = vctzd(V128::from_bytes([0; 16])).to_bytes();
+                b[7] != 64 || b[15] != 64
+            }
+            || {
+                let b = vpopcntd(V128::from_bytes([0xff; 16])).to_bytes();
+                b[7] != 64 || b[15] != 64
+            }
         {
             return false;
         }

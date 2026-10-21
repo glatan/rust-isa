@@ -199,3 +199,37 @@ un_enh!(
     vpopct,
     rust_isa_s390x_enh_vpopct
 );
+
+unsafe extern "C" {
+    fn rust_isa_s390x_enh_vclzd(a: *const u8, out: *mut u8);
+    fn rust_isa_s390x_enh_vctzd(a: *const u8, out: *mut u8);
+    fn rust_isa_s390x_enh_vpopcntd(a: *const u8, out: *mut u8);
+}
+
+macro_rules! un_enh2 {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[inline(always)]
+        pub unsafe fn $name(a: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe { $c(a.as_ptr(), out.as_mut_ptr()); }
+            out
+        }
+    };
+}
+un_enh2!(
+    /// `vclzd`.
+    vclzd,
+    rust_isa_s390x_enh_vclzd
+);
+un_enh2!(
+    /// `vctzd`.
+    vctzd,
+    rust_isa_s390x_enh_vctzd
+);
+un_enh2!(
+    /// `vpopcntd`.
+    vpopcntd,
+    rust_isa_s390x_enh_vpopcntd
+);
+pub use self::{vclzd as vclzg, vctzd as vctzg, vpopcntd as vpopcntg};
