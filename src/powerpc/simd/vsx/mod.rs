@@ -86,3 +86,197 @@ pub unsafe fn sqrt_f64(a: V128) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_vsx_xvadd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvsub(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvmul(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvdiv(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvmax(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvmin(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvcmpeq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_vsx_vcmpgt(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvand(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvor(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvxor(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvsl(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvsr(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvcpsgn(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvabs(a: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvneg(a: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvrdpi(a: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvrdpic(a: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvrdpim(a: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvrdpip(a: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvrdpiz(a: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvsel(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_vsx_xvperm(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+}
+
+macro_rules! vbin {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[inline(always)]
+        pub unsafe fn $name(a: V128, b: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe { $c(a.as_ptr(), b.as_ptr(), out.as_mut_ptr()); }
+            out
+        }
+    };
+}
+macro_rules! vun {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[inline(always)]
+        pub unsafe fn $name(a: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe { $c(a.as_ptr(), out.as_mut_ptr()); }
+            out
+        }
+    };
+}
+macro_rules! vtern {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[inline(always)]
+        pub unsafe fn $name(a: V128, b: V128, c: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe { $c(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr()); }
+            out
+        }
+    };
+}
+vbin!(
+    /// `xvadd`.
+    xvadd,
+    rust_isa_vsx_xvadd
+);
+vbin!(
+    /// `xvsub`.
+    xvsub,
+    rust_isa_vsx_xvsub
+);
+vbin!(
+    /// `xvmul`.
+    xvmul,
+    rust_isa_vsx_xvmul
+);
+vbin!(
+    /// `xvdiv`.
+    xvdiv,
+    rust_isa_vsx_xvdiv
+);
+vbin!(
+    /// `xvmax`.
+    xvmax,
+    rust_isa_vsx_xvmax
+);
+vbin!(
+    /// `xvmin`.
+    xvmin,
+    rust_isa_vsx_xvmin
+);
+vbin!(
+    /// `xvcmpeq`.
+    xvcmpeq,
+    rust_isa_vsx_xvcmpeq
+);
+vbin!(
+    /// `vcmpgt`.
+    vcmpgt,
+    rust_isa_vsx_vcmpgt
+);
+vbin!(
+    /// `xvand`.
+    xvand,
+    rust_isa_vsx_xvand
+);
+vbin!(
+    /// `xvor`.
+    xvor,
+    rust_isa_vsx_xvor
+);
+vbin!(
+    /// `xvxor`.
+    xvxor,
+    rust_isa_vsx_xvxor
+);
+vbin!(
+    /// `xvsl`.
+    xvsl,
+    rust_isa_vsx_xvsl
+);
+vbin!(
+    /// `xvsr`.
+    xvsr,
+    rust_isa_vsx_xvsr
+);
+vbin!(
+    /// `xvcpsgn`.
+    xvcpsgn,
+    rust_isa_vsx_xvcpsgn
+);
+vun!(
+    /// `xvabs`.
+    xvabs,
+    rust_isa_vsx_xvabs
+);
+vun!(
+    /// `xvneg`.
+    xvneg,
+    rust_isa_vsx_xvneg
+);
+vun!(
+    /// `xvrdpi`.
+    xvrdpi,
+    rust_isa_vsx_xvrdpi
+);
+vun!(
+    /// `xvrdpic`.
+    xvrdpic,
+    rust_isa_vsx_xvrdpic
+);
+vun!(
+    /// `xvrdpim`.
+    xvrdpim,
+    rust_isa_vsx_xvrdpim
+);
+vun!(
+    /// `xvrdpip`.
+    xvrdpip,
+    rust_isa_vsx_xvrdpip
+);
+vun!(
+    /// `xvrdpiz`.
+    xvrdpiz,
+    rust_isa_vsx_xvrdpiz
+);
+vtern!(
+    /// `xvsel`.
+    xvsel,
+    rust_isa_vsx_xvsel
+);
+vtern!(
+    /// `xvperm`.
+    xvperm,
+    rust_isa_vsx_xvperm
+);
+
+unsafe extern "C" {
+    fn rust_isa_vsx_xvsldoi(a: *const u8, b: *const u8, imm: u32, out: *mut u8);
+}
+
+/// `xvsldoi` with an immediate shift count.
+///
+/// # Safety
+///
+/// The caller must enable VSX.
+#[inline(always)]
+pub unsafe fn xvsldoi<const IMM: u8>(a: V128, b: V128) -> V128 {
+    const { assert!(IMM <= 15, "xvsldoi immediate must be in 0..=15") };
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_vsx_xvsldoi(a.as_ptr(), b.as_ptr(), u32::from(IMM), out.as_mut_ptr());
+    }
+    out
+}
