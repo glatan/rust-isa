@@ -4,6 +4,7 @@
 use core::arch::asm;
 use core::panic::PanicInfo;
 use rust_isa::loongarch::integer::lbt::{bitrev, bstrins, bstrpick, ext, ins, revb, revh, revw};
+use rust_isa::loongarch::simd::lasx::{xvmul_w};
 use rust_isa::loongarch::simd::lasx::{xvsub_w};
 use rust_isa::loongarch::simd::lasx::{xvadd_w};
 use rust_isa::loongarch::simd::lasx::{xvneg_d};
@@ -135,6 +136,7 @@ fn run() -> u32 {
     if !alias_xvneg_d() { return 401; }
     if !alias_xvadd_w() { return 402; }
     if !alias_xvsub_w() { return 421; }
+    if !alias_xvmul_w() { return 422; }
     0
 }
 
@@ -491,3 +493,5 @@ fn alias_xvneg_d() -> bool { unsafe { { let mut x=[0u8;32]; x[0]=1; let mut e=[0
 fn alias_xvadd_w() -> bool { unsafe { xvadd_w(V256::from_bytes([1;32]), V256::from_bytes([2;32])) == lasx_add(V256::from_bytes([1;32]), V256::from_bytes([2;32])) } }
 
 fn alias_xvsub_w() -> bool { unsafe { xvsub_w(V256::from_bytes([3;32]), V256::from_bytes([2;32])) == lasx_sub(V256::from_bytes([3;32]), V256::from_bytes([2;32])) } }
+
+fn alias_xvmul_w() -> bool { unsafe { xvmul_w(V256::from_bytes([1;32]), V256::from_bytes([2;32])) == lasx_mul(V256::from_bytes([1;32]), V256::from_bytes([2;32])) } }

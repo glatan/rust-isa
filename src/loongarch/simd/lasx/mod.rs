@@ -350,3 +350,10 @@ pub unsafe fn xvadd_w(a: V256, b: V256) -> V256 {
 pub unsafe fn xvsub_w(a: V256, b: V256) -> V256 {
     unsafe { sub(a, b) }
 }
+
+/// `xvmul.w`.
+#[target_feature(enable = "lasx")]
+#[inline]
+pub unsafe fn xvmul_w(a: V256, b: V256) -> V256 {
+    unsafe { mul(a, b) }
+}
