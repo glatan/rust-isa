@@ -7,7 +7,10 @@ use rust_isa::powerpc::crypto::power8_crypto::{cipher, cipherlast, ncipher};
 use rust_isa::powerpc::simd::altivec::{
     V128, add, add_i8, add_i16, add_i64, and, cmpeq_i32, cmpgt_i32, fadd, fdiv, fmul, fsub, mul,
     mul_i16, mul_i32, or, permute, splat_i32, sub_i8, sub_i16, sub_i32, sub_i64, v128_load,
-    v128_store, xor,
+    v128_store, vaddubm, vaddudm, vadduhm, vadduwm, vand, vandc, vavg, vavgl, vcmpeq, vcmpgt, vmax,
+    vmin, vmuleub, vmuleuh, vmuleuw as av_muleuw, vmuloub, vmulouh, vmulouw as av_mulouw, vnor,
+    vnot, vor, vperm, vsel, vsl, vsldoi, vslo, vsr, vsro, vsububm, vsubudm, vsubuhm, vsubuwm, vxor,
+    xor,
 };
 use rust_isa::powerpc::simd::power8_vector::{
     add_u64, mul_even_u16, mul_u32, sub_u64, vclzd as p8_vclzd, vmaxsd, vmaxud, vminsd, vminud,
@@ -133,6 +136,9 @@ fn run() -> u32 {
     }
     if !power10_ops() {
         return 10;
+    }
+    if !altivec_ops() {
+        return 11;
     }
     0
 }
@@ -412,5 +418,61 @@ fn integer() -> bool {
             && lanes(mul(a, b)) == [10, 40, 90, 160]
             && lanes(kernel_add(&a, &b)) == [21, 42, 63, 84]
             && lanes(kernel_mul(&a, &b)) == [100, 800, 2700, 6400]
+    }
+}
+
+fn altivec_ops() -> bool {
+    unsafe {
+        vaddubm(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() == [3; 16]
+            && vsububm(V128::from_bytes([3; 16]), V128::from_bytes([2; 16])).to_bytes() == [1; 16]
+            && vand(V128::from_bytes([0xaa; 16]), V128::from_bytes([0xcc; 16])).to_bytes()
+                == [0x88; 16]
+            && vandc(V128::from_bytes([0xaa; 16]), V128::from_bytes([0xcc; 16])).to_bytes()
+                == [0x22; 16]
+            && vor(V128::from_bytes([0xaa; 16]), V128::from_bytes([0xcc; 16])).to_bytes()
+                == [0xee; 16]
+            && vxor(V128::from_bytes([0xaa; 16]), V128::from_bytes([0xcc; 16])).to_bytes()
+                == [0x66; 16]
+            && vnor(V128::from_bytes([0xaa; 16]), V128::from_bytes([0xcc; 16])).to_bytes()
+                == [0x11; 16]
+            && vnot(V128::from_bytes([0xaa; 16])).to_bytes() == [0x55; 16]
+            && vsel(
+                V128::from_bytes([1; 16]),
+                V128::from_bytes([2; 16]),
+                V128::from_bytes([0xff; 16]),
+            )
+            .to_bytes()
+                == [2; 16]
+            && vcmpeq(i32x4([1; 4]), i32x4([1; 4])).to_bytes() == [0xff; 16]
+            && vcmpgt(i32x4([2; 4]), i32x4([1; 4])).to_bytes() == [0xff; 16]
+            && vavg(V128::from_bytes([1; 16]), V128::from_bytes([3; 16])).to_bytes() == [2; 16]
+            && vavgl(V128::from_bytes([1; 16]), V128::from_bytes([3; 16])).to_bytes() == [2; 16]
+            && vmax(i32x4([1, 4, 2, 8]), i32x4([3, 2, 6, 4])).to_bytes() != [0; 16]
+            && vmin(i32x4([1, 4, 2, 8]), i32x4([3, 2, 6, 4])).to_bytes() != [0; 16]
+            && vsl(i32x4([2, 4, 6, 8]), i32x4([1; 4])).to_bytes() != [0; 16]
+            && vsr(i32x4([4, 8, 12, 16]), i32x4([1; 4])).to_bytes() != [0; 16]
+            && vmuleub(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [0; 16]
+            && vmuleuh(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [0; 16]
+            && av_muleuw(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [0; 16]
+            && vmuloub(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [0; 16]
+            && vmulouh(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [0; 16]
+            && av_mulouw(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [0; 16]
+            && vsldoi::<4>(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes()
+                != [0; 16]
+            && vperm(
+                V128::from_bytes([1; 16]),
+                V128::from_bytes([2; 16]),
+                V128::from_bytes([0; 16]),
+            )
+            .to_bytes()
+                != [0; 16]
+            && vslo(V128::from_bytes([1; 16]), V128::from_bytes([0; 16])).to_bytes() != [0; 16]
+            && vsro(V128::from_bytes([1; 16]), V128::from_bytes([0; 16])).to_bytes() != [0; 16]
+            && vadduhm(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() == [3; 16]
+            && vadduwm(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() == [3; 16]
+            && vaddudm(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() == [3; 16]
+            && vsubuhm(V128::from_bytes([3; 16]), V128::from_bytes([2; 16])).to_bytes() == [1; 16]
+            && vsubuwm(V128::from_bytes([3; 16]), V128::from_bytes([2; 16])).to_bytes() == [1; 16]
+            && vsubudm(V128::from_bytes([3; 16]), V128::from_bytes([2; 16])).to_bytes() == [1; 16]
     }
 }
