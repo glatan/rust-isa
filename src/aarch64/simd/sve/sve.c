@@ -359,3 +359,52 @@ double rust_isa_sve_addv_f64(const double *a, size_t len) {
     }
     return svaddv_f64(svptrue_b64(), acc);
 }
+
+float rust_isa_sve_minv_f32(const float *a, size_t len) {
+    svfloat32_t acc = svdup_f32(__builtin_inff());
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        acc = svmin_f32_m(pg, acc, svld1_f32(pg, a + i));
+    }
+    return svminv_f32(svptrue_b32(), acc);
+}
+float rust_isa_sve_maxv_f32(const float *a, size_t len) {
+    svfloat32_t acc = svdup_f32(-__builtin_inff());
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        acc = svmax_f32_m(pg, acc, svld1_f32(pg, a + i));
+    }
+    return svmaxv_f32(svptrue_b32(), acc);
+}
+int32_t rust_isa_sve_minv_i32(const int32_t *a, size_t len) {
+    svint32_t acc = svdup_s32(INT32_MAX);
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        acc = svmin_s32_m(pg, acc, svld1_s32(pg, a + i));
+    }
+    return svminv_s32(svptrue_b32(), acc);
+}
+int32_t rust_isa_sve_maxv_i32(const int32_t *a, size_t len) {
+    svint32_t acc = svdup_s32(INT32_MIN);
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        acc = svmax_s32_m(pg, acc, svld1_s32(pg, a + i));
+    }
+    return svmaxv_s32(svptrue_b32(), acc);
+}
+double rust_isa_sve_minv_f64(const double *a, size_t len) {
+    svfloat64_t acc = svdup_f64(__builtin_inf());
+    for (size_t i = 0; i < len; i += svcntd()) {
+        svbool_t pg = svwhilelt_b64_u64(i, len);
+        acc = svmin_f64_m(pg, acc, svld1_f64(pg, a + i));
+    }
+    return svminv_f64(svptrue_b64(), acc);
+}
+double rust_isa_sve_maxv_f64(const double *a, size_t len) {
+    svfloat64_t acc = svdup_f64(-__builtin_inf());
+    for (size_t i = 0; i < len; i += svcntd()) {
+        svbool_t pg = svwhilelt_b64_u64(i, len);
+        acc = svmax_f64_m(pg, acc, svld1_f64(pg, a + i));
+    }
+    return svmaxv_f64(svptrue_b64(), acc);
+}
