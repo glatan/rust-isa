@@ -27,6 +27,20 @@ pub use permute::*;
 pub use round::*;
 pub use shuffle::*;
 
+mod arithmetic;
+mod compare;
+mod compare_imm;
+mod convert;
+mod dot;
+mod nontemporal;
+
+pub use arithmetic::*;
+pub use compare::*;
+pub use compare_imm::*;
+pub use convert::*;
+pub use dot::*;
+pub use nontemporal::*;
+
 unsafe extern "C" {
     fn rust_isa_avx_vaddps(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_avx_vaddpd(a: *const u8, b: *const u8, out: *mut u8);
