@@ -10,6 +10,7 @@
 //! an immediate are intentionally omitted.
 
 use super::sse2::V128;
+use core::arch::asm;
 
 unsafe extern "C" {
     fn rust_isa_sse41_pmulld(a: *const u8, b: *const u8, out: *mut u8);
@@ -262,6 +263,155 @@ pub unsafe fn pmovzxbw(a: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
         rust_isa_sse41_pmovzxbw(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `pinsrb`
+///
+/// Insert the low byte of `value` into lane `IMM`. `IMM` must be in `0..=15`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pinsrb<const IMM: u8>(a: V128, value: u8) -> V128 {
+    const { assert!(IMM <= 15, "pinsrb lane must be in 0..=15") };
+    let mut out = u128::from_le_bytes(a.to_bytes());
+    unsafe {
+        asm!(
+            "pinsrb {out}, {value:e}, {imm}",
+            out = inout(xmm_reg) out,
+            value = in(reg) value as u32,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+/// `pinsrd`
+///
+/// Insert `value` into 32-bit lane `IMM`. `IMM` must be in `0..=3`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pinsrd<const IMM: u8>(a: V128, value: u32) -> V128 {
+    const { assert!(IMM <= 3, "pinsrd lane must be in 0..=3") };
+    let mut out = u128::from_le_bytes(a.to_bytes());
+    unsafe {
+        asm!(
+            "pinsrd {out}, {value:e}, {imm}",
+            out = inout(xmm_reg) out,
+            value = in(reg) value,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+/// `pextrb`
+///
+/// Extract lane `IMM` as a byte. `IMM` must be in `0..=15`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pextrb<const IMM: u8>(a: V128) -> u8 {
+    const { assert!(IMM <= 15, "pextrb lane must be in 0..=15") };
+    let a = u128::from_le_bytes(a.to_bytes());
+    let out: u32;
+    unsafe {
+        asm!(
+            "pextrb {out:e}, {a}, {imm}",
+            out = lateout(reg) out,
+            a = in(xmm_reg) a,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    out as u8
+}
+
+/// `pextrd`
+///
+/// Extract 32-bit lane `IMM`. `IMM` must be in `0..=3`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1.
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pextrd<const IMM: u8>(a: V128) -> u32 {
+    const { assert!(IMM <= 3, "pextrd lane must be in 0..=3") };
+    let a = u128::from_le_bytes(a.to_bytes());
+    let out: u32;
+    unsafe {
+        asm!(
+            "pextrd {out:e}, {a}, {imm}",
+            out = lateout(reg) out,
+            a = in(xmm_reg) a,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    out
+}
+
+/// `pinsrq`
+///
+/// Insert `value` into 64-bit lane `IMM`. `IMM` must be in `0..=1`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1 and target x86-64.
+#[cfg(target_arch = "x86_64")]
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pinsrq<const IMM: u8>(a: V128, value: u64) -> V128 {
+    const { assert!(IMM <= 1, "pinsrq lane must be in 0..=1") };
+    let mut out = u128::from_le_bytes(a.to_bytes());
+    unsafe {
+        asm!(
+            "pinsrq {out}, {value}, {imm}",
+            out = inout(xmm_reg) out,
+            value = in(reg) value,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
+    }
+    V128::from_bytes(out.to_le_bytes())
+}
+
+/// `pextrq`
+///
+/// Extract 64-bit lane `IMM`. `IMM` must be in `0..=1`.
+///
+/// # Safety
+///
+/// The caller must enable SSE4.1 and target x86-64.
+#[cfg(target_arch = "x86_64")]
+#[target_feature(enable = "sse4.1")]
+#[inline]
+pub unsafe fn pextrq<const IMM: u8>(a: V128) -> u64 {
+    const { assert!(IMM <= 1, "pextrq lane must be in 0..=1") };
+    let a = u128::from_le_bytes(a.to_bytes());
+    let out: u64;
+    unsafe {
+        asm!(
+            "pextrq {out}, {a}, {imm}",
+            out = lateout(reg) out,
+            a = in(xmm_reg) a,
+            imm = const IMM,
+            options(pure, nomem, nostack),
+        );
     }
     out
 }

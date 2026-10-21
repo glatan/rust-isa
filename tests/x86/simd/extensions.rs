@@ -9,8 +9,8 @@ use rust_isa::x86::simd::sse3::{
     addsubpd, addsubps, haddpd, haddps, hsubpd, hsubps, lddqu, movddup, movshdup, movsldup,
 };
 use rust_isa::x86::simd::sse4_1::{
-    blendvpd, blendvps, packusdw, pblendvb, phminposuw, pmaxud, pmaxuw, pminud, pminuw, pmovsxbd,
-    pmovsxbw, pmovzxbw, pmulld, ptest,
+    blendvpd, blendvps, packusdw, pblendvb, pextrb, pextrd, phminposuw, pinsrb, pinsrd, pmaxud,
+    pmaxuw, pminud, pminuw, pmovsxbd, pmovsxbw, pmovzxbw, pmulld, ptest,
 };
 use rust_isa::x86::simd::sse4_2::{crc32_u8, pcmpgtq};
 use rust_isa::x86::simd::ssse3::{
@@ -502,4 +502,33 @@ fn optional_extension_api_surface() {
         core::mem::size_of::<rust_isa::x86::matrix::amx_tile::TileConfig>(),
         64
     );
+}
+
+#[test]
+fn sse41_insert_and_extract() {
+    if !is_x86_feature_detected!("sse4.1") {
+        return;
+    }
+    let zero = V128::from_bytes([0; 16]);
+    let value = unsafe { pinsrb::<3>(zero, 0xab) }.to_bytes();
+    assert_eq!(value[3], 0xab);
+    assert_eq!(unsafe { pextrb::<3>(V128::from_bytes(value)) }, 0xab);
+
+    let value = unsafe { pinsrd::<2>(zero, 0x1234_5678) }.to_bytes();
+    assert_eq!(&value[8..12], &[0x78, 0x56, 0x34, 0x12]);
+    assert_eq!(unsafe { pextrd::<2>(V128::from_bytes(value)) }, 0x1234_5678);
+
+    #[cfg(target_arch = "x86_64")]
+    {
+        use rust_isa::x86::simd::sse4_1::{pextrq, pinsrq};
+        let value = unsafe { pinsrq::<1>(zero, 0x0123_4567_89ab_cdef) }.to_bytes();
+        assert_eq!(
+            &value[8..16],
+            &[0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01]
+        );
+        assert_eq!(
+            unsafe { pextrq::<1>(V128::from_bytes(value)) },
+            0x0123_4567_89ab_cdef
+        );
+    }
 }
