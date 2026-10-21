@@ -24,14 +24,17 @@ use rust_isa::aarch64::simd::neon::{
     fcmlt_f64, fdiv, fmax, fmaxnm_f32, fmaxnm_f64, fmaxnmv_f32, fmaxnmv_f64, fmaxv_f32, fmaxv_f64,
     fmin, fminnm_f32, fminnm_f64, fminnmv_f32, fminnmv_f64, fminv_f32, fminv_f64, fmla_f32,
     fmla_f64, fmls_f32, fmls_f64, fmul, fmulx_f32, fmulx_f64, fneg, fsqrt, fsub, max_i16, max_i32,
-    max_i8, min_i16, min_i32, min_i8, mul, mul_f64, mul_i16, mul_i32, mul_i8, neg_i32, not, orn,
-    orr, rbit, replace_i32, rev16, rev32, rev64, saddl_s16, saddl_s32, saddl_s8, saddw_s16,
-    saddw_s32, saddw_s8, sar_i16, sar_i32, sar_i8, shl_i32, shr_i16, smaxv_s16, smaxv_s32,
-    smaxv_s8, sminv_s16, sminv_s32, sminv_s8, splat_i32, ssubl_s16, ssubl_s32, ssubl_s8, ssubw_s16,
+    max_i8, min_i16, min_i32, min_i8, mla_s16, mla_s32, mla_s8, mls_s16, mls_s32, mls_s8, mul,
+    mul_f64, mul_i16, mul_i32, mul_i8, neg_i32, not, orn, orr, rbit, replace_i32, rev16, rev32,
+    rev64, saddl_s16, saddl_s32, saddl_s8, saddw_s16, saddw_s32, saddw_s8, sar_i16, sar_i32,
+    sar_i8, shl_i32, shr_i16, smax_s16, smax_s32, smax_s8, smaxp_s16, smaxp_s32, smaxp_s8,
+    smaxv_s16, smaxv_s32, smaxv_s8, smin_s16, smin_s32, smin_s8, sminp_s16, sminp_s32, sminp_s8,
+    sminv_s16, sminv_s32, sminv_s8, splat_i32, ssubl_s16, ssubl_s32, ssubl_s8, ssubw_s16,
     ssubw_s32, ssubw_s8, sub_i16, sub_i32, sub_i64, sub_i8, tbl, trn1, uaddl_u16, uaddl_u32,
-    uaddl_u8, uaddw_u16, uaddw_u32, uaddw_u8, umaxv_u16, umaxv_u32, umaxv_u8, uminv_u16, uminv_u32,
-    uminv_u8, usubl_u16, usubl_u32, usubl_u8, usubw_u16, usubw_u32, usubw_u8, uzp1, v128_load,
-    v128_store, zip1,
+    uaddl_u8, uaddw_u16, uaddw_u32, uaddw_u8, umax_u16, umax_u32, umax_u8, umaxp_u16, umaxp_u32,
+    umaxp_u8, umaxv_u16, umaxv_u32, umaxv_u8, umin_u16, umin_u32, umin_u8, uminp_u16, uminp_u32,
+    uminp_u8, uminv_u16, uminv_u32, uminv_u8, usubl_u16, usubl_u32, usubl_u8, usubw_u16, usubw_u32,
+    usubw_u8, uzp1, v128_load, v128_store, zip1,
 };
 use rust_isa::aarch64::simd::sve;
 
@@ -499,6 +502,76 @@ fn integer_ops() -> bool {
         || uminv_u16(i16x8([1, 2, 3, 4, 5, 6, 7, 8])) != 1
         || umaxv_u32(i32x4([1, 2, 3, 4])) != 4
         || uminv_u32(i32x4([1, 2, 3, 4])) != 1
+
+    {
+        return false;
+    }
+    if smax_s8(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [2; 16]
+        || smin_s8(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [1; 16]
+        || i16_lanes(smax_s16(i16x8([1; 8]), i16x8([2; 8]))) != [2; 8]
+        || i16_lanes(smin_s16(i16x8([1; 8]), i16x8([2; 8]))) != [1; 8]
+        || lanes(smax_s32(i32x4([1; 4]), i32x4([2; 4]))) != [2; 4]
+        || lanes(smin_s32(i32x4([1; 4]), i32x4([2; 4]))) != [1; 4]
+        || umax_u8(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [2; 16]
+        || umin_u8(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes() != [1; 16]
+        || i16_lanes(umax_u16(i16x8([1; 8]), i16x8([2; 8]))) != [2; 8]
+        || i16_lanes(umin_u16(i16x8([1; 8]), i16x8([2; 8]))) != [1; 8]
+        || lanes(umax_u32(i32x4([1; 4]), i32x4([2; 4]))) != [2; 4]
+        || lanes(umin_u32(i32x4([1; 4]), i32x4([2; 4]))) != [1; 4]
+        || smaxp_s8(
+            V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]),
+            V128::from_bytes([0; 16]),
+        )
+        .to_bytes()
+            != [2, 4, 6, 8, 10, 12, 14, 16, 0, 0, 0, 0, 0, 0, 0, 0]
+        || sminp_s8(
+            V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]),
+            V128::from_bytes([0; 16]),
+        )
+        .to_bytes()
+            != [1, 3, 5, 7, 9, 11, 13, 15, 0, 0, 0, 0, 0, 0, 0, 0]
+        || i16_lanes(smaxp_s16(i16x8([1, 2, 3, 4, 5, 6, 7, 8]), i16x8([0; 8])))
+            != [2, 4, 6, 8, 0, 0, 0, 0]
+        || i16_lanes(sminp_s16(i16x8([1, 2, 3, 4, 5, 6, 7, 8]), i16x8([0; 8])))
+            != [1, 3, 5, 7, 0, 0, 0, 0]
+        || lanes(smaxp_s32(i32x4([1, 2, 3, 4]), i32x4([0; 4]))) != [2, 4, 0, 0]
+        || lanes(sminp_s32(i32x4([1, 2, 3, 4]), i32x4([0; 4]))) != [1, 3, 0, 0]
+        || umaxp_u8(
+            V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]),
+            V128::from_bytes([0; 16]),
+        )
+        .to_bytes()
+            != [2, 4, 6, 8, 10, 12, 14, 16, 0, 0, 0, 0, 0, 0, 0, 0]
+        || uminp_u8(
+            V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]),
+            V128::from_bytes([0; 16]),
+        )
+        .to_bytes()
+            != [1, 3, 5, 7, 9, 11, 13, 15, 0, 0, 0, 0, 0, 0, 0, 0]
+        || i16_lanes(umaxp_u16(i16x8([1, 2, 3, 4, 5, 6, 7, 8]), i16x8([0; 8])))
+            != [2, 4, 6, 8, 0, 0, 0, 0]
+        || i16_lanes(uminp_u16(i16x8([1, 2, 3, 4, 5, 6, 7, 8]), i16x8([0; 8])))
+            != [1, 3, 5, 7, 0, 0, 0, 0]
+        || lanes(umaxp_u32(i32x4([1, 2, 3, 4]), i32x4([0; 4]))) != [2, 4, 0, 0]
+        || lanes(uminp_u32(i32x4([1, 2, 3, 4]), i32x4([0; 4]))) != [1, 3, 0, 0]
+        || mla_s8(
+            V128::from_bytes([1; 16]),
+            V128::from_bytes([2; 16]),
+            V128::from_bytes([3; 16]),
+        )
+        .to_bytes()
+            != [7; 16]
+        || mls_s8(
+            V128::from_bytes([1; 16]),
+            V128::from_bytes([2; 16]),
+            V128::from_bytes([3; 16]),
+        )
+        .to_bytes()
+            != [0xfb; 16]
+        || i16_lanes(mla_s16(i16x8([1; 8]), i16x8([2; 8]), i16x8([3; 8]))) != [7; 8]
+        || i16_lanes(mls_s16(i16x8([1; 8]), i16x8([2; 8]), i16x8([3; 8]))) != [-5; 8]
+        || lanes(mla_s32(i32x4([1; 4]), i32x4([2; 4]), i32x4([3; 4]))) != [7; 4]
+        || lanes(mls_s32(i32x4([1; 4]), i32x4([2; 4]), i32x4([3; 4]))) != [u32::MAX - 4; 4]
     {
         return false;
     }
