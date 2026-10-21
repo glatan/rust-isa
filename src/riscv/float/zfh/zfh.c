@@ -56,3 +56,25 @@ uint16_t rust_isa_riscv_zfh_fcvt_h_w(int32_t value) { return bits((_Float16)valu
 uint16_t rust_isa_riscv_zfh_fcvt_h_wu(uint32_t value) { return bits((_Float16)value); }
 int16_t rust_isa_riscv_zfh_fmv_x_h(uint16_t value) { return (int16_t)value; }
 uint16_t rust_isa_riscv_zfh_fmv_h_x(int16_t value) { return (uint16_t)value; }
+
+uint16_t rust_isa_riscv_zfh_fminm(uint16_t a, uint16_t b) {
+    return bits(__builtin_fminf16(from_bits(a), from_bits(b)));
+}
+uint16_t rust_isa_riscv_zfh_fmaxm(uint16_t a, uint16_t b) {
+    return bits(__builtin_fmaxf16(from_bits(a), from_bits(b)));
+}
+uint16_t rust_isa_riscv_zfh_fround(uint16_t a) {
+    return bits(__builtin_rintf16(from_bits(a)));
+}
+uint16_t rust_isa_riscv_zfh_froundnx(uint16_t a) {
+    return bits(__builtin_rintf16(from_bits(a)));
+}
+uint32_t rust_isa_riscv_zfh_fleq(uint16_t a, uint16_t b) {
+    return from_bits(a) <= from_bits(b);
+}
+uint32_t rust_isa_riscv_zfh_fltq(uint16_t a, uint16_t b) {
+    return from_bits(a) < from_bits(b);
+}
+int32_t rust_isa_riscv_zfh_fcvtmod_w_h(uint16_t a) {
+    return (int32_t)from_bits(a);
+}
