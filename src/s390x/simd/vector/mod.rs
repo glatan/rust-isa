@@ -202,3 +202,121 @@ pub unsafe fn splat_i32(value: i32) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_s390x_vector_vab(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vah(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vaf(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vag(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vsb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vsh(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vsf(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vsg(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vmin(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vmax(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vavg(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vavgl(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vceq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vch(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vcl(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vsel(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vsl(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vsr(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+binary!(
+    /// `vab`.
+    vab,
+    rust_isa_s390x_vector_vab
+);
+binary!(
+    /// `vah`.
+    vah,
+    rust_isa_s390x_vector_vah
+);
+binary!(
+    /// `vaf`.
+    vaf,
+    rust_isa_s390x_vector_vaf
+);
+binary!(
+    /// `vag`.
+    vag,
+    rust_isa_s390x_vector_vag
+);
+binary!(
+    /// `vsb`.
+    vsb,
+    rust_isa_s390x_vector_vsb
+);
+binary!(
+    /// `vsh`.
+    vsh,
+    rust_isa_s390x_vector_vsh
+);
+binary!(
+    /// `vsf`.
+    vsf,
+    rust_isa_s390x_vector_vsf
+);
+binary!(
+    /// `vsg`.
+    vsg,
+    rust_isa_s390x_vector_vsg
+);
+binary!(
+    /// `vmin`.
+    vmin,
+    rust_isa_s390x_vector_vmin
+);
+binary!(
+    /// `vmax`.
+    vmax,
+    rust_isa_s390x_vector_vmax
+);
+binary!(
+    /// `vavg`.
+    vavg,
+    rust_isa_s390x_vector_vavg
+);
+binary!(
+    /// `vavgl`.
+    vavgl,
+    rust_isa_s390x_vector_vavgl
+);
+binary!(
+    /// `vceq`.
+    vceq,
+    rust_isa_s390x_vector_vceq
+);
+binary!(
+    /// `vch`.
+    vch,
+    rust_isa_s390x_vector_vch
+);
+binary!(
+    /// `vcl`.
+    vcl,
+    rust_isa_s390x_vector_vcl
+);
+binary!(
+    /// `vsl`.
+    vsl,
+    rust_isa_s390x_vector_vsl
+);
+binary!(
+    /// `vsr`.
+    vsr,
+    rust_isa_s390x_vector_vsr
+);
+
+/// `vsel`.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vsel(a: V128, b: V128, c: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_s390x_vector_vsel(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
