@@ -22,6 +22,7 @@ void rust_isa_power9_vector_abs_i32(const uint8_t *a, uint8_t *out) {
 typedef vector unsigned char v16u8;
 typedef vector unsigned short v8u16;
 typedef vector unsigned int v4u32;
+typedef vector unsigned long long v2u64;
 typedef vector signed char v16i8;
 typedef vector signed short v8i16;
 
@@ -92,4 +93,9 @@ void rust_isa_power9_vector_vctzh(const uint8_t *a, uint8_t *out) {
 __attribute__((always_inline))
 void rust_isa_power9_vector_vctzw(const uint8_t *a, uint8_t *out) {
     *(v4u32 *)(void *)out = (v4u32)vec_cnttz(*(const v4u32 *)(const void *)a);
+}
+
+__attribute__((always_inline))
+void rust_isa_power9_vector_vctzd(const uint8_t *a, uint8_t *out) {
+    *(v2u64 *)(void *)out = vec_cnttz(*(const v2u64 *)(const void *)a);
 }

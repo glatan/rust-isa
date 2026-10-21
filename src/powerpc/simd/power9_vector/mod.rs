@@ -70,6 +70,7 @@ unsafe extern "C" {
     fn rust_isa_power9_vector_vctzb(a: *const u8, out: *mut u8);
     fn rust_isa_power9_vector_vctzh(a: *const u8, out: *mut u8);
     fn rust_isa_power9_vector_vctzw(a: *const u8, out: *mut u8);
+    fn rust_isa_power9_vector_vctzd(a: *const u8, out: *mut u8);
 }
 
 macro_rules! unary9 {
@@ -163,6 +164,11 @@ unary9!(
     /// `vctzw`
     vctzw,
     rust_isa_power9_vector_vctzw
+);
+unary9!(
+    /// `vctzd`
+    vctzd,
+    rust_isa_power9_vector_vctzd
 );
 
 /// `vctzlsbb`

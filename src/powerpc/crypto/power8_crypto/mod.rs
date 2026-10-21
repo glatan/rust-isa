@@ -4,8 +4,8 @@
 //! operation is `unsafe` and the caller must enable the Power8 feature set. The
 //! C file is compiled with `-mcpu=power8`.
 //!
-//! The values are [`V128`]. The AES round instructions operate on the PowerPC
-//! big-endian byte order used by the instruction set.
+//! The values are [`V128`]. The AES round, S-box, and SHA sigma instructions
+//! operate on the PowerPC big-endian byte order used by the instruction set.
 
 use crate::powerpc::simd::altivec::V128;
 
@@ -14,6 +14,9 @@ unsafe extern "C" {
     fn rust_isa_power8_crypto_ncipher(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_power8_crypto_cipherlast(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_power8_crypto_ncipherlast(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_power8_crypto_vsbox(a: *const u8, out: *mut u8);
+    fn rust_isa_power8_crypto_vshasigmaw(a: *const u8, st_six: u32, out: *mut u8);
+    fn rust_isa_power8_crypto_vshasigmad(a: *const u8, st_six: u32, out: *mut u8);
 }
 
 /// `vcipher`
@@ -76,6 +79,108 @@ pub unsafe fn ncipherlast(a: V128, b: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
         rust_isa_power8_crypto_ncipherlast(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vcipher`
+///
+/// Perform one AES encryption round.
+///
+/// # Safety
+///
+/// The caller must enable the Power8 crypto feature set.
+#[inline(always)]
+pub unsafe fn vcipher(a: V128, b: V128) -> V128 {
+    unsafe { cipher(a, b) }
+}
+
+/// `vncipher`
+///
+/// Perform one AES decryption round.
+///
+/// # Safety
+///
+/// The caller must enable the Power8 crypto feature set.
+#[inline(always)]
+pub unsafe fn vncipher(a: V128, b: V128) -> V128 {
+    unsafe { ncipher(a, b) }
+}
+
+/// `vcipherlast`
+///
+/// Perform the final AES encryption round.
+///
+/// # Safety
+///
+/// The caller must enable the Power8 crypto feature set.
+#[inline(always)]
+pub unsafe fn vcipherlast(a: V128, b: V128) -> V128 {
+    unsafe { cipherlast(a, b) }
+}
+
+/// `vncipherlast`
+///
+/// Perform the final AES decryption round.
+///
+/// # Safety
+///
+/// The caller must enable the Power8 crypto feature set.
+#[inline(always)]
+pub unsafe fn vncipherlast(a: V128, b: V128) -> V128 {
+    unsafe { ncipherlast(a, b) }
+}
+
+/// `vsbox`
+///
+/// Apply the AES S-box to every byte.
+///
+/// # Safety
+///
+/// The caller must enable the Power8 crypto feature set.
+#[inline(always)]
+pub unsafe fn vsbox(a: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_power8_crypto_vsbox(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vshasigmaw`
+///
+/// Apply the SHA-256 sigma function selected by `ST` and `SIX` to each word.
+/// `ST` must be `0` or `1`, and `SIX` must be in `0..=15`.
+///
+/// # Safety
+///
+/// The caller must enable the Power8 crypto feature set.
+#[inline(always)]
+pub unsafe fn vshasigmaw<const ST: u32, const SIX: u32>(a: V128) -> V128 {
+    const { assert!(ST <= 1, "ST must be 0 or 1") };
+    const { assert!(SIX <= 15, "SIX must be in 0..=15") };
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_power8_crypto_vshasigmaw(a.as_ptr(), (ST << 4) | SIX, out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vshasigmad`
+///
+/// Apply the SHA-512 sigma function selected by `ST` and `SIX` to each
+/// doubleword. `ST` must be `0` or `1`, and `SIX` must be in `0..=15`.
+///
+/// # Safety
+///
+/// The caller must enable the Power8 crypto feature set.
+#[inline(always)]
+pub unsafe fn vshasigmad<const ST: u32, const SIX: u32>(a: V128) -> V128 {
+    const { assert!(ST <= 1, "ST must be 0 or 1") };
+    const { assert!(SIX <= 15, "SIX must be in 0..=15") };
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_power8_crypto_vshasigmad(a.as_ptr(), (ST << 4) | SIX, out.as_mut_ptr());
     }
     out
 }

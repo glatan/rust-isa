@@ -73,4 +73,18 @@ fn powerpc_pipeline() {
             "{mnemonic} is not adjacent:\n{body}"
         );
     }
+
+    for mnemonic in [
+        "vcipher",
+        "vsbox",
+        "vshasigmad",
+        "vshasigmaw",
+        "xvi4ger8",
+        "xvi8ger4spp",
+        "xvi16ger2spp",
+        "xxmfacc",
+        "xxsetaccz",
+    ] {
+        assert!(text.contains(mnemonic), "missing {mnemonic} in the binary");
+    }
 }

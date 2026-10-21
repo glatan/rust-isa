@@ -47,7 +47,6 @@ pub use super::power9_vector::{
 
 unsafe extern "C" {
     fn rust_isa_power10_vector_vclzd(a: *const u8, out: *mut u8);
-    fn rust_isa_power10_vector_vctzd(a: *const u8, out: *mut u8);
     fn rust_isa_power10_vector_vpopcntd(a: *const u8, out: *mut u8);
 }
 
@@ -69,14 +68,10 @@ pub unsafe fn vclzd(a: V128) -> V128 {
 ///
 /// # Safety
 ///
-/// The caller must enable the Power10 vector feature set.
+/// The caller must enable the Power9 vector feature set.
 #[inline(always)]
 pub unsafe fn vctzd(a: V128) -> V128 {
-    let mut out = V128::from_bytes([0; 16]);
-    unsafe {
-        rust_isa_power10_vector_vctzd(a.as_ptr(), out.as_mut_ptr());
-    }
-    out
+    unsafe { super::power9_vector::vctzd(a) }
 }
 
 /// `vpopcntd`.
