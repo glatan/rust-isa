@@ -9,6 +9,8 @@ use rust_isa::aarch64::crypto::sha2::{sha256h, sha256h2, sha256su0, sha256su1};
 use rust_isa::aarch64::crypto::sha3::{bcax, eor3, rax1};
 use rust_isa::aarch64::crypto::sm4::{sm4e, sm4ekey};
 use rust_isa::aarch64::simd::dotprod::{sdot, udot};
+use rust_isa::aarch64::simd::f32mm::fmmla_f32;
+use rust_isa::aarch64::simd::f64mm::fmmla_f64;
 use rust_isa::aarch64::simd::fcma::{fcmla, fcmla_rot180, fcmla_rot270};
 use rust_isa::aarch64::simd::fhm::{fmla_f16, fmls_f16};
 use rust_isa::aarch64::simd::fp16::{fadd_f16, fmul_f16};
@@ -144,6 +146,12 @@ fn run() -> u32 {
     }
     if !unsafe { jsconv_ops() } {
         return 22;
+    }
+    if !unsafe { f32mm_ops() } {
+        return 23;
+    }
+    if !unsafe { f64mm_ops() } {
+        return 24;
     }
     if !unsafe { sve_ops() } {
         return 17;
@@ -994,4 +1002,20 @@ unsafe fn sve_ops() -> bool {
 #[target_feature(enable = "jsconv")]
 unsafe fn jsconv_ops() -> bool {
     unsafe { fjcvtzs(1.9) == 1 && fjcvtzs(f64::NAN) == 0 && fjcvtzs(-1.5) == -1 }
+}
+
+#[target_feature(enable = "sve")]
+unsafe fn f32mm_ops() -> bool {
+    let a = [0.0f32; 64];
+    let mut acc = [0.0f32; 64];
+    unsafe { fmmla_f32(&a, &a, &mut acc) };
+    acc.iter().all(|&value| value == 0.0)
+}
+
+#[target_feature(enable = "sve")]
+unsafe fn f64mm_ops() -> bool {
+    let a = [0.0f64; 64];
+    let mut acc = [0.0f64; 64];
+    unsafe { fmmla_f64(&a, &a, &mut acc) };
+    acc.iter().all(|&value| value == 0.0)
 }

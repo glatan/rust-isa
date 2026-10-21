@@ -65,6 +65,8 @@ fn main() {
     let a64_fcma_c = manifest.join("src/aarch64/simd/fcma/fcma.c");
     let a64_fhm_c = manifest.join("src/aarch64/simd/fhm/fhm.c");
     let a64_jsconv_c = manifest.join("src/aarch64/simd/jsconv/jsconv.c");
+    let a64_f32mm_c = manifest.join("src/aarch64/simd/f32mm/f32mm.c");
+    let a64_f64mm_c = manifest.join("src/aarch64/simd/f64mm/f64mm.c");
     let a64_sve_c = manifest.join("src/aarch64/simd/sve/sve.c");
     let a64_sme_c = manifest.join("src/aarch64/simd/sme/sme.c");
     let a64_aes_c = manifest.join("src/aarch64/crypto/aes/aes.c");
@@ -161,6 +163,8 @@ fn main() {
         &a64_fcma_c,
         &a64_fhm_c,
         &a64_jsconv_c,
+        &a64_f32mm_c,
+        &a64_f64mm_c,
         &a64_sve_c,
         &a64_sme_c,
         &a64_aes_c,
@@ -462,6 +466,16 @@ fn main() {
                 &a64_fhm_c,
                 "rust_isa_a64_fhm",
                 &["-march=armv8.2-a+fp16"][..],
+            ),
+            (
+                &a64_f32mm_c,
+                "rust_isa_a64_f32mm",
+                &["-march=armv8.6-a+sve+f32mm"][..],
+            ),
+            (
+                &a64_f64mm_c,
+                "rust_isa_a64_f64mm",
+                &["-march=armv8.6-a+sve+f64mm"][..],
             ),
             (
                 &a64_jsconv_c,
