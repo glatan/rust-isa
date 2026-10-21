@@ -92,13 +92,28 @@ pub fn c_symbols_in(text: &str, prefix: &str) -> BTreeSet<String> {
         let prefix = line[..start].trim();
         if !matches!(
             prefix,
-            "void" | "int32_t" | "int64_t" | "uint32_t" | "uint64_t" | "float" | "double"
+            "void"
+                | "int"
+                | "int8_t"
+                | "int16_t"
+                | "int32_t"
+                | "int64_t"
+                | "uint8_t"
+                | "uint16_t"
+                | "uint32_t"
+                | "uint64_t"
+                | "float"
+                | "double"
         ) {
             continue;
         }
         let tail = &line[start..];
         let end = tail.find('(').expect("c symbol");
-        symbols.insert(tail[..end].to_string());
+        let name = &tail[..end];
+        if name.contains('#') {
+            continue;
+        }
+        symbols.insert(name.to_string());
     }
     symbols
 }

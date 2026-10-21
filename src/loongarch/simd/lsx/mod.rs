@@ -34,3 +34,140 @@ pub fn mul(a: V128, b: V128) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_lsx_add_i8(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lsx_add_i16(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lsx_add_i64(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lsx_sub_i8(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lsx_sub_i16(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lsx_sub_i32(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lsx_sub_i64(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lsx_mul_i16(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lsx_mul_i32(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lsx_and(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lsx_or(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lsx_xor(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lsx_cmpeq_i32(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lsx_cmpgt_i32(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lsx_fadd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lsx_fsub(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lsx_fmul(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lsx_fdiv(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_lsx_splat_i32(value: i32, out: *mut u8);
+}
+
+macro_rules! binary {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[inline(always)]
+        pub fn $name(a: V128, b: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe {
+                $c(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+            }
+            out
+        }
+    };
+}
+
+binary!(
+    /// `vadd.b` on 8-bit lanes.
+    add_i8,
+    rust_isa_lsx_add_i8
+);
+binary!(
+    /// `vadd.h` on 16-bit lanes.
+    add_i16,
+    rust_isa_lsx_add_i16
+);
+binary!(
+    /// `vadd.d` on 64-bit lanes.
+    add_i64,
+    rust_isa_lsx_add_i64
+);
+binary!(
+    /// `vsub.b` on 8-bit lanes.
+    sub_i8,
+    rust_isa_lsx_sub_i8
+);
+binary!(
+    /// `vsub.h` on 16-bit lanes.
+    sub_i16,
+    rust_isa_lsx_sub_i16
+);
+binary!(
+    /// `vsub.w` on 32-bit lanes.
+    sub_i32,
+    rust_isa_lsx_sub_i32
+);
+binary!(
+    /// `vsub.d` on 64-bit lanes.
+    sub_i64,
+    rust_isa_lsx_sub_i64
+);
+binary!(
+    /// `vmul.h` on 16-bit lanes, keeping the low 16 bits.
+    mul_i16,
+    rust_isa_lsx_mul_i16
+);
+binary!(
+    /// `vmul.w` on 32-bit lanes, keeping the low 32 bits.
+    mul_i32,
+    rust_isa_lsx_mul_i32
+);
+binary!(
+    /// Bitwise AND.
+    and,
+    rust_isa_lsx_and
+);
+binary!(
+    /// Bitwise OR.
+    or,
+    rust_isa_lsx_or
+);
+binary!(
+    /// Bitwise XOR.
+    xor,
+    rust_isa_lsx_xor
+);
+binary!(
+    /// `vseq.w` on 32-bit lanes. A true lane is all bits one.
+    cmpeq_i32,
+    rust_isa_lsx_cmpeq_i32
+);
+binary!(
+    /// `vslt.w` on signed 32-bit lanes. A true lane is all bits one.
+    cmpgt_i32,
+    rust_isa_lsx_cmpgt_i32
+);
+binary!(
+    /// `vfadd.s` on 32-bit float lanes.
+    fadd,
+    rust_isa_lsx_fadd
+);
+binary!(
+    /// `vfsub.s` on 32-bit float lanes.
+    fsub,
+    rust_isa_lsx_fsub
+);
+binary!(
+    /// `vfmul.s` on 32-bit float lanes.
+    fmul,
+    rust_isa_lsx_fmul
+);
+binary!(
+    /// `vfdiv.s` on 32-bit float lanes.
+    fdiv,
+    rust_isa_lsx_fdiv
+);
+
+/// Broadcast a 32-bit value to all four lanes.
+#[inline(always)]
+pub fn splat_i32(value: i32) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_lsx_splat_i32(value, out.as_mut_ptr());
+    }
+    out
+}

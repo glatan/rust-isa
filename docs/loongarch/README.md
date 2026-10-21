@@ -6,7 +6,18 @@ family は命令の種類に合わせて決める（`simd`、`system` など）�
 
 ## 実装状況
 
-LSX の `V128`、load / store、`vadd.w`、`vmul.w` を実装してある。`fixtures/loongarch-values` を QEMU-LoongArch で実行し、`vadd.w` と `vmul.w` の zero-cost を確認する。
+対象は各 extension の全命令である。次の表は、現在公開している命令と、
+まだ公開していない命令の一覧である。値テストの列は、その extension の
+値テストを実行する環境を示す。未実装命令も同じ表で管理する。
+
+### SIMD
+
+| extension        | 実装済み命令                                                                                                                                                                                                                        | 未実装命令                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | 値テスト |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `lsx`            | `add`, `add_i16`, `add_i64`, `add_i8`, `and`, `cmpeq_i32`, `cmpgt_i32`, `fadd`, `fdiv`, `fmul`, `fsub`, `mul`, `mul_i16`, `mul_i32`, `or`, `splat_i32`, `sub_i16`, `sub_i32`, `sub_i64`, `sub_i8`, `v128_load`, `v128_store`, `xor` | `vadd`, `vsub`, `vmul`, `vdiv`, `vabs`, `vneg`, `vmax`, `vmin`, `vseq`, `vsle`, `vslt`, `vseqi`, `vslei`, `vslti`, `vand`, `vor`, `vxor`, `vnor`, `vbitsel`, `vshuf`, `vshuf4i`, `vsll`, `vsrl`, `vsra`, `vslli`, `vsrli`, `vsrai`, `vpackev`, `vpackod`, `vext`, `vexth`, `vextl`, `vsat`, `vssr`, `vavgr`, `vfadd`, `vfsub`, `vfmul`, `vfdiv`, `vfmax`, `vfmin`, `vfcmp`, `vfcvt`, `vftint`, `vffint`, `vld`, `vst`, `vldi`, `vrepl`                                                  | QEMU     |
+| `lasx`           | `add`, `add_i64`, `and`, `fadd`, `fdiv`, `fmul`, `fsub`, `mul`, `mul_i32`, `or`, `splat_i32`, `sub`, `sub_i64`, `v256_load`, `v256_store`, `xor`                                                                                    | `xvadd`, `xvsub`, `xvmul`, `xvdiv`, `xvabs`, `xvneg`, `xvmax`, `xvmin`, `xvseq`, `xvsle`, `xvslt`, `xvseqi`, `xvslei`, `xvslti`, `xvand`, `xvor`, `xvxor`, `xvnor`, `xvbitsel`, `xvshuf`, `xvshuf4i`, `xvsll`, `xvsrl`, `xvsra`, `xvslli`, `xvsrli`, `xvsrai`, `xvpackev`, `xvpackod`, `xvext`, `xvexth`, `xvextl`, `xvsat`, `xvssr`, `xvavgr`, `xvfadd`, `xvfsub`, `xvfmul`, `xvfdiv`, `xvfmax`, `xvfmin`, `xvfcmp`, `xvfcvt`, `xvftint`, `xvffint`, `xvld`, `xvst`, `xvldi`, `xvrepl` | QEMU     |
+| `lbt`            | なし                                                                                                                                                                                                                                | `revb`, `revh`, `revw`, `bitrev`, `ext`, `ins`, `bstrins`, `bstrpick`                                                                                                                                                                                                                                                                                                                                                                                                                   | 未実行   |
+| `lamcas` / `scq` | なし                                                                                                                                                                                                                                | 同期命令のため命令 API にしない                                                                                                                                                                                                                                                                                                                                                                                                                                                         | 対象外   |
 
 ## 実装方式
 
@@ -38,9 +49,14 @@ LSX の `V128`、load / store、`vadd.w`、`vmul.w` を実装してある。`fix
 2. `lasx`
 3. `lbt`、`lamcas`、`scq`
 
-## 未決定
+## 未対応
 
-- LASX のベクタ ABI。
+- `lbt`、`lamcas`、`scq`。
+- LASX の shuffle。`xvshuf.b` は intrinsics で往復が残るため、現在の API には
+  含めていない。
+- 追加した LSX / LASX の命令のゼロコスト確認。現在の zero-cost は `xvadd.w` と `xvmul.w` だけである。
+- LASX のベクタ ABI は、C の境界ではポインタだけを使う現在の方式で回避して
+  いる。値渡しの ABI は公開しない。
 
 ## 文書
 

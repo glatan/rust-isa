@@ -8,3 +8,4 @@ fixtures/s390x-values/target
 fixtures/arm-values/target
 fixtures/powerpc-values/target
 fixtures/mips-values/target
+.local

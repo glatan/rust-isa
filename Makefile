@@ -2,7 +2,7 @@
 # テストはすべてイメージ内で、対象 triple を明示して実行する。
 
 # Containerfile のベースイメージ日付とイメージ改訂番号に合わせる。
-IMAGE_TAG ?= 20261018.1
+IMAGE_TAG ?= 20261018.2
 IMAGE ?= localhost/rust-isa-dev:$(IMAGE_TAG)
 PODMAN ?= podman
 NEXTEST ?= cargo nextest run
@@ -25,7 +25,9 @@ PODMAN_RUN := $(PODMAN) run --rm \
 help:
 	@printf '%s\n' \
 		'image                        開発イメージを作る' \
-		'test                         すべてのテスト（test-host + wasm32）' \
+		'test                         フォーマット検査とすべてのテスト（test-host + wasm32）' \
+		'fmt                          dprint と cargo fmt で整形する' \
+		'fmt-check                    dprint と cargo fmt の整形を検査する' \
 		'test-host                    x86_64 で実行する全テストと doctest' \
 		'test-x86_64                  x86_64 の値テスト・doctest・ゼロコスト検査' \
 		'test-check-static            シンボル・rustdoc・レーン即値の検査' \
@@ -45,8 +47,16 @@ help:
 image:
 	$(PODMAN) build -t $(IMAGE) -f Containerfile .
 
+.PHONY: fmt
+fmt:
+	$(PODMAN_RUN) bash -lc 'dprint fmt && cargo fmt --all && for d in fixtures/*-values; do cargo fmt --manifest-path "$$d/Cargo.toml" || exit 1; done'
+
+.PHONY: fmt-check
+fmt-check:
+	$(PODMAN_RUN) bash -lc 'dprint check && cargo fmt --all -- --check && for d in fixtures/*-values; do cargo fmt --manifest-path "$$d/Cargo.toml" -- --check || exit 1; done'
+
 .PHONY: test
-test: test-host test-wasip1 test-wasip1-wide-arithmetic
+test: fmt-check test-host test-wasip1 test-wasip1-wide-arithmetic
 
 .PHONY: test-host
 test-host:

@@ -31,6 +31,8 @@ fn s390x_values() {
     let binary = dir.join("s390x-unknown-linux-gnu/release/s390x-values");
     assert!(binary.is_file(), "missing {}", binary.display());
     let output = Command::new("qemu-s390x-static")
+        .arg("-cpu")
+        .arg("max")
         .arg(&binary)
         .output()
         .expect("qemu-s390x-static");

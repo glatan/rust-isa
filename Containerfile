@@ -1,5 +1,7 @@
 FROM docker.io/library/archlinux:base-devel-20261018.0.612668@sha256:0ccc8b2e55c0c26a6e501e892cc6b1cdea7cfdf77e432941320148b4dabd2bff
 
+COPY dprint.json /tmp/dprint.json
+
 # The mirror date matches the base image tag. A live mirror would drift
 # away from the digest-pinned rootfs.
 RUN printf 'Server = https://archive.archlinux.org/repos/2026/10/18/$repo/os/$arch\n' > /etc/pacman.d/mirrorlist \
@@ -8,6 +10,7 @@ RUN printf 'Server = https://archive.archlinux.org/repos/2026/10/18/$repo/os/$ar
         rust-wasm \
         cargo-nextest \
         rust-analyzer \
+        dprint \
         clang \
         llvm \
         binaryen \
@@ -30,6 +33,7 @@ WORKDIR /src
 RUN rustc --version \
     && cargo --version \
     && test -x /usr/bin/rust-analyzer \
+    && dprint --version \
     && clang --version \
     && llvm-ar --version \
     && cargo nextest --version \
@@ -44,3 +48,9 @@ RUN rustc --version \
     && test -x /usr/bin/qemu-ppc64le-static \
     && test -x /usr/bin/qemu-mips64-static \
     && test -x /usr/bin/qemu-i386-static
+
+# Preload the pinned dprint plugins so formatting does not need network access
+# after the image is built.
+RUN cd /tmp \
+    && dprint output-file-paths > /dev/null \
+    && test -d /root/.cache/dprint

@@ -27,41 +27,41 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 
 ## 結果
 
-| arch | extension | 確認した命令 | `call` | 命令間の store/load | 結果 |
-| --- | --- | --- | --- | --- | --- |
-| x86_64 | `sse2` | `paddd` | なし | なし | ゼロコスト |
-| i686 | `sse2` | `paddd`、`pmuludq` | なし | なし | ゼロコスト |
-| i686 | `avx2` | `vpaddd`、`vpmulld` | なし | なし | ゼロコスト |
-| x86_64 | `avx2` | `vpaddd`、`vpmulld`、`vpshufb` | なし | なし | ゼロコスト |
-| x86_64 | `aes` + `fma` fixture | `aesenc`、`vfmadd` | なし | なし | ゼロコスト |
-| x86_64 | `avx512f` | `vpaddd` | なし | なし | ゼロコスト |
-| x86_64 | `aes` | `aesenc` | なし | なし | ゼロコスト |
-| x86_64 | `fma` | `vfmadd` | なし | なし | ゼロコスト |
-| x86_64 | `avx10.1` | `vpaddd`、`vpmulld` | なし | なし | ゼロコスト |
-| x86_64 | `sha` | `sha256rnds2` | なし | なし | ゼロコスト |
-| x86_64 | `avx512bw` | `vpaddb` | なし | なし | ゼロコスト |
-| x86_64 | `avx512vl` | `vpaddb` | なし | なし | ゼロコスト |
-| x86_64 | `avx512dq` | `vpmullq` | なし | なし | ゼロコスト |
-| x86_64 | `avx512ifma` | `vpmadd52luq` | なし | なし | ゼロコスト |
-| x86_64 | `avx512vbmi` | `vpermb` | なし | なし | ゼロコスト |
-| x86_64 | `avx512vnni` | `vpdpbusd` | なし | なし | ゼロコスト |
-| x86_64 | `gfni` | `gf2p8affineqb` | なし | なし | ゼロコスト |
-| x86_64 | `vaes` | `vaesenc` | なし | なし | ゼロコスト |
-| x86_64 | `vpclmulqdq` | `vpclmulqdq` | なし | なし | ゼロコスト |
-| AArch64 | `neon` | `add v0.4s`、`mul v0.4s`、`tbl` | なし | なし | ゼロコスト |
-| AArch64 | `neon` + `dotprod` fixture | `add`、`tbl`、`sdot` | なし | なし | ゼロコスト |
-| AArch64 | `dotprod` | `sdot` | なし | なし | ゼロコスト |
-| RISC-V | `v` | `vadd.vv`、`vmul.vv` | なし | なし | ゼロコスト |
-| RISC-V | `v` fixture | `vadd.vv`、`vmul.vv` | なし | なし | ゼロコスト |
-| LoongArch | `lasx` | `xvadd.w`、`xvmul.w` | なし | なし | ゼロコスト |
-| LoongArch | `lsx` fixture | `vadd.w`、`vmul.w` | なし | なし | ゼロコスト |
-| LoongArch | `lasx` shuffle | `xvshuf.b` | なし | あり | 往復が残る |
-| s390x | `vector` | `vaf`、`vmlf`、`vperm` | なし | なし | ゼロコスト |
-| 32-bit ARM | `neon` | `vadd.i32`、`vmul.i32` | なし | なし | ゼロコスト |
-| PowerPC | `altivec` | `vadduwm`、`vmuluwm`、`vperm` | なし | なし | ゼロコスト |
-| PowerPC | `altivec` fixture | `vadduwm`、`vmuluwm` | なし | なし | ゼロコスト |
-| MIPS | `msa` | `addv.w`、`mulv.w`、`vshf.w` | なし | なし | ゼロコスト |
-| wasm32 | `wide-arithmetic` | `i64.add128` など | なし | なし | wat で確認 |
+| arch       | extension                  | 確認した命令                    | `call` | 命令間の store/load | 結果       |
+| ---------- | -------------------------- | ------------------------------- | ------ | ------------------- | ---------- |
+| x86_64     | `sse2`                     | `paddd`                         | なし   | なし                | ゼロコスト |
+| i686       | `sse2`                     | `paddd`、`pmuludq`              | なし   | なし                | ゼロコスト |
+| i686       | `avx2`                     | `vpaddd`、`vpmulld`             | なし   | なし                | ゼロコスト |
+| x86_64     | `avx2`                     | `vpaddd`、`vpmulld`、`vpshufb`  | なし   | なし                | ゼロコスト |
+| x86_64     | `aes` + `fma` fixture      | `aesenc`、`vfmadd`              | なし   | なし                | ゼロコスト |
+| x86_64     | `avx512f`                  | `vpaddd`                        | なし   | なし                | ゼロコスト |
+| x86_64     | `aes`                      | `aesenc`                        | なし   | なし                | ゼロコスト |
+| x86_64     | `fma`                      | `vfmadd`                        | なし   | なし                | ゼロコスト |
+| x86_64     | `avx10.1`                  | `vpaddd`、`vpmulld`             | なし   | なし                | ゼロコスト |
+| x86_64     | `sha`                      | `sha256rnds2`                   | なし   | なし                | ゼロコスト |
+| x86_64     | `avx512bw`                 | `vpaddb`                        | なし   | なし                | ゼロコスト |
+| x86_64     | `avx512vl`                 | `vpaddb`                        | なし   | なし                | ゼロコスト |
+| x86_64     | `avx512dq`                 | `vpmullq`                       | なし   | なし                | ゼロコスト |
+| x86_64     | `avx512ifma`               | `vpmadd52luq`                   | なし   | なし                | ゼロコスト |
+| x86_64     | `avx512vbmi`               | `vpermb`                        | なし   | なし                | ゼロコスト |
+| x86_64     | `avx512vnni`               | `vpdpbusd`                      | なし   | なし                | ゼロコスト |
+| x86_64     | `gfni`                     | `gf2p8affineqb`                 | なし   | なし                | ゼロコスト |
+| x86_64     | `vaes`                     | `vaesenc`                       | なし   | なし                | ゼロコスト |
+| x86_64     | `vpclmulqdq`               | `vpclmulqdq`                    | なし   | なし                | ゼロコスト |
+| AArch64    | `neon`                     | `add v0.4s`、`mul v0.4s`、`tbl` | なし   | なし                | ゼロコスト |
+| AArch64    | `neon` + `dotprod` fixture | `add`、`tbl`、`sdot`            | なし   | なし                | ゼロコスト |
+| AArch64    | `dotprod`                  | `sdot`                          | なし   | なし                | ゼロコスト |
+| RISC-V     | `v`                        | `vadd.vv`、`vmul.vv`            | なし   | なし                | ゼロコスト |
+| RISC-V     | `v` fixture                | `vadd.vv`、`vmul.vv`            | なし   | なし                | ゼロコスト |
+| LoongArch  | `lasx`                     | `xvadd.w`、`xvmul.w`            | なし   | なし                | ゼロコスト |
+| LoongArch  | `lsx` fixture              | `vadd.w`、`vmul.w`              | なし   | なし                | ゼロコスト |
+| LoongArch  | `lasx` shuffle             | `xvshuf.b`                      | なし   | あり                | 往復が残る |
+| s390x      | `vector`                   | `vaf`、`vmlf`、`vperm`          | なし   | なし                | ゼロコスト |
+| 32-bit ARM | `neon`                     | `vadd.i32`、`vmul.i32`          | なし   | なし                | ゼロコスト |
+| PowerPC    | `altivec`                  | `vadduwm`、`vmuluwm`、`vperm`   | なし   | なし                | ゼロコスト |
+| PowerPC    | `altivec` fixture          | `vadduwm`、`vmuluwm`            | なし   | なし                | ゼロコスト |
+| MIPS       | `msa`                      | `addv.w`、`mulv.w`、`vshf.w`    | なし   | なし                | ゼロコスト |
+| wasm32     | `wide-arithmetic`          | `i64.add128` など               | なし   | なし                | wat で確認 |
 
 ## IR レベルの確認
 
@@ -94,26 +94,26 @@ RVV のスライス API も RISC-V で確認した。C のループを Rust の�
 
 shuffle は命令ごとに結果が違う。
 
-| arch | 命令 | 結果 |
-| --- | --- | --- |
-| x86_64 | `vpshufb` | zero-cost |
-| AArch64 | `tbl` | zero-cost |
-| PowerPC | `vperm` | zero-cost |
-| RISC-V | `vrgather` | store/load が残る |
-| LoongArch | `xvshuf.b` | store/load が残る |
-| s390x | `vec_perm` | zero-cost |
-| MIPS | `vshf.w` | zero-cost |
-| ARMv7 | `vtbl1_s8` / `vtbl2_s8` | 8-byte table のみ。128-bit の単一命令はない |
+| arch      | 命令                    | 結果                                        |
+| --------- | ----------------------- | ------------------------------------------- |
+| x86_64    | `vpshufb`               | zero-cost                                   |
+| AArch64   | `tbl`                   | zero-cost                                   |
+| PowerPC   | `vperm`                 | zero-cost                                   |
+| RISC-V    | `vrgather`              | store/load が残る                           |
+| LoongArch | `xvshuf.b`              | store/load が残る                           |
+| s390x     | `vec_perm`              | zero-cost                                   |
+| MIPS      | `vshf.w`                | zero-cost                                   |
+| ARMv7     | `vtbl1_s8` / `vtbl2_s8` | 8-byte table のみ。128-bit の単一命令はない |
 
 `intrinsics` が必要な shuffle は、SROA が一時値を消せず、往復が残ることがある。命令ごとに disassembly を確認する。
 
 ## dot / compress
 
-| arch | 命令 | 結果 |
-| --- | --- | --- |
-| x86_64 | `vpdpbusd` | zero-cost |
-| AArch64 | `sdot` | zero-cost |
-| RISC-V | `vcompress` | store/load が残る |
+| arch    | 命令        | 結果              |
+| ------- | ----------- | ----------------- |
+| x86_64  | `vpdpbusd`  | zero-cost         |
+| AArch64 | `sdot`      | zero-cost         |
+| RISC-V  | `vcompress` | store/load が残る |
 
 `expand` など、まだ確認していない命令は、実装時に個別に確認する。
 
@@ -192,12 +192,12 @@ C の集合が Rust の集合の部分集合になるまで、`-mno-*` や `-Xcl
 
 確認した値の例:
 
-| 条件 | `CARGO_CFG_TARGET_FEATURE` |
-| --- | --- |
-| x86_64 の既定 | `fxsr,sse,sse2` |
+| 条件                             | `CARGO_CFG_TARGET_FEATURE`                        |
+| -------------------------------- | ------------------------------------------------- |
+| x86_64 の既定                    | `fxsr,sse,sse2`                                   |
 | x86_64 `-C target-feature=+avx2` | `avx,avx2,fxsr,sse,sse2,sse3,sse4.1,sse4.2,ssse3` |
-| AArch64 の既定 | `neon,outline-atomics` |
-| AArch64 `-C target-feature=+sve` | `fp16,neon,outline-atomics,sve` |
+| AArch64 の既定                   | `neon,outline-atomics`                            |
+| AArch64 `-C target-feature=+sve` | `fp16,neon,outline-atomics,sve`                   |
 
 ### LTO
 
@@ -219,10 +219,15 @@ panic = "abort"
 ```toml
 [build]
 rustflags = [
-  "-C", "linker-plugin-lto",
-  "-C", "linker=clang",
-  "-C", "link-arg=--target=<clang-target>",
-  "-C", "link-arg=-nostdlib",
-  "-C", "link-arg=-fuse-ld=lld",
+  "-C",
+  "linker-plugin-lto",
+  "-C",
+  "linker=clang",
+  "-C",
+  "link-arg=--target=<clang-target>",
+  "-C",
+  "link-arg=-nostdlib",
+  "-C",
+  "link-arg=-fuse-ld=lld",
 ]
 ```

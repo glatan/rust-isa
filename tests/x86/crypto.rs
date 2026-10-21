@@ -332,3 +332,61 @@ fn vaes_sub_bytes_and_last_rounds() {
     assert_eq!(&out[..16], &expected_dec_last);
     assert_eq!(&out[16..], &expected_dec_last);
 }
+
+#[test]
+fn sha512_message_schedule_and_rounds() {
+    if !is_x86_feature_detected!("sha512") {
+        return;
+    }
+    use rust_isa::x86::crypto::sha512::{vsha512msg1, vsha512msg2, vsha512rnds2};
+
+    let one = V256::from_bytes([1; 32]);
+    let zero = V256::from_bytes([0; 32]);
+    let k = V128::from_bytes([0; 16]);
+    assert_ne!(unsafe { vsha512msg1(one, k) }.to_bytes(), zero.to_bytes());
+    assert_ne!(unsafe { vsha512msg2(one, one) }.to_bytes(), zero.to_bytes());
+    assert_ne!(
+        unsafe { vsha512rnds2(one, one, k) }.to_bytes(),
+        zero.to_bytes()
+    );
+}
+
+#[test]
+fn sm3_message_expansion_and_rounds() {
+    if !is_x86_feature_detected!("sm3") {
+        return;
+    }
+    use rust_isa::x86::crypto::sm3::{vsm3msg1, vsm3msg2, vsm3rnds2};
+
+    let one = V128::from_bytes([1; 16]);
+    let zero = V128::from_bytes([0; 16]);
+    assert_ne!(
+        unsafe { vsm3msg1(one, one, one) }.to_bytes(),
+        zero.to_bytes()
+    );
+    assert_ne!(
+        unsafe { vsm3msg2(one, one, one) }.to_bytes(),
+        zero.to_bytes()
+    );
+    assert_ne!(
+        unsafe { vsm3rnds2::<0>(one, one, one) }.to_bytes(),
+        zero.to_bytes()
+    );
+    assert_ne!(
+        unsafe { vsm3rnds2::<3>(one, one, one) }.to_bytes(),
+        zero.to_bytes()
+    );
+}
+
+#[test]
+fn sm4_key_schedule_and_rounds() {
+    if !is_x86_feature_detected!("sm4") {
+        return;
+    }
+    use rust_isa::x86::crypto::sm4::{vsm4key4, vsm4rnds4};
+
+    let one = V128::from_bytes([1; 16]);
+    let zero = V128::from_bytes([0; 16]);
+    assert_ne!(unsafe { vsm4key4(one, one) }.to_bytes(), zero.to_bytes());
+    assert_ne!(unsafe { vsm4rnds4(one, one) }.to_bytes(), zero.to_bytes());
+}

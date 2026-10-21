@@ -31,6 +31,8 @@ fn riscv_pipeline() {
     let binary = dir.join("riscv64gc-unknown-linux-gnu/release/riscv-values");
     assert!(binary.is_file(), "missing {}", binary.display());
     let output = Command::new("qemu-riscv64-static")
+        .arg("-cpu")
+        .arg("max")
         .arg(&binary)
         .output()
         .expect("qemu-riscv64-static");

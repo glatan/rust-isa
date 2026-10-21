@@ -10,13 +10,12 @@
 - [ゼロコストの確認](zero-cost.md)
 - [スケーラブルベクタと状態](scalable-state.md)
 - [native の値テスト](native-testing.md)
-- [実装計画](implementation-plan.md)
 - [ソースの置き方](source-layout.md)
 - [文書の位置](documentation.md)
 
 ## arch ごと
 
-各 arch のディレクトリには、対象と実装方式を書いた `README.md` と、`cfg(target_feature)` の観測表を書いた `feasibility.md` を置く。ゼロコストを確認した arch は、リンクの条件を `linking.md` に分ける（例: [x86](x86/linking.md)）。
+各 arch のディレクトリには、対象・実装方式・命令ごとの実装状況を書いた `README.md` と、`cfg(target_feature)` の観測表を書いた `feasibility.md` を置く。ゼロコストを確認した arch は、リンクの条件を `linking.md` に分ける（例: [x86](x86/linking.md)）。
 
 - [x86](x86/README.md)
 - [AArch64](aarch64/README.md)

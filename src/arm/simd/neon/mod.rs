@@ -3,8 +3,10 @@
 //! NEON is unstable on this target. The caller must compile with
 //! `-C target-feature=+neon`.
 
+mod ops;
 mod v128;
 
+pub use ops::*;
 pub use v128::*;
 
 unsafe extern "C" {

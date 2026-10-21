@@ -6,7 +6,20 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 ## 実装状況
 
-`V128`、load / store、vector の整数 add / mul を実装してある。`fixtures/s390x-values` を QEMU-s390x で実行する。値はビッグエンディアンで扱う。
+対象は各 extension の全命令である。次の表は、現在公開している命令と、
+まだ公開していない命令の一覧である。値テストの列は、その extension の
+値テストを実行する環境を示す。未実装命令も同じ表で管理する。
+
+### SIMD
+
+| extension                     | 実装済み命令                                                                                                                                                                                                                                   | 未実装命令                                                                                                                                                                                                                                                                                                                                                                                                                                                          | 値テスト |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `vector`                      | `add`, `add_i16`, `add_i64`, `add_i8`, `and`, `cmpeq_i32`, `cmpgt_i32`, `fadd`, `fdiv`, `fmul`, `fsub`, `mul`, `mul_i16`, `mul_i32`, `or`, `permute`, `splat_i32`, `sub_i16`, `sub_i32`, `sub_i64`, `sub_i8`, `v128_load`, `v128_store`, `xor` | `vab`, `vah`, `vaf`, `vag`, `vsb`, `vsh`, `vsf`, `vsg`, `vmh`, `vmlh`, `vml`, `vme`, `vmle`, `vmo`, `vmlo`, `vceq`, `vch`, `vchl`, `vcl`, `vclh`, `vclf`, `vclg`, `vmin`, `vmax`, `vavg`, `vavgl`, `vcksm`, `vpks`, `vpkls`, `vperm`, `vsel`, `vseg`, `vuph`, `vupl`, `vupll`, `vuplh`, `vgbm`, `vrep`, `vsl`, `vsr`, `vsld`, `vsrd`, `vfa`, `vfs`, `vfm`, `vfd`, `vfsq`, `vfce`, `vfch`, `vfche`, `vftci`, `vistr`, `vstrl`, `vstr`, `vle`, `vst`, `vlef`, `vstef` | QEMU     |
+| `vector-enhancements-1`       | `cntlz_i32`, `fma`, `popcnt_i32`, `popcnt_i8`                                                                                                                                                                                                  | `vclz`, `vctz`, `vpopct`, `vfa`, `vfs`, `vfm`, `vfd`, `vfma`, `vfms`, `vfnma`, `vfnms`, `vfsq`, `vfce`, `vfch`, `vfche`, `vftci`, `vistr`, `vstrl`, `vstr`                                                                                                                                                                                                                                                                                                          | QEMU     |
+| `vector-enhancements-2` / `3` | なし                                                                                                                                                                                                                                           | `vclzd`, `vctzd`, `vpopcntd`, `vclzg`, `vctzg`, `vpopcntg`, `vgef`, `vgeg`, `vlgv`, `vscbi`, `vfae`, `vfee`, `vfene`, `vistr`, `vstrl`, `vstr`                                                                                                                                                                                                                                                                                                                      | 未実行   |
+| `vector-packed-decimal` 系    | なし                                                                                                                                                                                                                                           | `vpab`, `vpsrp`, `vpk`, `vupk`, `vcsd`, `vcsb`, `vcvd`, `vcvb`, `vistr`, `vstr`                                                                                                                                                                                                                                                                                                                                                                                     | 未実行   |
+| `nnp-assist`                  | なし                                                                                                                                                                                                                                           | `vnn`, `vflr`, `vfli`, `vfsq`, `vistr`, `vstr`, `vuph`, `vupl`, `vfll`, `vflr`                                                                                                                                                                                                                                                                                                                                                                                      | 未実行   |
+| `message-security-assist-*`   | なし                                                                                                                                                                                                                                           | 状態命令のため命令 API にしない                                                                                                                                                                                                                                                                                                                                                                                                                                     | 対象外   |
 
 ## 実装方式
 
@@ -42,10 +55,17 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 4. `nnp-assist`
 5. `message-security-assist-extension*`（不安定）
 
-## 未決定
+## 未対応
 
-- ビッグエンディアンのレーン順序と値型の表現。
-- vector-packed-decimal の値型。
+- `vector-enhancements-2` / `3`。
+- `vector-packed-decimal` とその enhancement。
+- `nnp-assist`。
+- `message-security-assist-extension*` は状態を持つため、値 API にしない。
+- `transactional-execution` と `guarded-storage` は制御・状態の命令のため、
+  値 API にしない。
+- 追加した vector 命令のゼロコスト確認。現在の zero-cost は `vaf`、`vmlf`、 `vperm` だけである。
+- ビッグエンディアンのレーン順序は rustdoc に書いた。値型は `V128` の
+  バイト列のままである。
 
 ## 文書
 

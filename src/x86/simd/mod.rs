@@ -1,12 +1,36 @@
 //! x86 SIMD extensions.
 
+pub mod avx;
+pub mod avx10_1;
+pub mod avx10_2;
 pub mod avx2;
+pub mod avx512bf16;
+pub mod avx512bitalg;
 pub mod avx512bw;
+pub mod avx512cd;
 pub mod avx512dq;
 pub mod avx512f;
+pub mod avx512fp16;
 pub mod avx512ifma;
 pub mod avx512vbmi;
+pub mod avx512vbmi2;
 pub mod avx512vl;
 pub mod avx512vnni;
+pub mod avx512vp2intersect;
+pub mod avx512vpopcntdq;
+pub mod avxifma;
+pub mod avxneconvert;
+pub mod avxvnni;
+pub mod avxvnniint16;
+pub mod avxvnniint8;
+pub mod f16c;
 pub mod fma;
+pub mod fma4;
+pub mod sse;
 pub mod sse2;
+pub mod sse3;
+pub mod sse4_1;
+pub mod sse4_2;
+pub mod sse4a;
+pub mod ssse3;
+pub mod xop;

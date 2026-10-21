@@ -31,6 +31,8 @@ fn powerpc_pipeline() {
     let binary = dir.join("powerpc64le-unknown-linux-gnu/release/powerpc-values");
     assert!(binary.is_file(), "missing {}", binary.display());
     let output = Command::new("qemu-ppc64le-static")
+        .arg("-cpu")
+        .arg("power10")
         .arg(&binary)
         .output()
         .expect("qemu-ppc64le-static");

@@ -48,3 +48,69 @@ fn popcnt() {
     assert_eq!(unsafe { popcnt_u32(0b1011) }, 3);
     assert_eq!(unsafe { popcnt_u64(0xffff_ffff_ffff_ffff) }, 64);
 }
+
+#[test]
+fn lzcnt_counts_leading_zeros() {
+    if !is_x86_feature_detected!("lzcnt") {
+        return;
+    }
+    use rust_isa::x86::integer::lzcnt::{lzcnt_u32, lzcnt_u64};
+    assert_eq!(unsafe { lzcnt_u32(1) }, 31);
+    assert_eq!(unsafe { lzcnt_u32(0) }, 32);
+    assert_eq!(unsafe { lzcnt_u64(1) }, 63);
+    assert_eq!(unsafe { lzcnt_u64(0) }, 64);
+}
+
+#[test]
+fn movbe_loads_and_stores_big_endian() {
+    if !is_x86_feature_detected!("movbe") {
+        return;
+    }
+    use rust_isa::x86::integer::movbe::{
+        movbe_load_u16, movbe_load_u32, movbe_load_u64, movbe_store_u16, movbe_store_u32,
+        movbe_store_u64,
+    };
+    let mut bytes = [0u8; 8];
+    unsafe { movbe_store_u16(bytes.as_mut_ptr(), 0x1234) };
+    assert_eq!(&bytes[..2], &[0x12, 0x34]);
+    assert_eq!(unsafe { movbe_load_u16(bytes.as_ptr()) }, 0x1234);
+
+    unsafe { movbe_store_u32(bytes.as_mut_ptr(), 0x1234_5678) };
+    assert_eq!(&bytes[..4], &[0x12, 0x34, 0x56, 0x78]);
+    assert_eq!(unsafe { movbe_load_u32(bytes.as_ptr()) }, 0x1234_5678);
+
+    unsafe { movbe_store_u64(bytes.as_mut_ptr(), 0x0123_4567_89ab_cdef) };
+    assert_eq!(&bytes, &[0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef]);
+    assert_eq!(
+        unsafe { movbe_load_u64(bytes.as_ptr()) },
+        0x0123_4567_89ab_cdef
+    );
+}
+
+#[test]
+fn adx_carry_chains() {
+    if !is_x86_feature_detected!("adx") {
+        return;
+    }
+    use rust_isa::x86::integer::adx::{adcx_u32, adcx_u64, adox_u32, adox_u64};
+    assert_eq!(unsafe { adcx_u32(u32::MAX, 1, false) }, (0, true));
+    assert_eq!(unsafe { adcx_u32(1, 1, true) }, (3, false));
+    assert_eq!(unsafe { adox_u32(u32::MAX, 1, false) }, (0, true));
+    assert_eq!(unsafe { adox_u32(1, 1, true) }, (3, false));
+    assert_eq!(unsafe { adcx_u64(u64::MAX, 1, false) }, (0, true));
+    assert_eq!(unsafe { adox_u64(u64::MAX, 1, false) }, (0, true));
+}
+
+#[test]
+fn rdrand_and_rdseed_do_not_panic() {
+    if is_x86_feature_detected!("rdrand") {
+        use rust_isa::x86::integer::rdrand::{rdrand_u32, rdrand_u64};
+        let _ = unsafe { rdrand_u32() };
+        let _ = unsafe { rdrand_u64() };
+    }
+    if is_x86_feature_detected!("rdseed") {
+        use rust_isa::x86::integer::rdseed::{rdseed_u32, rdseed_u64};
+        let _ = unsafe { rdseed_u32() };
+        let _ = unsafe { rdseed_u64() };
+    }
+}
