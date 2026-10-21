@@ -9,8 +9,8 @@ use rust_isa::riscv::float::zfh::{
     fadd_h, fdiv_h, feq_h, fle_h, flh, flt_h, fmax_h, fmin_h, fmul_h, fsh, fsqrt_h, fsub_h,
 };
 use rust_isa::riscv::float::zfh::{
-    fcvt_d_h, fcvt_h_d, fcvt_h_s, fcvt_h_w, fcvt_h_wu, fcvt_s_h, fcvt_w_h, fcvt_wu_h, fmv_h_x,
-    fmv_x_h,
+    fclass_h, fcvt_d_h, fcvt_h_d, fcvt_h_s, fcvt_h_w, fcvt_h_wu, fcvt_s_h, fcvt_w_h, fcvt_wu_h,
+    fmv_h_x, fmv_x_h,
 }; // conversions
 use rust_isa::riscv::float::zfh::{
     fcvtmod_w_h, fleq_h, fltq_h, fmaxm_h, fminm_h, fround_h, froundnx_h,
@@ -345,5 +345,15 @@ unsafe fn zfh_ops() -> bool {
             && fleq_h(one, two)
             && fltq_h(one, two)
             && fcvtmod_w_h(0x3e00) == 1
+            && fclass_h(0x0000) == 1 << 4
+            && fclass_h(0x8000) == 1 << 3
+            && fclass_h(0x7c00) == 1 << 7
+            && fclass_h(0xfc00) == 1 << 0
+            && fclass_h(0x7c01) == 1 << 8
+            && fclass_h(0x7e00) == 1 << 9
+            && fclass_h(0x3c00) == 1 << 6
+            && fclass_h(0xbc00) == 1 << 1
+            && fclass_h(0x0001) == 1 << 5
+            && fclass_h(0x8001) == 1 << 2
     }
 }
