@@ -37,6 +37,8 @@ unsafe extern "C" {
     fn rust_isa_sve_neg_i32(a: *const i32, out: *mut i32, len: usize);
     fn rust_isa_sve_abs_f64(a: *const f64, out: *mut f64, len: usize);
     fn rust_isa_sve_neg_f64(a: *const f64, out: *mut f64, len: usize);
+    fn rust_isa_sve_sqrt_f32(a: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_sve_sqrt_f64(a: *const f64, out: *mut f64, len: usize);
 }
 
 /// Add two `f32` slices.
@@ -337,5 +339,24 @@ pub unsafe fn neg_f64(a: &[f64], out: &mut [f64]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     unsafe {
         rust_isa_sve_neg_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+/// Square root of an `f32` slice.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn sqrt_f32(a: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_sqrt_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+/// Square root of an `f64` slice.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn sqrt_f64(a: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_sqrt_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
     }
 }
