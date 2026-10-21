@@ -452,3 +452,90 @@ pub unsafe fn vsldoi<const IMM: u8>(a: V128, b: V128) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_altivec_lvx(p: *const u8, out: *mut u8);
+    fn rust_isa_altivec_stvx(p: *mut u8, a: *const u8);
+    fn rust_isa_altivec_vmul(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vmla(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vmls(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vmadd(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vnmsub(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vpk(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_altivec_vupk(a: *const u8, out: *mut u8);
+}
+
+/// `lvx` load.
+///
+/// # Safety
+///
+/// `p` must be valid for reading 16 bytes.
+#[inline(always)]
+pub unsafe fn lvx(p: *const u8) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_altivec_lvx(p, out.as_mut_ptr());
+    }
+    out
+}
+
+/// `stvx` store.
+///
+/// # Safety
+///
+/// `p` must be valid for writing 16 bytes.
+#[inline(always)]
+pub unsafe fn stvx(p: *mut u8, a: V128) {
+    unsafe {
+        rust_isa_altivec_stvx(p, a.as_ptr());
+    }
+}
+
+abin!(
+    /// `vmul`.
+    vmul,
+    rust_isa_altivec_vmul
+);
+abin!(
+    /// `vpk`.
+    vpk,
+    rust_isa_altivec_vpk
+);
+aun!(
+    /// `vupk`.
+    vupk,
+    rust_isa_altivec_vupk
+);
+
+macro_rules! afma {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        #[inline(always)]
+        pub unsafe fn $name(acc: V128, a: V128, b: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe { $c(acc.as_ptr(), a.as_ptr(), b.as_ptr(), out.as_mut_ptr()); }
+            out
+        }
+    };
+}
+
+afma!(
+    /// `vmla`.
+    vmla,
+    rust_isa_altivec_vmla
+);
+afma!(
+    /// `vmls`.
+    vmls,
+    rust_isa_altivec_vmls
+);
+afma!(
+    /// `vmadd`.
+    vmadd,
+    rust_isa_altivec_vmadd
+);
+afma!(
+    /// `vnmsub`.
+    vnmsub,
+    rust_isa_altivec_vnmsub
+);
