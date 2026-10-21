@@ -6,6 +6,7 @@
 make coverage
 make coverage COVERAGE_ARGS='--arch aarch64 --todo'
 make coverage COVERAGE_ARGS='--json'
+make coverage-check
 ```
 
 `--manifest PATH` を付けると、表から作った在庫を JSON で書き出せる。マニフェストは命令の実装対象を確定するための作業用であり、`build.rs` は読まない。C と Rust はリポジトリにコミットする。
@@ -22,6 +23,8 @@ make coverage COVERAGE_ARGS='--json'
 | 値テスト     | ホスト、QEMU、wasmtime、未実行のいずれか。                 |
 
 セル内のバッククォート付きの名前を1件として数える。`なし` は0件とする。`236 命令（...）` のように先頭が件数の場合は、その数を使う。
+
+`make coverage-check` は、各表が4列であること、extensionがバッククォートで囲まれていること、実装済みと未実装のセルが空でないこと、同じarchでextensionが重複しないことを検査する。`make test` はこの検査を最初に実行する。
 
 ## 使い方
 

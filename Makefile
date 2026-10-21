@@ -43,7 +43,8 @@ help:
 		'test-mips64                  MIPS64 の値テスト' \
 		'test-wasip1                  wasm32-wasip1 の nextest と doctest' \
 		'test-wasip1-wide-arithmetic  wide-arithmetic 有効時の nextest と doctest' \
-		'coverage                     arch/extension ごとの実装状況を表示する'
+		'coverage                     arch/extension ごとの実装状況を表示する' \
+		'coverage-check               README の表の形式を検査する'
 
 .PHONY: image
 image:
@@ -52,6 +53,10 @@ image:
 .PHONY: coverage
 coverage:
 	$(PODMAN_RUN) python3 tools/coverage.py $(COVERAGE_ARGS)
+
+.PHONY: coverage-check
+coverage-check:
+	$(PODMAN_RUN) python3 tools/coverage.py --check
 
 .PHONY: fmt
 fmt:
@@ -62,7 +67,7 @@ fmt-check:
 	$(PODMAN_RUN) bash -lc 'dprint check && cargo fmt --all -- --check && for d in fixtures/*-values; do cargo fmt --manifest-path "$$d/Cargo.toml" -- --check || exit 1; done'
 
 .PHONY: test
-test: fmt-check test-host test-wasip1 test-wasip1-wide-arithmetic
+test: fmt-check coverage-check test-host test-wasip1 test-wasip1-wide-arithmetic
 
 .PHONY: test-host
 test-host:

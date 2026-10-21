@@ -44,6 +44,7 @@ extension の `mod.rs` には、次を書く。
 - [実装可否](feasibility.md): cfg の用語と arch ごとの表への索引
 - [ゼロコストの確認](zero-cost.md): 確認方法と arch ごとの結果
 - [スケーラブルベクタと状態](scalable-state.md): SVE、RVV、SME、AMX、MMA の API 設計
+- [スケーラブル・状態付き extension の対応表](scalable-coverage.md): ISA 命令と API の対応
 - [native の値テスト](native-testing.md): QEMU を使う値テストの設計
 - [ソースの置き方](source-layout.md): ディレクトリと公開パス
 - [開発環境](development.md): リポジトリのコマンド

@@ -34,7 +34,7 @@ def read_rows(root: Path) -> Iterable[dict[str, int | str]]:
             if not raw.startswith("|"):
                 continue
             cells = [cell.strip() for cell in raw.strip().strip("|").split("|")]
-            if len(cells) < 3 or not cells[0].startswith("`"):
+            if len(cells) < 4 or not cells[0].startswith("`"):
                 continue
             extension = cells[0].replace("`", "").strip()
             yield {
@@ -43,6 +43,44 @@ def read_rows(root: Path) -> Iterable[dict[str, int | str]]:
                 "implemented": count_items(cells[1]),
                 "unimplemented": count_items(cells[2]),
             }
+
+
+def check_tables(root: Path) -> list[str]:
+    problems: list[str] = []
+    for readme in sorted((root / "docs").glob("*/README.md")):
+        arch = readme.parent.name
+        seen: set[str] = set()
+        rows = 0
+        for number, raw in enumerate(readme.read_text(encoding="utf-8").splitlines(), 1):
+            if not raw.startswith("|"):
+                continue
+            cells = [cell.strip() for cell in raw.strip().strip("|").split("|")]
+            if len(cells) != 4:
+                problems.append(
+                    f"{readme}:{number}: expected 4 columns, found {len(cells)}"
+                )
+                continue
+            if set(cells[0]) <= set("-: "):
+                continue
+            if cells[0] == "extension":
+                continue
+            rows += 1
+            if not cells[0].startswith("`"):
+                problems.append(
+                    f"{readme}:{number}: extension must start with a backticked name"
+                )
+                continue
+            extension = cells[0].replace("`", "").strip()
+            if extension in seen:
+                problems.append(f"{readme}:{number}: duplicate extension {extension}")
+            seen.add(extension)
+            if not cells[1] or not cells[2]:
+                problems.append(
+                    f"{readme}:{number}: implemented and unimplemented cells must be filled"
+                )
+        if rows == 0:
+            problems.append(f"{readme}: no extension rows")
+    return problems
 
 
 def main() -> None:
@@ -61,11 +99,25 @@ def main() -> None:
     )
     parser.add_argument("--json", action="store_true", help="print JSON")
     parser.add_argument(
+        "--check",
+        action="store_true",
+        help="validate the table format and exit nonzero on errors",
+    )
+    parser.add_argument(
         "--manifest",
         type=Path,
         help="also write the full inventory as JSON to this path",
     )
     args = parser.parse_args()
+
+    if args.check:
+        problems = check_tables(args.root)
+        if problems:
+            for problem in problems:
+                print(problem)
+            raise SystemExit(1)
+        print("coverage tables: ok")
+        return
 
     rows = list(read_rows(args.root))
     if args.manifest:
