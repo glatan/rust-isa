@@ -502,3 +502,12 @@ pub fn vshuf(a: V128, b: V128, control: V128) -> V128 {
         if idx < 16 { a[idx] } else { b[idx - 16] }
     }))
 }
+
+/// `vshuf4i.b`.
+#[inline(always)]
+pub fn vshuf4i<const IMM: u8>(a: V128) -> V128 {
+    let a = a.to_bytes();
+    V128::from_bytes(core::array::from_fn(|i| {
+        a[(i / 4) * 4 + (((IMM >> ((i % 4) * 2)) & 3) as usize)]
+    }))
+}
