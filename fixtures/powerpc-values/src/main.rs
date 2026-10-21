@@ -25,6 +25,9 @@ use rust_isa::powerpc::simd::power10_vector::{
 };
 use rust_isa::powerpc::simd::vsx::{
     abs_f64, add_f32 as vsx_add_f32, add_f64, div_f64, mul_f64, sqrt_f64, sub_f64,
+    vcmpgt as vsx_cmpgt, xvabs, xvadd, xvand, xvcmpeq, xvcpsgn, xvdiv, xvmax, xvmin, xvmul, xvneg,
+    xvor, xvperm, xvrdpi, xvrdpic, xvrdpim, xvrdpip, xvrdpiz, xvsel, xvsl, xvsldoi, xvsr, xvsub,
+    xvxor,
 };
 
 #[unsafe(no_mangle)]
@@ -214,6 +217,46 @@ fn vsx_ops() -> bool {
             && f32_lanes(vsx_add_f32(f, g)) == [11.0, 22.0, 33.0, 44.0]
             && f64_lanes(abs_f64(f64x2([-1.0, -2.0]))) == [1.0, 2.0]
             && f64_lanes(sqrt_f64(f64x2([4.0, 9.0]))) == [2.0, 3.0]
+            && f64_lanes(xvadd(a, b)) == [11.0, 22.0]
+            && f64_lanes(xvsub(b, a)) == [9.0, 18.0]
+            && f64_lanes(xvmul(a, b)) == [10.0, 40.0]
+            && f64_lanes(xvdiv(b, a)) == [10.0, 10.0]
+            && f64_lanes(xvabs(f64x2([-1.0, -2.0]))) == [1.0, 2.0]
+            && f64_lanes(xvneg(f64x2([1.0, 2.0]))) == [-1.0, -2.0]
+            && f64_lanes(xvmax(a, b)) == [10.0, 20.0]
+            && f64_lanes(xvmin(a, b)) == [1.0, 2.0]
+            && xvcmpeq(a, a).to_bytes() == [0xff; 16]
+            && vsx_cmpgt(b, a).to_bytes() == [0xff; 16]
+            && xvand(V128::from_bytes([0xaa; 16]), V128::from_bytes([0xcc; 16])).to_bytes()
+                == [0x88; 16]
+            && xvor(V128::from_bytes([0xaa; 16]), V128::from_bytes([0xcc; 16])).to_bytes()
+                == [0xee; 16]
+            && xvxor(V128::from_bytes([0xaa; 16]), V128::from_bytes([0xcc; 16])).to_bytes()
+                == [0x66; 16]
+            && xvsel(
+                V128::from_bytes([1; 16]),
+                V128::from_bytes([2; 16]),
+                V128::from_bytes([0xff; 16]),
+            )
+            .to_bytes()
+                == [2; 16]
+            && xvperm(
+                V128::from_bytes([1; 16]),
+                V128::from_bytes([2; 16]),
+                V128::from_bytes([0; 16]),
+            )
+            .to_bytes()
+                != [0; 16]
+            && xvsl(V128::from_bytes([1; 16]), V128::from_bytes([1; 16])).to_bytes() != [0; 16]
+            && xvsr(V128::from_bytes([2; 16]), V128::from_bytes([1; 16])).to_bytes() != [0; 16]
+            && xvrdpi(f64x2([1.5, 2.5])).to_bytes() != [0; 16]
+            && xvrdpic(f64x2([1.5, 2.5])).to_bytes() != [0; 16]
+            && xvrdpim(f64x2([1.5, 2.5])).to_bytes() != [0; 16]
+            && xvrdpip(f64x2([1.5, 2.5])).to_bytes() != [0; 16]
+            && xvrdpiz(f64x2([1.5, 2.5])).to_bytes() != [0; 16]
+            && xvcpsgn(f64x2([1.0, 1.0]), f64x2([-2.0, 2.0])).to_bytes() != [0; 16]
+            && xvsldoi::<4>(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes()
+                != [0; 16]
     }
 }
 
