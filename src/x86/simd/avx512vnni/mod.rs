@@ -1,6 +1,6 @@
 //! AVX-512VNNI.
 //!
-//! AVX-512VNNI is not part of the x86-64 baseline. Every operation is `unsafe`
+//! AVX-512VNNI is not part of the x86-64 baseline. Every instruction wrapper is `unsafe`
 //! and the required target features are documented on each function. The values
 //! are [`V512`].
 //!

@@ -1,6 +1,6 @@
 //! AArch64 SHA-2 instructions.
 //!
-//! SHA-2 is not part of the AArch64 baseline. Every operation is `unsafe` and
+//! SHA-2 is not part of the AArch64 baseline. Every instruction wrapper is `unsafe` and
 //! the caller must enable SHA-2 with `#[target_feature(enable = "sha2")]` or a
 //! global target feature.
 //!

@@ -1,6 +1,6 @@
 //! BMI1.
 //!
-//! BMI1 is not part of the x86-64 baseline. Every operation is `unsafe` and
+//! BMI1 is not part of the x86-64 baseline. Every instruction wrapper is `unsafe` and
 //! requires the `bmi1` target feature. The functions operate on 32-bit scalar
 //! values.
 //!

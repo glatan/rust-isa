@@ -1,6 +1,6 @@
 //! 32-bit ARM DOTPROD.
 //!
-//! DOTPROD is unstable on this target. Every operation is `unsafe` and the
+//! DOTPROD is unstable on this target. Every instruction wrapper is `unsafe` and the
 //! caller must compile the whole crate with the DOTPROD feature enabled.
 //!
 //! The values are [`V128`]. The dot-product instructions multiply bytes, add

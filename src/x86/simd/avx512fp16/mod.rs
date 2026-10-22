@@ -1,6 +1,6 @@
 //! AVX-512FP16.
 //!
-//! AVX-512FP16 is not part of the x86-64 baseline. Every operation is `unsafe`
+//! AVX-512FP16 is not part of the x86-64 baseline. Every instruction wrapper is `unsafe`
 //! and the required target features are documented on each function. The
 //! values are [`V512`], [`V256`], and [`V128`], depending on the result width.
 //! Binary16 values are bit patterns in the vector lanes.

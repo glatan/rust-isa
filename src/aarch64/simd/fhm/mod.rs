@@ -1,6 +1,6 @@
 //! AArch64 FHM.
 //!
-//! FHM is not part of the AArch64 baseline. Every operation is `unsafe` and the
+//! FHM is not part of the AArch64 baseline. Every instruction wrapper is `unsafe` and the
 //! caller must enable FHM with `#[target_feature(enable = "fhm")]` or a global
 //! target feature.
 //!

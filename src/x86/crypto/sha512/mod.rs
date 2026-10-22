@@ -1,6 +1,6 @@
 //! SHA-512 instructions.
 //!
-//! SHA-512 is not part of the x86-64 baseline. Every operation is `unsafe` and
+//! SHA-512 is not part of the x86-64 baseline. Every instruction wrapper is `unsafe` and
 //! the caller must enable SHA-512 with `#[target_feature(enable = "sha512")]`
 //! or a global target feature.
 //!

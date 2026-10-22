@@ -1,6 +1,6 @@
 //! AVX-512 VPOPCNTDQ.
 //!
-//! AVX-512 VPOPCNTDQ is not part of the x86-64 baseline. Every operation is
+//! AVX-512 VPOPCNTDQ is not part of the x86-64 baseline. Every instruction wrapper is
 //! `unsafe` and the caller must enable it with
 //! `#[target_feature(enable = "avx512vpopcntdq")]` (which implies AVX-512 F) or
 //! a global target feature.

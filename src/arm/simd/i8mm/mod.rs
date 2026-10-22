@@ -1,6 +1,6 @@
 //! 32-bit ARM I8MM.
 //!
-//! I8MM is unstable on this target. Every operation is `unsafe` and the caller
+//! I8MM is unstable on this target. Every instruction wrapper is `unsafe` and the caller
 //! must compile the whole crate with the I8MM feature enabled.
 //!
 //! The values are [`V128`]. The matrix multiply-accumulate instructions

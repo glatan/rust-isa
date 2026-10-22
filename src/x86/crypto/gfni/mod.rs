@@ -1,6 +1,6 @@
 //! GFNI.
 //!
-//! GFNI is not part of the x86-64 baseline. Every operation is `unsafe` and
+//! GFNI is not part of the x86-64 baseline. Every instruction wrapper is `unsafe` and
 //! requires the `gfni` target feature. The values are [`V128`].
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software

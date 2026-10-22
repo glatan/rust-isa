@@ -1,6 +1,6 @@
 //! VAES.
 //!
-//! VAES is not part of the x86-64 baseline. Every operation is `unsafe` and the
+//! VAES is not part of the x86-64 baseline. Every instruction wrapper is `unsafe` and the
 //! required target features are documented on each function. The values are
 //! [`V256`], [`V512`], and [`V128`], depending on the width.
 //!

@@ -1,6 +1,6 @@
 //! SM3 instructions.
 //!
-//! SM3 is not part of the x86-64 baseline. Every operation is `unsafe` and the
+//! SM3 is not part of the x86-64 baseline. Every instruction wrapper is `unsafe` and the
 //! caller must enable SM3 with `#[target_feature(enable = "sm3")]` or a global
 //! target feature.
 //!

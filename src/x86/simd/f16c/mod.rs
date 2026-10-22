@@ -1,6 +1,6 @@
 //! F16C.
 //!
-//! F16C is not part of the x86-64 baseline. Every operation is `unsafe` and the
+//! F16C is not part of the x86-64 baseline. Every instruction wrapper is `unsafe` and the
 //! caller must enable F16C with `#[target_feature(enable = "f16c")]` or a global
 //! target feature.
 //!

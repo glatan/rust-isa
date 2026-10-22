@@ -1,6 +1,6 @@
 //! RDSEED.
 //!
-//! RDSEED is not part of the x86-64 baseline. Every operation is `unsafe` and
+//! RDSEED is not part of the x86-64 baseline. Every instruction wrapper is `unsafe` and
 //! the caller must enable RDSEED with `#[target_feature(enable = "rdseed")]` or
 //! a global target feature.
 //!

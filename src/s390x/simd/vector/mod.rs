@@ -1,6 +1,6 @@
 //! s390x vector facility.
 //!
-//! The vector facility is not enabled by default. Every operation is `unsafe`
+//! The vector facility is not enabled by default. Every instruction wrapper is `unsafe`
 //! and requires the `vector` target feature. The values are [`V128`]. Immediate
 //! operands are const generics unless documented otherwise.
 //!

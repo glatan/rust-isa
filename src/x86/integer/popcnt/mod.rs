@@ -1,6 +1,6 @@
 //! POPCNT.
 //!
-//! POPCNT is not part of the x86-64 baseline. Every operation is `unsafe` and
+//! POPCNT is not part of the x86-64 baseline. Every instruction wrapper is `unsafe` and
 //! requires the `popcnt` target feature. The functions operate on 32-bit and
 //! 64-bit scalar values.
 //!

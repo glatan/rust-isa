@@ -1,7 +1,7 @@
 //! MSA.
 //!
 //! MSA is unstable. The caller must compile with
-//! `-C target-feature=+msa,+fp64`. Every operation is `unsafe`. The values are
+//! `-C target-feature=+msa,+fp64`. Every instruction wrapper is `unsafe`. The values are
 //! [`V128`]. Immediate operands are const generics unless documented
 //! otherwise.
 //!

@@ -1,6 +1,6 @@
 //! PowerPC VSX.
 //!
-//! VSX is not part of the PowerPC baseline. Every operation is `unsafe` and the
+//! VSX is not part of the PowerPC baseline. Every instruction wrapper is `unsafe` and the
 //! caller must enable VSX with a global target feature. The C file is compiled
 //! with `-maltivec -mvsx`.
 //!

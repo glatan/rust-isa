@@ -5,7 +5,7 @@
 //! compile the whole crate with the feature enabled and the CPU must support
 //! XOP. The wrappers do not carry `#[target_feature]`.
 //!
-//! Every operation is `unsafe`. The values are [`V128`]. The module exposes the
+//! Every instruction wrapper is `unsafe`. The values are [`V128`]. The module exposes the
 //! 128-bit XOP permute, compare, rotate, shift, multiply-accumulate,
 //! fractional, and horizontal add/subtract instructions.
 //!

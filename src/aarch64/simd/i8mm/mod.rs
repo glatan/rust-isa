@@ -1,6 +1,6 @@
 //! AArch64 I8MM.
 //!
-//! I8MM is not part of the AArch64 baseline. Every operation is `unsafe` and
+//! I8MM is not part of the AArch64 baseline. Every instruction wrapper is `unsafe` and
 //! the caller must enable I8MM with `#[target_feature(enable = "i8mm")]` or a
 //! global target feature.
 //!

@@ -1,6 +1,6 @@
 //! AArch64 BF16.
 //!
-//! BF16 is not part of the AArch64 baseline. Every operation is `unsafe` and
+//! BF16 is not part of the AArch64 baseline. Every instruction wrapper is `unsafe` and
 //! the caller must enable BF16 with `#[target_feature(enable = "bf16")]` or a
 //! global target feature.
 //!

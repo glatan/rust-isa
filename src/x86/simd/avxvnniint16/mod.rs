@@ -1,6 +1,6 @@
 //! AVX-VNNI-INT16.
 //!
-//! AVX-VNNI-INT16 is not part of the x86-64 baseline. Every operation is
+//! AVX-VNNI-INT16 is not part of the x86-64 baseline. Every instruction wrapper is
 //! `unsafe` and the caller must enable it with
 //! `#[target_feature(enable = "avxvnniint16")]` or a global target feature.
 //!

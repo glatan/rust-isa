@@ -1,6 +1,6 @@
 //! RDRAND.
 //!
-//! RDRAND is not part of the x86-64 baseline. Every operation is `unsafe` and
+//! RDRAND is not part of the x86-64 baseline. Every instruction wrapper is `unsafe` and
 //! the caller must enable RDRAND with `#[target_feature(enable = "rdrand")]` or
 //! a global target feature.
 //!

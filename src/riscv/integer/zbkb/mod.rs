@@ -1,6 +1,6 @@
 //! RISC-V Zbkb and Zbkx bit-manipulation instructions.
 //!
-//! These extensions are not part of the baseline. Every operation is `unsafe`
+//! These extensions are not part of the baseline. Every instruction wrapper is `unsafe`
 //! and the caller must enable the extension with `#[target_feature]` or a
 //! global target feature. The functions operate on 64-bit scalar values.
 //!

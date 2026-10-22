@@ -1,6 +1,6 @@
 //! AVX-512VL.
 //!
-//! AVX-512VL is not part of the x86-64 baseline. Every operation is `unsafe`
+//! AVX-512VL is not part of the x86-64 baseline. Every instruction wrapper is `unsafe`
 //! and the required target features are documented on each function. The values
 //! are [`V256`] and [`V128`]. The functions also require the AVX-512 extension
 //! that defines the instruction, such as AVX-512BW or AVX-512DQ.

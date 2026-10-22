@@ -1,7 +1,7 @@
 //! 32-bit ARM MVE.
 //!
 //! MVE is an M-profile extension and is not available on
-//! `armv7-unknown-linux-gnueabihf`. Every operation is `unsafe` and the caller
+//! `armv7-unknown-linux-gnueabihf`. Every instruction wrapper is `unsafe` and the caller
 //! must run on a CPU with MVE. The C side is compiled with clang and
 //! `-march=armv8.1-m.main+mve`.
 //!

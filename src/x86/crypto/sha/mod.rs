@@ -1,6 +1,6 @@
 //! SHA-1 and SHA-256 instructions.
 //!
-//! These instructions are not part of the x86-64 baseline. Every operation is
+//! These instructions are not part of the x86-64 baseline. Every instruction wrapper is
 //! `unsafe` and requires the `sha` target feature. The values are [`V128`].
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software

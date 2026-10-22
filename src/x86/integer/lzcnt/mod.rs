@@ -1,6 +1,6 @@
 //! LZCNT.
 //!
-//! LZCNT is not part of the x86-64 baseline. Every operation is `unsafe` and
+//! LZCNT is not part of the x86-64 baseline. Every instruction wrapper is `unsafe` and
 //! the caller must enable LZCNT with `#[target_feature(enable = "lzcnt")]` or a
 //! global target feature.
 //!

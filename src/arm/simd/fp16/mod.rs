@@ -1,6 +1,6 @@
 //! 32-bit ARM FP16.
 //!
-//! FP16 is unstable on this target. Every operation is `unsafe` and the caller
+//! FP16 is unstable on this target. Every instruction wrapper is `unsafe` and the caller
 //! must compile the whole crate with the FP16 feature enabled.
 //!
 //! The values are [`V128`] of IEEE 754 binary16 lanes. The result of arithmetic

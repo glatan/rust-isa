@@ -1,6 +1,6 @@
 //! AVX-512IFMA.
 //!
-//! AVX-512IFMA is not part of the x86-64 baseline. Every operation is `unsafe`
+//! AVX-512IFMA is not part of the x86-64 baseline. Every instruction wrapper is `unsafe`
 //! and requires AVX-512F and AVX-512IFMA. The values are [`V512`].
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software

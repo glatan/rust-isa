@@ -1,6 +1,6 @@
 //! SSSE3.
 //!
-//! SSSE3 is not part of the x86-64 baseline. Every operation is `unsafe` and
+//! SSSE3 is not part of the x86-64 baseline. Every instruction wrapper is `unsafe` and
 //! the caller must enable SSSE3 with `#[target_feature(enable = "ssse3")]` or a
 //! global target feature.
 //!

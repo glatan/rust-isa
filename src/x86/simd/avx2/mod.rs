@@ -1,6 +1,6 @@
 //! AVX2.
 //!
-//! AVX2 is not part of the x86_64 baseline. Every operation is `unsafe` and
+//! AVX2 is not part of the x86_64 baseline. Every instruction wrapper is `unsafe` and
 //! the caller must enable AVX2 with `#[target_feature(enable = "avx2")]` or a
 //! global target feature. The values are [`V256`]; insert, extract, and gather
 //! operations also use [`V128`](super::sse2::V128). Immediate operands are

@@ -1,6 +1,6 @@
 //! PowerPC Power10 matrix-multiply assist (MMA) instructions.
 //!
-//! MMA is not part of the PowerPC baseline. Every operation is `unsafe` and
+//! MMA is not part of the PowerPC baseline. Every instruction wrapper is `unsafe` and
 //! the caller must enable the Power10 MMA feature set. The C file is compiled
 //! with `-mcpu=power10 -mmma`.
 //!

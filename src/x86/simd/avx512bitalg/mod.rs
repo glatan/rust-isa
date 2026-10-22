@@ -1,6 +1,6 @@
 //! AVX-512 BITALG.
 //!
-//! AVX-512 BITALG is not part of the x86-64 baseline. Every operation is
+//! AVX-512 BITALG is not part of the x86-64 baseline. Every instruction wrapper is
 //! `unsafe` and the caller must enable AVX-512 BITALG with
 //! `#[target_feature(enable = "avx512bitalg")]` (which implies AVX-512 F and BW)
 //! or a global target feature.

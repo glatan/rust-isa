@@ -1,6 +1,6 @@
 //! RISC-V Zkn crypto.
 //!
-//! Zkn is a stable scalar cryptography extension. Every operation is `unsafe`
+//! Zkn is a stable scalar cryptography extension. Every instruction wrapper is `unsafe`
 //! and the caller must enable the required sub-extension (`zkne`, `zknd`,
 //! `zknh`) with `#[target_feature]` or a global target feature.
 //!

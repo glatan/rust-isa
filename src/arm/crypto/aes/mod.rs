@@ -1,6 +1,6 @@
 //! 32-bit ARM AES.
 //!
-//! AES is unstable on this target. Every operation is `unsafe` and the caller
+//! AES is unstable on this target. Every instruction wrapper is `unsafe` and the caller
 //! must compile the whole crate with the AES feature enabled.
 //!
 //! The values are [`V128`]. The caller builds the key schedule and applies the

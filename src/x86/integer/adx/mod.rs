@@ -1,6 +1,6 @@
 //! ADX.
 //!
-//! ADX is not part of the x86-64 baseline. Every operation is `unsafe` and the
+//! ADX is not part of the x86-64 baseline. Every instruction wrapper is `unsafe` and the
 //! caller must enable ADX with `#[target_feature(enable = "adx")]` or a global
 //! target feature.
 //!

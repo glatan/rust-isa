@@ -1,6 +1,6 @@
 //! AArch64 SM4 instructions.
 //!
-//! SM4 is not part of the AArch64 baseline. Every operation is `unsafe` and the
+//! SM4 is not part of the AArch64 baseline. Every instruction wrapper is `unsafe` and the
 //! caller must enable SM4 with `#[target_feature(enable = "sm4")]` or a global
 //! target feature.
 //!

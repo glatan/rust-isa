@@ -1,6 +1,6 @@
 //! AArch64 SHA-3 instructions.
 //!
-//! SHA-3 is not part of the AArch64 baseline. Every operation is `unsafe` and
+//! SHA-3 is not part of the AArch64 baseline. Every instruction wrapper is `unsafe` and
 //! the caller must enable SHA-3 with `#[target_feature(enable = "sha3")]` or a
 //! global target feature.
 //!

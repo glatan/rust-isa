@@ -1,7 +1,7 @@
 //! Altivec.
 //!
 //! Altivec and VSX are not part of the PowerPC baseline. The caller must
-//! compile with `-C target-feature=+altivec,+vsx`. Every operation is `unsafe`.
+//! compile with `-C target-feature=+altivec,+vsx`. Every instruction wrapper is `unsafe`.
 //! The values are [`V128`]. Immediate operands are const generics unless
 //! documented otherwise.
 //!

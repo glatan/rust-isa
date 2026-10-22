@@ -1,6 +1,6 @@
 //! AArch64 JavaScript conversion.
 //!
-//! JSCONV is not part of the AArch64 baseline. Every operation is `unsafe` and
+//! JSCONV is not part of the AArch64 baseline. Every instruction wrapper is `unsafe` and
 //! requires the `jsconv` target feature. The value is a double-precision float
 //! or [`V128`].
 //!
