@@ -3,7 +3,8 @@
 //! The V extension is unstable. The caller must compile the whole crate with
 //! `-C target-feature=+v`; the wrappers do not carry `#[target_feature]`.
 //!
-//! SVE-like runtime vector lengths do not fit [`V128`]. These functions take
+//! SVE-like runtime vector lengths do not fit
+//! [`V128`](crate::riscv::simd::rv_vector::V128). These functions take
 //! slices and let the C loop choose VL with `vsetvl`. All slices must have the
 //! same length; a different length panics. The functions do not allocate.
 //!

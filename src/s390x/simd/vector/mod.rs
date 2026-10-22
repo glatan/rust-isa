@@ -67,6 +67,10 @@ unsafe extern "C" {
 macro_rules! binary {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable the vector facility.
         #[target_feature(enable = "vector")]
         #[inline]
         pub unsafe fn $name(a: V128, b: V128) -> V128 {
@@ -311,6 +315,13 @@ binary!(
 );
 
 /// `vsel`.
+///
+/// Select each bit from `b` where the corresponding bit of `c` is one, and
+/// from `a` where it is zero.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
 #[target_feature(enable = "vector")]
 #[inline]
 pub unsafe fn vsel(a: V128, b: V128, c: V128) -> V128 {
@@ -356,6 +367,12 @@ binary!(
 );
 
 /// `vperm`.
+///
+/// See [`permute`] for the index encoding.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
 #[target_feature(enable = "vector")]
 #[inline]
 pub unsafe fn vperm(a: V128, b: V128, index: V128) -> V128 {
@@ -363,6 +380,13 @@ pub unsafe fn vperm(a: V128, b: V128, index: V128) -> V128 {
 }
 
 /// `vle`.
+///
+/// Load 16 bytes.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility. `p` must be valid for reading
+/// 16 bytes.
 #[target_feature(enable = "vector")]
 #[inline]
 pub unsafe fn vle(p: *const u8) -> V128 {
@@ -370,6 +394,13 @@ pub unsafe fn vle(p: *const u8) -> V128 {
 }
 
 /// `vst`.
+///
+/// Store 16 bytes.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility. `p` must be valid for writing
+/// 16 bytes.
 #[target_feature(enable = "vector")]
 #[inline]
 pub unsafe fn vst(p: *mut u8, value: V128) {
@@ -400,6 +431,10 @@ binary!(
 macro_rules! tern_vec {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable the vector facility.
         #[target_feature(enable = "vector")]
         #[inline]
         pub unsafe fn $name(a: V128, b: V128, c: V128) -> V128 {
@@ -432,6 +467,13 @@ tern_vec!(
 );
 
 /// `vlef`.
+///
+/// Load 16 bytes into the four 32-bit lanes.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility. `p` must be valid for reading
+/// 16 bytes.
 #[target_feature(enable = "vector")]
 #[inline]
 pub unsafe fn vlef(p: *const f32) -> V128 {
@@ -443,6 +485,13 @@ pub unsafe fn vlef(p: *const f32) -> V128 {
 }
 
 /// `vstef`.
+///
+/// Store the four 32-bit lanes as 16 bytes.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility. `p` must be valid for writing
+/// 16 bytes.
 #[target_feature(enable = "vector")]
 #[inline]
 pub unsafe fn vstef(p: *mut f32, a: V128) {
@@ -460,6 +509,10 @@ use core::arch::asm;
 /// `vgbm`.
 ///
 /// Generate a vector by expanding each of the 16 immediate bits to a byte.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
 #[target_feature(enable = "vector")]
 #[inline]
 pub unsafe fn vgbm<const IMM: u16>() -> V128 {
@@ -476,6 +529,12 @@ pub unsafe fn vgbm<const IMM: u16>() -> V128 {
 }
 
 /// `vrepb`.
+///
+/// Broadcast byte `INDEX` to all 16 byte lanes. `INDEX` must be in `0..=15`.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
 #[target_feature(enable = "vector")]
 #[inline]
 pub unsafe fn vrepb<const INDEX: u8>(a: V128) -> V128 {
@@ -495,6 +554,13 @@ pub unsafe fn vrepb<const INDEX: u8>(a: V128) -> V128 {
 }
 
 /// `vreph`.
+///
+/// Broadcast 16-bit lane `INDEX` to all eight 16-bit lanes. `INDEX` must be in
+/// `0..=7`.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
 #[target_feature(enable = "vector")]
 #[inline]
 pub unsafe fn vreph<const INDEX: u8>(a: V128) -> V128 {
@@ -514,6 +580,13 @@ pub unsafe fn vreph<const INDEX: u8>(a: V128) -> V128 {
 }
 
 /// `vrepf`.
+///
+/// Broadcast 32-bit lane `INDEX` to all four 32-bit lanes. `INDEX` must be in
+/// `0..=3`.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
 #[target_feature(enable = "vector")]
 #[inline]
 pub unsafe fn vrepf<const INDEX: u8>(a: V128) -> V128 {
@@ -533,6 +606,13 @@ pub unsafe fn vrepf<const INDEX: u8>(a: V128) -> V128 {
 }
 
 /// `vrepg`.
+///
+/// Broadcast 64-bit lane `INDEX` to both 64-bit lanes. `INDEX` must be in
+/// `0..=1`.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
 #[target_feature(enable = "vector")]
 #[inline]
 pub unsafe fn vrepg<const INDEX: u8>(a: V128) -> V128 {
@@ -560,6 +640,10 @@ unsafe extern "C" {
 macro_rules! un_vec {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable the vector facility.
         #[target_feature(enable = "vector")]
         #[inline]
         pub unsafe fn $name(a: V128) -> V128 {

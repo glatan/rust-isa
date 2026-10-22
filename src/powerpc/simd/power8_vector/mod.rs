@@ -24,6 +24,10 @@ unsafe extern "C" {
 macro_rules! binary {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable the Power8 vector feature set.
         #[inline(always)]
         pub unsafe fn $name(a: V128, b: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -75,6 +79,10 @@ unsafe extern "C" {
 macro_rules! bin8 {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable the Power8 vector feature set.
         #[inline(always)]
         pub unsafe fn $name(a: V128, b: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -86,6 +94,10 @@ macro_rules! bin8 {
 macro_rules! un8 {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable the Power8 vector feature set.
         #[inline(always)]
         pub unsafe fn $name(a: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -161,21 +173,37 @@ un8!(
 );
 
 /// `vaddudm`.
+///
+/// # Safety
+///
+/// The caller must enable the Power8 vector feature set.
 #[inline(always)]
 pub unsafe fn vaddudm(a: V128, b: V128) -> V128 {
     unsafe { add_u64(a, b) }
 }
 /// `vsubudm`.
+///
+/// # Safety
+///
+/// The caller must enable the Power8 vector feature set.
 #[inline(always)]
 pub unsafe fn vsubudm(a: V128, b: V128) -> V128 {
     unsafe { sub_u64(a, b) }
 }
 /// `vmuluwm`.
+///
+/// # Safety
+///
+/// The caller must enable the Power8 vector feature set.
 #[inline(always)]
 pub unsafe fn vmuluwm(a: V128, b: V128) -> V128 {
     unsafe { mul_u32(a, b) }
 }
 /// `vmuleuh`.
+///
+/// # Safety
+///
+/// The caller must enable the Power8 vector feature set.
 #[inline(always)]
 pub unsafe fn vmuleuh(a: V128, b: V128) -> V128 {
     unsafe { mul_even_u16(a, b) }

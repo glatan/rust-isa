@@ -372,7 +372,9 @@ pub unsafe fn vpmulhuw(a: V256, b: V256) -> V256 {
 
 /// `vpmulhrsw`
 ///
-/// Multiply the 16 signed 16-bit lanes, add `0x4000`, and keep the high 16 bits.
+/// Multiply the 16 signed 16-bit lanes, add `0x4000`, shift right by 15, and
+/// keep the low 16 bits. The result wraps only when both inputs are
+/// `i16::MIN`.
 ///
 /// # Safety
 ///

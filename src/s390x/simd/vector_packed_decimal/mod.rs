@@ -66,7 +66,7 @@ decimal_binary!(
 /// `vsdp`.
 ///
 /// Shift left and divide packed decimal values. `I4` holds the shift
-/// amount in bits 3-7 and the instruction-overflow mask in bit 7. `M5`
+/// amount in bits 3-7; bits 0-2 are reserved and must be zero. `M5`
 /// holds the force-positive controls in bits 1-3 and the
 /// condition-code-set control in bit 0. The condition code is not
 /// returned.
@@ -77,7 +77,7 @@ decimal_binary!(
 #[target_feature(enable = "vector-packed-decimal")]
 #[inline]
 pub unsafe fn vsdp<const I4: u8, const M5: u8>(a: V128, b: V128) -> V128 {
-    const { assert!(I4 & 0x60 == 0, "I4 reserved bits must be zero") };
+    const { assert!(I4 & 0x07 == 0, "I4 reserved bits must be zero") };
     const { assert!(M5 <= 0x0f, "M5 must be in 0..=15") };
     let a = u128::from_be_bytes(a.to_bytes());
     let b = u128::from_be_bytes(b.to_bytes());

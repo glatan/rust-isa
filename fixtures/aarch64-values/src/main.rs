@@ -174,6 +174,14 @@ unsafe fn dot() -> bool {
             return false;
         }
     }
+    let negative = V128::from_bytes([0xff; 16]);
+    let out = unsafe { sdot(negative, b, acc) }.to_bytes();
+    for lane in 0..4 {
+        let value = i32::from_le_bytes(out[lane * 4..lane * 4 + 4].try_into().unwrap());
+        if value != -8 {
+            return false;
+        }
+    }
     let out = unsafe { kernel_dot(&a, &b, &acc) }.to_bytes();
     for lane in 0..4 {
         let value = i32::from_le_bytes(out[lane * 4..lane * 4 + 4].try_into().unwrap());
@@ -1766,6 +1774,12 @@ unsafe fn sve_ext_ops() -> bool {
     }
     unsafe { sve::ld1rqb_u8(&bytes, &mut ou8[..16]) };
     if ou8[..16] != bytes {
+        return false;
+    }
+    let quad = [1u8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+    let mut replicated = [0u8; 32];
+    unsafe { sve::ld1rqb_u8(&quad, &mut replicated) };
+    if replicated[..16] != quad || replicated[16..] != quad {
         return false;
     }
     unsafe { sve::ld1rb_u8(&[7], &mut ou32[..3]) };

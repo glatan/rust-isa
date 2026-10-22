@@ -69,6 +69,10 @@ unsafe extern "C" {
 macro_rules! binary {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with Altivec and VSX enabled.
         #[inline(always)]
         pub unsafe fn $name(a: V128, b: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -242,6 +246,10 @@ unsafe extern "C" {
 macro_rules! abin {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with Altivec and VSX enabled.
         #[inline(always)]
         pub unsafe fn $name(a: V128, b: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -253,6 +261,10 @@ macro_rules! abin {
 macro_rules! aun {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with Altivec and VSX enabled.
         #[inline(always)]
         pub unsafe fn $name(a: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -264,6 +276,10 @@ macro_rules! aun {
 macro_rules! atern {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with Altivec and VSX enabled.
         #[inline(always)]
         pub unsafe fn $name(a: V128, b: V128, c: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -510,6 +526,10 @@ aun!(
 macro_rules! afma {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with Altivec and VSX enabled.
         #[inline(always)]
         pub unsafe fn $name(acc: V128, a: V128, b: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -635,6 +655,10 @@ unsafe extern "C" {
 macro_rules! asum3 {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with Altivec and VSX enabled.
         #[inline(always)]
         pub unsafe fn $name(a: V128, b: V128, c: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -646,6 +670,10 @@ macro_rules! asum3 {
 macro_rules! asum2 {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with Altivec and VSX enabled.
         #[inline(always)]
         pub unsafe fn $name(a: V128, c: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);

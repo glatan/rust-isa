@@ -1,11 +1,11 @@
 //! WebAssembly SIMD extensions.
 //!
-//! [Fixed-width SIMD] is implemented by [`simd128`].
-//! [Relaxed SIMD] is implemented by [`relaxed_simd`].
+//! [Fixed-width SIMD] is implemented by `simd128`.
+//! [Relaxed SIMD] is implemented by `relaxed_simd`.
 //!
-//! [`simd128`] is compiled only when `target_feature = "simd128"` is enabled.
+//! `simd128` is compiled only when `target_feature = "simd128"` is enabled.
 //! Without that feature this module is empty, and the crate does not reference the SIMD128 C symbols.
-//! [`relaxed_simd`] is compiled only when `simd128` and `relaxed-simd` are both enabled.
+//! `relaxed_simd` is compiled only when `simd128` and `relaxed-simd` are both enabled.
 //!
 //! [Fixed-width SIMD]: https://webassembly.github.io/spec/core/syntax/instructions.html#vector-instructions
 //! [Relaxed SIMD]: https://webassembly.github.io/spec/core/exec/numerics.html#relaxed-operations

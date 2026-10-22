@@ -251,7 +251,8 @@ pub unsafe fn pmaddubsw(a: V128, b: V128) -> V128 {
 
 /// `pmulhrsw`
 ///
-/// Multiply signed 16-bit lanes, round the high 16 bits, and saturate.
+/// Multiply signed 16-bit lanes, add `0x4000`, shift right by 15, and keep the
+/// low 16 bits. The result wraps only when both inputs are `i16::MIN`.
 ///
 /// # Safety
 ///

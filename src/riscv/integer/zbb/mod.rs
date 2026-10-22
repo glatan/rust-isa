@@ -26,6 +26,10 @@ unsafe extern "C" {
 macro_rules! binary {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable Zbb.
         #[target_feature(enable = "zbb")]
         #[inline]
         pub unsafe fn $name(a: u64, b: u64) -> u64 {
@@ -37,6 +41,10 @@ macro_rules! binary {
 macro_rules! unary {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable Zbb.
         #[target_feature(enable = "zbb")]
         #[inline]
         pub unsafe fn $name(value: u64) -> u64 {

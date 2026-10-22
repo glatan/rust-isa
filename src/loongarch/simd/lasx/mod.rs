@@ -39,6 +39,10 @@ unsafe extern "C" {
 macro_rules! binary {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable LASX.
         #[target_feature(enable = "lasx")]
         #[inline]
         pub unsafe fn $name(a: V256, b: V256) -> V256 {
@@ -133,36 +137,60 @@ pub unsafe fn splat_i32(value: i32) -> V256 {
 }
 
 /// `xvadd.w`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvadd(a: V256, b: V256) -> V256 {
     unsafe { add(a, b) }
 }
 /// `xvsub.w`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvsub(a: V256, b: V256) -> V256 {
     unsafe { sub(a, b) }
 }
 /// `xvmul.w`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvmul(a: V256, b: V256) -> V256 {
     unsafe { mul(a, b) }
 }
 /// `xvand.v`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvand(a: V256, b: V256) -> V256 {
     unsafe { and(a, b) }
 }
 /// `xvor.v`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvor(a: V256, b: V256) -> V256 {
     unsafe { or(a, b) }
 }
 /// `xvxor.v`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvxor(a: V256, b: V256) -> V256 {
@@ -170,6 +198,10 @@ pub unsafe fn xvxor(a: V256, b: V256) -> V256 {
 }
 
 /// `xvabs.w`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvabs(a: V256) -> V256 {
@@ -183,6 +215,10 @@ pub unsafe fn xvabs(a: V256) -> V256 {
 }
 
 /// `xvneg.w`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvneg(a: V256) -> V256 {
@@ -196,18 +232,30 @@ pub unsafe fn xvneg(a: V256) -> V256 {
 }
 
 /// `xvdiv.s`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvdiv(a: V256, b: V256) -> V256 {
     unsafe { fdiv(a, b) }
 }
 /// `xvadd.d`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvadd_d(a: V256, b: V256) -> V256 {
     unsafe { add_i64(a, b) }
 }
 /// `xvsub.d`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvsub_d(a: V256, b: V256) -> V256 {
@@ -215,6 +263,10 @@ pub unsafe fn xvsub_d(a: V256, b: V256) -> V256 {
 }
 
 /// `xvadd.b`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvadd_b(a: V256, b: V256) -> V256 {
@@ -223,6 +275,10 @@ pub unsafe fn xvadd_b(a: V256, b: V256) -> V256 {
     V256::from_bytes(core::array::from_fn(|i| a[i].wrapping_add(b[i])))
 }
 /// `xvadd.h`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvadd_h(a: V256, b: V256) -> V256 {
@@ -237,6 +293,10 @@ pub unsafe fn xvadd_h(a: V256, b: V256) -> V256 {
     V256::from_bytes(out)
 }
 /// `xvsub.b`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvsub_b(a: V256, b: V256) -> V256 {
@@ -245,6 +305,10 @@ pub unsafe fn xvsub_b(a: V256, b: V256) -> V256 {
     V256::from_bytes(core::array::from_fn(|i| a[i].wrapping_sub(b[i])))
 }
 /// `xvsub.h`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvsub_h(a: V256, b: V256) -> V256 {
@@ -259,6 +323,10 @@ pub unsafe fn xvsub_h(a: V256, b: V256) -> V256 {
     V256::from_bytes(out)
 }
 /// `xvmul.h`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvmul_h(a: V256, b: V256) -> V256 {
@@ -274,6 +342,10 @@ pub unsafe fn xvmul_h(a: V256, b: V256) -> V256 {
 }
 
 /// `xvabs.b`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvabs_b(a: V256) -> V256 {
@@ -283,6 +355,10 @@ pub unsafe fn xvabs_b(a: V256) -> V256 {
 }
 
 /// `xvabs.h`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvabs_h(a: V256) -> V256 {
@@ -296,6 +372,10 @@ pub unsafe fn xvabs_h(a: V256) -> V256 {
 }
 
 /// `xvabs.d`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvabs_d(a: V256) -> V256 {
@@ -309,6 +389,10 @@ pub unsafe fn xvabs_d(a: V256) -> V256 {
 }
 
 /// `xvneg.b`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvneg_b(a: V256) -> V256 {
@@ -318,6 +402,10 @@ pub unsafe fn xvneg_b(a: V256) -> V256 {
 }
 
 /// `xvneg.h`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvneg_h(a: V256) -> V256 {
@@ -331,6 +419,10 @@ pub unsafe fn xvneg_h(a: V256) -> V256 {
 }
 
 /// `xvneg.d`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvneg_d(a: V256) -> V256 {
@@ -344,6 +436,10 @@ pub unsafe fn xvneg_d(a: V256) -> V256 {
 }
 
 /// `xvadd.w`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvadd_w(a: V256, b: V256) -> V256 {
@@ -351,6 +447,10 @@ pub unsafe fn xvadd_w(a: V256, b: V256) -> V256 {
 }
 
 /// `xvsub.w`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvsub_w(a: V256, b: V256) -> V256 {
@@ -358,6 +458,10 @@ pub unsafe fn xvsub_w(a: V256, b: V256) -> V256 {
 }
 
 /// `xvmul.w`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvmul_w(a: V256, b: V256) -> V256 {
@@ -365,6 +469,10 @@ pub unsafe fn xvmul_w(a: V256, b: V256) -> V256 {
 }
 
 /// `xvdiv.s`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvdiv_s(a: V256, b: V256) -> V256 {
@@ -372,6 +480,10 @@ pub unsafe fn xvdiv_s(a: V256, b: V256) -> V256 {
 }
 
 /// `xvmax.w` on signed 32-bit lanes.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvmax(a: V256, b: V256) -> V256 {
@@ -387,6 +499,10 @@ pub unsafe fn xvmax(a: V256, b: V256) -> V256 {
 }
 
 /// `xvmin.w` on signed 32-bit lanes.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvmin(a: V256, b: V256) -> V256 {
@@ -402,6 +518,10 @@ pub unsafe fn xvmin(a: V256, b: V256) -> V256 {
 }
 
 /// `xvseq.w` on 32-bit lanes. A true lane is all bits one.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvseq(a: V256, b: V256) -> V256 {
@@ -418,6 +538,10 @@ pub unsafe fn xvseq(a: V256, b: V256) -> V256 {
 }
 
 /// `xvsle.w` on signed 32-bit lanes. A true lane is all bits one.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvsle(a: V256, b: V256) -> V256 {
@@ -434,6 +558,10 @@ pub unsafe fn xvsle(a: V256, b: V256) -> V256 {
 }
 
 /// `xvslt.w` on signed 32-bit lanes. A true lane is all bits one.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvslt(a: V256, b: V256) -> V256 {
@@ -450,6 +578,10 @@ pub unsafe fn xvslt(a: V256, b: V256) -> V256 {
 }
 
 /// `xvseqi.w`. A true lane is all bits one.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvseqi(a: V256, imm: i32) -> V256 {
@@ -464,6 +596,10 @@ pub unsafe fn xvseqi(a: V256, imm: i32) -> V256 {
 }
 
 /// `xvslei.w` on signed 32-bit lanes. A true lane is all bits one.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvslei(a: V256, imm: i32) -> V256 {
@@ -478,6 +614,10 @@ pub unsafe fn xvslei(a: V256, imm: i32) -> V256 {
 }
 
 /// `xvslti.w` on signed 32-bit lanes. A true lane is all bits one.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvslti(a: V256, imm: i32) -> V256 {
@@ -492,6 +632,10 @@ pub unsafe fn xvslti(a: V256, imm: i32) -> V256 {
 }
 
 /// `xvnor.v`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvnor(a: V256, b: V256) -> V256 {
@@ -504,6 +648,10 @@ pub unsafe fn xvnor(a: V256, b: V256) -> V256 {
 ///
 /// Where a mask bit is one the result takes the bit from `a`, otherwise from
 /// `b`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvbitsel(a: V256, b: V256, mask: V256) -> V256 {
@@ -518,6 +666,10 @@ pub unsafe fn xvbitsel(a: V256, b: V256, mask: V256) -> V256 {
 /// Each control byte selects a byte from the concatenation of `a` and `b`. The
 /// low 6 bits are the index; indices 0 to 31 select `a` and indices 32 to 63
 /// select `b`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvshuf(a: V256, b: V256, control: V256) -> V256 {
@@ -533,6 +685,10 @@ pub unsafe fn xvshuf(a: V256, b: V256, control: V256) -> V256 {
 /// `xvshuf4i.b`.
 ///
 /// `IMM` holds four 2-bit selectors, one for each byte of a 4-byte group.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvshuf4i<const IMM: u8>(a: V256) -> V256 {
@@ -545,6 +701,10 @@ pub unsafe fn xvshuf4i<const IMM: u8>(a: V256) -> V256 {
 /// `xvsll.w`.
 ///
 /// Shift each 32-bit integer lane left by `shift & 31`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvsll(a: V256, shift: i32) -> V256 {
@@ -560,6 +720,10 @@ pub unsafe fn xvsll(a: V256, shift: i32) -> V256 {
 /// `xvsrl.w`.
 ///
 /// Shift each 32-bit integer lane right by `shift & 31`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvsrl(a: V256, shift: i32) -> V256 {
@@ -575,6 +739,10 @@ pub unsafe fn xvsrl(a: V256, shift: i32) -> V256 {
 /// `xvsra.w`.
 ///
 /// Shift each signed 32-bit integer lane right by `shift & 31`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvsra(a: V256, shift: i32) -> V256 {
@@ -588,6 +756,10 @@ pub unsafe fn xvsra(a: V256, shift: i32) -> V256 {
 }
 
 /// `xvslli.w`. `SHIFT` is masked to 5 bits.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvslli<const SHIFT: u32>(a: V256) -> V256 {
@@ -601,6 +773,10 @@ pub unsafe fn xvslli<const SHIFT: u32>(a: V256) -> V256 {
 }
 
 /// `xvsrli.w`. `SHIFT` is masked to 5 bits.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvsrli<const SHIFT: u32>(a: V256) -> V256 {
@@ -614,6 +790,10 @@ pub unsafe fn xvsrli<const SHIFT: u32>(a: V256) -> V256 {
 }
 
 /// `xvsrai.w`. `SHIFT` is masked to 5 bits.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvsrai<const SHIFT: u32>(a: V256) -> V256 {
@@ -627,6 +807,10 @@ pub unsafe fn xvsrai<const SHIFT: u32>(a: V256) -> V256 {
 }
 
 /// `xvpackev.b`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvpackev(a: V256, b: V256) -> V256 {
@@ -638,6 +822,10 @@ pub unsafe fn xvpackev(a: V256, b: V256) -> V256 {
 }
 
 /// `xvpackod.b`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvpackod(a: V256, b: V256) -> V256 {
@@ -652,6 +840,10 @@ pub unsafe fn xvpackod(a: V256, b: V256) -> V256 {
 ///
 /// Sign-extend the low 16 bytes of `a` to 16-bit lanes. The high half of `a`
 /// is ignored.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvext(a: V256) -> V256 {
@@ -667,6 +859,10 @@ pub unsafe fn xvext(a: V256) -> V256 {
 /// `xvexth.h.b`.
 ///
 /// Sign-extend the high 8 bytes of each 128-bit half to 16-bit lanes.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvexth(a: V256) -> V256 {
@@ -684,6 +880,10 @@ pub unsafe fn xvexth(a: V256) -> V256 {
 /// `xvextl.q.d`.
 ///
 /// Sign-extend the even 64-bit lanes to 128-bit lanes, one per 128-bit half.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvextl(a: V256) -> V256 {
@@ -700,6 +900,10 @@ pub unsafe fn xvextl(a: V256) -> V256 {
 ///
 /// Saturate each signed 32-bit lane to the signed `SAT`-bit range. `SAT` must
 /// be in `0..=31`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvsat<const SAT: u32>(a: V256) -> V256 {
@@ -721,6 +925,10 @@ pub unsafe fn xvsat<const SAT: u32>(a: V256) -> V256 {
 /// Shift the 16-bit lanes of `a` right by the low 4 bits of the corresponding
 /// lanes of `b`, saturate to unsigned 8 bits, and write the result to the low
 /// 8 bytes of each 128-bit half. The high 8 bytes of each half are zero.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvssr(a: V256, b: V256) -> V256 {
@@ -742,6 +950,10 @@ pub unsafe fn xvssr(a: V256, b: V256) -> V256 {
 /// `xvavgr.bu`.
 ///
 /// Rounding average of the unsigned 8-bit lanes: `(a + b + 1) >> 1`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvavgr(a: V256, b: V256) -> V256 {
@@ -753,6 +965,10 @@ pub unsafe fn xvavgr(a: V256, b: V256) -> V256 {
 }
 
 /// `xvfadd.s`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvfadd(a: V256, b: V256) -> V256 {
@@ -760,6 +976,10 @@ pub unsafe fn xvfadd(a: V256, b: V256) -> V256 {
 }
 
 /// `xvfsub.s`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvfsub(a: V256, b: V256) -> V256 {
@@ -767,6 +987,10 @@ pub unsafe fn xvfsub(a: V256, b: V256) -> V256 {
 }
 
 /// `xvfmul.s`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvfmul(a: V256, b: V256) -> V256 {
@@ -774,6 +998,10 @@ pub unsafe fn xvfmul(a: V256, b: V256) -> V256 {
 }
 
 /// `xvfdiv.s`.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvfdiv(a: V256, b: V256) -> V256 {
@@ -784,6 +1012,10 @@ pub unsafe fn xvfdiv(a: V256, b: V256) -> V256 {
 ///
 /// A NaN operand selects the other operand. The result for two NaNs is the
 /// instruction's NaN.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvfmax(a: V256, b: V256) -> V256 {
@@ -798,6 +1030,10 @@ pub unsafe fn xvfmax(a: V256, b: V256) -> V256 {
 ///
 /// A NaN operand selects the other operand. The result for two NaNs is the
 /// instruction's NaN.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvfmin(a: V256, b: V256) -> V256 {
@@ -830,6 +1066,10 @@ pub unsafe fn xvfmin(a: V256, b: V256) -> V256 {
 ///
 /// A true lane is all bits one. Unordered comparisons are true when either
 /// lane is NaN.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvfcmp<const COND: u32>(a: V256, b: V256) -> V256 {
@@ -860,6 +1100,10 @@ pub unsafe fn xvfcmp<const COND: u32>(a: V256, b: V256) -> V256 {
 /// Convert the f64 lanes to f32 lanes. In each 128-bit half the first two
 /// 32-bit result lanes come from `b` and the last two come from `a`, matching
 /// the instruction's two-source layout.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvfcvt(a: V256, b: V256) -> V256 {
@@ -874,6 +1118,10 @@ pub unsafe fn xvfcvt(a: V256, b: V256) -> V256 {
 ///
 /// Convert f32 lanes to signed 32-bit lanes using the current floating-point
 /// rounding mode from FCSR.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvftint(a: V256) -> V256 {
@@ -887,6 +1135,10 @@ pub unsafe fn xvftint(a: V256) -> V256 {
 /// `xvffint.s.w`.
 ///
 /// Convert signed 32-bit lanes to f32 lanes.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvffint(a: V256) -> V256 {
@@ -958,6 +1210,10 @@ pub unsafe fn xvldi<const IMM: i32>() -> V256 {
 /// `xvreplgr2vr.w`.
 ///
 /// Broadcast a 32-bit value to all eight lanes.
+///
+/// # Safety
+///
+/// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvrepl(value: i32) -> V256 {

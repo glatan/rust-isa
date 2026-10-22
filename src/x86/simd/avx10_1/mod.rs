@@ -97,7 +97,7 @@ unsafe extern "C" {
 }
 
 /// `vpaddb_v256`
-/// Apply the integer operation to the lanes.
+/// Add the 8-bit lanes, wrapping at 8 bits.
 ///
 /// # Safety
 ///
@@ -116,7 +116,7 @@ unsafe extern "C" {
 }
 
 /// `vpaddb_v512`
-/// Apply the integer operation to the lanes.
+/// Add the 8-bit lanes, wrapping at 8 bits.
 ///
 /// # Safety
 ///
@@ -135,7 +135,7 @@ unsafe extern "C" {
 }
 
 /// `vpaddw_v256`
-/// Apply the integer operation to the lanes.
+/// Add the 16-bit lanes, wrapping at 16 bits.
 ///
 /// # Safety
 ///
@@ -154,7 +154,7 @@ unsafe extern "C" {
 }
 
 /// `vpaddw_v512`
-/// Apply the integer operation to the lanes.
+/// Add the 16-bit lanes, wrapping at 16 bits.
 ///
 /// # Safety
 ///
@@ -173,7 +173,7 @@ unsafe extern "C" {
 }
 
 /// `vpaddd_v256`
-/// Apply the integer operation to the lanes.
+/// Add the 32-bit lanes, wrapping at 32 bits.
 ///
 /// # Safety
 ///
@@ -192,7 +192,7 @@ unsafe extern "C" {
 }
 
 /// `vpaddd_v512`
-/// Apply the integer operation to the lanes.
+/// Add the 32-bit lanes, wrapping at 32 bits.
 ///
 /// # Safety
 ///
@@ -211,7 +211,7 @@ unsafe extern "C" {
 }
 
 /// `vpaddq_v256`
-/// Apply the integer operation to the lanes.
+/// Add the 64-bit lanes, wrapping at 64 bits.
 ///
 /// # Safety
 ///
@@ -230,7 +230,7 @@ unsafe extern "C" {
 }
 
 /// `vpaddq_v512`
-/// Apply the integer operation to the lanes.
+/// Add the 64-bit lanes, wrapping at 64 bits.
 ///
 /// # Safety
 ///
@@ -249,7 +249,7 @@ unsafe extern "C" {
 }
 
 /// `vpsubb_v256`
-/// Apply the integer operation to the lanes.
+/// Subtract the 8-bit lanes, wrapping at 8 bits.
 ///
 /// # Safety
 ///
@@ -268,7 +268,7 @@ unsafe extern "C" {
 }
 
 /// `vpsubb_v512`
-/// Apply the integer operation to the lanes.
+/// Subtract the 8-bit lanes, wrapping at 8 bits.
 ///
 /// # Safety
 ///
@@ -287,7 +287,7 @@ unsafe extern "C" {
 }
 
 /// `vpsubw_v256`
-/// Apply the integer operation to the lanes.
+/// Subtract the 16-bit lanes, wrapping at 16 bits.
 ///
 /// # Safety
 ///
@@ -306,7 +306,7 @@ unsafe extern "C" {
 }
 
 /// `vpsubw_v512`
-/// Apply the integer operation to the lanes.
+/// Subtract the 16-bit lanes, wrapping at 16 bits.
 ///
 /// # Safety
 ///
@@ -325,7 +325,7 @@ unsafe extern "C" {
 }
 
 /// `vpsubd_v256`
-/// Apply the integer operation to the lanes.
+/// Subtract the 32-bit lanes, wrapping at 32 bits.
 ///
 /// # Safety
 ///
@@ -344,7 +344,7 @@ unsafe extern "C" {
 }
 
 /// `vpsubd_v512`
-/// Apply the integer operation to the lanes.
+/// Subtract the 32-bit lanes, wrapping at 32 bits.
 ///
 /// # Safety
 ///
@@ -363,7 +363,7 @@ unsafe extern "C" {
 }
 
 /// `vpsubq_v256`
-/// Apply the integer operation to the lanes.
+/// Subtract the 64-bit lanes, wrapping at 64 bits.
 ///
 /// # Safety
 ///
@@ -382,7 +382,7 @@ unsafe extern "C" {
 }
 
 /// `vpsubq_v512`
-/// Apply the integer operation to the lanes.
+/// Subtract the 64-bit lanes, wrapping at 64 bits.
 ///
 /// # Safety
 ///
@@ -401,7 +401,7 @@ unsafe extern "C" {
 }
 
 /// `vpmullw_v256`
-/// Apply the integer operation to the lanes.
+/// Multiply the 16-bit lanes, keeping the low 16 bits.
 ///
 /// # Safety
 ///
@@ -420,7 +420,7 @@ unsafe extern "C" {
 }
 
 /// `vpmullw_v512`
-/// Apply the integer operation to the lanes.
+/// Multiply the 16-bit lanes, keeping the low 16 bits.
 ///
 /// # Safety
 ///
@@ -439,7 +439,7 @@ unsafe extern "C" {
 }
 
 /// `vpmulld_v256`
-/// Apply the integer operation to the lanes.
+/// Multiply the 32-bit lanes, keeping the low 32 bits.
 ///
 /// # Safety
 ///
@@ -458,7 +458,7 @@ unsafe extern "C" {
 }
 
 /// `vpmulld_v512`
-/// Apply the integer operation to the lanes.
+/// Multiply the 32-bit lanes, keeping the low 32 bits.
 ///
 /// # Safety
 ///
@@ -477,7 +477,7 @@ unsafe extern "C" {
 }
 
 /// `vpmullq_v256`
-/// Apply the integer operation to the lanes.
+/// Multiply the 64-bit lanes, keeping the low 64 bits.
 ///
 /// # Safety
 ///
@@ -496,7 +496,7 @@ unsafe extern "C" {
 }
 
 /// `vpmullq_v512`
-/// Apply the integer operation to the lanes.
+/// Multiply the 64-bit lanes, keeping the low 64 bits.
 ///
 /// # Safety
 ///
@@ -515,7 +515,7 @@ unsafe extern "C" {
 }
 
 /// `vpmulhw_v256`
-/// Apply the integer operation to the lanes.
+/// Multiply the signed 16-bit lanes and keep the high 16 bits.
 ///
 /// # Safety
 ///
@@ -534,7 +534,7 @@ unsafe extern "C" {
 }
 
 /// `vpmulhw_v512`
-/// Apply the integer operation to the lanes.
+/// Multiply the signed 16-bit lanes and keep the high 16 bits.
 ///
 /// # Safety
 ///
@@ -553,7 +553,7 @@ unsafe extern "C" {
 }
 
 /// `vpmulhuw_v256`
-/// Apply the integer operation to the lanes.
+/// Multiply the unsigned 16-bit lanes and keep the high 16 bits.
 ///
 /// # Safety
 ///
@@ -572,7 +572,7 @@ unsafe extern "C" {
 }
 
 /// `vpmulhuw_v512`
-/// Apply the integer operation to the lanes.
+/// Multiply the unsigned 16-bit lanes and keep the high 16 bits.
 ///
 /// # Safety
 ///
@@ -591,7 +591,7 @@ unsafe extern "C" {
 }
 
 /// `vpmaddwd_v256`
-/// Apply the integer operation to the lanes.
+/// Multiply signed 16-bit lane pairs, add each pair, and store into 32-bit lanes.
 ///
 /// # Safety
 ///
@@ -610,7 +610,7 @@ unsafe extern "C" {
 }
 
 /// `vpmaddwd_v512`
-/// Apply the integer operation to the lanes.
+/// Multiply signed 16-bit lane pairs, add each pair, and store into 32-bit lanes.
 ///
 /// # Safety
 ///
@@ -629,7 +629,7 @@ unsafe extern "C" {
 }
 
 /// `vpmaddubsw_v256`
-/// Apply the integer operation to the lanes.
+/// Multiply unsigned bytes by signed bytes, add adjacent products, and saturate to signed 16 bits.
 ///
 /// # Safety
 ///
@@ -648,7 +648,7 @@ unsafe extern "C" {
 }
 
 /// `vpmaddubsw_v512`
-/// Apply the integer operation to the lanes.
+/// Multiply unsigned bytes by signed bytes, add adjacent products, and saturate to signed 16 bits.
 ///
 /// # Safety
 ///
@@ -667,7 +667,7 @@ unsafe extern "C" {
 }
 
 /// `vpandd_v256`
-/// Apply the integer operation to the lanes.
+/// Bitwise AND.
 ///
 /// # Safety
 ///
@@ -686,7 +686,7 @@ unsafe extern "C" {
 }
 
 /// `vpandd_v512`
-/// Apply the integer operation to the lanes.
+/// Bitwise AND.
 ///
 /// # Safety
 ///
@@ -705,7 +705,7 @@ unsafe extern "C" {
 }
 
 /// `vpandq_v256`
-/// Apply the integer operation to the lanes.
+/// Bitwise AND.
 ///
 /// # Safety
 ///
@@ -724,7 +724,7 @@ unsafe extern "C" {
 }
 
 /// `vpandq_v512`
-/// Apply the integer operation to the lanes.
+/// Bitwise AND.
 ///
 /// # Safety
 ///
@@ -743,7 +743,7 @@ unsafe extern "C" {
 }
 
 /// `vpandnd_v256`
-/// Apply the integer operation to the lanes.
+/// Bitwise AND of `b` with the complement of `a`.
 ///
 /// # Safety
 ///
@@ -762,7 +762,7 @@ unsafe extern "C" {
 }
 
 /// `vpandnd_v512`
-/// Apply the integer operation to the lanes.
+/// Bitwise AND of `b` with the complement of `a`.
 ///
 /// # Safety
 ///
@@ -781,7 +781,7 @@ unsafe extern "C" {
 }
 
 /// `vpandnq_v256`
-/// Apply the integer operation to the lanes.
+/// Bitwise AND of `b` with the complement of `a`.
 ///
 /// # Safety
 ///
@@ -800,7 +800,7 @@ unsafe extern "C" {
 }
 
 /// `vpandnq_v512`
-/// Apply the integer operation to the lanes.
+/// Bitwise AND of `b` with the complement of `a`.
 ///
 /// # Safety
 ///
@@ -819,7 +819,7 @@ unsafe extern "C" {
 }
 
 /// `vpord_v256`
-/// Apply the integer operation to the lanes.
+/// Bitwise OR.
 ///
 /// # Safety
 ///
@@ -838,7 +838,7 @@ unsafe extern "C" {
 }
 
 /// `vpord_v512`
-/// Apply the integer operation to the lanes.
+/// Bitwise OR.
 ///
 /// # Safety
 ///
@@ -857,7 +857,7 @@ unsafe extern "C" {
 }
 
 /// `vporq_v256`
-/// Apply the integer operation to the lanes.
+/// Bitwise OR.
 ///
 /// # Safety
 ///
@@ -876,7 +876,7 @@ unsafe extern "C" {
 }
 
 /// `vporq_v512`
-/// Apply the integer operation to the lanes.
+/// Bitwise OR.
 ///
 /// # Safety
 ///
@@ -895,7 +895,7 @@ unsafe extern "C" {
 }
 
 /// `vpxord_v256`
-/// Apply the integer operation to the lanes.
+/// Bitwise XOR.
 ///
 /// # Safety
 ///
@@ -914,7 +914,7 @@ unsafe extern "C" {
 }
 
 /// `vpxord_v512`
-/// Apply the integer operation to the lanes.
+/// Bitwise XOR.
 ///
 /// # Safety
 ///
@@ -933,7 +933,7 @@ unsafe extern "C" {
 }
 
 /// `vpxorq_v256`
-/// Apply the integer operation to the lanes.
+/// Bitwise XOR.
 ///
 /// # Safety
 ///
@@ -952,7 +952,7 @@ unsafe extern "C" {
 }
 
 /// `vpxorq_v512`
-/// Apply the integer operation to the lanes.
+/// Bitwise XOR.
 ///
 /// # Safety
 ///
@@ -3032,6 +3032,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
+///
+/// Every selected address must be valid for reading 4 bytes.
 #[inline]
 pub unsafe fn vgatherdps_v256(src: V256, base: *const u8, indices: V256, mask: u8) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
@@ -3063,6 +3065,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
+///
+/// Every selected address must be valid for reading 4 bytes.
 #[inline]
 pub unsafe fn vgatherdps_v512(src: V512, base: *const u8, indices: V512, mask: u16) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
@@ -3094,6 +3098,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
+///
+/// Every selected address must be valid for reading 8 bytes.
 #[inline]
 pub unsafe fn vgatherdpd_v256(src: V256, base: *const u8, indices: V128, mask: u8) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
@@ -3125,6 +3131,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
+///
+/// Every selected address must be valid for reading 8 bytes.
 #[inline]
 pub unsafe fn vgatherdpd_v512(src: V512, base: *const u8, indices: V256, mask: u8) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
@@ -3156,6 +3164,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
+///
+/// Every selected address must be valid for reading 8 bytes.
 #[inline]
 pub unsafe fn vgatherqpd_v256(src: V256, base: *const u8, indices: V256, mask: u8) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
@@ -3187,6 +3197,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
+///
+/// Every selected address must be valid for reading 8 bytes.
 #[inline]
 pub unsafe fn vgatherqpd_v512(src: V512, base: *const u8, indices: V512, mask: u8) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
@@ -3218,6 +3230,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
+///
+/// Every selected address must be valid for reading 4 bytes.
 #[inline]
 pub unsafe fn vgatherqps_v256(src: V128, base: *const u8, indices: V256, mask: u8) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
@@ -3249,6 +3263,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
+///
+/// Every selected address must be valid for reading 4 bytes.
 #[inline]
 pub unsafe fn vgatherqps_v512(src: V256, base: *const u8, indices: V512, mask: u8) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
@@ -3274,6 +3290,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
+///
+/// Every selected address must be valid for writing 4 bytes.
 #[inline]
 pub unsafe fn vscatterdps_v256(base: *mut u8, indices: V256, a: V256, mask: u8) {
     unsafe { rust_isa_avx10_1_vscatterdps_v256(base, indices.as_ptr(), a.as_ptr(), mask) }
@@ -3294,6 +3312,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
+///
+/// Every selected address must be valid for writing 4 bytes.
 #[inline]
 pub unsafe fn vscatterdps_v512(base: *mut u8, indices: V512, a: V512, mask: u16) {
     unsafe { rust_isa_avx10_1_vscatterdps_v512(base, indices.as_ptr(), a.as_ptr(), mask) }
@@ -3309,6 +3329,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
+///
+/// Every selected address must be valid for writing 8 bytes.
 #[inline]
 pub unsafe fn vscatterdpd_v256(base: *mut u8, indices: V128, a: V256, mask: u8) {
     unsafe { rust_isa_avx10_1_vscatterdpd_v256(base, indices.as_ptr(), a.as_ptr(), mask) }
@@ -3324,6 +3346,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
+///
+/// Every selected address must be valid for writing 8 bytes.
 #[inline]
 pub unsafe fn vscatterdpd_v512(base: *mut u8, indices: V256, a: V512, mask: u8) {
     unsafe { rust_isa_avx10_1_vscatterdpd_v512(base, indices.as_ptr(), a.as_ptr(), mask) }
@@ -3339,6 +3363,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
+///
+/// Every selected address must be valid for writing 8 bytes.
 #[inline]
 pub unsafe fn vscatterqpd_v256(base: *mut u8, indices: V256, a: V256, mask: u8) {
     unsafe { rust_isa_avx10_1_vscatterqpd_v256(base, indices.as_ptr(), a.as_ptr(), mask) }
@@ -3354,6 +3380,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
+///
+/// Every selected address must be valid for writing 8 bytes.
 #[inline]
 pub unsafe fn vscatterqpd_v512(base: *mut u8, indices: V512, a: V512, mask: u8) {
     unsafe { rust_isa_avx10_1_vscatterqpd_v512(base, indices.as_ptr(), a.as_ptr(), mask) }
@@ -3369,6 +3397,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
+///
+/// Every selected address must be valid for writing 4 bytes.
 #[inline]
 pub unsafe fn vscatterqps_v256(base: *mut u8, indices: V256, a: V128, mask: u8) {
     unsafe { rust_isa_avx10_1_vscatterqps_v256(base, indices.as_ptr(), a.as_ptr(), mask) }
@@ -3384,6 +3414,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
+///
+/// Every selected address must be valid for writing 4 bytes.
 #[inline]
 pub unsafe fn vscatterqps_v512(base: *mut u8, indices: V512, a: V256, mask: u8) {
     unsafe { rust_isa_avx10_1_vscatterqps_v512(base, indices.as_ptr(), a.as_ptr(), mask) }

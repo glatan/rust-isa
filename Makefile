@@ -12,6 +12,10 @@ DUPLICATES_ARGS ?=
 
 X86_64_TARGET ?= x86_64-unknown-linux-gnu
 WASIP1_TARGET ?= wasm32-wasip1
+WASM_UNKNOWN_TARGET ?= wasm32-unknown-unknown
+DOC_TARGETS ?= aarch64-unknown-linux-gnu armv7-unknown-linux-gnueabihf powerpc64le-unknown-linux-gnu riscv64gc-unknown-linux-gnu s390x-unknown-linux-gnu loongarch64-unknown-linux-gnu mips64-unknown-linux-gnuabi64
+DOC_TARGET_DIR ?= target-nested/doc
+WASM_DOC_TARGET_DIR ?= target-nested/doc-wasm
 
 PODMAN_RUN := $(PODMAN) run --rm \
 	-v "$(CURDIR)":/src \
@@ -27,7 +31,8 @@ PODMAN_RUN := $(PODMAN) run --rm \
 help:
 	@printf '%s\n' \
 		'image                        開発イメージを作る' \
-		'test                         フォーマット検査とすべてのテスト（test-host + wasm32）' \
+		'test                         フォーマット検査・rustdoc・すべてのテスト（test-host + wasm32）' \
+		'check-docs                   全ターゲットの rustdoc を -D warnings で検査する' \
 		'fmt                          dprint と cargo fmt で整形する' \
 		'fmt-check                    dprint と cargo fmt の整形を検査する' \
 		'test-host                    x86_64 で実行する全テストと doctest' \
@@ -72,8 +77,18 @@ fmt:
 fmt-check:
 	$(PODMAN_RUN) bash -lc 'dprint check && cargo fmt --all -- --check && for d in fixtures/*-values; do cargo fmt --manifest-path "$$d/Cargo.toml" -- --check || exit 1; done'
 
+.PHONY: check-docs
+check-docs:
+	$(PODMAN_RUN) bash -lc 'set -e; \
+		RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --target $(X86_64_TARGET); \
+		for t in $(DOC_TARGETS); do \
+			echo "===== doc $$t"; \
+			RUSTC_BOOTSTRAP=1 RUSTDOCFLAGS="-D warnings" CARGO_TARGET_DIR=$(DOC_TARGET_DIR) cargo doc --no-deps -Z build-std=core --target "$$t"; \
+		done; \
+		CARGO_TARGET_DIR=$(WASM_DOC_TARGET_DIR) RUSTDOCFLAGS="-D warnings -C target-feature=+simd128,+relaxed-simd" cargo doc --no-deps --features wide-arithmetic --target $(WASM_UNKNOWN_TARGET)'
+
 .PHONY: test
-test: fmt-check coverage-check test-host test-wasip1 test-wasip1-wide-arithmetic
+test: fmt-check coverage-check check-docs test-host test-wasip1 test-wasip1-wide-arithmetic
 
 .PHONY: test-host
 test-host:

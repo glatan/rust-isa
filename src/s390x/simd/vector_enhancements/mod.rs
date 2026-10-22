@@ -96,6 +96,10 @@ unsafe extern "C" {
 macro_rules! bin_enh {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable the vector-enhancement facility.
         #[inline(always)]
         pub unsafe fn $name(a: V128, b: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -107,6 +111,10 @@ macro_rules! bin_enh {
 macro_rules! un_enh {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable the vector-enhancement facility.
         #[inline(always)]
         pub unsafe fn $name(a: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -118,6 +126,10 @@ macro_rules! un_enh {
 macro_rules! tern_enh {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable the vector-enhancement facility.
         #[inline(always)]
         pub unsafe fn $name(acc: V128, a: V128, b: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -212,6 +224,10 @@ unsafe extern "C" {
 macro_rules! un_enh2 {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable the vector-enhancement facility.
         #[inline(always)]
         pub unsafe fn $name(a: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);

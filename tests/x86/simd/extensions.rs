@@ -243,6 +243,10 @@ fn ssse3_multiply_and_sign() {
         i16_lanes(unsafe { pmulhrsw(i16x8([0x4000; 8]), i16x8([0x4000; 8])) }),
         [8192; 8]
     );
+    assert_eq!(
+        i16_lanes(unsafe { pmulhrsw(i16x8([i16::MIN; 8]), i16x8([i16::MIN; 8])) }),
+        [i16::MIN; 8]
+    );
 
     let a = V128::from_bytes([
         1, 0xff, 2, 0xfe, 3, 0xff, 4, 0xfe, 5, 0xff, 6, 0xfe, 7, 0xff, 8, 0xfe,

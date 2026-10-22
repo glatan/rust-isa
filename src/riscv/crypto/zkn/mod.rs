@@ -29,6 +29,10 @@ unsafe extern "C" {
 macro_rules! sha {
     ($(#[$meta:meta])* $name:ident, $c:ident, $ty:ty) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable Zkn.
         #[target_feature(enable = "zkn")]
         #[inline]
         pub unsafe fn $name(value: $ty) -> $ty {
@@ -40,6 +44,10 @@ macro_rules! sha {
 macro_rules! aes {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable Zkn.
         #[target_feature(enable = "zkn")]
         #[inline]
         pub unsafe fn $name(a: u64, b: u64) -> u64 {
