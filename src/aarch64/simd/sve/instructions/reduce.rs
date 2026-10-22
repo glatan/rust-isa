@@ -377,3 +377,143 @@ unsafe extern "C" {
 pub unsafe fn reduce_minnm_f64(a: &[f64]) -> f64 {
     unsafe { rust_isa_sve_minnmv_f64(a.as_ptr(), a.len()) }
 }
+
+unsafe extern "C" {
+    fn rust_isa_sve_faddv_f32(a: *const f32, len: usize) -> f32;
+}
+/// `faddv` over a `f32` slice (alias of `addv`).
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn faddv_f32(a: &[f32]) -> f32 {
+    unsafe { rust_isa_sve_faddv_f32(a.as_ptr(), a.len()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_fmaxv_f32(a: *const f32, len: usize) -> f32;
+}
+/// `fmaxv` over a `f32` slice (alias of `maxv`).
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fmaxv_f32(a: &[f32]) -> f32 {
+    unsafe { rust_isa_sve_fmaxv_f32(a.as_ptr(), a.len()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_fminv_f32(a: *const f32, len: usize) -> f32;
+}
+/// `fminv` over a `f32` slice (alias of `minv`).
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fminv_f32(a: &[f32]) -> f32 {
+    unsafe { rust_isa_sve_fminv_f32(a.as_ptr(), a.len()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_fmaxnmv_f32(a: *const f32, len: usize) -> f32;
+}
+/// `fmaxnmv` over a `f32` slice (alias of `maxnmv`).
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fmaxnmv_f32(a: &[f32]) -> f32 {
+    unsafe { rust_isa_sve_fmaxnmv_f32(a.as_ptr(), a.len()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_fminnmv_f32(a: *const f32, len: usize) -> f32;
+}
+/// `fminnmv` over a `f32` slice (alias of `minnmv`).
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fminnmv_f32(a: &[f32]) -> f32 {
+    unsafe { rust_isa_sve_fminnmv_f32(a.as_ptr(), a.len()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_faddv_f64(a: *const f64, len: usize) -> f64;
+}
+/// `faddv` over a `f64` slice (alias of `addv`).
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn faddv_f64(a: &[f64]) -> f64 {
+    unsafe { rust_isa_sve_faddv_f64(a.as_ptr(), a.len()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_fmaxv_f64(a: *const f64, len: usize) -> f64;
+}
+/// `fmaxv` over a `f64` slice (alias of `maxv`).
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fmaxv_f64(a: &[f64]) -> f64 {
+    unsafe { rust_isa_sve_fmaxv_f64(a.as_ptr(), a.len()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_fminv_f64(a: *const f64, len: usize) -> f64;
+}
+/// `fminv` over a `f64` slice (alias of `minv`).
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fminv_f64(a: &[f64]) -> f64 {
+    unsafe { rust_isa_sve_fminv_f64(a.as_ptr(), a.len()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_fmaxnmv_f64(a: *const f64, len: usize) -> f64;
+}
+/// `fmaxnmv` over a `f64` slice (alias of `maxnmv`).
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fmaxnmv_f64(a: &[f64]) -> f64 {
+    unsafe { rust_isa_sve_fmaxnmv_f64(a.as_ptr(), a.len()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_fminnmv_f64(a: *const f64, len: usize) -> f64;
+}
+/// `fminnmv` over a `f64` slice (alias of `minnmv`).
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fminnmv_f64(a: &[f64]) -> f64 {
+    unsafe { rust_isa_sve_fminnmv_f64(a.as_ptr(), a.len()) }
+}

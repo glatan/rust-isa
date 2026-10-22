@@ -431,3 +431,45 @@ pub unsafe fn index_i32(start: i32, step: i32, out: &mut [i32]) {
         rust_isa_sve_index_i32(start, step, out.as_mut_ptr(), out.len());
     }
 }
+
+unsafe extern "C" {
+    fn rust_isa_sve_fmov_f32(a: *const f32, out: *mut f32, len: usize);
+}
+/// `fmov` on `f32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fmov_f32(a: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_fmov_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_fmov_f64(a: *const f64, out: *mut f64, len: usize);
+}
+/// `fmov` on `f64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fmov_f64(a: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_fmov_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
