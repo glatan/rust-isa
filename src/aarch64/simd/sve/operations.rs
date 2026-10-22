@@ -1,6 +1,6 @@
-//! SVE slice API operations.
+//! SVE operations exposed as slice functions.
 //!
-//! These are the curated slice operations. The per-mnemonic wrappers live in
+//! These are the curated operations. The per-mnemonic wrappers live in
 //! the `instructions` submodule; both are re-exported from the parent module.
 
 unsafe extern "C" {

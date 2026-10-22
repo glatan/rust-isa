@@ -21,6 +21,6 @@
 //! The build compiles the bundled C with clang.
 
 mod instructions;
-mod slice;
+mod operations;
 pub use instructions::*;
-pub use slice::*;
+pub use operations::*;

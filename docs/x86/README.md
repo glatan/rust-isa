@@ -96,7 +96,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 ## ソースの分割
 
-extension の内部モジュールは、型ごとに意味が変わる演算を型名（`f32x4`、`i8x16` など）、型に依存しない演算を操作名（`bitwise`、`shift`、`moves` など）で分ける。公開パスには内部モジュール名は出ない。
+extension ごとに内部モジュールの分割軸を決める。SSE2 は、ベクタの算術と比較を値型（`f32x4`、`f64x2`、`i8x16`、`i16x8`、`i32x4`、`i64x2`）で分け、それ以外の操作を命令ファミリ（`bitwise`、`shift`、`shuffle`、`unpack`、`double_convert`、`moves`、`compare`、`nontemporal`）で分ける。値型の定義は `v128` に置く。AVX2 のように命令ファミリだけで分ける extension もある。公開パスには内部モジュール名は出ない。
 
 ## ゼロコスト
 
