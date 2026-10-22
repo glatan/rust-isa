@@ -94,6 +94,10 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 - stable な feature は、呼び出し側のカーネルに `#[target_feature(enable = "...")]` を付ける。ラッパーは `#[inline(always)]` だけにし、`#[target_feature]` を付けない。unstable な feature は付けない。
 - `asm!` は補助として使える。`xmm_reg` は `u128` を受け付ける。`ymm_reg` は `avx` を要求し、256-bit の値型を `core::arch` なしでは表せないため、256-bit 以上は C を主とする。
 
+## ソースの分割
+
+extension の内部モジュールは、型ごとに意味が変わる演算を型名（`f32x4`、`i8x16` など）、型に依存しない演算を操作名（`bitwise`、`shift`、`moves` など）で分ける。公開パスには内部モジュール名は出ない。
+
 ## ゼロコスト
 
 x86_64 で条件付きのゼロコストを確認した。

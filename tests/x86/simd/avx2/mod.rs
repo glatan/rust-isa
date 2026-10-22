@@ -5,7 +5,7 @@ mod bitwise;
 mod broadcast;
 mod gather;
 mod horizontal;
-mod immediate;
+mod immediate_forms;
 mod mask;
 mod minmax;
 mod movemask;

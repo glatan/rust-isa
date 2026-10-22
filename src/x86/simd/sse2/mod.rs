@@ -12,6 +12,7 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+// Type-specific operations are grouped by value type; type-independent ones by operation.
 mod bitwise;
 mod compare;
 mod double_convert;
