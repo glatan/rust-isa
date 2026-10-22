@@ -19,6 +19,11 @@ use rust_isa::arm::simd::neon::{
     vmla, vmls, vmvn, vneg, vorn, vqabs, vqadd, vqdmulh, vqneg, vqrdmulh, vqshl, vqsub, vrecpe,
     vrecps, vrshl, vrsqrte, vrsqrts, vshl, vtst, zip1,
 };
+use rust_isa::arm::simd::neon::{
+    vabal, vabdl, vaddhn, vaddl, vaddw, vmlal, vmlsl, vmovn, vmull, vpadal, vqdmlal, vqdmlsl,
+    vqdmull, vqmovn, vqmovun, vqrshl, vqrshrn, vqrshrun, vqshlu, vqshrn, vqshrun, vraddhn, vrshr,
+    vrshrn, vrsra, vrsubhn, vshll, vshrn, vsli, vsra, vsri, vsubhn, vsubl, vsubw,
+};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {
@@ -94,6 +99,9 @@ fn run() -> u32 {
     }
     if !arith_ops() {
         return 12;
+    }
+    if !widen_ops() {
+        return 13;
     }
     0
 }
@@ -543,6 +551,141 @@ fn arith_ops() -> bool {
     }
 }
 
+fn widen_ops() -> bool {
+    let tens = V128::from_bytes([10; 16]);
+    let threes = V128::from_bytes([3; 16]);
+    unsafe {
+        if i16_lanes(vabal(i16x8([1; 8]), tens, threes)) != [8; 8]
+            || i16_lanes(vabdl(tens, threes)) != [7; 8]
+            || low_bytes(vaddhn(
+                i16x8([
+                    0x0102, 0x0304, 0x0506, 0x0708, 0x090a, 0x0b0c, 0x0d0e, 0x0f10,
+                ]),
+                i16x8([0; 8]),
+            )) != [1, 3, 5, 7, 9, 11, 13, 15]
+        {
+            return false;
+        }
+        let low_ascending = V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0]);
+        let low_tens = V128::from_bytes([10, 20, 30, 40, 50, 60, 70, 80, 0, 0, 0, 0, 0, 0, 0, 0]);
+        if i16_lanes(vaddl(low_ascending, low_tens)) != [11, 22, 33, 44, 55, 66, 77, 88]
+            || i16_lanes(vaddw(i16x8([1, 2, 3, 4, 5, 6, 7, 8]), low_tens))
+                != [11, 22, 33, 44, 55, 66, 77, 88]
+            || i16_lanes(vsubl(low_tens, low_ascending)) != [9, 18, 27, 36, 45, 54, 63, 72]
+            || i16_lanes(vsubw(
+                i16x8([10, 20, 30, 40, 50, 60, 70, 80]),
+                low_ascending,
+            )) != [9, 18, 27, 36, 45, 54, 63, 72]
+        {
+            return false;
+        }
+        let acc = i32x4([1, 2, 3, 4]);
+        let x16 = i16x8([2, 3, 4, 5, 0, 0, 0, 0]);
+        let y16 = i16x8([6, 7, 8, 9, 0, 0, 0, 0]);
+        if lanes(vmlal(acc, x16, y16)) != [13, 23, 35, 49]
+            || lanes(vmlsl(acc, x16, y16)) != [-11, -19, -29, -41]
+            || lanes(vmull(x16, y16)) != [12, 21, 32, 45]
+            || lanes(vpadal(acc, i16x8([1, 2, 3, 4, 5, 6, 7, 8]))) != [4, 9, 14, 19]
+        {
+            return false;
+        }
+        let quarter = i16x8([0x4000; 8]);
+        if lanes(vqdmlal(acc, quarter, quarter))
+            != [0x2000_0001, 0x2000_0002, 0x2000_0003, 0x2000_0004]
+            || lanes(vqdmlsl(acc, quarter, quarter))
+                != [-0x1fff_ffff, -0x1fff_fffe, -0x1fff_fffd, -0x1fff_fffc]
+            || lanes(vqdmull(quarter, quarter)) != [0x2000_0000; 4]
+        {
+            return false;
+        }
+        if low_bytes(vmovn(i16x8([
+            0x0102, 0x0304, 0x0506, 0x0708, 0x090a, 0x0b0c, 0x0d0e, 0x0f10,
+        ]))) != [2, 4, 6, 8, 10, 12, 14, 16]
+        {
+            return false;
+        }
+        let movn_input = i16x8([7, 0x0100, -7, 0x7fff, -0x8000, 0, 1, -1]);
+        if low_i8(vqmovn(movn_input)) != [7, 127, -7, 127, -128, 0, 1, -1] {
+            return false;
+        }
+        let movun = vqmovun(movn_input);
+        if movun.to_bytes()[..8] != [7, 255, 0, 255, 0, 0, 1, 0] || movun.to_bytes()[8..] != [0; 8]
+        {
+            return false;
+        }
+        if i16_lanes(vqrshl(i16x8([8; 8]), i16x8([1, -1, 1, -1, 1, -1, 1, -1])))
+            != [16, 4, 16, 4, 16, 4, 16, 4]
+        {
+            return false;
+        }
+        let shift_input = i16x8([
+            0x0011, 0x0021, 0x0031, 0x0041, 0x0051, 0x0061, 0x0071, 0x0081,
+        ]);
+        if low_bytes(vqrshrn::<4>(shift_input)) != [1, 2, 3, 4, 5, 6, 7, 8]
+            || low_bytes(vqrshrun::<4>(shift_input)) != [1, 2, 3, 4, 5, 6, 7, 8]
+            || low_bytes(vqshrn::<4>(shift_input)) != [1, 2, 3, 4, 5, 6, 7, 8]
+            || low_bytes(vqshrun::<4>(shift_input)) != [1, 2, 3, 4, 5, 6, 7, 8]
+            || low_bytes(vrshrn::<4>(shift_input)) != [1, 2, 3, 4, 5, 6, 7, 8]
+            || low_bytes(vshrn::<4>(shift_input)) != [1, 2, 3, 4, 5, 6, 7, 8]
+        {
+            return false;
+        }
+        if u16_lanes(vqshlu::<4>(i16x8([-1, 1, 2, 3, 0x7fff, -0x8000, 16, 17])))
+            != [0, 16, 32, 48, 65535, 0, 256, 272]
+        {
+            return false;
+        }
+        if low_bytes(vraddhn(
+            i16x8([
+                0x0102, 0x0304, 0x0506, 0x0708, 0x090a, 0x0b0c, 0x0d0e, 0x0f10,
+            ]),
+            i16x8([0; 8]),
+        )) != [1, 3, 5, 7, 9, 11, 13, 15]
+            || low_bytes(vrsubhn(
+                i16x8([
+                    0x0300, 0x0500, 0x0700, 0x0900, 0x0b00, 0x0d00, 0x0f00, 0x1100,
+                ]),
+                i16x8([0x0100; 8]),
+            )) != [2, 4, 6, 8, 10, 12, 14, 16]
+            || low_bytes(vsubhn(
+                i16x8([
+                    0x0300, 0x0500, 0x0700, 0x0900, 0x0b00, 0x0d00, 0x0f00, 0x1100,
+                ]),
+                i16x8([0x0100; 8]),
+            )) != [2, 4, 6, 8, 10, 12, 14, 16]
+        {
+            return false;
+        }
+        if lanes(vshll::<4>(i16x8([1, 2, 3, 4, 0, 0, 0, 0]))) != [16, 32, 48, 64] {
+            return false;
+        }
+        if i16_lanes(vrshr::<4>(i16x8([
+            0x0010, 0x0020, 0x0030, 0x0040, 0x0050, 0x0060, 0x0070, 0x0080,
+        ]))) != [1, 2, 3, 4, 5, 6, 7, 8]
+            || i16_lanes(vsra::<4>(
+                i16x8([1; 8]),
+                i16x8([
+                    0x0010, 0x0020, 0x0030, 0x0040, 0x0050, 0x0060, 0x0070, 0x0080,
+                ]),
+            )) != [2, 3, 4, 5, 6, 7, 8, 9]
+            || i16_lanes(vrsra::<4>(
+                i16x8([1; 8]),
+                i16x8([
+                    0x0010, 0x0020, 0x0030, 0x0040, 0x0050, 0x0060, 0x0070, 0x0080,
+                ]),
+            )) != [2, 3, 4, 5, 6, 7, 8, 9]
+        {
+            return false;
+        }
+        if u16_lanes(vsli::<4>(i16x8([-1; 8]), i16x8([0x1234; 8]))) != [0x234f; 8]
+            || u16_lanes(vsri::<4>(i16x8([-1; 8]), i16x8([0x1234; 8]))) != [0xf123; 8]
+        {
+            return false;
+        }
+        true
+    }
+}
+
 fn i16x8(values: [i16; 8]) -> V128 {
     let mut bytes = [0u8; 16];
     for (lane, value) in values.iter().enumerate() {
@@ -556,6 +699,23 @@ fn i16_lanes(value: V128) -> [i16; 8] {
     core::array::from_fn(|lane| {
         i16::from_le_bytes(bytes[lane * 2..lane * 2 + 2].try_into().unwrap())
     })
+}
+
+fn u16_lanes(value: V128) -> [u16; 8] {
+    let bytes = value.to_bytes();
+    core::array::from_fn(|lane| {
+        u16::from_le_bytes(bytes[lane * 2..lane * 2 + 2].try_into().unwrap())
+    })
+}
+
+fn low_bytes(value: V128) -> [u8; 8] {
+    let bytes = value.to_bytes();
+    core::array::from_fn(|index| bytes[index])
+}
+
+fn low_i8(value: V128) -> [i8; 8] {
+    let bytes = low_bytes(value);
+    core::array::from_fn(|index| bytes[index] as i8)
 }
 
 fn f16x8(values: [u16; 8]) -> V128 {

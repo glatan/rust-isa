@@ -6,10 +6,12 @@
 mod arith;
 mod ops;
 mod v128;
+mod widen;
 
 pub use arith::*;
 pub use ops::*;
 pub use v128::*;
+pub use widen::*;
 
 unsafe extern "C" {
     fn rust_isa_arm_neon_add(a: *const u8, b: *const u8, out: *mut u8);
