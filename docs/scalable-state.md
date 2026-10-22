@@ -66,7 +66,7 @@ pub unsafe fn add_f32(_guard: &SmeGuard, a: &[f32], b: &[f32], out: &mut [f32]) 
 ```
 
 - `__arm_streaming` は宣言子の後ろに置く。関数は `smstart` / `smstop` を出さないため、呼び出し側が guard を持つ。
-- ZA のタイルは、将来 `SmeGuard` の中の不透明な型で表す。最初は ZA を使わない関数だけを提供する。
+- ZA のタイルは対象外とする。`SmeGuard` はストリーミング状態だけを管理する。
 
 ## AMX
 
@@ -121,7 +121,7 @@ pub unsafe fn xvi4ger8(_acc: &mut MmaAccumulator, a: &[u8], b: &[u8]) { /* ... *
   値テストを実行する。C のループは `#[target_feature(enable = "sve")]` の
   カーネルへインラインされる。
 - RVV のスライス API: 実装済み。`add` / `mul` / `sub` / `div` / `min` / `max`、比較、load / store の f32 / i32。QEMU-RISC-V で値テストを実行する。VL は C の `vsetvl` が決める。
-- SME: `SmeGuard` とストリーミングの `add` / `mul` (f32) を実装した。ZA は未実装。 no_std の fixture は Arm SME ABI ランタイムの `__arm_get_current_vg` をリンク
+- SME: `SmeGuard` とストリーミングの `add` / `mul` (f32) を実装した。ZA は対象外。 no_std の fixture は Arm SME ABI ランタイムの `__arm_get_current_vg` をリンク
   しないため、SME の値テストはまだない。
 - AMX: `TileConfig`、`AmxGuard`、`tilezero` を実装した。タイル load / store と matrix multiply は未実装。OS のタイル状態の許可が必要なため、値テストはまだない。
 - PowerPC MMA: `MmaAccumulator`、`xvi4ger8` 系、`xxmfacc`、`xxmtacc`、`xxsetaccz` を実装した。アキュムレータは 64 バイトの値として保持し、各命令
@@ -134,6 +134,5 @@ pub unsafe fn xvi4ger8(_acc: &mut MmaAccumulator, a: &[u8], b: &[u8]) { /* ... *
 
 - SVE のスライス API の境界条件（長さが違う場合に panic するか、短い方に合わせるか）。
 - RVV のスライス API で、要素型ごとにどの LMUL を使うか。
-- SME の ZA タイルの型と操作。
 - AMX の `TileConfig` の構築 API。
 - guard を safe にできる範囲。
