@@ -27,6 +27,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 - `vpk` は `vpkz`、`vupk` は `vupkz`、`vpsrp` は `vsrp`、`vpab` は `vap`、`vcsd` は `vsdp`、`vcsb` は `vsp` である。
 - `vnn`、`vflr`、`vfsq`、`vistr`、`vuph`、`vupl`、`vfll` は vector / vector-enhancements-1 の同名の関数として実装した。
 - `vfae`、`vfee`、`vfene`、`vlgv`、`vscbi` は vector の命令であり、vector-enhancements-2 の行から vector の行へ移した。
+- `vclzg` / `vctzg` / `vpopcntg` は `vclzd` / `vctzd` / `vpopcntd` の別名である。
 
 ## 実装方式
 

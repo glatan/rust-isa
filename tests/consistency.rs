@@ -170,6 +170,11 @@ fn check_native_symbols() {
             "vector_enhancements_1.c",
             "rust_isa_s390x_enh_",
         ),
+        (
+            "s390x/simd/vector_enhancements_2",
+            "vector_enhancements_2.c",
+            "rust_isa_s390x_enh_",
+        ),
         ("powerpc/simd/altivec", "altivec.c", "rust_isa_altivec_"),
         ("powerpc/simd/vsx", "vsx.c", "rust_isa_vsx_"),
         (
