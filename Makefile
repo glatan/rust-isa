@@ -103,7 +103,7 @@ test-x86_64:
 
 .PHONY: test-check-static
 test-check-static:
-	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test checks $(CARGO_ARGS)
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test consistency $(CARGO_ARGS)
 
 .PHONY: test-check-wasm-link
 test-check-wasm-link:

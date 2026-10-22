@@ -14,9 +14,9 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
-mod intersect;
+mod vp2intersect;
 
-pub use intersect::*;
+pub use vp2intersect::*;
 
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::sse2::V128;

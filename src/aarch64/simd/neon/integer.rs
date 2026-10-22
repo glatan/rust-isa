@@ -1,7 +1,6 @@
 //! NEON integer instructions.
 
 use super::V128;
-
 unsafe extern "C" {
     fn rust_isa_neon_add_i8(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_neon_add_i16(a: *const u8, b: *const u8, out: *mut u8);
@@ -32,6 +31,21 @@ unsafe extern "C" {
     fn rust_isa_neon_neg_i8(a: *const u8, out: *mut u8);
     fn rust_isa_neon_neg_i16(a: *const u8, out: *mut u8);
     fn rust_isa_neon_neg_i32(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_bsl(mask: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_bit(a: *const u8, b: *const u8, mask: *const u8, out: *mut u8);
+    fn rust_isa_neon_bif(a: *const u8, b: *const u8, mask: *const u8, out: *mut u8);
+    fn rust_isa_neon_cls_i8(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_cls_i16(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_cls_i32(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_clz_i8(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_clz_i16(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_clz_i32(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_cnt_i8(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_rbit(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_rev16(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_rev32(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_rev64(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_abs_i64(a: *const u8, out: *mut u8);
 }
 
 macro_rules! binary {
@@ -208,23 +222,6 @@ unary!(
     rust_isa_neon_neg_i32
 );
 
-unsafe extern "C" {
-    fn rust_isa_neon_bsl(mask: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_bit(a: *const u8, b: *const u8, mask: *const u8, out: *mut u8);
-    fn rust_isa_neon_bif(a: *const u8, b: *const u8, mask: *const u8, out: *mut u8);
-    fn rust_isa_neon_cls_i8(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_cls_i16(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_cls_i32(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_clz_i8(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_clz_i16(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_clz_i32(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_cnt_i8(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_rbit(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_rev16(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_rev32(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_rev64(a: *const u8, out: *mut u8);
-}
-
 /// `bsl`
 ///
 /// Select bits from `a` where the corresponding bit of `mask` is one, and
@@ -316,4 +313,10 @@ unary!(
     /// Reverse the bytes in each 64-bit lane.
     rev64,
     rust_isa_neon_rev64
+);
+
+unary!(
+    /// `abs` on 64-bit signed lanes.
+    abs_i64,
+    rust_isa_neon_abs_i64
 );

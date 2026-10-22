@@ -1,5 +1,6 @@
-use super::V256;
+//! Integer arithmetic instructions.
 
+use super::V256;
 unsafe extern "C" {
     fn rust_isa_avx2_vpaddsb(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_avx2_vpaddsw(a: *const u8, b: *const u8, out: *mut u8);
@@ -28,6 +29,16 @@ unsafe extern "C" {
     fn rust_isa_avx2_vpsignb(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_avx2_vpsignw(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_avx2_vpsignd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpaddb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpsubb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpaddw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpsubw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpaddd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpsubd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpaddq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpsubq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpmulld(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpmullw(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `vpaddsb`
@@ -487,6 +498,176 @@ pub unsafe fn vpsignd(a: V256, b: V256) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
         rust_isa_avx2_vpsignd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpaddb`
+///
+/// Add the 32 byte lanes, wrapping at 8 bits.
+///
+/// # Safety
+///
+/// The caller must enable AVX2.
+#[target_feature(enable = "avx2")]
+#[inline]
+pub unsafe fn vpaddb(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx2_vpaddb(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpsubb`
+///
+/// Subtract the 32 byte lanes, wrapping at 8 bits.
+///
+/// # Safety
+///
+/// The caller must enable AVX2.
+#[target_feature(enable = "avx2")]
+#[inline]
+pub unsafe fn vpsubb(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx2_vpsubb(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpaddw`
+///
+/// Add the 16 16-bit integer lanes, wrapping at 16 bits.
+///
+/// # Safety
+///
+/// The caller must enable AVX2.
+#[target_feature(enable = "avx2")]
+#[inline]
+pub unsafe fn vpaddw(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx2_vpaddw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpsubw`
+///
+/// Subtract the 16 16-bit integer lanes, wrapping at 16 bits.
+///
+/// # Safety
+///
+/// The caller must enable AVX2.
+#[target_feature(enable = "avx2")]
+#[inline]
+pub unsafe fn vpsubw(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx2_vpsubw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpaddd`
+///
+/// Add the eight 32-bit integer lanes, wrapping at 32 bits.
+///
+/// # Safety
+///
+/// The caller must enable AVX2.
+#[target_feature(enable = "avx2")]
+#[inline]
+pub unsafe fn vpaddd(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx2_vpaddd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpsubd`
+///
+/// Subtract the eight 32-bit integer lanes, wrapping at 32 bits.
+///
+/// # Safety
+///
+/// The caller must enable AVX2.
+#[target_feature(enable = "avx2")]
+#[inline]
+pub unsafe fn vpsubd(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx2_vpsubd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpaddq`
+///
+/// Add the four 64-bit integer lanes, wrapping at 64 bits.
+///
+/// # Safety
+///
+/// The caller must enable AVX2.
+#[target_feature(enable = "avx2")]
+#[inline]
+pub unsafe fn vpaddq(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx2_vpaddq(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpsubq`
+///
+/// Subtract the four 64-bit integer lanes, wrapping at 64 bits.
+///
+/// # Safety
+///
+/// The caller must enable AVX2.
+#[target_feature(enable = "avx2")]
+#[inline]
+pub unsafe fn vpsubq(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx2_vpsubq(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpmulld`
+///
+/// Multiply the eight 32-bit integer lanes, keeping the low 32 bits.
+///
+/// # Safety
+///
+/// The caller must enable AVX2.
+#[target_feature(enable = "avx2")]
+#[inline]
+pub unsafe fn vpmulld(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx2_vpmulld(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpmullw`
+///
+/// Multiply the 16 16-bit integer lanes, keeping the low 16 bits.
+///
+/// # Safety
+///
+/// The caller must enable AVX2.
+#[target_feature(enable = "avx2")]
+#[inline]
+pub unsafe fn vpmullw(a: V256, b: V256) -> V256 {
+    let mut out = V256::from_bytes([0; 32]);
+    unsafe {
+        rust_isa_avx2_vpmullw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
 }

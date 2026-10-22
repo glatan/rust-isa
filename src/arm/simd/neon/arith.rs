@@ -4,7 +4,6 @@
 //! The caller must compile the whole crate with `-C target-feature=+neon`.
 
 use super::V128;
-
 unsafe extern "C" {
     fn rust_isa_arm_neon_vaba_s8(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_arm_neon_vabd_s8(a: *const u8, b: *const u8, out: *mut u8);
@@ -47,6 +46,15 @@ unsafe extern "C" {
     fn rust_isa_arm_neon_vrecps_f32(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_arm_neon_vrsqrte_f32(a: *const u8, out: *mut u8);
     fn rust_isa_arm_neon_vrsqrts_f32(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_arm_neon_add_i8(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_arm_neon_add_i16(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_arm_neon_add_i64(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_arm_neon_sub_i8(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_arm_neon_sub_i16(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_arm_neon_sub_i32(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_arm_neon_sub_i64(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_arm_neon_mul_i16(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_arm_neon_mul_i32(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 macro_rules! unary {
@@ -474,4 +482,76 @@ binary!(
     /// The caller must compile with NEON enabled.
     vrsqrts,
     rust_isa_arm_neon_vrsqrts_f32
+);
+
+macro_rules! binary_unsafe {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with NEON enabled.
+        #[inline(always)]
+        pub unsafe fn $name(a: V128, b: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe {
+                $c(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+            }
+            out
+        }
+    };
+}
+
+binary_unsafe!(
+    /// `vadd.i8`.
+    add_i8,
+    rust_isa_arm_neon_add_i8
+);
+
+binary_unsafe!(
+    /// `vadd.i16`.
+    add_i16,
+    rust_isa_arm_neon_add_i16
+);
+
+binary_unsafe!(
+    /// `vadd.i64`.
+    add_i64,
+    rust_isa_arm_neon_add_i64
+);
+
+binary_unsafe!(
+    /// `vsub.i8`.
+    sub_i8,
+    rust_isa_arm_neon_sub_i8
+);
+
+binary_unsafe!(
+    /// `vsub.i16`.
+    sub_i16,
+    rust_isa_arm_neon_sub_i16
+);
+
+binary_unsafe!(
+    /// `vsub.i32`.
+    sub_i32,
+    rust_isa_arm_neon_sub_i32
+);
+
+binary_unsafe!(
+    /// `vsub.i64`.
+    sub_i64,
+    rust_isa_arm_neon_sub_i64
+);
+
+binary_unsafe!(
+    /// `vmul.i16`.
+    mul_i16,
+    rust_isa_arm_neon_mul_i16
+);
+
+binary_unsafe!(
+    /// `vmul.i32`.
+    mul_i32,
+    rust_isa_arm_neon_mul_i32
 );
