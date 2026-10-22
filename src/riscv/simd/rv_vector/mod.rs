@@ -808,3 +808,913 @@ narrow!(
     vnclipu,
     rust_isa_rv_vector_vnclipu
 );
+
+unsafe extern "C" {
+    fn rust_isa_rv_vector_vmerge(a: *const u8, b: *const u8, mask: u16, out: *mut u8);
+    fn rust_isa_rv_vector_vslideup(dest: *const u8, src: *const u8, amount: u32, out: *mut u8);
+    fn rust_isa_rv_vector_vslidedown(src: *const u8, amount: u32, out: *mut u8);
+    fn rust_isa_rv_vector_vslide1up(src: *const u8, value: i32, out: *mut u8);
+    fn rust_isa_rv_vector_vslide1down(src: *const u8, value: i32, out: *mut u8);
+    fn rust_isa_rv_vector_vrgather(a: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vrgatherei16(a: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vcompress(a: *const u8, mask: u16, out: *mut u8);
+    fn rust_isa_rv_vector_vmand(a: u16, b: u16) -> u16;
+    fn rust_isa_rv_vector_vmnand(a: u16, b: u16) -> u16;
+    fn rust_isa_rv_vector_vmandn(a: u16, b: u16) -> u16;
+    fn rust_isa_rv_vector_vmxor(a: u16, b: u16) -> u16;
+    fn rust_isa_rv_vector_vmor(a: u16, b: u16) -> u16;
+    fn rust_isa_rv_vector_vmnor(a: u16, b: u16) -> u16;
+    fn rust_isa_rv_vector_vmorn(a: u16, b: u16) -> u16;
+    fn rust_isa_rv_vector_vmxnor(a: u16, b: u16) -> u16;
+    fn rust_isa_rv_vector_vcpop(mask: u16) -> u64;
+    fn rust_isa_rv_vector_vfirst(mask: u16) -> i64;
+    fn rust_isa_rv_vector_vmsbf(mask: u16) -> u16;
+    fn rust_isa_rv_vector_vmsof(mask: u16) -> u16;
+    fn rust_isa_rv_vector_vmsif(mask: u16) -> u16;
+    fn rust_isa_rv_vector_viota(mask: u16, out: *mut u8);
+    fn rust_isa_rv_vector_vid(out: *mut u8);
+    fn rust_isa_rv_vector_vredsum(a: *const u8) -> u32;
+    fn rust_isa_rv_vector_vredand(a: *const u8) -> i32;
+    fn rust_isa_rv_vector_vredor(a: *const u8) -> i32;
+    fn rust_isa_rv_vector_vredxor(a: *const u8) -> i32;
+    fn rust_isa_rv_vector_vredmin(a: *const u8) -> i32;
+    fn rust_isa_rv_vector_vredmax(a: *const u8) -> i32;
+    fn rust_isa_rv_vector_vredminu(a: *const u8) -> u32;
+    fn rust_isa_rv_vector_vredmaxu(a: *const u8) -> u32;
+    fn rust_isa_rv_vector_vwredsum(a: *const u8) -> i64;
+    fn rust_isa_rv_vector_vwredsumu(a: *const u8) -> u64;
+}
+
+/// `vmerge.vvm` on 32-bit integer lanes.
+///
+/// Lane `i` comes from `b` when bit `i` of `mask` is set, otherwise from `a`.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled.
+#[inline(always)]
+pub unsafe fn vmerge(a: V128, b: V128, mask: u16) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_rv_vector_vmerge(a.as_ptr(), b.as_ptr(), mask, out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vslideup.vx` on 32-bit integer lanes.
+///
+/// Slides `src` up by `amount`; the low lanes come from `dest`.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled.
+#[inline(always)]
+pub unsafe fn vslideup(dest: V128, src: V128, amount: u32) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_rv_vector_vslideup(dest.as_ptr(), src.as_ptr(), amount, out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vslidedown.vx` on 32-bit integer lanes.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled.
+#[inline(always)]
+pub unsafe fn vslidedown(src: V128, amount: u32) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_rv_vector_vslidedown(src.as_ptr(), amount, out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vslide1up.vx` on 32-bit integer lanes.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled.
+#[inline(always)]
+pub unsafe fn vslide1up(src: V128, value: i32) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_rv_vector_vslide1up(src.as_ptr(), value, out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vslide1down.vx` on 32-bit integer lanes.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled.
+#[inline(always)]
+pub unsafe fn vslide1down(src: V128, value: i32) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_rv_vector_vslide1down(src.as_ptr(), value, out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vrgather.vv` on 32-bit integer lanes.
+///
+/// Out-of-range indices produce zero.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled.
+#[inline(always)]
+pub unsafe fn vrgather(a: V128, indices: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_rv_vector_vrgather(a.as_ptr(), indices.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vrgatherei16.vv` on 32-bit integer lanes.
+///
+/// The low four 16-bit lanes of `indices` select the source lanes.
+/// Out-of-range indices produce zero.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled.
+#[inline(always)]
+pub unsafe fn vrgatherei16(a: V128, indices: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_rv_vector_vrgatherei16(a.as_ptr(), indices.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vcompress.vm` on 32-bit integer lanes.
+///
+/// Active lanes are packed to the low end; the remaining lanes are zero.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled.
+#[inline(always)]
+pub unsafe fn vcompress(a: V128, mask: u16) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_rv_vector_vcompress(a.as_ptr(), mask, out.as_mut_ptr());
+    }
+    out
+}
+
+macro_rules! mask_binary {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with the V extension enabled.
+        #[inline(always)]
+        pub unsafe fn $name(a: u16, b: u16) -> u16 {
+            unsafe { $c(a, b) }
+        }
+    };
+}
+
+mask_binary!(
+    /// `vmand.mm`.
+    vmand,
+    rust_isa_rv_vector_vmand
+);
+mask_binary!(
+    /// `vmnand.mm`.
+    vmnand,
+    rust_isa_rv_vector_vmnand
+);
+mask_binary!(
+    /// `vmandn.mm`.
+    vmandn,
+    rust_isa_rv_vector_vmandn
+);
+mask_binary!(
+    /// `vmxor.mm`.
+    vmxor,
+    rust_isa_rv_vector_vmxor
+);
+mask_binary!(
+    /// `vmor.mm`.
+    vmor,
+    rust_isa_rv_vector_vmor
+);
+mask_binary!(
+    /// `vmnor.mm`.
+    vmnor,
+    rust_isa_rv_vector_vmnor
+);
+mask_binary!(
+    /// `vmorn.mm`.
+    vmorn,
+    rust_isa_rv_vector_vmorn
+);
+mask_binary!(
+    /// `vmxnor.mm`.
+    vmxnor,
+    rust_isa_rv_vector_vmxnor
+);
+
+/// `vcpop.m`.
+///
+/// Returns the number of set bits in the 16-bit mask.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled.
+#[inline(always)]
+pub unsafe fn vcpop(mask: u16) -> u64 {
+    unsafe { rust_isa_rv_vector_vcpop(mask) }
+}
+
+/// `vfirst.m`.
+///
+/// Returns the index of the first set bit, or `-1` when the mask is zero.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled.
+#[inline(always)]
+pub unsafe fn vfirst(mask: u16) -> i64 {
+    unsafe { rust_isa_rv_vector_vfirst(mask) }
+}
+
+macro_rules! mask_unary {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with the V extension enabled.
+        #[inline(always)]
+        pub unsafe fn $name(mask: u16) -> u16 {
+            unsafe { $c(mask) }
+        }
+    };
+}
+
+mask_unary!(
+    /// `vmsbf.m`.
+    vmsbf,
+    rust_isa_rv_vector_vmsbf
+);
+mask_unary!(
+    /// `vmsof.m`.
+    vmsof,
+    rust_isa_rv_vector_vmsof
+);
+mask_unary!(
+    /// `vmsif.m`.
+    vmsif,
+    rust_isa_rv_vector_vmsif
+);
+
+/// `viota.m` on 8-bit lanes.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled.
+#[inline(always)]
+pub unsafe fn viota(mask: u16) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_rv_vector_viota(mask, out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vid.v` on 8-bit lanes.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled.
+#[inline(always)]
+pub unsafe fn vid() -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_rv_vector_vid(out.as_mut_ptr());
+    }
+    out
+}
+
+macro_rules! reduce {
+    ($(#[$meta:meta])* $name:ident, $c:ident, $ty:ty) => {
+        $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with the V extension enabled.
+        #[inline(always)]
+        pub unsafe fn $name(a: V128) -> $ty {
+            unsafe { $c(a.as_ptr()) }
+        }
+    };
+}
+
+reduce!(
+    /// `vredsum.vs` on 32-bit integer lanes.
+    vredsum,
+    rust_isa_rv_vector_vredsum,
+    u32
+);
+reduce!(
+    /// `vredand.vs` on 32-bit integer lanes.
+    vredand,
+    rust_isa_rv_vector_vredand,
+    i32
+);
+reduce!(
+    /// `vredor.vs` on 32-bit integer lanes.
+    vredor,
+    rust_isa_rv_vector_vredor,
+    i32
+);
+reduce!(
+    /// `vredxor.vs` on 32-bit integer lanes.
+    vredxor,
+    rust_isa_rv_vector_vredxor,
+    i32
+);
+reduce!(
+    /// `vredmin.vs` on signed 32-bit integer lanes.
+    vredmin,
+    rust_isa_rv_vector_vredmin,
+    i32
+);
+reduce!(
+    /// `vredmax.vs` on signed 32-bit integer lanes.
+    vredmax,
+    rust_isa_rv_vector_vredmax,
+    i32
+);
+reduce!(
+    /// `vredminu.vs` on unsigned 32-bit integer lanes.
+    vredminu,
+    rust_isa_rv_vector_vredminu,
+    u32
+);
+reduce!(
+    /// `vredmaxu.vs` on unsigned 32-bit integer lanes.
+    vredmaxu,
+    rust_isa_rv_vector_vredmaxu,
+    u32
+);
+reduce!(
+    /// `vwredsum.vs` from signed 32-bit to 64-bit lanes.
+    vwredsum,
+    rust_isa_rv_vector_vwredsum,
+    i64
+);
+reduce!(
+    /// `vwredsumu.vs` from unsigned 32-bit to 64-bit lanes.
+    vwredsumu,
+    rust_isa_rv_vector_vwredsumu,
+    u64
+);
+
+unsafe extern "C" {
+    fn rust_isa_rv_vector_vle8(p: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vle16(p: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vle32(p: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vle64(p: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vse8(p: *mut u8, value: *const u8);
+    fn rust_isa_rv_vector_vse16(p: *mut u8, value: *const u8);
+    fn rust_isa_rv_vector_vse32(p: *mut u8, value: *const u8);
+    fn rust_isa_rv_vector_vse64(p: *mut u8, value: *const u8);
+    fn rust_isa_rv_vector_vlse8(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rv_vector_vlse16(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rv_vector_vlse32(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rv_vector_vlse64(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rv_vector_vsse8(p: *mut u8, stride: isize, value: *const u8);
+    fn rust_isa_rv_vector_vsse16(p: *mut u8, stride: isize, value: *const u8);
+    fn rust_isa_rv_vector_vsse32(p: *mut u8, stride: isize, value: *const u8);
+    fn rust_isa_rv_vector_vsse64(p: *mut u8, stride: isize, value: *const u8);
+    fn rust_isa_rv_vector_vloxei8(base: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vloxei16(base: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vloxei32(base: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vloxei64(base: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vluxei8(base: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vluxei16(base: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vluxei32(base: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vluxei64(base: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vsoxei8(base: *mut u8, indices: *const u8, value: *const u8);
+    fn rust_isa_rv_vector_vsoxei16(base: *mut u8, indices: *const u8, value: *const u8);
+    fn rust_isa_rv_vector_vsoxei32(base: *mut u8, indices: *const u8, value: *const u8);
+    fn rust_isa_rv_vector_vsoxei64(base: *mut u8, indices: *const u8, value: *const u8);
+    fn rust_isa_rv_vector_vsuxei8(base: *mut u8, indices: *const u8, value: *const u8);
+    fn rust_isa_rv_vector_vsuxei16(base: *mut u8, indices: *const u8, value: *const u8);
+    fn rust_isa_rv_vector_vsuxei32(base: *mut u8, indices: *const u8, value: *const u8);
+    fn rust_isa_rv_vector_vsuxei64(base: *mut u8, indices: *const u8, value: *const u8);
+    fn rust_isa_rv_vector_vlm(p: *const u8) -> u16;
+    fn rust_isa_rv_vector_vsm(p: *mut u8, mask: u16);
+}
+
+macro_rules! load {
+    ($(#[$meta:meta])* $name:ident, $c:ident, $ty:ty) => {
+        $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with the V extension enabled. `p` must be
+        /// valid for reading 16 bytes.
+        #[inline(always)]
+        pub unsafe fn $name(p: *const $ty) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe {
+                $c(p.cast(), out.as_mut_ptr());
+            }
+            out
+        }
+    };
+}
+
+macro_rules! store {
+    ($(#[$meta:meta])* $name:ident, $c:ident, $ty:ty) => {
+        $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with the V extension enabled. `p` must be
+        /// valid for writing 16 bytes.
+        #[inline(always)]
+        pub unsafe fn $name(p: *mut $ty, value: V128) {
+            unsafe {
+                $c(p.cast(), value.as_ptr());
+            }
+        }
+    };
+}
+
+load!(
+    /// `vle8.v`.
+    vle8,
+    rust_isa_rv_vector_vle8,
+    u8
+);
+load!(
+    /// `vle16.v`.
+    vle16,
+    rust_isa_rv_vector_vle16,
+    u16
+);
+load!(
+    /// `vle32.v`.
+    vle32,
+    rust_isa_rv_vector_vle32,
+    i32
+);
+load!(
+    /// `vle64.v`.
+    vle64,
+    rust_isa_rv_vector_vle64,
+    u64
+);
+store!(
+    /// `vse8.v`.
+    vse8,
+    rust_isa_rv_vector_vse8,
+    u8
+);
+store!(
+    /// `vse16.v`.
+    vse16,
+    rust_isa_rv_vector_vse16,
+    u16
+);
+store!(
+    /// `vse32.v`.
+    vse32,
+    rust_isa_rv_vector_vse32,
+    i32
+);
+store!(
+    /// `vse64.v`.
+    vse64,
+    rust_isa_rv_vector_vse64,
+    u64
+);
+
+macro_rules! strided_load {
+    ($(#[$meta:meta])* $name:ident, $c:ident, $ty:ty) => {
+        $(#[$meta])*
+        ///
+        /// `stride` is in bytes.
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with the V extension enabled. `p + i * stride`
+        /// must be valid for reading one element for each loaded lane.
+        #[inline(always)]
+        pub unsafe fn $name(p: *const $ty, stride: isize) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe {
+                $c(p.cast(), stride, out.as_mut_ptr());
+            }
+            out
+        }
+    };
+}
+
+macro_rules! strided_store {
+    ($(#[$meta:meta])* $name:ident, $c:ident, $ty:ty) => {
+        $(#[$meta])*
+        ///
+        /// `stride` is in bytes.
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with the V extension enabled. `p + i * stride`
+        /// must be valid for writing one element for each stored lane.
+        #[inline(always)]
+        pub unsafe fn $name(p: *mut $ty, stride: isize, value: V128) {
+            unsafe {
+                $c(p.cast(), stride, value.as_ptr());
+            }
+        }
+    };
+}
+
+strided_load!(
+    /// `vlse8.v`.
+    vlse8,
+    rust_isa_rv_vector_vlse8,
+    u8
+);
+strided_load!(
+    /// `vlse16.v`.
+    vlse16,
+    rust_isa_rv_vector_vlse16,
+    u16
+);
+strided_load!(
+    /// `vlse32.v`.
+    vlse32,
+    rust_isa_rv_vector_vlse32,
+    i32
+);
+strided_load!(
+    /// `vlse64.v`.
+    vlse64,
+    rust_isa_rv_vector_vlse64,
+    u64
+);
+strided_store!(
+    /// `vsse8.v`.
+    vsse8,
+    rust_isa_rv_vector_vsse8,
+    u8
+);
+strided_store!(
+    /// `vsse16.v`.
+    vsse16,
+    rust_isa_rv_vector_vsse16,
+    u16
+);
+strided_store!(
+    /// `vsse32.v`.
+    vsse32,
+    rust_isa_rv_vector_vsse32,
+    i32
+);
+strided_store!(
+    /// `vsse64.v`.
+    vsse64,
+    rust_isa_rv_vector_vsse64,
+    u64
+);
+
+macro_rules! indexed_load {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        ///
+        /// The low bytes of `indices` hold 32-bit element indices.
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with the V extension enabled and the base
+        /// pointer must be valid for every selected element.
+        #[inline(always)]
+        pub unsafe fn $name(base: *const i32, indices: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe {
+                $c(base.cast(), indices.as_ptr(), out.as_mut_ptr());
+            }
+            out
+        }
+    };
+}
+
+macro_rules! indexed_store {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        ///
+        /// The low bytes of `indices` hold 32-bit element indices.
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with the V extension enabled and the base
+        /// pointer must be valid for every selected element.
+        #[inline(always)]
+        pub unsafe fn $name(base: *mut i32, indices: V128, value: V128) {
+            unsafe {
+                $c(base.cast(), indices.as_ptr(), value.as_ptr());
+            }
+        }
+    };
+}
+
+indexed_load!(
+    /// `vloxei8.v`.
+    vloxei8,
+    rust_isa_rv_vector_vloxei8
+);
+indexed_load!(
+    /// `vloxei16.v`.
+    vloxei16,
+    rust_isa_rv_vector_vloxei16
+);
+indexed_load!(
+    /// `vloxei32.v`.
+    vloxei32,
+    rust_isa_rv_vector_vloxei32
+);
+indexed_load!(
+    /// `vloxei64.v`. Only the first two lanes are written.
+    vloxei64,
+    rust_isa_rv_vector_vloxei64
+);
+indexed_load!(
+    /// `vluxei8.v`.
+    vluxei8,
+    rust_isa_rv_vector_vluxei8
+);
+indexed_load!(
+    /// `vluxei16.v`.
+    vluxei16,
+    rust_isa_rv_vector_vluxei16
+);
+indexed_load!(
+    /// `vluxei32.v`.
+    vluxei32,
+    rust_isa_rv_vector_vluxei32
+);
+indexed_load!(
+    /// `vluxei64.v`. Only the first two lanes are written.
+    vluxei64,
+    rust_isa_rv_vector_vluxei64
+);
+indexed_store!(
+    /// `vsoxei8.v`.
+    vsoxei8,
+    rust_isa_rv_vector_vsoxei8
+);
+indexed_store!(
+    /// `vsoxei16.v`.
+    vsoxei16,
+    rust_isa_rv_vector_vsoxei16
+);
+indexed_store!(
+    /// `vsoxei32.v`.
+    vsoxei32,
+    rust_isa_rv_vector_vsoxei32
+);
+indexed_store!(
+    /// `vsoxei64.v`. Only the first two lanes are written.
+    vsoxei64,
+    rust_isa_rv_vector_vsoxei64
+);
+indexed_store!(
+    /// `vsuxei8.v`.
+    vsuxei8,
+    rust_isa_rv_vector_vsuxei8
+);
+indexed_store!(
+    /// `vsuxei16.v`.
+    vsuxei16,
+    rust_isa_rv_vector_vsuxei16
+);
+indexed_store!(
+    /// `vsuxei32.v`.
+    vsuxei32,
+    rust_isa_rv_vector_vsuxei32
+);
+indexed_store!(
+    /// `vsuxei64.v`. Only the first two lanes are written.
+    vsuxei64,
+    rust_isa_rv_vector_vsuxei64
+);
+
+unsafe extern "C" {
+    fn rust_isa_rv_vector_vlseg2(p: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vsseg2(p: *mut u8, values: *const u8);
+    fn rust_isa_rv_vector_vlsseg2(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rv_vector_vssseg2(p: *mut u8, stride: isize, values: *const u8);
+    fn rust_isa_rv_vector_vlseg3(p: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vsseg3(p: *mut u8, values: *const u8);
+    fn rust_isa_rv_vector_vlsseg3(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rv_vector_vssseg3(p: *mut u8, stride: isize, values: *const u8);
+    fn rust_isa_rv_vector_vlseg4(p: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vsseg4(p: *mut u8, values: *const u8);
+    fn rust_isa_rv_vector_vlsseg4(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rv_vector_vssseg4(p: *mut u8, stride: isize, values: *const u8);
+    fn rust_isa_rv_vector_vlseg5(p: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vsseg5(p: *mut u8, values: *const u8);
+    fn rust_isa_rv_vector_vlsseg5(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rv_vector_vssseg5(p: *mut u8, stride: isize, values: *const u8);
+    fn rust_isa_rv_vector_vlseg6(p: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vsseg6(p: *mut u8, values: *const u8);
+    fn rust_isa_rv_vector_vlsseg6(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rv_vector_vssseg6(p: *mut u8, stride: isize, values: *const u8);
+    fn rust_isa_rv_vector_vlseg7(p: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vsseg7(p: *mut u8, values: *const u8);
+    fn rust_isa_rv_vector_vlsseg7(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rv_vector_vssseg7(p: *mut u8, stride: isize, values: *const u8);
+    fn rust_isa_rv_vector_vlseg8(p: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vsseg8(p: *mut u8, values: *const u8);
+    fn rust_isa_rv_vector_vlsseg8(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rv_vector_vssseg8(p: *mut u8, stride: isize, values: *const u8);
+}
+
+macro_rules! segment {
+    ($(#[$meta:meta])* $load:ident, $store:ident, $sload:ident, $sstore:ident,
+     $cload:ident, $cstore:ident, $csload:ident, $csstore:ident, $n:expr) => {
+        $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with the V extension enabled and the base
+        /// pointer must be valid for the requested number of interleaved
+        /// elements.
+        #[inline(always)]
+        pub unsafe fn $load(p: *const i32) -> [V128; $n] {
+            let mut out = [V128::from_bytes([0; 16]); $n];
+            unsafe {
+                $cload(p.cast(), out.as_mut_ptr().cast());
+            }
+            out
+        }
+
+        $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with the V extension enabled and the base
+        /// pointer must be valid for the requested number of interleaved
+        /// elements.
+        #[inline(always)]
+        pub unsafe fn $store(p: *mut i32, values: [V128; $n]) {
+            unsafe {
+                $cstore(p.cast(), values.as_ptr().cast());
+            }
+        }
+
+        $(#[$meta])*
+        ///
+        /// `stride` is in bytes.
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with the V extension enabled and every
+        /// selected element must be valid.
+        #[inline(always)]
+        pub unsafe fn $sload(p: *const i32, stride: isize) -> [V128; $n] {
+            let mut out = [V128::from_bytes([0; 16]); $n];
+            unsafe {
+                $csload(p.cast(), stride, out.as_mut_ptr().cast());
+            }
+            out
+        }
+
+        $(#[$meta])*
+        ///
+        /// `stride` is in bytes.
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with the V extension enabled and every
+        /// selected element must be valid.
+        #[inline(always)]
+        pub unsafe fn $sstore(p: *mut i32, stride: isize, values: [V128; $n]) {
+            unsafe {
+                $csstore(p.cast(), stride, values.as_ptr().cast());
+            }
+        }
+    };
+}
+
+segment!(
+    /// `vlseg2e32.v`, `vsseg2e32.v`, `vlsseg2e32.v`, `vssseg2e32.v`.
+    vlseg2,
+    vsseg2,
+    vlsseg2,
+    vssseg2,
+    rust_isa_rv_vector_vlseg2,
+    rust_isa_rv_vector_vsseg2,
+    rust_isa_rv_vector_vlsseg2,
+    rust_isa_rv_vector_vssseg2,
+    2
+);
+segment!(
+    /// `vlseg3e32.v`, `vsseg3e32.v`, `vlsseg3e32.v`, `vssseg3e32.v`.
+    vlseg3,
+    vsseg3,
+    vlsseg3,
+    vssseg3,
+    rust_isa_rv_vector_vlseg3,
+    rust_isa_rv_vector_vsseg3,
+    rust_isa_rv_vector_vlsseg3,
+    rust_isa_rv_vector_vssseg3,
+    3
+);
+segment!(
+    /// `vlseg4e32.v`, `vsseg4e32.v`, `vlsseg4e32.v`, `vssseg4e32.v`.
+    vlseg4,
+    vsseg4,
+    vlsseg4,
+    vssseg4,
+    rust_isa_rv_vector_vlseg4,
+    rust_isa_rv_vector_vsseg4,
+    rust_isa_rv_vector_vlsseg4,
+    rust_isa_rv_vector_vssseg4,
+    4
+);
+segment!(
+    /// `vlseg5e32.v`, `vsseg5e32.v`, `vlsseg5e32.v`, `vssseg5e32.v`.
+    vlseg5,
+    vsseg5,
+    vlsseg5,
+    vssseg5,
+    rust_isa_rv_vector_vlseg5,
+    rust_isa_rv_vector_vsseg5,
+    rust_isa_rv_vector_vlsseg5,
+    rust_isa_rv_vector_vssseg5,
+    5
+);
+segment!(
+    /// `vlseg6e32.v`, `vsseg6e32.v`, `vlsseg6e32.v`, `vssseg6e32.v`.
+    vlseg6,
+    vsseg6,
+    vlsseg6,
+    vssseg6,
+    rust_isa_rv_vector_vlseg6,
+    rust_isa_rv_vector_vsseg6,
+    rust_isa_rv_vector_vlsseg6,
+    rust_isa_rv_vector_vssseg6,
+    6
+);
+segment!(
+    /// `vlseg7e32.v`, `vsseg7e32.v`, `vlsseg7e32.v`, `vssseg7e32.v`.
+    vlseg7,
+    vsseg7,
+    vlsseg7,
+    vssseg7,
+    rust_isa_rv_vector_vlseg7,
+    rust_isa_rv_vector_vsseg7,
+    rust_isa_rv_vector_vlsseg7,
+    rust_isa_rv_vector_vssseg7,
+    7
+);
+segment!(
+    /// `vlseg8e32.v`, `vsseg8e32.v`, `vlsseg8e32.v`, `vssseg8e32.v`.
+    vlseg8,
+    vsseg8,
+    vlsseg8,
+    vssseg8,
+    rust_isa_rv_vector_vlseg8,
+    rust_isa_rv_vector_vsseg8,
+    rust_isa_rv_vector_vlsseg8,
+    rust_isa_rv_vector_vssseg8,
+    8
+);
+
+/// `vlm.v`.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled. `p` must be valid for
+/// reading two bytes.
+#[inline(always)]
+pub unsafe fn vlm(p: *const u8) -> u16 {
+    unsafe { rust_isa_rv_vector_vlm(p) }
+}
+
+/// `vsm.v`.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled. `p` must be valid for
+/// writing two bytes.
+#[inline(always)]
+pub unsafe fn vsm(p: *mut u8, mask: u16) {
+    unsafe {
+        rust_isa_rv_vector_vsm(p, mask);
+    }
+}
