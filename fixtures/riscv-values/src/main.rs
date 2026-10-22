@@ -31,7 +31,7 @@ use rust_isa::riscv::integer::zbb::{andn, clz, cpop, rol, sext_b, xnor};
 use rust_isa::riscv::integer::zbc::clmul;
 use rust_isa::riscv::integer::zbkb::{brev8, pack, packh, unzip, xperm4, xperm8, zip};
 use rust_isa::riscv::integer::zbs::{bclr, bext, binv, bset};
-use rust_isa::riscv::simd::rv_vector::{
+use rust_isa::riscv::simd::rvv::{
     V128, add, add_i8, add_i16, and, cmpeq_i32, cmpgt_i32, fadd, fmul, mul, mul_i16, or, splat_i32,
     sub_i32, v128_load, v128_store, vaadd, vaaddu, vadd, vaesdf, vaesdm, vaesef, vaesem, vaeskf1,
     vaeskf2, vaesz, vand, vasub, vasubu, vclmul, vclmulh, vcompress, vcpop, vdiv, vdivu, vfabs,

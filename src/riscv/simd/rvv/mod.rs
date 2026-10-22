@@ -17,8 +17,8 @@ mod v128;
 pub use v128::*;
 
 unsafe extern "C" {
-    fn rust_isa_rv_vector_add(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_mul(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_add(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_mul(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `vadd.vv`
@@ -32,7 +32,7 @@ unsafe extern "C" {
 pub unsafe fn add(a: V128, b: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_add(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+        rust_isa_rvv_add(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
 }
@@ -48,31 +48,31 @@ pub unsafe fn add(a: V128, b: V128) -> V128 {
 pub unsafe fn mul(a: V128, b: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_mul(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+        rust_isa_rvv_mul(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
 }
 
 unsafe extern "C" {
-    fn rust_isa_rv_vector_add_i8(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_add_i16(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_add_i64(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_sub_i8(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_sub_i16(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_sub_i32(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_sub_i64(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_mul_i8(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_mul_i16(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_and(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_or(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_xor(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_cmpeq_i32(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_cmpgt_i32(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_fadd(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_fsub(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_fmul(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_fdiv(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_splat_i32(value: i32, out: *mut u8);
+    fn rust_isa_rvv_add_i8(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_add_i16(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_add_i64(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_sub_i8(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_sub_i16(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_sub_i32(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_sub_i64(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_mul_i8(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_mul_i16(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_and(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_or(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_xor(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_cmpeq_i32(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_cmpgt_i32(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_fadd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_fsub(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_fmul(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_fdiv(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_splat_i32(value: i32, out: *mut u8);
 }
 
 macro_rules! binary {
@@ -96,92 +96,92 @@ macro_rules! binary {
 binary!(
     /// `vadd.vv` on 8-bit lanes.
     add_i8,
-    rust_isa_rv_vector_add_i8
+    rust_isa_rvv_add_i8
 );
 binary!(
     /// `vadd.vv` on 16-bit lanes.
     add_i16,
-    rust_isa_rv_vector_add_i16
+    rust_isa_rvv_add_i16
 );
 binary!(
     /// `vadd.vv` on 64-bit lanes.
     add_i64,
-    rust_isa_rv_vector_add_i64
+    rust_isa_rvv_add_i64
 );
 binary!(
     /// `vsub.vv` on 8-bit lanes.
     sub_i8,
-    rust_isa_rv_vector_sub_i8
+    rust_isa_rvv_sub_i8
 );
 binary!(
     /// `vsub.vv` on 16-bit lanes.
     sub_i16,
-    rust_isa_rv_vector_sub_i16
+    rust_isa_rvv_sub_i16
 );
 binary!(
     /// `vsub.vv` on 32-bit lanes.
     sub_i32,
-    rust_isa_rv_vector_sub_i32
+    rust_isa_rvv_sub_i32
 );
 binary!(
     /// `vsub.vv` on 64-bit lanes.
     sub_i64,
-    rust_isa_rv_vector_sub_i64
+    rust_isa_rvv_sub_i64
 );
 binary!(
     /// `vmul.vv` on 8-bit lanes, keeping the low 8 bits.
     mul_i8,
-    rust_isa_rv_vector_mul_i8
+    rust_isa_rvv_mul_i8
 );
 binary!(
     /// `vmul.vv` on 16-bit lanes, keeping the low 16 bits.
     mul_i16,
-    rust_isa_rv_vector_mul_i16
+    rust_isa_rvv_mul_i16
 );
 binary!(
     /// Bitwise AND.
     and,
-    rust_isa_rv_vector_and
+    rust_isa_rvv_and
 );
 binary!(
     /// Bitwise OR.
     or,
-    rust_isa_rv_vector_or
+    rust_isa_rvv_or
 );
 binary!(
     /// Bitwise XOR.
     xor,
-    rust_isa_rv_vector_xor
+    rust_isa_rvv_xor
 );
 binary!(
     /// `vmseq.vv` on 32-bit lanes. A true lane is all bits one.
     cmpeq_i32,
-    rust_isa_rv_vector_cmpeq_i32
+    rust_isa_rvv_cmpeq_i32
 );
 binary!(
     /// `vmsgt.vv` on signed 32-bit lanes. A true lane is all bits one.
     cmpgt_i32,
-    rust_isa_rv_vector_cmpgt_i32
+    rust_isa_rvv_cmpgt_i32
 );
 binary!(
     /// `vfadd.vv` on 32-bit float lanes.
     fadd,
-    rust_isa_rv_vector_fadd
+    rust_isa_rvv_fadd
 );
 binary!(
     /// `vfsub.vv` on 32-bit float lanes.
     fsub,
-    rust_isa_rv_vector_fsub
+    rust_isa_rvv_fsub
 );
 binary!(
     /// `vfmul.vv` on 32-bit float lanes.
     fmul,
-    rust_isa_rv_vector_fmul
+    rust_isa_rvv_fmul
 );
 binary!(
     /// `vfdiv.vv` on 32-bit float lanes.
     fdiv,
-    rust_isa_rv_vector_fdiv
+    rust_isa_rvv_fdiv
 );
 
 /// Broadcast a 32-bit value to all four lanes.
@@ -193,40 +193,40 @@ binary!(
 pub unsafe fn splat_i32(value: i32) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_splat_i32(value, out.as_mut_ptr());
+        rust_isa_rvv_splat_i32(value, out.as_mut_ptr());
     }
     out
 }
 
 unsafe extern "C" {
-    fn rust_isa_rv_vector_vdiv(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vdivu(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vrem(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vremu(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vsll(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vsrl(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vsra(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vmin(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vmax(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vminu(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vmaxu(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vmseq_mask(a: *const u8, b: *const u8) -> u16;
-    fn rust_isa_rv_vector_vmsne_mask(a: *const u8, b: *const u8) -> u16;
-    fn rust_isa_rv_vector_vmslt_mask(a: *const u8, b: *const u8) -> u16;
-    fn rust_isa_rv_vector_vmsle_mask(a: *const u8, b: *const u8) -> u16;
-    fn rust_isa_rv_vector_vmsgt_mask(a: *const u8, b: *const u8) -> u16;
-    fn rust_isa_rv_vector_vmsge_mask(a: *const u8, b: *const u8) -> u16;
-    fn rust_isa_rv_vector_vmsltu_mask(a: *const u8, b: *const u8) -> u16;
-    fn rust_isa_rv_vector_vmsleu_mask(a: *const u8, b: *const u8) -> u16;
-    fn rust_isa_rv_vector_vmsgtu_mask(a: *const u8, b: *const u8) -> u16;
-    fn rust_isa_rv_vector_vmsgeu_mask(a: *const u8, b: *const u8) -> u16;
-    fn rust_isa_rv_vector_vmacc(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vnmsac(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vmadd(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vnmsub(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vmv(a: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vmv_x_s(a: *const u8) -> i32;
-    fn rust_isa_rv_vector_vmv_s_x(value: i32, out: *mut u8);
+    fn rust_isa_rvv_vdiv(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vdivu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vrem(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vremu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsll(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsrl(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsra(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vmin(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vmax(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vminu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vmaxu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vmseq_mask(a: *const u8, b: *const u8) -> u16;
+    fn rust_isa_rvv_vmsne_mask(a: *const u8, b: *const u8) -> u16;
+    fn rust_isa_rvv_vmslt_mask(a: *const u8, b: *const u8) -> u16;
+    fn rust_isa_rvv_vmsle_mask(a: *const u8, b: *const u8) -> u16;
+    fn rust_isa_rvv_vmsgt_mask(a: *const u8, b: *const u8) -> u16;
+    fn rust_isa_rvv_vmsge_mask(a: *const u8, b: *const u8) -> u16;
+    fn rust_isa_rvv_vmsltu_mask(a: *const u8, b: *const u8) -> u16;
+    fn rust_isa_rvv_vmsleu_mask(a: *const u8, b: *const u8) -> u16;
+    fn rust_isa_rvv_vmsgtu_mask(a: *const u8, b: *const u8) -> u16;
+    fn rust_isa_rvv_vmsgeu_mask(a: *const u8, b: *const u8) -> u16;
+    fn rust_isa_rvv_vmacc(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vnmsac(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vmadd(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vnmsub(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vmv(a: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vmv_x_s(a: *const u8) -> i32;
+    fn rust_isa_rvv_vmv_s_x(value: i32, out: *mut u8);
 }
 
 /// Expand a four-lane mask into all-ones 32-bit lanes.
@@ -303,57 +303,57 @@ pub unsafe fn vxor(a: V128, b: V128) -> V128 {
 binary!(
     /// `vdiv.vv` on 32-bit integer lanes.
     vdiv,
-    rust_isa_rv_vector_vdiv
+    rust_isa_rvv_vdiv
 );
 binary!(
     /// `vdivu.vv` on 32-bit unsigned integer lanes.
     vdivu,
-    rust_isa_rv_vector_vdivu
+    rust_isa_rvv_vdivu
 );
 binary!(
     /// `vrem.vv` on 32-bit integer lanes.
     vrem,
-    rust_isa_rv_vector_vrem
+    rust_isa_rvv_vrem
 );
 binary!(
     /// `vremu.vv` on 32-bit unsigned integer lanes.
     vremu,
-    rust_isa_rv_vector_vremu
+    rust_isa_rvv_vremu
 );
 binary!(
     /// `vsll.vv` on 32-bit integer lanes.
     vsll,
-    rust_isa_rv_vector_vsll
+    rust_isa_rvv_vsll
 );
 binary!(
     /// `vsrl.vv` on 32-bit integer lanes.
     vsrl,
-    rust_isa_rv_vector_vsrl
+    rust_isa_rvv_vsrl
 );
 binary!(
     /// `vsra.vv` on 32-bit integer lanes.
     vsra,
-    rust_isa_rv_vector_vsra
+    rust_isa_rvv_vsra
 );
 binary!(
     /// `vmin.vv` on signed 32-bit integer lanes.
     vmin,
-    rust_isa_rv_vector_vmin
+    rust_isa_rvv_vmin
 );
 binary!(
     /// `vmax.vv` on signed 32-bit integer lanes.
     vmax,
-    rust_isa_rv_vector_vmax
+    rust_isa_rvv_vmax
 );
 binary!(
     /// `vminu.vv` on unsigned 32-bit integer lanes.
     vminu,
-    rust_isa_rv_vector_vminu
+    rust_isa_rvv_vminu
 );
 binary!(
     /// `vmaxu.vv` on unsigned 32-bit integer lanes.
     vmaxu,
-    rust_isa_rv_vector_vmaxu
+    rust_isa_rvv_vmaxu
 );
 
 macro_rules! compare_mask {
@@ -375,52 +375,52 @@ macro_rules! compare_mask {
 compare_mask!(
     /// `vmseq.vv` on 32-bit integer lanes.
     vmseq_mask,
-    rust_isa_rv_vector_vmseq_mask
+    rust_isa_rvv_vmseq_mask
 );
 compare_mask!(
     /// `vmsne.vv` on 32-bit integer lanes.
     vmsne_mask,
-    rust_isa_rv_vector_vmsne_mask
+    rust_isa_rvv_vmsne_mask
 );
 compare_mask!(
     /// `vmslt.vv` on signed 32-bit integer lanes.
     vmslt_mask,
-    rust_isa_rv_vector_vmslt_mask
+    rust_isa_rvv_vmslt_mask
 );
 compare_mask!(
     /// `vmsle.vv` on signed 32-bit integer lanes.
     vmsle_mask,
-    rust_isa_rv_vector_vmsle_mask
+    rust_isa_rvv_vmsle_mask
 );
 compare_mask!(
     /// `vmsgt.vv` on signed 32-bit integer lanes.
     vmsgt_mask,
-    rust_isa_rv_vector_vmsgt_mask
+    rust_isa_rvv_vmsgt_mask
 );
 compare_mask!(
     /// `vmsge.vv` on signed 32-bit integer lanes.
     vmsge_mask,
-    rust_isa_rv_vector_vmsge_mask
+    rust_isa_rvv_vmsge_mask
 );
 compare_mask!(
     /// `vmsltu.vv` on unsigned 32-bit integer lanes.
     vmsltu_mask,
-    rust_isa_rv_vector_vmsltu_mask
+    rust_isa_rvv_vmsltu_mask
 );
 compare_mask!(
     /// `vmsleu.vv` on unsigned 32-bit integer lanes.
     vmsleu_mask,
-    rust_isa_rv_vector_vmsleu_mask
+    rust_isa_rvv_vmsleu_mask
 );
 compare_mask!(
     /// `vmsgtu.vv` on unsigned 32-bit integer lanes.
     vmsgtu_mask,
-    rust_isa_rv_vector_vmsgtu_mask
+    rust_isa_rvv_vmsgtu_mask
 );
 compare_mask!(
     /// `vmsgeu.vv` on unsigned 32-bit integer lanes.
     vmsgeu_mask,
-    rust_isa_rv_vector_vmsgeu_mask
+    rust_isa_rvv_vmsgeu_mask
 );
 
 macro_rules! compare_v128 {
@@ -516,22 +516,22 @@ macro_rules! ternary {
 ternary!(
     /// `vmacc.vv`: `acc + a * b` on 32-bit integer lanes.
     vmacc,
-    rust_isa_rv_vector_vmacc
+    rust_isa_rvv_vmacc
 );
 ternary!(
     /// `vnmsac.vv`: `acc - a * b` on 32-bit integer lanes.
     vnmsac,
-    rust_isa_rv_vector_vnmsac
+    rust_isa_rvv_vnmsac
 );
 ternary!(
     /// `vmadd.vv`: `a * acc + b` on 32-bit integer lanes.
     vmadd,
-    rust_isa_rv_vector_vmadd
+    rust_isa_rvv_vmadd
 );
 ternary!(
     /// `vnmsub.vv`: `b - a * acc` on 32-bit integer lanes.
     vnmsub,
-    rust_isa_rv_vector_vnmsub
+    rust_isa_rvv_vnmsub
 );
 
 /// `vmv.v.v`.
@@ -543,7 +543,7 @@ ternary!(
 pub unsafe fn vmv(a: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_vmv(a.as_ptr(), out.as_mut_ptr());
+        rust_isa_rvv_vmv(a.as_ptr(), out.as_mut_ptr());
     }
     out
 }
@@ -565,7 +565,7 @@ pub unsafe fn vmv_v_x(value: i32) -> V128 {
 /// The caller must compile with the V extension enabled.
 #[inline(always)]
 pub unsafe fn vmv_x_s(a: V128) -> i32 {
-    unsafe { rust_isa_rv_vector_vmv_x_s(a.as_ptr()) }
+    unsafe { rust_isa_rvv_vmv_x_s(a.as_ptr()) }
 }
 
 /// `vmv.s.x`.
@@ -577,86 +577,86 @@ pub unsafe fn vmv_x_s(a: V128) -> i32 {
 pub unsafe fn vmv_s_x(value: i32) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_vmv_s_x(value, out.as_mut_ptr());
+        rust_isa_rvv_vmv_s_x(value, out.as_mut_ptr());
     }
     out
 }
 
 unsafe extern "C" {
-    fn rust_isa_rv_vector_vsadd(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vssub(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vsaddu(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vssubu(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vaadd(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vaaddu(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vasub(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vasubu(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vwmacc(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vwmaccu(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vwmaccsu(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vwmaccus(acc: *const u8, scalar: u32, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vzext(a: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vsext(a: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vwadd(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vwaddu(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vwsub(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vwsubu(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vwmul(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vwmulu(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vwmulsu(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vnsrl(a: *const u8, shift: u32, out: *mut u8);
-    fn rust_isa_rv_vector_vnsra(a: *const u8, shift: u32, out: *mut u8);
-    fn rust_isa_rv_vector_vnclip(a: *const u8, shift: u32, out: *mut u8);
-    fn rust_isa_rv_vector_vnclipu(a: *const u8, shift: u32, out: *mut u8);
+    fn rust_isa_rvv_vsadd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vssub(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsaddu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vssubu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vaadd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vaaddu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vasub(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vasubu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vwmacc(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vwmaccu(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vwmaccsu(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vwmaccus(acc: *const u8, scalar: u32, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vzext(a: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsext(a: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vwadd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vwaddu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vwsub(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vwsubu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vwmul(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vwmulu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vwmulsu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vnsrl(a: *const u8, shift: u32, out: *mut u8);
+    fn rust_isa_rvv_vnsra(a: *const u8, shift: u32, out: *mut u8);
+    fn rust_isa_rvv_vnclip(a: *const u8, shift: u32, out: *mut u8);
+    fn rust_isa_rvv_vnclipu(a: *const u8, shift: u32, out: *mut u8);
 }
 
 binary!(
     /// `vsadd.vv` on signed 32-bit integer lanes. Saturates to `i32::MIN..=i32::MAX`.
     vsadd,
-    rust_isa_rv_vector_vsadd
+    rust_isa_rvv_vsadd
 );
 binary!(
     /// `vssub.vv` on signed 32-bit integer lanes. Saturates to `i32::MIN..=i32::MAX`.
     vssub,
-    rust_isa_rv_vector_vssub
+    rust_isa_rvv_vssub
 );
 binary!(
     /// `vsaddu.vv` on unsigned 32-bit integer lanes. Saturates to `u32::MAX`.
     vsaddu,
-    rust_isa_rv_vector_vsaddu
+    rust_isa_rvv_vsaddu
 );
 binary!(
     /// `vssubu.vv` on unsigned 32-bit integer lanes. Saturates to zero.
     vssubu,
-    rust_isa_rv_vector_vssubu
+    rust_isa_rvv_vssubu
 );
 binary!(
     /// `vaadd.vv` on signed 32-bit integer lanes.
     ///
     /// Rounds to nearest, ties away from zero (`vxrm = 0`).
     vaadd,
-    rust_isa_rv_vector_vaadd
+    rust_isa_rvv_vaadd
 );
 binary!(
     /// `vaaddu.vv` on unsigned 32-bit integer lanes.
     ///
     /// Rounds to nearest, ties away from zero (`vxrm = 0`).
     vaaddu,
-    rust_isa_rv_vector_vaaddu
+    rust_isa_rvv_vaaddu
 );
 binary!(
     /// `vasub.vv` on signed 32-bit integer lanes.
     ///
     /// Rounds to nearest, ties away from zero (`vxrm = 0`).
     vasub,
-    rust_isa_rv_vector_vasub
+    rust_isa_rvv_vasub
 );
 binary!(
     /// `vasubu.vv` on unsigned 32-bit integer lanes.
     ///
     /// Rounds to nearest, ties away from zero (`vxrm = 0`).
     vasubu,
-    rust_isa_rv_vector_vasubu
+    rust_isa_rvv_vasubu
 );
 
 ternary!(
@@ -664,21 +664,21 @@ ternary!(
     ///
     /// The low four 16-bit lanes of `a` and `b` are widened to 32 bits.
     vwmacc,
-    rust_isa_rv_vector_vwmacc
+    rust_isa_rvv_vwmacc
 );
 ternary!(
     /// `vwmaccu.vv`: `acc + zero_extend(a) * zero_extend(b)`.
     ///
     /// The low four 16-bit lanes of `a` and `b` are widened to 32 bits.
     vwmaccu,
-    rust_isa_rv_vector_vwmaccu
+    rust_isa_rvv_vwmaccu
 );
 ternary!(
     /// `vwmaccsu.vv`: `acc + sign_extend(a) * zero_extend(b)`.
     ///
     /// The low four 16-bit lanes of `a` and `b` are widened to 32 bits.
     vwmaccsu,
-    rust_isa_rv_vector_vwmaccsu
+    rust_isa_rvv_vwmaccsu
 );
 
 /// `vwmaccus.vx`: `acc + zero_extend(scalar) * sign_extend(b)`.
@@ -692,7 +692,7 @@ ternary!(
 pub unsafe fn vwmaccus(acc: V128, scalar: u32, b: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_vwmaccus(acc.as_ptr(), scalar, b.as_ptr(), out.as_mut_ptr());
+        rust_isa_rvv_vwmaccus(acc.as_ptr(), scalar, b.as_ptr(), out.as_mut_ptr());
     }
     out
 }
@@ -719,13 +719,13 @@ macro_rules! widen {
 widen!(
     /// `vzext.vf2`.
     vzext,
-    rust_isa_rv_vector_vzext,
+    rust_isa_rvv_vzext,
     "The low eight bytes are zero-extended to eight 16-bit lanes."
 );
 widen!(
     /// `vsext.vf2`.
     vsext,
-    rust_isa_rv_vector_vsext,
+    rust_isa_rvv_vsext,
     "The low eight bytes are sign-extended to eight 16-bit lanes."
 );
 
@@ -734,49 +734,49 @@ binary!(
     ///
     /// The low four 16-bit lanes are sign-extended and added into 32-bit lanes.
     vwadd,
-    rust_isa_rv_vector_vwadd
+    rust_isa_rvv_vwadd
 );
 binary!(
     /// `vwaddu.vv`.
     ///
     /// The low four 16-bit lanes are zero-extended and added into 32-bit lanes.
     vwaddu,
-    rust_isa_rv_vector_vwaddu
+    rust_isa_rvv_vwaddu
 );
 binary!(
     /// `vwsub.vv`.
     ///
     /// The low four 16-bit lanes are sign-extended and subtracted into 32-bit lanes.
     vwsub,
-    rust_isa_rv_vector_vwsub
+    rust_isa_rvv_vwsub
 );
 binary!(
     /// `vwsubu.vv`.
     ///
     /// The low four 16-bit lanes are zero-extended and subtracted into 32-bit lanes.
     vwsubu,
-    rust_isa_rv_vector_vwsubu
+    rust_isa_rvv_vwsubu
 );
 binary!(
     /// `vwmul.vv`.
     ///
     /// The low four 16-bit lanes are sign-extended and multiplied into 32-bit lanes.
     vwmul,
-    rust_isa_rv_vector_vwmul
+    rust_isa_rvv_vwmul
 );
 binary!(
     /// `vwmulu.vv`.
     ///
     /// The low four 16-bit lanes are zero-extended and multiplied into 32-bit lanes.
     vwmulu,
-    rust_isa_rv_vector_vwmulu
+    rust_isa_rvv_vwmulu
 );
 binary!(
     /// `vwmulsu.vv`.
     ///
     /// `a` is sign-extended and `b` is zero-extended before multiplying.
     vwmulsu,
-    rust_isa_rv_vector_vwmulsu
+    rust_isa_rvv_vwmulsu
 );
 
 macro_rules! narrow {
@@ -803,58 +803,58 @@ macro_rules! narrow {
 narrow!(
     /// `vnsrl.wx`.
     vnsrl,
-    rust_isa_rv_vector_vnsrl
+    rust_isa_rvv_vnsrl
 );
 narrow!(
     /// `vnsra.wx`.
     vnsra,
-    rust_isa_rv_vector_vnsra
+    rust_isa_rvv_vnsra
 );
 narrow!(
     /// `vnclip.wx`, rounding to nearest, ties away from zero (`vxrm = 0`).
     vnclip,
-    rust_isa_rv_vector_vnclip
+    rust_isa_rvv_vnclip
 );
 narrow!(
     /// `vnclipu.wx`, rounding to nearest, ties away from zero (`vxrm = 0`).
     vnclipu,
-    rust_isa_rv_vector_vnclipu
+    rust_isa_rvv_vnclipu
 );
 
 unsafe extern "C" {
-    fn rust_isa_rv_vector_vmerge(a: *const u8, b: *const u8, mask: u16, out: *mut u8);
-    fn rust_isa_rv_vector_vslideup(dest: *const u8, src: *const u8, amount: u32, out: *mut u8);
-    fn rust_isa_rv_vector_vslidedown(src: *const u8, amount: u32, out: *mut u8);
-    fn rust_isa_rv_vector_vslide1up(src: *const u8, value: i32, out: *mut u8);
-    fn rust_isa_rv_vector_vslide1down(src: *const u8, value: i32, out: *mut u8);
-    fn rust_isa_rv_vector_vrgather(a: *const u8, indices: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vrgatherei16(a: *const u8, indices: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vcompress(a: *const u8, mask: u16, out: *mut u8);
-    fn rust_isa_rv_vector_vmand(a: u16, b: u16) -> u16;
-    fn rust_isa_rv_vector_vmnand(a: u16, b: u16) -> u16;
-    fn rust_isa_rv_vector_vmandn(a: u16, b: u16) -> u16;
-    fn rust_isa_rv_vector_vmxor(a: u16, b: u16) -> u16;
-    fn rust_isa_rv_vector_vmor(a: u16, b: u16) -> u16;
-    fn rust_isa_rv_vector_vmnor(a: u16, b: u16) -> u16;
-    fn rust_isa_rv_vector_vmorn(a: u16, b: u16) -> u16;
-    fn rust_isa_rv_vector_vmxnor(a: u16, b: u16) -> u16;
-    fn rust_isa_rv_vector_vcpop(mask: u16) -> u64;
-    fn rust_isa_rv_vector_vfirst(mask: u16) -> i64;
-    fn rust_isa_rv_vector_vmsbf(mask: u16) -> u16;
-    fn rust_isa_rv_vector_vmsof(mask: u16) -> u16;
-    fn rust_isa_rv_vector_vmsif(mask: u16) -> u16;
-    fn rust_isa_rv_vector_viota(mask: u16, out: *mut u8);
-    fn rust_isa_rv_vector_vid(out: *mut u8);
-    fn rust_isa_rv_vector_vredsum(a: *const u8) -> u32;
-    fn rust_isa_rv_vector_vredand(a: *const u8) -> i32;
-    fn rust_isa_rv_vector_vredor(a: *const u8) -> i32;
-    fn rust_isa_rv_vector_vredxor(a: *const u8) -> i32;
-    fn rust_isa_rv_vector_vredmin(a: *const u8) -> i32;
-    fn rust_isa_rv_vector_vredmax(a: *const u8) -> i32;
-    fn rust_isa_rv_vector_vredminu(a: *const u8) -> u32;
-    fn rust_isa_rv_vector_vredmaxu(a: *const u8) -> u32;
-    fn rust_isa_rv_vector_vwredsum(a: *const u8) -> i64;
-    fn rust_isa_rv_vector_vwredsumu(a: *const u8) -> u64;
+    fn rust_isa_rvv_vmerge(a: *const u8, b: *const u8, mask: u16, out: *mut u8);
+    fn rust_isa_rvv_vslideup(dest: *const u8, src: *const u8, amount: u32, out: *mut u8);
+    fn rust_isa_rvv_vslidedown(src: *const u8, amount: u32, out: *mut u8);
+    fn rust_isa_rvv_vslide1up(src: *const u8, value: i32, out: *mut u8);
+    fn rust_isa_rvv_vslide1down(src: *const u8, value: i32, out: *mut u8);
+    fn rust_isa_rvv_vrgather(a: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vrgatherei16(a: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vcompress(a: *const u8, mask: u16, out: *mut u8);
+    fn rust_isa_rvv_vmand(a: u16, b: u16) -> u16;
+    fn rust_isa_rvv_vmnand(a: u16, b: u16) -> u16;
+    fn rust_isa_rvv_vmandn(a: u16, b: u16) -> u16;
+    fn rust_isa_rvv_vmxor(a: u16, b: u16) -> u16;
+    fn rust_isa_rvv_vmor(a: u16, b: u16) -> u16;
+    fn rust_isa_rvv_vmnor(a: u16, b: u16) -> u16;
+    fn rust_isa_rvv_vmorn(a: u16, b: u16) -> u16;
+    fn rust_isa_rvv_vmxnor(a: u16, b: u16) -> u16;
+    fn rust_isa_rvv_vcpop(mask: u16) -> u64;
+    fn rust_isa_rvv_vfirst(mask: u16) -> i64;
+    fn rust_isa_rvv_vmsbf(mask: u16) -> u16;
+    fn rust_isa_rvv_vmsof(mask: u16) -> u16;
+    fn rust_isa_rvv_vmsif(mask: u16) -> u16;
+    fn rust_isa_rvv_viota(mask: u16, out: *mut u8);
+    fn rust_isa_rvv_vid(out: *mut u8);
+    fn rust_isa_rvv_vredsum(a: *const u8) -> u32;
+    fn rust_isa_rvv_vredand(a: *const u8) -> i32;
+    fn rust_isa_rvv_vredor(a: *const u8) -> i32;
+    fn rust_isa_rvv_vredxor(a: *const u8) -> i32;
+    fn rust_isa_rvv_vredmin(a: *const u8) -> i32;
+    fn rust_isa_rvv_vredmax(a: *const u8) -> i32;
+    fn rust_isa_rvv_vredminu(a: *const u8) -> u32;
+    fn rust_isa_rvv_vredmaxu(a: *const u8) -> u32;
+    fn rust_isa_rvv_vwredsum(a: *const u8) -> i64;
+    fn rust_isa_rvv_vwredsumu(a: *const u8) -> u64;
 }
 
 /// `vmerge.vvm` on 32-bit integer lanes.
@@ -868,7 +868,7 @@ unsafe extern "C" {
 pub unsafe fn vmerge(a: V128, b: V128, mask: u16) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_vmerge(a.as_ptr(), b.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_rvv_vmerge(a.as_ptr(), b.as_ptr(), mask, out.as_mut_ptr());
     }
     out
 }
@@ -884,7 +884,7 @@ pub unsafe fn vmerge(a: V128, b: V128, mask: u16) -> V128 {
 pub unsafe fn vslideup(dest: V128, src: V128, amount: u32) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_vslideup(dest.as_ptr(), src.as_ptr(), amount, out.as_mut_ptr());
+        rust_isa_rvv_vslideup(dest.as_ptr(), src.as_ptr(), amount, out.as_mut_ptr());
     }
     out
 }
@@ -898,7 +898,7 @@ pub unsafe fn vslideup(dest: V128, src: V128, amount: u32) -> V128 {
 pub unsafe fn vslidedown(src: V128, amount: u32) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_vslidedown(src.as_ptr(), amount, out.as_mut_ptr());
+        rust_isa_rvv_vslidedown(src.as_ptr(), amount, out.as_mut_ptr());
     }
     out
 }
@@ -912,7 +912,7 @@ pub unsafe fn vslidedown(src: V128, amount: u32) -> V128 {
 pub unsafe fn vslide1up(src: V128, value: i32) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_vslide1up(src.as_ptr(), value, out.as_mut_ptr());
+        rust_isa_rvv_vslide1up(src.as_ptr(), value, out.as_mut_ptr());
     }
     out
 }
@@ -926,7 +926,7 @@ pub unsafe fn vslide1up(src: V128, value: i32) -> V128 {
 pub unsafe fn vslide1down(src: V128, value: i32) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_vslide1down(src.as_ptr(), value, out.as_mut_ptr());
+        rust_isa_rvv_vslide1down(src.as_ptr(), value, out.as_mut_ptr());
     }
     out
 }
@@ -942,7 +942,7 @@ pub unsafe fn vslide1down(src: V128, value: i32) -> V128 {
 pub unsafe fn vrgather(a: V128, indices: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_vrgather(a.as_ptr(), indices.as_ptr(), out.as_mut_ptr());
+        rust_isa_rvv_vrgather(a.as_ptr(), indices.as_ptr(), out.as_mut_ptr());
     }
     out
 }
@@ -959,7 +959,7 @@ pub unsafe fn vrgather(a: V128, indices: V128) -> V128 {
 pub unsafe fn vrgatherei16(a: V128, indices: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_vrgatherei16(a.as_ptr(), indices.as_ptr(), out.as_mut_ptr());
+        rust_isa_rvv_vrgatherei16(a.as_ptr(), indices.as_ptr(), out.as_mut_ptr());
     }
     out
 }
@@ -975,7 +975,7 @@ pub unsafe fn vrgatherei16(a: V128, indices: V128) -> V128 {
 pub unsafe fn vcompress(a: V128, mask: u16) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_vcompress(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_rvv_vcompress(a.as_ptr(), mask, out.as_mut_ptr());
     }
     out
 }
@@ -997,42 +997,42 @@ macro_rules! mask_binary {
 mask_binary!(
     /// `vmand.mm`.
     vmand,
-    rust_isa_rv_vector_vmand
+    rust_isa_rvv_vmand
 );
 mask_binary!(
     /// `vmnand.mm`.
     vmnand,
-    rust_isa_rv_vector_vmnand
+    rust_isa_rvv_vmnand
 );
 mask_binary!(
     /// `vmandn.mm`.
     vmandn,
-    rust_isa_rv_vector_vmandn
+    rust_isa_rvv_vmandn
 );
 mask_binary!(
     /// `vmxor.mm`.
     vmxor,
-    rust_isa_rv_vector_vmxor
+    rust_isa_rvv_vmxor
 );
 mask_binary!(
     /// `vmor.mm`.
     vmor,
-    rust_isa_rv_vector_vmor
+    rust_isa_rvv_vmor
 );
 mask_binary!(
     /// `vmnor.mm`.
     vmnor,
-    rust_isa_rv_vector_vmnor
+    rust_isa_rvv_vmnor
 );
 mask_binary!(
     /// `vmorn.mm`.
     vmorn,
-    rust_isa_rv_vector_vmorn
+    rust_isa_rvv_vmorn
 );
 mask_binary!(
     /// `vmxnor.mm`.
     vmxnor,
-    rust_isa_rv_vector_vmxnor
+    rust_isa_rvv_vmxnor
 );
 
 /// `vcpop.m`.
@@ -1044,7 +1044,7 @@ mask_binary!(
 /// The caller must compile with the V extension enabled.
 #[inline(always)]
 pub unsafe fn vcpop(mask: u16) -> u64 {
-    unsafe { rust_isa_rv_vector_vcpop(mask) }
+    unsafe { rust_isa_rvv_vcpop(mask) }
 }
 
 /// `vfirst.m`.
@@ -1056,7 +1056,7 @@ pub unsafe fn vcpop(mask: u16) -> u64 {
 /// The caller must compile with the V extension enabled.
 #[inline(always)]
 pub unsafe fn vfirst(mask: u16) -> i64 {
-    unsafe { rust_isa_rv_vector_vfirst(mask) }
+    unsafe { rust_isa_rvv_vfirst(mask) }
 }
 
 macro_rules! mask_unary {
@@ -1076,17 +1076,17 @@ macro_rules! mask_unary {
 mask_unary!(
     /// `vmsbf.m`.
     vmsbf,
-    rust_isa_rv_vector_vmsbf
+    rust_isa_rvv_vmsbf
 );
 mask_unary!(
     /// `vmsof.m`.
     vmsof,
-    rust_isa_rv_vector_vmsof
+    rust_isa_rvv_vmsof
 );
 mask_unary!(
     /// `vmsif.m`.
     vmsif,
-    rust_isa_rv_vector_vmsif
+    rust_isa_rvv_vmsif
 );
 
 /// `viota.m` on 8-bit lanes.
@@ -1098,7 +1098,7 @@ mask_unary!(
 pub unsafe fn viota(mask: u16) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_viota(mask, out.as_mut_ptr());
+        rust_isa_rvv_viota(mask, out.as_mut_ptr());
     }
     out
 }
@@ -1112,7 +1112,7 @@ pub unsafe fn viota(mask: u16) -> V128 {
 pub unsafe fn vid() -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_vid(out.as_mut_ptr());
+        rust_isa_rvv_vid(out.as_mut_ptr());
     }
     out
 }
@@ -1134,99 +1134,99 @@ macro_rules! reduce {
 reduce!(
     /// `vredsum.vs` on 32-bit integer lanes.
     vredsum,
-    rust_isa_rv_vector_vredsum,
+    rust_isa_rvv_vredsum,
     u32
 );
 reduce!(
     /// `vredand.vs` on 32-bit integer lanes.
     vredand,
-    rust_isa_rv_vector_vredand,
+    rust_isa_rvv_vredand,
     i32
 );
 reduce!(
     /// `vredor.vs` on 32-bit integer lanes.
     vredor,
-    rust_isa_rv_vector_vredor,
+    rust_isa_rvv_vredor,
     i32
 );
 reduce!(
     /// `vredxor.vs` on 32-bit integer lanes.
     vredxor,
-    rust_isa_rv_vector_vredxor,
+    rust_isa_rvv_vredxor,
     i32
 );
 reduce!(
     /// `vredmin.vs` on signed 32-bit integer lanes.
     vredmin,
-    rust_isa_rv_vector_vredmin,
+    rust_isa_rvv_vredmin,
     i32
 );
 reduce!(
     /// `vredmax.vs` on signed 32-bit integer lanes.
     vredmax,
-    rust_isa_rv_vector_vredmax,
+    rust_isa_rvv_vredmax,
     i32
 );
 reduce!(
     /// `vredminu.vs` on unsigned 32-bit integer lanes.
     vredminu,
-    rust_isa_rv_vector_vredminu,
+    rust_isa_rvv_vredminu,
     u32
 );
 reduce!(
     /// `vredmaxu.vs` on unsigned 32-bit integer lanes.
     vredmaxu,
-    rust_isa_rv_vector_vredmaxu,
+    rust_isa_rvv_vredmaxu,
     u32
 );
 reduce!(
     /// `vwredsum.vs` from signed 32-bit to 64-bit lanes.
     vwredsum,
-    rust_isa_rv_vector_vwredsum,
+    rust_isa_rvv_vwredsum,
     i64
 );
 reduce!(
     /// `vwredsumu.vs` from unsigned 32-bit to 64-bit lanes.
     vwredsumu,
-    rust_isa_rv_vector_vwredsumu,
+    rust_isa_rvv_vwredsumu,
     u64
 );
 
 unsafe extern "C" {
-    fn rust_isa_rv_vector_vle8(p: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vle16(p: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vle32(p: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vle64(p: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vse8(p: *mut u8, value: *const u8);
-    fn rust_isa_rv_vector_vse16(p: *mut u8, value: *const u8);
-    fn rust_isa_rv_vector_vse32(p: *mut u8, value: *const u8);
-    fn rust_isa_rv_vector_vse64(p: *mut u8, value: *const u8);
-    fn rust_isa_rv_vector_vlse8(p: *const u8, stride: isize, out: *mut u8);
-    fn rust_isa_rv_vector_vlse16(p: *const u8, stride: isize, out: *mut u8);
-    fn rust_isa_rv_vector_vlse32(p: *const u8, stride: isize, out: *mut u8);
-    fn rust_isa_rv_vector_vlse64(p: *const u8, stride: isize, out: *mut u8);
-    fn rust_isa_rv_vector_vsse8(p: *mut u8, stride: isize, value: *const u8);
-    fn rust_isa_rv_vector_vsse16(p: *mut u8, stride: isize, value: *const u8);
-    fn rust_isa_rv_vector_vsse32(p: *mut u8, stride: isize, value: *const u8);
-    fn rust_isa_rv_vector_vsse64(p: *mut u8, stride: isize, value: *const u8);
-    fn rust_isa_rv_vector_vloxei8(base: *const u8, indices: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vloxei16(base: *const u8, indices: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vloxei32(base: *const u8, indices: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vloxei64(base: *const u8, indices: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vluxei8(base: *const u8, indices: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vluxei16(base: *const u8, indices: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vluxei32(base: *const u8, indices: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vluxei64(base: *const u8, indices: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vsoxei8(base: *mut u8, indices: *const u8, value: *const u8);
-    fn rust_isa_rv_vector_vsoxei16(base: *mut u8, indices: *const u8, value: *const u8);
-    fn rust_isa_rv_vector_vsoxei32(base: *mut u8, indices: *const u8, value: *const u8);
-    fn rust_isa_rv_vector_vsoxei64(base: *mut u8, indices: *const u8, value: *const u8);
-    fn rust_isa_rv_vector_vsuxei8(base: *mut u8, indices: *const u8, value: *const u8);
-    fn rust_isa_rv_vector_vsuxei16(base: *mut u8, indices: *const u8, value: *const u8);
-    fn rust_isa_rv_vector_vsuxei32(base: *mut u8, indices: *const u8, value: *const u8);
-    fn rust_isa_rv_vector_vsuxei64(base: *mut u8, indices: *const u8, value: *const u8);
-    fn rust_isa_rv_vector_vlm(p: *const u8) -> u16;
-    fn rust_isa_rv_vector_vsm(p: *mut u8, mask: u16);
+    fn rust_isa_rvv_vle8(p: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vle16(p: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vle32(p: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vle64(p: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vse8(p: *mut u8, value: *const u8);
+    fn rust_isa_rvv_vse16(p: *mut u8, value: *const u8);
+    fn rust_isa_rvv_vse32(p: *mut u8, value: *const u8);
+    fn rust_isa_rvv_vse64(p: *mut u8, value: *const u8);
+    fn rust_isa_rvv_vlse8(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rvv_vlse16(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rvv_vlse32(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rvv_vlse64(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rvv_vsse8(p: *mut u8, stride: isize, value: *const u8);
+    fn rust_isa_rvv_vsse16(p: *mut u8, stride: isize, value: *const u8);
+    fn rust_isa_rvv_vsse32(p: *mut u8, stride: isize, value: *const u8);
+    fn rust_isa_rvv_vsse64(p: *mut u8, stride: isize, value: *const u8);
+    fn rust_isa_rvv_vloxei8(base: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vloxei16(base: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vloxei32(base: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vloxei64(base: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vluxei8(base: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vluxei16(base: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vluxei32(base: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vluxei64(base: *const u8, indices: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsoxei8(base: *mut u8, indices: *const u8, value: *const u8);
+    fn rust_isa_rvv_vsoxei16(base: *mut u8, indices: *const u8, value: *const u8);
+    fn rust_isa_rvv_vsoxei32(base: *mut u8, indices: *const u8, value: *const u8);
+    fn rust_isa_rvv_vsoxei64(base: *mut u8, indices: *const u8, value: *const u8);
+    fn rust_isa_rvv_vsuxei8(base: *mut u8, indices: *const u8, value: *const u8);
+    fn rust_isa_rvv_vsuxei16(base: *mut u8, indices: *const u8, value: *const u8);
+    fn rust_isa_rvv_vsuxei32(base: *mut u8, indices: *const u8, value: *const u8);
+    fn rust_isa_rvv_vsuxei64(base: *mut u8, indices: *const u8, value: *const u8);
+    fn rust_isa_rvv_vlm(p: *const u8) -> u16;
+    fn rust_isa_rvv_vsm(p: *mut u8, mask: u16);
 }
 
 macro_rules! load {
@@ -1268,49 +1268,49 @@ macro_rules! store {
 load!(
     /// `vle8.v`.
     vle8,
-    rust_isa_rv_vector_vle8,
+    rust_isa_rvv_vle8,
     u8
 );
 load!(
     /// `vle16.v`.
     vle16,
-    rust_isa_rv_vector_vle16,
+    rust_isa_rvv_vle16,
     u16
 );
 load!(
     /// `vle32.v`.
     vle32,
-    rust_isa_rv_vector_vle32,
+    rust_isa_rvv_vle32,
     i32
 );
 load!(
     /// `vle64.v`.
     vle64,
-    rust_isa_rv_vector_vle64,
+    rust_isa_rvv_vle64,
     u64
 );
 store!(
     /// `vse8.v`.
     vse8,
-    rust_isa_rv_vector_vse8,
+    rust_isa_rvv_vse8,
     u8
 );
 store!(
     /// `vse16.v`.
     vse16,
-    rust_isa_rv_vector_vse16,
+    rust_isa_rvv_vse16,
     u16
 );
 store!(
     /// `vse32.v`.
     vse32,
-    rust_isa_rv_vector_vse32,
+    rust_isa_rvv_vse32,
     i32
 );
 store!(
     /// `vse64.v`.
     vse64,
-    rust_isa_rv_vector_vse64,
+    rust_isa_rvv_vse64,
     u64
 );
 
@@ -1357,49 +1357,49 @@ macro_rules! strided_store {
 strided_load!(
     /// `vlse8.v`.
     vlse8,
-    rust_isa_rv_vector_vlse8,
+    rust_isa_rvv_vlse8,
     u8
 );
 strided_load!(
     /// `vlse16.v`.
     vlse16,
-    rust_isa_rv_vector_vlse16,
+    rust_isa_rvv_vlse16,
     u16
 );
 strided_load!(
     /// `vlse32.v`.
     vlse32,
-    rust_isa_rv_vector_vlse32,
+    rust_isa_rvv_vlse32,
     i32
 );
 strided_load!(
     /// `vlse64.v`.
     vlse64,
-    rust_isa_rv_vector_vlse64,
+    rust_isa_rvv_vlse64,
     u64
 );
 strided_store!(
     /// `vsse8.v`.
     vsse8,
-    rust_isa_rv_vector_vsse8,
+    rust_isa_rvv_vsse8,
     u8
 );
 strided_store!(
     /// `vsse16.v`.
     vsse16,
-    rust_isa_rv_vector_vsse16,
+    rust_isa_rvv_vsse16,
     u16
 );
 strided_store!(
     /// `vsse32.v`.
     vsse32,
-    rust_isa_rv_vector_vsse32,
+    rust_isa_rvv_vsse32,
     i32
 );
 strided_store!(
     /// `vsse64.v`.
     vsse64,
-    rust_isa_rv_vector_vsse64,
+    rust_isa_rvv_vsse64,
     u64
 );
 
@@ -1448,113 +1448,113 @@ macro_rules! indexed_store {
 indexed_load!(
     /// `vloxei8.v`.
     vloxei8,
-    rust_isa_rv_vector_vloxei8
+    rust_isa_rvv_vloxei8
 );
 indexed_load!(
     /// `vloxei16.v`.
     vloxei16,
-    rust_isa_rv_vector_vloxei16
+    rust_isa_rvv_vloxei16
 );
 indexed_load!(
     /// `vloxei32.v`.
     vloxei32,
-    rust_isa_rv_vector_vloxei32
+    rust_isa_rvv_vloxei32
 );
 indexed_load!(
     /// `vloxei64.v`. Only the first two lanes are written.
     vloxei64,
-    rust_isa_rv_vector_vloxei64
+    rust_isa_rvv_vloxei64
 );
 indexed_load!(
     /// `vluxei8.v`.
     vluxei8,
-    rust_isa_rv_vector_vluxei8
+    rust_isa_rvv_vluxei8
 );
 indexed_load!(
     /// `vluxei16.v`.
     vluxei16,
-    rust_isa_rv_vector_vluxei16
+    rust_isa_rvv_vluxei16
 );
 indexed_load!(
     /// `vluxei32.v`.
     vluxei32,
-    rust_isa_rv_vector_vluxei32
+    rust_isa_rvv_vluxei32
 );
 indexed_load!(
     /// `vluxei64.v`. Only the first two lanes are written.
     vluxei64,
-    rust_isa_rv_vector_vluxei64
+    rust_isa_rvv_vluxei64
 );
 indexed_store!(
     /// `vsoxei8.v`.
     vsoxei8,
-    rust_isa_rv_vector_vsoxei8
+    rust_isa_rvv_vsoxei8
 );
 indexed_store!(
     /// `vsoxei16.v`.
     vsoxei16,
-    rust_isa_rv_vector_vsoxei16
+    rust_isa_rvv_vsoxei16
 );
 indexed_store!(
     /// `vsoxei32.v`.
     vsoxei32,
-    rust_isa_rv_vector_vsoxei32
+    rust_isa_rvv_vsoxei32
 );
 indexed_store!(
     /// `vsoxei64.v`. Only the first two lanes are written.
     vsoxei64,
-    rust_isa_rv_vector_vsoxei64
+    rust_isa_rvv_vsoxei64
 );
 indexed_store!(
     /// `vsuxei8.v`.
     vsuxei8,
-    rust_isa_rv_vector_vsuxei8
+    rust_isa_rvv_vsuxei8
 );
 indexed_store!(
     /// `vsuxei16.v`.
     vsuxei16,
-    rust_isa_rv_vector_vsuxei16
+    rust_isa_rvv_vsuxei16
 );
 indexed_store!(
     /// `vsuxei32.v`.
     vsuxei32,
-    rust_isa_rv_vector_vsuxei32
+    rust_isa_rvv_vsuxei32
 );
 indexed_store!(
     /// `vsuxei64.v`. Only the first two lanes are written.
     vsuxei64,
-    rust_isa_rv_vector_vsuxei64
+    rust_isa_rvv_vsuxei64
 );
 
 unsafe extern "C" {
-    fn rust_isa_rv_vector_vlseg2(p: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vsseg2(p: *mut u8, values: *const u8);
-    fn rust_isa_rv_vector_vlsseg2(p: *const u8, stride: isize, out: *mut u8);
-    fn rust_isa_rv_vector_vssseg2(p: *mut u8, stride: isize, values: *const u8);
-    fn rust_isa_rv_vector_vlseg3(p: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vsseg3(p: *mut u8, values: *const u8);
-    fn rust_isa_rv_vector_vlsseg3(p: *const u8, stride: isize, out: *mut u8);
-    fn rust_isa_rv_vector_vssseg3(p: *mut u8, stride: isize, values: *const u8);
-    fn rust_isa_rv_vector_vlseg4(p: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vsseg4(p: *mut u8, values: *const u8);
-    fn rust_isa_rv_vector_vlsseg4(p: *const u8, stride: isize, out: *mut u8);
-    fn rust_isa_rv_vector_vssseg4(p: *mut u8, stride: isize, values: *const u8);
-    fn rust_isa_rv_vector_vlseg5(p: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vsseg5(p: *mut u8, values: *const u8);
-    fn rust_isa_rv_vector_vlsseg5(p: *const u8, stride: isize, out: *mut u8);
-    fn rust_isa_rv_vector_vssseg5(p: *mut u8, stride: isize, values: *const u8);
-    fn rust_isa_rv_vector_vlseg6(p: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vsseg6(p: *mut u8, values: *const u8);
-    fn rust_isa_rv_vector_vlsseg6(p: *const u8, stride: isize, out: *mut u8);
-    fn rust_isa_rv_vector_vssseg6(p: *mut u8, stride: isize, values: *const u8);
-    fn rust_isa_rv_vector_vlseg7(p: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vsseg7(p: *mut u8, values: *const u8);
-    fn rust_isa_rv_vector_vlsseg7(p: *const u8, stride: isize, out: *mut u8);
-    fn rust_isa_rv_vector_vssseg7(p: *mut u8, stride: isize, values: *const u8);
-    fn rust_isa_rv_vector_vlseg8(p: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vsseg8(p: *mut u8, values: *const u8);
-    fn rust_isa_rv_vector_vlsseg8(p: *const u8, stride: isize, out: *mut u8);
-    fn rust_isa_rv_vector_vssseg8(p: *mut u8, stride: isize, values: *const u8);
+    fn rust_isa_rvv_vlseg2(p: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsseg2(p: *mut u8, values: *const u8);
+    fn rust_isa_rvv_vlsseg2(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rvv_vssseg2(p: *mut u8, stride: isize, values: *const u8);
+    fn rust_isa_rvv_vlseg3(p: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsseg3(p: *mut u8, values: *const u8);
+    fn rust_isa_rvv_vlsseg3(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rvv_vssseg3(p: *mut u8, stride: isize, values: *const u8);
+    fn rust_isa_rvv_vlseg4(p: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsseg4(p: *mut u8, values: *const u8);
+    fn rust_isa_rvv_vlsseg4(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rvv_vssseg4(p: *mut u8, stride: isize, values: *const u8);
+    fn rust_isa_rvv_vlseg5(p: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsseg5(p: *mut u8, values: *const u8);
+    fn rust_isa_rvv_vlsseg5(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rvv_vssseg5(p: *mut u8, stride: isize, values: *const u8);
+    fn rust_isa_rvv_vlseg6(p: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsseg6(p: *mut u8, values: *const u8);
+    fn rust_isa_rvv_vlsseg6(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rvv_vssseg6(p: *mut u8, stride: isize, values: *const u8);
+    fn rust_isa_rvv_vlseg7(p: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsseg7(p: *mut u8, values: *const u8);
+    fn rust_isa_rvv_vlsseg7(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rvv_vssseg7(p: *mut u8, stride: isize, values: *const u8);
+    fn rust_isa_rvv_vlseg8(p: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsseg8(p: *mut u8, values: *const u8);
+    fn rust_isa_rvv_vlsseg8(p: *const u8, stride: isize, out: *mut u8);
+    fn rust_isa_rvv_vssseg8(p: *mut u8, stride: isize, values: *const u8);
 }
 
 macro_rules! segment {
@@ -1630,10 +1630,10 @@ segment!(
     vsseg2,
     vlsseg2,
     vssseg2,
-    rust_isa_rv_vector_vlseg2,
-    rust_isa_rv_vector_vsseg2,
-    rust_isa_rv_vector_vlsseg2,
-    rust_isa_rv_vector_vssseg2,
+    rust_isa_rvv_vlseg2,
+    rust_isa_rvv_vsseg2,
+    rust_isa_rvv_vlsseg2,
+    rust_isa_rvv_vssseg2,
     2
 );
 segment!(
@@ -1642,10 +1642,10 @@ segment!(
     vsseg3,
     vlsseg3,
     vssseg3,
-    rust_isa_rv_vector_vlseg3,
-    rust_isa_rv_vector_vsseg3,
-    rust_isa_rv_vector_vlsseg3,
-    rust_isa_rv_vector_vssseg3,
+    rust_isa_rvv_vlseg3,
+    rust_isa_rvv_vsseg3,
+    rust_isa_rvv_vlsseg3,
+    rust_isa_rvv_vssseg3,
     3
 );
 segment!(
@@ -1654,10 +1654,10 @@ segment!(
     vsseg4,
     vlsseg4,
     vssseg4,
-    rust_isa_rv_vector_vlseg4,
-    rust_isa_rv_vector_vsseg4,
-    rust_isa_rv_vector_vlsseg4,
-    rust_isa_rv_vector_vssseg4,
+    rust_isa_rvv_vlseg4,
+    rust_isa_rvv_vsseg4,
+    rust_isa_rvv_vlsseg4,
+    rust_isa_rvv_vssseg4,
     4
 );
 segment!(
@@ -1666,10 +1666,10 @@ segment!(
     vsseg5,
     vlsseg5,
     vssseg5,
-    rust_isa_rv_vector_vlseg5,
-    rust_isa_rv_vector_vsseg5,
-    rust_isa_rv_vector_vlsseg5,
-    rust_isa_rv_vector_vssseg5,
+    rust_isa_rvv_vlseg5,
+    rust_isa_rvv_vsseg5,
+    rust_isa_rvv_vlsseg5,
+    rust_isa_rvv_vssseg5,
     5
 );
 segment!(
@@ -1678,10 +1678,10 @@ segment!(
     vsseg6,
     vlsseg6,
     vssseg6,
-    rust_isa_rv_vector_vlseg6,
-    rust_isa_rv_vector_vsseg6,
-    rust_isa_rv_vector_vlsseg6,
-    rust_isa_rv_vector_vssseg6,
+    rust_isa_rvv_vlseg6,
+    rust_isa_rvv_vsseg6,
+    rust_isa_rvv_vlsseg6,
+    rust_isa_rvv_vssseg6,
     6
 );
 segment!(
@@ -1690,10 +1690,10 @@ segment!(
     vsseg7,
     vlsseg7,
     vssseg7,
-    rust_isa_rv_vector_vlseg7,
-    rust_isa_rv_vector_vsseg7,
-    rust_isa_rv_vector_vlsseg7,
-    rust_isa_rv_vector_vssseg7,
+    rust_isa_rvv_vlseg7,
+    rust_isa_rvv_vsseg7,
+    rust_isa_rvv_vlsseg7,
+    rust_isa_rvv_vssseg7,
     7
 );
 segment!(
@@ -1702,10 +1702,10 @@ segment!(
     vsseg8,
     vlsseg8,
     vssseg8,
-    rust_isa_rv_vector_vlseg8,
-    rust_isa_rv_vector_vsseg8,
-    rust_isa_rv_vector_vlsseg8,
-    rust_isa_rv_vector_vssseg8,
+    rust_isa_rvv_vlseg8,
+    rust_isa_rvv_vsseg8,
+    rust_isa_rvv_vlsseg8,
+    rust_isa_rvv_vssseg8,
     8
 );
 
@@ -1717,7 +1717,7 @@ segment!(
 /// reading two bytes.
 #[inline(always)]
 pub unsafe fn vlm(p: *const u8) -> u16 {
-    unsafe { rust_isa_rv_vector_vlm(p) }
+    unsafe { rust_isa_rvv_vlm(p) }
 }
 
 /// `vsm.v`.
@@ -1729,48 +1729,48 @@ pub unsafe fn vlm(p: *const u8) -> u16 {
 #[inline(always)]
 pub unsafe fn vsm(p: *mut u8, mask: u16) {
     unsafe {
-        rust_isa_rv_vector_vsm(p, mask);
+        rust_isa_rvv_vsm(p, mask);
     }
 }
 
 unsafe extern "C" {
-    fn rust_isa_rv_vector_vfrdiv(a: *const u8, scalar: f32, out: *mut u8);
-    fn rust_isa_rv_vector_vfmin(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfmax(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfsgnj(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfsgnjn(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfsgnjx(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfabs(a: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfneg(a: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfsqrt(a: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfrsqrt7(a: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfrec7(a: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfmerge(a: *const u8, scalar: f32, mask: u16, out: *mut u8);
-    fn rust_isa_rv_vector_vfmv(scalar: f32, out: *mut u8);
-    fn rust_isa_rv_vector_vfmv_f_s(a: *const u8) -> f32;
-    fn rust_isa_rv_vector_vfma(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfms(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfnma(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfnms(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfredsum(a: *const u8) -> f32;
-    fn rust_isa_rv_vector_vfredosum(a: *const u8) -> f32;
-    fn rust_isa_rv_vector_vfredusum(a: *const u8) -> f32;
-    fn rust_isa_rv_vector_vfredmax(a: *const u8) -> f32;
-    fn rust_isa_rv_vector_vfredmin(a: *const u8) -> f32;
-    fn rust_isa_rv_vector_vfwadd(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfwsub(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfwmul(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfwmacc(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfwnmacc(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfwmsac(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfwnmsac(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfclass(a: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfcvt_xu_f(a: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfcvt_x_f(a: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfcvt_rtz_xu_f(a: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfcvt_rtz_x_f(a: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfcvt_f_xu(a: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vfcvt_f_x(a: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfrdiv(a: *const u8, scalar: f32, out: *mut u8);
+    fn rust_isa_rvv_vfmin(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfmax(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfsgnj(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfsgnjn(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfsgnjx(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfabs(a: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfneg(a: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfsqrt(a: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfrsqrt7(a: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfrec7(a: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfmerge(a: *const u8, scalar: f32, mask: u16, out: *mut u8);
+    fn rust_isa_rvv_vfmv(scalar: f32, out: *mut u8);
+    fn rust_isa_rvv_vfmv_f_s(a: *const u8) -> f32;
+    fn rust_isa_rvv_vfma(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfms(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfnma(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfnms(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfredsum(a: *const u8) -> f32;
+    fn rust_isa_rvv_vfredosum(a: *const u8) -> f32;
+    fn rust_isa_rvv_vfredusum(a: *const u8) -> f32;
+    fn rust_isa_rvv_vfredmax(a: *const u8) -> f32;
+    fn rust_isa_rvv_vfredmin(a: *const u8) -> f32;
+    fn rust_isa_rvv_vfwadd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfwsub(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfwmul(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfwmacc(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfwnmacc(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfwmsac(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfwnmsac(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfclass(a: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfcvt_xu_f(a: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfcvt_x_f(a: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfcvt_rtz_xu_f(a: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfcvt_rtz_x_f(a: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfcvt_f_xu(a: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vfcvt_f_x(a: *const u8, out: *mut u8);
 }
 
 /// `vfadd.vv` on 32-bit float lanes.
@@ -1824,7 +1824,7 @@ pub unsafe fn vfdiv(a: V128, b: V128) -> V128 {
 pub unsafe fn vfrdiv(a: V128, scalar: f32) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_vfrdiv(a.as_ptr(), scalar, out.as_mut_ptr());
+        rust_isa_rvv_vfrdiv(a.as_ptr(), scalar, out.as_mut_ptr());
     }
     out
 }
@@ -1832,27 +1832,27 @@ pub unsafe fn vfrdiv(a: V128, scalar: f32) -> V128 {
 binary!(
     /// `vfmin.vv` on 32-bit float lanes.
     vfmin,
-    rust_isa_rv_vector_vfmin
+    rust_isa_rvv_vfmin
 );
 binary!(
     /// `vfmax.vv` on 32-bit float lanes.
     vfmax,
-    rust_isa_rv_vector_vfmax
+    rust_isa_rvv_vfmax
 );
 binary!(
     /// `vfsgnj.vv` on 32-bit float lanes.
     vfsgnj,
-    rust_isa_rv_vector_vfsgnj
+    rust_isa_rvv_vfsgnj
 );
 binary!(
     /// `vfsgnjn.vv` on 32-bit float lanes.
     vfsgnjn,
-    rust_isa_rv_vector_vfsgnjn
+    rust_isa_rvv_vfsgnjn
 );
 binary!(
     /// `vfsgnjx.vv` on 32-bit float lanes.
     vfsgnjx,
-    rust_isa_rv_vector_vfsgnjx
+    rust_isa_rvv_vfsgnjx
 );
 
 macro_rules! float_unary {
@@ -1876,27 +1876,27 @@ macro_rules! float_unary {
 float_unary!(
     /// `vfabs.v`.
     vfabs,
-    rust_isa_rv_vector_vfabs
+    rust_isa_rvv_vfabs
 );
 float_unary!(
     /// `vfneg.v`.
     vfneg,
-    rust_isa_rv_vector_vfneg
+    rust_isa_rvv_vfneg
 );
 float_unary!(
     /// `vfsqrt.v`.
     vfsqrt,
-    rust_isa_rv_vector_vfsqrt
+    rust_isa_rvv_vfsqrt
 );
 float_unary!(
     /// `vfrsqrt7.v`.
     vfrsqrt7,
-    rust_isa_rv_vector_vfrsqrt7
+    rust_isa_rvv_vfrsqrt7
 );
 float_unary!(
     /// `vfrec7.v`.
     vfrec7,
-    rust_isa_rv_vector_vfrec7
+    rust_isa_rvv_vfrec7
 );
 
 /// `vfmerge.vfm` on 32-bit float lanes.
@@ -1910,7 +1910,7 @@ float_unary!(
 pub unsafe fn vfmerge(a: V128, scalar: f32, mask: u16) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_vfmerge(a.as_ptr(), scalar, mask, out.as_mut_ptr());
+        rust_isa_rvv_vfmerge(a.as_ptr(), scalar, mask, out.as_mut_ptr());
     }
     out
 }
@@ -1924,7 +1924,7 @@ pub unsafe fn vfmerge(a: V128, scalar: f32, mask: u16) -> V128 {
 pub unsafe fn vfmv(scalar: f32) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_vfmv(scalar, out.as_mut_ptr());
+        rust_isa_rvv_vfmv(scalar, out.as_mut_ptr());
     }
     out
 }
@@ -1936,28 +1936,28 @@ pub unsafe fn vfmv(scalar: f32) -> V128 {
 /// The caller must compile with the V extension enabled.
 #[inline(always)]
 pub unsafe fn vfmv_f_s(a: V128) -> f32 {
-    unsafe { rust_isa_rv_vector_vfmv_f_s(a.as_ptr()) }
+    unsafe { rust_isa_rvv_vfmv_f_s(a.as_ptr()) }
 }
 
 ternary!(
     /// `vfmadd.vv`: `acc * a + b`.
     vfma,
-    rust_isa_rv_vector_vfma
+    rust_isa_rvv_vfma
 );
 ternary!(
     /// `vfmsub.vv`: `acc * a - b`.
     vfms,
-    rust_isa_rv_vector_vfms
+    rust_isa_rvv_vfms
 );
 ternary!(
     /// `vfnmadd.vv`: `-(acc * a) - b`.
     vfnma,
-    rust_isa_rv_vector_vfnma
+    rust_isa_rvv_vfnma
 );
 ternary!(
     /// `vfnmsub.vv`: `-(acc * a) + b`.
     vfnms,
-    rust_isa_rv_vector_vfnms
+    rust_isa_rvv_vfnms
 );
 
 macro_rules! float_reduce {
@@ -1977,121 +1977,121 @@ macro_rules! float_reduce {
 float_reduce!(
     /// `vfredsum.vs`, the unordered reduction.
     vfredsum,
-    rust_isa_rv_vector_vfredsum
+    rust_isa_rvv_vfredsum
 );
 float_reduce!(
     /// `vfredusum.vs`, the unordered reduction.
     vfredusum,
-    rust_isa_rv_vector_vfredusum
+    rust_isa_rvv_vfredusum
 );
 float_reduce!(
     /// `vfredosum.vs`, the ordered reduction.
     vfredosum,
-    rust_isa_rv_vector_vfredosum
+    rust_isa_rvv_vfredosum
 );
 float_reduce!(
     /// `vfredmax.vs`.
     vfredmax,
-    rust_isa_rv_vector_vfredmax
+    rust_isa_rvv_vfredmax
 );
 float_reduce!(
     /// `vfredmin.vs`.
     vfredmin,
-    rust_isa_rv_vector_vfredmin
+    rust_isa_rvv_vfredmin
 );
 
 binary!(
     /// `vfwadd.vv`, widening the low two 32-bit lanes to 64-bit lanes.
     vfwadd,
-    rust_isa_rv_vector_vfwadd
+    rust_isa_rvv_vfwadd
 );
 binary!(
     /// `vfwsub.vv`, widening the low two 32-bit lanes to 64-bit lanes.
     vfwsub,
-    rust_isa_rv_vector_vfwsub
+    rust_isa_rvv_vfwsub
 );
 binary!(
     /// `vfwmul.vv`, widening the low two 32-bit lanes to 64-bit lanes.
     vfwmul,
-    rust_isa_rv_vector_vfwmul
+    rust_isa_rvv_vfwmul
 );
 ternary!(
     /// `vfwmacc.vv`: `acc + a * b` on two 64-bit accumulator lanes.
     vfwmacc,
-    rust_isa_rv_vector_vfwmacc
+    rust_isa_rvv_vfwmacc
 );
 ternary!(
     /// `vfwnmacc.vv`: `-(a * b) - acc` on two 64-bit accumulator lanes.
     vfwnmacc,
-    rust_isa_rv_vector_vfwnmacc
+    rust_isa_rvv_vfwnmacc
 );
 ternary!(
     /// `vfwmsac.vv`: `a * b - acc` on two 64-bit accumulator lanes.
     vfwmsac,
-    rust_isa_rv_vector_vfwmsac
+    rust_isa_rvv_vfwmsac
 );
 ternary!(
     /// `vfwnmsac.vv`: `-(a * b) + acc` on two 64-bit accumulator lanes.
     vfwnmsac,
-    rust_isa_rv_vector_vfwnmsac
+    rust_isa_rvv_vfwnmsac
 );
 
 float_unary!(
     /// `vfclass.v`, producing a 10-bit class mask in each 32-bit lane.
     vfclass,
-    rust_isa_rv_vector_vfclass
+    rust_isa_rvv_vfclass
 );
 
 float_unary!(
     /// `vfcvt.xu.f.v` on 32-bit lanes.
     vfcvt_xu_f,
-    rust_isa_rv_vector_vfcvt_xu_f
+    rust_isa_rvv_vfcvt_xu_f
 );
 float_unary!(
     /// `vfcvt.x.f.v` on 32-bit lanes.
     vfcvt_x_f,
-    rust_isa_rv_vector_vfcvt_x_f
+    rust_isa_rvv_vfcvt_x_f
 );
 float_unary!(
     /// `vfcvt.rtz.xu.f.v` on 32-bit lanes.
     vfcvt_rtz_xu_f,
-    rust_isa_rv_vector_vfcvt_rtz_xu_f
+    rust_isa_rvv_vfcvt_rtz_xu_f
 );
 float_unary!(
     /// `vfcvt.rtz.x.f.v` on 32-bit lanes.
     vfcvt_rtz_x_f,
-    rust_isa_rv_vector_vfcvt_rtz_x_f
+    rust_isa_rvv_vfcvt_rtz_x_f
 );
 float_unary!(
     /// `vfcvt.f.xu.v` on 32-bit lanes.
     vfcvt_f_xu,
-    rust_isa_rv_vector_vfcvt_f_xu
+    rust_isa_rvv_vfcvt_f_xu
 );
 float_unary!(
     /// `vfcvt.f.x.v` on 32-bit lanes.
     vfcvt_f_x,
-    rust_isa_rv_vector_vfcvt_f_x
+    rust_isa_rvv_vfcvt_f_x
 );
 
 unsafe extern "C" {
-    fn rust_isa_rv_vector_vaesef(state: *const u8, key: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vaesem(state: *const u8, key: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vaesdf(state: *const u8, key: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vaesdm(state: *const u8, key: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vaesz(state: *const u8, key: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vaeskf1(key: *const u8, round: u32, out: *mut u8);
-    fn rust_isa_rv_vector_vaeskf2(key: *const u8, round: u32, out: *mut u8);
-    fn rust_isa_rv_vector_vsm4k(key: *const u8, round: u32, out: *mut u8);
-    fn rust_isa_rv_vector_vsm4r(state: *const u8, key: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vsha2ms(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vsha2ch(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vsha2cl(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vsm3me(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vsm3c(state: *const u8, round: u32, out: *mut u8);
-    fn rust_isa_rv_vector_vclmul(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vclmulh(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vghsh(acc: *const u8, value: *const u8, key: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_vgmul(acc: *const u8, key: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vaesef(state: *const u8, key: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vaesem(state: *const u8, key: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vaesdf(state: *const u8, key: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vaesdm(state: *const u8, key: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vaesz(state: *const u8, key: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vaeskf1(key: *const u8, round: u32, out: *mut u8);
+    fn rust_isa_rvv_vaeskf2(key: *const u8, round: u32, out: *mut u8);
+    fn rust_isa_rvv_vsm4k(key: *const u8, round: u32, out: *mut u8);
+    fn rust_isa_rvv_vsm4r(state: *const u8, key: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsha2ms(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsha2ch(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsha2cl(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsm3me(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsm3c(state: *const u8, round: u32, out: *mut u8);
+    fn rust_isa_rvv_vclmul(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vclmulh(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vghsh(acc: *const u8, value: *const u8, key: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vgmul(acc: *const u8, key: *const u8, out: *mut u8);
 }
 
 macro_rules! crypto_binary {
@@ -2116,27 +2116,27 @@ macro_rules! crypto_binary {
 crypto_binary!(
     /// `vaesef.vv`.
     vaesef,
-    rust_isa_rv_vector_vaesef
+    rust_isa_rvv_vaesef
 );
 crypto_binary!(
     /// `vaesem.vv`.
     vaesem,
-    rust_isa_rv_vector_vaesem
+    rust_isa_rvv_vaesem
 );
 crypto_binary!(
     /// `vaesdf.vv`.
     vaesdf,
-    rust_isa_rv_vector_vaesdf
+    rust_isa_rvv_vaesdf
 );
 crypto_binary!(
     /// `vaesdm.vv`.
     vaesdm,
-    rust_isa_rv_vector_vaesdm
+    rust_isa_rvv_vaesdm
 );
 crypto_binary!(
     /// `vaesz.vs`.
     vaesz,
-    rust_isa_rv_vector_vaesz
+    rust_isa_rvv_vaesz
 );
 
 macro_rules! crypto_key_schedule {
@@ -2164,23 +2164,23 @@ macro_rules! crypto_key_schedule {
 crypto_key_schedule!(
     /// `vaeskf1.vi`, with `round` in `1..=10`.
     vaeskf1,
-    rust_isa_rv_vector_vaeskf1
+    rust_isa_rvv_vaeskf1
 );
 crypto_key_schedule!(
     /// `vaeskf2.vi`, with `round` in `2..=10`.
     vaeskf2,
-    rust_isa_rv_vector_vaeskf2
+    rust_isa_rvv_vaeskf2
 );
 crypto_key_schedule!(
     /// `vsm4k.vi`, with `round` in `0..=7`.
     vsm4k,
-    rust_isa_rv_vector_vsm4k
+    rust_isa_rvv_vsm4k
 );
 
 crypto_binary!(
     /// `vsm4r.vv`.
     vsm4r,
-    rust_isa_rv_vector_vsm4r
+    rust_isa_rvv_vsm4r
 );
 
 macro_rules! crypto_ternary {
@@ -2205,22 +2205,22 @@ macro_rules! crypto_ternary {
 crypto_ternary!(
     /// `vsha2ms.vv`.
     vsha2ms,
-    rust_isa_rv_vector_vsha2ms
+    rust_isa_rvv_vsha2ms
 );
 crypto_ternary!(
     /// `vsha2ch.vv`.
     vsha2ch,
-    rust_isa_rv_vector_vsha2ch
+    rust_isa_rvv_vsha2ch
 );
 crypto_ternary!(
     /// `vsha2cl.vv`.
     vsha2cl,
-    rust_isa_rv_vector_vsha2cl
+    rust_isa_rvv_vsha2cl
 );
 crypto_ternary!(
     /// `vghsh.vv`.
     vghsh,
-    rust_isa_rv_vector_vghsh
+    rust_isa_rvv_vghsh
 );
 
 /// `vsm3me.vv` on a 256-bit element group.
@@ -2232,7 +2232,7 @@ crypto_ternary!(
 pub unsafe fn vsm3me(a: [V128; 2], b: [V128; 2]) -> [V128; 2] {
     let mut out = [V128::from_bytes([0; 16]); 2];
     unsafe {
-        rust_isa_rv_vector_vsm3me(
+        rust_isa_rvv_vsm3me(
             a.as_ptr().cast(),
             b.as_ptr().cast(),
             out.as_mut_ptr().cast(),
@@ -2253,7 +2253,7 @@ pub unsafe fn vsm3me(a: [V128; 2], b: [V128; 2]) -> [V128; 2] {
 pub unsafe fn vsm3c(state: [V128; 2], round: u32) -> [V128; 2] {
     let mut out = [V128::from_bytes([0; 16]); 2];
     unsafe {
-        rust_isa_rv_vector_vsm3c(state.as_ptr().cast(), round, out.as_mut_ptr().cast());
+        rust_isa_rvv_vsm3c(state.as_ptr().cast(), round, out.as_mut_ptr().cast());
     }
     out
 }
@@ -2261,12 +2261,12 @@ pub unsafe fn vsm3c(state: [V128; 2], round: u32) -> [V128; 2] {
 crypto_binary!(
     /// `vclmul.vv` on 64-bit lanes.
     vclmul,
-    rust_isa_rv_vector_vclmul
+    rust_isa_rvv_vclmul
 );
 crypto_binary!(
     /// `vclmulh.vv` on 64-bit lanes.
     vclmulh,
-    rust_isa_rv_vector_vclmulh
+    rust_isa_rvv_vclmulh
 );
 
 /// `vgmul.vv`.
@@ -2278,7 +2278,7 @@ crypto_binary!(
 pub unsafe fn vgmul(acc: V128, key: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_vgmul(acc.as_ptr(), key.as_ptr(), out.as_mut_ptr());
+        rust_isa_rvv_vgmul(acc.as_ptr(), key.as_ptr(), out.as_mut_ptr());
     }
     out
 }

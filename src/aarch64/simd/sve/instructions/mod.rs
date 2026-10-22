@@ -1,0 +1,43 @@
+//! SVE instruction wrappers grouped by operation.
+
+mod bitwise;
+mod convert;
+mod dot;
+mod float_arith;
+mod float_compare;
+mod float_complex;
+mod float_fma;
+mod float_trig;
+mod integer_arith;
+mod integer_unary;
+mod load;
+mod narrowing;
+mod permute;
+mod predicate;
+mod reduce;
+mod saturating;
+mod shift;
+mod store;
+mod structure;
+mod widening;
+
+pub use bitwise::*;
+pub use convert::*;
+pub use dot::*;
+pub use float_arith::*;
+pub use float_compare::*;
+pub use float_complex::*;
+pub use float_fma::*;
+pub use float_trig::*;
+pub use integer_arith::*;
+pub use integer_unary::*;
+pub use load::*;
+pub use narrowing::*;
+pub use permute::*;
+pub use predicate::*;
+pub use reduce::*;
+pub use saturating::*;
+pub use shift::*;
+pub use store::*;
+pub use structure::*;
+pub use widening::*;

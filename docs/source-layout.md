@@ -1,6 +1,6 @@
 # ソースの置き方
 
-公開パスは `{arch}::{family}::{extension}::{instruction}` である。`family` は名前空間である。extension の中のモジュールは非公開で、ファイル名は命令の接頭辞または命令カテゴリに合わせる。公開パスにはそのファイル名は出ない。命令は extension から再公開する。
+公開パスは `{arch}::{family}::{extension}::{instruction}` である。`family` は名前空間である。family を持たない extension の扱いは [API契約](api-contract.md) に書く。extension の中のモジュールは非公開で、ファイル名は命令の接頭辞または命令カテゴリに合わせる。公開パスにはそのファイル名は出ない。命令は extension から再公開する。
 
 extension の名前は、rustc の feature 名の `.` と `-` を `_` に置き換える。たとえば `sse4.1` は `sse4_1`、`relaxed-simd` は `relaxed_simd` である。仕様名をそのまま使う arch は、その arch の `README.md` に規則を書く。
 

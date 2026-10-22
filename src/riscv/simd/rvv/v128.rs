@@ -28,8 +28,8 @@ impl V128 {
 }
 
 unsafe extern "C" {
-    fn rust_isa_rv_vector_v128_load(p: *const u8, out: *mut u8);
-    fn rust_isa_rv_vector_v128_store(p: *mut u8, value: *const u8);
+    fn rust_isa_rvv_v128_load(p: *const u8, out: *mut u8);
+    fn rust_isa_rvv_v128_store(p: *mut u8, value: *const u8);
 }
 
 /// `vle32.v`
@@ -44,7 +44,7 @@ unsafe extern "C" {
 pub unsafe fn v128_load(p: *const u8) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_rv_vector_v128_load(p, out.as_mut_ptr());
+        rust_isa_rvv_v128_load(p, out.as_mut_ptr());
     }
     out
 }
@@ -60,6 +60,6 @@ pub unsafe fn v128_load(p: *const u8) -> V128 {
 #[inline(always)]
 pub unsafe fn v128_store(p: *mut u8, value: V128) {
     unsafe {
-        rust_isa_rv_vector_v128_store(p, value.as_ptr());
+        rust_isa_rvv_v128_store(p, value.as_ptr());
     }
 }
