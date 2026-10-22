@@ -1,3 +1,4 @@
+mod avx10_2;
 mod avx2;
 mod avx2_integer;
 mod avx2_remaining;
@@ -8,4 +9,5 @@ mod avx_compare;
 mod avx_permute;
 mod extensions;
 mod fma;
+mod fma4_xop;
 mod sse2;

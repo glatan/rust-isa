@@ -827,26 +827,25 @@ unsafe fn dotprod_ops() -> bool {
 
 #[target_feature(enable = "i8mm")]
 unsafe fn i8mm_ops() -> bool {
-    let a = V128::from_bytes([1; 16]);
-    let b = V128::from_bytes([1; 16]);
+    let a = V128::from_bytes([1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2]);
+    let b = V128::from_bytes([3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4]);
     let zero = V128::from_bytes([0; 16]);
-    unsafe { smmla(zero, a, b) }.to_bytes() != zero.to_bytes()
-        && unsafe { usmmla(zero, a, b) }.to_bytes() != zero.to_bytes()
-        && unsafe { ummla(zero, a, b) }.to_bytes() != zero.to_bytes()
+    lanes(unsafe { smmla(zero, a, b) }) == [24, 32, 48, 64]
+        && lanes(unsafe { usmmla(zero, a, b) }) == [24, 32, 48, 64]
+        && lanes(unsafe { ummla(zero, a, b) }) == [24, 32, 48, 64]
 }
 
 #[target_feature(enable = "fcma")]
 unsafe fn fcma_ops() -> bool {
-    let a = f32x4([1.0, 0.0, 1.0, 0.0]);
-    let b = f32x4([2.0, 0.0, 2.0, 0.0]);
-    let zero = V128::from_bytes([0; 16]);
-    let out = unsafe { fcmla(zero, a, b) };
-    let rot180 = unsafe { fcmla_rot180(zero, a, b) };
-    let rot270 = unsafe { fcmla_rot270(zero, a, b) };
-    out.to_bytes() != zero.to_bytes()
-        && rot180.to_bytes() != zero.to_bytes()
-        && rot180.to_bytes() != out.to_bytes()
-        && (rot270.to_bytes() == zero.to_bytes() || rot270.to_bytes() != out.to_bytes())
+    let acc = f32x4([1.0, 2.0, 3.0, 4.0]);
+    let a = f32x4([2.0, 3.0, 4.0, 5.0]);
+    let b = f32x4([6.0, 7.0, 8.0, 9.0]);
+    let out = unsafe { fcmla(acc, a, b) };
+    let rot180 = unsafe { fcmla_rot180(acc, a, b) };
+    let rot270 = unsafe { fcmla_rot270(acc, a, b) };
+    f32_lanes(out) == [13.0, 16.0, 35.0, 40.0]
+        && f32_lanes(rot180) == [-11.0, -12.0, -29.0, -32.0]
+        && f32_lanes(rot270) == [22.0, -16.0, 48.0, -36.0]
 }
 
 #[target_feature(enable = "fhm")]
