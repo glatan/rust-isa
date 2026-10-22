@@ -1,4 +1,4 @@
-//! Scalar move instructions.
+//! Move instructions.
 
 use super::V128;
 

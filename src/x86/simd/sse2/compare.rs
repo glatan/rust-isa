@@ -1,4 +1,4 @@
-//! Scalar compare instructions.
+//! Compare instructions.
 
 use super::V128;
 
