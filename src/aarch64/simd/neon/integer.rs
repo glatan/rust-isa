@@ -320,3 +320,35 @@ unary!(
     abs_i64,
     rust_isa_neon_abs_i64
 );
+
+unsafe extern "C" {
+    fn rust_isa_neon_add(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `add`
+///
+/// Add the four 32-bit integer lanes.
+#[inline(always)]
+pub fn add(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_neon_add(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_neon_mul(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `mul`
+///
+/// Multiply the four 32-bit integer lanes, keeping the low 32 bits.
+#[inline(always)]
+pub fn mul(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_neon_mul(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}

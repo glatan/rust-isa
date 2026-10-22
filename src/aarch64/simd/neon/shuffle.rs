@@ -96,3 +96,19 @@ pub fn trn2(a: V128, b: V128) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_neon_tbl(a: *const u8, idx: *const u8, out: *mut u8);
+}
+
+/// `tbl`
+///
+/// Look up bytes in `a` with the indices in `idx`.
+#[inline(always)]
+pub fn tbl(a: V128, idx: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_neon_tbl(a.as_ptr(), idx.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
