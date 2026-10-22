@@ -64,6 +64,22 @@ unsafe extern "C" {
     fn rust_isa_xop_vpmacsdd(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
     fn rust_isa_xop_vpmadcsswd(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
     fn rust_isa_xop_vpmadcswd(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_xop_vpmacssdu(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_xop_vpmacsdu(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_xop_vpermil2ps(
+        a: *const u8,
+        b: *const u8,
+        control: *const u8,
+        imm: u32,
+        out: *mut u8,
+    );
+    fn rust_isa_xop_vpermil2pd(
+        a: *const u8,
+        b: *const u8,
+        control: *const u8,
+        imm: u32,
+        out: *mut u8,
+    );
     fn rust_isa_xop_vfrczps(a: *const u8, out: *mut u8);
     fn rust_isa_xop_vfrczpd(a: *const u8, out: *mut u8);
     fn rust_isa_xop_vfrczss(a: *const u8, out: *mut u8);
@@ -458,6 +474,73 @@ ternary!(
     vpmadcswd,
     rust_isa_xop_vpmadcswd
 );
+ternary!(
+    /// `vpmacssdu`
+    ///
+    /// Signed saturating multiply-accumulate of signed dwords in `a` by
+    /// unsigned dwords in `b` into `c`.
+    ///
+    /// LLVM has no encoding for this instruction. The wrapper computes the low
+    /// 32 bits of each product, adds the corresponding lane of `c`, and
+    /// saturates the result.
+    vpmacssdu,
+    rust_isa_xop_vpmacssdu
+);
+ternary!(
+    /// `vpmacsdu`
+    ///
+    /// Multiply-accumulate of signed dwords in `a` by unsigned dwords in `b`
+    /// into `c`.
+    ///
+    /// LLVM has no encoding for this instruction. The wrapper computes the low
+    /// 32 bits of each product and adds the corresponding lane of `c`.
+    vpmacsdu,
+    rust_isa_xop_vpmacsdu
+);
+/// `vpermil2ps`
+///
+/// Permute four 32-bit float lanes from `a` and `b` using `control`. The low
+/// two bits of `imm` select the mask and zeroing mode.
+///
+/// # Safety
+///
+/// The caller must compile with XOP enabled and the CPU must support it.
+#[inline(always)]
+pub unsafe fn vpermil2ps(a: V128, b: V128, control: V128, imm: u8) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_xop_vpermil2ps(
+            a.as_ptr(),
+            b.as_ptr(),
+            control.as_ptr(),
+            u32::from(imm & 0x03),
+            out.as_mut_ptr(),
+        );
+    }
+    out
+}
+/// `vpermil2pd`
+///
+/// Permute two 64-bit float lanes from `a` and `b` using `control`. The low
+/// two bits of `imm` select the mask and zeroing mode.
+///
+/// # Safety
+///
+/// The caller must compile with XOP enabled and the CPU must support it.
+#[inline(always)]
+pub unsafe fn vpermil2pd(a: V128, b: V128, control: V128, imm: u8) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_xop_vpermil2pd(
+            a.as_ptr(),
+            b.as_ptr(),
+            control.as_ptr(),
+            u32::from(imm & 0x03),
+            out.as_mut_ptr(),
+        );
+    }
+    out
+}
 compare!(
     /// `vpcomb`
     ///

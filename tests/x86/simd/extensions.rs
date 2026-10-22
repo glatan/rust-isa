@@ -534,6 +534,10 @@ fn optional_extension_api_surface() {
     let _: unsafe fn(V128, V128, u8) -> V128 = rust_isa::x86::simd::xop::vpcomub;
     let _: unsafe fn(V128) -> V128 = rust_isa::x86::simd::xop::vfrczps;
     let _: unsafe fn(V128, V128, V128) -> V128 = rust_isa::x86::simd::xop::vpmacssww;
+    let _: unsafe fn(V128, V128, V128) -> V128 = rust_isa::x86::simd::xop::vpmacssdu;
+    let _: unsafe fn(V128, V128, V128) -> V128 = rust_isa::x86::simd::xop::vpmacsdu;
+    let _: unsafe fn(V128, V128, V128, u8) -> V128 = rust_isa::x86::simd::xop::vpermil2ps;
+    let _: unsafe fn(V128, V128, V128, u8) -> V128 = rust_isa::x86::simd::xop::vpermil2pd;
     let _: unsafe fn(V128, V128, V128) -> V128 = rust_isa::x86::simd::xop::vpperm;
     let _: unsafe fn(V256, V256) -> V256 = rust_isa::x86::simd::avx10_1::vaddps_v256;
     let _: unsafe fn(

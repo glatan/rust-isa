@@ -5,8 +5,8 @@ use rust_isa::x86::crypto::sha::{
     sha1msg1, sha1msg2, sha1nexte, sha1rnds4, sha256msg1, sha256msg2, sha256rnds2,
 };
 use rust_isa::x86::crypto::vaes::{
-    vaesdec, vaesdec_v128, vaesdeclast, vaesdeclast_v128, vaesenc, vaesenc_v128, vaesenclast,
-    vaesenclast_v128,
+    vaesdec, vaesdec_v128, vaesdec_v512, vaesdeclast, vaesdeclast_v128, vaesdeclast_v512, vaesenc,
+    vaesenc_v128, vaesenc_v512, vaesenclast, vaesenclast_v128, vaesenclast_v512,
 };
 use rust_isa::x86::crypto::vpclmulqdq::{vpclmulqdq_v256, vpclmulqdq_v512};
 use rust_isa::x86::simd::avx2::V256;
@@ -33,6 +33,10 @@ fn vaes_enabled() -> bool {
     is_x86_feature_detected!("vaes") && is_x86_feature_detected!("avx2")
 }
 
+fn vaes512_enabled() -> bool {
+    is_x86_feature_detected!("vaes") && is_x86_feature_detected!("avx512f")
+}
+
 fn vpclmul_enabled() -> bool {
     is_x86_feature_detected!("vpclmulqdq")
         && is_x86_feature_detected!("avx512f")
@@ -51,6 +55,10 @@ fn sequential(start: u8) -> V128 {
 
 fn sequential256(start: u8) -> V256 {
     V256::from_bytes(core::array::from_fn(|index| start + (index % 16) as u8))
+}
+
+fn sequential512(start: u8) -> V512 {
+    V512::from_bytes(core::array::from_fn(|index| start + (index % 16) as u8))
 }
 
 #[test]
@@ -161,6 +169,43 @@ fn vaes_rounds() {
     let out = unsafe { vaesenc(sequential256(0), sequential256(16)) }.to_bytes();
     assert_eq!(&out[..16], &expected);
     assert_eq!(&out[16..], &expected);
+}
+
+#[test]
+fn vaes_512_rounds() {
+    if !vaes512_enabled() {
+        return;
+    }
+    let zero = V512::from_bytes([0; 64]);
+    assert_eq!(unsafe { vaesenc_v512(zero, zero) }.to_bytes(), [0x63; 64]);
+    assert_eq!(unsafe { vaesdec_v512(zero, zero) }.to_bytes(), [0x52; 64]);
+    assert_eq!(
+        unsafe { vaesenclast_v512(zero, zero) }.to_bytes(),
+        [0x63; 64]
+    );
+    assert_eq!(
+        unsafe { vaesdeclast_v512(zero, zero) }.to_bytes(),
+        [0x52; 64]
+    );
+
+    let a = sequential512(0);
+    let b = sequential512(16);
+    let expected_enc = [
+        0x7a, 0x7b, 0x4e, 0x56, 0x38, 0x78, 0x25, 0x46, 0xa8, 0xc0, 0x47, 0x7a, 0x3b, 0x81, 0x3f,
+        0x43,
+    ];
+    let expected_dec = [
+        0x03, 0xb2, 0x84, 0x0f, 0x3a, 0x0c, 0x3f, 0x79, 0x0f, 0x56, 0xe8, 0xa9, 0xda, 0xa0, 0x85,
+        0x4e,
+    ];
+    let out = unsafe { vaesenc_v512(a, b) }.to_bytes();
+    for lane in 0..4 {
+        assert_eq!(&out[lane * 16..lane * 16 + 16], &expected_enc);
+    }
+    let out = unsafe { vaesdec_v512(a, b) }.to_bytes();
+    for lane in 0..4 {
+        assert_eq!(&out[lane * 16..lane * 16 + 16], &expected_dec);
+    }
 }
 
 #[test]

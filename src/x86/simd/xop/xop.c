@@ -459,3 +459,87 @@ void rust_isa_xop_vphsubdq(const uint8_t *a, uint8_t *out) {
     _mm_storeu_si128((__m128i *)(void *)out, _mm_hsubq_epi32(
         _mm_loadu_si128((const __m128i *)(const void *)a)));
 }
+
+/* LLVM does not define an encoding or intrinsic for VPMACSSDU/VPMACSDU.
+   Compute the low 32 bits of the signed-by-unsigned product and add the
+   accumulator lane. VPMACSSDU saturates the 32-bit sum. */
+__attribute__((always_inline))
+void rust_isa_xop_vpmacssdu(const uint8_t *a, const uint8_t *b, const uint8_t *c, uint8_t *out) {
+    int32_t av[4], bv[4], cv[4];
+    _mm_storeu_si128((__m128i *)(void *)av, _mm_loadu_si128((const __m128i *)(const void *)a));
+    _mm_storeu_si128((__m128i *)(void *)bv, _mm_loadu_si128((const __m128i *)(const void *)b));
+    _mm_storeu_si128((__m128i *)(void *)cv, _mm_loadu_si128((const __m128i *)(const void *)c));
+    for (int i = 0; i < 4; ++i) {
+        const uint32_t product = (uint32_t)((int64_t)av[i] * (int64_t)(uint32_t)bv[i]);
+        const int64_t sum = (int64_t)(int32_t)product + (int64_t)cv[i];
+        if (sum > INT32_MAX) {
+            cv[i] = INT32_MAX;
+        } else if (sum < INT32_MIN) {
+            cv[i] = INT32_MIN;
+        } else {
+            cv[i] = (int32_t)sum;
+        }
+    }
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_loadu_si128((const __m128i *)(const void *)cv));
+}
+
+__attribute__((always_inline))
+void rust_isa_xop_vpmacsdu(const uint8_t *a, const uint8_t *b, const uint8_t *c, uint8_t *out) {
+    int32_t av[4], bv[4], cv[4];
+    _mm_storeu_si128((__m128i *)(void *)av, _mm_loadu_si128((const __m128i *)(const void *)a));
+    _mm_storeu_si128((__m128i *)(void *)bv, _mm_loadu_si128((const __m128i *)(const void *)b));
+    _mm_storeu_si128((__m128i *)(void *)cv, _mm_loadu_si128((const __m128i *)(const void *)c));
+    for (int i = 0; i < 4; ++i) {
+        const uint32_t product = (uint32_t)((int64_t)av[i] * (int64_t)(uint32_t)bv[i]);
+        cv[i] = (int32_t)(product + (uint32_t)cv[i]);
+    }
+    _mm_storeu_si128((__m128i *)(void *)out, _mm_loadu_si128((const __m128i *)(const void *)cv));
+}
+
+#define XOP_PERMIL2PS_CASE(N)                                                  \
+    case N:                                                                    \
+        r = _mm_permute2_ps(va, vb, vc, N);                                    \
+        break;
+
+__attribute__((always_inline))
+void rust_isa_xop_vpermil2ps(const uint8_t *a, const uint8_t *b, const uint8_t *control, uint32_t imm, uint8_t *out) {
+    const __m128 va = _mm_loadu_ps((const float *)(const void *)a);
+    const __m128 vb = _mm_loadu_ps((const float *)(const void *)b);
+    const __m128 vc = _mm_loadu_ps((const float *)(const void *)control);
+    __m128 r = _mm_setzero_ps();
+    switch (imm & 0x03) {
+        XOP_PERMIL2PS_CASE(0)
+        XOP_PERMIL2PS_CASE(1)
+        XOP_PERMIL2PS_CASE(2)
+        XOP_PERMIL2PS_CASE(3)
+        default:
+            break;
+    }
+    _mm_storeu_ps((float *)(void *)out, r);
+}
+
+#undef XOP_PERMIL2PS_CASE
+
+#define XOP_PERMIL2PD_CASE(N)                                                  \
+    case N:                                                                    \
+        r = _mm_permute2_pd(va, vb, vc, N);                                    \
+        break;
+
+__attribute__((always_inline))
+void rust_isa_xop_vpermil2pd(const uint8_t *a, const uint8_t *b, const uint8_t *control, uint32_t imm, uint8_t *out) {
+    const __m128d va = _mm_loadu_pd((const double *)(const void *)a);
+    const __m128d vb = _mm_loadu_pd((const double *)(const void *)b);
+    const __m128d vc = _mm_loadu_pd((const double *)(const void *)control);
+    __m128d r = _mm_setzero_pd();
+    switch (imm & 0x03) {
+        XOP_PERMIL2PD_CASE(0)
+        XOP_PERMIL2PD_CASE(1)
+        XOP_PERMIL2PD_CASE(2)
+        XOP_PERMIL2PD_CASE(3)
+        default:
+            break;
+    }
+    _mm_storeu_pd((double *)(void *)out, r);
+}
+
+#undef XOP_PERMIL2PD_CASE

@@ -4,17 +4,22 @@
 //! the caller must enable AVX-VNNI with
 //! `#[target_feature(enable = "avxvnni")]` or a global target feature.
 //!
-//! The values are [`V256`]. The dot-product operations treat the first operand
+//! The values are [`V256`] or [`V128`]. The dot-product operations treat the first operand
 //! as unsigned bytes or signed words and accumulate into 32-bit lanes. The
 //! `*s` variants saturate the 32-bit result.
 
 use super::avx2::V256;
+use super::sse2::V128;
 
 unsafe extern "C" {
     fn rust_isa_avxvnni_vpdpbusd(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_avxvnni_vpdpbusds(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_avxvnni_vpdpwssd(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_avxvnni_vpdpwssds(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avxvnni_vpdpbusd_v128(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avxvnni_vpdpbusds_v128(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avxvnni_vpdpwssd_v128(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avxvnni_vpdpwssds_v128(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `vpdpbusd`
@@ -83,6 +88,76 @@ pub unsafe fn vpdpwssds(acc: V256, a: V256, b: V256) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
         rust_isa_avxvnni_vpdpwssds(acc.as_ptr(), a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpdpbusd` on 128-bit values.
+///
+/// Multiply unsigned bytes in `a` by signed bytes in `b`, add adjacent
+/// products, and accumulate into 32-bit lanes of `acc`.
+///
+/// # Safety
+///
+/// The caller must enable AVX-VNNI.
+#[target_feature(enable = "avxvnni")]
+#[inline]
+pub unsafe fn vpdpbusd_v128(acc: V128, a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_avxvnni_vpdpbusd_v128(acc.as_ptr(), a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpdpbusds` on 128-bit values.
+///
+/// Like [`vpdpbusd_v128`] with signed saturation of the 32-bit result.
+///
+/// # Safety
+///
+/// The caller must enable AVX-VNNI.
+#[target_feature(enable = "avxvnni")]
+#[inline]
+pub unsafe fn vpdpbusds_v128(acc: V128, a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_avxvnni_vpdpbusds_v128(acc.as_ptr(), a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpdpwssd` on 128-bit values.
+///
+/// Multiply signed 16-bit lanes, add adjacent products, and accumulate into
+/// 32-bit lanes of `acc`.
+///
+/// # Safety
+///
+/// The caller must enable AVX-VNNI.
+#[target_feature(enable = "avxvnni")]
+#[inline]
+pub unsafe fn vpdpwssd_v128(acc: V128, a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_avxvnni_vpdpwssd_v128(acc.as_ptr(), a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpdpwssds` on 128-bit values.
+///
+/// Like [`vpdpwssd_v128`] with signed saturation of the 32-bit result.
+///
+/// # Safety
+///
+/// The caller must enable AVX-VNNI.
+#[target_feature(enable = "avxvnni")]
+#[inline]
+pub unsafe fn vpdpwssds_v128(acc: V128, a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_avxvnni_vpdpwssds_v128(acc.as_ptr(), a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
 }
