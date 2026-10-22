@@ -14,26 +14,30 @@
 
 mod arithmetic;
 mod bitwise;
-mod blend;
+mod blendv;
 mod broadcast;
+mod compare;
 mod gather;
 mod horizontal;
 mod immediate;
-mod integer;
+mod movemask;
 mod pack;
 mod permute;
 mod shift;
+mod shuffle;
 mod v256;
 
 pub use arithmetic::*;
 pub use bitwise::*;
-pub use blend::*;
+pub use blendv::*;
 pub use broadcast::*;
+pub use compare::*;
 pub use gather::*;
 pub use horizontal::*;
 pub use immediate::*;
-pub use integer::*;
+pub use movemask::*;
 pub use pack::*;
 pub use permute::*;
 pub use shift::*;
+pub use shuffle::*;
 pub use v256::*;

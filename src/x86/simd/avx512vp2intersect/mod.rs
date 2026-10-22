@@ -1,5 +1,7 @@
 //! AVX-512 VP2INTERSECT.
 //!
+//! The 128-bit and 256-bit forms are in [`avx512vl`](super::avx512vl).
+//!
 //! AVX-512 VP2INTERSECT is not part of the x86-64 baseline. Every instruction wrapper is
 //! `unsafe` and the caller must enable it with
 //! `#[target_feature(enable = "avx512vp2intersect")]` (which implies AVX-512 F)

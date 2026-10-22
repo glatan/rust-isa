@@ -34,6 +34,7 @@ pub use round::*;
 pub use shuffle::*;
 
 mod arithmetic;
+mod bitwise;
 mod compare;
 mod compare_imm;
 mod convert;
@@ -41,6 +42,7 @@ mod dot;
 mod nontemporal;
 
 pub use arithmetic::*;
+pub use bitwise::*;
 pub use compare::*;
 pub use compare_imm::*;
 pub use convert::*;
@@ -56,9 +58,6 @@ unsafe extern "C" {
     fn rust_isa_avx_vmulpd(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_avx_vdivps(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_avx_vdivpd(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_avx_vandps(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_avx_vorps(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_avx_vxorps(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_avx_vaddss(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_avx_vaddsd(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_avx_vbroadcastss(value: f32, out: *mut u8);
@@ -199,57 +198,6 @@ pub unsafe fn vdivpd(a: V256, b: V256) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
         rust_isa_avx_vdivpd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
-    }
-    out
-}
-
-/// `vandps`
-///
-/// Bitwise AND of the 256-bit values.
-///
-/// # Safety
-///
-/// The caller must enable AVX.
-#[target_feature(enable = "avx")]
-#[inline]
-pub unsafe fn vandps(a: V256, b: V256) -> V256 {
-    let mut out = V256::from_bytes([0; 32]);
-    unsafe {
-        rust_isa_avx_vandps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
-    }
-    out
-}
-
-/// `vorps`
-///
-/// Bitwise OR of the 256-bit values.
-///
-/// # Safety
-///
-/// The caller must enable AVX.
-#[target_feature(enable = "avx")]
-#[inline]
-pub unsafe fn vorps(a: V256, b: V256) -> V256 {
-    let mut out = V256::from_bytes([0; 32]);
-    unsafe {
-        rust_isa_avx_vorps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
-    }
-    out
-}
-
-/// `vxorps`
-///
-/// Bitwise XOR of the 256-bit values.
-///
-/// # Safety
-///
-/// The caller must enable AVX.
-#[target_feature(enable = "avx")]
-#[inline]
-pub unsafe fn vxorps(a: V256, b: V256) -> V256 {
-    let mut out = V256::from_bytes([0; 32]);
-    unsafe {
-        rust_isa_avx_vxorps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
 }

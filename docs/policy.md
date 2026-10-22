@@ -214,7 +214,7 @@ clang 23.1.1 で確認したこと:
 - ELF のリンクが通らない arch は、Rust と C の bitcode を `llvm-link` し、`opt -passes="default<O3>"` で最適化して IR を確認する。これはバイナリでの確認の代わりではなく、リンク前の確認である。
 - cfg の観測: `rustc --print cfg`。結果は `docs/<arch>/feasibility.md` に置く。
 - 未対応の CPU でテストを走らせない。native の任意 feature は、実行時検出でスキップするか、`cfg(target_feature)` でテストを分ける。
-- C と Rust のシンボルが一致することを確認する（`tests/checks.rs` と同じ形）。
+- C と Rust のシンボルが一致することを確認する（`tests/consistency.rs` と同じ形）。
 
 ## セキュリティ
 

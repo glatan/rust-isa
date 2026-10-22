@@ -13,7 +13,6 @@ unsafe extern "C" {
     fn rust_isa_avx2_vpunpckhdq(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_avx2_vpunpcklqdq(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_avx2_vpunpckhqdq(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_avx2_vpmovmskb(a: *const u8) -> u32;
 }
 
 /// `vpacksswb`
@@ -218,17 +217,4 @@ pub unsafe fn vpunpckhqdq(a: V256, b: V256) -> V256 {
         rust_isa_avx2_vpunpckhqdq(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-/// `vpmovmskb`
-///
-/// Extract the high bit of each byte into a 32-bit mask.
-///
-/// # Safety
-///
-/// The caller must enable AVX2.
-#[target_feature(enable = "avx2")]
-#[inline]
-pub unsafe fn vpmovmskb(a: V256) -> u32 {
-    unsafe { rust_isa_avx2_vpmovmskb(a.as_ptr()) }
 }

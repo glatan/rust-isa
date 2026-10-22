@@ -12,14 +12,22 @@
 //! Instructions not listed in this module are not exposed.
 
 mod arith;
+mod bitwise;
+mod compare;
+mod float;
+mod lane;
 mod memory;
-mod ops;
+mod structure;
 mod v128;
 mod widen;
 
 pub use arith::*;
+pub use bitwise::*;
+pub use compare::*;
+pub use float::*;
+pub use lane::*;
 pub use memory::*;
-pub use ops::*;
+pub use structure::*;
 pub use v128::*;
 pub use widen::*;
 

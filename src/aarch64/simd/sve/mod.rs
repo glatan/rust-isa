@@ -1464,5 +1464,5 @@ pub unsafe fn frecpx_f64(a: &[f64], out: &mut [f64]) {
     }
 }
 
-mod generated;
-pub use generated::*;
+mod instructions;
+pub use instructions::*;

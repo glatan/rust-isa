@@ -2,4 +2,5 @@
 
 mod crypto;
 mod integer;
+mod matrix;
 mod simd;
