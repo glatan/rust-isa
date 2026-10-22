@@ -12,34 +12,30 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
-// Vector arithmetic and comparison are grouped by value type; other operations by instruction family.
+// Internal modules are grouped by operation.
+mod arithmetic;
 mod bitwise;
 mod compare;
-mod double_convert;
-mod f32x4;
-mod f64x2;
-mod i16x8;
-mod i32x4;
-mod i64x2;
-mod i8x16;
+mod convert;
+mod memory;
+mod movemask;
 mod moves;
 mod nontemporal;
+mod pack;
 mod shift;
 mod shuffle;
 mod unpack;
 mod v128;
 
+pub use arithmetic::*;
 pub use bitwise::*;
 pub use compare::*;
-pub use double_convert::*;
-pub use f32x4::*;
-pub use f64x2::*;
-pub use i8x16::*;
-pub use i16x8::*;
-pub use i32x4::*;
-pub use i64x2::*;
+pub use convert::*;
+pub use memory::*;
+pub use movemask::*;
 pub use moves::*;
 pub use nontemporal::*;
+pub use pack::*;
 pub use shift::*;
 pub use shuffle::*;
 pub use unpack::*;

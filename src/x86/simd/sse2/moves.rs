@@ -65,3 +65,27 @@ pub fn movhlps(a: V128, b: V128) -> V128 {
     bytes[..8].copy_from_slice(&b.to_bytes()[8..]);
     V128::from_bytes(bytes)
 }
+
+unsafe extern "C" {
+    fn rust_isa_sse2_movd(a: *const u8) -> u32;
+}
+
+/// `movd`
+///
+/// Return the low 32 bits of the value.
+#[inline(always)]
+pub fn movd(a: V128) -> u32 {
+    unsafe { rust_isa_sse2_movd(a.as_ptr()) }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse2_movq(a: *const u8) -> u64;
+}
+
+/// `movq`
+///
+/// Return the low 64 bits of the value.
+#[inline(always)]
+pub fn movq(a: V128) -> u64 {
+    unsafe { rust_isa_sse2_movq(a.as_ptr()) }
+}

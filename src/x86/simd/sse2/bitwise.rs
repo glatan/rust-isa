@@ -56,3 +56,67 @@ pub fn pxor(a: V128, b: V128) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_sse2_andps(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `andps`
+///
+/// Bitwise AND of the 16 bytes.
+#[inline(always)]
+pub fn andps(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_andps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse2_andnps(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `andnps`
+///
+/// Bitwise AND of `b` with the complement of `a`.
+#[inline(always)]
+pub fn andnps(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_andnps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse2_orps(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `orps`
+///
+/// Bitwise OR of the 16 bytes.
+#[inline(always)]
+pub fn orps(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_orps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse2_xorps(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `xorps`
+///
+/// Bitwise XOR of the 16 bytes.
+#[inline(always)]
+pub fn xorps(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_xorps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
