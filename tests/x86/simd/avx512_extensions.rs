@@ -7,11 +7,69 @@ use rust_isa::x86::simd::avx512fp16::{vaddph, vcvtph2psx, vcvtps2phx};
 use rust_isa::x86::simd::avx512vbmi2::{vpcompressb, vpexpandb};
 use rust_isa::x86::simd::avx512vp2intersect::vp2intersectd;
 use rust_isa::x86::simd::avx512vpopcntdq::vpopcntd;
-use rust_isa::x86::simd::avxifma::vpmadd52luq;
-use rust_isa::x86::simd::avxneconvert::{vbcstnebf162ps, vcvtneps2bf16 as vcvtneps2bf16_256};
-use rust_isa::x86::simd::avxvnni::vpdpbusd;
-use rust_isa::x86::simd::avxvnniint8::vpdpbssd;
-use rust_isa::x86::simd::avxvnniint16::vpdpwuud;
+use rust_isa::x86::simd::avxifma::{vpmadd52huq_v128, vpmadd52luq, vpmadd52luq_v128};
+use rust_isa::x86::simd::avxneconvert::{
+    vbcstnebf162ps, vcvtneebf162ps, vcvtneepbf162ps, vcvtneeph2ps, vcvtneepsh2ps,
+    vcvtneps2bf16 as vcvtneps2bf16_256,
+};
+use rust_isa::x86::simd::avxvnni::{vpdpbusd, vpdpbusd_v128, vpdpbusds_v128};
+use rust_isa::x86::simd::avxvnniint8::{vpdpbssd, vpdpbuud, vpdpbuuds_v128};
+use rust_isa::x86::simd::avxvnniint16::{vpdpwusds_v128, vpdpwuud, vpdpwuuds};
+use rust_isa::x86::simd::sse2::V128;
+
+fn i32x4(values: [i32; 4]) -> V128 {
+    let mut bytes = [0u8; 16];
+    for (lane, value) in values.iter().enumerate() {
+        bytes[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+    }
+    V128::from_bytes(bytes)
+}
+
+fn i32x4_lanes(value: V128) -> [i32; 4] {
+    let bytes = value.to_bytes();
+    core::array::from_fn(|lane| {
+        i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap())
+    })
+}
+
+fn i16x8(values: [i16; 8]) -> V128 {
+    let mut bytes = [0u8; 16];
+    for (lane, value) in values.iter().enumerate() {
+        bytes[lane * 2..lane * 2 + 2].copy_from_slice(&value.to_le_bytes());
+    }
+    V128::from_bytes(bytes)
+}
+
+fn u16x8(values: [u16; 8]) -> V128 {
+    let mut bytes = [0u8; 16];
+    for (lane, value) in values.iter().enumerate() {
+        bytes[lane * 2..lane * 2 + 2].copy_from_slice(&value.to_le_bytes());
+    }
+    V128::from_bytes(bytes)
+}
+
+fn i64x2(values: [i64; 2]) -> V128 {
+    let mut bytes = [0u8; 16];
+    bytes[..8].copy_from_slice(&values[0].to_le_bytes());
+    bytes[8..].copy_from_slice(&values[1].to_le_bytes());
+    V128::from_bytes(bytes)
+}
+
+fn i64x2_lanes(value: V128) -> [i64; 2] {
+    let bytes = value.to_bytes();
+    [
+        i64::from_le_bytes(bytes[..8].try_into().unwrap()),
+        i64::from_le_bytes(bytes[8..].try_into().unwrap()),
+    ]
+}
+
+fn u16x16(values: [u16; 16]) -> V256 {
+    let mut bytes = [0u8; 32];
+    for (lane, value) in values.iter().enumerate() {
+        bytes[lane * 2..lane * 2 + 2].copy_from_slice(&value.to_le_bytes());
+    }
+    V256::from_bytes(bytes)
+}
 
 fn i32x16(values: [i32; 16]) -> V512 {
     let mut bytes = [0u8; 64];
@@ -192,17 +250,62 @@ fn avx512fp16_arithmetic() {
 
 #[test]
 fn avx_vnni_and_ifma() {
+    let zero128 = V128::from_bytes([0; 16]);
     if is_x86_feature_detected!("avxvnni") {
         let a = V256::from_bytes([1; 32]);
         let b = V256::from_bytes([2; 32]);
         let zero = V256::from_bytes([0; 32]);
         assert_eq!(i32x8_lanes(unsafe { vpdpbusd(zero, a, b) }), [8; 8]);
+
+        let a = V128::from_bytes([1; 16]);
+        let b = V128::from_bytes([2; 16]);
+        assert_eq!(i32x4_lanes(unsafe { vpdpbusd_v128(zero128, a, b) }), [8; 4]);
+        assert_eq!(
+            i32x4_lanes(unsafe { vpdpbusds_v128(i32x4([i32::MAX; 4]), a, b) }),
+            [i32::MAX; 4]
+        );
+
+        let a = u16x8([1; 8]);
+        let b = u16x8([2; 8]);
+        assert_eq!(
+            i32x4_lanes(unsafe { rust_isa::x86::simd::avxvnni::vpdpwssd_v128(zero128, a, b) }),
+            [4; 4]
+        );
+        assert_eq!(
+            i32x4_lanes(unsafe {
+                rust_isa::x86::simd::avxvnni::vpdpwssds_v128(i32x4([i32::MAX; 4]), a, b)
+            }),
+            [i32::MAX; 4]
+        );
     }
     if is_x86_feature_detected!("avxvnniint8") {
         let a = V256::from_bytes([1; 32]);
         let b = V256::from_bytes([2; 32]);
         let zero = V256::from_bytes([0; 32]);
         assert_eq!(i32x8_lanes(unsafe { vpdpbssd(zero, a, b) }), [8; 8]);
+
+        let a = V128::from_bytes([1; 16]);
+        let b = V128::from_bytes([2; 16]);
+        assert_eq!(
+            i32x4_lanes(unsafe { rust_isa::x86::simd::avxvnniint8::vpdpbssd_v128(zero128, a, b) }),
+            [4; 4]
+        );
+
+        let all = V256::from_bytes([0xff; 32]);
+        assert_eq!(
+            i32x8_lanes(unsafe { vpdpbuud(zero, all, all) }),
+            [260100; 8]
+        );
+        assert_eq!(
+            i32x4_lanes(unsafe {
+                vpdpbuuds_v128(
+                    i32x4([-1; 4]),
+                    V128::from_bytes([0xff; 16]),
+                    V128::from_bytes([0xff; 16]),
+                )
+            }),
+            [-1; 4]
+        );
     }
     if is_x86_feature_detected!("avxvnniint16") {
         let mut a = [0u8; 32];
@@ -216,13 +319,58 @@ fn avx_vnni_and_ifma() {
             i32x8_lanes(unsafe { vpdpwuud(zero, V256::from_bytes(a), V256::from_bytes(b)) }),
             [4; 8]
         );
+
+        let all = u16x16([0xffff; 16]);
+        assert_eq!(
+            i32x8_lanes(unsafe { vpdpwuuds(i32x8([i32::MAX; 8]), all, all) }),
+            [-1; 8]
+        );
+        assert_eq!(
+            i32x4_lanes(unsafe {
+                vpdpwusds_v128(i32x4([i32::MAX; 4]), u16x8([0xffff; 8]), i16x8([1; 8]))
+            }),
+            [i32::MAX; 4]
+        );
     }
     if is_x86_feature_detected!("avxifma") {
         let a = i64x8([3; 8]);
         let b = i64x8([5; 8]);
         let zero = V256::from_bytes([0; 32]);
         assert_eq!(i64x8_lanes(unsafe { vpmadd52luq(zero, a, b) }), [15; 8]);
+
+        assert_eq!(
+            i64x2_lanes(unsafe { vpmadd52luq_v128(i64x2([0; 2]), i64x2([3; 2]), i64x2([5; 2])) }),
+            [15; 2]
+        );
+        assert_eq!(
+            i64x2_lanes(unsafe {
+                vpmadd52huq_v128(
+                    i64x2([0; 2]),
+                    i64x2([1i64 << 26; 2]),
+                    i64x2([1i64 << 27; 2]),
+                )
+            }),
+            [2; 2]
+        );
     }
+}
+
+#[test]
+fn avx_ne_convert_packed() {
+    if !is_x86_feature_detected!("avxneconvert") {
+        return;
+    }
+    let even_bf16 = u16x16(core::array::from_fn(|index| {
+        if index % 2 == 0 { 0x3f80 } else { 0x4000 }
+    }));
+    assert_eq!(f32x8_lanes(unsafe { vcvtneebf162ps(even_bf16) }), [1.0; 8]);
+    assert_eq!(f32x8_lanes(unsafe { vcvtneepbf162ps(even_bf16) }), [2.0; 8]);
+
+    let even_half = u16x16(core::array::from_fn(|index| {
+        if index % 2 == 0 { 0x3c00 } else { 0x4000 }
+    }));
+    assert_eq!(f32x8_lanes(unsafe { vcvtneeph2ps(even_half) }), [1.0; 8]);
+    assert_eq!(f32x8_lanes(unsafe { vcvtneepsh2ps(even_half) }), [2.0; 8]);
 }
 
 #[test]

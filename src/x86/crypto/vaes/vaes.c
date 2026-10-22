@@ -40,3 +40,23 @@ __attribute__((always_inline))
 void rust_isa_vaes_vaesdeclast(const uint8_t *a, const uint8_t *b, uint8_t *out) {
     _mm256_storeu_si256((__m256i *)(void *)out, _mm256_aesdeclast_epi128(_mm256_loadu_si256((const __m256i *)(const void *)a), _mm256_loadu_si256((const __m256i *)(const void *)b)));
 }
+
+__attribute__((always_inline))
+void rust_isa_vaes_vaesenc_v512(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm512_storeu_si512((void *)out, _mm512_aesenc_epi128(_mm512_loadu_si512((const void *)a), _mm512_loadu_si512((const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_vaes_vaesdec_v512(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm512_storeu_si512((void *)out, _mm512_aesdec_epi128(_mm512_loadu_si512((const void *)a), _mm512_loadu_si512((const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_vaes_vaesenclast_v512(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm512_storeu_si512((void *)out, _mm512_aesenclast_epi128(_mm512_loadu_si512((const void *)a), _mm512_loadu_si512((const void *)b)));
+}
+
+__attribute__((always_inline))
+void rust_isa_vaes_vaesdeclast_v512(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    _mm512_storeu_si512((void *)out, _mm512_aesdeclast_epi128(_mm512_loadu_si512((const void *)a), _mm512_loadu_si512((const void *)b)));
+}

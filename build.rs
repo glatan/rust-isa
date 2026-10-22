@@ -703,7 +703,12 @@ fn main() {
         compile_native(&out_dir, &sm3_c, "rust_isa_sm3", &["-msm3"]);
         compile_native(&out_dir, &sm4_c, "rust_isa_sm4", &["-msm4"]);
         compile_native(&out_dir, &gfni_c, "rust_isa_gfni", &["-mgfni"]);
-        compile_native(&out_dir, &vaes_c, "rust_isa_vaes", &["-mvaes", "-mavx2"]);
+        compile_native(
+            &out_dir,
+            &vaes_c,
+            "rust_isa_vaes",
+            &["-mvaes", "-mavx2", "-mavx512f"],
+        );
         compile_native(
             &out_dir,
             &vpclmulqdq_c,

@@ -16,3 +16,27 @@ __attribute__((always_inline))
 void rust_isa_avxneconvert_vbcstnesh2ps(const uint16_t *value, uint8_t *out) {
     _mm256_storeu_ps((float *)(void *)out, _mm256_bcstnesh_ps(value));
 }
+
+__attribute__((always_inline))
+void rust_isa_avxneconvert_vcvtneebf162ps(const uint8_t *a, uint8_t *out) {
+    _mm256_storeu_ps((float *)(void *)out, _mm256_cvtneebf16_ps(
+        (const __m256bh *)(const void *)a));
+}
+
+__attribute__((always_inline))
+void rust_isa_avxneconvert_vcvtneeph2ps(const uint8_t *a, uint8_t *out) {
+    _mm256_storeu_ps((float *)(void *)out, _mm256_cvtneeph_ps(
+        (const __m256h *)(const void *)a));
+}
+
+__attribute__((always_inline))
+void rust_isa_avxneconvert_vcvtneepbf162ps(const uint8_t *a, uint8_t *out) {
+    _mm256_storeu_ps((float *)(void *)out, _mm256_cvtneobf16_ps(
+        (const __m256bh *)(const void *)a));
+}
+
+__attribute__((always_inline))
+void rust_isa_avxneconvert_vcvtneepsh2ps(const uint8_t *a, uint8_t *out) {
+    _mm256_storeu_ps((float *)(void *)out, _mm256_cvtneoph_ps(
+        (const __m256h *)(const void *)a));
+}
