@@ -1,6 +1,6 @@
 //! RISC-V Zbb.
 //!
-//! Zbb is a stable extension. Every operation is `unsafe` and the caller must
+//! Zbb is a stable extension. Every instruction wrapper is `unsafe` and the caller must
 //! enable Zbb with `#[target_feature(enable = "zbb")]` or a global target
 //! feature.
 //!

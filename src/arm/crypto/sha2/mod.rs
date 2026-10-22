@@ -1,6 +1,6 @@
 //! 32-bit ARM SHA-2.
 //!
-//! SHA-2 is unstable on this target. Every operation is `unsafe` and the caller
+//! SHA-2 is unstable on this target. Every instruction wrapper is `unsafe` and the caller
 //! must compile the whole crate with the SHA-2 feature enabled.
 //!
 //! The values are [`V128`]. The caller combines the round and schedule

@@ -1,6 +1,6 @@
 //! RISC-V Zks crypto.
 //!
-//! Zks is a stable scalar cryptography extension. Every operation is `unsafe`
+//! Zks is a stable scalar cryptography extension. Every instruction wrapper is `unsafe`
 //! and the caller must enable the required sub-extension (`zksed`, `zksh`) with
 //! `#[target_feature]` or a global target feature.
 //!

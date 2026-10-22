@@ -1,6 +1,6 @@
 //! AVX-VNNI-INT8.
 //!
-//! AVX-VNNI-INT8 is not part of the x86-64 baseline. Every operation is
+//! AVX-VNNI-INT8 is not part of the x86-64 baseline. Every instruction wrapper is
 //! `unsafe` and the caller must enable it with
 //! `#[target_feature(enable = "avxvnniint8")]` or a global target feature.
 //!

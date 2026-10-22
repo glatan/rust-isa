@@ -1,6 +1,6 @@
 //! AArch64 SVE floating-point matrix multiply-accumulate (F64MM).
 //!
-//! F64MM is not part of the AArch64 baseline. Every operation is `unsafe` and
+//! F64MM is not part of the AArch64 baseline. Every instruction wrapper is `unsafe` and
 //! the caller must compile with F64MM and SVE enabled. The slice length must be
 //! a multiple of the SVE vector length in 64-bit elements.
 //!

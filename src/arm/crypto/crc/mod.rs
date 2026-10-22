@@ -1,6 +1,6 @@
 //! 32-bit ARM CRC.
 //!
-//! CRC is unstable on this target. Every operation is `unsafe` and the caller
+//! CRC is unstable on this target. Every instruction wrapper is `unsafe` and the caller
 //! must compile the whole crate with the CRC feature enabled.
 //!
 //! The functions implement CRC-32 (IEEE 802.3), not CRC-32C. The accumulator is

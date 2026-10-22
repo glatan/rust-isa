@@ -1,6 +1,6 @@
 //! AVX-IFMA.
 //!
-//! AVX-IFMA is not part of the x86-64 baseline. Every operation is `unsafe` and
+//! AVX-IFMA is not part of the x86-64 baseline. Every instruction wrapper is `unsafe` and
 //! the caller must enable AVX-IFMA with
 //! `#[target_feature(enable = "avxifma")]` or a global target feature.
 //!

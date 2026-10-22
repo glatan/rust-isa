@@ -1,6 +1,6 @@
 //! AArch64 CRC instructions.
 //!
-//! CRC is not part of the AArch64 baseline. Every operation is `unsafe` and the
+//! CRC is not part of the AArch64 baseline. Every instruction wrapper is `unsafe` and the
 //! caller must enable CRC with `#[target_feature(enable = "crc")]` or a global
 //! target feature.
 //!

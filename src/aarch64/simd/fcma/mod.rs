@@ -1,6 +1,6 @@
 //! AArch64 FCMA.
 //!
-//! FCMA is not part of the AArch64 baseline. Every operation is `unsafe` and
+//! FCMA is not part of the AArch64 baseline. Every instruction wrapper is `unsafe` and
 //! the caller must enable FCMA with `#[target_feature(enable = "fcma")]` or a
 //! global target feature.
 //!

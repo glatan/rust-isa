@@ -1,6 +1,6 @@
 //! AVX-512VBMI2.
 //!
-//! AVX-512VBMI2 is not part of the x86-64 baseline. Every operation is
+//! AVX-512VBMI2 is not part of the x86-64 baseline. Every instruction wrapper is
 //! `unsafe` and the required target features are documented on each function.
 //! The values are [`V512`].
 //!

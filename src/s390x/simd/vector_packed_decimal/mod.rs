@@ -1,7 +1,7 @@
 //! s390x vector packed decimal facility.
 //!
 //! The packed decimal instructions operate on packed decimal values in
-//! vector registers. Every operation is `unsafe` and the caller must enable
+//! vector registers. Every instruction wrapper is `unsafe` and the caller must enable
 //! the vector packed decimal facility. The values are [`V128`], except for
 //! the conversions between packed decimal and binary integers, which take
 //! or return a general-purpose register. Immediate operands are const generics

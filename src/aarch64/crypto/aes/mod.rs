@@ -1,6 +1,6 @@
 //! AArch64 AES instructions.
 //!
-//! AES is not part of the AArch64 baseline. Every operation is `unsafe` and the
+//! AES is not part of the AArch64 baseline. Every instruction wrapper is `unsafe` and the
 //! caller must enable AES with `#[target_feature(enable = "aes")]` or a global
 //! target feature.
 //!

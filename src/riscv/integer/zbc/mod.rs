@@ -1,6 +1,6 @@
 //! RISC-V Zbc.
 //!
-//! Zbc is a stable extension. Every operation is `unsafe` and the caller must
+//! Zbc is a stable extension. Every instruction wrapper is `unsafe` and the caller must
 //! enable Zbc with `#[target_feature(enable = "zbc")]` or a global target
 //! feature.
 //!

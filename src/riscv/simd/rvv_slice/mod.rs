@@ -6,8 +6,9 @@
 //!
 //! SVE-like runtime vector lengths do not fit
 //! [`V128`](crate::riscv::simd::rv_vector::V128). These functions take
-//! slices and let the C loop choose VL with `vsetvl`. All slices must have the
-//! same length; a different length panics. The functions do not allocate.
+//! slices and let the C loop choose VL with `vsetvl`. The slices use the element
+//! type in each function name. All slices must have the same length; a different
+//! length panics. The functions do not allocate.
 //!
 //! The fixed-length [`V128`](crate::riscv::simd::rv_vector::V128) API is
 //! separate from this slice API.

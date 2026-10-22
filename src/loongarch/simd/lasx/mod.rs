@@ -1,6 +1,6 @@
 //! LASX.
 //!
-//! LASX is not part of the LoongArch baseline. Every operation is `unsafe` and
+//! LASX is not part of the LoongArch baseline. Every instruction wrapper is `unsafe` and
 //! the caller must enable LASX with `#[target_feature(enable = "lasx")]` or a
 //! global target feature.
 //!

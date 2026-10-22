@@ -1,6 +1,6 @@
 //! AArch64 RDM.
 //!
-//! RDM is not part of the AArch64 baseline. Every operation is `unsafe` and the
+//! RDM is not part of the AArch64 baseline. Every instruction wrapper is `unsafe` and the
 //! caller must enable RDM with `#[target_feature(enable = "rdm")]` or a global
 //! target feature.
 //!

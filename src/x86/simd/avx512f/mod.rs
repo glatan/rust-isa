@@ -1,6 +1,6 @@
 //! AVX-512 Foundation.
 //!
-//! AVX-512 is not part of the x86_64 baseline. Every operation is `unsafe`
+//! AVX-512 is not part of the x86_64 baseline. Every instruction wrapper is `unsafe`
 //! and the caller must enable the required target features. The values are
 //! [`V512`], [`V256`](super::avx2::V256), and [`V128`](super::sse2::V128),
 //! depending on the operation. Immediate operands are const generics unless

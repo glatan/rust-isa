@@ -2,7 +2,7 @@
 //!
 //! The V extension is unstable. The caller must compile with
 //! `-C target-feature=+v`; the wrappers do not carry `#[target_feature]`.
-//! Every operation is `unsafe`. The values are [`V128`]. Some key-schedule
+//! Every instruction wrapper is `unsafe`. The values are [`V128`]. Some key-schedule
 //! functions take a runtime round number; the valid range is documented on each
 //! function.
 //!

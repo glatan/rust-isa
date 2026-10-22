@@ -1,6 +1,6 @@
 //! AVX-512DQ.
 //!
-//! AVX-512DQ is not part of the x86-64 baseline. Every operation is `unsafe`
+//! AVX-512DQ is not part of the x86-64 baseline. Every instruction wrapper is `unsafe`
 //! and the required target features are documented on each function. The
 //! values are [`V512`], [`V256`], and [`V128`], depending on the result width.
 //!

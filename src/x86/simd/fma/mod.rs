@@ -1,6 +1,6 @@
 //! FMA.
 //!
-//! Every operation is `unsafe` and the caller must enable AVX2 and FMA.
+//! Every instruction wrapper is `unsafe` and the caller must enable AVX2 and FMA.
 //! Packed operations use [`V256`]; scalar `*ss` and `*sd` operations use
 //! [`V128`] and only define the low lane. The upper lanes of a scalar result
 //! are copied from `a`.

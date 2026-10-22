@@ -1,6 +1,6 @@
 //! MOVBE.
 //!
-//! MOVBE is not part of the x86-64 baseline. Every operation is `unsafe` and
+//! MOVBE is not part of the x86-64 baseline. Every instruction wrapper is `unsafe` and
 //! the caller must enable MOVBE with `#[target_feature(enable = "movbe")]` or a
 //! global target feature.
 //!

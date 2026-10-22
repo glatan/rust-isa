@@ -1,6 +1,6 @@
 //! AArch64 dot product.
 //!
-//! DOTPROD is not part of the AArch64 baseline. Every operation is `unsafe`
+//! DOTPROD is not part of the AArch64 baseline. Every instruction wrapper is `unsafe`
 //! and requires the `dotprod` target feature. The values are [`V128`].
 //!
 //! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).

@@ -1,6 +1,6 @@
 //! SSE4.2.
 //!
-//! SSE4.2 is not part of the x86-64 baseline. Every operation is `unsafe` and
+//! SSE4.2 is not part of the x86-64 baseline. Every instruction wrapper is `unsafe` and
 //! the caller must enable SSE4.2 with `#[target_feature(enable = "sse4.2")]` or
 //! a global target feature.
 //!

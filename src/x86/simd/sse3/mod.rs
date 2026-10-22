@@ -1,6 +1,6 @@
 //! SSE3.
 //!
-//! SSE3 is not part of the x86-64 baseline. Every operation is `unsafe` and the
+//! SSE3 is not part of the x86-64 baseline. Every instruction wrapper is `unsafe` and the
 //! caller must enable SSE3 with `#[target_feature(enable = "sse3")]` or a global
 //! target feature.
 //!

@@ -1,6 +1,6 @@
 //! AVX.
 //!
-//! AVX is not part of the x86-64 baseline. Every operation is `unsafe` and the
+//! AVX is not part of the x86-64 baseline. Every instruction wrapper is `unsafe` and the
 //! caller must enable AVX with `#[target_feature(enable = "avx")]` or a global
 //! target feature.
 //!

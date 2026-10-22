@@ -1,7 +1,7 @@
 //! NEON.
 //!
 //! NEON is unstable on this target. The caller must compile with
-//! `-C target-feature=+neon`. Every operation is `unsafe`. The values are
+//! `-C target-feature=+neon`. Every instruction wrapper is `unsafe`. The values are
 //! [`V128`]. Immediate operands are const generics unless documented
 //! otherwise.
 //!

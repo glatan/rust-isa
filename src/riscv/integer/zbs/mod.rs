@@ -1,6 +1,6 @@
 //! RISC-V Zbs.
 //!
-//! Zbs is a stable extension. Every operation is `unsafe` and the caller must
+//! Zbs is a stable extension. Every instruction wrapper is `unsafe` and the caller must
 //! enable Zbs with `#[target_feature(enable = "zbs")]` or a global target
 //! feature.
 //!

@@ -1,7 +1,7 @@
 //! s390x NNP assist facility.
 //!
 //! The NNP assist instructions convert between binary floating-point values
-//! and the 16-bit NNP format. Every operation is `unsafe` and the caller
+//! and the 16-bit NNP format. Every instruction wrapper is `unsafe` and the caller
 //! must enable the NNP assist facility. The values are [`V128`]. The byte
 //! order is big-endian.
 //!

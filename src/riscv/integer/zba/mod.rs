@@ -1,6 +1,6 @@
 //! RISC-V Zba.
 //!
-//! Zba is a stable extension. Every operation is `unsafe` and the caller must
+//! Zba is a stable extension. Every instruction wrapper is `unsafe` and the caller must
 //! enable Zba with `#[target_feature(enable = "zba")]` or a global target
 //! feature.
 //!

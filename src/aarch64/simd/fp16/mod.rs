@@ -1,6 +1,6 @@
 //! AArch64 FP16.
 //!
-//! FP16 is not part of the AArch64 baseline. Every operation is `unsafe` and
+//! FP16 is not part of the AArch64 baseline. Every instruction wrapper is `unsafe` and
 //! the caller must enable FP16 with `#[target_feature(enable = "fp16")]` or a
 //! global target feature.
 //!

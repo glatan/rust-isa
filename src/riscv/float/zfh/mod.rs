@@ -5,10 +5,11 @@
 //! Zfa additions (immediate loads, `fminm`, `fmaxm`, rounding, quiet
 //! comparisons, and the modular conversion).
 //!
-//! These extensions are not part of the baseline. Every operation is `unsafe`
-//! and the caller must enable the extensions used by the operation. The
-//! wrappers do not carry `#[target_feature]` because rustc does not expose it
-//! on stable.
+//! These extensions are not part of the baseline. Operations that use an
+//! extension are `unsafe` and the caller must enable the extensions used by the
+//! operation. `fclass*` and `fli*` are safe because they operate on values and
+//! do not require a target feature. The wrappers do not carry
+//! `#[target_feature]` because rustc does not expose it on stable.
 //!
 //! Half-precision values are binary16 bit patterns in `u16`. Single- and
 //! double-precision values are bit patterns in `u32` and `u64`.

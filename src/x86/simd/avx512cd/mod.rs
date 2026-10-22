@@ -1,6 +1,6 @@
 //! AVX-512 CD.
 //!
-//! AVX-512 CD is not part of the x86-64 baseline. Every operation is `unsafe`
+//! AVX-512 CD is not part of the x86-64 baseline. Every instruction wrapper is `unsafe`
 //! and the caller must enable AVX-512 CD with
 //! `#[target_feature(enable = "avx512cd")]` (which implies AVX-512 F) or a
 //! global target feature.

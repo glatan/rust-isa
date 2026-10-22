@@ -1,7 +1,7 @@
 //! SSE4a.
 //!
 //! SSE4a is not part of the x86-64 baseline and is available on AMD processors.
-//! Every operation is `unsafe` and the caller must enable SSE4a with
+//! Every instruction wrapper is `unsafe` and the caller must enable SSE4a with
 //! `#[target_feature(enable = "sse4a")]` or a global target feature.
 //!
 //! The values are [`V128`]. `extrq` and `insertq` use the register-controlled
