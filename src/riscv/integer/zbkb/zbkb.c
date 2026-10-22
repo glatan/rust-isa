@@ -29,3 +29,27 @@ __attribute__((always_inline))
 uint64_t rust_isa_riscv_zbkb_xperm8(uint64_t a, uint64_t b) {
     return __riscv_xperm8_64(a, b);
 }
+
+/* RV32-only instruction; implemented as a bit loop on RV64. */
+__attribute__((always_inline))
+uint64_t rust_isa_riscv_zbkb_zip(uint64_t value) {
+    uint32_t input = (uint32_t)value;
+    uint32_t output = 0;
+    for (unsigned i = 0; i < 16; ++i) {
+        output |= ((input >> i) & 1u) << (2u * i);
+        output |= ((input >> (i + 16u)) & 1u) << (2u * i + 1u);
+    }
+    return output;
+}
+
+/* RV32-only instruction; implemented as a bit loop on RV64. */
+__attribute__((always_inline))
+uint64_t rust_isa_riscv_zbkb_unzip(uint64_t value) {
+    uint32_t input = (uint32_t)value;
+    uint32_t output = 0;
+    for (unsigned i = 0; i < 16; ++i) {
+        output |= ((input >> (2u * i)) & 1u) << i;
+        output |= ((input >> (2u * i + 1u)) & 1u) << (i + 16u);
+    }
+    return output;
+}

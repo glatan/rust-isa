@@ -29,21 +29,26 @@ use rust_isa::riscv::float::zfh::{
 use rust_isa::riscv::integer::zba::{sh1add, sh2add, sh3add};
 use rust_isa::riscv::integer::zbb::{andn, clz, cpop, rol, sext_b, xnor};
 use rust_isa::riscv::integer::zbc::clmul;
-use rust_isa::riscv::integer::zbkb::{brev8, pack, packh, xperm4, xperm8};
+use rust_isa::riscv::integer::zbkb::{brev8, pack, packh, unzip, xperm4, xperm8, zip};
 use rust_isa::riscv::integer::zbs::{bclr, bext, binv, bset};
 use rust_isa::riscv::simd::rv_vector::{
     V128, add, add_i8, add_i16, and, cmpeq_i32, cmpgt_i32, fadd, fmul, mul, mul_i16, or, splat_i32,
-    sub_i32, v128_load, v128_store, vaadd, vaaddu, vadd, vand, vasub, vasubu, vcompress, vcpop,
-    vdiv, vdivu, vfirst, vid, viota, vle8, vle16, vle32, vle64, vlm, vloxei8, vloxei16, vloxei32,
-    vloxei64, vlse32, vlseg2, vlseg8, vlsseg2, vluxei32, vmacc, vmadd, vmand, vmandn, vmax, vmaxu,
-    vmerge, vmin, vminu, vmnand, vmnor, vmor, vmorn, vmsbf, vmseq, vmseq_mask, vmsgeu_mask, vmsgt,
+    sub_i32, v128_load, v128_store, vaadd, vaaddu, vadd, vaesdf, vaesdm, vaesef, vaesem, vaeskf1,
+    vaeskf2, vaesz, vand, vasub, vasubu, vclmul, vclmulh, vcompress, vcpop, vdiv, vdivu, vfabs,
+    vfadd, vfclass, vfcvt_f_x, vfcvt_f_xu, vfcvt_rtz_x_f, vfcvt_rtz_xu_f, vfcvt_x_f, vfcvt_xu_f,
+    vfdiv, vfirst, vfma, vfmax, vfmerge, vfmin, vfms, vfmul, vfmv, vfmv_f_s, vfneg, vfnma, vfnms,
+    vfrdiv, vfrec7, vfredmax, vfredmin, vfredosum, vfredsum, vfredusum, vfrsqrt7, vfsgnj, vfsgnjn,
+    vfsgnjx, vfsqrt, vfsub, vfwadd, vfwmacc, vfwmsac, vfwmul, vfwnmacc, vfwnmsac, vfwsub, vghsh,
+    vgmul, vid, viota, vle8, vle16, vle32, vle64, vlm, vloxei8, vloxei16, vloxei32, vloxei64,
+    vlse32, vlseg2, vlseg8, vlsseg2, vluxei32, vmacc, vmadd, vmand, vmandn, vmax, vmaxu, vmerge,
+    vmin, vminu, vmnand, vmnor, vmor, vmorn, vmsbf, vmseq, vmseq_mask, vmsgeu_mask, vmsgt,
     vmsgt_mask, vmsif, vmslt, vmsne_mask, vmsof, vmul, vmv, vmv_s_x, vmv_v_x, vmv_x_s, vmxnor,
     vmxor, vnclip, vnclipu, vnmsac, vnmsub, vnsra, vnsrl, vor, vredand, vredmax, vredmaxu, vredmin,
     vredminu, vredor, vredsum, vredxor, vrem, vremu, vrgather, vrgatherei16, vsadd, vsaddu, vse8,
-    vse32, vse64, vsext, vslide1down, vslide1up, vslidedown, vslideup, vsll, vsm, vsoxei32, vsra,
-    vsrl, vsse32, vsseg2, vsseg8, vssseg2, vssub, vssubu, vsub, vsuxei32, vwadd, vwaddu, vwmacc,
-    vwmaccsu, vwmaccu, vwmaccus, vwmul, vwmulsu, vwmulu, vwredsum, vwredsumu, vwsub, vwsubu, vxor,
-    vzext, xor,
+    vse32, vse64, vsext, vsha2ch, vsha2cl, vsha2ms, vslide1down, vslide1up, vslidedown, vslideup,
+    vsll, vsm, vsm3c, vsm3me, vsm4k, vsm4r, vsoxei32, vsra, vsrl, vsse32, vsseg2, vsseg8, vssseg2,
+    vssub, vssubu, vsub, vsuxei32, vwadd, vwaddu, vwmacc, vwmaccsu, vwmaccu, vwmaccus, vwmul,
+    vwmulsu, vwmulu, vwredsum, vwredsumu, vwsub, vwsubu, vxor, vzext, xor,
 };
 use rust_isa::riscv::simd::rvv_slice;
 
@@ -100,6 +105,9 @@ fn run() -> u32 {
     if !mask_memory_ops() {
         return 10;
     }
+    if !float_crypto_ops() {
+        return 11;
+    }
     if !scalar_integer_ops() {
         return 4;
     }
@@ -150,6 +158,21 @@ fn u16_lanes(value: V128) -> [u16; 8] {
     let bytes = value.to_bytes();
     core::array::from_fn(|lane| {
         u16::from_le_bytes(bytes[lane * 2..lane * 2 + 2].try_into().unwrap())
+    })
+}
+
+fn f64x2(values: [f64; 2]) -> V128 {
+    let mut bytes = [0u8; 16];
+    for (lane, value) in values.iter().enumerate() {
+        bytes[lane * 8..lane * 8 + 8].copy_from_slice(&value.to_le_bytes());
+    }
+    V128::from_bytes(bytes)
+}
+
+fn f64_lanes(value: V128) -> [f64; 2] {
+    let bytes = value.to_bytes();
+    core::array::from_fn(|lane| {
+        f64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap())
     })
 }
 
@@ -621,6 +644,196 @@ fn mask_memory_ops() -> bool {
     }
 }
 
+fn float_crypto_ops() -> bool {
+    unsafe {
+        if f32_lanes(vfrdiv(f32x4([1.0, 2.0, 4.0, 8.0]), 16.0)) != [16.0, 8.0, 4.0, 2.0] {
+            return false;
+        }
+        if f32_lanes(vfmin(
+            f32x4([1.0, 5.0, 3.0, 7.0]),
+            f32x4([2.0, 4.0, 6.0, 0.0]),
+        )) != [1.0, 4.0, 3.0, 0.0]
+            || f32_lanes(vfmax(
+                f32x4([1.0, 5.0, 3.0, 7.0]),
+                f32x4([2.0, 4.0, 6.0, 0.0]),
+            )) != [2.0, 5.0, 6.0, 7.0]
+        {
+            return false;
+        }
+        let signed = f32x4([1.0, -2.0, 3.0, -4.0]);
+        let signs = f32x4([-0.0, 0.0, -1.0, 1.0]);
+        if f32_lanes(vfsgnj(signed, signs)) != [-1.0, 2.0, -3.0, 4.0]
+            || f32_lanes(vfsgnjn(signed, signs)) != [1.0, -2.0, 3.0, -4.0]
+            || f32_lanes(vfsgnjx(signed, signs)) != [-1.0, -2.0, -3.0, -4.0]
+        {
+            return false;
+        }
+        if f32_lanes(vfabs(signed)) != [1.0, 2.0, 3.0, 4.0]
+            || f32_lanes(vfneg(signed)) != [-1.0, 2.0, -3.0, 4.0]
+        {
+            return false;
+        }
+        if f32_lanes(vfsqrt(f32x4([4.0, 9.0, 16.0, 25.0]))) != [2.0, 3.0, 4.0, 5.0] {
+            return false;
+        }
+        if (vfmv_f_s(vfrec7(vfmv(2.0))) - 0.5).abs() > 0.01
+            || (vfmv_f_s(vfrsqrt7(vfmv(4.0))) - 0.5).abs() > 0.01
+        {
+            return false;
+        }
+        if f32_lanes(vfmerge(f32x4([1.0, 2.0, 3.0, 4.0]), 9.0, 0b1010)) != [1.0, 9.0, 3.0, 9.0]
+            || f32_lanes(vfmv(7.0)) != [7.0; 4]
+            || vfmv_f_s(f32x4([5.0, 6.0, 7.0, 8.0])) != 5.0
+        {
+            return false;
+        }
+        let acc = f32x4([2.0, 3.0, 4.0, 5.0]);
+        let a = f32x4([10.0, 20.0, 30.0, 40.0]);
+        let b = f32x4([1.0, 2.0, 3.0, 4.0]);
+        if f32_lanes(vfma(acc, a, b)) != [21.0, 62.0, 123.0, 204.0]
+            || f32_lanes(vfms(acc, a, b)) != [19.0, 58.0, 117.0, 196.0]
+            || f32_lanes(vfnma(acc, a, b)) != [-21.0, -62.0, -123.0, -204.0]
+            || f32_lanes(vfnms(acc, a, b)) != [-19.0, -58.0, -117.0, -196.0]
+        {
+            return false;
+        }
+        let values = f32x4([1.0, 2.0, 3.0, 4.0]);
+        if vfredsum(values) != 10.0
+            || vfredusum(values) != 10.0
+            || vfredosum(values) != 10.0
+            || vfredmax(values) != 4.0
+            || vfredmin(values) != 1.0
+        {
+            return false;
+        }
+        let wide_a = f32x4([1.0, 2.0, 3.0, 4.0]);
+        let wide_b = f32x4([10.0, 20.0, 30.0, 40.0]);
+        if f64_lanes(vfwadd(wide_a, wide_b)) != [11.0, 22.0]
+            || f64_lanes(vfwsub(wide_b, wide_a)) != [9.0, 18.0]
+            || f64_lanes(vfwmul(wide_a, wide_b)) != [10.0, 40.0]
+        {
+            return false;
+        }
+        let wide_acc = f64x2([10.0, 20.0]);
+        let mul_a = f32x4([2.0, 3.0, 4.0, 5.0]);
+        let mul_b = f32x4([4.0, 5.0, 6.0, 7.0]);
+        if f64_lanes(vfwmacc(wide_acc, mul_a, mul_b)) != [18.0, 35.0]
+            || f64_lanes(vfwnmacc(wide_acc, mul_a, mul_b)) != [-18.0, -35.0]
+            || f64_lanes(vfwmsac(wide_acc, mul_a, mul_b)) != [-2.0, -5.0]
+            || f64_lanes(vfwnmsac(wide_acc, mul_a, mul_b)) != [2.0, 5.0]
+        {
+            return false;
+        }
+
+        let classes = vfclass(f32x4([
+            0.0,
+            -0.0,
+            f32::from_bits(0x7f80_0000),
+            f32::from_bits(0xff80_0000),
+        ]));
+        if lanes(classes) != [1 << 4, 1 << 3, 1 << 7, 1 << 0] {
+            return false;
+        }
+        let classes = vfclass(f32x4([
+            f32::from_bits(0x7f80_0001),
+            f32::from_bits(0x7fc0_0000),
+            1.0,
+            -1.0,
+        ]));
+        if lanes(classes) != [1 << 8, 1 << 9, 1 << 6, 1 << 1] {
+            return false;
+        }
+        let classes = vfclass(f32x4([
+            f32::from_bits(0x0000_0001),
+            f32::from_bits(0x8000_0001),
+            0.0,
+            0.0,
+        ]));
+        if lanes(classes) != [1 << 5, 1 << 2, 1 << 4, 1 << 4] {
+            return false;
+        }
+
+        if lanes(vfcvt_x_f(f32x4([1.5, 2.5, -1.5, -2.5]))) != [2, 2, -2, -2]
+            || lanes(vfcvt_rtz_x_f(f32x4([1.5, 2.5, -1.5, -2.5]))) != [1, 2, -1, -2]
+            || lanes(vfcvt_xu_f(f32x4([1.5, 2.5, 3.5, 4.5]))) != [2, 2, 4, 4]
+            || lanes(vfcvt_rtz_xu_f(f32x4([1.5, 2.5, 3.5, 4.5]))) != [1, 2, 3, 4]
+        {
+            return false;
+        }
+        if f32_lanes(vfcvt_f_x(i32x4([1, -2, 3, -4]))) != [1.0, -2.0, 3.0, -4.0]
+            || f32_lanes(vfcvt_f_xu(i32x4([1, 2, 3, 4]))) != [1.0, 2.0, 3.0, 4.0]
+        {
+            return false;
+        }
+
+        let zero = V128::from_bytes([0; 16]);
+        if vaesef(zero, zero).to_bytes() != [0x63; 16]
+            || vaesem(zero, zero).to_bytes() != [0x63; 16]
+            || vaesdf(zero, zero).to_bytes() != [0x52; 16]
+            || vaesdm(zero, zero).to_bytes() != [0x52; 16]
+            || vaesz(zero, V128::from_bytes([0x11; 16])).to_bytes() != [0x11; 16]
+        {
+            return false;
+        }
+        let key_schedule = vaeskf1(zero, 1).to_bytes();
+        let mut expected_schedule = [0u8; 16];
+        for word in expected_schedule.chunks_mut(4) {
+            word.copy_from_slice(&[0x62, 0x63, 0x63, 0x63]);
+        }
+        if key_schedule != expected_schedule {
+            return false;
+        }
+        if vaeskf1(zero, 2).to_bytes() == [0; 16]
+            || vaeskf2(zero, 2).to_bytes() == [0; 16]
+            || vsm4k(zero, 0).to_bytes() == [0; 16]
+            || vsm4r(zero, zero).to_bytes() == [0; 16]
+        {
+            return false;
+        }
+        if vsha2ms(zero, zero, zero).to_bytes() != [0; 16]
+            || vsha2ch(zero, zero, zero).to_bytes() != [0; 16]
+            || vsha2cl(zero, zero, zero).to_bytes() != [0; 16]
+        {
+            return false;
+        }
+        let zero_pair = [zero; 2];
+        if vsm3me(zero_pair, zero_pair) != zero_pair {
+            return false;
+        }
+        if vsm3c(zero_pair, 0) == zero_pair {
+            return false;
+        }
+
+        let carry_a = V128::from_bytes({
+            let mut bytes = [0u8; 16];
+            bytes[..8].copy_from_slice(&3u64.to_le_bytes());
+            bytes[8..].copy_from_slice(&5u64.to_le_bytes());
+            bytes
+        });
+        let carry_b = V128::from_bytes({
+            let mut bytes = [0u8; 16];
+            bytes[..8].copy_from_slice(&7u64.to_le_bytes());
+            bytes[8..].copy_from_slice(&11u64.to_le_bytes());
+            bytes
+        });
+        let low = vclmul(carry_a, carry_b).to_bytes();
+        if u64::from_le_bytes(low[..8].try_into().unwrap()) != 9
+            || u64::from_le_bytes(low[8..].try_into().unwrap()) != 39
+            || vclmulh(carry_a, carry_b).to_bytes() != [0; 16]
+        {
+            return false;
+        }
+        let one = i32x4([1, 0, 0, 0]);
+        let product = V128::from_bytes([0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+        if vghsh(zero, one, one).to_bytes() != product.to_bytes()
+            || vgmul(one, one).to_bytes() != product.to_bytes()
+        {
+            return false;
+        }
+        true
+    }
+}
+
 fn scalar_integer_ops() -> bool {
     unsafe {
         if sh1add(3, 1) != 7 || sh2add(3, 1) != 13 || sh3add(3, 1) != 25 {
@@ -643,6 +856,15 @@ fn scalar_integer_ops() -> bool {
             || brev8(1) != 0x80
             || xperm8(0x0123_4567_89ab_cdef, 0) == 0
             || xperm4(0x0123_4567_89ab_cdef, 0) == 0
+        {
+            return false;
+        }
+        if zip(0x0000_0001) != 0x0000_0001
+            || zip(0x0001_0000) != 0x0000_0002
+            || zip(0x8000_0000) != 0x8000_0000
+            || unzip(0x0000_0002) != 0x0001_0000
+            || unzip(0x0000_0001) != 0x0000_0001
+            || unzip(zip(0x1234_5678)) != 0x1234_5678
         {
             return false;
         }

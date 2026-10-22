@@ -10,6 +10,8 @@ unsafe extern "C" {
     fn rust_isa_riscv_zbkb_brev8(a: u64) -> u64;
     fn rust_isa_riscv_zbkb_xperm4(a: u64, b: u64) -> u64;
     fn rust_isa_riscv_zbkb_xperm8(a: u64, b: u64) -> u64;
+    fn rust_isa_riscv_zbkb_zip(value: u64) -> u64;
+    fn rust_isa_riscv_zbkb_unzip(value: u64) -> u64;
 }
 
 macro_rules! binary {
@@ -53,4 +55,35 @@ pub unsafe fn xperm4(a: u64, b: u64) -> u64 {
 #[inline]
 pub unsafe fn xperm8(a: u64, b: u64) -> u64 {
     unsafe { rust_isa_riscv_zbkb_xperm8(a, b) }
+}
+
+/// `zip`.
+///
+/// The instruction exists only on RV32. On RV64 this function implements the
+/// same 32-bit bit-interleave operation in software. Bits of the low half
+/// become the even bits and bits of the high half become the odd bits.
+///
+/// # Safety
+///
+/// The caller must enable `zbkb` with `#[target_feature]` or a global target
+/// feature.
+#[target_feature(enable = "zbkb")]
+#[inline]
+pub unsafe fn zip(value: u32) -> u32 {
+    unsafe { rust_isa_riscv_zbkb_zip(value as u64) as u32 }
+}
+
+/// `unzip`.
+///
+/// The instruction exists only on RV32. On RV64 this function implements the
+/// same 32-bit bit-deinterleave operation in software.
+///
+/// # Safety
+///
+/// The caller must enable `zbkb` with `#[target_feature]` or a global target
+/// feature.
+#[target_feature(enable = "zbkb")]
+#[inline]
+pub unsafe fn unzip(value: u32) -> u32 {
+    unsafe { rust_isa_riscv_zbkb_unzip(value as u64) as u32 }
 }
