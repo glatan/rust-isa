@@ -282,7 +282,7 @@ fn main() {
             &[
                 "-mthumb",
                 "-march=armv7-a",
-                "-mfpu=neon",
+                "-mfpu=neon-vfpv4",
                 "-mfloat-abi=hard",
             ],
             Some("armv7-unknown-linux-gnueabihf"),
