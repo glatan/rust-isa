@@ -1,3 +1,5 @@
+#include <riscv_vector.h>
+#include <stddef.h>
 #include <stdint.h>
 
 typedef int v4i32 __attribute__((vector_size(16)));
@@ -120,4 +122,233 @@ void rust_isa_rv_vector_fdiv(const uint8_t *a, const uint8_t *b, uint8_t *out) {
 __attribute__((always_inline))
 void rust_isa_rv_vector_splat_i32(int32_t value, uint8_t *out) {
     *(v4i32 *)(void *)out = (v4i32){value, value, value, value};
+}
+
+/* Fixed 128-bit helpers for the RVV intrinsic implementations. */
+
+static inline vint32m1_t rv_load_i32(const uint8_t *p) {
+    return __riscv_vle32_v_i32m1((const int32_t *)(const void *)p, 4);
+}
+
+static inline void rv_store_i32(uint8_t *p, vint32m1_t value) {
+    __riscv_vse32_v_i32m1((int32_t *)(void *)p, value, 4);
+}
+
+static inline vuint32m1_t rv_load_u32(const uint8_t *p) {
+    return __riscv_vle32_v_u32m1((const uint32_t *)(const void *)p, 4);
+}
+
+static inline void rv_store_u32(uint8_t *p, vuint32m1_t value) {
+    __riscv_vse32_v_u32m1((uint32_t *)(void *)p, value, 4);
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vdiv(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vint32m1_t va = rv_load_i32(a);
+    vint32m1_t vb = rv_load_i32(b);
+    rv_store_i32(out, __riscv_vdiv_vv_i32m1(va, vb, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vrem(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vint32m1_t va = rv_load_i32(a);
+    vint32m1_t vb = rv_load_i32(b);
+    rv_store_i32(out, __riscv_vrem_vv_i32m1(va, vb, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vmin(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vint32m1_t va = rv_load_i32(a);
+    vint32m1_t vb = rv_load_i32(b);
+    rv_store_i32(out, __riscv_vmin_vv_i32m1(va, vb, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vmax(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vint32m1_t va = rv_load_i32(a);
+    vint32m1_t vb = rv_load_i32(b);
+    rv_store_i32(out, __riscv_vmax_vv_i32m1(va, vb, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vdivu(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vuint32m1_t va = rv_load_u32(a);
+    vuint32m1_t vb = rv_load_u32(b);
+    rv_store_u32(out, __riscv_vdivu_vv_u32m1(va, vb, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vremu(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vuint32m1_t va = rv_load_u32(a);
+    vuint32m1_t vb = rv_load_u32(b);
+    rv_store_u32(out, __riscv_vremu_vv_u32m1(va, vb, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vminu(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vuint32m1_t va = rv_load_u32(a);
+    vuint32m1_t vb = rv_load_u32(b);
+    rv_store_u32(out, __riscv_vminu_vv_u32m1(va, vb, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vmaxu(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vuint32m1_t va = rv_load_u32(a);
+    vuint32m1_t vb = rv_load_u32(b);
+    rv_store_u32(out, __riscv_vmaxu_vv_u32m1(va, vb, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vsll(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vint32m1_t va = rv_load_i32(a);
+    vuint32m1_t shift = rv_load_u32(b);
+    rv_store_i32(out, __riscv_vsll_vv_i32m1(va, shift, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vsrl(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vuint32m1_t va = rv_load_u32(a);
+    vuint32m1_t shift = rv_load_u32(b);
+    rv_store_u32(out, __riscv_vsrl_vv_u32m1(va, shift, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vsra(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vint32m1_t va = rv_load_i32(a);
+    vuint32m1_t shift = rv_load_u32(b);
+    rv_store_i32(out, __riscv_vsra_vv_i32m1(va, shift, 4));
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rv_vector_vmseq_mask(const uint8_t *a, const uint8_t *b) {
+    vint32m1_t va = rv_load_i32(a);
+    vint32m1_t vb = rv_load_i32(b);
+    vbool32_t mask = __riscv_vmseq_vv_i32m1_b32(va, vb, 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rv_vector_vmsne_mask(const uint8_t *a, const uint8_t *b) {
+    vint32m1_t va = rv_load_i32(a);
+    vint32m1_t vb = rv_load_i32(b);
+    vbool32_t mask = __riscv_vmsne_vv_i32m1_b32(va, vb, 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rv_vector_vmslt_mask(const uint8_t *a, const uint8_t *b) {
+    vint32m1_t va = rv_load_i32(a);
+    vint32m1_t vb = rv_load_i32(b);
+    vbool32_t mask = __riscv_vmslt_vv_i32m1_b32(va, vb, 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rv_vector_vmsle_mask(const uint8_t *a, const uint8_t *b) {
+    vint32m1_t va = rv_load_i32(a);
+    vint32m1_t vb = rv_load_i32(b);
+    vbool32_t mask = __riscv_vmsle_vv_i32m1_b32(va, vb, 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rv_vector_vmsgt_mask(const uint8_t *a, const uint8_t *b) {
+    vint32m1_t va = rv_load_i32(a);
+    vint32m1_t vb = rv_load_i32(b);
+    vbool32_t mask = __riscv_vmsgt_vv_i32m1_b32(va, vb, 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rv_vector_vmsge_mask(const uint8_t *a, const uint8_t *b) {
+    vint32m1_t va = rv_load_i32(a);
+    vint32m1_t vb = rv_load_i32(b);
+    vbool32_t mask = __riscv_vmsge_vv_i32m1_b32(va, vb, 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rv_vector_vmsltu_mask(const uint8_t *a, const uint8_t *b) {
+    vuint32m1_t va = rv_load_u32(a);
+    vuint32m1_t vb = rv_load_u32(b);
+    vbool32_t mask = __riscv_vmsltu_vv_u32m1_b32(va, vb, 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rv_vector_vmsleu_mask(const uint8_t *a, const uint8_t *b) {
+    vuint32m1_t va = rv_load_u32(a);
+    vuint32m1_t vb = rv_load_u32(b);
+    vbool32_t mask = __riscv_vmsleu_vv_u32m1_b32(va, vb, 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rv_vector_vmsgtu_mask(const uint8_t *a, const uint8_t *b) {
+    vuint32m1_t va = rv_load_u32(a);
+    vuint32m1_t vb = rv_load_u32(b);
+    vbool32_t mask = __riscv_vmsgtu_vv_u32m1_b32(va, vb, 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rv_vector_vmsgeu_mask(const uint8_t *a, const uint8_t *b) {
+    vuint32m1_t va = rv_load_u32(a);
+    vuint32m1_t vb = rv_load_u32(b);
+    vbool32_t mask = __riscv_vmsgeu_vv_u32m1_b32(va, vb, 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vmacc(const uint8_t *acc, const uint8_t *a, const uint8_t *b,
+                               uint8_t *out) {
+    vint32m1_t vd = rv_load_i32(acc);
+    vint32m1_t va = rv_load_i32(a);
+    vint32m1_t vb = rv_load_i32(b);
+    rv_store_i32(out, __riscv_vmacc_vv_i32m1(vd, va, vb, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vnmsac(const uint8_t *acc, const uint8_t *a, const uint8_t *b,
+                               uint8_t *out) {
+    vint32m1_t vd = rv_load_i32(acc);
+    vint32m1_t va = rv_load_i32(a);
+    vint32m1_t vb = rv_load_i32(b);
+    rv_store_i32(out, __riscv_vnmsac_vv_i32m1(vd, va, vb, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vmadd(const uint8_t *acc, const uint8_t *a, const uint8_t *b,
+                               uint8_t *out) {
+    vint32m1_t vd = rv_load_i32(acc);
+    vint32m1_t va = rv_load_i32(a);
+    vint32m1_t vb = rv_load_i32(b);
+    rv_store_i32(out, __riscv_vmadd_vv_i32m1(vd, va, vb, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vnmsub(const uint8_t *acc, const uint8_t *a, const uint8_t *b,
+                               uint8_t *out) {
+    vint32m1_t vd = rv_load_i32(acc);
+    vint32m1_t va = rv_load_i32(a);
+    vint32m1_t vb = rv_load_i32(b);
+    rv_store_i32(out, __riscv_vnmsub_vv_i32m1(vd, va, vb, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vmv(
+    const uint8_t *a, uint8_t *out) {
+    vint32m1_t va = rv_load_i32(a);
+    rv_store_i32(out, __riscv_vmv_v_v_i32m1(va, 4));
+}
+
+__attribute__((always_inline))
+int32_t rust_isa_rv_vector_vmv_x_s(
+    const uint8_t *a) {
+    vint32m1_t va = rv_load_i32(a);
+    return __riscv_vmv_x_s_i32m1_i32(va);
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vmv_s_x(
+    int32_t value, uint8_t *out) {
+    vint32m1_t zero = __riscv_vmv_v_x_i32m1(0, 4);
+    rv_store_i32(out, __riscv_vmv_s_x_i32m1_tu(zero, value, 4));
 }

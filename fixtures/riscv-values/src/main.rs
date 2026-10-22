@@ -33,7 +33,9 @@ use rust_isa::riscv::integer::zbkb::{brev8, pack, packh, xperm4, xperm8};
 use rust_isa::riscv::integer::zbs::{bclr, bext, binv, bset};
 use rust_isa::riscv::simd::rv_vector::{
     V128, add, add_i8, add_i16, and, cmpeq_i32, cmpgt_i32, fadd, fmul, mul, mul_i16, or, splat_i32,
-    sub_i32, v128_load, v128_store, xor,
+    sub_i32, v128_load, v128_store, vadd, vand, vdiv, vdivu, vmacc, vmadd, vmax, vmaxu, vmin,
+    vminu, vmseq, vmseq_mask, vmsgeu_mask, vmsgt, vmsgt_mask, vmslt, vmsne_mask, vmul, vmv,
+    vmv_s_x, vmv_v_x, vmv_x_s, vnmsac, vnmsub, vor, vrem, vremu, vsll, vsra, vsrl, vsub, vxor, xor,
 };
 use rust_isa::riscv::simd::rvv_slice;
 
@@ -183,7 +185,107 @@ fn vector_ops() -> bool {
         {
             return false;
         }
-        lanes(splat_i32(7)) == [7; 4]
+        if lanes(splat_i32(7)) != [7; 4] {
+            return false;
+        }
+        if lanes(vadd(i32x4([1, 2, 3, 4]), i32x4([10, 20, 30, 40]))) != [11, 22, 33, 44]
+            || lanes(vsub(i32x4([10, 20, 30, 40]), i32x4([1, 2, 3, 4]))) != [9, 18, 27, 36]
+            || lanes(vmul(i32x4([1, 2, 3, 4]), i32x4([10, 20, 30, 40]))) != [10, 40, 90, 160]
+        {
+            return false;
+        }
+        if lanes(vdiv(i32x4([10, -20, 30, -40]), i32x4([2, 3, 4, 5]))) != [5, -6, 7, -8]
+            || lanes(vdiv(i32x4([1, 0, 0, 0]), i32x4([0; 4]))) != [-1; 4]
+        {
+            return false;
+        }
+        if lanes(vrem(i32x4([10, -20, 30, -40]), i32x4([3, 6, 7, 9]))) != [1, -2, 2, -4] {
+            return false;
+        }
+        if lanes(vdivu(i32x4([-1, 7, 0, 9]), i32x4([2; 4]))) != [0x7fff_ffff, 3, 0, 4]
+            || lanes(vremu(i32x4([-1, 7, 9, 11]), i32x4([3; 4]))) != [0, 1, 0, 2]
+        {
+            return false;
+        }
+        if lanes(vsll(i32x4([1, 2, 3, 4]), i32x4([1, 2, 3, 4]))) != [2, 8, 24, 64] {
+            return false;
+        }
+        if lanes(vsrl(i32x4([-8, -16, 16, 32]), i32x4([1, 2, 3, 4])))
+            != [0x7fff_fffc, 0x3fff_fffc, 2, 2]
+        {
+            return false;
+        }
+        if lanes(vsra(i32x4([-8, -16, 16, 32]), i32x4([1, 2, 3, 4]))) != [-4, -4, 2, 2] {
+            return false;
+        }
+        if lanes(vmin(i32x4([-1, 5, 3, 7]), i32x4([2, 4, 6, 0]))) != [-1, 4, 3, 0]
+            || lanes(vmax(i32x4([-1, 5, 3, 7]), i32x4([2, 4, 6, 0]))) != [2, 5, 6, 7]
+        {
+            return false;
+        }
+        if lanes(vminu(i32x4([-1, 5, 3, 7]), i32x4([2, 4, 6, 0]))) != [2, 4, 3, 0]
+            || lanes(vmaxu(i32x4([-1, 5, 3, 7]), i32x4([2, 4, 6, 0]))) != [-1, 5, 6, 7]
+        {
+            return false;
+        }
+        if vmseq_mask(i32x4([1, 2, 3, 4]), i32x4([1, 0, 3, 0])) != 0b0101
+            || vmsne_mask(i32x4([1, 2, 3, 4]), i32x4([1, 0, 3, 0])) != 0b1010
+            || vmslt(i32x4([1, 2, 3, 4]), i32x4([2, 2, 2, 2])).to_bytes()
+                != [0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            || vmseq(i32x4([1, 2, 3, 4]), i32x4([1, 0, 3, 0])).to_bytes()
+                != [
+                    0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0,
+                ]
+        {
+            return false;
+        }
+        if vmsgeu_mask(i32x4([-1, 0, 1, 2]), i32x4([0; 4])) != 0b1111
+            || vmsgt_mask(i32x4([1, 2, 3, 4]), i32x4([2, 2, 2, 2])) != 0b1100
+        {
+            return false;
+        }
+        if vmsgt(i32x4([2, 2, 2, 2]), i32x4([1, 2, 3, 4])).to_bytes()
+            != [0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        {
+            return false;
+        }
+        if lanes(vmacc(
+            i32x4([10, 20, 30, 40]),
+            i32x4([1, 2, 3, 4]),
+            i32x4([2, 3, 4, 5]),
+        )) != [12, 26, 42, 60]
+            || lanes(vnmsac(
+                i32x4([10, 20, 30, 40]),
+                i32x4([1, 2, 3, 4]),
+                i32x4([2, 3, 4, 5]),
+            )) != [8, 14, 18, 20]
+            || lanes(vmadd(
+                i32x4([10, 20, 30, 40]),
+                i32x4([1, 2, 3, 4]),
+                i32x4([2, 3, 4, 5]),
+            )) != [12, 43, 94, 165]
+            || lanes(vnmsub(
+                i32x4([10, 20, 30, 40]),
+                i32x4([1, 2, 3, 4]),
+                i32x4([2, 3, 4, 5]),
+            )) != [-8, -37, -86, -155]
+        {
+            return false;
+        }
+        if vand(i32x4([0b1010; 4]), i32x4([0b1100; 4])) != i32x4([0b1000; 4])
+            || vor(i32x4([0b1010; 4]), i32x4([0b1100; 4])) != i32x4([0b1110; 4])
+            || vxor(i32x4([0b1010; 4]), i32x4([0b1100; 4])) != i32x4([0b0110; 4])
+        {
+            return false;
+        }
+        if vmv(i32x4([9, 8, 7, 6])).to_bytes() != i32x4([9, 8, 7, 6]).to_bytes()
+            || lanes(vmv_v_x(5)) != [5; 4]
+            || vmv_x_s(i32x4([-1, 2, 3, 4])) != -1
+            || lanes(vmv_s_x(-2)) != [-2, 0, 0, 0]
+        {
+            return false;
+        }
+        true
     }
 }
 

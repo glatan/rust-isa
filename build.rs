@@ -421,7 +421,12 @@ fn main() {
             &out_dir,
             &rv_vector_c,
             "rust_isa_rv_vector",
-            &["-march=rv64gcv", "-mabi=lp64d", "-mno-relax"],
+            &[
+                "-march=rv64gcv",
+                "-mabi=lp64d",
+                "-mno-relax",
+                "-fno-stack-protector",
+            ],
             Some("riscv64-unknown-linux-gnu"),
         );
         compile_archive(
