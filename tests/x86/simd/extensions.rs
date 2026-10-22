@@ -548,6 +548,10 @@ fn optional_extension_api_surface() {
         core::mem::size_of::<rust_isa::x86::matrix::amx_tile::TileConfig>(),
         64
     );
+    assert_eq!(
+        core::mem::align_of::<rust_isa::x86::matrix::amx_tile::TileConfig>(),
+        64
+    );
 }
 
 #[test]
@@ -679,8 +683,12 @@ fn sse41_signed_minmax_and_extend() {
         [-2, -12]
     );
 
-    let source = [1u8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-    assert_eq!(unsafe { movntdqa(source.as_ptr()) }.to_bytes(), source);
+    // MOVNTDQA requires 16-byte alignment; V128 is repr(align(16)).
+    let source = V128::from_bytes([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]);
+    assert_eq!(
+        unsafe { movntdqa(source.as_ptr()) }.to_bytes(),
+        source.to_bytes()
+    );
 }
 
 #[test]

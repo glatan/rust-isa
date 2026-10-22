@@ -735,8 +735,9 @@ unary!(
 ///
 /// # Safety
 ///
-/// The caller must enable SSE4.1. `p` must be valid for reading 16 bytes and
-/// should point to write-combining memory for the hint to take effect.
+/// The caller must enable SSE4.1. `p` must be valid for reading 16 bytes,
+/// 16-byte aligned, and should point to write-combining memory for the hint to
+/// take effect.
 #[target_feature(enable = "sse4.1")]
 #[inline]
 pub unsafe fn movntdqa(p: *const u8) -> V128 {
