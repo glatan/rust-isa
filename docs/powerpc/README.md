@@ -26,10 +26,10 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`matrix`
 
 ### 暗号
 
-| extension        | 実装済み命令                                                                                                                                                                         | 未実装命令                                             | 値テスト |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------ | -------- |
-| `power8-crypto`  | `cipher`, `cipherlast`, `ncipher`, `ncipherlast`, `vcipher`, `vncipher`, `vcipherlast`, `vncipherlast`, `vsbox`, `vshasigmaw`, `vshasigmad`                                          | `vpmsumb`, `vpmsumh`, `vpmsumw`, `vpmsumd`, `vpermxor` | QEMU     |
-| `power9-altivec` | `vabsd`, `vabsduw`, `vctzb`, `vctzd`, `vctzh`, `vctzlsbb`, `vctzw`, `vextsb2d`, `vextsb2w`, `vextsh2d`, `vextsh2w`, `vextsw2d`, `vnegd`, `vnegw`（`power9-vector` の再エクスポート） | なし                                                   | 未実行   |
+| extension        | 実装済み命令                                                                                                                                                                                        | 未実装命令 | 値テスト |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | -------- |
+| `power8-crypto`  | `cipher`, `cipherlast`, `ncipher`, `ncipherlast`, `vcipher`, `vncipher`, `vcipherlast`, `vncipherlast`, `vpermxor`, `vpmsumb`, `vpmsumh`, `vpmsumw`, `vpmsumd`, `vsbox`, `vshasigmaw`, `vshasigmad` | なし       | QEMU     |
+| `power9-altivec` | `vabsd`, `vabsduw`, `vctzb`, `vctzd`, `vctzh`, `vctzlsbb`, `vctzw`, `vextsb2d`, `vextsb2w`, `vextsh2d`, `vextsh2w`, `vextsw2d`, `vnegd`, `vnegw`（`power9-vector` の再エクスポート）                | なし       | 未実行   |
 
 `vsha256h`、`vsha256h2`、`vsha256su0`、`vsha256su1` は ARM Crypto の命令で
 あり、PowerPC の命令ではない。以前の表にあったこれらは削除した。PowerPC の SHA 命令は `vshasigmaw` と `vshasigmad` である。
@@ -43,6 +43,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`matrix`
 - `asm!` は補助として使える。`vreg` と `vsreg` は feature を要求するため、オペランドの型を確認する必要がある。
 - MMA は C の `__builtin_mma_*` を使う。`MmaAccumulator` は 64 バイトのアキュムレータを値として保持し、各命令の前後で `xxmtacc` と `xxmfacc` を実行する。命令は `&mut MmaAccumulator` を引数に取る。`xxmfacc` に相当する値の取り出しは `xxmfacc` 関数に分ける。
 - `vshasigmaw` と `vshasigmad` の `ST` と `SIX` は const generics で受け、C は 32 通りの即値を持つ switch に展開する。
+- `vpmsum*` は C の `vec_pmsum_be` を型ごとに使い、`vpermxor` は `vec_permxor` を使う。
 
 ## ゼロコスト
 
@@ -63,13 +64,12 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`matrix`
 
 1. `altivec`、`vsx`
 2. `power8-vector`、`power9-vector`、`power10-vector`
-3. `power8-crypto` の AES と SHA（`vpmsum*` と `vpermxor` は未実装）
+3. `power8-crypto` の AES、SHA、`vpmsum*`、`vpermxor`
 4. `quadword-atomics`、`partword-atomics`
 5. `mma`
 
 ## 未対応
 
-- `power8-crypto` の `vpmsumb`、`vpmsumh`、`vpmsumw`、`vpmsumd`、`vpermxor`。
 - `quadword-atomics`、`partword-atomics`、`htm`。同期・制御命令のため、
   値 API にしない。
 - 追加した VSX / Power8 / MMA の命令のゼロコスト確認。現在の zero-cost は `vadduwm`、`vmuluwm`、`vperm` だけである。

@@ -4,8 +4,8 @@
 use core::arch::asm;
 use core::panic::PanicInfo;
 use rust_isa::powerpc::crypto::power8_crypto::{
-    cipher, cipherlast, ncipher, ncipherlast, vcipher, vcipherlast, vncipher, vncipherlast, vsbox,
-    vshasigmad, vshasigmaw,
+    cipher, cipherlast, ncipher, ncipherlast, vcipher, vcipherlast, vncipher, vncipherlast,
+    vpermxor, vpmsumb, vpmsumd, vpmsumh, vpmsumw, vsbox, vshasigmad, vshasigmaw,
 };
 use rust_isa::powerpc::matrix::mma::{
     MmaAccumulator, xvi4ger8, xvi4ger8pp, xvi8ger4, xvi8ger4pp, xvi8ger4spp, xvi16ger2,
@@ -413,6 +413,100 @@ fn sha512_sigma<const ST: u32, const SIX: u32>(values: [u64; 2]) -> [u64; 2] {
     })
 }
 
+fn clmul_u8(a: u8, b: u8) -> u16 {
+    let mut result = 0u16;
+    for bit in 0..8u32 {
+        if (b >> bit) & 1 == 1 {
+            result ^= (a as u16) << bit;
+        }
+    }
+    result
+}
+
+fn clmul_u16(a: u16, b: u16) -> u32 {
+    let mut result = 0u32;
+    for bit in 0..16u32 {
+        if (b >> bit) & 1 == 1 {
+            result ^= (a as u32) << bit;
+        }
+    }
+    result
+}
+
+fn clmul_u32(a: u32, b: u32) -> u64 {
+    let mut result = 0u64;
+    for bit in 0..32u32 {
+        if (b >> bit) & 1 == 1 {
+            result ^= (a as u64) << bit;
+        }
+    }
+    result
+}
+
+fn clmul_u64(a: u64, b: u64) -> u128 {
+    let mut result = 0u128;
+    for bit in 0..64u32 {
+        if (b >> bit) & 1 == 1 {
+            result ^= (a as u128) << bit;
+        }
+    }
+    result
+}
+
+fn vpmsumb_ref(a: &[u8; 16], b: &[u8; 16]) -> [u8; 16] {
+    let mut out = [0u8; 16];
+    for lane in 0..8 {
+        let offset = lane * 2;
+        let product = clmul_u8(a[offset], b[offset]) ^ clmul_u8(a[offset + 1], b[offset + 1]);
+        out[offset..offset + 2].copy_from_slice(&product.to_le_bytes());
+    }
+    out
+}
+
+fn vpmsumh_ref(a: &[u8; 16], b: &[u8; 16]) -> [u8; 16] {
+    let mut out = [0u8; 16];
+    for lane in 0..4 {
+        let offset = lane * 4;
+        let a0 = u16::from_le_bytes(a[offset..offset + 2].try_into().unwrap());
+        let a1 = u16::from_le_bytes(a[offset + 2..offset + 4].try_into().unwrap());
+        let b0 = u16::from_le_bytes(b[offset..offset + 2].try_into().unwrap());
+        let b1 = u16::from_le_bytes(b[offset + 2..offset + 4].try_into().unwrap());
+        let product = clmul_u16(a0, b0) ^ clmul_u16(a1, b1);
+        out[offset..offset + 4].copy_from_slice(&product.to_le_bytes());
+    }
+    out
+}
+
+fn vpmsumw_ref(a: &[u8; 16], b: &[u8; 16]) -> [u8; 16] {
+    let mut out = [0u8; 16];
+    for lane in 0..2 {
+        let offset = lane * 8;
+        let a0 = u32::from_le_bytes(a[offset..offset + 4].try_into().unwrap());
+        let a1 = u32::from_le_bytes(a[offset + 4..offset + 8].try_into().unwrap());
+        let b0 = u32::from_le_bytes(b[offset..offset + 4].try_into().unwrap());
+        let b1 = u32::from_le_bytes(b[offset + 4..offset + 8].try_into().unwrap());
+        let product = clmul_u32(a0, b0) ^ clmul_u32(a1, b1);
+        out[offset..offset + 8].copy_from_slice(&product.to_le_bytes());
+    }
+    out
+}
+
+fn vpmsumd_ref(a: &[u8; 16], b: &[u8; 16]) -> [u8; 16] {
+    let a0 = u64::from_le_bytes(a[..8].try_into().unwrap());
+    let a1 = u64::from_le_bytes(a[8..].try_into().unwrap());
+    let b0 = u64::from_le_bytes(b[..8].try_into().unwrap());
+    let b1 = u64::from_le_bytes(b[8..].try_into().unwrap());
+    (clmul_u64(a0, b0) ^ clmul_u64(a1, b1)).to_le_bytes()
+}
+
+fn vpermxor_ref(a: &[u8; 16], b: &[u8; 16], c: &[u8; 16]) -> [u8; 16] {
+    core::array::from_fn(|index| {
+        let high = (c[index] >> 4) as usize;
+        let low = (c[index] & 0xf) as usize;
+        a[15 - high] ^ b[15 - low]
+    })
+}
+
 fn crypto_ops() -> bool {
     let one = V128::from_bytes([1; 16]);
     let two = V128::from_bytes([2; 16]);
@@ -434,6 +528,66 @@ fn crypto_ops() -> bool {
         }
         if vsbox(zero).to_bytes() != [0x63; 16]
             || vsbox(V128::from_bytes([1; 16])).to_bytes() != [0x7c; 16]
+        {
+            return false;
+        }
+        let pmsum_a = [
+            0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0, 0x0f, 0x1e, 0x2d, 0x3c, 0x4b, 0x5a,
+            0x69, 0x78,
+        ];
+        let pmsum_b = [
+            0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0xff, 0xee, 0xdd, 0xcc, 0xbb, 0xaa,
+            0x99, 0x88,
+        ];
+        let pmsum_input_a = V128::from_bytes(pmsum_a);
+        let pmsum_input_b = V128::from_bytes(pmsum_b);
+        if vpmsumb(pmsum_input_a, pmsum_input_b).to_bytes() != vpmsumb_ref(&pmsum_a, &pmsum_b)
+            || vpmsumh(pmsum_input_a, pmsum_input_b).to_bytes() != vpmsumh_ref(&pmsum_a, &pmsum_b)
+            || vpmsumw(pmsum_input_a, pmsum_input_b).to_bytes() != vpmsumw_ref(&pmsum_a, &pmsum_b)
+            || vpmsumd(pmsum_input_a, pmsum_input_b).to_bytes() != vpmsumd_ref(&pmsum_a, &pmsum_b)
+        {
+            return false;
+        }
+        let ones = [0xff; 16];
+        if vpmsumb(V128::from_bytes(ones), V128::from_bytes(ones)).to_bytes()
+            != vpmsumb_ref(&ones, &ones)
+            || vpmsumh(V128::from_bytes(ones), V128::from_bytes(ones)).to_bytes()
+                != vpmsumh_ref(&ones, &ones)
+            || vpmsumw(V128::from_bytes(ones), V128::from_bytes(ones)).to_bytes()
+                != vpmsumw_ref(&ones, &ones)
+            || vpmsumd(V128::from_bytes(ones), V128::from_bytes(ones)).to_bytes()
+                != vpmsumd_ref(&ones, &ones)
+            || vpmsumd(zero, V128::from_bytes(ones)).to_bytes() != [0; 16]
+        {
+            return false;
+        }
+        let perm_a: [u8; 16] = core::array::from_fn(|index| index as u8);
+        let perm_b: [u8; 16] = core::array::from_fn(|index| index as u8 + 0x10);
+        let perm_controls = [
+            [0u8; 16],
+            [0x1f; 16],
+            core::array::from_fn(|index| index as u8),
+            core::array::from_fn(|index| (index as u8).wrapping_mul(0x13).wrapping_add(7)),
+        ];
+        for control in perm_controls {
+            if vpermxor(
+                V128::from_bytes(perm_a),
+                V128::from_bytes(perm_b),
+                V128::from_bytes(control),
+            )
+            .to_bytes()
+                != vpermxor_ref(&perm_a, &perm_b, &control)
+            {
+                return false;
+            }
+        }
+        if vpermxor(
+            V128::from_bytes(perm_a),
+            V128::from_bytes(perm_b),
+            V128::from_bytes(core::array::from_fn(|index| index as u8)),
+        )
+        .to_bytes()
+            != perm_b
         {
             return false;
         }

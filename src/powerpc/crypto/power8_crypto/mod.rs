@@ -15,6 +15,11 @@ unsafe extern "C" {
     fn rust_isa_power8_crypto_cipherlast(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_power8_crypto_ncipherlast(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_power8_crypto_vsbox(a: *const u8, out: *mut u8);
+    fn rust_isa_power8_crypto_vpmsumb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_power8_crypto_vpmsumh(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_power8_crypto_vpmsumw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_power8_crypto_vpmsumd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_power8_crypto_vpermxor(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
     fn rust_isa_power8_crypto_vshasigmaw(a: *const u8, st_six: u32, out: *mut u8);
     fn rust_isa_power8_crypto_vshasigmad(a: *const u8, st_six: u32, out: *mut u8);
 }
@@ -143,6 +148,93 @@ pub unsafe fn vsbox(a: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
         rust_isa_power8_crypto_vsbox(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpmsumb`
+///
+/// Perform carry-less multiplication on adjacent byte pairs and XOR each pair
+/// of products.
+///
+/// # Safety
+///
+/// The caller must enable the Power8 crypto feature set.
+#[inline(always)]
+pub unsafe fn vpmsumb(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_power8_crypto_vpmsumb(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpmsumh`
+///
+/// Perform carry-less multiplication on adjacent halfword pairs and XOR each
+/// pair of products.
+///
+/// # Safety
+///
+/// The caller must enable the Power8 crypto feature set.
+#[inline(always)]
+pub unsafe fn vpmsumh(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_power8_crypto_vpmsumh(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpmsumw`
+///
+/// Perform carry-less multiplication on adjacent word pairs and XOR each pair
+/// of products.
+///
+/// # Safety
+///
+/// The caller must enable the Power8 crypto feature set.
+#[inline(always)]
+pub unsafe fn vpmsumw(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_power8_crypto_vpmsumw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpmsumd`
+///
+/// Perform carry-less multiplication on both doubleword pairs and XOR the two
+/// products.
+///
+/// # Safety
+///
+/// The caller must enable the Power8 crypto feature set.
+#[inline(always)]
+pub unsafe fn vpmsumd(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_power8_crypto_vpmsumd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vpermxor`
+///
+/// Select bytes from `a` and `b` using the nibbles of `c`, and XOR the selected
+/// bytes. The high nibble of each control byte selects a byte from `a`, and the
+/// low nibble selects a byte from `b`. Both indices count from the end of the
+/// vectors.
+///
+/// # Safety
+///
+/// The caller must enable the Power8 crypto feature set.
+#[inline(always)]
+pub unsafe fn vpermxor(a: V128, b: V128, c: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_power8_crypto_vpermxor(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
     }
     out
 }

@@ -76,6 +76,11 @@ fn powerpc_pipeline() {
 
     for mnemonic in [
         "vcipher",
+        "vpermxor",
+        "vpmsumb",
+        "vpmsumd",
+        "vpmsumh",
+        "vpmsumw",
         "vsbox",
         "vshasigmad",
         "vshasigmaw",
