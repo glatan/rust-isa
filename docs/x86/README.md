@@ -96,7 +96,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 ## ソースの分割
 
-extension ごとに内部モジュールの分割軸を決める。SSE2 は、ベクタの算術と比較を値型（`f32x4`、`f64x2`、`i8x16`、`i16x8`、`i32x4`、`i64x2`）で分け、それ以外の操作を命令ファミリ（`bitwise`、`shift`、`shuffle`、`unpack`、`double_convert`、`moves`、`compare`、`nontemporal`）で分ける。値型の定義は `v128` に置く。AVX2 のように命令ファミリだけで分ける extension もある。公開パスには内部モジュール名は出ない。
+extension ごとに内部モジュールの分割軸を決める。SSE2 は操作名で分ける（`arithmetic`、`compare`、`convert`、`bitwise`、`shift`、`shuffle`、`unpack`、`pack`、`movemask`、`moves`、`nontemporal`、`memory`）。値型の定義は `v128` に置く。AVX2 も操作名で分け、AVX-512F は `float` / `integer` / `memory` / `v512` で分ける。公開パスには内部モジュール名は出ない。
 
 乱数を生成する `rdrand` と `rdseed` は `integer` に置く。暗号演算ではないため `crypto` には置かない。
 

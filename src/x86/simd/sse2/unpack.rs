@@ -129,3 +129,67 @@ pub fn punpckhqdq(a: V128, b: V128) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_sse2_unpcklps(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `unpcklps`
+///
+/// Interleave the low two 32-bit float lanes of `a` and `b`.
+#[inline(always)]
+pub fn unpcklps(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_unpcklps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse2_unpckhps(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `unpckhps`
+///
+/// Interleave the high two 32-bit float lanes of `a` and `b`.
+#[inline(always)]
+pub fn unpckhps(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_unpckhps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse2_unpcklpd(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `unpcklpd`
+///
+/// Interleave the low 64-bit float lane of `a` and `b`.
+#[inline(always)]
+pub fn unpcklpd(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_unpcklpd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
+    fn rust_isa_sse2_unpckhpd(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+/// `unpckhpd`
+///
+/// Interleave the high 64-bit float lane of `a` and `b`.
+#[inline(always)]
+pub fn unpckhpd(a: V128, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_unpckhpd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
