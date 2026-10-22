@@ -2,6 +2,7 @@
 #include <altivec.h>
 
 typedef vector unsigned char v16u8;
+typedef vector unsigned short v8u16;
 typedef vector unsigned int v4u32;
 typedef vector unsigned long long v2u64;
 
@@ -36,6 +37,43 @@ void rust_isa_power8_crypto_ncipherlast(const uint8_t *a, const uint8_t *b, uint
 __attribute__((always_inline))
 void rust_isa_power8_crypto_vsbox(const uint8_t *a, uint8_t *out) {
     *(v16u8 *)(void *)out = vec_sbox_be(*(const v16u8 *)(const void *)a);
+}
+
+__attribute__((always_inline))
+void rust_isa_power8_crypto_vpmsumb(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    *(v16u8 *)(void *)out = vec_pmsum_be(
+        *(const v16u8 *)(const void *)a,
+        *(const v16u8 *)(const void *)b);
+}
+
+__attribute__((always_inline))
+void rust_isa_power8_crypto_vpmsumh(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    *(v8u16 *)(void *)out = vec_pmsum_be(
+        *(const v8u16 *)(const void *)a,
+        *(const v8u16 *)(const void *)b);
+}
+
+__attribute__((always_inline))
+void rust_isa_power8_crypto_vpmsumw(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    *(v4u32 *)(void *)out = vec_pmsum_be(
+        *(const v4u32 *)(const void *)a,
+        *(const v4u32 *)(const void *)b);
+}
+
+__attribute__((always_inline))
+void rust_isa_power8_crypto_vpmsumd(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    *(v2u64 *)(void *)out = vec_pmsum_be(
+        *(const v2u64 *)(const void *)a,
+        *(const v2u64 *)(const void *)b);
+}
+
+__attribute__((always_inline))
+void rust_isa_power8_crypto_vpermxor(const uint8_t *a, const uint8_t *b, const uint8_t *c,
+                                     uint8_t *out) {
+    *(v16u8 *)(void *)out = vec_permxor(
+        *(const v16u8 *)(const void *)a,
+        *(const v16u8 *)(const void *)b,
+        *(const v16u8 *)(const void *)c);
 }
 
 /*

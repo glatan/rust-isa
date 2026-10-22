@@ -13,7 +13,7 @@
 | `power9-altivec`   | SIMD   | 不安定    | 一部     |
 | `power9-vector`    | SIMD   | 不安定    | 一部     |
 | `power10-vector`   | SIMD   | 不安定    | 一部     |
-| `power8-crypto`    | 暗号   | 不安定    | 一部     |
+| `power8-crypto`    | 暗号   | 不安定    | 実装済み |
 | `quadword-atomics` | その他 | 不安定    | 対象外   |
 | `partword-atomics` | その他 | 不安定    | 対象外   |
 | `mma`              | 行列   | LLVM のみ | 実装済み |
