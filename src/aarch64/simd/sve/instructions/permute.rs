@@ -327,48 +327,6 @@ pub unsafe fn csel_i32(a: &[i32], b: &[i32], out: &mut [i32]) {
 }
 
 unsafe extern "C" {
-    fn rust_isa_sve_lasta_i32(a: *const i32, len: usize) -> i32;
-}
-/// `lasta` of an `i32` slice (scalar fallback).
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn lasta_i32(a: &[i32]) -> i32 {
-    unsafe { rust_isa_sve_lasta_i32(a.as_ptr(), a.len()) }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sve_lastb_i32(a: *const i32, len: usize) -> i32;
-}
-/// `lastb` of an `i32` slice (scalar fallback).
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn lastb_i32(a: &[i32]) -> i32 {
-    unsafe { rust_isa_sve_lastb_i32(a.as_ptr(), a.len()) }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sve_clast_i32(a: *const i32, len: usize) -> i32;
-}
-/// `clast` of an `i32` slice.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn clast_i32(a: &[i32]) -> i32 {
-    unsafe { rust_isa_sve_clast_i32(a.as_ptr(), a.len()) }
-}
-
-unsafe extern "C" {
     fn rust_isa_sve_dup_i32(value: i32, out: *mut i32, len: usize);
 }
 /// Broadcast an `i32` value.

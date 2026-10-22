@@ -1,4 +1,4 @@
-//! `V128` and `v128.*`.
+//! `V128` value type.
 
 /// A 128-bit value.
 ///

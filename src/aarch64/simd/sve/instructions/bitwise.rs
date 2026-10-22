@@ -221,28 +221,6 @@ pub unsafe fn bic_i32(a: &[i32], b: &[i32], out: &mut [i32]) {
 }
 
 unsafe extern "C" {
-    fn rust_isa_sve_subr_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
-}
-/// `subr` on `i32` slices.
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn subr_i32(a: &[i32], b: &[i32], out: &mut [i32]) {
-    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_subr_i32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
     fn rust_isa_sve_nand_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
 }
 /// `nand` on `i32` slices.
