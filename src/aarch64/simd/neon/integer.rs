@@ -227,7 +227,7 @@ unsafe extern "C" {
 
 /// `bsl`
 ///
-/// Select bytes from `a` where the corresponding bit of `mask` is one, and
+/// Select bits from `a` where the corresponding bit of `mask` is one, and
 /// from `b` where it is zero.
 #[inline(always)]
 pub fn bsl(mask: V128, a: V128, b: V128) -> V128 {
@@ -240,7 +240,7 @@ pub fn bsl(mask: V128, a: V128, b: V128) -> V128 {
 
 /// `bit`
 ///
-/// Insert bytes from `b` into `a` where the corresponding bit of `mask` is one.
+/// Insert bits from `b` into `a` where the corresponding bit of `mask` is one.
 #[inline(always)]
 pub fn bit(a: V128, b: V128, mask: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
@@ -252,7 +252,7 @@ pub fn bit(a: V128, b: V128, mask: V128) -> V128 {
 
 /// `bif`
 ///
-/// Insert bytes from `b` into `a` where the corresponding bit of `mask` is zero.
+/// Insert bits from `b` into `a` where the corresponding bit of `mask` is zero.
 #[inline(always)]
 pub fn bif(a: V128, b: V128, mask: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);

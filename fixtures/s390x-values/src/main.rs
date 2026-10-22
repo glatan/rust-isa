@@ -61,7 +61,7 @@ pub extern "C" fn compile_only() {
         let mut buffer = [0u8; 32];
         let _ = vap::<0x05, 0>(x, x);
         let _ = vsp::<0x05, 0>(x, x);
-        let _ = vsdp::<0x05, 0>(x, x);
+        let _ = vsdp::<0x08, 0>(x, x);
         let _ = vsrp::<0, 0, 0x05>(x);
         let _ = vpkz::<5>(buffer.as_ptr());
         vupkz::<5>(x, buffer.as_mut_ptr());

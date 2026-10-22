@@ -17,6 +17,10 @@ unsafe extern "C" {
 macro_rules! binary {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable Zbkb.
         #[target_feature(enable = "zbkb")]
         #[inline]
         pub unsafe fn $name(a: u64, b: u64) -> u64 {
@@ -37,6 +41,12 @@ binary!(
 );
 
 /// `brev8`.
+///
+/// Reverse the bits in each byte.
+///
+/// # Safety
+///
+/// The caller must enable Zbkb.
 #[target_feature(enable = "zbkb")]
 #[inline]
 pub unsafe fn brev8(a: u64) -> u64 {
@@ -44,6 +54,12 @@ pub unsafe fn brev8(a: u64) -> u64 {
 }
 
 /// `xperm4`.
+///
+/// Permute nibbles with the indices in `b`.
+///
+/// # Safety
+///
+/// The caller must enable Zbkx.
 #[target_feature(enable = "zbkx")]
 #[inline]
 pub unsafe fn xperm4(a: u64, b: u64) -> u64 {
@@ -51,6 +67,12 @@ pub unsafe fn xperm4(a: u64, b: u64) -> u64 {
 }
 
 /// `xperm8`.
+///
+/// Permute bytes with the indices in `b`.
+///
+/// # Safety
+///
+/// The caller must enable Zbkx.
 #[target_feature(enable = "zbkx")]
 #[inline]
 pub unsafe fn xperm8(a: u64, b: u64) -> u64 {

@@ -7,6 +7,7 @@ make image
 make fmt
 make fmt-check
 make test
+make check-docs
 make test-host
 make test-x86_64
 make test-check-static
@@ -18,8 +19,9 @@ make coverage-check
 make duplicates
 ```
 
-`make test` が既定で、`fmt-check`、`test-host`、`test-wasip1`、`test-wasip1-wide-arithmetic` を実行する。すべてのテストはイメージ内で、対象 triple を明示して実行する。
+`make test` が既定で、`fmt-check`、`coverage-check`、`check-docs`、`test-host`、`test-wasip1`、`test-wasip1-wide-arithmetic` を実行する。すべてのテストはイメージ内で、対象 triple を明示して実行する。
 
+- `make check-docs`: 全ターゲットの rustdoc を `-D warnings` で検査する。クロスターゲットは `-Z build-std=core` で core をビルドし、wasm32 は `simd128` / `relaxed-simd` と `wide-arithmetic` を有効にして検査する
 - `make test-host`: `x86_64-unknown-linux-gnu` で実行する全テストと doctest。新しい統合テストも自動的に対象になる
 - `make test-x86_64`: x86_64 の値テスト、doctest、x86 のゼロコスト検査だけを実行する
 - `make test-check-static`: シンボル一致、rustdoc の言語、レーン即値の検査

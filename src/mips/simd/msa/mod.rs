@@ -69,6 +69,10 @@ unsafe extern "C" {
 macro_rules! binary {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with MSA enabled.
         #[inline(always)]
         pub unsafe fn $name(a: V128, b: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -195,6 +199,10 @@ unsafe extern "C" {
 macro_rules! binary_f64 {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with MSA enabled.
         #[inline(always)]
         pub unsafe fn $name(a: V128, b: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);

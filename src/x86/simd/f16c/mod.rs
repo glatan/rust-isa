@@ -63,7 +63,10 @@ pub unsafe fn vcvtph2ps_v256(a: V128) -> V256 {
 
 /// `vcvtps2ph::<IMM>`
 ///
-/// Convert four 32-bit float lanes to four 16-bit half-precision lanes.
+/// Convert four 32-bit float lanes to four 16-bit half-precision lanes using
+/// the rounding mode selected by `IMM`. `IMM` must be in `0..=4`: 0 is
+/// round-to-nearest-even, 1 is round-down, 2 is round-up, 3 is truncate, and 4
+/// uses the current MXCSR rounding mode.
 ///
 /// # Safety
 ///
@@ -93,7 +96,10 @@ pub unsafe fn vcvtps2ph<const IMM: u8>(a: V128) -> V128 {
 
 /// `vcvtps2ph::<IMM>` over 256 bits.
 ///
-/// Convert eight 32-bit float lanes to eight 16-bit half-precision lanes.
+/// Convert eight 32-bit float lanes to eight 16-bit half-precision lanes using
+/// the rounding mode selected by `IMM`. `IMM` must be in `0..=4`: 0 is
+/// round-to-nearest-even, 1 is round-down, 2 is round-up, 3 is truncate, and 4
+/// uses the current MXCSR rounding mode.
 ///
 /// # Safety
 ///

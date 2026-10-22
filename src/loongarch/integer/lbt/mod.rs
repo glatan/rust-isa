@@ -44,7 +44,7 @@ pub fn bstrins<const MSB: u32, const LSB: u32>(dst: u64, src: u64) -> u64 {
     (dst & !mask) | ((src << LSB) & mask)
 }
 
-/// `bstrpick.d`: extract bits `MSB..=LSB` from `src`.
+/// `bstrpick.d`: extract bits `LSB..=MSB` from `src`.
 #[inline(always)]
 pub fn bstrpick<const MSB: u32, const LSB: u32>(src: u64) -> u64 {
     const { assert!(LSB <= MSB && MSB <= 63, "invalid bit range") };

@@ -1,7 +1,12 @@
 //! NEON.
 //!
 //! NEON is part of the AArch64 baseline. The arithmetic operations are safe.
-//! Loads and stores take raw pointers and are `unsafe`.
+//! Loads and stores take raw pointers and are `unsafe`. The values are
+//! [`V128`].
+//!
+//! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
+//! The build compiles the bundled C with clang. Const-generic lane and shift
+//! immediates document their valid range on each function.
 
 mod compare;
 mod compare_ext;

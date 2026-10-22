@@ -82,6 +82,10 @@ unsafe extern "C" {
 macro_rules! unary {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable MVE.
         #[inline(always)]
         pub unsafe fn $name(a: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -96,6 +100,10 @@ macro_rules! unary {
 macro_rules! binary {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable MVE.
         #[inline(always)]
         pub unsafe fn $name(a: V128, b: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -110,6 +118,10 @@ macro_rules! binary {
 macro_rules! ternary {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable MVE.
         #[inline(always)]
         pub unsafe fn $name(acc: V128, a: V128, b: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -253,7 +265,7 @@ binary!(
 /// `vbrsr.s32`
 ///
 /// Reverse all 32 bits of each lane and shift the result right by
-/// `32 - bits`. `bits` must be in `1..=32`; zero produces zero.
+/// `32 - bits`. `bits` is normally in `1..=32`; a value of 0 produces zero.
 ///
 /// # Safety
 ///

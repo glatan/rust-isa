@@ -31,6 +31,10 @@ unsafe extern "C" {
 macro_rules! binary {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable Zfh.
         #[inline]
         pub unsafe fn $name(a: u16, b: u16) -> u16 {
             unsafe { $c(a, b) }
@@ -43,6 +47,10 @@ macro_rules! compare {
     };
     ($(#[$meta:meta])* $name:ident, $c:ident, $ty:ty) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable Zfh.
         #[inline]
         pub unsafe fn $name(a: $ty, b: $ty) -> bool {
             unsafe { $c(a, b) != 0 }
@@ -97,12 +105,24 @@ compare!(
 );
 
 /// `fsqrt.h`.
+///
+/// Compute the square root of a binary16 value.
+///
+/// # Safety
+///
+/// The caller must enable Zfh.
 #[inline]
 pub unsafe fn fsqrt_h(a: u16) -> u16 {
     unsafe { rust_isa_riscv_zfh_fsqrt(a) }
 }
 
 /// `flh`.
+///
+/// Load a binary16 value from 2 bytes at `p`.
+///
+/// # Safety
+///
+/// The caller must enable Zfh. `p` must be valid for reading 2 bytes.
 #[inline]
 pub unsafe fn flh(p: *const u8) -> u16 {
     let mut out = [0u8; 2];
@@ -111,6 +131,12 @@ pub unsafe fn flh(p: *const u8) -> u16 {
 }
 
 /// `fsh`.
+///
+/// Store a binary16 value as 2 bytes at `p`.
+///
+/// # Safety
+///
+/// The caller must enable Zfh. `p` must be valid for writing 2 bytes.
 #[inline]
 pub unsafe fn fsh(p: *mut u8, value: u16) {
     let bytes = value.to_le_bytes();
@@ -137,6 +163,10 @@ unsafe extern "C" {
 macro_rules! convert {
     ($(#[$meta:meta])* $name:ident, $c:ident, $from:ty, $to:ty) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable Zfh, F, D, or Zfa as required by the operation.
         #[inline]
         pub unsafe fn $name(value: $from) -> $to {
             unsafe { $c(value) }
@@ -274,18 +304,37 @@ compare!(
 );
 
 /// `fround.h`.
+///
+/// Round a binary16 value to an integral value using the current rounding mode.
+///
+/// # Safety
+///
+/// The caller must enable Zfa.
 #[inline]
 pub unsafe fn fround_h(a: u16) -> u16 {
     unsafe { rust_isa_riscv_zfh_fround(a) }
 }
 
 /// `froundnx.h`.
+///
+/// Round a binary16 value to an integral value and report whether the result is
+/// inexact.
+///
+/// # Safety
+///
+/// The caller must enable Zfa.
 #[inline]
 pub unsafe fn froundnx_h(a: u16) -> u16 {
     unsafe { rust_isa_riscv_zfh_froundnx(a) }
 }
 
 /// `fcvtmod.w.h`.
+///
+/// Convert a binary16 value to a signed 32-bit integer with modulo semantics.
+///
+/// # Safety
+///
+/// The caller must enable Zfa.
 #[inline]
 pub unsafe fn fcvtmod_w_h(a: u16) -> i32 {
     unsafe { rust_isa_riscv_zfh_fcvtmod_w_h(a) }
@@ -396,6 +445,10 @@ unsafe extern "C" {
 macro_rules! binary_fmt {
     ($(#[$meta:meta])* $name:ident, $c:ident, $ty:ty) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable Zfh, F, D, or Zfa as required by the operation.
         #[inline]
         pub unsafe fn $name(a: $ty, b: $ty) -> $ty {
             unsafe { $c(a, b) }
@@ -406,6 +459,10 @@ macro_rules! binary_fmt {
 macro_rules! unary_fmt {
     ($(#[$meta:meta])* $name:ident, $c:ident, $ty:ty) => {
         $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable Zfh, F, D, or Zfa as required by the operation.
         #[inline]
         pub unsafe fn $name(value: $ty) -> $ty {
             unsafe { $c(value) }
@@ -774,6 +831,10 @@ convert!(
 ///
 /// Return bits 63:32. This instruction is only encodable on RV32; the value
 /// API is also provided on RV64 for symmetry with [`fmvp_d_x`].
+///
+/// # Safety
+///
+/// The caller must enable Zfa.
 #[inline]
 pub unsafe fn fmvh_x_d(value: u64) -> u32 {
     unsafe { rust_isa_riscv_zfh_fmvh_x_d(value) }
@@ -783,6 +844,10 @@ pub unsafe fn fmvh_x_d(value: u64) -> u32 {
 ///
 /// Combine `low` (bits 31:0) and `high` (bits 63:32). This instruction is only
 /// encodable on RV32; the value API is also provided on RV64.
+///
+/// # Safety
+///
+/// The caller must enable Zfa.
 #[inline]
 pub unsafe fn fmvp_d_x(low: u32, high: u32) -> u64 {
     unsafe { rust_isa_riscv_zfh_fmvp_d_x(low, high) }

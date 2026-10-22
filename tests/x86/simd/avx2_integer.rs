@@ -199,6 +199,10 @@ fn multiply_and_sum_of_differences() {
         i16_lanes(unsafe { vpmulhrsw(i16x16([16_384; 16]), i16x16([16_384; 16])) }),
         [8_192; 16]
     );
+    assert_eq!(
+        i16_lanes(unsafe { vpmulhrsw(i16x16([i16::MIN; 16]), i16x16([i16::MIN; 16])) }),
+        [i16::MIN; 16]
+    );
 
     let words = i16x16(core::array::from_fn(|lane| lane as i16 + 1));
     assert_eq!(

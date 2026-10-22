@@ -1,4 +1,18 @@
-//! Instruction wrappers.
+//! AVX-512VL.
+//!
+//! AVX-512VL is not part of the x86-64 baseline. Every operation is `unsafe`
+//! and the required target features are documented on each function. The values
+//! are [`V256`] and [`V128`]. The functions also require the AVX-512 extension
+//! that defines the instruction, such as AVX-512BW or AVX-512DQ.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software
+//! Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+//! The build compiles the bundled C with clang; some wrappers use `asm!`.
+//! Immediate operands are const generics, and the valid range is documented on
+//! each function. Mask arguments use one bit per lane, with the low lane in the
+//! low bit.
+//!
+//! Instructions not listed in this module are not exposed.
 
 mod intersect;
 
@@ -13,7 +27,7 @@ unsafe extern "C" {
 }
 
 /// `vpaddd_v128`
-/// Apply the integer operation to the lanes.
+/// Add the 32-bit lanes, wrapping at 32 bits.
 ///
 /// # Safety
 ///
@@ -34,7 +48,7 @@ unsafe extern "C" {
 }
 
 /// `vpaddd_v256`
-/// Apply the integer operation to the lanes.
+/// Add the 32-bit lanes, wrapping at 32 bits.
 ///
 /// # Safety
 ///
@@ -55,7 +69,7 @@ unsafe extern "C" {
 }
 
 /// `vpaddq_v128`
-/// Apply the integer operation to the lanes.
+/// Add the 64-bit lanes, wrapping at 64 bits.
 ///
 /// # Safety
 ///
@@ -76,7 +90,7 @@ unsafe extern "C" {
 }
 
 /// `vpaddq_v256`
-/// Apply the integer operation to the lanes.
+/// Add the 64-bit lanes, wrapping at 64 bits.
 ///
 /// # Safety
 ///
@@ -97,7 +111,7 @@ unsafe extern "C" {
 }
 
 /// `vpsubd_v128`
-/// Apply the integer operation to the lanes.
+/// Subtract the 32-bit lanes, wrapping at 32 bits.
 ///
 /// # Safety
 ///
@@ -118,7 +132,7 @@ unsafe extern "C" {
 }
 
 /// `vpsubd_v256`
-/// Apply the integer operation to the lanes.
+/// Subtract the 32-bit lanes, wrapping at 32 bits.
 ///
 /// # Safety
 ///
@@ -139,7 +153,7 @@ unsafe extern "C" {
 }
 
 /// `vpsubq_v128`
-/// Apply the integer operation to the lanes.
+/// Subtract the 64-bit lanes, wrapping at 64 bits.
 ///
 /// # Safety
 ///
@@ -160,7 +174,7 @@ unsafe extern "C" {
 }
 
 /// `vpsubq_v256`
-/// Apply the integer operation to the lanes.
+/// Subtract the 64-bit lanes, wrapping at 64 bits.
 ///
 /// # Safety
 ///
@@ -181,7 +195,7 @@ unsafe extern "C" {
 }
 
 /// `vpandd_v128`
-/// Apply the integer operation to the lanes.
+/// Bitwise AND.
 ///
 /// # Safety
 ///
@@ -202,7 +216,7 @@ unsafe extern "C" {
 }
 
 /// `vpandd_v256`
-/// Apply the integer operation to the lanes.
+/// Bitwise AND.
 ///
 /// # Safety
 ///
@@ -223,7 +237,7 @@ unsafe extern "C" {
 }
 
 /// `vpandq_v128`
-/// Apply the integer operation to the lanes.
+/// Bitwise AND.
 ///
 /// # Safety
 ///
@@ -244,7 +258,7 @@ unsafe extern "C" {
 }
 
 /// `vpandq_v256`
-/// Apply the integer operation to the lanes.
+/// Bitwise AND.
 ///
 /// # Safety
 ///
@@ -349,7 +363,7 @@ unsafe extern "C" {
 }
 
 /// `vpord_v128`
-/// Apply the integer operation to the lanes.
+/// Bitwise OR.
 ///
 /// # Safety
 ///
@@ -370,7 +384,7 @@ unsafe extern "C" {
 }
 
 /// `vpord_v256`
-/// Apply the integer operation to the lanes.
+/// Bitwise OR.
 ///
 /// # Safety
 ///
@@ -391,7 +405,7 @@ unsafe extern "C" {
 }
 
 /// `vporq_v128`
-/// Apply the integer operation to the lanes.
+/// Bitwise OR.
 ///
 /// # Safety
 ///
@@ -412,7 +426,7 @@ unsafe extern "C" {
 }
 
 /// `vporq_v256`
-/// Apply the integer operation to the lanes.
+/// Bitwise OR.
 ///
 /// # Safety
 ///
@@ -433,7 +447,7 @@ unsafe extern "C" {
 }
 
 /// `vpxord_v128`
-/// Apply the integer operation to the lanes.
+/// Bitwise XOR.
 ///
 /// # Safety
 ///
@@ -454,7 +468,7 @@ unsafe extern "C" {
 }
 
 /// `vpxord_v256`
-/// Apply the integer operation to the lanes.
+/// Bitwise XOR.
 ///
 /// # Safety
 ///
@@ -475,7 +489,7 @@ unsafe extern "C" {
 }
 
 /// `vpxorq_v128`
-/// Apply the integer operation to the lanes.
+/// Bitwise XOR.
 ///
 /// # Safety
 ///
@@ -496,7 +510,7 @@ unsafe extern "C" {
 }
 
 /// `vpxorq_v256`
-/// Apply the integer operation to the lanes.
+/// Bitwise XOR.
 ///
 /// # Safety
 ///
@@ -2296,6 +2310,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must enable AVX-512F, AVX-512VL.
+///
+/// Every selected address must be valid for reading 4 bytes.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
@@ -2329,6 +2345,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must enable AVX-512F, AVX-512VL.
+///
+/// Every selected address must be valid for reading 4 bytes.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
@@ -2362,6 +2380,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must enable AVX-512F, AVX-512VL.
+///
+/// Every selected address must be valid for reading 8 bytes.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
@@ -2395,6 +2415,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must enable AVX-512F, AVX-512VL.
+///
+/// Every selected address must be valid for reading 8 bytes.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
@@ -2428,6 +2450,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must enable AVX-512F, AVX-512VL.
+///
+/// Every selected address must be valid for reading 4 bytes.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
@@ -2461,6 +2485,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must enable AVX-512F, AVX-512VL.
+///
+/// Every selected address must be valid for reading 4 bytes.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
@@ -2494,6 +2520,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must enable AVX-512F, AVX-512VL.
+///
+/// Every selected address must be valid for reading 8 bytes.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
@@ -2527,6 +2555,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must enable AVX-512F, AVX-512VL.
+///
+/// Every selected address must be valid for reading 8 bytes.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
@@ -2559,6 +2589,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must enable AVX-512F, AVX-512VL.
+///
+/// Every selected address must be valid for writing 4 bytes.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
@@ -2581,6 +2613,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must enable AVX-512F, AVX-512VL.
+///
+/// Every selected address must be valid for writing 4 bytes.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
@@ -2603,6 +2637,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must enable AVX-512F, AVX-512VL.
+///
+/// Every selected address must be valid for writing 8 bytes.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
@@ -2625,6 +2661,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must enable AVX-512F, AVX-512VL.
+///
+/// Every selected address must be valid for writing 8 bytes.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
@@ -2647,6 +2685,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must enable AVX-512F, AVX-512VL.
+///
+/// Every selected address must be valid for writing 4 bytes.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
@@ -2669,6 +2709,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must enable AVX-512F, AVX-512VL.
+///
+/// Every selected address must be valid for writing 4 bytes.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
@@ -2691,6 +2733,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must enable AVX-512F, AVX-512VL.
+///
+/// Every selected address must be valid for writing 8 bytes.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
@@ -2713,6 +2757,8 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The caller must enable AVX-512F, AVX-512VL.
+///
+/// Every selected address must be valid for writing 8 bytes.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
@@ -3887,7 +3933,7 @@ unsafe extern "C" {
 }
 
 /// `vpaddb_v128`
-/// Add or subtract the lanes, wrapping.
+/// Add the 8-bit lanes, wrapping at 8 bits.
 ///
 /// # Safety
 ///
@@ -3909,7 +3955,7 @@ unsafe extern "C" {
 }
 
 /// `vpaddb_v256`
-/// Add or subtract the lanes, wrapping.
+/// Add the 8-bit lanes, wrapping at 8 bits.
 ///
 /// # Safety
 ///
@@ -3931,7 +3977,7 @@ unsafe extern "C" {
 }
 
 /// `vpaddw_v128`
-/// Add or subtract the lanes, wrapping.
+/// Add the 16-bit lanes, wrapping at 16 bits.
 ///
 /// # Safety
 ///
@@ -3953,7 +3999,7 @@ unsafe extern "C" {
 }
 
 /// `vpaddw_v256`
-/// Add or subtract the lanes, wrapping.
+/// Add the 16-bit lanes, wrapping at 16 bits.
 ///
 /// # Safety
 ///
@@ -3975,7 +4021,7 @@ unsafe extern "C" {
 }
 
 /// `vpsubb_v128`
-/// Add or subtract the lanes, wrapping.
+/// Subtract the 8-bit lanes, wrapping at 8 bits.
 ///
 /// # Safety
 ///
@@ -3997,7 +4043,7 @@ unsafe extern "C" {
 }
 
 /// `vpsubb_v256`
-/// Add or subtract the lanes, wrapping.
+/// Subtract the 8-bit lanes, wrapping at 8 bits.
 ///
 /// # Safety
 ///
@@ -4019,7 +4065,7 @@ unsafe extern "C" {
 }
 
 /// `vpsubw_v128`
-/// Add or subtract the lanes, wrapping.
+/// Subtract the 16-bit lanes, wrapping at 16 bits.
 ///
 /// # Safety
 ///
@@ -4041,7 +4087,7 @@ unsafe extern "C" {
 }
 
 /// `vpsubw_v256`
-/// Add or subtract the lanes, wrapping.
+/// Subtract the 16-bit lanes, wrapping at 16 bits.
 ///
 /// # Safety
 ///

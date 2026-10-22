@@ -42,7 +42,7 @@ pub unsafe fn neg_i64(a: V128) -> V128 {
     out
 }
 
-/// `vabsduw` / `vabsd` representative.
+/// Absolute value of each signed 32-bit lane.
 ///
 /// # Safety
 ///
