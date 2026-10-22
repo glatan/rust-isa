@@ -7,7 +7,7 @@
 //!
 //! Instruction behavior follows the [IBM z/Architecture Principles of Operation](https://www.ibm.com/docs/en/module_1678991624569/pdf/SA22-7832-14.pdf).
 //!
-//! The wrappers use `asm!`.
+//! Most wrappers use `asm!`; the count instructions use the bundled C.
 //!
 //! Instructions not listed in this module are not exposed.
 
@@ -63,3 +63,41 @@ shift_double!(
     "vsrd",
     "right"
 );
+
+unsafe extern "C" {
+    fn rust_isa_s390x_enh_vclzd(a: *const u8, out: *mut u8);
+    fn rust_isa_s390x_enh_vctzd(a: *const u8, out: *mut u8);
+    fn rust_isa_s390x_enh_vpopcntd(a: *const u8, out: *mut u8);
+}
+
+macro_rules! un_enh2 {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable the vector-enhancement facility.
+        #[inline(always)]
+        pub unsafe fn $name(a: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe { $c(a.as_ptr(), out.as_mut_ptr()); }
+            out
+        }
+    };
+}
+un_enh2!(
+    /// `vclzd`.
+    vclzd,
+    rust_isa_s390x_enh_vclzd
+);
+un_enh2!(
+    /// `vctzd`.
+    vctzd,
+    rust_isa_s390x_enh_vctzd
+);
+un_enh2!(
+    /// `vpopcntd`.
+    vpopcntd,
+    rust_isa_s390x_enh_vpopcntd
+);
+pub use self::{vclzd as vclzg, vctzd as vctzg, vpopcntd as vpopcntg};

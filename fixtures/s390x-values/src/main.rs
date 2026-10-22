@@ -18,11 +18,10 @@ use rust_isa::s390x::simd::vector::{
 };
 use rust_isa::s390x::simd::vector::{vgbm, vrepb, vrepf, vrepg, vreph, vuph, vupl, vuplh, vupll};
 use rust_isa::s390x::simd::vector_enhancements_1::{
-    cntlz_i32, fma, popcnt_i8, popcnt_i32, vclz, vclzd, vctz, vctzd, vfa, vfce, vfch, vfche, vfd,
-    vfi_f32, vfll, vflr, vfm, vfma, vfms, vfnma, vfnms, vfs, vfsq, vftci_f32, vnn, vpopcntd,
-    vpopct,
+    cntlz_i32, fma, popcnt_i8, popcnt_i32, vclz, vctz, vfa, vfce, vfch, vfche, vfd, vfi_f32, vfll,
+    vflr, vfm, vfma, vfms, vfnma, vfnms, vfs, vfsq, vftci_f32, vnn, vpopct,
 };
-use rust_isa::s390x::simd::vector_enhancements_2::{vsld, vsrd};
+use rust_isa::s390x::simd::vector_enhancements_2::{vclzd, vctzd, vpopcntd, vsld, vsrd};
 use rust_isa::s390x::simd::vector_packed_decimal::{
     vap, vcvb, vcvbg, vcvd, vpkz, vsdp, vsp, vsrp, vstrl, vupkz, vupkzh, vupkzl,
 };
