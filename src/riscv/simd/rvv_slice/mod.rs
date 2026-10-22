@@ -2,6 +2,7 @@
 //!
 //! The V extension is unstable. The caller must compile the whole crate with
 //! `-C target-feature=+v`; the wrappers do not carry `#[target_feature]`.
+//! The slice operations are `unsafe`.
 //!
 //! SVE-like runtime vector lengths do not fit
 //! [`V128`](crate::riscv::simd::rv_vector::V128). These functions take
@@ -12,6 +13,10 @@
 //! separate from this slice API.
 //!
 //! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 unsafe extern "C" {
     fn rust_isa_rvv_slice_add_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);

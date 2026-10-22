@@ -7,6 +7,8 @@
 //!
 //! [`TileConfig`] is the 64-byte tile configuration consumed by
 //! [`AmxGuard::enter`]. The caller builds it; this crate does not interpret it.
+//! The guard and instruction wrappers are `unsafe`. Tile numbers are const
+//! generics, and the tile configuration is caller-provided state.
 //! [`AmxGuard`] releases the tile state in its `Drop` implementation and is not
 //! `Send` or `Sync`. Nested guards are not allowed.
 //!
@@ -15,6 +17,8 @@
 //! are intentionally omitted until the tile-state API is extended.
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+//!
+//! The build compiles the bundled C with clang; some wrappers use `asm!`.
 
 mod instructions;
 

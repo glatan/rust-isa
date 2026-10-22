@@ -1,9 +1,15 @@
 //! MSA.
 //!
 //! MSA is unstable. The caller must compile with
-//! `-C target-feature=+msa,+fp64`.
+//! `-C target-feature=+msa,+fp64`. Every operation is `unsafe`. The values are
+//! [`V128`]. Immediate operands are const generics unless documented
+//! otherwise.
 //!
 //! Instruction behavior follows the [MIPS Architecture](https://www.mips.com/products/architectures/).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 mod v128;
 

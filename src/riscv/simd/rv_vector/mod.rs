@@ -2,8 +2,15 @@
 //!
 //! The V extension is unstable. The caller must compile with
 //! `-C target-feature=+v`; the wrappers do not carry `#[target_feature]`.
+//! Every operation is `unsafe`. The values are [`V128`]. Some key-schedule
+//! functions take a runtime round number; the valid range is documented on each
+//! function.
 //!
 //! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 mod v128;
 

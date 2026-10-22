@@ -7,6 +7,10 @@
 //! The functions implement carry-less multiplication of 64-bit values.
 //!
 //! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 unsafe extern "C" {
     fn rust_isa_riscv_zbc_clmul(a: u64, b: u64) -> u64;

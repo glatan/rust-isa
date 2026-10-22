@@ -7,6 +7,8 @@
 //! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
 //! The build compiles the bundled C with clang. Const-generic lane and shift
 //! immediates document their valid range on each function.
+//!
+//! Instructions not listed in this module are not exposed.
 
 mod compare;
 mod compare_ext;

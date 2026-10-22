@@ -4,9 +4,14 @@
 //! enable Zbs with `#[target_feature(enable = "zbs")]` or a global target
 //! feature.
 //!
-//! The bit index uses the low six bits of the second operand.
+//! The functions operate on 64-bit scalar values. The bit index uses the low
+//! six bits of the second operand.
 //!
 //! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 unsafe extern "C" {
     fn rust_isa_riscv_zbs_bset(value: u64, index: u64) -> u64;

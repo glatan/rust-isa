@@ -4,12 +4,17 @@
 //! vector registers. Every operation is `unsafe` and the caller must enable
 //! the vector packed decimal facility. The values are [`V128`], except for
 //! the conversions between packed decimal and binary integers, which take
-//! or return a general-purpose register. The byte order is big-endian.
+//! or return a general-purpose register. Immediate operands are const generics
+//! unless documented otherwise. The byte order is big-endian.
 //!
 //! The condition code is not returned. Overflow and the decimal data
 //! exception are left to the caller.
 //!
 //! Instruction behavior follows the [IBM z/Architecture Principles of Operation](https://www.ibm.com/docs/en/module_1678991624569/pdf/SA22-7832-14.pdf).
+//!
+//! The wrappers use `asm!`.
+//!
+//! Instructions not listed in this module are not exposed.
 
 use super::vector::V128;
 use core::arch::asm;

@@ -9,6 +9,10 @@
 //! repository do not execute them.
 //!
 //! Instruction behavior follows the [IBM z/Architecture Principles of Operation](https://www.ibm.com/docs/en/module_1678991624569/pdf/SA22-7832-14.pdf).
+//!
+//! The wrappers use `asm!`.
+//!
+//! Instructions not listed in this module are not exposed.
 
 use super::vector::V128;
 use core::arch::asm;

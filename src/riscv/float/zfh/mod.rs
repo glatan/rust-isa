@@ -14,6 +14,8 @@
 //! double-precision values are bit patterns in `u32` and `u64`.
 //!
 //! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
+//!
+//! The build compiles the bundled C with clang.
 
 unsafe extern "C" {
     fn rust_isa_riscv_zfh_fadd(a: u16, b: u16) -> u16;

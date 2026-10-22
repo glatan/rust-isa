@@ -2,9 +2,13 @@
 //!
 //! These extensions are not part of the baseline. Every operation is `unsafe`
 //! and the caller must enable the extension with `#[target_feature]` or a
-//! global target feature.
+//! global target feature. The functions operate on 64-bit scalar values.
 //!
 //! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 unsafe extern "C" {
     fn rust_isa_riscv_zbkb_pack(a: u64, b: u64) -> u64;

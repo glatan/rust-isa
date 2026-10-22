@@ -9,6 +9,10 @@
 //! [`V128`]: super::sse2::V128
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+//!
+//! This module re-exports existing wrappers and adds no build steps.
+//!
+//! Instructions not listed in this module are not exposed.
 
 pub use super::sse2::{
     addps, cmpeqps, cmpleps, cmpltps, divps, maxps, minps, mulps, shufps, sqrtps, subps,

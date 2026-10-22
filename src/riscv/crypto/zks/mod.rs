@@ -9,6 +9,10 @@
 //! `0..=3` and a larger value is a compile-time error.
 //!
 //! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 unsafe extern "C" {
     fn rust_isa_riscv_zks_sm3p0(value: u32) -> u32;

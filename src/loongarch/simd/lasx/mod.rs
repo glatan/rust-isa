@@ -6,11 +6,14 @@
 //!
 //! The values are [`V256`]. The C implementation uses GCC vector extensions and
 //! ordinary loads and stores so that LTO can keep values in registers.
+//! Immediate operands are const generics unless documented otherwise.
 //! Comparison, shift, shuffle, and bit operations are written in Rust on the
 //! byte representation. Float conversions, max, and min call the clang
 //! intrinsics; zero cost is not claimed for those.
 //!
 //! Instruction behavior follows the [LoongArch Documentation](https://loongson.github.io/LoongArch-Documentation/).
+//!
+//! Instructions not listed in this module are not exposed.
 
 mod v256;
 
