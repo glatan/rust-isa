@@ -155,6 +155,7 @@ fn check_native_symbols() {
         ("arm/crypto/crc", "crc.c", "rust_isa_arm_crc_"),
         ("riscv/simd/rvv", "rvv.c", "rust_isa_rvv_"),
         ("riscv/simd/rvv_slice", "rvv_slice.c", "rust_isa_rvv_slice_"),
+        ("riscv/simd/zv", "zv.c", "rust_isa_rvv_"),
         ("riscv/float/zfh", "zfh.c", "rust_isa_riscv_zfh_"),
         ("riscv/integer/zba", "zba.c", "rust_isa_riscv_zba_"),
         ("riscv/integer/zbb", "zbb.c", "rust_isa_riscv_zbb_"),

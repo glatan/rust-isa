@@ -2,3 +2,4 @@
 
 pub mod rvv;
 pub mod rvv_slice;
+pub mod zv;
