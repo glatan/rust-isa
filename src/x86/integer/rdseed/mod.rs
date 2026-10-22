@@ -4,11 +4,15 @@
 //! the caller must enable RDSEED with `#[target_feature(enable = "rdseed")]` or
 //! a global target feature.
 //!
-//! RDSEED is intended to seed another random-number generator. The function
-//! returns `None` when the hardware reports that no seed is available; the
-//! caller may retry.
+//! RDSEED is intended to seed another random-number generator. The functions
+//! operate on 32-bit and 64-bit scalar values. They return `None` when the
+//! hardware reports that no seed is available; the caller may retry.
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 unsafe extern "C" {
     fn rust_isa_rdseed_u32(out: *mut u32) -> i32;

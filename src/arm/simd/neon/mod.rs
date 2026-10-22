@@ -1,9 +1,15 @@
 //! NEON.
 //!
 //! NEON is unstable on this target. The caller must compile with
-//! `-C target-feature=+neon`.
+//! `-C target-feature=+neon`. Every operation is `unsafe`. The values are
+//! [`V128`]. Immediate operands are const generics unless documented
+//! otherwise.
 //!
 //! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 mod arith;
 mod memory;

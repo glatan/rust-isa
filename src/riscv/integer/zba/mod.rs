@@ -4,9 +4,14 @@
 //! enable Zba with `#[target_feature(enable = "zba")]` or a global target
 //! feature.
 //!
-//! The functions return the address-generation result in a 64-bit register.
+//! The functions operate on 64-bit scalar values and return the
+//! address-generation result in a 64-bit register.
 //!
 //! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 unsafe extern "C" {
     fn rust_isa_riscv_zba_sh1add(a: u64, b: u64) -> u64;

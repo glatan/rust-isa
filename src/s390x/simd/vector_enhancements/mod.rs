@@ -2,14 +2,17 @@
 //!
 //! The vector-enhancement facilities are not part of the s390x baseline. Every
 //! operation is `unsafe` and the caller must compile with the corresponding
-//! enhancement enabled. The C file is compiled with `-march=z14`. The
+//! enhancement enabled. The C file is compiled with clang and `-march=z14`. The
 //! instructions without a clang intrinsic use `asm!` with the
 //! `vector-enhancements-1` target feature.
 //!
 //! The values are [`V128`]. `cntlz` and `popcnt` operate on the lane type in
-//! the function name. The byte order is big-endian.
+//! the function name. Immediate operands are const generics unless documented
+//! otherwise. The byte order is big-endian.
 //!
 //! Instruction behavior follows the [IBM z/Architecture Principles of Operation](https://www.ibm.com/docs/en/module_1678991624569/pdf/SA22-7832-14.pdf).
+//!
+//! Instructions not listed in this module are not exposed.
 
 use super::vector::V128;
 use core::arch::asm;

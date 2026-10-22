@@ -1,8 +1,13 @@
 //! LoongArch Binary Translation (LBT) bit-manipulation instructions.
 //!
-//! The operations are expressed on 64-bit scalar values.
+//! LBT is not part of the LoongArch baseline. The functions are implemented in
+//! Rust, are safe, and do not require a target feature. The operations are
+//! expressed on 64-bit scalar values. Immediate operands (bit ranges) are const
+//! generics; invalid ranges do not compile.
 //!
 //! Instruction behavior follows the [LoongArch Documentation](https://loongson.github.io/LoongArch-Documentation/).
+//!
+//! Instructions not listed in this module are not exposed.
 
 /// `revb.d`: reverse the byte order of a 64-bit value.
 #[inline(always)]

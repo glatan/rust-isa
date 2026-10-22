@@ -29,6 +29,8 @@
 //! ```
 //!
 //! [Relaxed SIMD]: https://webassembly.github.io/spec/core/exec/numerics.html#relaxed-operations
+//!
+//! Instructions not listed in this module are not exposed.
 
 pub use super::simd128::V128;
 

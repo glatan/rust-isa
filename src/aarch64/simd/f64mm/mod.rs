@@ -5,6 +5,10 @@
 //! a multiple of the SVE vector length in 64-bit elements.
 //!
 //! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 unsafe extern "C" {
     fn rust_isa_f64mm_fmmla(a: *const f64, b: *const f64, acc: *mut f64, len: usize);

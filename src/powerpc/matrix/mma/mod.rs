@@ -11,6 +11,10 @@
 //! them.
 //!
 //! Instruction behavior follows the [Power ISA](https://openpowerfoundation.org/specifications/isa/).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 use core::marker::PhantomData;
 

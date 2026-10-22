@@ -5,10 +5,15 @@
 //! compile the whole crate with the feature enabled and the CPU must support
 //! XOP. The wrappers do not carry `#[target_feature]`.
 //!
-//! The module exposes the 128-bit XOP permute, compare, rotate, shift,
-//! multiply-accumulate, fractional, and horizontal add/subtract instructions.
+//! Every operation is `unsafe`. The values are [`V128`]. The module exposes the
+//! 128-bit XOP permute, compare, rotate, shift, multiply-accumulate,
+//! fractional, and horizontal add/subtract instructions.
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 use super::sse2::V128;
 

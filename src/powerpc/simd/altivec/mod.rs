@@ -1,8 +1,15 @@
 //! Altivec.
 //!
-//! The caller must compile with `-C target-feature=+altivec,+vsx`.
+//! Altivec and VSX are not part of the PowerPC baseline. The caller must
+//! compile with `-C target-feature=+altivec,+vsx`. Every operation is `unsafe`.
+//! The values are [`V128`]. Immediate operands are const generics unless
+//! documented otherwise.
 //!
 //! Instruction behavior follows the [Power ISA](https://openpowerfoundation.org/specifications/isa/).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 mod v128;
 

@@ -7,6 +7,10 @@
 //! the raw hardware state.
 //!
 //! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 unsafe extern "C" {
     fn rust_isa_arm_crc_crc32b(crc: u32, value: u8) -> u32;

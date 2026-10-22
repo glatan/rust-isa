@@ -4,11 +4,16 @@
 //! the caller must enable MOVBE with `#[target_feature(enable = "movbe")]` or a
 //! global target feature.
 //!
-//! The load functions read a big-endian value and return it as a native
-//! integer. The store functions write a native integer in big-endian order.
+//! The functions operate on 16-bit, 32-bit, and 64-bit scalar values. The load
+//! functions read a big-endian value and return it as a native integer. The
+//! store functions write a native integer in big-endian order.
 //! The memory operations do not require alignment.
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 unsafe extern "C" {
     fn rust_isa_movbe_load_u16(p: *const u8) -> u16;

@@ -3,15 +3,18 @@
 //! AVX10.1 is not part of the x86-64 baseline and rustc does not allow
 //! `#[target_feature(enable = "avx10.1")]` on stable. The caller must compile
 //! the whole crate with `-C target-feature=+avx10.1` and the CPU must support
-//! AVX10.1. The wrappers do not carry `#[target_feature]`.
+//! AVX10.1. The wrappers do not carry `#[target_feature]`. Every wrapper is
+//! `unsafe`. Immediate operands are const generics unless documented otherwise.
 //!
-//! The values are [`V256`] and [`V512`]. The module covers the integer, mask,
-//! permute, compress/expand, gather/scatter, conversion, reciprocal,
+//! The values are [`V128`], [`V256`], and [`V512`]. The module covers the
+//! integer, mask, permute, compress/expand, gather/scatter, conversion, reciprocal,
 //! square-root, FMA, VNNI, IFMA, population-count, leading-zero, and conflict
 //! instructions that were previously listed as missing. Embedded rounding
 //! control and the vector-length selection bits are omitted.
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+//!
+//! The build compiles the bundled C with clang; some wrappers use `asm!`.
 
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;

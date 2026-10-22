@@ -11,6 +11,10 @@
 //! The 64-bit forms are available only on x86-64.
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+//!
+//! The wrappers use `asm!`.
+//!
+//! Instructions not listed in this module are not exposed.
 
 /// `adcx` with 32-bit operands.
 ///

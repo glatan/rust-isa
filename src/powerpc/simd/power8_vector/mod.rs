@@ -2,7 +2,7 @@
 //!
 //! Power8 vector instructions are not part of the PowerPC baseline. Every
 //! operation is `unsafe` and the caller must enable the Power8 feature set. The
-//! C file is compiled with `-mcpu=power8`.
+//! C file is compiled with clang and `-mcpu=power8`.
 //!
 //! The values are [`V128`]. The module contains the 64-bit integer add and
 //! subtract (`vaddudm`, `vsubudm`), 32-bit multiply (`vmuluwm`) and the even
@@ -13,6 +13,8 @@
 //! feature set.
 //!
 //! Instruction behavior follows the [Power ISA](https://openpowerfoundation.org/specifications/isa/).
+//!
+//! Instructions not listed in this module are not exposed.
 
 use super::altivec::V128;
 

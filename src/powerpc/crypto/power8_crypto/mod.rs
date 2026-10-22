@@ -2,12 +2,15 @@
 //!
 //! Power8 crypto instructions are not part of the PowerPC baseline. Every
 //! operation is `unsafe` and the caller must enable the Power8 feature set. The
-//! C file is compiled with `-mcpu=power8`.
+//! C file is compiled with clang and `-mcpu=power8`.
 //!
 //! The values are [`V128`]. The AES round, S-box, and SHA sigma instructions
 //! operate on the PowerPC big-endian byte order used by the instruction set.
+//! Immediate operands are const generics unless documented otherwise.
 //!
 //! Instruction behavior follows the [Power ISA](https://openpowerfoundation.org/specifications/isa/).
+//!
+//! Instructions not listed in this module are not exposed.
 
 use crate::powerpc::simd::altivec::V128;
 

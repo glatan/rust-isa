@@ -7,12 +7,14 @@
 //! [`SmeGuard`] enters streaming mode and leaves it in its `Drop` implementation.
 //! The guard is neither `Send` nor `Sync` and must not be nested. The slice
 //! functions take a guard so that the streaming state is established before the
-//! C loop runs.
+//! C loop runs. They are `unsafe` and require SME.
 //!
 //! ZA tile operations are intentionally omitted. They need an additional opaque
 //! tile type and a separate lifetime model.
 //!
 //! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
+//!
+//! The build compiles the bundled C with clang.
 
 use core::marker::PhantomData;
 

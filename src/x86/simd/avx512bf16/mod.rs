@@ -5,11 +5,16 @@
 //! `#[target_feature(enable = "avx512bf16")]` (which implies AVX-512 F) or a
 //! global target feature.
 //!
-//! The module converts 32-bit float lanes to bfloat16 and accumulates
-//! bfloat16 dot products into 32-bit float lanes. The dot-product pairs are
-//! formed within each 32-bit lane; the result is added to `acc`.
+//! The values are [`V256`] and [`V512`]. The module converts 32-bit float lanes
+//! to bfloat16 and accumulates bfloat16 dot products into 32-bit float lanes.
+//! The dot-product pairs are formed within each 32-bit lane; the result is
+//! added to `acc`.
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 use super::avx2::V256;
 use super::avx512f::V512;

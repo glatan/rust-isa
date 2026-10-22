@@ -1,8 +1,15 @@
 //! LSX.
 //!
-//! LSX is part of the LoongArch baseline. The arithmetic operations are safe.
+//! LSX is part of the LoongArch baseline. The arithmetic operations are safe;
+//! loads and stores take raw pointers and are `unsafe`. The values are
+//! [`V128`]. Immediate operands are const generics unless documented
+//! otherwise.
 //!
 //! Instruction behavior follows the [LoongArch Documentation](https://loongson.github.io/LoongArch-Documentation/).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 mod v128;
 

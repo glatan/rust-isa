@@ -8,6 +8,10 @@
 //! bfloat16 lanes and accumulate into 32-bit float lanes.
 //!
 //! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 use crate::aarch64::simd::neon::V128;
 

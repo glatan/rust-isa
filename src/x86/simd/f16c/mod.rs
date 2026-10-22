@@ -4,12 +4,16 @@
 //! caller must enable F16C with `#[target_feature(enable = "f16c")]` or a global
 //! target feature.
 //!
-//! Half-precision values use the IEEE 754 binary16 layout in the low 16 bits of
-//! each 32-bit lane. The `vcvtps2ph` functions take a rounding mode in `IMM`:
-//! 0 is nearest, 1 is down, 2 is up, 3 is truncate, and 4 uses MXCSR.
-//! A larger value is a compile-time error.
+//! The values are [`V128`] and [`V256`]. Half-precision values use the IEEE 754
+//! binary16 layout in the low 16 bits of each 32-bit lane. The `vcvtps2ph`
+//! functions take a rounding mode in `IMM`: 0 is nearest, 1 is down, 2 is up,
+//! 3 is truncate, and 4 uses MXCSR. A larger value is a compile-time error.
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 use super::avx2::V256;
 use super::sse2::V128;

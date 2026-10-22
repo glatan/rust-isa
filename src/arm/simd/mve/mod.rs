@@ -2,7 +2,7 @@
 //!
 //! MVE is an M-profile extension and is not available on
 //! `armv7-unknown-linux-gnueabihf`. Every operation is `unsafe` and the caller
-//! must run on a CPU with MVE. The C side is compiled with
+//! must run on a CPU with MVE. The C side is compiled with clang and
 //! `-march=armv8.1-m.main+mve`.
 //!
 //! The values are [`V128`] of little-endian lanes. Unless stated otherwise,
@@ -16,6 +16,8 @@
 //! [`fma`] and [`fms`] are the MVE-FP forms and require MVE-FP.
 //!
 //! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
+//!
+//! Instructions not listed in this module are not exposed.
 
 use super::neon::V128;
 

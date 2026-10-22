@@ -16,6 +16,8 @@
 //! Each instruction is exposed as a slice operation instead.
 //!
 //! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
+//!
+//! The build compiles the bundled C with clang.
 
 unsafe extern "C" {
     fn rust_isa_sve_add_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
