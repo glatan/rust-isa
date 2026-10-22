@@ -7,6 +7,8 @@
 //!
 //! The module exposes the 128-bit XOP permute, compare, rotate, shift,
 //! multiply-accumulate, fractional, and horizontal add/subtract instructions.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use super::sse2::V128;
 

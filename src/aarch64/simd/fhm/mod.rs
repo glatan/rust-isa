@@ -6,6 +6,8 @@
 //!
 //! The values are [`V128`] of binary16 lanes. The fused multiply-add rounds only
 //! once, at the end.
+//!
+//! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
 
 use crate::aarch64::simd::neon::V128;
 

@@ -7,6 +7,8 @@
 //! The values are [`V128`]. The round and schedule instructions follow the
 //! AArch64 SHA-256 instruction definitions. The caller combines them with the
 //! SHA-256 specification.
+//!
+//! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
 
 use crate::aarch64::simd::neon::V128;
 

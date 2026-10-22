@@ -7,6 +7,8 @@
 //!
 //! The values are [`V128`] of little-endian binary32 lanes. Results follow
 //! the FPSCR rounding mode and the default NaN behaviour of the target.
+//!
+//! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
 
 use super::neon::V128;
 

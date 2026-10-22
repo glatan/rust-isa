@@ -1,4 +1,15 @@
 //! VPCLMULQDQ.
+//!
+//! VPCLMULQDQ is not part of the x86-64 baseline. Every operation is `unsafe`
+//! and the required target features are documented on each function. The values
+//! are [`V256`] and [`V512`].
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software
+//! Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+//! The build compiles the bundled C with clang. The immediate is a runtime
+//! value because this API does not claim zero cost for these forms.
+//!
+//! Instructions not listed in this module are not exposed.
 
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;

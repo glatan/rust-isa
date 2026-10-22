@@ -7,6 +7,8 @@
 //!
 //! The values are [`V128`]. The four-operand form is exposed as three operands
 //! because the destination is also the first source in this API.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use super::sse2::V128;
 

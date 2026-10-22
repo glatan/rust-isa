@@ -315,6 +315,10 @@ unsafe extern "C" {
 }
 /// `abs` on `i8` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -330,6 +334,10 @@ unsafe extern "C" {
     fn rust_isa_sve_neg_i8(a: *const i8, out: *mut i8, len: usize);
 }
 /// `neg` on `i8` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -347,6 +355,10 @@ unsafe extern "C" {
 }
 /// `clz` on `i8` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -362,6 +374,10 @@ unsafe extern "C" {
     fn rust_isa_sve_cnt_i8(a: *const i8, out: *mut i8, len: usize);
 }
 /// `cnt` on `i8` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -379,6 +395,10 @@ unsafe extern "C" {
 }
 /// `not` on `i8` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -394,6 +414,10 @@ unsafe extern "C" {
     fn rust_isa_sve_abs_i16(a: *const i16, out: *mut i16, len: usize);
 }
 /// `abs` on `i16` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -411,6 +435,10 @@ unsafe extern "C" {
 }
 /// `neg` on `i16` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -426,6 +454,10 @@ unsafe extern "C" {
     fn rust_isa_sve_clz_i16(a: *const i16, out: *mut i16, len: usize);
 }
 /// `clz` on `i16` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -443,6 +475,10 @@ unsafe extern "C" {
 }
 /// `cnt` on `i16` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -458,6 +494,10 @@ unsafe extern "C" {
     fn rust_isa_sve_not_i16(a: *const i16, out: *mut i16, len: usize);
 }
 /// `not` on `i16` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -475,6 +515,10 @@ unsafe extern "C" {
 }
 /// `abs` on `i64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -490,6 +534,10 @@ unsafe extern "C" {
     fn rust_isa_sve_neg_i64(a: *const i64, out: *mut i64, len: usize);
 }
 /// `neg` on `i64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -507,6 +555,10 @@ unsafe extern "C" {
 }
 /// `clz` on `i64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -522,6 +574,10 @@ unsafe extern "C" {
     fn rust_isa_sve_cnt_i64(a: *const i64, out: *mut i64, len: usize);
 }
 /// `cnt` on `i64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -539,6 +595,10 @@ unsafe extern "C" {
 }
 /// `not` on `i64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -554,6 +614,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqabs_i8(a: *const i8, out: *mut i8, len: usize);
 }
 /// `sqabs` on `i8` slices (scalar saturating fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -571,6 +635,10 @@ unsafe extern "C" {
 }
 /// `sqneg` on `i8` slices (scalar saturating fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -586,6 +654,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqabs_i16(a: *const i16, out: *mut i16, len: usize);
 }
 /// `sqabs` on `i16` slices (scalar saturating fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -603,6 +675,10 @@ unsafe extern "C" {
 }
 /// `sqneg` on `i16` slices (scalar saturating fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -618,6 +694,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqabs_i32(a: *const i32, out: *mut i32, len: usize);
 }
 /// `sqabs` on `i32` slices (scalar saturating fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -635,6 +715,10 @@ unsafe extern "C" {
 }
 /// `sqneg` on `i32` slices (scalar saturating fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -650,6 +734,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqabs_i64(a: *const i64, out: *mut i64, len: usize);
 }
 /// `sqabs` on `i64` slices (scalar saturating fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -667,6 +755,10 @@ unsafe extern "C" {
 }
 /// `sqneg` on `i64` slices (scalar saturating fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -682,6 +774,10 @@ unsafe extern "C" {
     fn rust_isa_sve_rbit_i32(a: *const i32, out: *mut i32, len: usize);
 }
 /// `rbit` on `i32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -699,6 +795,10 @@ unsafe extern "C" {
 }
 /// `rev` from `i32` to `i32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -714,6 +814,10 @@ unsafe extern "C" {
     fn rust_isa_sve_revb_i32(a: *const i32, out: *mut i32, len: usize);
 }
 /// `revb` on `i32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -731,6 +835,10 @@ unsafe extern "C" {
 }
 /// `revh` on `i32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -746,6 +854,10 @@ unsafe extern "C" {
     fn rust_isa_sve_revw_i64(a: *const i64, out: *mut i64, len: usize);
 }
 /// `revw` on `i64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -763,6 +875,10 @@ unsafe extern "C" {
 }
 /// `cnot` on `i32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -778,6 +894,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sunpkhi_i8(a: *const i8, out: *mut i16, len: usize);
 }
 /// `sunpkhi` from `i8` to `i16` slices (scalar widening fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -795,6 +915,10 @@ unsafe extern "C" {
 }
 /// `sunpklo` from `i8` to `i16` slices (scalar widening fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -810,6 +934,10 @@ unsafe extern "C" {
     fn rust_isa_sve_uunpkhi_u8(a: *const u8, out: *mut u16, len: usize);
 }
 /// `uunpkhi` from `u8` to `u16` slices (scalar widening fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -827,6 +955,10 @@ unsafe extern "C" {
 }
 /// `uunpklo` from `u8` to `u16` slices (scalar widening fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -842,6 +974,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sxtb_i8(a: *const i8, out: *mut i32, len: usize);
 }
 /// `sxtb` from `i8` to `i32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -859,6 +995,10 @@ unsafe extern "C" {
 }
 /// `sxth` from `i16` to `i32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -874,6 +1014,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sxtw_i32(a: *const i32, out: *mut i64, len: usize);
 }
 /// `sxtw` from `i32` to `i64` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -891,6 +1035,10 @@ unsafe extern "C" {
 }
 /// `uxtb` from `u8` to `u32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -906,6 +1054,10 @@ unsafe extern "C" {
     fn rust_isa_sve_uxth_u16(a: *const u16, out: *mut u32, len: usize);
 }
 /// `uxth` from `u16` to `u32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -923,6 +1075,10 @@ unsafe extern "C" {
 }
 /// `uxtw` from `u32` to `u64` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -938,6 +1094,10 @@ unsafe extern "C" {
     fn rust_isa_sve_add_i8(a: *const i8, b: *const i8, out: *mut i8, len: usize);
 }
 /// `add` on `i8` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -956,6 +1116,10 @@ unsafe extern "C" {
 }
 /// `sub` on `i8` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -972,6 +1136,10 @@ unsafe extern "C" {
     fn rust_isa_sve_mul_i8(a: *const i8, b: *const i8, out: *mut i8, len: usize);
 }
 /// `mul` on `i8` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -990,6 +1158,10 @@ unsafe extern "C" {
 }
 /// `add` on `i16` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1006,6 +1178,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sub_i16(a: *const i16, b: *const i16, out: *mut i16, len: usize);
 }
 /// `sub` on `i16` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1024,6 +1200,10 @@ unsafe extern "C" {
 }
 /// `mul` on `i16` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1040,6 +1220,10 @@ unsafe extern "C" {
     fn rust_isa_sve_add_i64(a: *const i64, b: *const i64, out: *mut i64, len: usize);
 }
 /// `add` on `i64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1058,6 +1242,10 @@ unsafe extern "C" {
 }
 /// `sub` on `i64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1074,6 +1262,10 @@ unsafe extern "C" {
     fn rust_isa_sve_mul_i64(a: *const i64, b: *const i64, out: *mut i64, len: usize);
 }
 /// `mul` on `i64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1092,6 +1284,10 @@ unsafe extern "C" {
 }
 /// `add` on `u8` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1108,6 +1304,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sub_u8(a: *const u8, b: *const u8, out: *mut u8, len: usize);
 }
 /// `sub` on `u8` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1126,6 +1326,10 @@ unsafe extern "C" {
 }
 /// `mul` on `u8` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1142,6 +1346,10 @@ unsafe extern "C" {
     fn rust_isa_sve_add_u16(a: *const u16, b: *const u16, out: *mut u16, len: usize);
 }
 /// `add` on `u16` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1160,6 +1368,10 @@ unsafe extern "C" {
 }
 /// `sub` on `u16` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1176,6 +1388,10 @@ unsafe extern "C" {
     fn rust_isa_sve_mul_u16(a: *const u16, b: *const u16, out: *mut u16, len: usize);
 }
 /// `mul` on `u16` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1194,6 +1410,10 @@ unsafe extern "C" {
 }
 /// `add` on `u32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1210,6 +1430,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sub_u32(a: *const u32, b: *const u32, out: *mut u32, len: usize);
 }
 /// `sub` on `u32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1228,6 +1452,10 @@ unsafe extern "C" {
 }
 /// `mul` on `u32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1244,6 +1472,10 @@ unsafe extern "C" {
     fn rust_isa_sve_add_u64(a: *const u64, b: *const u64, out: *mut u64, len: usize);
 }
 /// `add` on `u64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1262,6 +1494,10 @@ unsafe extern "C" {
 }
 /// `sub` on `u64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1278,6 +1514,10 @@ unsafe extern "C" {
     fn rust_isa_sve_mul_u64(a: *const u64, b: *const u64, out: *mut u64, len: usize);
 }
 /// `mul` on `u64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1296,6 +1536,10 @@ unsafe extern "C" {
 }
 /// `smax` on `i8` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1312,6 +1556,10 @@ unsafe extern "C" {
     fn rust_isa_sve_smin_i8(a: *const i8, b: *const i8, out: *mut i8, len: usize);
 }
 /// `smin` on `i8` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1330,6 +1578,10 @@ unsafe extern "C" {
 }
 /// `smax` on `i16` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1346,6 +1598,10 @@ unsafe extern "C" {
     fn rust_isa_sve_smin_i16(a: *const i16, b: *const i16, out: *mut i16, len: usize);
 }
 /// `smin` on `i16` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1364,6 +1620,10 @@ unsafe extern "C" {
 }
 /// `smax` on `i64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1380,6 +1640,10 @@ unsafe extern "C" {
     fn rust_isa_sve_smin_i64(a: *const i64, b: *const i64, out: *mut i64, len: usize);
 }
 /// `smin` on `i64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1398,6 +1662,10 @@ unsafe extern "C" {
 }
 /// `umax` on `u8` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1414,6 +1682,10 @@ unsafe extern "C" {
     fn rust_isa_sve_umin_u8(a: *const u8, b: *const u8, out: *mut u8, len: usize);
 }
 /// `umin` on `u8` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1432,6 +1704,10 @@ unsafe extern "C" {
 }
 /// `umax` on `u16` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1448,6 +1724,10 @@ unsafe extern "C" {
     fn rust_isa_sve_umin_u16(a: *const u16, b: *const u16, out: *mut u16, len: usize);
 }
 /// `umin` on `u16` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1466,6 +1746,10 @@ unsafe extern "C" {
 }
 /// `umax` on `u32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1482,6 +1766,10 @@ unsafe extern "C" {
     fn rust_isa_sve_umin_u32(a: *const u32, b: *const u32, out: *mut u32, len: usize);
 }
 /// `umin` on `u32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1500,6 +1788,10 @@ unsafe extern "C" {
 }
 /// `umax` on `u64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1516,6 +1808,10 @@ unsafe extern "C" {
     fn rust_isa_sve_umin_u64(a: *const u64, b: *const u64, out: *mut u64, len: usize);
 }
 /// `umin` on `u64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1534,6 +1830,10 @@ unsafe extern "C" {
 }
 /// `sabd` on `i8` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1550,6 +1850,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sabd_i16(a: *const i16, b: *const i16, out: *mut i16, len: usize);
 }
 /// `sabd` on `i16` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1568,6 +1872,10 @@ unsafe extern "C" {
 }
 /// `sabd` on `i32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1584,6 +1892,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sabd_i64(a: *const i64, b: *const i64, out: *mut i64, len: usize);
 }
 /// `sabd` on `i64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1602,6 +1914,10 @@ unsafe extern "C" {
 }
 /// `uabd` on `u8` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1618,6 +1934,10 @@ unsafe extern "C" {
     fn rust_isa_sve_uabd_u16(a: *const u16, b: *const u16, out: *mut u16, len: usize);
 }
 /// `uabd` on `u16` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1636,6 +1956,10 @@ unsafe extern "C" {
 }
 /// `uabd` on `u32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1652,6 +1976,10 @@ unsafe extern "C" {
     fn rust_isa_sve_uabd_u64(a: *const u64, b: *const u64, out: *mut u64, len: usize);
 }
 /// `uabd` on `u64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1670,6 +1998,10 @@ unsafe extern "C" {
 }
 /// `smulh` on `i32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1686,6 +2018,10 @@ unsafe extern "C" {
     fn rust_isa_sve_smulh_i64(a: *const i64, b: *const i64, out: *mut i64, len: usize);
 }
 /// `smulh` on `i64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1704,6 +2040,10 @@ unsafe extern "C" {
 }
 /// `umulh` on `u32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1720,6 +2060,10 @@ unsafe extern "C" {
     fn rust_isa_sve_umulh_u64(a: *const u64, b: *const u64, out: *mut u64, len: usize);
 }
 /// `umulh` on `u64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1738,6 +2082,10 @@ unsafe extern "C" {
 }
 /// `and` on `i8` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1754,6 +2102,10 @@ unsafe extern "C" {
     fn rust_isa_sve_orr_i8(a: *const i8, b: *const i8, out: *mut i8, len: usize);
 }
 /// `orr` on `i8` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1772,6 +2124,10 @@ unsafe extern "C" {
 }
 /// `eor` on `i8` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1788,6 +2144,10 @@ unsafe extern "C" {
     fn rust_isa_sve_and_i16(a: *const i16, b: *const i16, out: *mut i16, len: usize);
 }
 /// `and` on `i16` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1806,6 +2166,10 @@ unsafe extern "C" {
 }
 /// `orr` on `i16` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1822,6 +2186,10 @@ unsafe extern "C" {
     fn rust_isa_sve_eor_i16(a: *const i16, b: *const i16, out: *mut i16, len: usize);
 }
 /// `eor` on `i16` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1840,6 +2208,10 @@ unsafe extern "C" {
 }
 /// `and` on `i64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1856,6 +2228,10 @@ unsafe extern "C" {
     fn rust_isa_sve_orr_i64(a: *const i64, b: *const i64, out: *mut i64, len: usize);
 }
 /// `orr` on `i64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1874,6 +2250,10 @@ unsafe extern "C" {
 }
 /// `eor` on `i64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1890,6 +2270,10 @@ unsafe extern "C" {
     fn rust_isa_sve_bic_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
 }
 /// `bic` on `i32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1908,6 +2292,10 @@ unsafe extern "C" {
 }
 /// `subr` on `i32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1924,6 +2312,10 @@ unsafe extern "C" {
     fn rust_isa_sve_nand_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
 }
 /// `nand` on `i32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -1942,6 +2334,10 @@ unsafe extern "C" {
 }
 /// `nor` on `i32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -1958,6 +2354,10 @@ unsafe extern "C" {
     fn rust_isa_sve_orn_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
 }
 /// `orn` on `i32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2275,6 +2675,10 @@ unsafe extern "C" {
 }
 /// `lsl` on `i8` slices by a scalar shift.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2290,6 +2694,10 @@ unsafe extern "C" {
     fn rust_isa_sve_lsr_i8(a: *const i8, shift: i32, out: *mut i8, len: usize);
 }
 /// `lsr` on `i8` slices by a scalar shift.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2307,6 +2715,10 @@ unsafe extern "C" {
 }
 /// `asr` on `i8` slices by a scalar shift.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2322,6 +2734,10 @@ unsafe extern "C" {
     fn rust_isa_sve_lsl_i16(a: *const i16, shift: i32, out: *mut i16, len: usize);
 }
 /// `lsl` on `i16` slices by a scalar shift.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2339,6 +2755,10 @@ unsafe extern "C" {
 }
 /// `lsr` on `i16` slices by a scalar shift.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2354,6 +2774,10 @@ unsafe extern "C" {
     fn rust_isa_sve_asr_i16(a: *const i16, shift: i32, out: *mut i16, len: usize);
 }
 /// `asr` on `i16` slices by a scalar shift.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2371,6 +2795,10 @@ unsafe extern "C" {
 }
 /// `lsl` on `i64` slices by a scalar shift.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2386,6 +2814,10 @@ unsafe extern "C" {
     fn rust_isa_sve_lsr_i64(a: *const i64, shift: i32, out: *mut i64, len: usize);
 }
 /// `lsr` on `i64` slices by a scalar shift.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2403,6 +2835,10 @@ unsafe extern "C" {
 }
 /// `asr` on `i64` slices by a scalar shift.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2418,6 +2854,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sli_i32(a: *const i32, shift: i32, out: *mut i32, len: usize);
 }
 /// `sli` on `i32` slices (scalar shift).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2435,6 +2875,10 @@ unsafe extern "C" {
 }
 /// `sri` on `i32` slices (scalar shift).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2450,6 +2894,10 @@ unsafe extern "C" {
     fn rust_isa_sve_srshl_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
 }
 /// `srshl` on `i32` slices (scalar shift).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2468,6 +2916,10 @@ unsafe extern "C" {
 }
 /// `urshl` on `u32` slices (scalar shift).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2484,6 +2936,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqshl_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
 }
 /// `sqshl` on `i32` slices (scalar shift).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2502,6 +2958,10 @@ unsafe extern "C" {
 }
 /// `uqshl` on `u32` slices (scalar shift).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2518,6 +2978,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqrshl_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
 }
 /// `sqrshl` on `i32` slices (scalar shift).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2536,6 +3000,10 @@ unsafe extern "C" {
 }
 /// `uqrshl` on `u32` slices (scalar shift).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2553,6 +3021,10 @@ unsafe extern "C" {
 }
 /// `srshr` on `i32` slices (scalar shift).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2568,6 +3040,10 @@ unsafe extern "C" {
     fn rust_isa_sve_urshr_u32(a: *const u32, shift: i32, out: *mut u32, len: usize);
 }
 /// `urshr` on `u32` slices (scalar shift).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2590,6 +3066,10 @@ unsafe extern "C" {
     );
 }
 /// `srsra` on `i32` slices with an accumulator.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2614,6 +3094,10 @@ unsafe extern "C" {
 }
 /// `ursra` on `u32` slices with an accumulator.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2630,6 +3114,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ssra_i32(a: *const i32, shift: i32, acc: *const i32, out: *mut i32, len: usize);
 }
 /// `ssra` on `i32` slices with an accumulator.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2648,6 +3136,10 @@ unsafe extern "C" {
 }
 /// `usra` on `u32` slices with an accumulator.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2664,6 +3156,10 @@ unsafe extern "C" {
     fn rust_isa_sve_abd_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
 /// `abd` on `f32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2682,6 +3178,10 @@ unsafe extern "C" {
 }
 /// `mulx` on `f32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2698,6 +3198,10 @@ unsafe extern "C" {
     fn rust_isa_sve_recps_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
 /// `recps` from `f32` to `f32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2716,6 +3220,10 @@ unsafe extern "C" {
 }
 /// `rsqrts` from `f32` to `f32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2733,6 +3241,10 @@ unsafe extern "C" {
 }
 /// `recpe` from `f32` to `f32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2749,6 +3261,10 @@ unsafe extern "C" {
 }
 /// `rsqrte` from `f32` to `f32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2764,6 +3280,10 @@ unsafe extern "C" {
     fn rust_isa_sve_abd_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
 /// `abd` on `f64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2782,6 +3302,10 @@ unsafe extern "C" {
 }
 /// `mulx` on `f64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2798,6 +3322,10 @@ unsafe extern "C" {
     fn rust_isa_sve_recps_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
 /// `recps` from `f64` to `f64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2816,6 +3344,10 @@ unsafe extern "C" {
 }
 /// `rsqrts` from `f64` to `f64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2833,6 +3365,10 @@ unsafe extern "C" {
 }
 /// `recpe` from `f64` to `f64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2849,6 +3385,10 @@ unsafe extern "C" {
 }
 /// `rsqrte` from `f64` to `f64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2864,6 +3404,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fcmeq_f32(a: *const f32, b: *const f32, out: *mut u32, len: usize);
 }
 /// `fcmeq` on `f32` slices; true lanes become `u32::MAX`.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2882,6 +3426,10 @@ unsafe extern "C" {
 }
 /// `fcmeq` on `f64` slices; true lanes become `u32::MAX`.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2898,6 +3446,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fcmge_f32(a: *const f32, b: *const f32, out: *mut u32, len: usize);
 }
 /// `fcmge` on `f32` slices; true lanes become `u32::MAX`.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2916,6 +3468,10 @@ unsafe extern "C" {
 }
 /// `fcmge` on `f64` slices; true lanes become `u32::MAX`.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2932,6 +3488,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fcmgt_f32(a: *const f32, b: *const f32, out: *mut u32, len: usize);
 }
 /// `fcmgt` on `f32` slices; true lanes become `u32::MAX`.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2950,6 +3510,10 @@ unsafe extern "C" {
 }
 /// `fcmgt` on `f64` slices; true lanes become `u32::MAX`.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -2966,6 +3530,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fcmle_f32(a: *const f32, b: *const f32, out: *mut u32, len: usize);
 }
 /// `fcmle` on `f32` slices; true lanes become `u32::MAX`.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -2984,6 +3552,10 @@ unsafe extern "C" {
 }
 /// `fcmle` on `f64` slices; true lanes become `u32::MAX`.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3000,6 +3572,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fcmlt_f32(a: *const f32, b: *const f32, out: *mut u32, len: usize);
 }
 /// `fcmlt` on `f32` slices; true lanes become `u32::MAX`.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -3018,6 +3594,10 @@ unsafe extern "C" {
 }
 /// `fcmlt` on `f64` slices; true lanes become `u32::MAX`.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3034,6 +3614,10 @@ unsafe extern "C" {
     fn rust_isa_sve_facge_f32(a: *const f32, b: *const f32, out: *mut u32, len: usize);
 }
 /// `facge` on `f32` slices; true lanes become `u32::MAX`.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -3052,6 +3636,10 @@ unsafe extern "C" {
 }
 /// `facge` on `f64` slices; true lanes become `u32::MAX`.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3069,6 +3657,10 @@ unsafe extern "C" {
 }
 /// `facgt` on `f32` slices; true lanes become `u32::MAX`.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3085,6 +3677,10 @@ unsafe extern "C" {
     fn rust_isa_sve_facgt_f64(a: *const f64, b: *const f64, out: *mut u32, len: usize);
 }
 /// `facgt` on `f64` slices; true lanes become `u32::MAX`.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -3161,6 +3757,10 @@ unsafe extern "C" {
 }
 /// `mad` on `f32` slices with an accumulator.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3190,6 +3790,10 @@ unsafe extern "C" {
     );
 }
 /// `msb` on `f32` slices with an accumulator.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -3221,6 +3825,10 @@ unsafe extern "C" {
 }
 /// `fmad` on `f32` slices with an accumulator.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3250,6 +3858,10 @@ unsafe extern "C" {
     );
 }
 /// `fmsb` on `f32` slices with an accumulator.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -3281,6 +3893,10 @@ unsafe extern "C" {
 }
 /// `fnmad` on `f32` slices with an accumulator.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3310,6 +3926,10 @@ unsafe extern "C" {
     );
 }
 /// `fnmsb` on `f32` slices with an accumulator.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -3341,6 +3961,10 @@ unsafe extern "C" {
 }
 /// `fnmla` on `f32` slices with an accumulator.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3370,6 +3994,10 @@ unsafe extern "C" {
     );
 }
 /// `fnmls` on `f32` slices with an accumulator.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -3401,6 +4029,10 @@ unsafe extern "C" {
 }
 /// `mad` on `f64` slices with an accumulator.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3430,6 +4062,10 @@ unsafe extern "C" {
     );
 }
 /// `msb` on `f64` slices with an accumulator.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -3461,6 +4097,10 @@ unsafe extern "C" {
 }
 /// `fmad` on `f64` slices with an accumulator.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3490,6 +4130,10 @@ unsafe extern "C" {
     );
 }
 /// `fmsb` on `f64` slices with an accumulator.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -3521,6 +4165,10 @@ unsafe extern "C" {
 }
 /// `fnmad` on `f64` slices with an accumulator.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3550,6 +4198,10 @@ unsafe extern "C" {
     );
 }
 /// `fnmsb` on `f64` slices with an accumulator.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -3581,6 +4233,10 @@ unsafe extern "C" {
 }
 /// `fnmla` on `f64` slices with an accumulator.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3611,6 +4267,10 @@ unsafe extern "C" {
 }
 /// `fnmls` on `f64` slices with an accumulator.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3635,6 +4295,10 @@ unsafe extern "C" {
 }
 /// Complex `cadd` on `f32` slices with a 90 degree rotation.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3651,6 +4315,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fcadd_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
 /// Complex `fcadd` on `f32` slices with a 90 degree rotation.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -3674,6 +4342,10 @@ unsafe extern "C" {
     );
 }
 /// Complex `fcmla` on `f32` slices with a 90 degree rotation.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -3705,6 +4377,10 @@ unsafe extern "C" {
 }
 /// Complex `cmla` on `f32` slices with a 90 degree rotation.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3729,6 +4405,10 @@ unsafe extern "C" {
 }
 /// Complex `cadd` on `f64` slices with a 90 degree rotation.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3745,6 +4425,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fcadd_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
 /// Complex `fcadd` on `f64` slices with a 90 degree rotation.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -3768,6 +4452,10 @@ unsafe extern "C" {
     );
 }
 /// Complex `fcmla` on `f64` slices with a 90 degree rotation.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -3799,6 +4487,10 @@ unsafe extern "C" {
 }
 /// Complex `cmla` on `f64` slices with a 90 degree rotation.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3823,6 +4515,10 @@ unsafe extern "C" {
 }
 /// `ftsmul` on `f32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3839,6 +4535,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ftssel_f32(a: *const f32, b: *const u32, out: *mut f32, len: usize);
 }
 /// `ftssel` on `f32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -3857,6 +4557,10 @@ unsafe extern "C" {
 }
 /// `ftmad` on `f32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3874,6 +4578,10 @@ unsafe extern "C" {
 }
 /// `cpy` on `i32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3889,6 +4597,10 @@ unsafe extern "C" {
     fn rust_isa_sve_mov_i32(a: *const i32, out: *mut i32, len: usize);
 }
 /// `mov` on `i32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -3906,6 +4618,10 @@ unsafe extern "C" {
 }
 /// `movprfx` on `i32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3922,6 +4638,10 @@ unsafe extern "C" {
 }
 /// `compact` on `i32` slices with an all-true predicate.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3937,6 +4657,10 @@ unsafe extern "C" {
     fn rust_isa_sve_trn1_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
 }
 /// `trn1` on `i32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -3955,6 +4679,10 @@ unsafe extern "C" {
 }
 /// `trn2` on `i32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -3971,6 +4699,10 @@ unsafe extern "C" {
     fn rust_isa_sve_zip1_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
 }
 /// `zip1` on `i32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -3989,6 +4721,10 @@ unsafe extern "C" {
 }
 /// `zip2` on `i32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4005,6 +4741,10 @@ unsafe extern "C" {
     fn rust_isa_sve_uzp1_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
 }
 /// `uzp1` on `i32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4023,6 +4763,10 @@ unsafe extern "C" {
 }
 /// `uzp2` on `i32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4039,6 +4783,10 @@ unsafe extern "C" {
     fn rust_isa_sve_splice_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
 }
 /// `splice` on `i32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4057,6 +4805,10 @@ unsafe extern "C" {
 }
 /// `ext` on `i32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4073,6 +4825,10 @@ unsafe extern "C" {
     fn rust_isa_sve_tbl_i32(a: *const i32, idx: *const u32, out: *mut i32, len: usize);
 }
 /// `tbl` on `i32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4091,6 +4847,10 @@ unsafe extern "C" {
 }
 /// `sel` on `i32` slices with an all-true predicate.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4107,6 +4867,10 @@ unsafe extern "C" {
     fn rust_isa_sve_csel_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
 }
 /// `csel` on `i32` slices with an all-true condition.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4224,6 +4988,10 @@ unsafe extern "C" {
 }
 /// `ld1` on `u8` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4239,6 +5007,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ld1_u16(a: *const u16, out: *mut u16, len: usize);
 }
 /// `ld1` on `u16` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4256,6 +5028,10 @@ unsafe extern "C" {
 }
 /// `ld1` on `u32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4271,6 +5047,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ld1_u64(a: *const u64, out: *mut u64, len: usize);
 }
 /// `ld1` on `u64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4288,6 +5068,10 @@ unsafe extern "C" {
 }
 /// `ld1` on `f32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4303,6 +5087,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ld1_f64(a: *const f64, out: *mut f64, len: usize);
 }
 /// `ld1` on `f64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4320,6 +5108,10 @@ unsafe extern "C" {
 }
 /// `ld1b` from `u8` to `u32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4335,6 +5127,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ld1sb_i8(a: *const i8, out: *mut i32, len: usize);
 }
 /// `ld1sb` from `i8` to `i32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4352,6 +5148,10 @@ unsafe extern "C" {
 }
 /// `ld1h` from `u16` to `u32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4367,6 +5167,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ld1sh_i16(a: *const i16, out: *mut i32, len: usize);
 }
 /// `ld1sh` from `i16` to `i32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4384,6 +5188,10 @@ unsafe extern "C" {
 }
 /// `ld1w` from `u32` to `u64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4399,6 +5207,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ld1sw_i32(a: *const i32, out: *mut i64, len: usize);
 }
 /// `ld1sw` from `i32` to `i64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4416,6 +5228,10 @@ unsafe extern "C" {
 }
 /// `ld1d` on `u64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4431,6 +5247,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ldnt1b_u8(a: *const u8, out: *mut u8, len: usize);
 }
 /// `ldnt1b` on `u8` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4448,6 +5268,10 @@ unsafe extern "C" {
 }
 /// `ldnt1h` on `u16` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4463,6 +5287,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ldnt1w_u32(a: *const u32, out: *mut u32, len: usize);
 }
 /// `ldnt1w` on `u32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4480,6 +5308,10 @@ unsafe extern "C" {
 }
 /// `ldnt1d` on `u64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4495,6 +5327,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ldff1b_u8(a: *const u8, out: *mut u8, len: usize);
 }
 /// `ldff1b` on `u8` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4512,6 +5348,10 @@ unsafe extern "C" {
 }
 /// `ldff1h` on `u16` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4527,6 +5367,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ldff1w_u32(a: *const u32, out: *mut u32, len: usize);
 }
 /// `ldff1w` on `u32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4544,6 +5388,10 @@ unsafe extern "C" {
 }
 /// `ldff1d` on `u64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4559,6 +5407,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ldnf1b_u8(a: *const u8, out: *mut u8, len: usize);
 }
 /// `ldnf1b` on `u8` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4576,6 +5428,10 @@ unsafe extern "C" {
 }
 /// `ldnf1h` on `u16` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4592,6 +5448,10 @@ unsafe extern "C" {
 }
 /// `ldnf1w` on `u32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4607,6 +5467,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ldnf1d_u64(a: *const u64, out: *mut u64, len: usize);
 }
 /// `ldnf1d` on `u64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4712,6 +5576,10 @@ unsafe extern "C" {
 }
 /// `ld1rb` broadcast from `u8` to `u32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4728,6 +5596,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ld1rsb_i8(a: *const i8, out: *mut i32, len: usize);
 }
 /// `ld1rsb` broadcast from `i8` to `i32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4746,6 +5618,10 @@ unsafe extern "C" {
 }
 /// `ld1rh` broadcast from `u16` to `u32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4762,6 +5638,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ld1rsh_i16(a: *const i16, out: *mut i32, len: usize);
 }
 /// `ld1rsh` broadcast from `i16` to `i32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4780,6 +5660,10 @@ unsafe extern "C" {
 }
 /// `ld1rw` broadcast from `u32` to `u64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4796,6 +5680,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ld1rsw_i32(a: *const i32, out: *mut i64, len: usize);
 }
 /// `ld1rsw` broadcast from `i32` to `i64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4814,6 +5702,10 @@ unsafe extern "C" {
 }
 /// `ld1rd` broadcast from `u64` to `u64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4831,6 +5723,10 @@ unsafe extern "C" {
 }
 /// `st1` on `u8` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4846,6 +5742,10 @@ unsafe extern "C" {
     fn rust_isa_sve_st1_u16(a: *const u16, out: *mut u16, len: usize);
 }
 /// `st1` on `u16` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4863,6 +5763,10 @@ unsafe extern "C" {
 }
 /// `st1` on `u32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4878,6 +5782,10 @@ unsafe extern "C" {
     fn rust_isa_sve_st1_u64(a: *const u64, out: *mut u64, len: usize);
 }
 /// `st1` on `u64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4895,6 +5803,10 @@ unsafe extern "C" {
 }
 /// `st1` on `f32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4910,6 +5822,10 @@ unsafe extern "C" {
     fn rust_isa_sve_st1_f64(a: *const f64, out: *mut f64, len: usize);
 }
 /// `st1` on `f64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4927,6 +5843,10 @@ unsafe extern "C" {
 }
 /// `st1b` from `u32` to `u8` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4942,6 +5862,10 @@ unsafe extern "C" {
     fn rust_isa_sve_st1h_u32(a: *const u32, out: *mut u16, len: usize);
 }
 /// `st1h` from `u32` to `u16` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4959,6 +5883,10 @@ unsafe extern "C" {
 }
 /// `st1w` from `u64` to `u32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -4974,6 +5902,10 @@ unsafe extern "C" {
     fn rust_isa_sve_stnt1b_u8(a: *const u8, out: *mut u8, len: usize);
 }
 /// `stnt1b` on `u8` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -4991,6 +5923,10 @@ unsafe extern "C" {
 }
 /// `stnt1h` on `u16` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -5006,6 +5942,10 @@ unsafe extern "C" {
     fn rust_isa_sve_stnt1w_u32(a: *const u32, out: *mut u32, len: usize);
 }
 /// `stnt1w` on `u32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -5023,6 +5963,10 @@ unsafe extern "C" {
 }
 /// `stnt1d` on `u64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -5038,6 +5982,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ld2b_u8(a: *const u8, out0: *mut u8, out1: *mut u8, len: usize);
 }
 /// `ld2b` deinterleave from `u8` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -5064,6 +6012,10 @@ unsafe extern "C" {
 }
 /// `ld2h` deinterleave from `u16` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -5088,6 +6040,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ld2w_u32(a: *const u32, out0: *mut u32, out1: *mut u32, len: usize);
 }
 /// `ld2w` deinterleave from `u32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -5114,6 +6070,10 @@ unsafe extern "C" {
 }
 /// `ld2d` deinterleave from `u64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -5138,6 +6098,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ld3b_u8(a: *const u8, out0: *mut u8, out1: *mut u8, out2: *mut u8, len: usize);
 }
 /// `ld3b` deinterleave from `u8` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -5181,6 +6145,10 @@ unsafe extern "C" {
 }
 /// `ld3h` deinterleave from `u16` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -5222,6 +6190,10 @@ unsafe extern "C" {
     );
 }
 /// `ld3w` deinterleave from `u32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -5265,6 +6237,10 @@ unsafe extern "C" {
 }
 /// `ld3d` deinterleave from `u64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -5307,6 +6283,10 @@ unsafe extern "C" {
     );
 }
 /// `ld4b` deinterleave from `u8` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -5363,6 +6343,10 @@ unsafe extern "C" {
 }
 /// `ld4h` deinterleave from `u16` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -5417,6 +6401,10 @@ unsafe extern "C" {
     );
 }
 /// `ld4w` deinterleave from `u32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -5473,6 +6461,10 @@ unsafe extern "C" {
 }
 /// `ld4d` deinterleave from `u64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -5521,6 +6513,10 @@ unsafe extern "C" {
 }
 /// `st2b` interleave to `u8` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -5541,6 +6537,10 @@ unsafe extern "C" {
     fn rust_isa_sve_st2h_u16(a0: *const u16, a1: *const u16, out: *mut u16, len: usize);
 }
 /// `st2h` interleave to `u16` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -5563,6 +6563,10 @@ unsafe extern "C" {
 }
 /// `st2w` interleave to `u32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -5584,6 +6588,10 @@ unsafe extern "C" {
 }
 /// `st2d` interleave to `u64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -5604,6 +6612,10 @@ unsafe extern "C" {
     fn rust_isa_sve_st3b_u8(a0: *const u8, a1: *const u8, a2: *const u8, out: *mut u8, len: usize);
 }
 /// `st3b` interleave to `u8` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -5639,6 +6651,10 @@ unsafe extern "C" {
 }
 /// `st3h` interleave to `u16` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -5672,6 +6688,10 @@ unsafe extern "C" {
     );
 }
 /// `st3w` interleave to `u32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -5707,6 +6727,10 @@ unsafe extern "C" {
 }
 /// `st3d` interleave to `u64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -5741,6 +6765,10 @@ unsafe extern "C" {
     );
 }
 /// `st4b` interleave to `u8` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -5779,6 +6807,10 @@ unsafe extern "C" {
 }
 /// `st4h` interleave to `u16` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -5815,6 +6847,10 @@ unsafe extern "C" {
     );
 }
 /// `st4w` interleave to `u32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -5853,6 +6889,10 @@ unsafe extern "C" {
 }
 /// `st4d` interleave to `u64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -5883,6 +6923,10 @@ unsafe extern "C" {
 }
 /// `sqadd` on `i8` slices (scalar saturating fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -5899,6 +6943,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqsub_i8(a: *const i8, b: *const i8, out: *mut i8, len: usize);
 }
 /// `sqsub` on `i8` slices (scalar saturating fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -5917,6 +6965,10 @@ unsafe extern "C" {
 }
 /// `sqadd` on `i16` slices (scalar saturating fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -5933,6 +6985,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqsub_i16(a: *const i16, b: *const i16, out: *mut i16, len: usize);
 }
 /// `sqsub` on `i16` slices (scalar saturating fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -5951,6 +7007,10 @@ unsafe extern "C" {
 }
 /// `sqadd` on `i32` slices (scalar saturating fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -5967,6 +7027,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqsub_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
 }
 /// `sqsub` on `i32` slices (scalar saturating fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -5985,6 +7049,10 @@ unsafe extern "C" {
 }
 /// `sqadd` on `i64` slices (scalar saturating fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6001,6 +7069,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqsub_i64(a: *const i64, b: *const i64, out: *mut i64, len: usize);
 }
 /// `sqsub` on `i64` slices (scalar saturating fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6019,6 +7091,10 @@ unsafe extern "C" {
 }
 /// `uqadd` on `u8` slices (scalar saturating fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6035,6 +7111,10 @@ unsafe extern "C" {
     fn rust_isa_sve_uqsub_u8(a: *const u8, b: *const u8, out: *mut u8, len: usize);
 }
 /// `uqsub` on `u8` slices (scalar saturating fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6053,6 +7133,10 @@ unsafe extern "C" {
 }
 /// `uqadd` on `u16` slices (scalar saturating fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6069,6 +7153,10 @@ unsafe extern "C" {
     fn rust_isa_sve_uqsub_u16(a: *const u16, b: *const u16, out: *mut u16, len: usize);
 }
 /// `uqsub` on `u16` slices (scalar saturating fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6087,6 +7175,10 @@ unsafe extern "C" {
 }
 /// `uqadd` on `u32` slices (scalar saturating fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6103,6 +7195,10 @@ unsafe extern "C" {
     fn rust_isa_sve_uqsub_u32(a: *const u32, b: *const u32, out: *mut u32, len: usize);
 }
 /// `uqsub` on `u32` slices (scalar saturating fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6121,6 +7217,10 @@ unsafe extern "C" {
 }
 /// `uqadd` on `u64` slices (scalar saturating fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6137,6 +7237,10 @@ unsafe extern "C" {
     fn rust_isa_sve_uqsub_u64(a: *const u64, b: *const u64, out: *mut u64, len: usize);
 }
 /// `uqsub` on `u64` slices (scalar saturating fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6155,6 +7259,10 @@ unsafe extern "C" {
 }
 /// `sqxtnb` from `i32` to `i16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6170,6 +7278,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqxtnt_i32(acc: *const i16, a: *const i32, out: *mut i16, len: usize);
 }
 /// `sqxtnt` from `i32` to `i16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6188,6 +7300,10 @@ unsafe extern "C" {
 }
 /// `sqxtunb` from `i32` to `u16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6203,6 +7319,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqxtunt_i32(acc: *const u16, a: *const i32, out: *mut u16, len: usize);
 }
 /// `sqxtunt` from `i32` to `u16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6221,6 +7341,10 @@ unsafe extern "C" {
 }
 /// `uqxtnb` from `u32` to `u16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6236,6 +7360,10 @@ unsafe extern "C" {
     fn rust_isa_sve_uqxtnt_u32(acc: *const u16, a: *const u32, out: *mut u16, len: usize);
 }
 /// `uqxtnt` from `u32` to `u16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6254,6 +7382,10 @@ unsafe extern "C" {
 }
 /// `sqdmulh` on `i16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6270,6 +7402,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqrdmulh_i16(a: *const i16, b: *const i16, out: *mut i16, len: usize);
 }
 /// `sqrdmulh` on `i16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6288,6 +7424,10 @@ unsafe extern "C" {
 }
 /// `sqdmulh` on `i32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6305,6 +7445,10 @@ unsafe extern "C" {
 }
 /// `sqrdmulh` on `i32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6321,6 +7465,10 @@ unsafe extern "C" {
     fn rust_isa_sve_bsl_i32(a: *const i32, b: *const i32, c: *const i32, out: *mut i32, len: usize);
 }
 /// `bsl` on `i32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6346,6 +7494,10 @@ unsafe extern "C" {
 }
 /// `cadd` on `i32` slices with a 90 degree rotation (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6362,6 +7514,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqcadd_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
 }
 /// `sqcadd` on `i32` slices with a 90 degree rotation (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6380,6 +7536,10 @@ unsafe extern "C" {
 }
 /// `sclamp` on `i32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6396,6 +7556,10 @@ unsafe extern "C" {
 }
 /// `uclamp` on `u32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6411,6 +7575,10 @@ unsafe extern "C" {
     fn rust_isa_sve_scale_f32(a: *const f32, b: *const i32, out: *mut f32, len: usize);
 }
 /// `fscale` on `f32` slices with `i32` exponents.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6429,6 +7597,10 @@ unsafe extern "C" {
 }
 /// `fmov` on `f32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6444,6 +7616,10 @@ unsafe extern "C" {
     fn rust_isa_sve_scale_f64(a: *const f64, b: *const i64, out: *mut f64, len: usize);
 }
 /// `fscale` on `f64` slices with `i64` exponents.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6462,6 +7638,10 @@ unsafe extern "C" {
 }
 /// `fmov` on `f64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6477,6 +7657,10 @@ unsafe extern "C" {
     fn rust_isa_sve_saddlb_i8(a: *const i8, b: *const i8, out: *mut i16, len: usize);
 }
 /// `saddlb` from `i8` to `i16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6495,6 +7679,10 @@ unsafe extern "C" {
 }
 /// `saddlt` from `i8` to `i16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6511,6 +7699,10 @@ unsafe extern "C" {
     fn rust_isa_sve_saddlbt_i8(a: *const i8, b: *const i8, out: *mut i16, len: usize);
 }
 /// `saddlbt` from `i8` to `i16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6529,6 +7721,10 @@ unsafe extern "C" {
 }
 /// `ssublb` from `i8` to `i16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6545,6 +7741,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ssublt_i8(a: *const i8, b: *const i8, out: *mut i16, len: usize);
 }
 /// `ssublt` from `i8` to `i16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6563,6 +7763,10 @@ unsafe extern "C" {
 }
 /// `ssublbt` from `i8` to `i16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6579,6 +7783,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ssubltb_i8(a: *const i8, b: *const i8, out: *mut i16, len: usize);
 }
 /// `ssubltb` from `i8` to `i16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6597,6 +7805,10 @@ unsafe extern "C" {
 }
 /// `saddwb` from `i8` to `i16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6613,6 +7825,10 @@ unsafe extern "C" {
     fn rust_isa_sve_saddwt_i8(a: *const i8, b: *const i8, out: *mut i16, len: usize);
 }
 /// `saddwt` from `i8` to `i16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6631,6 +7847,10 @@ unsafe extern "C" {
 }
 /// `ssubwb` from `i8` to `i16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6647,6 +7867,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ssubwt_i8(a: *const i8, b: *const i8, out: *mut i16, len: usize);
 }
 /// `ssubwt` from `i8` to `i16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6665,6 +7889,10 @@ unsafe extern "C" {
 }
 /// `uaddlb` from `u8` to `u16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6681,6 +7909,10 @@ unsafe extern "C" {
     fn rust_isa_sve_uaddlt_u8(a: *const u8, b: *const u8, out: *mut u16, len: usize);
 }
 /// `uaddlt` from `u8` to `u16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6699,6 +7931,10 @@ unsafe extern "C" {
 }
 /// `usublb` from `u8` to `u16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6715,6 +7951,10 @@ unsafe extern "C" {
     fn rust_isa_sve_usublt_u8(a: *const u8, b: *const u8, out: *mut u16, len: usize);
 }
 /// `usublt` from `u8` to `u16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6733,6 +7973,10 @@ unsafe extern "C" {
 }
 /// `usublbt` from `u8` to `u16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6749,6 +7993,10 @@ unsafe extern "C" {
     fn rust_isa_sve_usubltb_u8(a: *const u8, b: *const u8, out: *mut u16, len: usize);
 }
 /// `usubltb` from `u8` to `u16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6767,6 +8015,10 @@ unsafe extern "C" {
 }
 /// `uaddwb` from `u8` to `u16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6783,6 +8035,10 @@ unsafe extern "C" {
     fn rust_isa_sve_uaddwt_u8(a: *const u8, b: *const u8, out: *mut u16, len: usize);
 }
 /// `uaddwt` from `u8` to `u16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6801,6 +8057,10 @@ unsafe extern "C" {
 }
 /// `usubwb` from `u8` to `u16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6817,6 +8077,10 @@ unsafe extern "C" {
     fn rust_isa_sve_usubwt_u8(a: *const u8, b: *const u8, out: *mut u16, len: usize);
 }
 /// `usubwt` from `u8` to `u16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6835,6 +8099,10 @@ unsafe extern "C" {
 }
 /// `saddlh` from `i16` to `i32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6851,6 +8119,10 @@ unsafe extern "C" {
     fn rust_isa_sve_saddlht_i16(a: *const i16, b: *const i16, out: *mut i32, len: usize);
 }
 /// `saddlht` from `i16` to `i32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6869,6 +8141,10 @@ unsafe extern "C" {
 }
 /// `uaddlh` from `u16` to `u32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6885,6 +8161,10 @@ unsafe extern "C" {
     fn rust_isa_sve_uaddlht_u16(a: *const u16, b: *const u16, out: *mut u32, len: usize);
 }
 /// `uaddlht` from `u16` to `u32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6903,6 +8183,10 @@ unsafe extern "C" {
 }
 /// `sabdlb` from `i8` to `i16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6919,6 +8203,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sabdlt_i8(a: *const i8, b: *const i8, out: *mut i16, len: usize);
 }
 /// `sabdlt` from `i8` to `i16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6937,6 +8225,10 @@ unsafe extern "C" {
 }
 /// `uabdlb` from `u8` to `u16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6953,6 +8245,10 @@ unsafe extern "C" {
     fn rust_isa_sve_uabdlt_u8(a: *const u8, b: *const u8, out: *mut u16, len: usize);
 }
 /// `uabdlt` from `u8` to `u16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -6971,6 +8267,10 @@ unsafe extern "C" {
 }
 /// `smullb` from `i8` to `i16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -6987,6 +8287,10 @@ unsafe extern "C" {
     fn rust_isa_sve_smullt_i8(a: *const i8, b: *const i8, out: *mut i16, len: usize);
 }
 /// `smullt` from `i8` to `i16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7005,6 +8309,10 @@ unsafe extern "C" {
 }
 /// `umullb` from `u8` to `u16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7021,6 +8329,10 @@ unsafe extern "C" {
     fn rust_isa_sve_umullt_u8(a: *const u8, b: *const u8, out: *mut u16, len: usize);
 }
 /// `umullt` from `u8` to `u16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7039,6 +8351,10 @@ unsafe extern "C" {
 }
 /// `sqdmullb` from `i16` to `i32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7055,6 +8371,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqdmullt_i16(a: *const i16, b: *const i16, out: *mut i32, len: usize);
 }
 /// `sqdmullt` from `i16` to `i32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7078,6 +8398,10 @@ unsafe extern "C" {
     );
 }
 /// `smlalb` from `i8` to `i16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7109,6 +8433,10 @@ unsafe extern "C" {
 }
 /// `smlalt` from `i8` to `i16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7138,6 +8466,10 @@ unsafe extern "C" {
     );
 }
 /// `smlslb` from `i8` to `i16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7169,6 +8501,10 @@ unsafe extern "C" {
 }
 /// `smlslt` from `i8` to `i16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7198,6 +8534,10 @@ unsafe extern "C" {
     );
 }
 /// `umlalb` from `u8` to `u16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7229,6 +8569,10 @@ unsafe extern "C" {
 }
 /// `umlalt` from `u8` to `u16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7258,6 +8602,10 @@ unsafe extern "C" {
     );
 }
 /// `umlslb` from `u8` to `u16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7289,6 +8637,10 @@ unsafe extern "C" {
 }
 /// `umlslt` from `u8` to `u16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7318,6 +8670,10 @@ unsafe extern "C" {
     );
 }
 /// `sqdmlalb` from `i16` to `i32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7349,6 +8705,10 @@ unsafe extern "C" {
 }
 /// `sqdmlalt` from `i16` to `i32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7378,6 +8738,10 @@ unsafe extern "C" {
     );
 }
 /// `sqdmlalbt` from `i16` to `i32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7409,6 +8773,10 @@ unsafe extern "C" {
 }
 /// `sqdmlslb` from `i16` to `i32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7438,6 +8806,10 @@ unsafe extern "C" {
     );
 }
 /// `sqdmlslt` from `i16` to `i32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7469,6 +8841,10 @@ unsafe extern "C" {
 }
 /// `sqdmlslbt` from `i16` to `i32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7493,6 +8869,10 @@ unsafe extern "C" {
 }
 /// `sadalp` from `i16` to `i32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7513,6 +8893,10 @@ unsafe extern "C" {
 }
 /// `uadalp` from `u16` to `u32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7532,6 +8916,10 @@ unsafe extern "C" {
     fn rust_isa_sve_saba_i8(a: *const i8, b: *const i8, acc: *const i8, out: *mut i8, len: usize);
 }
 /// `saba` on `i8` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7563,6 +8951,10 @@ unsafe extern "C" {
 }
 /// `saba` on `i16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7593,6 +8985,10 @@ unsafe extern "C" {
 }
 /// `saba` on `i32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7616,6 +9012,10 @@ unsafe extern "C" {
     fn rust_isa_sve_uaba_u8(a: *const u8, b: *const u8, acc: *const u8, out: *mut u8, len: usize);
 }
 /// `uaba` on `u8` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7647,6 +9047,10 @@ unsafe extern "C" {
 }
 /// `uaba` on `u16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7676,6 +9080,10 @@ unsafe extern "C" {
     );
 }
 /// `uaba` on `u32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7707,6 +9115,10 @@ unsafe extern "C" {
 }
 /// `sabalb` from `i8` to `i16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7736,6 +9148,10 @@ unsafe extern "C" {
     );
 }
 /// `sabalt` from `i8` to `i16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7767,6 +9183,10 @@ unsafe extern "C" {
 }
 /// `uabalb` from `u8` to `u16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7797,6 +9217,10 @@ unsafe extern "C" {
 }
 /// `uabalt` from `u8` to `u16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7821,6 +9245,10 @@ unsafe extern "C" {
 }
 /// `srhadd` on `i8` slices (scalar rounding fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7837,6 +9265,10 @@ unsafe extern "C" {
     fn rust_isa_sve_srhadd_i16(a: *const i16, b: *const i16, out: *mut i16, len: usize);
 }
 /// `srhadd` on `i16` slices (scalar rounding fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7855,6 +9287,10 @@ unsafe extern "C" {
 }
 /// `srhadd` on `i32` slices (scalar rounding fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7871,6 +9307,10 @@ unsafe extern "C" {
     fn rust_isa_sve_urhadd_u8(a: *const u8, b: *const u8, out: *mut u8, len: usize);
 }
 /// `urhadd` on `u8` slices (scalar rounding fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7889,6 +9329,10 @@ unsafe extern "C" {
 }
 /// `urhadd` on `u16` slices (scalar rounding fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7905,6 +9349,10 @@ unsafe extern "C" {
     fn rust_isa_sve_urhadd_u32(a: *const u32, b: *const u32, out: *mut u32, len: usize);
 }
 /// `urhadd` on `u32` slices (scalar rounding fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7923,6 +9371,10 @@ unsafe extern "C" {
 }
 /// `xtn` from `i32` to `i16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7938,6 +9390,10 @@ unsafe extern "C" {
     fn rust_isa_sve_raddhnb_i32(a: *const i32, b: *const i32, out: *mut i16, len: usize);
 }
 /// `raddhnb` from `i32` to `i16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7956,6 +9412,10 @@ unsafe extern "C" {
 }
 /// `raddhnt` from `i32` to `i16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -7972,6 +9432,10 @@ unsafe extern "C" {
     fn rust_isa_sve_rsubhnb_i32(a: *const i32, b: *const i32, out: *mut i16, len: usize);
 }
 /// `rsubhnb` from `i32` to `i16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -7990,6 +9454,10 @@ unsafe extern "C" {
 }
 /// `rsubhnt` from `i32` to `i16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8006,6 +9474,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqshrnb_i32(a: *const i32, shift: i32, out: *mut i16, len: usize);
 }
 /// `sqshrnb` from `i32` to `i16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8029,6 +9501,10 @@ unsafe extern "C" {
 }
 /// `sqshrnt` from `i32` to `i16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8045,6 +9521,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqrshrnb_i32(a: *const i32, shift: i32, out: *mut i16, len: usize);
 }
 /// `sqrshrnb` from `i32` to `i16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8068,6 +9548,10 @@ unsafe extern "C" {
 }
 /// `sqrshrnt` from `i32` to `i16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8084,6 +9568,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqshrunb_i32(a: *const i32, shift: i32, out: *mut u16, len: usize);
 }
 /// `sqshrunb` from `i32` to `u16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8107,6 +9595,10 @@ unsafe extern "C" {
 }
 /// `sqshrunt` from `i32` to `u16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8123,6 +9615,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqrshrunb_i32(a: *const i32, shift: i32, out: *mut u16, len: usize);
 }
 /// `sqrshrunb` from `i32` to `u16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8146,6 +9642,10 @@ unsafe extern "C" {
 }
 /// `sqrshrunt` from `i32` to `u16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8162,6 +9662,10 @@ unsafe extern "C" {
     fn rust_isa_sve_uqshrnb_u32(a: *const u32, shift: i32, out: *mut u16, len: usize);
 }
 /// `uqshrnb` from `u32` to `u16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8185,6 +9689,10 @@ unsafe extern "C" {
 }
 /// `uqshrnt` from `u32` to `u16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8201,6 +9709,10 @@ unsafe extern "C" {
     fn rust_isa_sve_uqrshrnb_u32(a: *const u32, shift: i32, out: *mut u16, len: usize);
 }
 /// `uqrshrnb` from `u32` to `u16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8224,6 +9736,10 @@ unsafe extern "C" {
 }
 /// `uqrshrnt` from `u32` to `u16` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8240,6 +9756,10 @@ unsafe extern "C" {
     fn rust_isa_sve_sqshlu_i32(a: *const i32, shift: i32, out: *mut i32, len: usize);
 }
 /// `sqshlu` on `i32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8262,6 +9782,10 @@ unsafe extern "C" {
     );
 }
 /// `sqrdmlah` on `i32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8293,6 +9817,10 @@ unsafe extern "C" {
 }
 /// `sqrdmlsh` on `i32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8322,6 +9850,10 @@ unsafe extern "C" {
     );
 }
 /// `sdot` on `i32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8357,6 +9889,10 @@ unsafe extern "C" {
 }
 /// `sdotb` on `i32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8390,6 +9926,10 @@ unsafe extern "C" {
     );
 }
 /// `sdott` on `i32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8425,6 +9965,10 @@ unsafe extern "C" {
 }
 /// `udot` on `i32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8458,6 +10002,10 @@ unsafe extern "C" {
     );
 }
 /// `udotb` on `i32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8493,6 +10041,10 @@ unsafe extern "C" {
 }
 /// `udott` on `i32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8526,6 +10078,10 @@ unsafe extern "C" {
     );
 }
 /// `sudot` on `i32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8561,6 +10117,10 @@ unsafe extern "C" {
 }
 /// `usdot` on `i32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8594,6 +10154,10 @@ unsafe extern "C" {
     );
 }
 /// `smmla` on `i32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8629,6 +10193,10 @@ unsafe extern "C" {
 }
 /// `ummla` on `u32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8663,6 +10231,10 @@ unsafe extern "C" {
 }
 /// `usmmla` on `i32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8691,6 +10263,10 @@ unsafe extern "C" {
 }
 /// `urecpe` from `u32` to `f32` slices (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8706,6 +10282,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ld2_u32(a: *const u32, out0: *mut u32, out1: *mut u32, len: usize);
 }
 /// `ld2` deinterleave from `u32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8737,6 +10317,10 @@ unsafe extern "C" {
     );
 }
 /// `ld3` deinterleave from `u32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8780,6 +10364,10 @@ unsafe extern "C" {
     );
 }
 /// `ld4` deinterleave from `u32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8829,6 +10417,10 @@ unsafe extern "C" {
 }
 /// `st2` interleave to `u32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8855,6 +10447,10 @@ unsafe extern "C" {
     );
 }
 /// `st3` interleave to `u32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8891,6 +10487,10 @@ unsafe extern "C" {
 }
 /// `st4` interleave to `u32` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8921,6 +10521,10 @@ unsafe extern "C" {
 }
 /// `st1d` on `u64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8936,6 +10540,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fcvt_f32_f64(a: *const f64, out: *mut f32, len: usize);
 }
 /// Convert `f64` slices to `f32` (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8953,6 +10561,10 @@ unsafe extern "C" {
 }
 /// Convert `f32` slices to `f64` (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -8968,6 +10580,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fcvtzs_i32_f32(a: *const f32, out: *mut i32, len: usize);
 }
 /// `fcvtzs` from `f32` to `i32` (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -8985,6 +10601,10 @@ unsafe extern "C" {
 }
 /// `fcvtzs` from `f64` to `i32` (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9000,6 +10620,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fcvtzs_i64_f32(a: *const f32, out: *mut i64, len: usize);
 }
 /// `fcvtzs` from `f32` to `i64` (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9017,6 +10641,10 @@ unsafe extern "C" {
 }
 /// `fcvtzs` from `f64` to `i64` (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9032,6 +10660,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fcvtzu_u32_f32(a: *const f32, out: *mut u32, len: usize);
 }
 /// `fcvtzu` from `f32` to `u32` (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9049,6 +10681,10 @@ unsafe extern "C" {
 }
 /// `fcvtzu` from `f64` to `u32` (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9064,6 +10700,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fcvtzu_u64_f32(a: *const f32, out: *mut u64, len: usize);
 }
 /// `fcvtzu` from `f32` to `u64` (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9081,6 +10721,10 @@ unsafe extern "C" {
 }
 /// `fcvtzu` from `f64` to `u64` (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9096,6 +10740,10 @@ unsafe extern "C" {
     fn rust_isa_sve_scvtf_f32_i32(a: *const i32, out: *mut f32, len: usize);
 }
 /// `scvtf` from `i32` to `f32` (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9113,6 +10761,10 @@ unsafe extern "C" {
 }
 /// `scvtf` from `i64` to `f32` (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9128,6 +10780,10 @@ unsafe extern "C" {
     fn rust_isa_sve_scvtf_f64_i32(a: *const i32, out: *mut f64, len: usize);
 }
 /// `scvtf` from `i32` to `f64` (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9145,6 +10801,10 @@ unsafe extern "C" {
 }
 /// `scvtf` from `i64` to `f64` (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9160,6 +10820,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ucvtf_f32_u32(a: *const u32, out: *mut f32, len: usize);
 }
 /// `ucvtf` from `u32` to `f32` (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9177,6 +10841,10 @@ unsafe extern "C" {
 }
 /// `ucvtf` from `u64` to `f32` (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9192,6 +10860,10 @@ unsafe extern "C" {
     fn rust_isa_sve_ucvtf_f64_u32(a: *const u32, out: *mut f64, len: usize);
 }
 /// `ucvtf` from `u32` to `f64` (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9209,6 +10881,10 @@ unsafe extern "C" {
 }
 /// `ucvtf` from `u64` to `f64` (scalar fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9224,6 +10900,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fabs_f32(a: *const f32, out: *mut f32, len: usize);
 }
 /// `fabs` on `f32` slices (alias of `abs`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9241,6 +10921,10 @@ unsafe extern "C" {
 }
 /// `fneg` on `f32` slices (alias of `neg`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9256,6 +10940,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fsqrt_f32(a: *const f32, out: *mut f32, len: usize);
 }
 /// `fsqrt` on `f32` slices (alias of `sqrt`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9273,6 +10961,10 @@ unsafe extern "C" {
 }
 /// `frecpe` on `f32` slices (alias of `recpe`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9288,6 +10980,10 @@ unsafe extern "C" {
     fn rust_isa_sve_frinta_f32(a: *const f32, out: *mut f32, len: usize);
 }
 /// `frinta` on `f32` slices (alias of `rinta`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9305,6 +11001,10 @@ unsafe extern "C" {
 }
 /// `frinti` on `f32` slices (alias of `rinti`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9320,6 +11020,10 @@ unsafe extern "C" {
     fn rust_isa_sve_frintx_f32(a: *const f32, out: *mut f32, len: usize);
 }
 /// `frintx` on `f32` slices (alias of `rintx`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9337,6 +11041,10 @@ unsafe extern "C" {
 }
 /// `frintm` on `f32` slices (alias of `floor`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9352,6 +11060,10 @@ unsafe extern "C" {
     fn rust_isa_sve_frintn_f32(a: *const f32, out: *mut f32, len: usize);
 }
 /// `frintn` on `f32` slices (alias of `rint`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9369,6 +11081,10 @@ unsafe extern "C" {
 }
 /// `frintp` on `f32` slices (alias of `ceil`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9384,6 +11100,10 @@ unsafe extern "C" {
     fn rust_isa_sve_frintz_f32(a: *const f32, out: *mut f32, len: usize);
 }
 /// `frintz` on `f32` slices (alias of `trunc`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9401,6 +11121,10 @@ unsafe extern "C" {
 }
 /// `rintm` on `f32` slices (alias of `floor`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9416,6 +11140,10 @@ unsafe extern "C" {
     fn rust_isa_sve_rintn_f32(a: *const f32, out: *mut f32, len: usize);
 }
 /// `rintn` on `f32` slices (alias of `rint`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9433,6 +11161,10 @@ unsafe extern "C" {
 }
 /// `rintp` on `f32` slices (alias of `ceil`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9449,6 +11181,10 @@ unsafe extern "C" {
 }
 /// `rintz` on `f32` slices (alias of `trunc`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9464,6 +11200,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fadd_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
 /// `fadd` on `f32` slices (alias of `add`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9482,6 +11222,10 @@ unsafe extern "C" {
 }
 /// `fsub` on `f32` slices (alias of `sub`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9498,6 +11242,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fmul_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
 /// `fmul` on `f32` slices (alias of `mul`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9516,6 +11264,10 @@ unsafe extern "C" {
 }
 /// `fdiv` on `f32` slices (alias of `div`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9532,6 +11284,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fmax_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
 /// `fmax` on `f32` slices (alias of `max`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9550,6 +11306,10 @@ unsafe extern "C" {
 }
 /// `fmin` on `f32` slices (alias of `min`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9566,6 +11326,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fmaxnm_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
 /// `fmaxnm` on `f32` slices (alias of `maxnm`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9584,6 +11348,10 @@ unsafe extern "C" {
 }
 /// `fminnm` on `f32` slices (alias of `minnm`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9600,6 +11368,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fabd_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
 /// `fabd` on `f32` slices (alias of `abd`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9618,6 +11390,10 @@ unsafe extern "C" {
 }
 /// `fmulx` on `f32` slices (alias of `mulx`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9634,6 +11410,10 @@ unsafe extern "C" {
     fn rust_isa_sve_frecps_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
 /// `frecps` on `f32` slices (alias of `recps`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9652,6 +11432,10 @@ unsafe extern "C" {
 }
 /// `frsqrts` on `f32` slices (alias of `rsqrts`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9668,6 +11452,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fscale_f32(a: *const f32, b: *const i32, out: *mut f32, len: usize);
 }
 /// `fscale` on `f32` slices with `i32` exponents (alias of `scale`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9691,6 +11479,10 @@ unsafe extern "C" {
     );
 }
 /// `fmla` on `f32` slices (alias of `fma`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9721,6 +11513,10 @@ unsafe extern "C" {
     );
 }
 /// `fmls` on `f32` slices (alias of `mls`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9811,6 +11607,10 @@ unsafe extern "C" {
 }
 /// `fabs` on `f64` slices (alias of `abs`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9826,6 +11626,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fneg_f64(a: *const f64, out: *mut f64, len: usize);
 }
 /// `fneg` on `f64` slices (alias of `neg`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9843,6 +11647,10 @@ unsafe extern "C" {
 }
 /// `fsqrt` on `f64` slices (alias of `sqrt`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9858,6 +11666,10 @@ unsafe extern "C" {
     fn rust_isa_sve_frecpe_f64(a: *const f64, out: *mut f64, len: usize);
 }
 /// `frecpe` on `f64` slices (alias of `recpe`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9875,6 +11687,10 @@ unsafe extern "C" {
 }
 /// `frinta` on `f64` slices (alias of `rinta`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9890,6 +11706,10 @@ unsafe extern "C" {
     fn rust_isa_sve_frinti_f64(a: *const f64, out: *mut f64, len: usize);
 }
 /// `frinti` on `f64` slices (alias of `rinti`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9907,6 +11727,10 @@ unsafe extern "C" {
 }
 /// `frintx` on `f64` slices (alias of `rintx`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9922,6 +11746,10 @@ unsafe extern "C" {
     fn rust_isa_sve_frintm_f64(a: *const f64, out: *mut f64, len: usize);
 }
 /// `frintm` on `f64` slices (alias of `floor`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9939,6 +11767,10 @@ unsafe extern "C" {
 }
 /// `frintn` on `f64` slices (alias of `rint`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9954,6 +11786,10 @@ unsafe extern "C" {
     fn rust_isa_sve_frintp_f64(a: *const f64, out: *mut f64, len: usize);
 }
 /// `frintp` on `f64` slices (alias of `ceil`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -9971,6 +11807,10 @@ unsafe extern "C" {
 }
 /// `frintz` on `f64` slices (alias of `trunc`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -9986,6 +11826,10 @@ unsafe extern "C" {
     fn rust_isa_sve_rintm_f64(a: *const f64, out: *mut f64, len: usize);
 }
 /// `rintm` on `f64` slices (alias of `floor`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -10003,6 +11847,10 @@ unsafe extern "C" {
 }
 /// `rintn` on `f64` slices (alias of `rint`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -10018,6 +11866,10 @@ unsafe extern "C" {
     fn rust_isa_sve_rintp_f64(a: *const f64, out: *mut f64, len: usize);
 }
 /// `rintp` on `f64` slices (alias of `ceil`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -10035,6 +11887,10 @@ unsafe extern "C" {
 }
 /// `rintz` on `f64` slices (alias of `trunc`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -10050,6 +11906,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fadd_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
 /// `fadd` on `f64` slices (alias of `add`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -10068,6 +11928,10 @@ unsafe extern "C" {
 }
 /// `fsub` on `f64` slices (alias of `sub`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -10084,6 +11948,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fmul_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
 /// `fmul` on `f64` slices (alias of `mul`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -10102,6 +11970,10 @@ unsafe extern "C" {
 }
 /// `fdiv` on `f64` slices (alias of `div`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -10118,6 +11990,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fmax_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
 /// `fmax` on `f64` slices (alias of `max`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -10136,6 +12012,10 @@ unsafe extern "C" {
 }
 /// `fmin` on `f64` slices (alias of `min`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -10152,6 +12032,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fmaxnm_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
 /// `fmaxnm` on `f64` slices (alias of `maxnm`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -10170,6 +12054,10 @@ unsafe extern "C" {
 }
 /// `fminnm` on `f64` slices (alias of `minnm`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -10186,6 +12074,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fabd_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
 /// `fabd` on `f64` slices (alias of `abd`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -10204,6 +12096,10 @@ unsafe extern "C" {
 }
 /// `fmulx` on `f64` slices (alias of `mulx`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -10220,6 +12116,10 @@ unsafe extern "C" {
     fn rust_isa_sve_frecps_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
 /// `frecps` on `f64` slices (alias of `recps`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -10238,6 +12138,10 @@ unsafe extern "C" {
 }
 /// `frsqrts` on `f64` slices (alias of `rsqrts`).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -10254,6 +12158,10 @@ unsafe extern "C" {
     fn rust_isa_sve_fscale_f64(a: *const f64, b: *const i64, out: *mut f64, len: usize);
 }
 /// `fscale` on `f64` slices with `i64` exponents (alias of `scale`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -10277,6 +12185,10 @@ unsafe extern "C" {
     );
 }
 /// `fmla` on `f64` slices (alias of `fma`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -10307,6 +12219,10 @@ unsafe extern "C" {
     );
 }
 /// `fmls` on `f64` slices (alias of `mls`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -10397,6 +12313,10 @@ unsafe extern "C" {
 }
 /// `sdiv`/`udiv` on `i64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -10413,6 +12333,10 @@ unsafe extern "C" {
     fn rust_isa_sve_div_u32(a: *const u32, b: *const u32, out: *mut u32, len: usize);
 }
 /// `sdiv`/`udiv` on `u32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///
@@ -10431,6 +12355,10 @@ unsafe extern "C" {
 }
 /// `sdiv`/`udiv` on `u64` slices.
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -10448,6 +12376,10 @@ unsafe extern "C" {
 }
 /// `punpkhi` on `u8` slices (scalar boolean widening fallback).
 ///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
 /// # Safety
 ///
 /// The caller must enable SVE and the CPU must support it.
@@ -10463,6 +12395,10 @@ unsafe extern "C" {
     fn rust_isa_sve_punpklo_u8(a: *const u8, out: *mut u16, len: usize);
 }
 /// `punpklo` on `u8` slices (scalar boolean widening fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
 ///
 /// # Safety
 ///

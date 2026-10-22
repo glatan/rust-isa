@@ -7,6 +7,8 @@
 //! The values are [`V128`]. `extrq` and `insertq` use the register-controlled
 //! form. The control vector packs the length in bits 5:0 and the index in bits
 //! 13:8 of its low 64 bits.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use super::sse2::V128;
 

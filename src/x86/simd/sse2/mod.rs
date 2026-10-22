@@ -4,6 +4,8 @@
 //! Loads and stores take raw pointers and are `unsafe`.
 //!
 //! The values are [`V128`]. The instruction decides what the lanes mean.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 mod bitwise;
 mod double_convert;

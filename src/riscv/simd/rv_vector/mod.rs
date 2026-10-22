@@ -2,6 +2,8 @@
 //!
 //! The V extension is unstable. The caller must compile with
 //! `-C target-feature=+v`; the wrappers do not carry `#[target_feature]`.
+//!
+//! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
 
 mod v128;
 

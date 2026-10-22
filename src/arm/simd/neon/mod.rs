@@ -2,6 +2,8 @@
 //!
 //! NEON is unstable on this target. The caller must compile with
 //! `-C target-feature=+neon`.
+//!
+//! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
 
 mod arith;
 mod memory;

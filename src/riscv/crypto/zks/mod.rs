@@ -7,6 +7,8 @@
 //! The functions operate on scalar registers. The SM4 instructions take a
 //! two-bit byte-select immediate; `sm4ed::<BS>` and `sm4ks::<BS>` accept
 //! `0..=3` and a larger value is a compile-time error.
+//!
+//! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
 
 unsafe extern "C" {
     fn rust_isa_riscv_zks_sm3p0(value: u32) -> u32;

@@ -9,6 +9,8 @@
 //! hardware accumulator, so the value can be kept in memory between calls.
 //! `xxmfacc` returns the four accumulator registers and `xxmtacc` replaces
 //! them.
+//!
+//! Instruction behavior follows the [Power ISA](https://openpowerfoundation.org/specifications/isa/).
 
 use core::marker::PhantomData;
 

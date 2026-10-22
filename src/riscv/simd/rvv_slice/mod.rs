@@ -10,6 +10,8 @@
 //!
 //! The fixed-length [`V128`](crate::riscv::simd::rv_vector::V128) API is
 //! separate from this slice API.
+//!
+//! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
 
 unsafe extern "C" {
     fn rust_isa_rvv_slice_add_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);

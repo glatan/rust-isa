@@ -5,6 +5,8 @@
 //! feature.
 //!
 //! The functions return the address-generation result in a 64-bit register.
+//!
+//! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
 
 unsafe extern "C" {
     fn rust_isa_riscv_zba_sh1add(a: u64, b: u64) -> u64;

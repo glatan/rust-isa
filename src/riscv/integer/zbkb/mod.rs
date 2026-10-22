@@ -3,6 +3,8 @@
 //! These extensions are not part of the baseline. Every operation is `unsafe`
 //! and the caller must enable the extension with `#[target_feature]` or a
 //! global target feature.
+//!
+//! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
 
 unsafe extern "C" {
     fn rust_isa_riscv_zbkb_pack(a: u64, b: u64) -> u64;

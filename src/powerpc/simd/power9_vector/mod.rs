@@ -5,6 +5,8 @@
 //! C file is compiled with `-mcpu=power9`.
 //!
 //! The values are [`V128`].
+//!
+//! Instruction behavior follows the [Power ISA](https://openpowerfoundation.org/specifications/isa/).
 
 use super::altivec::V128;
 

@@ -3,6 +3,8 @@
 //! F32MM is not part of the AArch64 baseline. Every operation is `unsafe` and
 //! the caller must compile with F32MM and SVE enabled. The slice length must be
 //! a multiple of the SVE vector length in 32-bit elements.
+//!
+//! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
 
 unsafe extern "C" {
     fn rust_isa_f32mm_fmmla(a: *const f32, b: *const f32, acc: *mut f32, len: usize);

@@ -7,6 +7,8 @@
 //! the SSE2 backend so that the public path `x86::simd::sse::*` exists.
 //!
 //! [`V128`]: super::sse2::V128
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 pub use super::sse2::{
     addps, cmpeqps, cmpleps, cmpltps, divps, maxps, minps, mulps, shufps, sqrtps, subps,

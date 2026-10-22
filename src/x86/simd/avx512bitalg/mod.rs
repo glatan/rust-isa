@@ -8,6 +8,8 @@
 //! The values are [`V512`]. The population-count instructions return the count
 //! in each lane. `vpshufbitqmb` selects one bit from each 64-bit group and
 //! returns the selected bits as a mask.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use super::avx512f::V512;
 

@@ -1,4 +1,13 @@
 //! AES-NI.
+//!
+//! AES-NI is not part of the x86-64 baseline. Every operation is `unsafe` and
+//! requires the `aes` target feature. The values are [`V128`].
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software
+//! Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+//! The build uses `asm!` for the register and immediate forms.
+//!
+//! Instructions not listed in this module are not exposed.
 
 use core::arch::asm;
 

@@ -7,6 +7,8 @@
 //! The values are [`V256`] or [`V128`]. The dot-product operations treat the first operand
 //! as unsigned bytes or signed words and accumulate into 32-bit lanes. The
 //! `*s` variants saturate the 32-bit result.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use super::avx2::V256;
 use super::sse2::V128;

@@ -4,6 +4,8 @@
 //! Packed operations use [`V256`]; scalar `*ss` and `*sd` operations use
 //! [`V128`] and only define the low lane. The upper lanes of a scalar result
 //! are copied from `a`.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::sse2::V128;

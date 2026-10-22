@@ -7,6 +7,8 @@
 //! The values are [`V256`] or [`V128`]. The instructions multiply the low 52 bits of each
 //! unsigned 64-bit lane and accumulate. [`vpmadd52luq`] adds the low 52 bits of
 //! the product and [`vpmadd52huq`] adds bits 52..104.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use super::avx2::V256;
 use super::sse2::V128;

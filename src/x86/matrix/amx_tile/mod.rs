@@ -13,6 +13,8 @@
 //! The module contains the guard and `tilezero`. Tile loads, stores and
 //! matrix-multiply instructions require tile numbers and memory strides; they
 //! are intentionally omitted until the tile-state API is extended.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 mod instructions;
 

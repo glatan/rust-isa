@@ -11,6 +11,8 @@
 //! `vctzd` was introduced by Power ISA 3.0. It is re-exported here because the
 //! Power8 extension table lists it, and calling it requires the Power9 vector
 //! feature set.
+//!
+//! Instruction behavior follows the [Power ISA](https://openpowerfoundation.org/specifications/isa/).
 
 use super::altivec::V128;
 

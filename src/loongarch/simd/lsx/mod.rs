@@ -1,6 +1,8 @@
 //! LSX.
 //!
 //! LSX is part of the LoongArch baseline. The arithmetic operations are safe.
+//!
+//! Instruction behavior follows the [LoongArch Documentation](https://loongson.github.io/LoongArch-Documentation/).
 
 mod v128;
 

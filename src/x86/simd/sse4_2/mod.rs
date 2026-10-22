@@ -8,6 +8,8 @@
 //! The packed string comparison instructions use the low two bits of `imm` for
 //! the element size, bits 3-2 for the aggregation mode, bits 5-4 for polarity,
 //! and bit 6 for output selection.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use super::sse2::V128;
 

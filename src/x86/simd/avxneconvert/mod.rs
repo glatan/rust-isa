@@ -7,6 +7,8 @@
 //! The module converts between 32-bit float lanes and bfloat16 or IEEE 754
 //! binary16 lanes. The conversions use round-to-nearest-even. A NaN input is
 //! converted to the canonical quiet NaN of the destination format.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use super::avx2::V256;
 use super::sse2::V128;

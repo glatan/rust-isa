@@ -7,6 +7,8 @@
 //!
 //! The values are [`V512`]. The conflict instructions return, for each lane,
 //! the bitmask of earlier lanes with the same value.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use super::avx512f::V512;
 

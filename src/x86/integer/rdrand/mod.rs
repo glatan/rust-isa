@@ -7,6 +7,8 @@
 //! The function returns `None` when the hardware reports that no random value
 //! is available. The caller may retry. The quality of the random value is the
 //! responsibility of the CPU and the caller.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 unsafe extern "C" {
     fn rust_isa_rdrand_u32(out: *mut u32) -> i32;

@@ -6,6 +6,8 @@
 //!
 //! The values are [`V128`]. The `f64` functions use two 64-bit float lanes and
 //! the `f32` functions use four 32-bit float lanes.
+//!
+//! Instruction behavior follows the [Power ISA](https://openpowerfoundation.org/specifications/isa/).
 
 use super::altivec::V128;
 

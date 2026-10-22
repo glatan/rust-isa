@@ -5,6 +5,8 @@
 //! feature.
 //!
 //! The bit index uses the low six bits of the second operand.
+//!
+//! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
 
 unsafe extern "C" {
     fn rust_isa_riscv_zbs_bset(value: u64, index: u64) -> u64;
