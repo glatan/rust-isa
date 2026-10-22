@@ -5,6 +5,8 @@
 //!
 //! The values are [`V128`]. The matrix multiply-accumulate instructions
 //! interpret the byte operands as an 8x2 by 2x8 matrix product.
+//!
+//! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
 
 use super::neon::V128;
 

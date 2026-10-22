@@ -1,4 +1,13 @@
 //! AArch64 JavaScript conversion.
+//!
+//! JSCONV is not part of the AArch64 baseline. Every operation is `unsafe` and
+//! requires the `jsconv` target feature. The value is a double-precision float
+//! or [`V128`].
+//!
+//! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 use crate::aarch64::simd::neon::V128;
 

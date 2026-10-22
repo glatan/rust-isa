@@ -9,6 +9,8 @@
 //! suffixes describe the signedness of the operands: `su` is signed/unsigned,
 //! `us` is unsigned/signed, and `uu` is unsigned/unsigned. The `s` variants
 //! saturate the 32-bit result. The `uu` variants use unsigned saturation.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use super::avx2::V256;
 use super::sse2::V128;

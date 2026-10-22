@@ -9,6 +9,8 @@
 //! the upper lanes are copied from the first operand.
 //!
 //! Immediate forms use const-generic inline assembly with memory operands.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 pub use super::avx2::V256;
 pub use super::sse2::V128;

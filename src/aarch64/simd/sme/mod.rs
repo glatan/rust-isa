@@ -11,6 +11,8 @@
 //!
 //! ZA tile operations are intentionally omitted. They need an additional opaque
 //! tile type and a separate lifetime model.
+//!
+//! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
 
 use core::marker::PhantomData;
 

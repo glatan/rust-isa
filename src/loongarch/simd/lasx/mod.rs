@@ -9,6 +9,8 @@
 //! Comparison, shift, shuffle, and bit operations are written in Rust on the
 //! byte representation. Float conversions, max, and min call the clang
 //! intrinsics; zero cost is not claimed for those.
+//!
+//! Instruction behavior follows the [LoongArch Documentation](https://loongson.github.io/LoongArch-Documentation/).
 
 mod v256;
 

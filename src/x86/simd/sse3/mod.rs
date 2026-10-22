@@ -7,6 +7,8 @@
 //! The values are [`V128`]. The instruction decides what the lanes mean.
 //! The `*ps` functions use four 32-bit float lanes and the `*pd` functions use
 //! two 64-bit float lanes. Memory operations do not require alignment.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use super::sse2::V128;
 

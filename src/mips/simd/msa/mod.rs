@@ -2,6 +2,8 @@
 //!
 //! MSA is unstable. The caller must compile with
 //! `-C target-feature=+msa,+fp64`.
+//!
+//! Instruction behavior follows the [MIPS Architecture](https://www.mips.com/products/architectures/).
 
 mod v128;
 

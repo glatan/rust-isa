@@ -8,6 +8,8 @@
 //!
 //! The values are [`V128`]. `cntlz` and `popcnt` operate on the lane type in
 //! the function name. The byte order is big-endian.
+//!
+//! Instruction behavior follows the [IBM z/Architecture Principles of Operation](https://www.ibm.com/docs/en/module_1678991624569/pdf/SA22-7832-14.pdf).
 
 use super::vector::V128;
 use core::arch::asm;

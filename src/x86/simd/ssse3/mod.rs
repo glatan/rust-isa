@@ -6,6 +6,8 @@
 //!
 //! The values are [`V128`]. Byte shuffles use the low four bits of each index;
 //! an index with the high bit set produces zero.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use super::sse2::V128;
 

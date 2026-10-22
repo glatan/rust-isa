@@ -5,6 +5,8 @@
 //!
 //! The functions implement CRC-32 (IEEE 802.3), not CRC-32C. The accumulator is
 //! the raw hardware state.
+//!
+//! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
 
 unsafe extern "C" {
     fn rust_isa_arm_crc_crc32b(crc: u32, value: u8) -> u32;

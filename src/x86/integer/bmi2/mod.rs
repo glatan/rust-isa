@@ -1,4 +1,15 @@
 //! BMI2.
+//!
+//! BMI2 is not part of the x86-64 baseline. Every operation is `unsafe` and
+//! requires the `bmi2` target feature. The functions operate on 32-bit scalar
+//! values.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software
+//! Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+//! The build compiles the bundled C with clang; the shift and rotate forms use
+//! `asm!`. Immediate operands are const generics.
+//!
+//! Instructions not listed in this module are not exposed.
 
 use core::arch::asm;
 

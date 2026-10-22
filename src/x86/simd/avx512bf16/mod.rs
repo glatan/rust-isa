@@ -8,6 +8,8 @@
 //! The module converts 32-bit float lanes to bfloat16 and accumulates
 //! bfloat16 dot products into 32-bit float lanes. The dot-product pairs are
 //! formed within each 32-bit lane; the result is added to `acc`.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use super::avx2::V256;
 use super::avx512f::V512;

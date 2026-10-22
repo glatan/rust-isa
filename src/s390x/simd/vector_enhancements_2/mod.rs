@@ -3,6 +3,8 @@
 //! These instructions are not part of the vector facility. Every operation
 //! is `unsafe` and the caller must enable the vector enhancements facility
 //! 2. The values are [`V128`]. The byte order is big-endian.
+//!
+//! Instruction behavior follows the [IBM z/Architecture Principles of Operation](https://www.ibm.com/docs/en/module_1678991624569/pdf/SA22-7832-14.pdf).
 
 use super::vector::V128;
 use core::arch::asm;

@@ -8,6 +8,8 @@
 //! `vsm3rnds2::<IMM>` accepts `0..=3` and a larger value is a compile-time
 //! error. The caller combines the message schedule and round instructions with
 //! the SM3 specification.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use crate::x86::simd::sse2::V128;
 

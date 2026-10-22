@@ -12,6 +12,8 @@
 //!
 //! Half-precision values are binary16 bit patterns in `u16`. Single- and
 //! double-precision values are bit patterns in `u32` and `u64`.
+//!
+//! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
 
 unsafe extern "C" {
     fn rust_isa_riscv_zfh_fadd(a: u16, b: u16) -> u16;

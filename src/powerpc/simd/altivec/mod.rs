@@ -1,6 +1,8 @@
 //! Altivec.
 //!
 //! The caller must compile with `-C target-feature=+altivec,+vsx`.
+//!
+//! Instruction behavior follows the [Power ISA](https://openpowerfoundation.org/specifications/isa/).
 
 mod v128;
 

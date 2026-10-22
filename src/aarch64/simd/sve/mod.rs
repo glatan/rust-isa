@@ -14,6 +14,8 @@
 //! The per-register API is intentionally omitted because a fixed-length
 //! [`V128`](crate::aarch64::simd::neon::V128) cannot represent an SVE register.
 //! Each instruction is exposed as a slice operation instead.
+//!
+//! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
 
 unsafe extern "C" {
     fn rust_isa_sve_add_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);

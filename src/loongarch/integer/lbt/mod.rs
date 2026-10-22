@@ -1,6 +1,8 @@
 //! LoongArch Binary Translation (LBT) bit-manipulation instructions.
 //!
 //! The operations are expressed on 64-bit scalar values.
+//!
+//! Instruction behavior follows the [LoongArch Documentation](https://loongson.github.io/LoongArch-Documentation/).
 
 /// `revb.d`: reverse the byte order of a 64-bit value.
 #[inline(always)]

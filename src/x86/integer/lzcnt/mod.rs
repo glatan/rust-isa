@@ -6,6 +6,8 @@
 //!
 //! The result is the number of leading zero bits. A zero input returns the
 //! operand width.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 unsafe extern "C" {
     fn rust_isa_lzcnt_u32(value: u32) -> u32;

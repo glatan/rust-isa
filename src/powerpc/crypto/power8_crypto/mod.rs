@@ -6,6 +6,8 @@
 //!
 //! The values are [`V128`]. The AES round, S-box, and SHA sigma instructions
 //! operate on the PowerPC big-endian byte order used by the instruction set.
+//!
+//! Instruction behavior follows the [Power ISA](https://openpowerfoundation.org/specifications/isa/).
 
 use crate::powerpc::simd::altivec::V128;
 

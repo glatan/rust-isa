@@ -14,6 +14,8 @@
 //! lane.
 //!
 //! [`fma`] and [`fms`] are the MVE-FP forms and require MVE-FP.
+//!
+//! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
 
 use super::neon::V128;
 

@@ -8,6 +8,8 @@
 //! bit of each lane. The module contains representative integer, conversion and
 //! blend operations. The dot-product and insert/extract instructions that take
 //! an immediate are intentionally omitted.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use super::sse2::V128;
 use core::arch::asm;

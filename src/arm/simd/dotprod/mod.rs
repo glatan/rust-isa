@@ -5,6 +5,8 @@
 //!
 //! The values are [`V128`]. The dot-product instructions multiply bytes, add
 //! adjacent products, and accumulate into 32-bit lanes.
+//!
+//! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
 
 use super::neon::V128;
 

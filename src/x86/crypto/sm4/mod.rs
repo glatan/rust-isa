@@ -6,6 +6,8 @@
 //!
 //! The values are [`V128`]. The caller combines the key schedule and round
 //! instructions with the SM4 specification.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use crate::x86::simd::sse2::V128;
 

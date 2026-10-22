@@ -6,6 +6,8 @@
 //!
 //! The functions operate on 64-bit values. `clz` and `ctz` return 64 for a zero
 //! input. `rol` and `ror` use the low six bits of the shift amount.
+//!
+//! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
 
 unsafe extern "C" {
     fn rust_isa_riscv_zbb_andn(a: u64, b: u64) -> u64;

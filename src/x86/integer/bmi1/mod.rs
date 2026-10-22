@@ -1,4 +1,14 @@
 //! BMI1.
+//!
+//! BMI1 is not part of the x86-64 baseline. Every operation is `unsafe` and
+//! requires the `bmi1` target feature. The functions operate on 32-bit scalar
+//! values.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software
+//! Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
 
 unsafe extern "C" {
     fn rust_isa_bmi1_andn(a: u32, b: u32) -> u32;

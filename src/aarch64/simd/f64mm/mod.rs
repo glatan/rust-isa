@@ -3,6 +3,8 @@
 //! F64MM is not part of the AArch64 baseline. Every operation is `unsafe` and
 //! the caller must compile with F64MM and SVE enabled. The slice length must be
 //! a multiple of the SVE vector length in 64-bit elements.
+//!
+//! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
 
 unsafe extern "C" {
     fn rust_isa_f64mm_fmmla(a: *const f64, b: *const f64, acc: *mut f64, len: usize);

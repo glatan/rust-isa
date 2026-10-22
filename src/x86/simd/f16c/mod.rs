@@ -8,6 +8,8 @@
 //! each 32-bit lane. The `vcvtps2ph` functions take a rounding mode in `IMM`:
 //! 0 is nearest, 1 is down, 2 is up, 3 is truncate, and 4 uses MXCSR.
 //! A larger value is a compile-time error.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use super::avx2::V256;
 use super::sse2::V128;

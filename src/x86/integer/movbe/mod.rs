@@ -7,6 +7,8 @@
 //! The load functions read a big-endian value and return it as a native
 //! integer. The store functions write a native integer in big-endian order.
 //! The memory operations do not require alignment.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 unsafe extern "C" {
     fn rust_isa_movbe_load_u16(p: *const u8) -> u16;

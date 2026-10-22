@@ -9,6 +9,8 @@
 //! return the result and the new carry (or overflow) flag.
 //!
 //! The 64-bit forms are available only on x86-64.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 /// `adcx` with 32-bit operands.
 ///

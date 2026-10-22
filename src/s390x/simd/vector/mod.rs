@@ -1,6 +1,8 @@
 //! s390x vector facility.
 //!
 //! The lane order is big-endian.
+//!
+//! Instruction behavior follows the [IBM z/Architecture Principles of Operation](https://www.ibm.com/docs/en/module_1678991624569/pdf/SA22-7832-14.pdf).
 
 mod v128;
 

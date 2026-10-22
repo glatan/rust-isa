@@ -6,6 +6,8 @@
 //!
 //! The values are [`V128`]. The instructions perform a rounding doubling
 //! multiply and accumulate or subtract on 32-bit lanes.
+//!
+//! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
 
 use crate::aarch64::simd::neon::V128;
 

@@ -6,6 +6,8 @@
 //!
 //! The functions implement CRC-32C (Castagnoli). The accumulator is the raw
 //! hardware state; the caller applies the final XOR required by the protocol.
+//!
+//! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
 
 unsafe extern "C" {
     fn rust_isa_crc_crc32b(crc: u32, value: u8) -> u32;

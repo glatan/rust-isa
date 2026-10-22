@@ -1,4 +1,14 @@
 //! GFNI.
+//!
+//! GFNI is not part of the x86-64 baseline. Every operation is `unsafe` and
+//! requires the `gfni` target feature. The values are [`V128`].
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software
+//! Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+//! The build compiles the bundled C with clang; the immediate form uses
+//! `asm!`. Immediate operands are const generics.
+//!
+//! Instructions not listed in this module are not exposed.
 
 use core::arch::asm;
 

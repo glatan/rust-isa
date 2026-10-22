@@ -7,6 +7,8 @@
 //! The functions operate on scalar registers. The caller combines them with the
 //! AES or SHA specification. `aes64ks1i` accepts the round number as a runtime
 //! argument.
+//!
+//! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
 
 unsafe extern "C" {
     fn rust_isa_riscv_zkn_sha256sig0(value: u32) -> u32;

@@ -10,6 +10,8 @@
 //! `vscalef`, `vrndscale`, `vreduce`, `vfixupimm`, `vrange`, `vrcp14`,
 //! `vrsqrt14`, and `vsqrt` forms that were previously listed as missing.
 //! Embedded rounding control is omitted.
+//!
+//! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;
