@@ -39,10 +39,15 @@ extension の `mod.rs` には、次を書く。
 ## 共通の文書
 
 - [実装方針](policy.md): 可用性、ゼロコスト、実装方式、安全境界
+- [API契約](api-contract.md): 公開パス、値型、即値、状態型の形
+- [実装状況の集計](coverage.md): `make coverage` と表の形式
 - [実装可否](feasibility.md): cfg の用語と arch ごとの表への索引
 - [ゼロコストの確認](zero-cost.md): 確認方法と arch ごとの結果
 - [スケーラブルベクタと状態](scalable-state.md): SVE、RVV、SME、AMX、MMA の API 設計
+- [スケーラブル・状態付き extension の対応表](scalable-coverage.md): ISA 命令と API の対応
 - [native の値テスト](native-testing.md): QEMU を使う値テストの設計
+- [値テストの fixture](fixture-matrix.md): fixture と runner の対応
+- [重複する命令名](dedup.md): extension 間で共有できる C 関数の判定
 - [ソースの置き方](source-layout.md): ディレクトリと公開パス
 - [開発環境](development.md): リポジトリのコマンド
 

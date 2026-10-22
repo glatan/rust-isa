@@ -7,6 +7,8 @@ IMAGE ?= localhost/rust-isa-dev:$(IMAGE_TAG)
 PODMAN ?= podman
 NEXTEST ?= cargo nextest run
 NEXTEST_FLAGS ?= --no-tests=fail
+COVERAGE_ARGS ?= --todo
+DUPLICATES_ARGS ?=
 
 X86_64_TARGET ?= x86_64-unknown-linux-gnu
 WASIP1_TARGET ?= wasm32-wasip1
@@ -41,11 +43,26 @@ help:
 		'test-powerpc64le             PowerPC の値テスト' \
 		'test-mips64                  MIPS64 の値テスト' \
 		'test-wasip1                  wasm32-wasip1 の nextest と doctest' \
-		'test-wasip1-wide-arithmetic  wide-arithmetic 有効時の nextest と doctest'
+		'test-wasip1-wide-arithmetic  wide-arithmetic 有効時の nextest と doctest' \
+		'coverage                     arch/extension ごとの実装状況を表示する' \
+		'coverage-check               README の表の形式を検査する' \
+		'duplicates                   同じ arch で重複する命令名を表示する'
 
 .PHONY: image
 image:
 	$(PODMAN) build -t $(IMAGE) -f Containerfile .
+
+.PHONY: coverage
+coverage:
+	$(PODMAN_RUN) python3 tools/coverage.py $(COVERAGE_ARGS)
+
+.PHONY: coverage-check
+coverage-check:
+	$(PODMAN_RUN) python3 tools/coverage.py --check
+
+.PHONY: duplicates
+duplicates:
+	$(PODMAN_RUN) python3 tools/duplicates.py $(DUPLICATES_ARGS)
 
 .PHONY: fmt
 fmt:
@@ -56,7 +73,7 @@ fmt-check:
 	$(PODMAN_RUN) bash -lc 'dprint check && cargo fmt --all -- --check && for d in fixtures/*-values; do cargo fmt --manifest-path "$$d/Cargo.toml" -- --check || exit 1; done'
 
 .PHONY: test
-test: fmt-check test-host test-wasip1 test-wasip1-wide-arithmetic
+test: fmt-check coverage-check test-host test-wasip1 test-wasip1-wide-arithmetic
 
 .PHONY: test-host
 test-host:

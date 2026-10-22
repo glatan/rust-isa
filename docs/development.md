@@ -13,6 +13,9 @@ make test-check-static
 make test-check-wasm-link
 make test-wasip1
 make test-wasip1-wide-arithmetic
+make coverage
+make coverage-check
+make duplicates
 ```
 
 `make test` が既定で、`fmt-check`、`test-host`、`test-wasip1`、`test-wasip1-wide-arithmetic` を実行する。すべてのテストはイメージ内で、対象 triple を明示して実行する。

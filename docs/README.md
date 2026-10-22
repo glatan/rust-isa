@@ -6,10 +6,15 @@
 
 - [開発環境](development.md)
 - [実装方針](policy.md)
+- [API契約](api-contract.md)
+- [実装状況の集計](coverage.md)
 - [実装可否](feasibility.md)
 - [ゼロコストの確認](zero-cost.md)
 - [スケーラブルベクタと状態](scalable-state.md)
+- [スケーラブル・状態付き extension の対応表](scalable-coverage.md)
 - [native の値テスト](native-testing.md)
+- [値テストの fixture](fixture-matrix.md)
+- [重複する命令名](dedup.md)
 - [ソースの置き方](source-layout.md)
 - [文書の位置](documentation.md)
 

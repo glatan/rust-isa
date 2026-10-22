@@ -159,4 +159,5 @@ C は `-flto=thin` でコンパイルする。`lto = "fat"` の場合は C も `
 
 - [実装可否](feasibility.md)
 - [リンクとゼロコスト](linking.md)
+- [マスク](masking.md)
 - [実装方針](../policy.md)
