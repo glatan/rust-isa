@@ -94,6 +94,10 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 - stable な feature は、呼び出し側のカーネルに `#[target_feature(enable = "...")]` を付ける。ラッパーは `#[inline(always)]` だけにし、`#[target_feature]` を付けない。unstable な feature は付けない。
 - `asm!` は補助として使える。`xmm_reg` は `u128` を受け付ける。`ymm_reg` は `avx` を要求し、256-bit の値型を `core::arch` なしでは表せないため、256-bit 以上は C を主とする。
 
+## ソースの分割
+
+extension ごとに内部モジュールの分割軸を決める。SSE2 は、ベクタの算術と比較を値型（`f32x4`、`f64x2`、`i8x16`、`i16x8`、`i32x4`、`i64x2`）で分け、それ以外の操作を命令ファミリ（`bitwise`、`shift`、`shuffle`、`unpack`、`double_convert`、`moves`、`compare`、`nontemporal`）で分ける。値型の定義は `v128` に置く。AVX2 のように命令ファミリだけで分ける extension もある。公開パスには内部モジュール名は出ない。
+
 ## ゼロコスト
 
 x86_64 で条件付きのゼロコストを確認した。

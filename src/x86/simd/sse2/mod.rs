@@ -12,6 +12,7 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+// Vector arithmetic and comparison are grouped by value type; other operations by instruction family.
 mod bitwise;
 mod compare;
 mod double_convert;
