@@ -1,4 +1,31 @@
-//! `V128` and `v128.*`.
+//! `V128`, `V64`, and `v128.*`.
+
+/// A 64-bit value.
+#[repr(C, align(8))]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct V64([u8; 8]);
+
+impl V64 {
+    /// Keep the 8 bytes unchanged.
+    pub const fn from_bytes(bytes: [u8; 8]) -> Self {
+        Self(bytes)
+    }
+
+    /// Return the 8 bytes.
+    pub const fn to_bytes(self) -> [u8; 8] {
+        self.0
+    }
+
+    /// Pointer to the first byte.
+    pub fn as_ptr(&self) -> *const u8 {
+        self.0.as_ptr()
+    }
+
+    /// Mutable pointer to the first byte.
+    pub fn as_mut_ptr(&mut self) -> *mut u8 {
+        self.0.as_mut_ptr()
+    }
+}
 
 /// A 128-bit value.
 #[repr(C, align(16))]

@@ -784,3 +784,177 @@ void rust_isa_arm_neon_vshll_s16(const uint8_t *a, int n, uint8_t *out) {
     }
     vst1q_s32((int32_t *)(void *)out, r);
 }
+
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vld1_u8(const uint8_t *p, uint8_t *out) {
+    vst1q_u8(out, vld1q_u8(p));
+}
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vld2_u8(const uint8_t *p, uint8_t *o0, uint8_t *o1) {
+    uint8x16x2_t r = vld2q_u8(p);
+    vst1q_u8(o0, r.val[0]);
+    vst1q_u8(o1, r.val[1]);
+}
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vld3_u8(const uint8_t *p, uint8_t *o0, uint8_t *o1, uint8_t *o2) {
+    uint8x16x3_t r = vld3q_u8(p);
+    vst1q_u8(o0, r.val[0]);
+    vst1q_u8(o1, r.val[1]);
+    vst1q_u8(o2, r.val[2]);
+}
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vld4_u8(const uint8_t *p, uint8_t *o0, uint8_t *o1, uint8_t *o2, uint8_t *o3) {
+    uint8x16x4_t r = vld4q_u8(p);
+    vst1q_u8(o0, r.val[0]);
+    vst1q_u8(o1, r.val[1]);
+    vst1q_u8(o2, r.val[2]);
+    vst1q_u8(o3, r.val[3]);
+}
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vmov_u8(const uint8_t *a, uint8_t *out) {
+    vst1q_u8(out, vld1q_u8(a));
+}
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vpadd_s32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    int32x4_t va = vld1q_s32((const int32_t *)(const void *)a);
+    int32x4_t vb = vld1q_s32((const int32_t *)(const void *)b);
+    vst1q_s32((int32_t *)(void *)out, vcombine_s32(
+        vpadd_s32(vget_low_s32(va), vget_high_s32(va)),
+        vpadd_s32(vget_low_s32(vb), vget_high_s32(vb))));
+}
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vpmax_s32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    int32x4_t va = vld1q_s32((const int32_t *)(const void *)a);
+    int32x4_t vb = vld1q_s32((const int32_t *)(const void *)b);
+    vst1q_s32((int32_t *)(void *)out, vcombine_s32(
+        vpmax_s32(vget_low_s32(va), vget_high_s32(va)),
+        vpmax_s32(vget_low_s32(vb), vget_high_s32(vb))));
+}
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vpmin_s32(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    int32x4_t va = vld1q_s32((const int32_t *)(const void *)a);
+    int32x4_t vb = vld1q_s32((const int32_t *)(const void *)b);
+    vst1q_s32((int32_t *)(void *)out, vcombine_s32(
+        vpmin_s32(vget_low_s32(va), vget_high_s32(va)),
+        vpmin_s32(vget_low_s32(vb), vget_high_s32(vb))));
+}
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vrev16_u8(const uint8_t *a, uint8_t *out) {
+    vst1q_u8(out, vrev16q_u8(vld1q_u8(a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vrev32_u8(const uint8_t *a, uint8_t *out) {
+    vst1q_u8(out, vrev32q_u8(vld1q_u8(a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vrev64_u8(const uint8_t *a, uint8_t *out) {
+    vst1q_u8(out, vrev64q_u8(vld1q_u8(a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vswp_u8(const uint8_t *a, const uint8_t *b, uint8_t *o0, uint8_t *o1) {
+    vst1q_u8(o0, vld1q_u8(b));
+    vst1q_u8(o1, vld1q_u8(a));
+}
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vtrn_u8(const uint8_t *a, const uint8_t *b, uint8_t *o0, uint8_t *o1) {
+    uint8x16x2_t r = vtrnq_u8(vld1q_u8(a), vld1q_u8(b));
+    vst1q_u8(o0, r.val[0]);
+    vst1q_u8(o1, r.val[1]);
+}
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vuzp_u8(const uint8_t *a, const uint8_t *b, uint8_t *o0, uint8_t *o1) {
+    uint8x16x2_t r = vuzpq_u8(vld1q_u8(a), vld1q_u8(b));
+    vst1q_u8(o0, r.val[0]);
+    vst1q_u8(o1, r.val[1]);
+}
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vzip_u8(const uint8_t *a, const uint8_t *b, uint8_t *o0, uint8_t *o1) {
+    uint8x16x2_t r = vzipq_u8(vld1q_u8(a), vld1q_u8(b));
+    vst1q_u8(o0, r.val[0]);
+    vst1q_u8(o1, r.val[1]);
+}
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vtbl_u8(const uint8_t *table, const uint8_t *idx, uint8_t *out) {
+    int8x8x2_t t;
+    t.val[0] = vld1_s8((const int8_t *)(const void *)table);
+    t.val[1] = vld1_s8((const int8_t *)(const void *)(table + 8));
+    vst1_s8((int8_t *)(void *)out, vtbl2_s8(t, vld1_s8((const int8_t *)(const void *)idx)));
+}
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vtbx_u8(const uint8_t *table, const uint8_t *idx, const uint8_t *src, uint8_t *out) {
+    int8x8x2_t t;
+    t.val[0] = vld1_s8((const int8_t *)(const void *)table);
+    t.val[1] = vld1_s8((const int8_t *)(const void *)(table + 8));
+    vst1_s8((int8_t *)(void *)out, vtbx2_s8(
+        vld1_s8((const int8_t *)(const void *)src),
+        t,
+        vld1_s8((const int8_t *)(const void *)idx)));
+}
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vext_u8(const uint8_t *a, const uint8_t *b, int n, uint8_t *out) {
+    uint8x16_t va = vld1q_u8(a);
+    uint8x16_t vb = vld1q_u8(b);
+    uint8x16_t r = vdupq_n_u8(0);
+    switch (n) {
+        case 0: r = vextq_u8(va, vb, 0); break;
+        case 1: r = vextq_u8(va, vb, 1); break;
+        case 2: r = vextq_u8(va, vb, 2); break;
+        case 3: r = vextq_u8(va, vb, 3); break;
+        case 4: r = vextq_u8(va, vb, 4); break;
+        case 5: r = vextq_u8(va, vb, 5); break;
+        case 6: r = vextq_u8(va, vb, 6); break;
+        case 7: r = vextq_u8(va, vb, 7); break;
+        case 8: r = vextq_u8(va, vb, 8); break;
+        case 9: r = vextq_u8(va, vb, 9); break;
+        case 10: r = vextq_u8(va, vb, 10); break;
+        case 11: r = vextq_u8(va, vb, 11); break;
+        case 12: r = vextq_u8(va, vb, 12); break;
+        case 13: r = vextq_u8(va, vb, 13); break;
+        case 14: r = vextq_u8(va, vb, 14); break;
+        case 15: r = vextq_u8(va, vb, 15); break;
+    }
+    vst1q_u8(out, r);
+}
+
+__attribute__((always_inline))
+void rust_isa_arm_neon_vshr_s16(const uint8_t *a, int n, uint8_t *out) {
+    int16x8_t va = vld1q_s16((const int16_t *)(const void *)a);
+    int16x8_t r = vdupq_n_s16(0);
+    switch (n) {
+        case 1: r = vshrq_n_s16(va, 1); break;
+        case 2: r = vshrq_n_s16(va, 2); break;
+        case 3: r = vshrq_n_s16(va, 3); break;
+        case 4: r = vshrq_n_s16(va, 4); break;
+        case 5: r = vshrq_n_s16(va, 5); break;
+        case 6: r = vshrq_n_s16(va, 6); break;
+        case 7: r = vshrq_n_s16(va, 7); break;
+        case 8: r = vshrq_n_s16(va, 8); break;
+        case 9: r = vshrq_n_s16(va, 9); break;
+        case 10: r = vshrq_n_s16(va, 10); break;
+        case 11: r = vshrq_n_s16(va, 11); break;
+        case 12: r = vshrq_n_s16(va, 12); break;
+        case 13: r = vshrq_n_s16(va, 13); break;
+        case 14: r = vshrq_n_s16(va, 14); break;
+        case 15: r = vshrq_n_s16(va, 15); break;
+        case 16: r = vshrq_n_s16(va, 16); break;
+    }
+    vst1q_s16((int16_t *)(void *)out, r);
+}

@@ -4,11 +4,13 @@
 //! `-C target-feature=+neon`.
 
 mod arith;
+mod memory;
 mod ops;
 mod v128;
 mod widen;
 
 pub use arith::*;
+pub use memory::*;
 pub use ops::*;
 pub use v128::*;
 pub use widen::*;
