@@ -352,3 +352,196 @@ void rust_isa_rv_vector_vmv_s_x(
     vint32m1_t zero = __riscv_vmv_v_x_i32m1(0, 4);
     rv_store_i32(out, __riscv_vmv_s_x_i32m1_tu(zero, value, 4));
 }
+
+/* Saturating, averaging, widening, and narrowing integer operations. */
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vsadd(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vint32m1_t va = rv_load_i32(a);
+    vint32m1_t vb = rv_load_i32(b);
+    rv_store_i32(out, __riscv_vsadd_vv_i32m1(va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vssub(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vint32m1_t va = rv_load_i32(a);
+    vint32m1_t vb = rv_load_i32(b);
+    rv_store_i32(out, __riscv_vssub_vv_i32m1(va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vsaddu(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vuint32m1_t va = rv_load_u32(a);
+    vuint32m1_t vb = rv_load_u32(b);
+    rv_store_u32(out, __riscv_vsaddu_vv_u32m1(va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vssubu(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vuint32m1_t va = rv_load_u32(a);
+    vuint32m1_t vb = rv_load_u32(b);
+    rv_store_u32(out, __riscv_vssubu_vv_u32m1(va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vaadd(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vint32m1_t va = rv_load_i32(a);
+    vint32m1_t vb = rv_load_i32(b);
+    rv_store_i32(out, __riscv_vaadd_vv_i32m1(va, vb, __RISCV_VXRM_RNU, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vasub(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vint32m1_t va = rv_load_i32(a);
+    vint32m1_t vb = rv_load_i32(b);
+    rv_store_i32(out, __riscv_vasub_vv_i32m1(va, vb, __RISCV_VXRM_RNU, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vaaddu(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vuint32m1_t va = rv_load_u32(a);
+    vuint32m1_t vb = rv_load_u32(b);
+    rv_store_u32(out, __riscv_vaaddu_vv_u32m1(va, vb, __RISCV_VXRM_RNU, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vasubu(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vuint32m1_t va = rv_load_u32(a);
+    vuint32m1_t vb = rv_load_u32(b);
+    rv_store_u32(out, __riscv_vasubu_vv_u32m1(va, vb, __RISCV_VXRM_RNU, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vwmacc(const uint8_t *acc, const uint8_t *a, const uint8_t *b,
+                               uint8_t *out) {
+    vint32m1_t vd = rv_load_i32(acc);
+    vint16mf2_t va = __riscv_vle16_v_i16mf2((const int16_t *)(const void *)a, 4);
+    vint16mf2_t vb = __riscv_vle16_v_i16mf2((const int16_t *)(const void *)b, 4);
+    rv_store_i32(out, __riscv_vwmacc_vv_i32m1(vd, va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vwmaccu(const uint8_t *acc, const uint8_t *a, const uint8_t *b,
+                                uint8_t *out) {
+    vuint32m1_t vd = rv_load_u32(acc);
+    vuint16mf2_t va = __riscv_vle16_v_u16mf2((const uint16_t *)(const void *)a, 4);
+    vuint16mf2_t vb = __riscv_vle16_v_u16mf2((const uint16_t *)(const void *)b, 4);
+    rv_store_u32(out, __riscv_vwmaccu_vv_u32m1(vd, va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vwmaccsu(const uint8_t *acc, const uint8_t *a, const uint8_t *b,
+                                 uint8_t *out) {
+    vint32m1_t vd = rv_load_i32(acc);
+    vint16mf2_t va = __riscv_vle16_v_i16mf2((const int16_t *)(const void *)a, 4);
+    vuint16mf2_t vb = __riscv_vle16_v_u16mf2((const uint16_t *)(const void *)b, 4);
+    rv_store_i32(out, __riscv_vwmaccsu_vv_i32m1(vd, va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vwmaccus(const uint8_t *acc, uint32_t scalar, const uint8_t *b,
+                                 uint8_t *out) {
+    vint32m1_t vd = rv_load_i32(acc);
+    vint16mf2_t vb = __riscv_vle16_v_i16mf2((const int16_t *)(const void *)b, 4);
+    rv_store_i32(out, __riscv_vwmaccus_vx_i32m1(vd, scalar, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vzext(const uint8_t *a, uint8_t *out) {
+    vuint8mf2_t va = __riscv_vle8_v_u8mf2((const uint8_t *)(const void *)a, 8);
+    __riscv_vse16_v_u16m1((uint16_t *)(void *)out, __riscv_vzext_vf2_u16m1(va, 8), 8);
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vsext(const uint8_t *a, uint8_t *out) {
+    vint8mf2_t va = __riscv_vle8_v_i8mf2((const int8_t *)(const void *)a, 8);
+    __riscv_vse16_v_i16m1((int16_t *)(void *)out, __riscv_vsext_vf2_i16m1(va, 8), 8);
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vwadd(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vint16mf2_t va = __riscv_vle16_v_i16mf2((const int16_t *)(const void *)a, 4);
+    vint16mf2_t vb = __riscv_vle16_v_i16mf2((const int16_t *)(const void *)b, 4);
+    rv_store_i32(out, __riscv_vwadd_vv_i32m1(va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vwaddu(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vuint16mf2_t va = __riscv_vle16_v_u16mf2((const uint16_t *)(const void *)a, 4);
+    vuint16mf2_t vb = __riscv_vle16_v_u16mf2((const uint16_t *)(const void *)b, 4);
+    rv_store_u32(out, __riscv_vwaddu_vv_u32m1(va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vwsub(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vint16mf2_t va = __riscv_vle16_v_i16mf2((const int16_t *)(const void *)a, 4);
+    vint16mf2_t vb = __riscv_vle16_v_i16mf2((const int16_t *)(const void *)b, 4);
+    rv_store_i32(out, __riscv_vwsub_vv_i32m1(va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vwsubu(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vuint16mf2_t va = __riscv_vle16_v_u16mf2((const uint16_t *)(const void *)a, 4);
+    vuint16mf2_t vb = __riscv_vle16_v_u16mf2((const uint16_t *)(const void *)b, 4);
+    rv_store_u32(out, __riscv_vwsubu_vv_u32m1(va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vwmul(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vint16mf2_t va = __riscv_vle16_v_i16mf2((const int16_t *)(const void *)a, 4);
+    vint16mf2_t vb = __riscv_vle16_v_i16mf2((const int16_t *)(const void *)b, 4);
+    rv_store_i32(out, __riscv_vwmul_vv_i32m1(va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vwmulu(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vuint16mf2_t va = __riscv_vle16_v_u16mf2((const uint16_t *)(const void *)a, 4);
+    vuint16mf2_t vb = __riscv_vle16_v_u16mf2((const uint16_t *)(const void *)b, 4);
+    rv_store_u32(out, __riscv_vwmulu_vv_u32m1(va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vwmulsu(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vint16mf2_t va = __riscv_vle16_v_i16mf2((const int16_t *)(const void *)a, 4);
+    vuint16mf2_t vb = __riscv_vle16_v_u16mf2((const uint16_t *)(const void *)b, 4);
+    rv_store_i32(out, __riscv_vwmulsu_vv_i32m1(va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vnsrl(const uint8_t *a, uint32_t shift, uint8_t *out) {
+    vint32m1_t va = rv_load_i32(a);
+    vuint16mf2_t result =
+        __riscv_vnsrl_wx_u16mf2(__riscv_vreinterpret_u32m1(va), shift, 4);
+    uint8_t zero[16] = {0};
+    __riscv_vse16_v_u16mf2((uint16_t *)(void *)zero, result, 4);
+    __builtin_memcpy(out, zero, 16);
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vnsra(const uint8_t *a, uint32_t shift, uint8_t *out) {
+    vint32m1_t va = rv_load_i32(a);
+    vint16mf2_t result = __riscv_vnsra_wx_i16mf2(va, shift, 4);
+    uint8_t zero[16] = {0};
+    __riscv_vse16_v_i16mf2((int16_t *)(void *)zero, result, 4);
+    __builtin_memcpy(out, zero, 16);
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vnclip(const uint8_t *a, uint32_t shift, uint8_t *out) {
+    vint32m1_t va = rv_load_i32(a);
+    vint16mf2_t result =
+        __riscv_vnclip_wx_i16mf2(va, shift, __RISCV_VXRM_RNU, 4);
+    uint8_t zero[16] = {0};
+    __riscv_vse16_v_i16mf2((int16_t *)(void *)zero, result, 4);
+    __builtin_memcpy(out, zero, 16);
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vnclipu(const uint8_t *a, uint32_t shift, uint8_t *out) {
+    vuint32m1_t va = rv_load_u32(a);
+    vuint16mf2_t result =
+        __riscv_vnclipu_wx_u16mf2(va, shift, __RISCV_VXRM_RNU, 4);
+    uint8_t zero[16] = {0};
+    __riscv_vse16_v_u16mf2((uint16_t *)(void *)zero, result, 4);
+    __builtin_memcpy(out, zero, 16);
+}
