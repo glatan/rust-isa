@@ -1323,3 +1323,565 @@ void rust_isa_rv_vector_vsm(uint8_t *p, uint16_t mask) {
     vbool8_t m = __riscv_vlm_v_b8((const uint8_t *)&mask, 16);
     __riscv_vsm_v_b8(p, m, 16);
 }
+
+/* Floating-point vector operations. */
+
+static inline vfloat32m1_t rv_load_f32(const uint8_t *p) {
+    return __riscv_vle32_v_f32m1((const float *)(const void *)p, 4);
+}
+
+static inline void rv_store_f32(uint8_t *p, vfloat32m1_t value) {
+    __riscv_vse32_v_f32m1((float *)(void *)p, value, 4);
+}
+
+static inline vfloat64m1_t rv_load_f64(const uint8_t *p) {
+    return __riscv_vle64_v_f64m1((const double *)(const void *)p, 2);
+}
+
+static inline void rv_store_f64(uint8_t *p, vfloat64m1_t value) {
+    __riscv_vse64_v_f64m1((double *)(void *)p, value, 2);
+}
+
+static inline vfloat32mf2_t rv_load_f32_half(const uint8_t *p) {
+    return __riscv_vle32_v_f32mf2((const float *)(const void *)p, 2);
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfrdiv(const uint8_t *a, float scalar, uint8_t *out) {
+    vfloat32m1_t va = rv_load_f32(a);
+    rv_store_f32(out, __riscv_vfrdiv_vf_f32m1(va, scalar, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfmin(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vfloat32m1_t va = rv_load_f32(a);
+    vfloat32m1_t vb = rv_load_f32(b);
+    rv_store_f32(out, __riscv_vfmin_vv_f32m1(va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfmax(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vfloat32m1_t va = rv_load_f32(a);
+    vfloat32m1_t vb = rv_load_f32(b);
+    rv_store_f32(out, __riscv_vfmax_vv_f32m1(va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfsgnj(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vfloat32m1_t va = rv_load_f32(a);
+    vfloat32m1_t vb = rv_load_f32(b);
+    rv_store_f32(out, __riscv_vfsgnj_vv_f32m1(va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfsgnjn(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vfloat32m1_t va = rv_load_f32(a);
+    vfloat32m1_t vb = rv_load_f32(b);
+    rv_store_f32(out, __riscv_vfsgnjn_vv_f32m1(va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfsgnjx(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vfloat32m1_t va = rv_load_f32(a);
+    vfloat32m1_t vb = rv_load_f32(b);
+    rv_store_f32(out, __riscv_vfsgnjx_vv_f32m1(va, vb, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfabs(const uint8_t *a, uint8_t *out) {
+    vfloat32m1_t va = rv_load_f32(a);
+    rv_store_f32(out, __riscv_vfabs_v_f32m1(va, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfneg(const uint8_t *a, uint8_t *out) {
+    vfloat32m1_t va = rv_load_f32(a);
+    rv_store_f32(out, __riscv_vfneg_v_f32m1(va, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfsqrt(const uint8_t *a, uint8_t *out) {
+    vfloat32m1_t va = rv_load_f32(a);
+    rv_store_f32(out, __riscv_vfsqrt_v_f32m1(va, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfrsqrt7(const uint8_t *a, uint8_t *out) {
+    vfloat32m1_t va = rv_load_f32(a);
+    rv_store_f32(out, __riscv_vfrsqrt7_v_f32m1(va, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfrec7(const uint8_t *a, uint8_t *out) {
+    vfloat32m1_t va = rv_load_f32(a);
+    rv_store_f32(out, __riscv_vfrec7_v_f32m1(va, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfmerge(const uint8_t *a, float scalar, uint16_t mask, uint8_t *out) {
+    vfloat32m1_t va = rv_load_f32(a);
+    vbool32_t m = __riscv_vlm_v_b32((const uint8_t *)&mask, 4);
+    rv_store_f32(out, __riscv_vfmerge_vfm_f32m1(va, scalar, m, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfmv(float scalar, uint8_t *out) {
+    rv_store_f32(out, __riscv_vfmv_v_f_f32m1(scalar, 4));
+}
+
+__attribute__((always_inline))
+float rust_isa_rv_vector_vfmv_f_s(const uint8_t *a) {
+    vfloat32m1_t va = rv_load_f32(a);
+    return __riscv_vfmv_f_s_f32m1_f32(va);
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfma(const uint8_t *acc, const uint8_t *a, const uint8_t *b,
+                               uint8_t *out) {
+    vfloat32m1_t vd = rv_load_f32(acc);
+    vfloat32m1_t va = rv_load_f32(a);
+    vfloat32m1_t vb = rv_load_f32(b);
+    rv_store_f32(out, __riscv_vfmadd_vv_f32m1(vd, va, vb, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfms(const uint8_t *acc, const uint8_t *a, const uint8_t *b,
+                               uint8_t *out) {
+    vfloat32m1_t vd = rv_load_f32(acc);
+    vfloat32m1_t va = rv_load_f32(a);
+    vfloat32m1_t vb = rv_load_f32(b);
+    rv_store_f32(out, __riscv_vfmsub_vv_f32m1(vd, va, vb, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfnma(const uint8_t *acc, const uint8_t *a, const uint8_t *b,
+                               uint8_t *out) {
+    vfloat32m1_t vd = rv_load_f32(acc);
+    vfloat32m1_t va = rv_load_f32(a);
+    vfloat32m1_t vb = rv_load_f32(b);
+    rv_store_f32(out, __riscv_vfnmadd_vv_f32m1(vd, va, vb, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfnms(const uint8_t *acc, const uint8_t *a, const uint8_t *b,
+                               uint8_t *out) {
+    vfloat32m1_t vd = rv_load_f32(acc);
+    vfloat32m1_t va = rv_load_f32(a);
+    vfloat32m1_t vb = rv_load_f32(b);
+    rv_store_f32(out, __riscv_vfnmsub_vv_f32m1(vd, va, vb, 4));
+}
+__attribute__((always_inline))
+float rust_isa_rv_vector_vfredsum(const uint8_t *a) {
+    vfloat32m1_t va = rv_load_f32(a);
+    vfloat32m1_t init = __riscv_vfmv_v_f_f32m1(0.0f, 1);
+    vfloat32m1_t result = __riscv_vfredusum_vs_f32m1_f32m1(va, init, 4);
+    return __riscv_vfmv_f_s_f32m1_f32(result);
+}
+__attribute__((always_inline))
+float rust_isa_rv_vector_vfredusum(const uint8_t *a) {
+    vfloat32m1_t va = rv_load_f32(a);
+    vfloat32m1_t init = __riscv_vfmv_v_f_f32m1(0.0f, 1);
+    vfloat32m1_t result = __riscv_vfredusum_vs_f32m1_f32m1(va, init, 4);
+    return __riscv_vfmv_f_s_f32m1_f32(result);
+}
+__attribute__((always_inline))
+float rust_isa_rv_vector_vfredosum(const uint8_t *a) {
+    vfloat32m1_t va = rv_load_f32(a);
+    vfloat32m1_t init = __riscv_vfmv_v_f_f32m1(0.0f, 1);
+    vfloat32m1_t result = __riscv_vfredosum_vs_f32m1_f32m1(va, init, 4);
+    return __riscv_vfmv_f_s_f32m1_f32(result);
+}
+__attribute__((always_inline))
+float rust_isa_rv_vector_vfredmax(const uint8_t *a) {
+    vfloat32m1_t va = rv_load_f32(a);
+    vfloat32m1_t init = __riscv_vfmv_v_f_f32m1(-__builtin_inff(), 1);
+    vfloat32m1_t result = __riscv_vfredmax_vs_f32m1_f32m1(va, init, 4);
+    return __riscv_vfmv_f_s_f32m1_f32(result);
+}
+__attribute__((always_inline))
+float rust_isa_rv_vector_vfredmin(const uint8_t *a) {
+    vfloat32m1_t va = rv_load_f32(a);
+    vfloat32m1_t init = __riscv_vfmv_v_f_f32m1(__builtin_inff(), 1);
+    vfloat32m1_t result = __riscv_vfredmin_vs_f32m1_f32m1(va, init, 4);
+    return __riscv_vfmv_f_s_f32m1_f32(result);
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfwadd(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vfloat32mf2_t va = rv_load_f32_half(a);
+    vfloat32mf2_t vb = rv_load_f32_half(b);
+    rv_store_f64(out, __riscv_vfwadd_vv_f64m1(va, vb, 2));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfwsub(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vfloat32mf2_t va = rv_load_f32_half(a);
+    vfloat32mf2_t vb = rv_load_f32_half(b);
+    rv_store_f64(out, __riscv_vfwsub_vv_f64m1(va, vb, 2));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfwmul(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    vfloat32mf2_t va = rv_load_f32_half(a);
+    vfloat32mf2_t vb = rv_load_f32_half(b);
+    rv_store_f64(out, __riscv_vfwmul_vv_f64m1(va, vb, 2));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfwmacc(const uint8_t *acc, const uint8_t *a, const uint8_t *b,
+                               uint8_t *out) {
+    vfloat64m1_t vd = rv_load_f64(acc);
+    vfloat32mf2_t va = rv_load_f32_half(a);
+    vfloat32mf2_t vb = rv_load_f32_half(b);
+    rv_store_f64(out, __riscv_vfwmacc_vv_f64m1(vd, va, vb, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfwnmacc(const uint8_t *acc, const uint8_t *a, const uint8_t *b,
+                               uint8_t *out) {
+    vfloat64m1_t vd = rv_load_f64(acc);
+    vfloat32mf2_t va = rv_load_f32_half(a);
+    vfloat32mf2_t vb = rv_load_f32_half(b);
+    rv_store_f64(out, __riscv_vfwnmacc_vv_f64m1(vd, va, vb, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfwmsac(const uint8_t *acc, const uint8_t *a, const uint8_t *b,
+                               uint8_t *out) {
+    vfloat64m1_t vd = rv_load_f64(acc);
+    vfloat32mf2_t va = rv_load_f32_half(a);
+    vfloat32mf2_t vb = rv_load_f32_half(b);
+    rv_store_f64(out, __riscv_vfwmsac_vv_f64m1(vd, va, vb, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfwnmsac(const uint8_t *acc, const uint8_t *a, const uint8_t *b,
+                               uint8_t *out) {
+    vfloat64m1_t vd = rv_load_f64(acc);
+    vfloat32mf2_t va = rv_load_f32_half(a);
+    vfloat32mf2_t vb = rv_load_f32_half(b);
+    rv_store_f64(out, __riscv_vfwnmsac_vv_f64m1(vd, va, vb, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfclass(const uint8_t *a, uint8_t *out) {
+    vfloat32m1_t va = rv_load_f32(a);
+    rv_store_u32(out, __riscv_vfclass_v_u32m1(va, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfcvt_xu_f(const uint8_t *a, uint8_t *out) {
+    vfloat32m1_t va = rv_load_f32(a);
+    rv_store_u32(out, __riscv_vfcvt_xu_f_v_u32m1(va, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfcvt_x_f(const uint8_t *a, uint8_t *out) {
+    vfloat32m1_t va = rv_load_f32(a);
+    rv_store_i32(out, __riscv_vfcvt_x_f_v_i32m1(va, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfcvt_rtz_xu_f(const uint8_t *a, uint8_t *out) {
+    vfloat32m1_t va = rv_load_f32(a);
+    rv_store_u32(out, __riscv_vfcvt_rtz_xu_f_v_u32m1(va, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfcvt_rtz_x_f(const uint8_t *a, uint8_t *out) {
+    vfloat32m1_t va = rv_load_f32(a);
+    rv_store_i32(out, __riscv_vfcvt_rtz_x_f_v_i32m1(va, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfcvt_f_xu(const uint8_t *a, uint8_t *out) {
+    vuint32m1_t va = rv_load_u32(a);
+    rv_store_f32(out, __riscv_vfcvt_f_xu_v_f32m1(va, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rv_vector_vfcvt_f_x(const uint8_t *a, uint8_t *out) {
+    vint32m1_t va = rv_load_i32(a);
+    rv_store_f32(out, __riscv_vfcvt_f_x_v_f32m1(va, 4));
+}
+
+/* Vector cryptography (Zvkned, Zvknh, Zvksed, Zvksh, Zvkg, Zvbc). */
+
+#define RV_CRYPTO __attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+
+__attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+void rust_isa_rv_vector_vaesef(const uint8_t *state, const uint8_t *key, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vle32.v v3, (%1)\n\t"
+                     "vaesef.vv v2, v3\n\t"
+                     "vse32.v v2, (%2)"
+                     ::"r"(state), "r"(key), "r"(out)
+                     : "v2", "v3", "memory");
+}
+__attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+void rust_isa_rv_vector_vaesem(const uint8_t *state, const uint8_t *key, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vle32.v v3, (%1)\n\t"
+                     "vaesem.vv v2, v3\n\t"
+                     "vse32.v v2, (%2)"
+                     ::"r"(state), "r"(key), "r"(out)
+                     : "v2", "v3", "memory");
+}
+__attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+void rust_isa_rv_vector_vaesdf(const uint8_t *state, const uint8_t *key, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vle32.v v3, (%1)\n\t"
+                     "vaesdf.vv v2, v3\n\t"
+                     "vse32.v v2, (%2)"
+                     ::"r"(state), "r"(key), "r"(out)
+                     : "v2", "v3", "memory");
+}
+__attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+void rust_isa_rv_vector_vaesdm(const uint8_t *state, const uint8_t *key, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vle32.v v3, (%1)\n\t"
+                     "vaesdm.vv v2, v3\n\t"
+                     "vse32.v v2, (%2)"
+                     ::"r"(state), "r"(key), "r"(out)
+                     : "v2", "v3", "memory");
+}
+__attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+void rust_isa_rv_vector_vaesz(const uint8_t *state, const uint8_t *key, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vle32.v v3, (%1)\n\t"
+                     "vaesz.vs v2, v3\n\t"
+                     "vse32.v v2, (%2)"
+                     ::"r"(state), "r"(key), "r"(out)
+                     : "v2", "v3", "memory");
+}
+
+#define RV_AES_KEY1_CASE(r)                                                    \
+    case r:                                                                    \
+        __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"               \
+                         "vle32.v v2, (%0)\n\t"                                \
+                         "vaeskf1.vi v2, v2, " #r "\n\t"                       \
+                         "vse32.v v2, (%1)"                                    \
+                         ::"r"(key), "r"(out)                                  \
+                         : "v2", "memory");                                    \
+        break;
+
+__attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+void rust_isa_rv_vector_vaeskf1(const uint8_t *key, uint32_t round, uint8_t *out) {
+    switch (round) {
+        RV_AES_KEY1_CASE(0)
+        RV_AES_KEY1_CASE(1)
+        RV_AES_KEY1_CASE(2)
+        RV_AES_KEY1_CASE(3)
+        RV_AES_KEY1_CASE(4)
+        RV_AES_KEY1_CASE(5)
+        RV_AES_KEY1_CASE(6)
+        RV_AES_KEY1_CASE(7)
+        RV_AES_KEY1_CASE(8)
+        RV_AES_KEY1_CASE(9)
+        RV_AES_KEY1_CASE(10)
+    default:
+        break;
+    }
+}
+
+#define RV_AES_KEY2_CASE(r)                                                    \
+    case r:                                                                    \
+        __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"               \
+                         "vle32.v v2, (%0)\n\t"                                \
+                         "vaeskf2.vi v2, v2, " #r "\n\t"                       \
+                         "vse32.v v2, (%1)"                                    \
+                         ::"r"(key), "r"(out)                                  \
+                         : "v2", "memory");                                    \
+        break;
+
+__attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+void rust_isa_rv_vector_vaeskf2(const uint8_t *key, uint32_t round, uint8_t *out) {
+    switch (round) {
+        RV_AES_KEY2_CASE(2)
+        RV_AES_KEY2_CASE(3)
+        RV_AES_KEY2_CASE(4)
+        RV_AES_KEY2_CASE(5)
+        RV_AES_KEY2_CASE(6)
+        RV_AES_KEY2_CASE(7)
+        RV_AES_KEY2_CASE(8)
+        RV_AES_KEY2_CASE(9)
+        RV_AES_KEY2_CASE(10)
+    default:
+        break;
+    }
+}
+
+#define RV_SM4K_CASE(r)                                                        \
+    case r:                                                                    \
+        __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"               \
+                         "vle32.v v2, (%0)\n\t"                                \
+                         "vsm4k.vi v2, v2, " #r "\n\t"                         \
+                         "vse32.v v2, (%1)"                                    \
+                         ::"r"(key), "r"(out)                                  \
+                         : "v2", "memory");                                    \
+        break;
+
+__attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+void rust_isa_rv_vector_vsm4k(const uint8_t *key, uint32_t round, uint8_t *out) {
+    switch (round) {
+        RV_SM4K_CASE(0)
+        RV_SM4K_CASE(1)
+        RV_SM4K_CASE(2)
+        RV_SM4K_CASE(3)
+        RV_SM4K_CASE(4)
+        RV_SM4K_CASE(5)
+        RV_SM4K_CASE(6)
+        RV_SM4K_CASE(7)
+    default:
+        break;
+    }
+}
+
+__attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+void rust_isa_rv_vector_vsm4r(const uint8_t *state, const uint8_t *key, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vle32.v v3, (%1)\n\t"
+                     "vsm4r.vv v2, v3\n\t"
+                     "vse32.v v2, (%2)"
+                     ::"r"(state), "r"(key), "r"(out)
+                     : "v2", "v3", "memory");
+}
+
+__attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+void rust_isa_rv_vector_vsha2ms(const uint8_t *a, const uint8_t *b, const uint8_t *c,
+                               uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vle32.v v3, (%1)\n\t"
+                     "vle32.v v4, (%2)\n\t"
+                     "vsha2ms.vv v2, v3, v4\n\t"
+                     "vse32.v v2, (%3)"
+                     ::"r"(a), "r"(b), "r"(c), "r"(out)
+                     : "v2", "v3", "v4", "memory");
+}
+__attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+void rust_isa_rv_vector_vsha2ch(const uint8_t *a, const uint8_t *b, const uint8_t *c,
+                               uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vle32.v v3, (%1)\n\t"
+                     "vle32.v v4, (%2)\n\t"
+                     "vsha2ch.vv v2, v3, v4\n\t"
+                     "vse32.v v2, (%3)"
+                     ::"r"(a), "r"(b), "r"(c), "r"(out)
+                     : "v2", "v3", "v4", "memory");
+}
+__attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+void rust_isa_rv_vector_vsha2cl(const uint8_t *a, const uint8_t *b, const uint8_t *c,
+                               uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vle32.v v3, (%1)\n\t"
+                     "vle32.v v4, (%2)\n\t"
+                     "vsha2cl.vv v2, v3, v4\n\t"
+                     "vse32.v v2, (%3)"
+                     ::"r"(a), "r"(b), "r"(c), "r"(out)
+                     : "v2", "v3", "v4", "memory");
+}
+__attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+void rust_isa_rv_vector_vsm3me(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 8, e32, m2, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vle32.v v4, (%1)\n\t"
+                     "vsm3me.vv v6, v2, v4\n\t"
+                     "vse32.v v6, (%2)"
+                     ::"r"(a), "r"(b), "r"(out)
+                     : "v2", "v3", "v4", "v5", "v6", "v7", "memory");
+}
+
+#define RV_SM3C_CASE(r)                                                        \
+    case r:                                                                    \
+        __asm__ volatile("vsetivli zero, 8, e32, m2, ta, ma\n\t"               \
+                         "vle32.v v2, (%0)\n\t"                                \
+                         "vsm3c.vi v4, v2, " #r "\n\t"                         \
+                         "vse32.v v4, (%1)"                                    \
+                         ::"r"(state), "r"(out)                                \
+                         : "v2", "v3", "v4", "v5", "memory");                  \
+        break;
+
+__attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+void rust_isa_rv_vector_vsm3c(const uint8_t *state, uint32_t round, uint8_t *out) {
+    switch (round) {
+        RV_SM3C_CASE(0)
+        RV_SM3C_CASE(1)
+        RV_SM3C_CASE(2)
+        RV_SM3C_CASE(3)
+        RV_SM3C_CASE(4)
+        RV_SM3C_CASE(5)
+        RV_SM3C_CASE(6)
+        RV_SM3C_CASE(7)
+        RV_SM3C_CASE(8)
+        RV_SM3C_CASE(9)
+        RV_SM3C_CASE(10)
+        RV_SM3C_CASE(11)
+        RV_SM3C_CASE(12)
+        RV_SM3C_CASE(13)
+        RV_SM3C_CASE(14)
+        RV_SM3C_CASE(15)
+        RV_SM3C_CASE(16)
+        RV_SM3C_CASE(17)
+        RV_SM3C_CASE(18)
+        RV_SM3C_CASE(19)
+        RV_SM3C_CASE(20)
+        RV_SM3C_CASE(21)
+        RV_SM3C_CASE(22)
+        RV_SM3C_CASE(23)
+        RV_SM3C_CASE(24)
+        RV_SM3C_CASE(25)
+        RV_SM3C_CASE(26)
+        RV_SM3C_CASE(27)
+        RV_SM3C_CASE(28)
+        RV_SM3C_CASE(29)
+        RV_SM3C_CASE(30)
+        RV_SM3C_CASE(31)
+    default:
+        break;
+    }
+}
+
+__attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+void rust_isa_rv_vector_vclmul(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 2, e64, m1, ta, ma\n\t"
+                     "vle64.v v2, (%0)\n\t"
+                     "vle64.v v3, (%1)\n\t"
+                     "vclmul.vv v4, v2, v3\n\t"
+                     "vse64.v v4, (%2)"
+                     ::"r"(a), "r"(b), "r"(out)
+                     : "v2", "v3", "v4", "memory");
+}
+__attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+void rust_isa_rv_vector_vclmulh(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 2, e64, m1, ta, ma\n\t"
+                     "vle64.v v2, (%0)\n\t"
+                     "vle64.v v3, (%1)\n\t"
+                     "vclmulh.vv v4, v2, v3\n\t"
+                     "vse64.v v4, (%2)"
+                     ::"r"(a), "r"(b), "r"(out)
+                     : "v2", "v3", "v4", "memory");
+}
+__attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+void rust_isa_rv_vector_vghsh(const uint8_t *acc, const uint8_t *value, const uint8_t *key,
+                              uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vle32.v v3, (%1)\n\t"
+                     "vle32.v v4, (%2)\n\t"
+                     "vghsh.vv v2, v3, v4\n\t"
+                     "vse32.v v2, (%3)"
+                     ::"r"(acc), "r"(value), "r"(key), "r"(out)
+                     : "v2", "v3", "v4", "memory");
+}
+
+__attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
+void rust_isa_rv_vector_vgmul(const uint8_t *acc, const uint8_t *key, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vle32.v v3, (%1)\n\t"
+                     "vgmul.vv v2, v3\n\t"
+                     "vse32.v v2, (%2)"
+                     ::"r"(acc), "r"(key), "r"(out)
+                     : "v2", "v3", "memory");
+}
