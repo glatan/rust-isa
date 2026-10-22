@@ -12,6 +12,10 @@ use rust_isa::arm::simd::i8mm::{smmla, usmmla, vummla};
 use rust_isa::arm::simd::mve;
 use rust_isa::arm::simd::mve_fp;
 use rust_isa::arm::simd::neon::{
+    V64, vext, vld1, vld2, vld3, vld4, vmov, vpadd, vpmax, vpmin, vrev16, vrev32, vrev64, vshr,
+    vswp, vtbl, vtbx, vtrn, vuzp, vzip,
+};
+use rust_isa::arm::simd::neon::{
     V128, add, add_i8, add_i16, add_i64, and, cmpeq_i8, cmpeq_i16, cmpeq_i32, cmpgt_i8, cmpgt_i16,
     cmpgt_i32, eor, fadd, fmul, fsub, mul, mul_i16, mul_i32, orr, splat_i32, sub_i8, sub_i16,
     sub_i32, sub_i64, trn1, uzp1, v128_load, v128_store, vaba, vabd, vabs, vbic, vbsl, vceq, vcge,
@@ -102,6 +106,9 @@ fn run() -> u32 {
     }
     if !widen_ops() {
         return 13;
+    }
+    if !memory_ops() {
+        return 14;
     }
     0
 }
@@ -679,6 +686,114 @@ fn widen_ops() -> bool {
         }
         if u16_lanes(vsli::<4>(i16x8([-1; 8]), i16x8([0x1234; 8]))) != [0x234f; 8]
             || u16_lanes(vsri::<4>(i16x8([-1; 8]), i16x8([0x1234; 8]))) != [0xf123; 8]
+        {
+            return false;
+        }
+        true
+    }
+}
+
+fn memory_ops() -> bool {
+    let ascending = V128::from_bytes(core::array::from_fn(|index| index as u8));
+    let plus_16 = V128::from_bytes(core::array::from_fn(|index| index as u8 + 16));
+    let mut load2 = [0u8; 32];
+    for (index, byte) in load2.iter_mut().enumerate() {
+        *byte = index as u8;
+    }
+    let mut load3 = [0u8; 48];
+    for (index, byte) in load3.iter_mut().enumerate() {
+        *byte = index as u8;
+    }
+    let mut load4 = [0u8; 64];
+    for (index, byte) in load4.iter_mut().enumerate() {
+        *byte = index as u8;
+    }
+    unsafe {
+        if vld1(load2.as_ptr()) != V128::from_bytes(core::array::from_fn(|i| i as u8)) {
+            return false;
+        }
+        let (ld2a, ld2b) = vld2(load2.as_ptr());
+        if ld2a.to_bytes() != core::array::from_fn(|i| (i * 2) as u8)
+            || ld2b.to_bytes() != core::array::from_fn(|i| (i * 2 + 1) as u8)
+        {
+            return false;
+        }
+        let (ld3a, ld3b, ld3c) = vld3(load3.as_ptr());
+        if ld3a.to_bytes() != core::array::from_fn(|i| (i * 3) as u8)
+            || ld3b.to_bytes() != core::array::from_fn(|i| (i * 3 + 1) as u8)
+            || ld3c.to_bytes() != core::array::from_fn(|i| (i * 3 + 2) as u8)
+        {
+            return false;
+        }
+        let (ld4a, ld4b, ld4c, ld4d) = vld4(load4.as_ptr());
+        if ld4a.to_bytes() != core::array::from_fn(|i| (i * 4) as u8)
+            || ld4b.to_bytes() != core::array::from_fn(|i| (i * 4 + 1) as u8)
+            || ld4c.to_bytes() != core::array::from_fn(|i| (i * 4 + 2) as u8)
+            || ld4d.to_bytes() != core::array::from_fn(|i| (i * 4 + 3) as u8)
+        {
+            return false;
+        }
+        if vmov(ascending) != ascending {
+            return false;
+        }
+        if lanes(vpadd(i32x4([1, 2, 3, 4]), i32x4([10, 20, 30, 40]))) != [3, 7, 30, 70]
+            || lanes(vpmax(i32x4([1, 5, 2, 7]), i32x4([3, 4, 6, 0]))) != [5, 7, 4, 6]
+            || lanes(vpmin(i32x4([1, 5, 2, 7]), i32x4([3, 4, 6, 0]))) != [1, 2, 3, 0]
+        {
+            return false;
+        }
+        if vrev16(ascending).to_bytes() != [1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14]
+            || vrev32(ascending).to_bytes()
+                != [3, 2, 1, 0, 7, 6, 5, 4, 11, 10, 9, 8, 15, 14, 13, 12]
+            || vrev64(ascending).to_bytes()
+                != [7, 6, 5, 4, 3, 2, 1, 0, 15, 14, 13, 12, 11, 10, 9, 8]
+        {
+            return false;
+        }
+        if vswp(ascending, plus_16) != (plus_16, ascending) {
+            return false;
+        }
+        let (trn_a, trn_b) = vtrn(ascending, plus_16);
+        if trn_a.to_bytes() != [0, 16, 2, 18, 4, 20, 6, 22, 8, 24, 10, 26, 12, 28, 14, 30]
+            || trn_b.to_bytes() != [1, 17, 3, 19, 5, 21, 7, 23, 9, 25, 11, 27, 13, 29, 15, 31]
+        {
+            return false;
+        }
+        let (uzp_a, uzp_b) = vuzp(ascending, plus_16);
+        if uzp_a.to_bytes() != [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+            || uzp_b.to_bytes() != [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31]
+        {
+            return false;
+        }
+        let (zip_a, zip_b) = vzip(ascending, plus_16);
+        if zip_a.to_bytes() != [0, 16, 1, 17, 2, 18, 3, 19, 4, 20, 5, 21, 6, 22, 7, 23]
+            || zip_b.to_bytes() != [8, 24, 9, 25, 10, 26, 11, 27, 12, 28, 13, 29, 14, 30, 15, 31]
+        {
+            return false;
+        }
+        let indices = V64::from_bytes([0, 1, 15, 16, 255, 3, 4, 5]);
+        if vtbl(ascending, indices).to_bytes() != [0, 1, 15, 0, 0, 3, 4, 5] {
+            return false;
+        }
+        let mut source = [0u8; 8];
+        for (index, byte) in source.iter_mut().enumerate() {
+            *byte = index as u8 + 100;
+        }
+        if vtbx(ascending, indices, V64::from_bytes(source)).to_bytes()
+            != [0, 1, 15, 103, 104, 3, 4, 5]
+        {
+            return false;
+        }
+        if vext::<4>(ascending, plus_16).to_bytes()
+            != [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+            || vext::<0>(ascending, plus_16) != ascending
+        {
+            return false;
+        }
+        if i16_lanes(vshr::<4>(i16x8([
+            0x0010, 0x0020, 0x0030, 0x0040, 0x0050, 0x0060, 0x0070, 0x0080,
+        ]))) != [1, 2, 3, 4, 5, 6, 7, 8]
+            || i16_lanes(vshr::<4>(i16x8([-16; 8]))) != [-1; 8]
         {
             return false;
         }
