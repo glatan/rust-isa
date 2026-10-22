@@ -33,24 +33,27 @@ use rust_isa::riscv::integer::zbkb::{brev8, pack, packh, unzip, xperm4, xperm8, 
 use rust_isa::riscv::integer::zbs::{bclr, bext, binv, bset};
 use rust_isa::riscv::simd::rvv::{
     V128, add, add_i8, add_i16, and, cmpeq_i32, cmpgt_i32, fadd, fmul, mul, mul_i16, or, splat_i32,
-    sub_i32, v128_load, v128_store, vaadd, vaaddu, vadd, vaesdf, vaesdm, vaesef, vaesem, vaeskf1,
-    vaeskf2, vaesz, vand, vasub, vasubu, vclmul, vclmulh, vcompress, vcpop, vdiv, vdivu, vfabs,
-    vfadd, vfclass, vfcvt_f_x, vfcvt_f_xu, vfcvt_rtz_x_f, vfcvt_rtz_xu_f, vfcvt_x_f, vfcvt_xu_f,
-    vfdiv, vfirst, vfma, vfmax, vfmerge, vfmin, vfms, vfmul, vfmv, vfmv_f_s, vfneg, vfnma, vfnms,
-    vfrdiv, vfrec7, vfredmax, vfredmin, vfredosum, vfredsum, vfredusum, vfrsqrt7, vfsgnj, vfsgnjn,
-    vfsgnjx, vfsqrt, vfsub, vfwadd, vfwmacc, vfwmsac, vfwmul, vfwnmacc, vfwnmsac, vfwsub, vghsh,
-    vgmul, vid, viota, vle8, vle16, vle32, vle64, vlm, vloxei8, vloxei16, vloxei32, vloxei64,
-    vlse32, vlseg2, vlseg8, vlsseg2, vluxei32, vmacc, vmadd, vmand, vmandn, vmax, vmaxu, vmerge,
-    vmin, vminu, vmnand, vmnor, vmor, vmorn, vmsbf, vmseq, vmseq_mask, vmsgeu_mask, vmsgt,
+    sub_i32, v128_load, v128_store, vaadd, vaaddu, vadd, vand, vasub, vasubu, vcompress, vcpop,
+    vdiv, vdivu, vfabs, vfadd, vfclass, vfcvt_f_x, vfcvt_f_xu, vfcvt_rtz_x_f, vfcvt_rtz_xu_f,
+    vfcvt_x_f, vfcvt_xu_f, vfdiv, vfirst, vfma, vfmax, vfmerge, vfmin, vfms, vfmul, vfmv, vfmv_f_s,
+    vfneg, vfnma, vfnms, vfrdiv, vfrec7, vfredmax, vfredmin, vfredosum, vfredsum, vfredusum,
+    vfrsqrt7, vfsgnj, vfsgnjn, vfsgnjx, vfsqrt, vfsub, vfwadd, vfwmacc, vfwmsac, vfwmul, vfwnmacc,
+    vfwnmsac, vfwsub, vid, viota, vle8, vle16, vle32, vle64, vlm, vloxei8, vloxei16, vloxei32,
+    vloxei64, vlse32, vlseg2, vlseg8, vlsseg2, vluxei32, vmacc, vmadd, vmand, vmandn, vmax, vmaxu,
+    vmerge, vmin, vminu, vmnand, vmnor, vmor, vmorn, vmsbf, vmseq, vmseq_mask, vmsgeu_mask, vmsgt,
     vmsgt_mask, vmsif, vmslt, vmsne_mask, vmsof, vmul, vmv, vmv_s_x, vmv_v_x, vmv_x_s, vmxnor,
     vmxor, vnclip, vnclipu, vnmsac, vnmsub, vnsra, vnsrl, vor, vredand, vredmax, vredmaxu, vredmin,
     vredminu, vredor, vredsum, vredxor, vrem, vremu, vrgather, vrgatherei16, vsadd, vsaddu, vse8,
-    vse32, vse64, vsext, vsha2ch, vsha2cl, vsha2ms, vslide1down, vslide1up, vslidedown, vslideup,
-    vsll, vsm, vsm3c, vsm3me, vsm4k, vsm4r, vsoxei32, vsra, vsrl, vsse32, vsseg2, vsseg8, vssseg2,
-    vssub, vssubu, vsub, vsuxei32, vwadd, vwaddu, vwmacc, vwmaccsu, vwmaccu, vwmaccus, vwmul,
-    vwmulsu, vwmulu, vwredsum, vwredsumu, vwsub, vwsubu, vxor, vzext, xor,
+    vse32, vse64, vsext, vslide1down, vslide1up, vslidedown, vslideup, vsll, vsm, vsoxei32, vsra,
+    vsrl, vsse32, vsseg2, vsseg8, vssseg2, vssub, vssubu, vsub, vsuxei32, vwadd, vwaddu, vwmacc,
+    vwmaccsu, vwmaccu, vwmaccus, vwmul, vwmulsu, vwmulu, vwredsum, vwredsumu, vwsub, vwsubu, vxor,
+    vzext, xor,
 };
 use rust_isa::riscv::simd::rvv_slice;
+use rust_isa::riscv::simd::zv::{
+    vaesdf, vaesdm, vaesef, vaesem, vaeskf1, vaeskf2, vaesz, vclmul, vclmulh, vghsh, vgmul,
+    vsha2ch, vsha2cl, vsha2ms, vsm3c, vsm3me, vsm4k, vsm4r,
+};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {

@@ -6,6 +6,8 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 V 拡張は `rvv`、そのスライス API は `rvv_slice` と書く（rustc の feature 名は `v`）。
 
+Zv* 暗号拡張は `zv` にまとめる（rustc の feature 名は `zvkn`、`zvks`、`zvkg`、`zvbc`）。
+
 ## 実装状況
 
 対象は各 extension の全命令である。次の表は、現在公開している命令と、
