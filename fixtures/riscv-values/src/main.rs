@@ -33,9 +33,12 @@ use rust_isa::riscv::integer::zbkb::{brev8, pack, packh, xperm4, xperm8};
 use rust_isa::riscv::integer::zbs::{bclr, bext, binv, bset};
 use rust_isa::riscv::simd::rv_vector::{
     V128, add, add_i8, add_i16, and, cmpeq_i32, cmpgt_i32, fadd, fmul, mul, mul_i16, or, splat_i32,
-    sub_i32, v128_load, v128_store, vadd, vand, vdiv, vdivu, vmacc, vmadd, vmax, vmaxu, vmin,
-    vminu, vmseq, vmseq_mask, vmsgeu_mask, vmsgt, vmsgt_mask, vmslt, vmsne_mask, vmul, vmv,
-    vmv_s_x, vmv_v_x, vmv_x_s, vnmsac, vnmsub, vor, vrem, vremu, vsll, vsra, vsrl, vsub, vxor, xor,
+    sub_i32, v128_load, v128_store, vaadd, vaaddu, vadd, vand, vasub, vasubu, vdiv, vdivu, vmacc,
+    vmadd, vmax, vmaxu, vmin, vminu, vmseq, vmseq_mask, vmsgeu_mask, vmsgt, vmsgt_mask, vmslt,
+    vmsne_mask, vmul, vmv, vmv_s_x, vmv_v_x, vmv_x_s, vnclip, vnclipu, vnmsac, vnmsub, vnsra,
+    vnsrl, vor, vrem, vremu, vsadd, vsaddu, vsext, vsll, vsra, vsrl, vssub, vssubu, vsub, vwadd,
+    vwaddu, vwmacc, vwmaccsu, vwmaccu, vwmaccus, vwmul, vwmulsu, vwmulu, vwsub, vwsubu, vxor,
+    vzext, xor,
 };
 use rust_isa::riscv::simd::rvv_slice;
 
@@ -86,6 +89,9 @@ fn run() -> u32 {
     if !vector_ops() {
         return 3;
     }
+    if !integer_fixed_ops() {
+        return 9;
+    }
     if !scalar_integer_ops() {
         return 4;
     }
@@ -129,6 +135,13 @@ fn i16_lanes(value: V128) -> [i16; 8] {
     let bytes = value.to_bytes();
     core::array::from_fn(|lane| {
         i16::from_le_bytes(bytes[lane * 2..lane * 2 + 2].try_into().unwrap())
+    })
+}
+
+fn u16_lanes(value: V128) -> [u16; 8] {
+    let bytes = value.to_bytes();
+    core::array::from_fn(|lane| {
+        u16::from_le_bytes(bytes[lane * 2..lane * 2 + 2].try_into().unwrap())
     })
 }
 
@@ -283,6 +296,121 @@ fn vector_ops() -> bool {
             || vmv_x_s(i32x4([-1, 2, 3, 4])) != -1
             || lanes(vmv_s_x(-2)) != [-2, 0, 0, 0]
         {
+            return false;
+        }
+        true
+    }
+}
+
+fn integer_fixed_ops() -> bool {
+    unsafe {
+        if lanes(vsadd(
+            i32x4([i32::MAX, i32::MIN, 100, -100]),
+            i32x4([1, -1, 50, -50]),
+        )) != [i32::MAX, i32::MIN, 150, -150]
+        {
+            return false;
+        }
+        if lanes(vssub(
+            i32x4([i32::MIN, i32::MAX, 100, -100]),
+            i32x4([1, -1, 50, -50]),
+        )) != [i32::MIN, i32::MAX, 50, -50]
+        {
+            return false;
+        }
+        if lanes(vsaddu(i32x4([-1, 0, 1, 2]), i32x4([1; 4]))) != [-1, 1, 2, 3]
+            || lanes(vssubu(i32x4([0, 1, 2, 3]), i32x4([1; 4]))) != [0, 0, 1, 2]
+        {
+            return false;
+        }
+        if lanes(vaadd(i32x4([1, 2, 3, 4]), i32x4([2, 3, 4, 5]))) != [2, 3, 4, 5]
+            || lanes(vaaddu(i32x4([1, 2, 3, 4]), i32x4([2, 3, 4, 5]))) != [2, 3, 4, 5]
+        {
+            return false;
+        }
+        if lanes(vasub(i32x4([2, 3, 4, 5]), i32x4([1; 4]))) != [1, 1, 2, 2]
+            || lanes(vasubu(i32x4([2, 3, 4, 5]), i32x4([1; 4]))) != [1, 1, 2, 2]
+        {
+            return false;
+        }
+
+        let wide_a = i16x8([1, -2, 30000, -30000, 5, 6, 7, 8]);
+        let wide_b = i16x8([2, 3, 30000, 30000, 9, 10, 11, 12]);
+        if lanes(vwadd(wide_a, wide_b)) != [3, 1, 60000, 0]
+            || lanes(vwsub(wide_a, wide_b)) != [-1, -5, 0, -60000]
+            || lanes(vwmul(wide_a, wide_b)) != [2, -6, 900_000_000, -900_000_000]
+        {
+            return false;
+        }
+        if lanes(vwaddu(
+            i16x8([-1, 1, 0, 2, 0, 0, 0, 0]),
+            i16x8([1, 1, 1, 1, 0, 0, 0, 0]),
+        )) != [65536, 2, 1, 3]
+            || lanes(vwsubu(
+                i16x8([-1, 0, 2, 3, 0, 0, 0, 0]),
+                i16x8([1, 1, 1, 1, 0, 0, 0, 0]),
+            )) != [65534, -1, 1, 2]
+        {
+            return false;
+        }
+        if lanes(vwmulu(
+            i16x8([-1, 2, 3, 4, 0, 0, 0, 0]),
+            i16x8([2, 3, 4, 5, 0, 0, 0, 0]),
+        )) != [131070, 6, 12, 20]
+            || lanes(vwmulsu(
+                i16x8([-1, 2, -3, 4, 0, 0, 0, 0]),
+                i16x8([2, 3, 4, 5, 0, 0, 0, 0]),
+            )) != [-2, 6, -12, 20]
+        {
+            return false;
+        }
+        if lanes(vwmacc(
+            i32x4([10, 20, 30, 40]),
+            i16x8([1, 2, 3, 4, 0, 0, 0, 0]),
+            i16x8([2, 3, 4, 5, 0, 0, 0, 0]),
+        )) != [12, 26, 42, 60]
+            || lanes(vwmaccu(
+                i32x4([10, 20, 30, 40]),
+                i16x8([-1, 2, 3, 4, 0, 0, 0, 0]),
+                i16x8([2, 3, 4, 5, 0, 0, 0, 0]),
+            )) != [131080, 26, 42, 60]
+            || lanes(vwmaccsu(
+                i32x4([10, 20, 30, 40]),
+                i16x8([-1, 2, -3, 4, 0, 0, 0, 0]),
+                i16x8([2, 3, 4, 5, 0, 0, 0, 0]),
+            )) != [8, 26, 18, 60]
+            || lanes(vwmaccus(
+                i32x4([10, 20, 30, 40]),
+                2,
+                i16x8([-1, 2, -3, 4, 0, 0, 0, 0]),
+            )) != [8, 24, 24, 48]
+        {
+            return false;
+        }
+
+        let narrow_source = i8x16([0, 1, -128, -1, 127, 2, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0]);
+        if i16_lanes(vzext(narrow_source)) != [0, 1, 128, 255, 127, 2, 3, 4]
+            || i16_lanes(vsext(narrow_source)) != [0, 1, -128, -1, 127, 2, 3, 4]
+        {
+            return false;
+        }
+        let narrow = i16_lanes(vnsrl(i32x4([0x0000_1200, 0x0000_3400, -1, 0x007f_ff00]), 8));
+        if narrow != [0x12, 0x34, -1, 0x7fff, 0, 0, 0, 0] {
+            return false;
+        }
+        let narrow = i16_lanes(vnsra(
+            i32x4([-1, -256, 0x007f_ff00, 0xff80_0000u32 as i32]),
+            8,
+        ));
+        if narrow != [-1, -1, 0x7fff, -0x8000, 0, 0, 0, 0] {
+            return false;
+        }
+        let narrow = i16_lanes(vnclip(i32x4([40000, -40000, 100, -100]), 0));
+        if narrow != [0x7fff, -0x8000, 100, -100, 0, 0, 0, 0] {
+            return false;
+        }
+        let narrow = u16_lanes(vnclipu(i32x4([70000, 100, 0, 40000]), 0));
+        if narrow != [65535, 100, 0, 40000, 0, 0, 0, 0] {
             return false;
         }
         true

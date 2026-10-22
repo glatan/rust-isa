@@ -568,3 +568,243 @@ pub unsafe fn vmv_s_x(value: i32) -> V128 {
     }
     out
 }
+
+unsafe extern "C" {
+    fn rust_isa_rv_vector_vsadd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vssub(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vsaddu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vssubu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vaadd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vaaddu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vasub(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vasubu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vwmacc(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vwmaccu(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vwmaccsu(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vwmaccus(acc: *const u8, scalar: u32, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vzext(a: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vsext(a: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vwadd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vwaddu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vwsub(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vwsubu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vwmul(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vwmulu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vwmulsu(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rv_vector_vnsrl(a: *const u8, shift: u32, out: *mut u8);
+    fn rust_isa_rv_vector_vnsra(a: *const u8, shift: u32, out: *mut u8);
+    fn rust_isa_rv_vector_vnclip(a: *const u8, shift: u32, out: *mut u8);
+    fn rust_isa_rv_vector_vnclipu(a: *const u8, shift: u32, out: *mut u8);
+}
+
+binary!(
+    /// `vsadd.vv` on signed 32-bit integer lanes. Saturates to `i32::MIN..=i32::MAX`.
+    vsadd,
+    rust_isa_rv_vector_vsadd
+);
+binary!(
+    /// `vssub.vv` on signed 32-bit integer lanes. Saturates to `i32::MIN..=i32::MAX`.
+    vssub,
+    rust_isa_rv_vector_vssub
+);
+binary!(
+    /// `vsaddu.vv` on unsigned 32-bit integer lanes. Saturates to `u32::MAX`.
+    vsaddu,
+    rust_isa_rv_vector_vsaddu
+);
+binary!(
+    /// `vssubu.vv` on unsigned 32-bit integer lanes. Saturates to zero.
+    vssubu,
+    rust_isa_rv_vector_vssubu
+);
+binary!(
+    /// `vaadd.vv` on signed 32-bit integer lanes.
+    ///
+    /// Rounds to nearest, ties away from zero (`vxrm = 0`).
+    vaadd,
+    rust_isa_rv_vector_vaadd
+);
+binary!(
+    /// `vaaddu.vv` on unsigned 32-bit integer lanes.
+    ///
+    /// Rounds to nearest, ties away from zero (`vxrm = 0`).
+    vaaddu,
+    rust_isa_rv_vector_vaaddu
+);
+binary!(
+    /// `vasub.vv` on signed 32-bit integer lanes.
+    ///
+    /// Rounds to nearest, ties away from zero (`vxrm = 0`).
+    vasub,
+    rust_isa_rv_vector_vasub
+);
+binary!(
+    /// `vasubu.vv` on unsigned 32-bit integer lanes.
+    ///
+    /// Rounds to nearest, ties away from zero (`vxrm = 0`).
+    vasubu,
+    rust_isa_rv_vector_vasubu
+);
+
+ternary!(
+    /// `vwmacc.vv`: `acc + sign_extend(a) * sign_extend(b)`.
+    ///
+    /// The low four 16-bit lanes of `a` and `b` are widened to 32 bits.
+    vwmacc,
+    rust_isa_rv_vector_vwmacc
+);
+ternary!(
+    /// `vwmaccu.vv`: `acc + zero_extend(a) * zero_extend(b)`.
+    ///
+    /// The low four 16-bit lanes of `a` and `b` are widened to 32 bits.
+    vwmaccu,
+    rust_isa_rv_vector_vwmaccu
+);
+ternary!(
+    /// `vwmaccsu.vv`: `acc + sign_extend(a) * zero_extend(b)`.
+    ///
+    /// The low four 16-bit lanes of `a` and `b` are widened to 32 bits.
+    vwmaccsu,
+    rust_isa_rv_vector_vwmaccsu
+);
+
+/// `vwmaccus.vx`: `acc + zero_extend(scalar) * sign_extend(b)`.
+///
+/// The low four 16-bit lanes of `b` are widened to 32 bits.
+///
+/// # Safety
+///
+/// The caller must compile with the V extension enabled.
+#[inline(always)]
+pub unsafe fn vwmaccus(acc: V128, scalar: u32, b: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_rv_vector_vwmaccus(acc.as_ptr(), scalar, b.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+macro_rules! widen {
+    ($(#[$meta:meta])* $name:ident, $c:ident, $doc:literal) => {
+        $(#[$meta])*
+        ///
+        #[doc = $doc]
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with the V extension enabled.
+        #[inline(always)]
+        pub unsafe fn $name(a: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe {
+                $c(a.as_ptr(), out.as_mut_ptr());
+            }
+            out
+        }
+    };
+}
+
+widen!(
+    /// `vzext.vf2`.
+    vzext,
+    rust_isa_rv_vector_vzext,
+    "The low eight bytes are zero-extended to eight 16-bit lanes."
+);
+widen!(
+    /// `vsext.vf2`.
+    vsext,
+    rust_isa_rv_vector_vsext,
+    "The low eight bytes are sign-extended to eight 16-bit lanes."
+);
+
+binary!(
+    /// `vwadd.vv`.
+    ///
+    /// The low four 16-bit lanes are sign-extended and added into 32-bit lanes.
+    vwadd,
+    rust_isa_rv_vector_vwadd
+);
+binary!(
+    /// `vwaddu.vv`.
+    ///
+    /// The low four 16-bit lanes are zero-extended and added into 32-bit lanes.
+    vwaddu,
+    rust_isa_rv_vector_vwaddu
+);
+binary!(
+    /// `vwsub.vv`.
+    ///
+    /// The low four 16-bit lanes are sign-extended and subtracted into 32-bit lanes.
+    vwsub,
+    rust_isa_rv_vector_vwsub
+);
+binary!(
+    /// `vwsubu.vv`.
+    ///
+    /// The low four 16-bit lanes are zero-extended and subtracted into 32-bit lanes.
+    vwsubu,
+    rust_isa_rv_vector_vwsubu
+);
+binary!(
+    /// `vwmul.vv`.
+    ///
+    /// The low four 16-bit lanes are sign-extended and multiplied into 32-bit lanes.
+    vwmul,
+    rust_isa_rv_vector_vwmul
+);
+binary!(
+    /// `vwmulu.vv`.
+    ///
+    /// The low four 16-bit lanes are zero-extended and multiplied into 32-bit lanes.
+    vwmulu,
+    rust_isa_rv_vector_vwmulu
+);
+binary!(
+    /// `vwmulsu.vv`.
+    ///
+    /// `a` is sign-extended and `b` is zero-extended before multiplying.
+    vwmulsu,
+    rust_isa_rv_vector_vwmulsu
+);
+
+macro_rules! narrow {
+    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+        $(#[$meta])*
+        ///
+        /// The low four 32-bit lanes are narrowed to four 16-bit lanes. The
+        /// remaining bytes are zero.
+        ///
+        /// # Safety
+        ///
+        /// The caller must compile with the V extension enabled.
+        #[inline(always)]
+        pub unsafe fn $name(a: V128, shift: u32) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe {
+                $c(a.as_ptr(), shift, out.as_mut_ptr());
+            }
+            out
+        }
+    };
+}
+
+narrow!(
+    /// `vnsrl.wx`.
+    vnsrl,
+    rust_isa_rv_vector_vnsrl
+);
+narrow!(
+    /// `vnsra.wx`.
+    vnsra,
+    rust_isa_rv_vector_vnsra
+);
+narrow!(
+    /// `vnclip.wx`, rounding to nearest, ties away from zero (`vxrm = 0`).
+    vnclip,
+    rust_isa_rv_vector_vnclip
+);
+narrow!(
+    /// `vnclipu.wx`, rounding to nearest, ties away from zero (`vxrm = 0`).
+    vnclipu,
+    rust_isa_rv_vector_vnclipu
+);
