@@ -14,8 +14,8 @@
 
 mod arithmetic;
 mod bitwise;
-mod blend;
-mod blendv;
+mod blend_imm;
+mod blend_variable;
 mod broadcast;
 mod compare;
 mod gather;
@@ -30,8 +30,8 @@ mod v256;
 
 pub use arithmetic::*;
 pub use bitwise::*;
-pub use blend::*;
-pub use blendv::*;
+pub use blend_imm::*;
+pub use blend_variable::*;
 pub use broadcast::*;
 pub use compare::*;
 pub use gather::*;
