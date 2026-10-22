@@ -559,3 +559,143 @@ pub unsafe fn fnmls_f64(a: &[f64], b: &[f64], acc: &[f64], out: &mut [f64]) {
         );
     }
 }
+
+unsafe extern "C" {
+    fn rust_isa_sve_fmla_f32(
+        a: *const f32,
+        b: *const f32,
+        acc: *const f32,
+        out: *mut f32,
+        len: usize,
+    );
+}
+/// `fmla` on `f32` slices (alias of `fma`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fmla_f32(a: &[f32], b: &[f32], acc: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), acc.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_fmla_f32(
+            a.as_ptr(),
+            b.as_ptr(),
+            acc.as_ptr(),
+            out.as_mut_ptr(),
+            a.len(),
+        );
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_fmls_f32(
+        a: *const f32,
+        b: *const f32,
+        acc: *const f32,
+        out: *mut f32,
+        len: usize,
+    );
+}
+/// `fmls` on `f32` slices (alias of `mls`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fmls_f32(a: &[f32], b: &[f32], acc: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), acc.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_fmls_f32(
+            a.as_ptr(),
+            b.as_ptr(),
+            acc.as_ptr(),
+            out.as_mut_ptr(),
+            a.len(),
+        );
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_fmla_f64(
+        a: *const f64,
+        b: *const f64,
+        acc: *const f64,
+        out: *mut f64,
+        len: usize,
+    );
+}
+/// `fmla` on `f64` slices (alias of `fma`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fmla_f64(a: &[f64], b: &[f64], acc: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), acc.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_fmla_f64(
+            a.as_ptr(),
+            b.as_ptr(),
+            acc.as_ptr(),
+            out.as_mut_ptr(),
+            a.len(),
+        );
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_fmls_f64(
+        a: *const f64,
+        b: *const f64,
+        acc: *const f64,
+        out: *mut f64,
+        len: usize,
+    );
+}
+/// `fmls` on `f64` slices (alias of `mls`).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fmls_f64(a: &[f64], b: &[f64], acc: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), acc.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_fmls_f64(
+            a.as_ptr(),
+            b.as_ptr(),
+            acc.as_ptr(),
+            out.as_mut_ptr(),
+            a.len(),
+        );
+    }
+}

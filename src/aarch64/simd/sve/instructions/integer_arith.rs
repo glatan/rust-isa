@@ -1253,3 +1253,201 @@ pub unsafe fn div_u64(a: &[u64], b: &[u64], out: &mut [u64]) {
         rust_isa_sve_div_u64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
     }
 }
+
+unsafe extern "C" {
+    fn rust_isa_sve_saba_i8(a: *const i8, b: *const i8, acc: *const i8, out: *mut i8, len: usize);
+}
+/// `saba` on `i8` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn saba_i8(a: &[i8], b: &[i8], acc: &[i8], out: &mut [i8]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), acc.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_saba_i8(
+            a.as_ptr(),
+            b.as_ptr(),
+            acc.as_ptr(),
+            out.as_mut_ptr(),
+            a.len(),
+        );
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_saba_i16(
+        a: *const i16,
+        b: *const i16,
+        acc: *const i16,
+        out: *mut i16,
+        len: usize,
+    );
+}
+/// `saba` on `i16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn saba_i16(a: &[i16], b: &[i16], acc: &[i16], out: &mut [i16]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), acc.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_saba_i16(
+            a.as_ptr(),
+            b.as_ptr(),
+            acc.as_ptr(),
+            out.as_mut_ptr(),
+            a.len(),
+        );
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_saba_i32(
+        a: *const i32,
+        b: *const i32,
+        acc: *const i32,
+        out: *mut i32,
+        len: usize,
+    );
+}
+/// `saba` on `i32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn saba_i32(a: &[i32], b: &[i32], acc: &[i32], out: &mut [i32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), acc.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_saba_i32(
+            a.as_ptr(),
+            b.as_ptr(),
+            acc.as_ptr(),
+            out.as_mut_ptr(),
+            a.len(),
+        );
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_uaba_u8(a: *const u8, b: *const u8, acc: *const u8, out: *mut u8, len: usize);
+}
+/// `uaba` on `u8` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn uaba_u8(a: &[u8], b: &[u8], acc: &[u8], out: &mut [u8]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), acc.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_uaba_u8(
+            a.as_ptr(),
+            b.as_ptr(),
+            acc.as_ptr(),
+            out.as_mut_ptr(),
+            a.len(),
+        );
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_uaba_u16(
+        a: *const u16,
+        b: *const u16,
+        acc: *const u16,
+        out: *mut u16,
+        len: usize,
+    );
+}
+/// `uaba` on `u16` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn uaba_u16(a: &[u16], b: &[u16], acc: &[u16], out: &mut [u16]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), acc.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_uaba_u16(
+            a.as_ptr(),
+            b.as_ptr(),
+            acc.as_ptr(),
+            out.as_mut_ptr(),
+            a.len(),
+        );
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_uaba_u32(
+        a: *const u32,
+        b: *const u32,
+        acc: *const u32,
+        out: *mut u32,
+        len: usize,
+    );
+}
+/// `uaba` on `u32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn uaba_u32(a: &[u32], b: &[u32], acc: &[u32], out: &mut [u32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), acc.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_uaba_u32(
+            a.as_ptr(),
+            b.as_ptr(),
+            acc.as_ptr(),
+            out.as_mut_ptr(),
+            a.len(),
+        );
+    }
+}
