@@ -27,9 +27,7 @@ use rust_isa::powerpc::simd::power8_vector::{
 use rust_isa::powerpc::simd::power8_vector::{
     vaddudm as p8_vaddudm, vmuleuh as p8_vmuleuh, vmuluwm as p8_vmuluwm, vsubudm as p8_vsubudm,
 };
-use rust_isa::powerpc::simd::power9_altivec_aliases::{
-    vctzd as altivec_vctzd, vnegw as altivec_vnegw,
-};
+use rust_isa::powerpc::simd::power9_altivec::{vctzd as altivec_vctzd, vnegw as altivec_vnegw};
 use rust_isa::powerpc::simd::power9_vector::{
     abs_i32 as p9_abs_i32, neg_i32 as p9_neg_i32, vabsd, vabsduw, vctzb, vctzd as p9_vctzd, vctzh,
     vctzlsbb, vctzw, vextsb2d, vextsb2w, vextsh2d, vextsh2w, vextsw2d, vnegd, vnegw,
