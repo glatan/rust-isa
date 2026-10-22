@@ -2,6 +2,8 @@
 //!
 //! This crate is `no_std` and does not call `core::arch`. The public path is
 //! `{arch}::{family}::{extension}::{instruction}`. `family` is a namespace.
+//! `wasm32::wide_arithmetic` is the exception: it sits directly under the arch
+//! module because it has no family.
 //! Instructions are re-exported from the extension, so a call looks like
 //! `wasm32::simd::simd128::f32x4_add`.
 //!

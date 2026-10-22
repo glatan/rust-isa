@@ -12,11 +12,9 @@
 
 mod absdiff;
 mod compare;
-mod compare_ext;
 mod convert;
 mod crypto;
 mod extract;
-mod float;
 mod float_arith;
 mod float_compare;
 mod halving;
@@ -37,11 +35,9 @@ mod widen;
 
 pub use absdiff::*;
 pub use compare::*;
-pub use compare_ext::*;
 pub use convert::*;
 pub use crypto::*;
 pub use extract::*;
-pub use float::*;
 pub use float_arith::*;
 pub use float_compare::*;
 pub use halving::*;

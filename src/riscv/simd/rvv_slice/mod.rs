@@ -5,12 +5,12 @@
 //! The slice operations are `unsafe`.
 //!
 //! SVE-like runtime vector lengths do not fit
-//! [`V128`](crate::riscv::simd::rv_vector::V128). These functions take
+//! [`V128`](crate::riscv::simd::rvv::V128). These functions take
 //! slices and let the C loop choose VL with `vsetvl`. The slices use the element
 //! type in each function name. All slices must have the same length; a different
 //! length panics. The functions do not allocate.
 //!
-//! The fixed-length [`V128`](crate::riscv::simd::rv_vector::V128) API is
+//! The fixed-length [`V128`](crate::riscv::simd::rvv::V128) API is
 //! separate from this slice API.
 //!
 //! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).

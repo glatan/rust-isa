@@ -1,4 +1,4 @@
-//! s390x vector enhancements.
+//! s390x vector enhancements facility 1.
 //!
 //! The vector-enhancement facilities are not part of the s390x baseline. Every
 //! operation is `unsafe` and the caller must compile with the corresponding

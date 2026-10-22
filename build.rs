@@ -74,7 +74,7 @@ fn main() {
     let a64_sha3_c = manifest.join("src/aarch64/crypto/sha3/sha3.c");
     let a64_sm4_c = manifest.join("src/aarch64/crypto/sm4/sm4.c");
     let a64_crc_c = manifest.join("src/aarch64/crypto/crc/crc.c");
-    let rv_vector_c = manifest.join("src/riscv/simd/rv_vector/rv_vector.c");
+    let rvv_c = manifest.join("src/riscv/simd/rvv/rvv.c");
     let rvv_slice_c = manifest.join("src/riscv/simd/rvv_slice/rvv_slice.c");
     let rv_zba_c = manifest.join("src/riscv/integer/zba/zba.c");
     let rv_zbb_c = manifest.join("src/riscv/integer/zbb/zbb.c");
@@ -87,7 +87,7 @@ fn main() {
     let lsx_c = manifest.join("src/loongarch/simd/lsx/lsx.c");
     let lasx_c = manifest.join("src/loongarch/simd/lasx/lasx.c");
     let s390x_vector_c = manifest.join("src/s390x/simd/vector/vector.c");
-    let s390x_enh_c = manifest.join("src/s390x/simd/vector_enhancements/vector_enhancements.c");
+    let s390x_enh_c = manifest.join("src/s390x/simd/vector_enhancements_1/vector_enhancements_1.c");
     let arm_neon_c = manifest.join("src/arm/simd/neon/neon.c");
     let arm_dotprod_c = manifest.join("src/arm/simd/dotprod/dotprod.c");
     let arm_fp16_c = manifest.join("src/arm/simd/fp16/fp16.c");
@@ -176,7 +176,7 @@ fn main() {
         &a64_sha3_c,
         &a64_sm4_c,
         &a64_crc_c,
-        &rv_vector_c,
+        &rvv_c,
         &rvv_slice_c,
         &rv_zba_c,
         &rv_zbb_c,
@@ -419,8 +419,8 @@ fn main() {
     if target == "riscv64gc-unknown-linux-gnu" {
         compile_archive(
             &out_dir,
-            &rv_vector_c,
-            "rust_isa_rv_vector",
+            &rvv_c,
+            "rust_isa_rvv",
             &[
                 "-march=rv64gcv",
                 "-mabi=lp64d",

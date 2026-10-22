@@ -510,7 +510,7 @@ pub unsafe fn vstef(p: *mut f32, a: V128) {
     }
 }
 
-pub use super::vector_enhancements::{
+pub use super::vector_enhancements_1::{
     vfa, vfce, vfch, vfche, vfd, vfi_f32, vfll, vflr, vfm, vfs, vfsq, vftci_f32, vnn,
 };
 
