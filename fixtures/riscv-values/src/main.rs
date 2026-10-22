@@ -33,11 +33,16 @@ use rust_isa::riscv::integer::zbkb::{brev8, pack, packh, xperm4, xperm8};
 use rust_isa::riscv::integer::zbs::{bclr, bext, binv, bset};
 use rust_isa::riscv::simd::rv_vector::{
     V128, add, add_i8, add_i16, and, cmpeq_i32, cmpgt_i32, fadd, fmul, mul, mul_i16, or, splat_i32,
-    sub_i32, v128_load, v128_store, vaadd, vaaddu, vadd, vand, vasub, vasubu, vdiv, vdivu, vmacc,
-    vmadd, vmax, vmaxu, vmin, vminu, vmseq, vmseq_mask, vmsgeu_mask, vmsgt, vmsgt_mask, vmslt,
-    vmsne_mask, vmul, vmv, vmv_s_x, vmv_v_x, vmv_x_s, vnclip, vnclipu, vnmsac, vnmsub, vnsra,
-    vnsrl, vor, vrem, vremu, vsadd, vsaddu, vsext, vsll, vsra, vsrl, vssub, vssubu, vsub, vwadd,
-    vwaddu, vwmacc, vwmaccsu, vwmaccu, vwmaccus, vwmul, vwmulsu, vwmulu, vwsub, vwsubu, vxor,
+    sub_i32, v128_load, v128_store, vaadd, vaaddu, vadd, vand, vasub, vasubu, vcompress, vcpop,
+    vdiv, vdivu, vfirst, vid, viota, vle8, vle16, vle32, vle64, vlm, vloxei8, vloxei16, vloxei32,
+    vloxei64, vlse32, vlseg2, vlseg8, vlsseg2, vluxei32, vmacc, vmadd, vmand, vmandn, vmax, vmaxu,
+    vmerge, vmin, vminu, vmnand, vmnor, vmor, vmorn, vmsbf, vmseq, vmseq_mask, vmsgeu_mask, vmsgt,
+    vmsgt_mask, vmsif, vmslt, vmsne_mask, vmsof, vmul, vmv, vmv_s_x, vmv_v_x, vmv_x_s, vmxnor,
+    vmxor, vnclip, vnclipu, vnmsac, vnmsub, vnsra, vnsrl, vor, vredand, vredmax, vredmaxu, vredmin,
+    vredminu, vredor, vredsum, vredxor, vrem, vremu, vrgather, vrgatherei16, vsadd, vsaddu, vse8,
+    vse32, vse64, vsext, vslide1down, vslide1up, vslidedown, vslideup, vsll, vsm, vsoxei32, vsra,
+    vsrl, vsse32, vsseg2, vsseg8, vssseg2, vssub, vssubu, vsub, vsuxei32, vwadd, vwaddu, vwmacc,
+    vwmaccsu, vwmaccu, vwmaccus, vwmul, vwmulsu, vwmulu, vwredsum, vwredsumu, vwsub, vwsubu, vxor,
     vzext, xor,
 };
 use rust_isa::riscv::simd::rvv_slice;
@@ -91,6 +96,9 @@ fn run() -> u32 {
     }
     if !integer_fixed_ops() {
         return 9;
+    }
+    if !mask_memory_ops() {
+        return 10;
     }
     if !scalar_integer_ops() {
         return 4;
@@ -208,7 +216,7 @@ fn vector_ops() -> bool {
             return false;
         }
         if lanes(vdiv(i32x4([10, -20, 30, -40]), i32x4([2, 3, 4, 5]))) != [5, -6, 7, -8]
-            || lanes(vdiv(i32x4([1, 0, 0, 0]), i32x4([0; 4]))) != [-1; 4]
+            || lanes(vdiv(i32x4([4, 0, 0, 0]), i32x4([0; 4]))) != [-1; 4]
         {
             return false;
         }
@@ -411,6 +419,202 @@ fn integer_fixed_ops() -> bool {
         }
         let narrow = u16_lanes(vnclipu(i32x4([70000, 100, 0, 40000]), 0));
         if narrow != [65535, 100, 0, 40000, 0, 0, 0, 0] {
+            return false;
+        }
+        true
+    }
+}
+
+fn mask_memory_ops() -> bool {
+    unsafe {
+        if vmand(0xf0f0, 0xff00) != 0xf000
+            || vmnand(0xf0f0, 0xff00) != 0x0fff
+            || vmandn(0xf0f0, 0xff00) != 0x00f0
+            || vmxor(0xf0f0, 0xff00) != 0x0ff0
+            || vmor(0xf0f0, 0xff00) != 0xfff0
+            || vmnor(0xf0f0, 0xff00) != 0x000f
+            || vmorn(0xf0f0, 0xff00) != 0xf0ff
+            || vmxnor(0xf0f0, 0xff00) != 0xf00f
+        {
+            return false;
+        }
+        if vcpop(0xf0f0) != 8 || vfirst(0x0100) != 8 || vfirst(0) != -1 {
+            return false;
+        }
+        if vmsbf(0x0100) != 0x00ff || vmsof(0x0100) != 0x0100 || vmsif(0x0100) != 0x01ff {
+            return false;
+        }
+        let iota = viota(0x000f).to_bytes();
+        if iota[..5] != [0, 1, 2, 3, 4] {
+            return false;
+        }
+        if vid().to_bytes() != core::array::from_fn::<u8, 16, _>(|i| i as u8) {
+            return false;
+        }
+
+        if lanes(vslideup(i32x4([10, 20, 30, 40]), i32x4([1, 2, 3, 4]), 2)) != [10, 20, 1, 2]
+            || lanes(vslidedown(i32x4([1, 2, 3, 4]), 2)) != [3, 4, 0, 0]
+            || lanes(vslide1up(i32x4([1, 2, 3, 4]), 9)) != [9, 1, 2, 3]
+            || lanes(vslide1down(i32x4([1, 2, 3, 4]), 9)) != [2, 3, 4, 9]
+        {
+            return false;
+        }
+        if lanes(vrgather(i32x4([10, 20, 30, 40]), i32x4([3, 2, 1, 0]))) != [40, 30, 20, 10]
+            || lanes(vrgather(i32x4([10, 20, 30, 40]), i32x4([0, 4, 1, 2]))) != [10, 0, 20, 30]
+        {
+            return false;
+        }
+        if lanes(vrgatherei16(
+            i32x4([10, 20, 30, 40]),
+            i16x8([2, 0, 3, 1, 0, 0, 0, 0]),
+        )) != [30, 10, 40, 20]
+        {
+            return false;
+        }
+        if lanes(vmerge(i32x4([1, 2, 3, 4]), i32x4([10, 20, 30, 40]), 0b1010)) != [1, 20, 3, 40]
+            || lanes(vcompress(i32x4([1, 2, 3, 4]), 0b0101)) != [1, 3, 0, 0]
+        {
+            return false;
+        }
+
+        let bytes = [1u8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let value = vle8(bytes.as_ptr());
+        if value.to_bytes() != bytes {
+            return false;
+        }
+        let mut stored = [0u8; 16];
+        vse8(stored.as_mut_ptr(), value);
+        if stored != bytes {
+            return false;
+        }
+        let words = [1i32, 2, 3, 4];
+        if lanes(vle32(words.as_ptr())) != [1, 2, 3, 4] {
+            return false;
+        }
+        let halves = [1u16, 2, 3, 4, 5, 6, 7, 8];
+        if vle16(halves.as_ptr()).to_bytes() != i16x8([1, 2, 3, 4, 5, 6, 7, 8]).to_bytes() {
+            return false;
+        }
+        let doubles = [1u64, 2];
+        if vle64(doubles.as_ptr()).to_bytes() != {
+            let mut expected = [0u8; 16];
+            expected[..8].copy_from_slice(&1u64.to_le_bytes());
+            expected[8..].copy_from_slice(&2u64.to_le_bytes());
+            expected
+        } {
+            return false;
+        }
+        let mut stores = [0i32; 4];
+        vse32(stores.as_mut_ptr(), i32x4([7, 8, 9, 10]));
+        if stores != [7, 8, 9, 10] {
+            return false;
+        }
+
+        let strided = [1i32, 2, 3, 4, 5, 6, 7, 8];
+        if lanes(vlse32(strided.as_ptr(), 8)) != [1, 3, 5, 7] {
+            return false;
+        }
+        let mut strided_out = [0i32; 8];
+        vsse32(strided_out.as_mut_ptr(), 8, i32x4([10, 20, 30, 40]));
+        if strided_out != [10, 0, 20, 0, 30, 0, 40, 0] {
+            return false;
+        }
+
+        let base = [10i32, 20, 30, 40, 50];
+        let indices = i32x4([16, 0, 8, 4]);
+        if lanes(vloxei32(base.as_ptr(), indices)) != [50, 10, 30, 20]
+            || lanes(vluxei32(base.as_ptr(), indices)) != [50, 10, 30, 20]
+        {
+            return false;
+        }
+        let mut gathered = [0i32; 5];
+        vsoxei32(gathered.as_mut_ptr(), indices, i32x4([1, 2, 3, 4]));
+        if gathered != [2, 4, 3, 0, 1] {
+            return false;
+        }
+        let mut scattered = [0i32; 5];
+        vsuxei32(scattered.as_mut_ptr(), indices, i32x4([5, 6, 7, 8]));
+        if scattered != [6, 8, 7, 0, 5] {
+            return false;
+        }
+        let bytes_indices = V128::from_bytes([4, 0, 12, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+        if lanes(vloxei8(base.as_ptr(), bytes_indices)) != [20, 10, 40, 30]
+            || lanes(vloxei16(base.as_ptr(), i16x8([4, 0, 12, 8, 0, 0, 0, 0]))) != [20, 10, 40, 30]
+            || lanes(vloxei64(base.as_ptr(), i32x4([4, 0, 0, 0]))) != [20, 10, 0, 0]
+        {
+            return false;
+        }
+
+        let interleaved = [1i32, 10, 2, 20, 3, 30, 4, 40];
+        let pair = vlseg2(interleaved.as_ptr());
+        if lanes(pair[0]) != [1, 2, 3, 4] || lanes(pair[1]) != [10, 20, 30, 40] {
+            return false;
+        }
+        let mut interleaved_out = [0i32; 8];
+        vsseg2(interleaved_out.as_mut_ptr(), pair);
+        if interleaved_out != interleaved {
+            return false;
+        }
+        let mut strided_segments = [0i32; 8];
+        vssseg2(strided_segments.as_mut_ptr(), 8, pair);
+        if strided_segments != interleaved {
+            return false;
+        }
+        let strided_pair = vlsseg2(interleaved.as_ptr(), 8);
+        if lanes(strided_pair[0]) != [1, 2, 3, 4] || lanes(strided_pair[1]) != [10, 20, 30, 40] {
+            return false;
+        }
+
+        let mut eight = [0i32; 32];
+        for i in 0..4 {
+            for s in 0..8 {
+                eight[i * 8 + s] = (s as i32) * 10 + i as i32;
+            }
+        }
+        let segments = vlseg8(eight.as_ptr());
+        for s in 0..8 {
+            let expected = [
+                (s as i32) * 10,
+                (s as i32) * 10 + 1,
+                (s as i32) * 10 + 2,
+                (s as i32) * 10 + 3,
+            ];
+            if lanes(segments[s]) != expected {
+                return false;
+            }
+        }
+        let mut eight_out = [0i32; 32];
+        vsseg8(eight_out.as_mut_ptr(), segments);
+        if eight_out != eight {
+            return false;
+        }
+
+        let mask_bytes = [0x34u8, 0x12];
+        let mask = vlm(mask_bytes.as_ptr());
+        if mask != 0x1234 {
+            return false;
+        }
+        let mut mask_out = [0u8; 2];
+        vsm(mask_out.as_mut_ptr(), mask);
+        if mask_out != mask_bytes {
+            return false;
+        }
+
+        if vredsum(i32x4([1, 2, 3, 4])) != 10
+            || vredand(i32x4([0b1100, 0b1010, 0b1111, 0b0110])) != 0
+            || vredor(i32x4([0b1100, 0b1010, 0b1111, 0b0110])) != 0b1111
+            || vredxor(i32x4([0b1100, 0b1010, 0b1111, 0b0110])) != 0b1111
+        {
+            return false;
+        }
+        if vredmin(i32x4([4, 2, 7, -1])) != -1
+            || vredmax(i32x4([4, 2, 7, -1])) != 7
+            || vredminu(i32x4([-1, 2, 7, 1])) != 1
+            || vredmaxu(i32x4([-1, 2, 7, 1])) != 0xffff_ffff
+        {
+            return false;
+        }
+        if vwredsum(i32x4([1, 2, 3, 4])) != 10 || vwredsumu(i32x4([-1, 1, 2, 3])) != 0x1_0000_0005 {
             return false;
         }
         true
