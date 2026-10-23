@@ -4,6 +4,8 @@
 //! and the required target features are documented on each function. The values
 //! are [`V256`] and [`V128`]. The functions also require the AVX-512 extension
 //! that defines the instruction, such as AVX-512BW or AVX-512DQ.
+//! `vp2intersectd` and `vp2intersectq` additionally require
+//! AVX-512VP2INTERSECT.
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software
 //! Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
