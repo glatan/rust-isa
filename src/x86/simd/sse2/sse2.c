@@ -121,12 +121,12 @@ void rust_isa_sse2_pmaddwd(const uint8_t *a, const uint8_t *b, uint8_t *out) {
 }
 
 __attribute__((always_inline))
-void rust_isa_sse2_pminw(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+void rust_isa_sse2_pminsw(const uint8_t *a, const uint8_t *b, uint8_t *out) {
     _mm_storeu_si128((__m128i *)(void *)out, _mm_min_epi16(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
 }
 
 __attribute__((always_inline))
-void rust_isa_sse2_pmaxw(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+void rust_isa_sse2_pmaxsw(const uint8_t *a, const uint8_t *b, uint8_t *out) {
     _mm_storeu_si128((__m128i *)(void *)out, _mm_max_epi16(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
 }
 

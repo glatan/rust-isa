@@ -30,8 +30,8 @@ unsafe extern "C" {
     fn rust_isa_sse2_psubw(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_sse2_pmullw(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_sse2_pmaddwd(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_sse2_pminw(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_sse2_pmaxw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pminsw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pmaxsw(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_sse2_pavgw(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_sse2_paddsw(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_sse2_paddusw(a: *const u8, b: *const u8, out: *mut u8);
@@ -371,30 +371,6 @@ pub fn pmaddwd(a: V128, b: V128) -> V128 {
     out
 }
 
-/// `pminw`
-///
-/// Take the minimum of the eight signed 16-bit integer lanes.
-#[inline(always)]
-pub fn pminw(a: V128, b: V128) -> V128 {
-    let mut out = V128::from_bytes([0; 16]);
-    unsafe {
-        rust_isa_sse2_pminw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
-    }
-    out
-}
-
-/// `pmaxw`
-///
-/// Take the maximum of the eight signed 16-bit integer lanes.
-#[inline(always)]
-pub fn pmaxw(a: V128, b: V128) -> V128 {
-    let mut out = V128::from_bytes([0; 16]);
-    unsafe {
-        rust_isa_sse2_pmaxw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
-    }
-    out
-}
-
 /// `pavgw`
 ///
 /// Average the eight unsigned 16-bit integer lanes, rounding up.
@@ -412,7 +388,11 @@ pub fn pavgw(a: V128, b: V128) -> V128 {
 /// Take the minimum of the eight signed 16-bit integer lanes.
 #[inline(always)]
 pub fn pminsw(a: V128, b: V128) -> V128 {
-    pminw(a, b)
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_pminsw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
 }
 
 /// `pmaxsw`
@@ -420,7 +400,11 @@ pub fn pminsw(a: V128, b: V128) -> V128 {
 /// Take the maximum of the eight signed 16-bit integer lanes.
 #[inline(always)]
 pub fn pmaxsw(a: V128, b: V128) -> V128 {
-    pmaxw(a, b)
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse2_pmaxsw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+    }
+    out
 }
 
 /// `paddsw`

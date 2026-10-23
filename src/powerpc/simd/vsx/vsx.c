@@ -136,7 +136,7 @@ void rust_isa_vsx_xvcpsgn(const uint8_t *a, const uint8_t *b, uint8_t *out) {
 }
 
 __attribute__((always_inline))
-void rust_isa_vsx_xvsldoi(const uint8_t *a, const uint8_t *b, uint32_t imm, uint8_t *out) {
+void rust_isa_vsx_vsldoi(const uint8_t *a, const uint8_t *b, uint32_t imm, uint8_t *out) {
     const v16u8 va = *(const v16u8 *)(const void *)a;
     const v16u8 vb = *(const v16u8 *)(const void *)b;
     v16u8 r = va;

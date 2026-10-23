@@ -286,20 +286,20 @@ vtern!(
 );
 
 unsafe extern "C" {
-    fn rust_isa_vsx_xvsldoi(a: *const u8, b: *const u8, imm: u32, out: *mut u8);
+    fn rust_isa_vsx_vsldoi(a: *const u8, b: *const u8, imm: u32, out: *mut u8);
 }
 
-/// `xvsldoi` with an immediate shift count.
+/// `vsldoi` with an immediate shift count.
 ///
 /// # Safety
 ///
 /// The caller must enable VSX.
 #[inline(always)]
-pub unsafe fn xvsldoi<const IMM: u8>(a: V128, b: V128) -> V128 {
-    const { assert!(IMM <= 15, "xvsldoi immediate must be in 0..=15") };
+pub unsafe fn vsldoi<const IMM: u8>(a: V128, b: V128) -> V128 {
+    const { assert!(IMM <= 15, "vsldoi immediate must be in 0..=15") };
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_vsx_xvsldoi(a.as_ptr(), b.as_ptr(), u32::from(IMM), out.as_mut_ptr());
+        rust_isa_vsx_vsldoi(a.as_ptr(), b.as_ptr(), u32::from(IMM), out.as_mut_ptr());
     }
     out
 }

@@ -1,5 +1,5 @@
 use rust_isa::x86::simd::avxneconvert::{
-    vbcstnebf162ps, vcvtneebf162ps, vcvtneepbf162ps, vcvtneeph2ps, vcvtneepsh2ps,
+    vbcstnebf162ps, vcvtneebf162ps, vcvtneeph2ps, vcvtneobf162ps, vcvtneoph2ps,
     vcvtneps2bf16 as vcvtneps2bf16_256,
 };
 
@@ -14,13 +14,13 @@ fn avx_ne_convert_packed() {
         if index % 2 == 0 { 0x3f80 } else { 0x4000 }
     }));
     assert_eq!(f32x8_lanes(unsafe { vcvtneebf162ps(even_bf16) }), [1.0; 8]);
-    assert_eq!(f32x8_lanes(unsafe { vcvtneepbf162ps(even_bf16) }), [2.0; 8]);
+    assert_eq!(f32x8_lanes(unsafe { vcvtneobf162ps(even_bf16) }), [2.0; 8]);
 
     let even_half = u16x16(core::array::from_fn(|index| {
         if index % 2 == 0 { 0x3c00 } else { 0x4000 }
     }));
     assert_eq!(f32x8_lanes(unsafe { vcvtneeph2ps(even_half) }), [1.0; 8]);
-    assert_eq!(f32x8_lanes(unsafe { vcvtneepsh2ps(even_half) }), [2.0; 8]);
+    assert_eq!(f32x8_lanes(unsafe { vcvtneoph2ps(even_half) }), [2.0; 8]);
 }
 
 #[test]

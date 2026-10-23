@@ -16,7 +16,7 @@ use super::neon::V128;
 
 unsafe extern "C" {
     fn rust_isa_arm_i8mm_smmla(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_arm_i8mm_usmmla(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_arm_i8mm_vusmmla(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_arm_i8mm_vummla(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
 }
 
@@ -52,7 +52,7 @@ pub unsafe fn vummla(acc: V128, a: V128, b: V128) -> V128 {
     out
 }
 
-/// `usmmla`
+/// `vusmmla`
 ///
 /// Multiply unsigned bytes in `a` by signed bytes in `b` and accumulate.
 ///
@@ -60,10 +60,10 @@ pub unsafe fn vummla(acc: V128, a: V128, b: V128) -> V128 {
 ///
 /// The caller must enable I8MM on the CPU and in the target features.
 #[inline(always)]
-pub unsafe fn usmmla(acc: V128, a: V128, b: V128) -> V128 {
+pub unsafe fn vusmmla(acc: V128, a: V128, b: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_arm_i8mm_usmmla(acc.as_ptr(), a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+        rust_isa_arm_i8mm_vusmmla(acc.as_ptr(), a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
 }

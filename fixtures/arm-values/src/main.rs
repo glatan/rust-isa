@@ -8,7 +8,7 @@ use rust_isa::arm::crypto::crc::crc32b;
 use rust_isa::arm::crypto::sha2::{sha256h, sha256h2, sha256su0, sha256su1};
 use rust_isa::arm::simd::dotprod::{sdot, udot};
 use rust_isa::arm::simd::fp16;
-use rust_isa::arm::simd::i8mm::{smmla, usmmla, vummla};
+use rust_isa::arm::simd::i8mm::{smmla, vummla, vusmmla};
 use rust_isa::arm::simd::mve;
 use rust_isa::arm::simd::mve_fp;
 use rust_isa::arm::simd::neon::{
@@ -440,7 +440,7 @@ fn i8mm_ops() -> bool {
     unsafe {
         let signed = smmla(zero, a, b);
         let unsigned = vummla(zero, a, b);
-        let mixed = usmmla(zero, a, b);
+        let mixed = vusmmla(zero, a, b);
         signed == unsigned && unsigned == mixed && signed != zero
     }
 }

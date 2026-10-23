@@ -4,12 +4,12 @@ use rust_isa::x86::simd::sse2::{
     cvttsd2si, cvttss2si, divpd, divps, maskmovdqu, maxpd, maxps, minpd, minps, movd, movmskpd,
     movmskps, movq, mulpd, mulps, orps, packssdw, packsswb, packuswb, paddb, paddd, paddq, paddsb,
     paddsw, paddusb, paddusw, paddw, pand, pavgb, pavgw, pcmpeqb, pcmpeqd, pcmpeqw, pcmpgtb,
-    pcmpgtd, pcmpgtw, pmaddwd, pmaxsw, pmaxub, pmaxw, pminsw, pminub, pminw, pmovmskb, pmulhuw,
-    pmulhw, pmullw, pmuludq, por, psadbw, pshufd, pshufhw, pshuflw, pslld, pslldq, psllq, psllw,
-    psrad, psraw, psrld, psrldq, psrlq, psrlw, psubb, psubd, psubq, psubsb, psubsw, psubusb,
-    psubusw, psubw, punpckhbw, punpckhdq, punpckhqdq, punpckhwd, punpcklbw, punpckldq, punpcklqdq,
-    punpcklwd, pxor, shufpd, shufps, sqrtpd, sqrtps, subpd, subps, unpckhpd, unpckhps, unpcklpd,
-    unpcklps, v128_load, v128_store, xorps,
+    pcmpgtd, pcmpgtw, pmaddwd, pmaxsw, pmaxub, pminsw, pminub, pmovmskb, pmulhuw, pmulhw, pmullw,
+    pmuludq, por, psadbw, pshufd, pshufhw, pshuflw, pslld, pslldq, psllq, psllw, psrad, psraw,
+    psrld, psrldq, psrlq, psrlw, psubb, psubd, psubq, psubsb, psubsw, psubusb, psubusw, psubw,
+    punpckhbw, punpckhdq, punpckhqdq, punpckhwd, punpcklbw, punpckldq, punpcklqdq, punpcklwd, pxor,
+    shufpd, shufps, sqrtpd, sqrtps, subpd, subps, unpckhpd, unpckhps, unpcklpd, unpcklps,
+    v128_load, v128_store, xorps,
 };
 use rust_isa::x86::simd::sse2::{
     comisd, comiss, cvtdq2pd, cvtpd2dq, cvttpd2dq, movhlps, movhps, movlhps, movlps, movntdq,
@@ -375,14 +375,14 @@ fn word_arithmetic_compare_and_minmax() {
         [-1, 0, -1, 0, -1, 0, -1, 0]
     );
     assert_eq!(
-        i16_lanes(pminw(
+        i16_lanes(pminsw(
             i16x8([-1, 7, 3, 9, -5, 2, 8, 0]),
             i16x8([1, 6, 4, 8, -4, 3, 7, 1])
         )),
         [-1, 6, 3, 8, -5, 2, 7, 0]
     );
     assert_eq!(
-        i16_lanes(pmaxw(
+        i16_lanes(pmaxsw(
             i16x8([-1, 7, 3, 9, -5, 2, 8, 0]),
             i16x8([1, 6, 4, 8, -4, 3, 7, 1])
         )),
