@@ -58,11 +58,11 @@ features = "+msa"
 vle = "Family name; vleb, vleh, vlef, and vleg are the concrete instructions."
 
 [allow.riscv]
-"fmvh.x.d" = "LLVM 23 does not recognize this Zfa mnemonic; the C uses the encoding for a newer assembler."
-"fmvp.d.x" = "LLVM 23 does not recognize this Zfa mnemonic; the C uses the encoding for a newer assembler."
-zip = "LLVM 23 does not recognize this Zbkb mnemonic; the C uses the encoding for a newer assembler."
-unzip = "LLVM 23 does not recognize this Zbkb mnemonic; the C uses the encoding for a newer assembler."
-"fcvtmod.w.h" = "LLVM 23 does not recognize this Zfa mnemonic; the C uses the encoding for a newer assembler."
+"fmvh.x.d" = "Zfa move-high; semantic fallback: the RV64 C uses a shift."
+"fmvp.d.x" = "Zfa move-pair; semantic fallback: the RV64 C uses shifts."
+zip = "Zbkb zip is RV32-only; semantic fallback: the RV64 C uses a bit loop."
+unzip = "Zbkb zip is RV32-only; semantic fallback: the RV64 C uses a bit loop."
+"fcvtmod.w.h" = "Zfa convert; semantic fallback: the C truncates the low 32 bits."
 
 [allow.aarch64]
 extract = "Semantic lane extraction; the implementation selects a lane, not a single mnemonic."
