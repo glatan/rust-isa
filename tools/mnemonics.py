@@ -48,22 +48,92 @@ def normalize(raw, arch):
     return text
 
 
+OPEN_DELIMITERS = {"(": ")", "[": "]", "{": "}"}
+MACRO_INVOCATION = re.compile(r"\b([A-Za-z_][A-Za-z0-9_]*)!\s*([\(\[\{])")
+
+
+def skip_literal(text, index):
+    """Skip a string, character literal, or comment starting at ``index``."""
+    if text.startswith("//", index):
+        end = text.find("\n", index)
+        return len(text) if end < 0 else end
+    if text.startswith("/*", index):
+        depth = 1
+        index += 2
+        while index < len(text) and depth:
+            if text.startswith("/*", index):
+                depth += 1
+                index += 2
+            elif text.startswith("*/", index):
+                depth -= 1
+                index += 2
+            else:
+                index += 1
+        return index
+    if text[index] in ('"', "'"):
+        quote = text[index]
+        index += 1
+        while index < len(text):
+            if text[index] == "\\":
+                index += 2
+            elif text[index] == quote:
+                return index + 1
+            else:
+                index += 1
+        return index
+    return index
+
+
+def macro_line_ranges(text):
+    """Return line ranges covered by macro invocations (not macro_rules)."""
+    ranges = []
+    for match in MACRO_INVOCATION.finditer(text):
+        if match.group(1) == "macro_rules":
+            continue
+        stack = [OPEN_DELIMITERS[match.group(2)]]
+        index = match.start(2) + 1
+        while index < len(text) and stack:
+            if text.startswith("//", index) or text.startswith("/*", index) or text[index] in ('"', "'"):
+                index = skip_literal(text, index)
+                continue
+            char = text[index]
+            if char in OPEN_DELIMITERS:
+                stack.append(OPEN_DELIMITERS[char])
+            elif stack and char == stack[-1]:
+                stack.pop()
+                if not stack:
+                    start_line = text.count("\n", 0, match.start())
+                    end_line = text.count("\n", 0, index)
+                    ranges.append((start_line, end_line))
+            index += 1
+    return ranges
+
+
 def candidates(arch):
     found = {}
     for path in (SOURCE / arch).rglob("*.rs"):
-        lines = path.read_text().splitlines()
+        text = path.read_text()
+        lines = text.splitlines()
+        macro_lines = set()
+        for start, end in macro_line_ranges(text):
+            macro_lines.update(range(start, end + 1))
         i = 0
         while i < len(lines):
-            if not lines[i].startswith("///"):
+            if not lines[i].lstrip().startswith("///"):
                 i += 1
                 continue
-            match = re.match(r"^/// `([^`]+)`", lines[i])
+            start = i
+            while i < len(lines) and lines[i].lstrip().startswith("///"):
+                i += 1
+            # Keep the historical column-0 docs and add docs inside macro
+            # invocations. The first line is the mnemonic; later lines are prose.
+            if not lines[start].startswith("///") and start not in macro_lines:
+                continue
+            match = re.match(r"^/// `([^`]+)`", lines[start].lstrip())
             if match:
                 token = normalize(match.group(1), arch)
                 if token:
-                    found.setdefault(token, (str(path.relative_to(ROOT)), i + 1))
-            while i < len(lines) and lines[i].startswith("///"):
-                i += 1
+                    found.setdefault(token, (str(path.relative_to(ROOT)), start + 1))
     return found
 
 

@@ -129,7 +129,7 @@ binary!(
     rust_isa_altivec_sub_i64
 );
 binary!(
-    /// `vmuluhm` on 16-bit lanes.
+    /// `vmladduhm` on 16-bit lanes.
     mul_i16,
     rust_isa_altivec_mul_i16
 );
@@ -393,37 +393,37 @@ abin!(
     rust_isa_altivec_vmulouw
 );
 abin!(
-    /// `vmin`.
+    /// `vminuw`.
     vmin,
     rust_isa_altivec_vmin
 );
 abin!(
-    /// `vmax`.
+    /// `vmaxuw`.
     vmax,
     rust_isa_altivec_vmax
 );
 abin!(
-    /// `vavg`.
+    /// `vavgub`.
     vavg,
     rust_isa_altivec_vavg
 );
 abin!(
-    /// `vavgl`.
+    /// `vavguh`.
     vavgl,
     rust_isa_altivec_vavgl
 );
 abin!(
-    /// `vcmpeq`.
+    /// `vcmpequw`.
     vcmpeq,
     rust_isa_altivec_vcmpeq
 );
 abin!(
-    /// `vcmpgt`.
+    /// `vcmpgtsw`.
     vcmpgt,
     rust_isa_altivec_vcmpgt
 );
 abin!(
-    /// `vcmp`.
+    /// `vcmpgtsw`.
     vcmp,
     rust_isa_altivec_vcmp
 );
@@ -517,17 +517,17 @@ pub unsafe fn stvx(p: *mut u8, a: V128) {
 }
 
 abin!(
-    /// `vmul`.
+    /// `vmladduhm`.
     vmul,
     rust_isa_altivec_vmul
 );
 abin!(
-    /// `vpk`.
+    /// `vpkuwum`.
     vpk,
     rust_isa_altivec_vpk
 );
 aun!(
-    /// `vupk`.
+    /// `vupklsh`.
     vupk,
     rust_isa_altivec_vupk
 );
@@ -549,22 +549,22 @@ macro_rules! afma {
 }
 
 afma!(
-    /// `vmla`.
+    /// `xvmaddasp`.
     vmla,
     rust_isa_altivec_vmla
 );
 afma!(
-    /// `vmls`.
+    /// `xvmsubasp`.
     vmls,
     rust_isa_altivec_vmls
 );
 afma!(
-    /// `vmadd`.
+    /// `xvmaddasp`.
     vmadd,
     rust_isa_altivec_vmadd
 );
 afma!(
-    /// `vnmsub`.
+    /// `xvnmsubasp`.
     vnmsub,
     rust_isa_altivec_vnmsub
 );
