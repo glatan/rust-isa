@@ -8,7 +8,7 @@ use rust_isa::wasm32::simd::relaxed_simd::{
 };
 use rust_isa::wasm32::simd::simd128::{
     V128, f32x4_extract_lane, f32x4_splat, f64x2_extract_lane, f64x2_splat, i16x8_extract_lane_s,
-    i32x4_extract_lane_s, i32x4_extract_lane_u,
+    i32x4_extract_lane,
 };
 
 #[test]
@@ -46,23 +46,23 @@ fn in_range_truncation() {
     bytes[0..4].copy_from_slice(&1.9f32.to_le_bytes());
     bytes[4..8].copy_from_slice(&(-1.9f32).to_le_bytes());
     let signed = i32x4_relaxed_trunc_f32x4_s(V128::from_bytes(bytes));
-    assert_eq!(i32x4_extract_lane_s::<0>(signed), 1);
-    assert_eq!(i32x4_extract_lane_s::<1>(signed), -1);
+    assert_eq!(i32x4_extract_lane::<0>(signed), 1);
+    assert_eq!(i32x4_extract_lane::<1>(signed), -1);
     let unsigned = i32x4_relaxed_trunc_f32x4_u(V128::from_bytes(bytes));
-    assert_eq!(i32x4_extract_lane_u::<0>(unsigned), 1);
+    assert_eq!(i32x4_extract_lane::<0>(unsigned), 1);
 
     bytes = [0; 16];
     bytes[..8].copy_from_slice(&1.9f64.to_le_bytes());
     bytes[8..].copy_from_slice(&(-1.9f64).to_le_bytes());
     let signed = i32x4_relaxed_trunc_f64x2_s_zero(V128::from_bytes(bytes));
-    assert_eq!(i32x4_extract_lane_s::<0>(signed), 1);
-    assert_eq!(i32x4_extract_lane_s::<1>(signed), -1);
-    assert_eq!(i32x4_extract_lane_s::<2>(signed), 0);
+    assert_eq!(i32x4_extract_lane::<0>(signed), 1);
+    assert_eq!(i32x4_extract_lane::<1>(signed), -1);
+    assert_eq!(i32x4_extract_lane::<2>(signed), 0);
     bytes = [0; 16];
     bytes[..8].copy_from_slice(&1.9f64.to_le_bytes());
     let unsigned = i32x4_relaxed_trunc_f64x2_u_zero(V128::from_bytes(bytes));
-    assert_eq!(i32x4_extract_lane_u::<0>(unsigned), 1);
-    assert_eq!(i32x4_extract_lane_u::<2>(unsigned), 0);
+    assert_eq!(i32x4_extract_lane::<0>(unsigned), 1);
+    assert_eq!(i32x4_extract_lane::<2>(unsigned), 0);
 }
 
 #[test]
@@ -124,7 +124,7 @@ fn q15_and_dot() {
         17
     );
     assert_eq!(
-        i32x4_extract_lane_s::<0>(i32x4_relaxed_dot_i8x16_i7x16_add_s(
+        i32x4_extract_lane::<0>(i32x4_relaxed_dot_i8x16_i7x16_add_s(
             a,
             b,
             V128::from_bytes([0; 16])

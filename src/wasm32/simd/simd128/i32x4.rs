@@ -20,66 +20,33 @@ pub fn i32x4_splat(value: i32) -> V128 {
 }
 
 unsafe extern "C" {
-    fn rust_isa_simd128_i32x4_extract_lane_s_0(a: *const u8) -> i32;
+    fn rust_isa_simd128_i32x4_extract_lane_0(a: *const u8) -> i32;
 }
 unsafe extern "C" {
-    fn rust_isa_simd128_i32x4_extract_lane_s_1(a: *const u8) -> i32;
+    fn rust_isa_simd128_i32x4_extract_lane_1(a: *const u8) -> i32;
 }
 unsafe extern "C" {
-    fn rust_isa_simd128_i32x4_extract_lane_s_2(a: *const u8) -> i32;
+    fn rust_isa_simd128_i32x4_extract_lane_2(a: *const u8) -> i32;
 }
 unsafe extern "C" {
-    fn rust_isa_simd128_i32x4_extract_lane_s_3(a: *const u8) -> i32;
+    fn rust_isa_simd128_i32x4_extract_lane_3(a: *const u8) -> i32;
 }
-/// `i32x4.extract_lane_s`
+/// `i32x4.extract_lane`
 ///
 /// Sign-extend the lane to `i32`.
 ///
 /// `LANE` is an immediate in `0..4`. A constant outside that range does not compile.
 #[inline(always)]
-pub fn i32x4_extract_lane_s<const LANE: u32>(a: V128) -> i32 {
+pub fn i32x4_extract_lane<const LANE: u32>(a: V128) -> i32 {
     const {
         assert!(LANE < 4);
     }
     unsafe {
         match LANE {
-            0 => rust_isa_simd128_i32x4_extract_lane_s_0(a.as_ptr()),
-            1 => rust_isa_simd128_i32x4_extract_lane_s_1(a.as_ptr()),
-            2 => rust_isa_simd128_i32x4_extract_lane_s_2(a.as_ptr()),
-            3 => rust_isa_simd128_i32x4_extract_lane_s_3(a.as_ptr()),
-            _ => core::hint::unreachable_unchecked(),
-        }
-    }
-}
-
-unsafe extern "C" {
-    fn rust_isa_simd128_i32x4_extract_lane_u_0(a: *const u8) -> u32;
-}
-unsafe extern "C" {
-    fn rust_isa_simd128_i32x4_extract_lane_u_1(a: *const u8) -> u32;
-}
-unsafe extern "C" {
-    fn rust_isa_simd128_i32x4_extract_lane_u_2(a: *const u8) -> u32;
-}
-unsafe extern "C" {
-    fn rust_isa_simd128_i32x4_extract_lane_u_3(a: *const u8) -> u32;
-}
-/// `i32x4.extract_lane_u`
-///
-/// Zero-extend the lane to `u32`.
-///
-/// `LANE` is an immediate in `0..4`. A constant outside that range does not compile.
-#[inline(always)]
-pub fn i32x4_extract_lane_u<const LANE: u32>(a: V128) -> u32 {
-    const {
-        assert!(LANE < 4);
-    }
-    unsafe {
-        match LANE {
-            0 => rust_isa_simd128_i32x4_extract_lane_u_0(a.as_ptr()),
-            1 => rust_isa_simd128_i32x4_extract_lane_u_1(a.as_ptr()),
-            2 => rust_isa_simd128_i32x4_extract_lane_u_2(a.as_ptr()),
-            3 => rust_isa_simd128_i32x4_extract_lane_u_3(a.as_ptr()),
+            0 => rust_isa_simd128_i32x4_extract_lane_0(a.as_ptr()),
+            1 => rust_isa_simd128_i32x4_extract_lane_1(a.as_ptr()),
+            2 => rust_isa_simd128_i32x4_extract_lane_2(a.as_ptr()),
+            3 => rust_isa_simd128_i32x4_extract_lane_3(a.as_ptr()),
             _ => core::hint::unreachable_unchecked(),
         }
     }
@@ -391,10 +358,10 @@ unsafe extern "C" {
 /// # Examples
 ///
 /// ```
-/// use rust_isa::wasm32::simd::simd128::{i32x4_add, i32x4_extract_lane_s, i32x4_splat};
+/// use rust_isa::wasm32::simd::simd128::{i32x4_add, i32x4_extract_lane, i32x4_splat};
 ///
 /// assert_eq!(
-///     i32x4_extract_lane_s::<0>(i32x4_add(i32x4_splat(i32::MAX), i32x4_splat(1))),
+///     i32x4_extract_lane::<0>(i32x4_add(i32x4_splat(i32::MAX), i32x4_splat(1))),
 ///     i32::MIN,
 /// );
 /// ```
@@ -507,13 +474,13 @@ unsafe extern "C" {
 /// # Examples
 ///
 /// ```
-/// use rust_isa::wasm32::simd::simd128::{i32x4_dot_i16x8_s, i32x4_extract_lane_s, V128};
+/// use rust_isa::wasm32::simd::simd128::{i32x4_dot_i16x8_s, i32x4_extract_lane, V128};
 ///
 /// let left = V128::from_bytes([2, 0, 3, 0, 4, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 /// let right = V128::from_bytes([4, 0, 5, 0, 6, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 /// let dot = i32x4_dot_i16x8_s(left, right);
-/// assert_eq!(i32x4_extract_lane_s::<0>(dot), 23);
-/// assert_eq!(i32x4_extract_lane_s::<1>(dot), 59);
+/// assert_eq!(i32x4_extract_lane::<0>(dot), 23);
+/// assert_eq!(i32x4_extract_lane::<1>(dot), 59);
 /// ```
 #[inline(always)]
 pub fn i32x4_dot_i16x8_s(a: V128, b: V128) -> V128 {
@@ -534,16 +501,16 @@ unsafe extern "C" {
 /// # Examples
 ///
 /// ```
-/// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane_s, i32x4_trunc_sat_f32x4_s, V128};
+/// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane, i32x4_trunc_sat_f32x4_s, V128};
 ///
 /// let mut bytes = [0u8; 16];
 /// bytes[0..4].copy_from_slice(&1.9f32.to_le_bytes());
 /// bytes[4..8].copy_from_slice(&(-1.9f32).to_le_bytes());
 /// bytes[8..12].copy_from_slice(&f32::NAN.to_le_bytes());
 /// let lanes = i32x4_trunc_sat_f32x4_s(V128::from_bytes(bytes));
-/// assert_eq!(i32x4_extract_lane_s::<0>(lanes), 1);
-/// assert_eq!(i32x4_extract_lane_s::<1>(lanes), -1);
-/// assert_eq!(i32x4_extract_lane_s::<2>(lanes), 0);
+/// assert_eq!(i32x4_extract_lane::<0>(lanes), 1);
+/// assert_eq!(i32x4_extract_lane::<1>(lanes), -1);
+/// assert_eq!(i32x4_extract_lane::<2>(lanes), 0);
 /// ```
 #[inline(always)]
 pub fn i32x4_trunc_sat_f32x4_s(a: V128) -> V128 {
@@ -564,16 +531,16 @@ unsafe extern "C" {
 /// # Examples
 ///
 /// ```
-/// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane_u, i32x4_trunc_sat_f32x4_u, V128};
+/// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane, i32x4_trunc_sat_f32x4_u, V128};
 ///
 /// let mut bytes = [0u8; 16];
 /// bytes[0..4].copy_from_slice(&(-1.9f32).to_le_bytes());
 /// bytes[4..8].copy_from_slice(&1.9f32.to_le_bytes());
 /// bytes[8..12].copy_from_slice(&f32::NAN.to_le_bytes());
 /// let lanes = i32x4_trunc_sat_f32x4_u(V128::from_bytes(bytes));
-/// assert_eq!(i32x4_extract_lane_u::<0>(lanes), 0);
-/// assert_eq!(i32x4_extract_lane_u::<1>(lanes), 1);
-/// assert_eq!(i32x4_extract_lane_u::<2>(lanes), 0);
+/// assert_eq!(i32x4_extract_lane::<0>(lanes), 0);
+/// assert_eq!(i32x4_extract_lane::<1>(lanes), 1);
+/// assert_eq!(i32x4_extract_lane::<2>(lanes), 0);
 /// ```
 #[inline(always)]
 pub fn i32x4_trunc_sat_f32x4_u(a: V128) -> V128 {
@@ -594,15 +561,15 @@ unsafe extern "C" {
 /// # Examples
 ///
 /// ```
-/// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane_s, i32x4_trunc_sat_f64x2_s_zero, V128};
+/// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane, i32x4_trunc_sat_f64x2_s_zero, V128};
 ///
 /// let mut bytes = [0u8; 16];
 /// bytes[..8].copy_from_slice(&1.9f64.to_le_bytes());
 /// bytes[8..].copy_from_slice(&(-1.9f64).to_le_bytes());
 /// let lanes = i32x4_trunc_sat_f64x2_s_zero(V128::from_bytes(bytes));
-/// assert_eq!(i32x4_extract_lane_s::<0>(lanes), 1);
-/// assert_eq!(i32x4_extract_lane_s::<1>(lanes), -1);
-/// assert_eq!(i32x4_extract_lane_s::<2>(lanes), 0);
+/// assert_eq!(i32x4_extract_lane::<0>(lanes), 1);
+/// assert_eq!(i32x4_extract_lane::<1>(lanes), -1);
+/// assert_eq!(i32x4_extract_lane::<2>(lanes), 0);
 /// ```
 #[inline(always)]
 pub fn i32x4_trunc_sat_f64x2_s_zero(a: V128) -> V128 {
@@ -623,15 +590,15 @@ unsafe extern "C" {
 /// # Examples
 ///
 /// ```
-/// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane_u, i32x4_trunc_sat_f64x2_u_zero, V128};
+/// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane, i32x4_trunc_sat_f64x2_u_zero, V128};
 ///
 /// let mut bytes = [0u8; 16];
 /// bytes[..8].copy_from_slice(&(-1.5f64).to_le_bytes());
 /// bytes[8..].copy_from_slice(&4.2f64.to_le_bytes());
 /// let lanes = i32x4_trunc_sat_f64x2_u_zero(V128::from_bytes(bytes));
-/// assert_eq!(i32x4_extract_lane_u::<0>(lanes), 0);
-/// assert_eq!(i32x4_extract_lane_u::<1>(lanes), 4);
-/// assert_eq!(i32x4_extract_lane_u::<2>(lanes), 0);
+/// assert_eq!(i32x4_extract_lane::<0>(lanes), 0);
+/// assert_eq!(i32x4_extract_lane::<1>(lanes), 4);
+/// assert_eq!(i32x4_extract_lane::<2>(lanes), 0);
 /// ```
 #[inline(always)]
 pub fn i32x4_trunc_sat_f64x2_u_zero(a: V128) -> V128 {
