@@ -732,22 +732,22 @@ void rust_isa_avx10_1_vscatterqps_v512(uint8_t *base, const uint8_t *indices, co
 }
 
 __attribute__((always_inline))
-void rust_isa_avx10_1_vcompressb_v256(const uint8_t *a, uint32_t mask, uint8_t *out) {
+void rust_isa_avx10_1_vpcompressb_v256(const uint8_t *a, uint32_t mask, uint8_t *out) {
     _mm256_storeu_si256((__m256i *)(void *)out, _mm256_maskz_compress_epi8((__mmask32)mask, _mm256_loadu_si256((const __m256i *)(const void *)a)));
 }
 
 __attribute__((always_inline))
-void rust_isa_avx10_1_vcompressb_v512(const uint8_t *a, uint64_t mask, uint8_t *out) {
+void rust_isa_avx10_1_vpcompressb_v512(const uint8_t *a, uint64_t mask, uint8_t *out) {
     _mm512_storeu_si512((void *)out, _mm512_maskz_compress_epi8((__mmask64)mask, _mm512_loadu_si512((const void *)a)));
 }
 
 __attribute__((always_inline))
-void rust_isa_avx10_1_vcompressw_v256(const uint8_t *a, uint16_t mask, uint8_t *out) {
+void rust_isa_avx10_1_vpcompressw_v256(const uint8_t *a, uint16_t mask, uint8_t *out) {
     _mm256_storeu_si256((__m256i *)(void *)out, _mm256_maskz_compress_epi16((__mmask16)mask, _mm256_loadu_si256((const __m256i *)(const void *)a)));
 }
 
 __attribute__((always_inline))
-void rust_isa_avx10_1_vcompressw_v512(const uint8_t *a, uint32_t mask, uint8_t *out) {
+void rust_isa_avx10_1_vpcompressw_v512(const uint8_t *a, uint32_t mask, uint8_t *out) {
     _mm512_storeu_si512((void *)out, _mm512_maskz_compress_epi16((__mmask32)mask, _mm512_loadu_si512((const void *)a)));
 }
 
@@ -762,12 +762,12 @@ void rust_isa_avx10_1_vpexpandb_v512(const uint8_t *a, uint64_t mask, uint8_t *o
 }
 
 __attribute__((always_inline))
-void rust_isa_avx10_1_vexpandw_v256(const uint8_t *a, uint16_t mask, uint8_t *out) {
+void rust_isa_avx10_1_vpexpandw_v256(const uint8_t *a, uint16_t mask, uint8_t *out) {
     _mm256_storeu_si256((__m256i *)(void *)out, _mm256_maskz_expand_epi16((__mmask16)mask, _mm256_loadu_si256((const __m256i *)(const void *)a)));
 }
 
 __attribute__((always_inline))
-void rust_isa_avx10_1_vexpandw_v512(const uint8_t *a, uint32_t mask, uint8_t *out) {
+void rust_isa_avx10_1_vpexpandw_v512(const uint8_t *a, uint32_t mask, uint8_t *out) {
     _mm512_storeu_si512((void *)out, _mm512_maskz_expand_epi16((__mmask32)mask, _mm512_loadu_si512((const void *)a)));
 }
 
