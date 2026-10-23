@@ -136,6 +136,97 @@ def source_names(arch: str, extension: str):
     return names
 
 
+MACRO_FIRST_ARG = re.compile(r"^\s*([A-Za-z_][A-Za-z0-9_]*)\s*,")
+ALL_EXTENSIONS: set[str] = set()
+
+
+def macro_first_arguments(arch: str, extension: str):
+    directory = normalize_extension(extension)
+    directories = [
+        path
+        for path in (SOURCE / arch).rglob("*")
+        if path.is_dir() and path.name == directory
+    ]
+    names: set[str] = set()
+    for directory_path in directories:
+        for path in directory_path.rglob("*.rs"):
+            text = path.read_text(encoding="utf-8")
+            lines = text.splitlines()
+            for start, end in macro_line_ranges(text):
+                limit = min(end, len(lines) - 1)
+                for index in range(start, limit + 1):
+                    line = lines[index]
+                    if not line.strip() or line.lstrip().startswith(("///", "//", "#[")):
+                        continue
+                    match = MACRO_FIRST_ARG.match(line)
+                    if match:
+                        names.add(match.group(1))
+                    break
+    return names
+
+
+REEXPORT_LIST = re.compile(r"pub use\s+[^;]*?::\{([^}]*)\};")
+REEXPORT_SINGLE = re.compile(r"pub use\s+[^;]*?::([A-Za-z_][A-Za-z0-9_]*)(?:\s+as\s+([A-Za-z_][A-Za-z0-9_]*))?;")
+
+
+def reexport_names(text: str) -> set[str]:
+    names: set[str] = set()
+    for match in REEXPORT_LIST.finditer(text):
+        for item in match.group(1).split(","):
+            item = item.strip()
+            if not item:
+                continue
+            item = item.split(" as ")[-1].strip()
+            if re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", item):
+                names.add(item)
+    for match in REEXPORT_SINGLE.finditer(text):
+        names.add(match.group(2) or match.group(1))
+    return names
+
+
+def arch_names(arch: str) -> set[str]:
+    names: set[str] = set()
+    for path in (SOURCE / arch).rglob("*.rs"):
+        text = path.read_text(encoding="utf-8")
+        lines = text.splitlines()
+        for line in lines:
+            match = re.match(
+                r"^\s*pub(?:\([^)]*\))?\s+(?:unsafe\s+)?fn\s+([A-Za-z_][A-Za-z0-9_]*)",
+                line,
+            )
+            if match:
+                names.add(match.group(1))
+        names.update(reexport_names(text))
+        for start, end in macro_line_ranges(text):
+            limit = min(end, len(lines) - 1)
+            macro_name = ""
+            header = re.search(r"([A-Za-z_][A-Za-z0-9_]*)!\s*[\[({]", lines[start])
+            if header:
+                macro_name = header.group(1)
+            want = 4 if macro_name == "segment" else 1
+            found = 0
+            for index in range(start, limit + 1):
+                line = lines[index]
+                if not line.strip() or line.lstrip().startswith(("///", "//", "#[")):
+                    continue
+                if "!(" in line and found == 0:
+                    tail = line.rsplit("!(", 1)[1]
+                    match = re.match(r"\s*([A-Za-z_][A-Za-z0-9_]*)\s*,", tail)
+                    if match:
+                        names.add(match.group(1))
+                        found += 1
+                    continue
+                match = MACRO_FIRST_ARG.match(line)
+                if match:
+                    names.add(match.group(1))
+                    found += 1
+                    if found >= want:
+                        break
+                elif found:
+                    break
+    return names
+
+
 def covered_by_family(arch: str, extension: str, name: str) -> bool:
     for prefix in FAMILY_PREFIXES.get((arch, normalize_extension(extension)), []):
         if name.startswith(prefix):
@@ -145,6 +236,11 @@ def covered_by_family(arch: str, extension: str, name: str) -> bool:
 
 def check() -> list[str]:
     problems: list[str] = []
+    global ALL_EXTENSIONS
+    ALL_EXTENSIONS = {
+        normalize_extension(extension)
+        for _, extension, _ in table_rows()
+    } | {extension for _, extension, _ in table_rows()}
     seen_rows: set[tuple[str, str]] = set()
     for arch, extension, documented in table_rows():
         key = (arch, normalize_extension(extension))
@@ -165,6 +261,17 @@ def check() -> list[str]:
         if missing:
             problems.append(
                 f"{arch}/{extension}: missing from docs table: " + ", ".join(missing)
+            )
+        known = arch_names(arch)
+        extra = sorted(
+            name
+            for name in documented - known
+            if "-" not in name and name not in ALL_EXTENSIONS
+        )
+        if extra:
+            problems.append(
+                f"{arch}/{extension}: docs name has no source wrapper: "
+                + ", ".join(extra)
             )
     return problems
 
