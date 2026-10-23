@@ -1,7 +1,7 @@
 //! SVE floating-point arithmetic instructions.
 
 unsafe extern "C" {
-    fn rust_isa_sve_rsqrte_f32(a: *const f32, out: *mut f32, len: usize);
+    fn rust_isa_sve_frsqrte_f32(a: *const f32, out: *mut f32, len: usize);
 }
 /// `frsqrte` from `f32` to `f32` slices.
 ///
@@ -17,12 +17,12 @@ unsafe extern "C" {
 pub unsafe fn frsqrte_f32(a: &[f32], out: &mut [f32]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     unsafe {
-        rust_isa_sve_rsqrte_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
+        rust_isa_sve_frsqrte_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
     }
 }
 
 unsafe extern "C" {
-    fn rust_isa_sve_rsqrte_f64(a: *const f64, out: *mut f64, len: usize);
+    fn rust_isa_sve_frsqrte_f64(a: *const f64, out: *mut f64, len: usize);
 }
 /// `frsqrte` from `f64` to `f64` slices.
 ///
@@ -38,7 +38,7 @@ unsafe extern "C" {
 pub unsafe fn frsqrte_f64(a: &[f64], out: &mut [f64]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     unsafe {
-        rust_isa_sve_rsqrte_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
+        rust_isa_sve_frsqrte_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
     }
 }
 
@@ -583,7 +583,7 @@ pub unsafe fn frecps_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_frsqrts_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
-/// `frsqrts` on `f32` slices (alias of `rsqrts`).
+/// `frsqrts` on `f32` slices.
 ///
 /// # Panics
 ///
@@ -1100,7 +1100,7 @@ pub unsafe fn frecps_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_frsqrts_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
-/// `frsqrts` on `f64` slices (alias of `rsqrts`).
+/// `frsqrts` on `f64` slices.
 ///
 /// # Panics
 ///
