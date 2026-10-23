@@ -7,7 +7,8 @@
 //!
 //! Instruction behavior follows the [IBM z/Architecture Principles of Operation](https://www.ibm.com/docs/en/module_1678991624569/pdf/SA22-7832-14.pdf).
 //!
-//! Most wrappers use `asm!`; the count instructions use the bundled C.
+//! Most wrappers use `asm!`; `vclzd`, `vctzd`, and `vpopcntd` are scalar
+//! fallbacks and do not require the facility.
 //!
 //! Instructions not listed in this module are not exposed.
 
@@ -76,7 +77,9 @@ macro_rules! un_enh2 {
         ///
         /// # Safety
         ///
-        /// The caller must enable the vector-enhancement facility.
+        /// This is a scalar fallback. The function is `unsafe` for API
+        /// consistency with the other vector-enhancement wrappers; it does
+        /// not require the facility.
         #[inline(always)]
         pub unsafe fn $name(a: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
