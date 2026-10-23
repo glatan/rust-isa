@@ -220,6 +220,52 @@ un_enh!(
     rust_isa_s390x_enh_vpopct
 );
 
+/// `vclzg`.
+///
+/// Count the leading zero bits in each 64-bit lane.
+///
+/// # Safety
+///
+/// The caller must enable the vector-enhancements-1 facility.
+#[target_feature(enable = "vector-enhancements-1")]
+#[inline]
+pub unsafe fn vclzg(a: V128) -> V128 {
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vclzg {out}, {input}",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
+
+/// `vctzg`.
+///
+/// Count the trailing zero bits in each 64-bit lane.
+///
+/// # Safety
+///
+/// The caller must enable the vector-enhancements-1 facility.
+#[target_feature(enable = "vector-enhancements-1")]
+#[inline]
+pub unsafe fn vctzg(a: V128) -> V128 {
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vctzg {out}, {input}",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
+
 /// `vftci` on single-precision lanes.
 ///
 /// Test each binary floating-point element against the 12-bit data class

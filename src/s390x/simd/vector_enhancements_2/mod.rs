@@ -7,8 +7,7 @@
 //!
 //! Instruction behavior follows the [IBM z/Architecture Principles of Operation](https://www.ibm.com/docs/en/module_1678991624569/pdf/SA22-7832-14.pdf).
 //!
-//! Most wrappers use `asm!`; `vclzd`, `vctzd`, and `vpopcntd` are scalar
-//! fallbacks and do not require the facility.
+//! The wrappers use `asm!`.
 //!
 //! Instructions not listed in this module are not exposed.
 
@@ -65,42 +64,25 @@ shift_double!(
     "right"
 );
 
-unsafe extern "C" {
-    fn rust_isa_s390x_enh_vclzd(a: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_vctzd(a: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_vpopcntd(a: *const u8, out: *mut u8);
+/// `vpopctg`.
+///
+/// Count the set bits in each 64-bit lane.
+///
+/// # Safety
+///
+/// The caller must enable the vector-enhancements-2 facility.
+#[target_feature(enable = "vector-enhancements-2")]
+#[inline]
+pub unsafe fn vpopctg(a: V128) -> V128 {
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vpopctg {out}, {input}",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
 }
-
-macro_rules! un_enh2 {
-    ($(#[$meta:meta])* $name:ident, $c:ident) => {
-        $(#[$meta])*
-        ///
-        /// # Safety
-        ///
-        /// This is a scalar fallback. The function is `unsafe` for API
-        /// consistency with the other vector-enhancement wrappers; it does
-        /// not require the facility.
-        #[inline(always)]
-        pub unsafe fn $name(a: V128) -> V128 {
-            let mut out = V128::from_bytes([0; 16]);
-            unsafe { $c(a.as_ptr(), out.as_mut_ptr()); }
-            out
-        }
-    };
-}
-un_enh2!(
-    /// `vclzd`.
-    vclzd,
-    rust_isa_s390x_enh_vclzd
-);
-un_enh2!(
-    /// `vctzd`.
-    vctzd,
-    rust_isa_s390x_enh_vctzd
-);
-un_enh2!(
-    /// `vpopcntd`.
-    vpopcntd,
-    rust_isa_s390x_enh_vpopcntd
-);
-pub use self::{vclzd as vclzg, vctzd as vctzg, vpopcntd as vpopcntg};
