@@ -1,11 +1,13 @@
-//! RISC-V vector cryptography: zvks.
+//! RISC-V vector cryptography: Zvks (SM3 and SM4).
 
 #[allow(unused_imports)]
 use super::{crypto_binary, crypto_key_schedule};
 use crate::riscv::simd::rvv::V128;
-
 unsafe extern "C" {
     fn rust_isa_rvv_vsm3c(state: *const u8, round: u32, out: *mut u8);
+    fn rust_isa_rvv_vsm3me(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vsm4k(key: *const u8, round: u32, out: *mut u8);
+    fn rust_isa_rvv_vsm4r(state: *const u8, key: *const u8, out: *mut u8);
 }
 
 /// `vsm3c.vi` on a 256-bit element group.
@@ -24,10 +26,6 @@ pub unsafe fn vsm3c(state: [V128; 2], round: u32) -> [V128; 2] {
     }
     out
 }
-unsafe extern "C" {
-    fn rust_isa_rvv_vsm3me(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `vsm3me.vv` on a 256-bit element group.
 ///
 /// # Safety
@@ -45,19 +43,11 @@ pub unsafe fn vsm3me(a: [V128; 2], b: [V128; 2]) -> [V128; 2] {
     }
     out
 }
-unsafe extern "C" {
-    fn rust_isa_rvv_vsm4k(key: *const u8, round: u32, out: *mut u8);
-}
-
 crypto_key_schedule!(
     /// `vsm4k.vi`, with `round` in `0..=7`.
     vsm4k,
     rust_isa_rvv_vsm4k
 );
-unsafe extern "C" {
-    fn rust_isa_rvv_vsm4r(state: *const u8, key: *const u8, out: *mut u8);
-}
-
 crypto_binary!(
     /// `vsm4r.vv`.
     vsm4r,

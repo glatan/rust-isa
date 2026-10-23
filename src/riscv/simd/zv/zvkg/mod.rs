@@ -1,11 +1,11 @@
-//! RISC-V vector cryptography: zvkg.
+//! RISC-V vector cryptography: Zvkg (GCM).
 
 #[allow(unused_imports)]
 use super::crypto_ternary;
 use crate::riscv::simd::rvv::V128;
-
 unsafe extern "C" {
     fn rust_isa_rvv_vghsh(acc: *const u8, value: *const u8, key: *const u8, out: *mut u8);
+    fn rust_isa_rvv_vgmul(acc: *const u8, key: *const u8, out: *mut u8);
 }
 
 crypto_ternary!(
@@ -13,10 +13,6 @@ crypto_ternary!(
     vghsh,
     rust_isa_rvv_vghsh
 );
-unsafe extern "C" {
-    fn rust_isa_rvv_vgmul(acc: *const u8, key: *const u8, out: *mut u8);
-}
-
 /// `vgmul.vv`.
 ///
 /// # Safety

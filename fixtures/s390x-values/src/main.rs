@@ -168,6 +168,24 @@ fn enhancement_ops() -> bool {
                 let b = vpopctg(V128::from_bytes([0xff; 16])).to_bytes();
                 b[7] != 64 || b[15] != 64
             }
+            || {
+                let mut input = [0u8; 16];
+                input[8..].copy_from_slice(&1u64.to_be_bytes());
+                let b = vclzg(V128::from_bytes(input)).to_bytes();
+                b[7] != 64 || b[15] != 63
+            }
+            || {
+                let mut input = [0u8; 16];
+                input[8..].copy_from_slice(&2u64.to_be_bytes());
+                let b = vctzg(V128::from_bytes(input)).to_bytes();
+                b[7] != 64 || b[15] != 1
+            }
+            || {
+                let mut input = [0xffu8; 16];
+                input[8..].fill(0);
+                let b = vpopctg(V128::from_bytes(input)).to_bytes();
+                b[7] != 64 || b[15] != 0
+            }
         {
             return false;
         }
