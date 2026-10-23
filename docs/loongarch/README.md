@@ -22,6 +22,8 @@ family は命令の種類に合わせて決める（`simd`、`system` など）�
 `vsat`、`vssr`、`vavgr`、`vfcmp`、`vftint`、`vffint`、`vrepl` は、レーン幅・
 符号・丸めモードごとの関数も公開する。`vfcmp` は 22 条件を `vfcmp_<cond>_s` と `vfcmp_<cond>_d` で公開する。 `vfcvt` は `vfcvt_s_d`、`vrepl` は `vrepl_w`、`vreplve` は `vreplve_w` の alias である。
 
+`vabs` / `xvabs` は絶対値の semantic helper で、LSX/LASX の `vabsd`（絶対差）とは異なる。`revw` は 2 つの 32-bit word を入れ替える semantic helper で、LBT に `revw.d` はない。
+
 ## 実装方式
 
 - native なので無条件に公開する。任意の feature を要求する命令は `unsafe fn` とする。

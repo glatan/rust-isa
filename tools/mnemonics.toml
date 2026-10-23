@@ -69,7 +69,6 @@ extract = "Semantic lane extraction; the implementation selects a lane, not a si
 replace = "Semantic lane replacement; the implementation selects a lane, not a single mnemonic."
 
 [allow.loongarch]
-"revw.d" = "Semantic word reversal; LLVM 23 does not list revw.d."
 "vabs.w" = "Semantic absolute value; LSX has vabsd (absolute difference), not vabs."
 "vabs.b" = "Semantic absolute value; LSX has vabsd (absolute difference), not vabs."
 "vabs.h" = "Semantic absolute value; LSX has vabsd (absolute difference), not vabs."

@@ -1,7 +1,7 @@
 //! PowerPC Power10 vector instructions.
 //!
 //! Power10 vector instructions are not part of the PowerPC baseline. Every
-//! operation is `unsafe` and the caller must enable the Power10 feature set. The
+//! operation is `unsafe` and the caller must enable the `power10-vector` target feature. The
 //! C file is compiled with clang and `-mcpu=power10`.
 //!
 //! The values are [`V128`].
@@ -21,7 +21,7 @@ unsafe extern "C" {
 ///
 /// # Safety
 ///
-/// The caller must enable the Power10 vector feature set.
+/// The caller must enable the `power10-vector` target feature.
 #[inline(always)]
 pub unsafe fn popcnt_i32(a: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
@@ -35,7 +35,7 @@ pub unsafe fn popcnt_i32(a: V128) -> V128 {
 ///
 /// # Safety
 ///
-/// The caller must enable the Power10 vector feature set.
+/// The caller must enable the `power10-vector` target feature.
 #[inline(always)]
 pub unsafe fn cntlz_i32(a: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
@@ -58,7 +58,7 @@ unsafe extern "C" {
 ///
 /// # Safety
 ///
-/// The caller must enable the Power10 vector feature set.
+/// The caller must enable the `power10-vector` target feature.
 #[inline(always)]
 pub unsafe fn vclzd(a: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
@@ -72,7 +72,7 @@ pub unsafe fn vclzd(a: V128) -> V128 {
 ///
 /// # Safety
 ///
-/// The caller must enable the Power9 vector feature set.
+/// The caller must enable the `power9-vector` target feature (included in `power10-vector`).
 #[inline(always)]
 pub unsafe fn vctzd(a: V128) -> V128 {
     unsafe { super::power9_vector::vctzd(a) }
@@ -82,7 +82,7 @@ pub unsafe fn vctzd(a: V128) -> V128 {
 ///
 /// # Safety
 ///
-/// The caller must enable the Power10 vector feature set.
+/// The caller must enable the `power10-vector` target feature.
 #[inline(always)]
 pub unsafe fn vpopcntd(a: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
@@ -96,7 +96,7 @@ pub unsafe fn vpopcntd(a: V128) -> V128 {
 ///
 /// # Safety
 ///
-/// The caller must enable the Power10 vector feature set.
+/// The caller must enable the `power10-vector` target feature.
 #[inline(always)]
 pub unsafe fn vpopcntw(a: V128) -> V128 {
     unsafe { popcnt_i32(a) }

@@ -24,7 +24,10 @@ pub fn revh(value: u64) -> u64 {
         | ((value & 0xffff_0000_0000_0000) >> 48)
 }
 
-/// `revw.d`: reverse the order of the two 32-bit words.
+/// Reverse the order of the two 32-bit words.
+///
+/// This is a semantic helper equivalent to `rotri.d` with 32; LBT has no
+/// separate `revw.d` mnemonic.
 #[inline(always)]
 pub fn revw(value: u64) -> u64 {
     value.rotate_left(32)
