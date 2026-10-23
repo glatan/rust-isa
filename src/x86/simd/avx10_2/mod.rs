@@ -1963,14 +1963,14 @@ pub unsafe fn vsqrtsd_v128(a: V128, b: V128) -> V128 {
     out
 }
 
-/// `vgetmantss_v128_v128`
+/// `vgetmantss_v128`
 /// Extract the mantissa of the low 32-bit float lane. `IMM` selects the interval and sign control.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vgetmantss_v128_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
+pub unsafe fn vgetmantss_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
         asm!(
@@ -1990,14 +1990,14 @@ pub unsafe fn vgetmantss_v128_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
     out
 }
 
-/// `vgetmantsd_v128_v128`
+/// `vgetmantsd_v128`
 /// Extract the mantissa of the low 64-bit float lane. `IMM` selects the interval and sign control.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vgetmantsd_v128_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
+pub unsafe fn vgetmantsd_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
         asm!(
@@ -2017,14 +2017,14 @@ pub unsafe fn vgetmantsd_v128_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
     out
 }
 
-/// `vreducess_v128_v128`
+/// `vreducess_v128`
 /// Reduce the low 32-bit float lane to the precision in `IMM`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vreducess_v128_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
+pub unsafe fn vreducess_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
         asm!(
@@ -2044,14 +2044,14 @@ pub unsafe fn vreducess_v128_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
     out
 }
 
-/// `vreducesd_v128_v128`
+/// `vreducesd_v128`
 /// Reduce the low 64-bit float lane to the precision in `IMM`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vreducesd_v128_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
+pub unsafe fn vreducesd_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
         asm!(
@@ -2071,14 +2071,14 @@ pub unsafe fn vreducesd_v128_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
     out
 }
 
-/// `vrangess_v128_v128`
+/// `vrangess_v128`
 /// Apply the range operation selected by `IMM` to the low 32-bit float lane.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vrangess_v128_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
+pub unsafe fn vrangess_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
         asm!(
@@ -2098,14 +2098,14 @@ pub unsafe fn vrangess_v128_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
     out
 }
 
-/// `vrangesd_v128_v128`
+/// `vrangesd_v128`
 /// Apply the range operation selected by `IMM` to the low 64-bit float lane.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vrangesd_v128_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
+pub unsafe fn vrangesd_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
         asm!(
