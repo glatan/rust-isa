@@ -52,6 +52,61 @@ pub unsafe fn mul(a: V128, b: V128) -> V128 {
 }
 
 unsafe extern "C" {
+    fn rust_isa_s390x_vector_vclzb(a: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_vctzb(a: *const u8, out: *mut u8);
+    fn rust_isa_s390x_vector_cntlz_i32(a: *const u8, out: *mut u8);
+}
+
+/// `vclzb`.
+///
+/// Count the leading zero bits in each byte lane.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vclzb(a: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_s390x_vector_vclzb(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vctzb`.
+///
+/// Count the trailing zero bits in each byte lane.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vctzb(a: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_s390x_vector_vctzb(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `vclzf` on 32-bit lanes.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn cntlz_i32(a: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_s390x_vector_cntlz_i32(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+unsafe extern "C" {
     fn rust_isa_s390x_vector_add_i8(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_s390x_vector_add_i16(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_s390x_vector_add_i64(a: *const u8, b: *const u8, out: *mut u8);
@@ -1100,6 +1155,52 @@ pub unsafe fn vfi_f64<const M4: u8, const M5: u8>(a: V128) -> V128 {
             input = in(vreg) input,
             m4 = const M4,
             m5 = const M5,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
+
+/// `vclzg`.
+///
+/// Count the leading zero bits in each 64-bit lane.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vclzg(a: V128) -> V128 {
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vclzg {out}, {input}",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
+
+/// `vctzg`.
+///
+/// Count the trailing zero bits in each 64-bit lane.
+///
+/// # Safety
+///
+/// The caller must enable the vector facility.
+#[target_feature(enable = "vector")]
+#[inline]
+pub unsafe fn vctzg(a: V128) -> V128 {
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vctzg {out}, {input}",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
             options(nostack, nomem, pure)
         );
     }

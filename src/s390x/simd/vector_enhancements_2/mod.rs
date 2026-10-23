@@ -63,26 +63,3 @@ shift_double!(
     "vsrd",
     "right"
 );
-
-/// `vpopctg`.
-///
-/// Count the set bits in each 64-bit lane.
-///
-/// # Safety
-///
-/// The caller must enable the vector-enhancements-2 facility.
-#[target_feature(enable = "vector-enhancements-2")]
-#[inline]
-pub unsafe fn vpopctg(a: V128) -> V128 {
-    let input = u128::from_be_bytes(a.to_bytes());
-    let out: u128;
-    unsafe {
-        asm!(
-            "vpopctg {out}, {input}",
-            out = lateout(vreg) out,
-            input = in(vreg) input,
-            options(nostack, nomem, pure)
-        );
-    }
-    V128::from_bytes(out.to_be_bytes())
-}
