@@ -671,3 +671,73 @@ pub unsafe fn uclamp_u32(a: &[u32], min: u32, max: u32, out: &mut [u32]) {
         rust_isa_sve_uclamp_u32(a.as_ptr(), min, max, out.as_mut_ptr(), a.len());
     }
 }
+
+unsafe extern "C" {
+    fn rust_isa_sve_sqrdmlah_i32(
+        a: *const i32,
+        b: *const i32,
+        acc: *const i32,
+        out: *mut i32,
+        len: usize,
+    );
+}
+/// `sqrdmlah` on `i32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn sqrdmlah_i32(a: &[i32], b: &[i32], acc: &[i32], out: &mut [i32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), acc.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_sqrdmlah_i32(
+            a.as_ptr(),
+            b.as_ptr(),
+            acc.as_ptr(),
+            out.as_mut_ptr(),
+            a.len(),
+        );
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_sqrdmlsh_i32(
+        a: *const i32,
+        b: *const i32,
+        acc: *const i32,
+        out: *mut i32,
+        len: usize,
+    );
+}
+/// `sqrdmlsh` on `i32` slices (scalar fallback).
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn sqrdmlsh_i32(a: &[i32], b: &[i32], acc: &[i32], out: &mut [i32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), acc.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_sqrdmlsh_i32(
+            a.as_ptr(),
+            b.as_ptr(),
+            acc.as_ptr(),
+            out.as_mut_ptr(),
+            a.len(),
+        );
+    }
+}
