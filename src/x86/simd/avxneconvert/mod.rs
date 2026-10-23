@@ -24,8 +24,8 @@ unsafe extern "C" {
     fn rust_isa_avxneconvert_vbcstnesh2ps(value: *const u16, out: *mut u8);
     fn rust_isa_avxneconvert_vcvtneebf162ps(a: *const u8, out: *mut u8);
     fn rust_isa_avxneconvert_vcvtneeph2ps(a: *const u8, out: *mut u8);
-    fn rust_isa_avxneconvert_vcvtneepbf162ps(a: *const u8, out: *mut u8);
-    fn rust_isa_avxneconvert_vcvtneepsh2ps(a: *const u8, out: *mut u8);
+    fn rust_isa_avxneconvert_vcvtneobf162ps(a: *const u8, out: *mut u8);
+    fn rust_isa_avxneconvert_vcvtneoph2ps(a: *const u8, out: *mut u8);
 }
 
 /// `vcvtneps2bf16`
@@ -113,7 +113,7 @@ pub unsafe fn vcvtneeph2ps(a: V256) -> V256 {
     out
 }
 
-/// `vcvtneepbf162ps`
+/// `vcvtneobf162ps`
 ///
 /// Convert the odd-indexed bfloat16 lanes of `a` to 32-bit float lanes.
 ///
@@ -122,15 +122,15 @@ pub unsafe fn vcvtneeph2ps(a: V256) -> V256 {
 /// The caller must enable AVX-NE-CONVERT.
 #[target_feature(enable = "avxneconvert")]
 #[inline]
-pub unsafe fn vcvtneepbf162ps(a: V256) -> V256 {
+pub unsafe fn vcvtneobf162ps(a: V256) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
-        rust_isa_avxneconvert_vcvtneepbf162ps(a.as_ptr(), out.as_mut_ptr());
+        rust_isa_avxneconvert_vcvtneobf162ps(a.as_ptr(), out.as_mut_ptr());
     }
     out
 }
 
-/// `vcvtneepsh2ps`
+/// `vcvtneoph2ps`
 ///
 /// Convert the odd-indexed binary16 lanes of `a` to 32-bit float lanes.
 ///
@@ -139,10 +139,10 @@ pub unsafe fn vcvtneepbf162ps(a: V256) -> V256 {
 /// The caller must enable AVX-NE-CONVERT.
 #[target_feature(enable = "avxneconvert")]
 #[inline]
-pub unsafe fn vcvtneepsh2ps(a: V256) -> V256 {
+pub unsafe fn vcvtneoph2ps(a: V256) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
-        rust_isa_avxneconvert_vcvtneepsh2ps(a.as_ptr(), out.as_mut_ptr());
+        rust_isa_avxneconvert_vcvtneoph2ps(a.as_ptr(), out.as_mut_ptr());
     }
     out
 }

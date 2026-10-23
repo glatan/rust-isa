@@ -89,7 +89,6 @@ replace = "Semantic lane replacement; the implementation selects a lane, not a s
 "usubltb" = "Existing SVE variant or duplicate name; pending ISA review."
 
 [baseline.arm]
-"usmmla" = "Existing ARM name or feature-model gap; pending review."
 "vcmpeq.f16" = "Existing ARM name or feature-model gap; pending review."
 "vcmpeq.i32" = "Existing ARM name or feature-model gap; pending review."
 "vcvt.f16.f32" = "Existing ARM name or feature-model gap; pending review."
@@ -113,19 +112,13 @@ replace = "Semantic lane replacement; the implementation selects a lane, not a s
 "xvfcmp" = "LLVM feature-model gap; pending review."
 
 [baseline.powerpc]
-"xvsldoi" = "Pending rename to vsldoi."
 
 [baseline.riscv]
 "fcvtmod.w.h" = "LLVM 23 gap; pending review."
 
 [baseline.x86]
-"pmaxw" = "Existing name pending rename or semantic-helper decision."
-"pminw" = "Existing name pending rename or semantic-helper decision."
 "vcompressb" = "Existing name pending rename or semantic-helper decision."
 "vcompressw" = "Existing name pending rename or semantic-helper decision."
-"vcvtneepbf162ps" = "Existing name pending rename or semantic-helper decision."
-"vcvtneepsh2ps" = "Existing name pending rename or semantic-helper decision."
 "vexpandw" = "Existing name pending rename or semantic-helper decision."
-"vfixupimpps" = "Existing name pending rename or semantic-helper decision."
 "vmovmpd" = "Existing name pending rename or semantic-helper decision."
 "vmovmps" = "Existing name pending rename or semantic-helper decision."

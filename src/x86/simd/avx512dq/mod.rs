@@ -1183,7 +1183,7 @@ pub unsafe fn vrsqrt14sd(a: V128, b: V128) -> V128 {
     out
 }
 
-/// `vfixupimpps`
+/// `vfixupimmps`
 /// Fix up the 32-bit float lanes selected by the table in `IMM`.
 ///
 /// # Safety
@@ -1192,7 +1192,7 @@ pub unsafe fn vrsqrt14sd(a: V128, b: V128) -> V128 {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512dq")]
 #[inline]
-pub unsafe fn vfixupimpps<const IMM: u8>(a: V512, b: V512, c: V512) -> V512 {
+pub unsafe fn vfixupimmps<const IMM: u8>(a: V512, b: V512, c: V512) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
         asm!(

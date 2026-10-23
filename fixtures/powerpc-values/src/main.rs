@@ -37,9 +37,9 @@ use rust_isa::powerpc::simd::power10_vector::{
 };
 use rust_isa::powerpc::simd::vsx::{
     abs_f64, add_f32 as vsx_add_f32, add_f64, div_f64, mul_f64, sqrt_f64, sub_f64,
-    vcmpgt as vsx_cmpgt, xvabs, xvadd, xvand, xvcmpeq, xvcpsgn, xvdiv, xvmax, xvmin, xvmul, xvneg,
-    xvor, xvperm, xvrdpi, xvrdpic, xvrdpim, xvrdpip, xvrdpiz, xvsel, xvsl, xvsldoi, xvsr, xvsub,
-    xvxor,
+    vcmpgt as vsx_cmpgt, vsldoi as vsx_vsldoi, xvabs, xvadd, xvand, xvcmpeq, xvcpsgn, xvdiv, xvmax,
+    xvmin, xvmul, xvneg, xvor, xvperm, xvrdpi, xvrdpic, xvrdpim, xvrdpip, xvrdpiz, xvsel, xvsl,
+    xvsr, xvsub, xvxor,
 };
 use rust_isa::powerpc::simd::vsx::{
     xscvdpsp, xscvdpspn, xscvspdp, xscvspdpn, xvcvdpsxds, xvcvdpsxws, xvcvdpuxds, xvcvdpuxws,
@@ -283,7 +283,7 @@ fn vsx_ops() -> bool {
             && xvrdpip(f64x2([1.5, 2.5])).to_bytes() != [0; 16]
             && xvrdpiz(f64x2([1.5, 2.5])).to_bytes() != [0; 16]
             && xvcpsgn(f64x2([1.0, 1.0]), f64x2([-2.0, 2.0])).to_bytes() != [0; 16]
-            && xvsldoi::<4>(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes()
+            && vsx_vsldoi::<4>(V128::from_bytes([1; 16]), V128::from_bytes([2; 16])).to_bytes()
                 != [0; 16]
             && f32_lanes(xscvdpsp(f64x2([1.5, 2.5])))[0] == 1.5
             && f32_lanes(xscvdpspn(f64x2([1.5, 2.5])))[0] == 1.5
