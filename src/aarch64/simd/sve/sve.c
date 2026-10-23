@@ -2177,9 +2177,7 @@ int32_t rust_isa_sve_lastb_i32(const int32_t *a, size_t len) {
     return len == 0 ? 0 : a[len - 1];
 }
 
-int32_t rust_isa_sve_clast_i32(const int32_t *a, size_t len) {
-    return rust_isa_sve_lasta_i32(a, len);
-}
+
 
 void rust_isa_sve_dup_i32(int32_t value, int32_t *out, size_t len) {
     for (size_t i = 0; i < len; i += svcntw()) {
@@ -3043,13 +3041,9 @@ void rust_isa_sve_usublt_u8(const uint8_t *a, const uint8_t *b, uint16_t *out, s
     for (size_t i = 0; i < len; i++) out[i] = (uint16_t)((int64_t)a[i] - (int64_t)b[i]);
 }
 
-void rust_isa_sve_usublbt_u8(const uint8_t *a, const uint8_t *b, uint16_t *out, size_t len) {
-    for (size_t i = 0; i < len; i++) out[i] = (uint16_t)((int64_t)a[i] - (int64_t)b[i]);
-}
 
-void rust_isa_sve_usubltb_u8(const uint8_t *a, const uint8_t *b, uint16_t *out, size_t len) {
-    for (size_t i = 0; i < len; i++) out[i] = (uint16_t)((int64_t)a[i] - (int64_t)b[i]);
-}
+
+
 
 void rust_isa_sve_uaddwb_u8(const uint8_t *a, const uint8_t *b, uint16_t *out, size_t len) {
     for (size_t i = 0; i < len; i++) out[i] = (uint16_t)((int64_t)a[i] + (int64_t)b[i]);
@@ -3067,21 +3061,13 @@ void rust_isa_sve_usubwt_u8(const uint8_t *a, const uint8_t *b, uint16_t *out, s
     for (size_t i = 0; i < len; i++) out[i] = (uint16_t)((int64_t)a[i] - (int64_t)b[i]);
 }
 
-void rust_isa_sve_saddlh_i16(const int16_t *a, const int16_t *b, int32_t *out, size_t len) {
-    for (size_t i = 0; i < len; i++) out[i] = (int32_t)((int64_t)a[i] + (int64_t)b[i]);
-}
 
-void rust_isa_sve_saddlht_i16(const int16_t *a, const int16_t *b, int32_t *out, size_t len) {
-    for (size_t i = 0; i < len; i++) out[i] = (int32_t)((int64_t)a[i] + (int64_t)b[i]);
-}
 
-void rust_isa_sve_uaddlh_u16(const uint16_t *a, const uint16_t *b, uint32_t *out, size_t len) {
-    for (size_t i = 0; i < len; i++) out[i] = (uint32_t)((int64_t)a[i] + (int64_t)b[i]);
-}
 
-void rust_isa_sve_uaddlht_u16(const uint16_t *a, const uint16_t *b, uint32_t *out, size_t len) {
-    for (size_t i = 0; i < len; i++) out[i] = (uint32_t)((int64_t)a[i] + (int64_t)b[i]);
-}
+
+
+
+
 
 void rust_isa_sve_sabdlb_i8(const int8_t *a, const int8_t *b, int16_t *out, size_t len) {
     for (size_t i = 0; i < len; i++) out[i] = (int16_t)((int64_t)a[i] - (int64_t)b[i]);
@@ -3450,21 +3436,9 @@ void rust_isa_sve_sdot_i32(const int8_t *a, const int8_t *b, const int32_t *acc,
     }
 }
 
-void rust_isa_sve_sdotb_i32(const int8_t *a, const int8_t *b, const int32_t *acc, int32_t *out, size_t len) {
-    for (size_t i = 0; i < len; i++) {
-        int32_t v = acc[i];
-        for (size_t k = 0; k < 4; k++) v += (int32_t)a[4 * i + k] * (int32_t)b[4 * i + k];
-        out[i] = v;
-    }
-}
 
-void rust_isa_sve_sdott_i32(const int8_t *a, const int8_t *b, const int32_t *acc, int32_t *out, size_t len) {
-    for (size_t i = 0; i < len; i++) {
-        int32_t v = acc[i];
-        for (size_t k = 0; k < 4; k++) v += (int32_t)a[4 * i + k] * (int32_t)b[4 * i + k];
-        out[i] = v;
-    }
-}
+
+
 
 void rust_isa_sve_udot_i32(const uint8_t *a, const uint8_t *b, const int32_t *acc, int32_t *out, size_t len) {
     for (size_t i = 0; i < len; i++) {
@@ -3474,21 +3448,9 @@ void rust_isa_sve_udot_i32(const uint8_t *a, const uint8_t *b, const int32_t *ac
     }
 }
 
-void rust_isa_sve_udotb_i32(const uint8_t *a, const uint8_t *b, const int32_t *acc, int32_t *out, size_t len) {
-    for (size_t i = 0; i < len; i++) {
-        int32_t v = acc[i];
-        for (size_t k = 0; k < 4; k++) v += (int32_t)a[4 * i + k] * (int32_t)b[4 * i + k];
-        out[i] = v;
-    }
-}
 
-void rust_isa_sve_udott_i32(const uint8_t *a, const uint8_t *b, const int32_t *acc, int32_t *out, size_t len) {
-    for (size_t i = 0; i < len; i++) {
-        int32_t v = acc[i];
-        for (size_t k = 0; k < 4; k++) v += (int32_t)a[4 * i + k] * (int32_t)b[4 * i + k];
-        out[i] = v;
-    }
-}
+
+
 
 void rust_isa_sve_sudot_i32(const int8_t *a, const uint8_t *b, const int32_t *acc, int32_t *out, size_t len) {
     for (size_t i = 0; i < len; i++) {

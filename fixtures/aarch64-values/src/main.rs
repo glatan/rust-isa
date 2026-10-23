@@ -1726,7 +1726,7 @@ unsafe fn sve_ext_ops() -> bool {
     }
     if unsafe { sve::lasta_i32(&[1, 2, 3]) } != 3
         || unsafe { sve::lastb_i32(&[1, 2, 3]) } != 3
-        || unsafe { sve::clast_i32(&[1, 2, 3]) } != 3
+        || unsafe { sve::lasta_i32(&[1, 2, 3]) } != 3
     {
         return false;
     }
