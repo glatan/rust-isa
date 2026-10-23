@@ -17,6 +17,66 @@ unsafe extern "C" {
     fn rust_isa_neon_replace_i32_1(a: *const u8, value: i32, out: *mut u8);
     fn rust_isa_neon_replace_i32_2(a: *const u8, value: i32, out: *mut u8);
     fn rust_isa_neon_replace_i32_3(a: *const u8, value: i32, out: *mut u8);
+    fn rust_isa_neon_dup_s8_0(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s8_1(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s8_2(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s8_3(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s8_4(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s8_5(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s8_6(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s8_7(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s8_8(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s8_9(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s8_10(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s8_11(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s8_12(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s8_13(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s8_14(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s8_15(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_ins_s8_0(a: *const u8, value: i8, out: *mut u8);
+    fn rust_isa_neon_ins_s8_1(a: *const u8, value: i8, out: *mut u8);
+    fn rust_isa_neon_ins_s8_2(a: *const u8, value: i8, out: *mut u8);
+    fn rust_isa_neon_ins_s8_3(a: *const u8, value: i8, out: *mut u8);
+    fn rust_isa_neon_ins_s8_4(a: *const u8, value: i8, out: *mut u8);
+    fn rust_isa_neon_ins_s8_5(a: *const u8, value: i8, out: *mut u8);
+    fn rust_isa_neon_ins_s8_6(a: *const u8, value: i8, out: *mut u8);
+    fn rust_isa_neon_ins_s8_7(a: *const u8, value: i8, out: *mut u8);
+    fn rust_isa_neon_ins_s8_8(a: *const u8, value: i8, out: *mut u8);
+    fn rust_isa_neon_ins_s8_9(a: *const u8, value: i8, out: *mut u8);
+    fn rust_isa_neon_ins_s8_10(a: *const u8, value: i8, out: *mut u8);
+    fn rust_isa_neon_ins_s8_11(a: *const u8, value: i8, out: *mut u8);
+    fn rust_isa_neon_ins_s8_12(a: *const u8, value: i8, out: *mut u8);
+    fn rust_isa_neon_ins_s8_13(a: *const u8, value: i8, out: *mut u8);
+    fn rust_isa_neon_ins_s8_14(a: *const u8, value: i8, out: *mut u8);
+    fn rust_isa_neon_ins_s8_15(a: *const u8, value: i8, out: *mut u8);
+    fn rust_isa_neon_dup_s16_0(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s16_1(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s16_2(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s16_3(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s16_4(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s16_5(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s16_6(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s16_7(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_ins_s16_0(a: *const u8, value: i16, out: *mut u8);
+    fn rust_isa_neon_ins_s16_1(a: *const u8, value: i16, out: *mut u8);
+    fn rust_isa_neon_ins_s16_2(a: *const u8, value: i16, out: *mut u8);
+    fn rust_isa_neon_ins_s16_3(a: *const u8, value: i16, out: *mut u8);
+    fn rust_isa_neon_ins_s16_4(a: *const u8, value: i16, out: *mut u8);
+    fn rust_isa_neon_ins_s16_5(a: *const u8, value: i16, out: *mut u8);
+    fn rust_isa_neon_ins_s16_6(a: *const u8, value: i16, out: *mut u8);
+    fn rust_isa_neon_ins_s16_7(a: *const u8, value: i16, out: *mut u8);
+    fn rust_isa_neon_dup_s32_0(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s32_1(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s32_2(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s32_3(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_ins_s32_0(a: *const u8, value: i32, out: *mut u8);
+    fn rust_isa_neon_ins_s32_1(a: *const u8, value: i32, out: *mut u8);
+    fn rust_isa_neon_ins_s32_2(a: *const u8, value: i32, out: *mut u8);
+    fn rust_isa_neon_ins_s32_3(a: *const u8, value: i32, out: *mut u8);
+    fn rust_isa_neon_dup_s64_0(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_dup_s64_1(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_ins_s64_0(a: *const u8, value: i64, out: *mut u8);
+    fn rust_isa_neon_ins_s64_1(a: *const u8, value: i64, out: *mut u8);
 }
 
 /// Broadcast an 8-bit value to all lanes.
@@ -123,69 +183,6 @@ pub fn replace_i32<const LANE: u8>(a: V128, value: i32) -> V128 {
         3 => call!(rust_isa_neon_replace_i32_3),
         _ => unreachable!(),
     }
-}
-
-unsafe extern "C" {
-    fn rust_isa_neon_dup_s8_0(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s8_1(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s8_2(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s8_3(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s8_4(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s8_5(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s8_6(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s8_7(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s8_8(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s8_9(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s8_10(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s8_11(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s8_12(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s8_13(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s8_14(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s8_15(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_ins_s8_0(a: *const u8, value: i8, out: *mut u8);
-    fn rust_isa_neon_ins_s8_1(a: *const u8, value: i8, out: *mut u8);
-    fn rust_isa_neon_ins_s8_2(a: *const u8, value: i8, out: *mut u8);
-    fn rust_isa_neon_ins_s8_3(a: *const u8, value: i8, out: *mut u8);
-    fn rust_isa_neon_ins_s8_4(a: *const u8, value: i8, out: *mut u8);
-    fn rust_isa_neon_ins_s8_5(a: *const u8, value: i8, out: *mut u8);
-    fn rust_isa_neon_ins_s8_6(a: *const u8, value: i8, out: *mut u8);
-    fn rust_isa_neon_ins_s8_7(a: *const u8, value: i8, out: *mut u8);
-    fn rust_isa_neon_ins_s8_8(a: *const u8, value: i8, out: *mut u8);
-    fn rust_isa_neon_ins_s8_9(a: *const u8, value: i8, out: *mut u8);
-    fn rust_isa_neon_ins_s8_10(a: *const u8, value: i8, out: *mut u8);
-    fn rust_isa_neon_ins_s8_11(a: *const u8, value: i8, out: *mut u8);
-    fn rust_isa_neon_ins_s8_12(a: *const u8, value: i8, out: *mut u8);
-    fn rust_isa_neon_ins_s8_13(a: *const u8, value: i8, out: *mut u8);
-    fn rust_isa_neon_ins_s8_14(a: *const u8, value: i8, out: *mut u8);
-    fn rust_isa_neon_ins_s8_15(a: *const u8, value: i8, out: *mut u8);
-    fn rust_isa_neon_dup_s16_0(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s16_1(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s16_2(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s16_3(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s16_4(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s16_5(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s16_6(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s16_7(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_ins_s16_0(a: *const u8, value: i16, out: *mut u8);
-    fn rust_isa_neon_ins_s16_1(a: *const u8, value: i16, out: *mut u8);
-    fn rust_isa_neon_ins_s16_2(a: *const u8, value: i16, out: *mut u8);
-    fn rust_isa_neon_ins_s16_3(a: *const u8, value: i16, out: *mut u8);
-    fn rust_isa_neon_ins_s16_4(a: *const u8, value: i16, out: *mut u8);
-    fn rust_isa_neon_ins_s16_5(a: *const u8, value: i16, out: *mut u8);
-    fn rust_isa_neon_ins_s16_6(a: *const u8, value: i16, out: *mut u8);
-    fn rust_isa_neon_ins_s16_7(a: *const u8, value: i16, out: *mut u8);
-    fn rust_isa_neon_dup_s32_0(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s32_1(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s32_2(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s32_3(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_ins_s32_0(a: *const u8, value: i32, out: *mut u8);
-    fn rust_isa_neon_ins_s32_1(a: *const u8, value: i32, out: *mut u8);
-    fn rust_isa_neon_ins_s32_2(a: *const u8, value: i32, out: *mut u8);
-    fn rust_isa_neon_ins_s32_3(a: *const u8, value: i32, out: *mut u8);
-    fn rust_isa_neon_dup_s64_0(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_dup_s64_1(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_ins_s64_0(a: *const u8, value: i64, out: *mut u8);
-    fn rust_isa_neon_ins_s64_1(a: *const u8, value: i64, out: *mut u8);
 }
 
 /// `dup` on 8-bit lanes: broadcast lane `LANE`.

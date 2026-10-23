@@ -4,6 +4,8 @@ use super::V128;
 
 unsafe extern "C" {
     fn rust_isa_sse2_v128_load(p: *const u8, out: *mut u8);
+    fn rust_isa_sse2_v128_store(p: *mut u8, value: *const u8);
+    fn rust_isa_sse2_maskmovdqu(a: *const u8, mask: *const u8, p: *mut u8);
 }
 
 /// `v128.load`
@@ -22,10 +24,6 @@ pub unsafe fn v128_load(p: *const u8) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_v128_store(p: *mut u8, value: *const u8);
-}
-
 /// `v128.store`
 ///
 /// Store 16 bytes.
@@ -38,10 +36,6 @@ pub unsafe fn v128_store(p: *mut u8, value: V128) {
     unsafe {
         rust_isa_sse2_v128_store(p, value.as_ptr());
     }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_maskmovdqu(a: *const u8, mask: *const u8, p: *mut u8);
 }
 
 /// `maskmovdqu`

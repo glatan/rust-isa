@@ -4,6 +4,8 @@ use super::V128;
 
 unsafe extern "C" {
     fn rust_isa_sse2_packsswb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_packuswb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_packssdw(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `packsswb`
@@ -18,10 +20,6 @@ pub fn packsswb(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_packuswb(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `packuswb`
 ///
 /// Pack 16-bit lanes from `a` and `b` into unsigned bytes with saturation.
@@ -32,10 +30,6 @@ pub fn packuswb(a: V128, b: V128) -> V128 {
         rust_isa_sse2_packuswb(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_packssdw(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `packssdw`

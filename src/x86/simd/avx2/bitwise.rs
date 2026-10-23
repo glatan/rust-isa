@@ -4,6 +4,8 @@ use super::V256;
 
 unsafe extern "C" {
     fn rust_isa_avx2_vpand(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpor(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpxor(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `vpand`
@@ -23,10 +25,6 @@ pub unsafe fn vpand(a: V256, b: V256) -> V256 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_avx2_vpor(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `vpor`
 ///
 /// Bitwise OR of the 32 bytes.
@@ -42,10 +40,6 @@ pub unsafe fn vpor(a: V256, b: V256) -> V256 {
         rust_isa_avx2_vpor(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_avx2_vpxor(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `vpxor`

@@ -28,7 +28,6 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 - `vnn`、`vflr`、`vfsq`、`vistr`、`vuph`、`vupl`、`vfll` は vector / vector-enhancements-1 の同名の関数として実装した。
 - `vfae`、`vfee`、`vfene`、`vlgv`、`vscbi` は vector の命令であり、vector-enhancements-2 の行から vector の行へ移した。
 - `vclzg` / `vctzg` は facility 1、`vpopctg` は facility 2 の命令である。
-- 旧 API の `vclzd` / `vctzd` / `vpopcntd` / `vpopcntg` は削除した。`vclzg` / `vctzg` / `vpopctg` を使う。
 
 ## 実装方式
 

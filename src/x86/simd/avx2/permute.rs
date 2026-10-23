@@ -2,6 +2,7 @@
 
 use super::V256;
 use core::arch::asm;
+
 unsafe extern "C" {
     fn rust_isa_avx2_vpermps(a: *const u8, idx: *const u8, out: *mut u8);
     fn rust_isa_avx2_vpermd(a: *const u8, idx: *const u8, out: *mut u8);

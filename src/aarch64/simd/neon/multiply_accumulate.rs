@@ -4,6 +4,11 @@ use super::V128;
 
 unsafe extern "C" {
     fn rust_isa_neon_mla_s8(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_neon_mla_s16(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_neon_mla_s32(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_neon_mls_s8(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_neon_mls_s16(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_neon_mls_s32(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
 }
 
 /// `mla_s8`
@@ -18,10 +23,6 @@ pub fn mla_s8(a: V128, b: V128, c: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_neon_mla_s16(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
-}
-
 /// `mla_s16`
 ///
 /// Multiply signed lanes and add the result to the accumulator.
@@ -32,10 +33,6 @@ pub fn mla_s16(a: V128, b: V128, c: V128) -> V128 {
         rust_isa_neon_mla_s16(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_neon_mla_s32(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
 }
 
 /// `mla_s32`
@@ -50,10 +47,6 @@ pub fn mla_s32(a: V128, b: V128, c: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_neon_mls_s8(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
-}
-
 /// `mls_s8`
 ///
 /// Multiply signed lanes and subtract the result from the accumulator.
@@ -66,10 +59,6 @@ pub fn mls_s8(a: V128, b: V128, c: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_neon_mls_s16(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
-}
-
 /// `mls_s16`
 ///
 /// Multiply signed lanes and subtract the result from the accumulator.
@@ -80,10 +69,6 @@ pub fn mls_s16(a: V128, b: V128, c: V128) -> V128 {
         rust_isa_neon_mls_s16(a.as_ptr(), b.as_ptr(), c.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_neon_mls_s32(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
 }
 
 /// `mls_s32`

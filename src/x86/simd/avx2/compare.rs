@@ -1,6 +1,7 @@
 //! Compare instructions.
 
 use super::V256;
+
 unsafe extern "C" {
     fn rust_isa_avx2_vpcmpeqb(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_avx2_vpcmpeqw(a: *const u8, b: *const u8, out: *mut u8);

@@ -10,6 +10,7 @@ unsafe extern "C" {
     fn rust_isa_neon_uzp2_u8(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_neon_trn2_u8(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_neon_tbx(a: *const u8, idx: *const u8, out: *mut u8);
+    fn rust_isa_neon_tbl(a: *const u8, idx: *const u8, out: *mut u8);
 }
 
 /// `zip1`
@@ -95,10 +96,6 @@ pub fn trn2(a: V128, b: V128) -> V128 {
         rust_isa_neon_trn2_u8(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_neon_tbl(a: *const u8, idx: *const u8, out: *mut u8);
 }
 
 /// `tbl`

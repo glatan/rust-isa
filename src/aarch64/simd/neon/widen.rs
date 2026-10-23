@@ -1,6 +1,7 @@
 //! NEON widening arithmetic instructions.
 
 use super::V128;
+
 unsafe extern "C" {
     fn rust_isa_neon_saddl_s8(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_neon_saddl_s16(a: *const u8, b: *const u8, out: *mut u8);

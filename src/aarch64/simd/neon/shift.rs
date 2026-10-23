@@ -1,6 +1,7 @@
 //! NEON shift instructions.
 
 use super::V128;
+
 unsafe extern "C" {
     fn rust_isa_neon_shl_i8(a: *const u8, count: i32, out: *mut u8);
     fn rust_isa_neon_shl_i16(a: *const u8, count: i32, out: *mut u8);

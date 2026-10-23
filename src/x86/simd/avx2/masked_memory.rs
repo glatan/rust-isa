@@ -4,6 +4,9 @@ use super::V256;
 
 unsafe extern "C" {
     fn rust_isa_avx2_vpmaskmovd_load(p: *const u8, mask: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpmaskmovd_store(p: *mut u8, mask: *const u8, value: *const u8);
+    fn rust_isa_avx2_vpmaskmovq_load(p: *const u8, mask: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpmaskmovq_store(p: *mut u8, mask: *const u8, value: *const u8);
 }
 
 /// `vpmaskmovd` load form
@@ -23,10 +26,6 @@ pub unsafe fn vpmaskmovd_load(p: *const u8, mask: V256) -> V256 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_avx2_vpmaskmovd_store(p: *mut u8, mask: *const u8, value: *const u8);
-}
-
 /// `vpmaskmovd` store form
 ///
 /// Store the selected 32-bit lanes. Unselected lanes are not written.
@@ -40,10 +39,6 @@ pub unsafe fn vpmaskmovd_store(p: *mut u8, mask: V256, value: V256) {
     unsafe {
         rust_isa_avx2_vpmaskmovd_store(p, mask.as_ptr(), value.as_ptr());
     }
-}
-
-unsafe extern "C" {
-    fn rust_isa_avx2_vpmaskmovq_load(p: *const u8, mask: *const u8, out: *mut u8);
 }
 
 /// `vpmaskmovq` load form
@@ -61,10 +56,6 @@ pub unsafe fn vpmaskmovq_load(p: *const u8, mask: V256) -> V256 {
         rust_isa_avx2_vpmaskmovq_load(p, mask.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_avx2_vpmaskmovq_store(p: *mut u8, mask: *const u8, value: *const u8);
 }
 
 /// `vpmaskmovq` store form
