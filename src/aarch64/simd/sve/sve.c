@@ -1680,7 +1680,7 @@ void rust_isa_sve_usra_u32(const uint32_t *a, int32_t shift, const uint32_t *acc
 
 
 
-void rust_isa_sve_rsqrte_f32(const float *a, float *out, size_t len) {
+void rust_isa_sve_frsqrte_f32(const float *a, float *out, size_t len) {
     for (size_t i = 0; i < len; i += svcntw()) {
         svbool_t pg = svwhilelt_b32_u64(i, len);
         svfloat32_t r = svrsqrte_f32(svld1_f32(pg, a + i));
@@ -1698,7 +1698,7 @@ void rust_isa_sve_rsqrte_f32(const float *a, float *out, size_t len) {
 
 
 
-void rust_isa_sve_rsqrte_f64(const double *a, double *out, size_t len) {
+void rust_isa_sve_frsqrte_f64(const double *a, double *out, size_t len) {
     for (size_t i = 0; i < len; i += svcntd()) {
         svbool_t pg = svwhilelt_b64_u64(i, len);
         svfloat64_t r = svrsqrte_f64(svld1_f64(pg, a + i));

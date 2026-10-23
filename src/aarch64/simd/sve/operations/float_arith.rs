@@ -528,7 +528,7 @@ unsafe extern "C" {
     fn rust_isa_sve_rsqrt_f32(a: *const f32, out: *mut f32, len: usize);
 }
 
-/// Reciprocal square-root estimate on `f32` slices.
+/// Reciprocal square-root estimate (`frsqrte`) on `f32` slices.
 ///
 /// # Panics
 ///
@@ -550,7 +550,7 @@ unsafe extern "C" {
     fn rust_isa_sve_rsqrt_f64(a: *const f64, out: *mut f64, len: usize);
 }
 
-/// Reciprocal square-root estimate on `f64` slices.
+/// Reciprocal square-root estimate (`frsqrte`) on `f64` slices.
 ///
 /// # Panics
 ///
