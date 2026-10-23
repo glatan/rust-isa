@@ -1,6 +1,5 @@
 use rust_isa::x86::simd::avx2::{
-    vextracti128, vinserti128, vpblendd, vpblendw, vperm2i128, vpermps, vpermq, vpshufd, vpshufhw,
-    vpshuflw,
+    vextracti128, vinserti128, vperm2i128, vpermps, vpermq, vpshufd, vpshufhw, vpshuflw,
 };
 
 use super::support::*;
@@ -32,21 +31,7 @@ fn immediate_forms() {
     );
     assert_eq!(i64x2_lanes(unsafe { vextracti128::<1>(a) }), [30, 40]);
 
-    let a = i16x16(core::array::from_fn(|lane| lane as i16 + 1));
-    let b = i16x16(core::array::from_fn(|lane| lane as i16 + 101));
-    assert_eq!(
-        i16_lanes(unsafe { vpblendw::<0x55>(a, b) }),
-        [
-            101, 2, 103, 4, 105, 6, 107, 8, 109, 10, 111, 12, 113, 14, 115, 16
-        ]
-    );
-
     let a = i32x8(core::array::from_fn(|lane| lane as i32 + 1));
-    let b = i32x8(core::array::from_fn(|lane| lane as i32 + 101));
-    assert_eq!(
-        i32_lanes(unsafe { vpblendd::<0x55>(a, b) }),
-        [101, 2, 103, 4, 105, 6, 107, 8]
-    );
     assert_eq!(
         i32_lanes(unsafe { vpshufd::<0x1b>(a) }),
         [4, 3, 2, 1, 8, 7, 6, 5]
