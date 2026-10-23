@@ -94,20 +94,12 @@ void rust_isa_avx512fp16_vcvtph2pd(const uint8_t *a, uint8_t *out) {
 }
 
 __attribute__((always_inline))
-void rust_isa_avx512fp16_vcvtph2ps(const uint8_t *a, uint8_t *out) {
-    _mm512_storeu_ps((float *)(void *)out, _mm512_cvtph_ps((__m256i)(__m256h)_mm256_loadu_si256((const __m256i *)(const void *)a)));
-}
-
 __attribute__((always_inline))
 void rust_isa_avx512fp16_vcvtpd2ph(const uint8_t *a, uint8_t *out) {
     _mm_storeu_si128((__m128i *)(void *)out, (__m128i)_mm512_cvtpd_ph(_mm512_loadu_pd((const double *)(const void *)a)));
 }
 
 __attribute__((always_inline))
-void rust_isa_avx512fp16_vcvtps2ph(const uint8_t *a, uint8_t *out) {
-    _mm256_storeu_si256((__m256i *)(void *)out, (__m256i)_mm512_cvtps_ph(_mm512_loadu_ps((const float *)(const void *)a), _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC));
-}
-
 __attribute__((always_inline))
 void rust_isa_avx512fp16_vcvtsh2ss(const uint8_t *a, const uint8_t *b, uint8_t *out) {
     _mm_storeu_ps((float *)(void *)out, _mm_cvtsh_ss(_mm_loadu_ps((const float *)(const void *)a), (__m128h)(__m128h)_mm_loadu_si128((const __m128i *)(const void *)b)));
