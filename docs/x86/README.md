@@ -98,6 +98,8 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 extension ごとに内部モジュールの分割軸を決める。SSE2 は操作名で分ける（`arithmetic`、`compare`、`convert`、`bitwise`、`shift`、`shuffle`、`unpack`、`pack`、`movemask`、`moves`、`nontemporal`、`memory`）。値型の定義は `v128` に置く。AVX2 も操作名で分け、AVX-512F は `float` / `gather_scatter` / `integer` / `v512` で分ける。AVX-512F の load/store は `v512` に置き、`gather_scatter` は gather/scatter だけを含む。公開パスには内部モジュール名は出ない。
 
+extension の `mod.rs` が実装本体になることも許容する。AVX-512VL は全 220 命令を実装済みで、各関数が同じ形の wrapper であり、`vp2intersect` だけが追加の AVX-512VP2INTERSECT を要求するため submodule に分けている。行数は分割の基準にしない。追加 feature の境界、操作カテゴリの混在、変更軸の分離が生じたときに operation 別の分割を検討する。AVX10.1 も同じ方針とする。
+
 乱数を生成する `rdrand` と `rdseed` は `integer` に置く。暗号演算ではないため `crypto` には置かない。
 
 ## ゼロコスト
