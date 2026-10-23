@@ -92,8 +92,6 @@ fn main() {
     let lasx_c = manifest.join("src/loongarch/simd/lasx/lasx.c");
     let s390x_vector_c = manifest.join("src/s390x/simd/vector/vector.c");
     let s390x_enh_c = manifest.join("src/s390x/simd/vector_enhancements_1/vector_enhancements_1.c");
-    let s390x_enh2_c =
-        manifest.join("src/s390x/simd/vector_enhancements_2/vector_enhancements_2.c");
     let arm_neon_c = manifest.join("src/arm/simd/neon/neon.c");
     let arm_dotprod_c = manifest.join("src/arm/simd/dotprod/dotprod.c");
     let arm_fp16_c = manifest.join("src/arm/simd/fp16/fp16.c");
@@ -200,7 +198,6 @@ fn main() {
         &lasx_c,
         &s390x_vector_c,
         &s390x_enh_c,
-        &s390x_enh2_c,
         &arm_neon_c,
         &arm_dotprod_c,
         &arm_fp16_c,
@@ -403,13 +400,6 @@ fn main() {
             &out_dir,
             &s390x_enh_c,
             "rust_isa_s390x_enh",
-            &["-march=z14", "-mzvector"],
-            Some("s390x-unknown-linux-gnu"),
-        );
-        compile_archive(
-            &out_dir,
-            &s390x_enh2_c,
-            "rust_isa_s390x_enh2",
             &["-march=z14", "-mzvector"],
             Some("s390x-unknown-linux-gnu"),
         );

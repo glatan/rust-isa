@@ -18,10 +18,10 @@ use rust_isa::s390x::simd::vector::{
 };
 use rust_isa::s390x::simd::vector::{vgbm, vrepb, vrepf, vrepg, vreph, vuph, vupl, vuplh, vupll};
 use rust_isa::s390x::simd::vector_enhancements_1::{
-    cntlz_i32, fma, popcnt_i8, popcnt_i32, vclz, vctz, vfa, vfce, vfch, vfche, vfd, vfi_f32, vfll,
-    vflr, vfm, vfma, vfms, vfnma, vfnms, vfs, vfsq, vftci_f32, vnn, vpopct,
+    cntlz_i32, fma, popcnt_i8, popcnt_i32, vclz, vclzg, vctz, vctzg, vfa, vfce, vfch, vfche, vfd,
+    vfi_f32, vfll, vflr, vfm, vfma, vfms, vfnma, vfnms, vfs, vfsq, vftci_f32, vnn, vpopct,
 };
-use rust_isa::s390x::simd::vector_enhancements_2::{vclzd, vctzd, vpopcntd, vsld, vsrd};
+use rust_isa::s390x::simd::vector_enhancements_2::{vpopctg, vsld, vsrd};
 use rust_isa::s390x::simd::vector_packed_decimal::{
     vap, vcvb, vcvbg, vcvd, vpkz, vsdp, vsp, vsrp, vstrl, vupkz, vupkzh, vupkzl,
 };
@@ -157,15 +157,15 @@ fn enhancement_ops() -> bool {
             || vctz(V128::from_bytes([2; 16])).to_bytes() != [1; 16]
             || vpopct(V128::from_bytes([0xff; 16])).to_bytes() != [8; 16]
             || {
-                let b = vclzd(V128::from_bytes([0; 16])).to_bytes();
+                let b = vclzg(V128::from_bytes([0; 16])).to_bytes();
                 b[7] != 64 || b[15] != 64
             }
             || {
-                let b = vctzd(V128::from_bytes([0; 16])).to_bytes();
+                let b = vctzg(V128::from_bytes([0; 16])).to_bytes();
                 b[7] != 64 || b[15] != 64
             }
             || {
-                let b = vpopcntd(V128::from_bytes([0xff; 16])).to_bytes();
+                let b = vpopctg(V128::from_bytes([0xff; 16])).to_bytes();
                 b[7] != 64 || b[15] != 64
             }
         {
