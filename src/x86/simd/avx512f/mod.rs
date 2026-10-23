@@ -13,11 +13,11 @@
 //! Instructions not listed in this module are not exposed.
 
 mod float;
+mod gather_scatter;
 mod integer;
-mod memory;
 mod v512;
 
 pub use float::*;
+pub use gather_scatter::*;
 pub use integer::*;
-pub use memory::*;
 pub use v512::*;
