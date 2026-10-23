@@ -1,6 +1,4 @@
-use rust_isa::x86::simd::fma4::{
-    macc_pd, macc_ps, vfmaddpd, vfmaddps, vfmsubps, vfnmaddps, vfnmsubps,
-};
+use rust_isa::x86::simd::fma4::{vfmaddpd, vfmaddps, vfmsubps, vfnmaddps, vfnmsubps};
 use rust_isa::x86::simd::sse2::V128;
 
 fn fma4_available() -> bool {
@@ -56,10 +54,6 @@ fn fma4_values() {
         [10.5, 41.5, 92.5, 163.5]
     );
     assert_eq!(
-        f32_lanes(unsafe { macc_ps(a, b, c) }),
-        [10.5, 41.5, 92.5, 163.5]
-    );
-    assert_eq!(
         f32_lanes(unsafe { vfmsubps(a, b, c) }),
         [9.5, 38.5, 87.5, 156.5]
     );
@@ -76,5 +70,4 @@ fn fma4_values() {
     let b = f64x2([10.0, 20.0]);
     let c = f64x2([0.5, 1.5]);
     assert_eq!(f64_lanes(unsafe { vfmaddpd(a, b, c) }), [10.5, 41.5]);
-    assert_eq!(f64_lanes(unsafe { macc_pd(a, b, c) }), [10.5, 41.5]);
 }

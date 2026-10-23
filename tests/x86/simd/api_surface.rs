@@ -5,7 +5,6 @@ use rust_isa::x86::simd::sse2::V128;
 fn optional_extension_api_surface() {
     let _: unsafe fn(V128, V128) -> V128 = rust_isa::x86::simd::sse4a::extrq;
     let _: unsafe fn(V128, V128) -> V128 = rust_isa::x86::simd::sse4a::insertq;
-    let _: unsafe fn(V128, V128, V128) -> V128 = rust_isa::x86::simd::fma4::macc_ps;
     let _: unsafe fn(V128, V128, V128) -> V128 = rust_isa::x86::simd::fma4::vfmaddps;
     let _: unsafe fn(V128, V128, V128) -> V128 = rust_isa::x86::simd::fma4::vfmaddpd;
     let _: unsafe fn(V128, V128, V128) -> V128 = rust_isa::x86::simd::fma4::vfmsubps;
