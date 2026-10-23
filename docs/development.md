@@ -29,7 +29,7 @@ make duplicates
 - `make test-check-wasm-link`: `wasm32-unknown-unknown` のリンクと simd128 無効時の検査
 - `make test-wasip1`: `wasm32-wasip1` の nextest と doctest
 - `make test-wasip1-wide-arithmetic`: `wide-arithmetic` feature を有効にした wasm32-wasip1 の nextest、doctest、リンク検査
-- `make check-mnemonics`: rustdoc の命令名を `llvm-mc` で検証する。現在は s390x を対象にしている。単一の命令名ではない名前は `tools/mnemonics.toml` の `[allow.<arch>]` に理由付きで書く
+- `make check-mnemonics`: rustdoc の命令名を `llvm-mc` で検証する。全 native arch が対象。単一の命令名ではない名前は `tools/mnemonics.toml` の `[allow.<arch>]` に、既知の未修正名は `[baseline.<arch>]` に理由付きで書く。baseline は負債で、新規の無効名は失敗する
 
 arch ごとの `test-i686`、`test-aarch64`、`test-armv7`、`test-riscv64`、`test-loongarch64`、`test-s390x`、`test-powerpc64le`、`test-mips64` は、対応する `tests/<arch>.rs` のテストだけを実行する。`make test` は `test-host` 経由でこれらも実行する。
 

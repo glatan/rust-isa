@@ -1,13 +1,131 @@
 # Instruction mnemonics checked by tools/mnemonics.py.
 #
 # Add an arch to [targets] to enable the check for that arch. The triple and
-# features are passed to llvm-mc. Names that are intentionally not single
-# mnemonics (family names, pseudo instructions, or LLVM gaps) go in
-# [allow.<arch>] with a reason.
+# features are passed to llvm-mc. A [targets.<arch>.overrides.<family or
+# extension>] table selects a different triple or feature set for that
+# directory. Names that are intentionally not single mnemonics (family names,
+# pseudo instructions, or LLVM gaps) go in [allow.<arch>] with a reason.
+
+[targets.x86]
+triple = "x86_64"
+features = "+sse2,+avx,+avx2,+avx512f,+avx512bw,+avx512dq,+avx512vl,+fma,+f16c,+bmi,+bmi2,+popcnt,+lzcnt,+movbe,+adx,+rdrnd,+rdseed,+gfni,+vaes,+vpclmulqdq,+sha,+sm3,+sm4,+avx512vbmi,+avx512ifma,+avx512vnni,+avx512bf16,+avx512fp16,+avx512vpopcntdq,+avx512bitalg,+avx512vbmi2,+avx512vp2intersect,+avxifma,+avxneconvert,+avxvnni,+avxvnniint8,+avxvnniint16"
+
+[targets.aarch64]
+triple = "aarch64"
+features = "+neon,+sve,+sme,+fp16,+dotprod,+i8mm,+bf16,+f32mm,+f64mm,+fcma,+fhm,+jsconv,+rdm,+crypto,+sha3,+sm4"
+
+[targets.arm]
+triple = "armv7"
+features = "+neon,+i8mm,+dotprod"
+
+[targets.arm.overrides.mve]
+triple = "thumbv8.1m.main"
+features = "+mve"
+
+[targets.arm.overrides.mve_fp]
+triple = "thumbv8.1m.main"
+features = "+mve.fp"
+
+[targets.arm.overrides.crypto]
+triple = "armv8-a"
+features = "+crypto,+sha2,+aes,+crc"
+
+[targets.riscv]
+triple = "riscv64"
+features = "+v,+zba,+zbb,+zbc,+zbs,+zbkb,+zkn,+zks,+zfh,+zfa,+zvkn,+zvks,+zvkg,+zvbc"
 
 [targets.s390x]
 triple = "s390x"
 features = "+vector,+vector-enhancements-1,+vector-enhancements-2,+vector-enhancements-3"
 
+[targets.powerpc]
+triple = "powerpc64le"
+features = "+altivec,+vsx,+power8-vector,+power9-vector,+power10-vector,+power8-crypto,+mma"
+
+[targets.loongarch]
+triple = "loongarch64"
+features = "+lsx,+lasx"
+
+[targets.mips]
+triple = "mips64"
+features = "+msa"
+
 [allow.s390x]
 vle = "Family name; vleb, vleh, vlef, and vleg are the concrete instructions."
+
+[allow.riscv]
+"fmvh.x.d" = "LLVM 23 does not recognize this Zfa mnemonic; the C uses the encoding for a newer assembler."
+"fmvp.d.x" = "LLVM 23 does not recognize this Zfa mnemonic; the C uses the encoding for a newer assembler."
+zip = "LLVM 23 does not recognize this Zbkb mnemonic; the C uses the encoding for a newer assembler."
+unzip = "LLVM 23 does not recognize this Zbkb mnemonic; the C uses the encoding for a newer assembler."
+
+[allow.aarch64]
+extract = "Semantic lane extraction; the implementation selects a lane, not a single mnemonic."
+replace = "Semantic lane replacement; the implementation selects a lane, not a single mnemonic."
+
+# Known debt. New invalid names still fail; remove an entry after fixing it.
+
+[baseline.aarch64]
+"abd" = "Existing SVE variant or duplicate name; pending ISA review."
+"clast" = "Existing SVE variant or duplicate name; pending ISA review."
+"mulx" = "Existing SVE variant or duplicate name; pending ISA review."
+"recpe" = "Existing SVE variant or duplicate name; pending ISA review."
+"recps" = "Existing SVE variant or duplicate name; pending ISA review."
+"rintm" = "Existing SVE variant or duplicate name; pending ISA review."
+"rintn" = "Existing SVE variant or duplicate name; pending ISA review."
+"rintp" = "Existing SVE variant or duplicate name; pending ISA review."
+"rintz" = "Existing SVE variant or duplicate name; pending ISA review."
+"rsqrte" = "Existing SVE variant or duplicate name; pending ISA review."
+"rsqrts" = "Existing SVE variant or duplicate name; pending ISA review."
+"saddlh" = "Existing SVE variant or duplicate name; pending ISA review."
+"saddlht" = "Existing SVE variant or duplicate name; pending ISA review."
+"sdotb" = "Existing SVE variant or duplicate name; pending ISA review."
+"sdott" = "Existing SVE variant or duplicate name; pending ISA review."
+"uaddlh" = "Existing SVE variant or duplicate name; pending ISA review."
+"uaddlht" = "Existing SVE variant or duplicate name; pending ISA review."
+"udotb" = "Existing SVE variant or duplicate name; pending ISA review."
+"udott" = "Existing SVE variant or duplicate name; pending ISA review."
+"usublbt" = "Existing SVE variant or duplicate name; pending ISA review."
+"usubltb" = "Existing SVE variant or duplicate name; pending ISA review."
+
+[baseline.arm]
+"usmmla" = "Existing ARM name or feature-model gap; pending review."
+"vcmpeq.f16" = "Existing ARM name or feature-model gap; pending review."
+"vcmpeq.i32" = "Existing ARM name or feature-model gap; pending review."
+"vcvt.f16.f32" = "Existing ARM name or feature-model gap; pending review."
+
+[baseline.loongarch]
+"ext" = "LLVM feature-model gap; pending review."
+"ins" = "LLVM feature-model gap; pending review."
+"revw.d" = "LLVM feature-model gap; pending review."
+"vabs.b" = "LLVM feature-model gap; pending review."
+"vabs.d" = "LLVM feature-model gap; pending review."
+"vabs.h" = "LLVM feature-model gap; pending review."
+"vabs.w" = "LLVM feature-model gap; pending review."
+"vdiv.s" = "LLVM feature-model gap; pending review."
+"vfcmp" = "LLVM feature-model gap; pending review."
+"xvabs.b" = "LLVM feature-model gap; pending review."
+"xvabs.d" = "LLVM feature-model gap; pending review."
+"xvabs.h" = "LLVM feature-model gap; pending review."
+"xvabs.w" = "LLVM feature-model gap; pending review."
+"xvdiv.s" = "LLVM feature-model gap; pending review."
+"xvext2xv.h.b" = "LLVM feature-model gap; pending review."
+"xvfcmp" = "LLVM feature-model gap; pending review."
+
+[baseline.powerpc]
+"xvsldoi" = "Pending rename to vsldoi."
+
+[baseline.riscv]
+"fcvtmod.w.h" = "LLVM 23 gap; pending review."
+
+[baseline.x86]
+"pmaxw" = "Existing name pending rename or semantic-helper decision."
+"pminw" = "Existing name pending rename or semantic-helper decision."
+"vcompressb" = "Existing name pending rename or semantic-helper decision."
+"vcompressw" = "Existing name pending rename or semantic-helper decision."
+"vcvtneepbf162ps" = "Existing name pending rename or semantic-helper decision."
+"vcvtneepsh2ps" = "Existing name pending rename or semantic-helper decision."
+"vexpandw" = "Existing name pending rename or semantic-helper decision."
+"vfixupimpps" = "Existing name pending rename or semantic-helper decision."
+"vmovmpd" = "Existing name pending rename or semantic-helper decision."
+"vmovmps" = "Existing name pending rename or semantic-helper decision."

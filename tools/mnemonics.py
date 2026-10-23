@@ -27,7 +27,7 @@ def load_config():
         return tomllib.load(handle)
 
 
-def normalize(raw):
+def normalize(raw, arch):
     text = raw.strip()
     if any(ch in text for ch in " +-*=/="):
         return None
@@ -37,6 +37,10 @@ def normalize(raw):
     text = re.sub(r"<[^>]*>", "", text)
     while re.search(r"_v(128|256|512)$", text):
         text = re.sub(r"_v(128|256|512)$", "", text)
+    if arch in {"aarch64", "arm"}:
+        while re.search(r"_[iusf](8|16|32|64)$", text) or text.endswith("_bf16"):
+            text = re.sub(r"_[iusf](8|16|32|64)$", "", text)
+            text = re.sub(r"_bf16$", "", text)
     if ".." in text:
         text = text.split("..")[0]
     if not re.fullmatch(r"[a-z][a-z0-9._]*", text):
@@ -55,12 +59,24 @@ def candidates(arch):
                 continue
             match = re.match(r"^/// `([^`]+)`", lines[i])
             if match:
-                token = normalize(match.group(1))
+                token = normalize(match.group(1), arch)
                 if token:
                     found.setdefault(token, (str(path.relative_to(ROOT)), i + 1))
             while i < len(lines) and lines[i].startswith("///"):
                 i += 1
     return found
+
+
+def target_for(arch, path, target):
+    parts = Path(path).parts
+    overrides = target.get("overrides", {})
+    if len(parts) >= 5:
+        family, extension = parts[2], parts[3]
+        if extension in overrides:
+            return overrides[extension]
+        if family in overrides:
+            return overrides[family]
+    return target
 
 
 def probe(target, tokens):
@@ -88,52 +104,68 @@ def probe(target, tokens):
             result[token] = "ok"
             continue
         joined = " ".join(messages)
-        if "too few operands" in joined or "any one of the following" in joined:
-            result[token] = "ok"
-        elif "invalid instruction" in joined:
-            result[token] = "invalid"
-        else:
-            result[token] = "review"
+        invalid = (
+            "invalid instruction" in joined
+            or "unrecognized instruction mnemonic" in joined
+            or "invalid instruction mnemonic" in joined
+        )
+        result[token] = "invalid" if invalid else "ok"
     return result
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--arch", action="append", help="arch to check (default: all configured)")
+    parser.add_argument("--verbose", action="store_true", help="print allow and baseline entries")
     args = parser.parse_args()
 
     config = load_config()
     targets = config.get("targets", {})
     allow = config.get("allow", {})
+    baseline = config.get("baseline", {})
     archs = args.arch or sorted(targets)
 
     failed = False
+    baseline_count = 0
     for arch in archs:
         if arch not in targets:
             print("no target configured for " + arch, file=sys.stderr)
             return 2
 
         found = candidates(arch)
-        tokens = sorted(found)
-        result = probe(targets[arch], tokens)
-        if result is None:
-            return 2
+        groups = {}
+        for token, (path, line) in found.items():
+            target = target_for(arch, path, targets[arch])
+            key = (target["triple"], target["features"])
+            groups.setdefault(key, []).append((token, path, line))
 
-        for token in tokens:
-            verdict = result[token]
-            path, line = found[token]
-            if verdict == "invalid":
-                reason = allow.get(arch, {}).get(token)
-                if reason:
-                    print("allow", arch, token, "(" + reason + ")")
-                else:
-                    print("INVALID " + arch + " " + token + " " + path + ":" + str(line))
+        for (triple, features), entries in sorted(groups.items()):
+            tokens = [entry[0] for entry in entries]
+            result = probe({"triple": triple, "features": features}, tokens)
+            if result is None:
+                return 2
+            for token, path, line in entries:
+                verdict = result[token]
+                if verdict == "invalid":
+                    reason = allow.get(arch, {}).get(token)
+                    if reason:
+                        if args.verbose:
+                            print("allow", arch, token, "(" + reason + ")")
+                    elif token in baseline.get(arch, {}):
+                        baseline_count += 1
+                        if args.verbose:
+                            print("baseline", arch, token, "(" + baseline[arch][token] + ")")
+                    else:
+                        print("INVALID " + arch + " " + token + " " + path + ":" + str(line))
+                        failed = True
+                elif verdict == "review":
+                    print("REVIEW " + arch + " " + token + " " + path + ":" + str(line))
                     failed = True
-            elif verdict == "review":
-                print("REVIEW " + arch + " " + token + " " + path + ":" + str(line))
-                failed = True
 
-    return 1 if failed else 0
+    if failed:
+        return 1
+    print("mnemonics: ok (" + str(baseline_count) + " baseline)")
+    return 0
 
 
 if __name__ == "__main__":
