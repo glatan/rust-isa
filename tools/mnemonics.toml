@@ -70,17 +70,7 @@ replace = "Semantic lane replacement; the implementation selects a lane, not a s
 # Known debt. New invalid names still fail; remove an entry after fixing it.
 
 [baseline.aarch64]
-"abd" = "Existing SVE variant or duplicate name; pending ISA review."
 "clast" = "Existing SVE variant or duplicate name; pending ISA review."
-"mulx" = "Existing SVE variant or duplicate name; pending ISA review."
-"recpe" = "Existing SVE variant or duplicate name; pending ISA review."
-"recps" = "Existing SVE variant or duplicate name; pending ISA review."
-"rintm" = "Existing SVE variant or duplicate name; pending ISA review."
-"rintn" = "Existing SVE variant or duplicate name; pending ISA review."
-"rintp" = "Existing SVE variant or duplicate name; pending ISA review."
-"rintz" = "Existing SVE variant or duplicate name; pending ISA review."
-"rsqrte" = "Existing SVE variant or duplicate name; pending ISA review."
-"rsqrts" = "Existing SVE variant or duplicate name; pending ISA review."
 "saddlh" = "Existing SVE variant or duplicate name; pending ISA review."
 "saddlht" = "Existing SVE variant or duplicate name; pending ISA review."
 "sdotb" = "Existing SVE variant or duplicate name; pending ISA review."
