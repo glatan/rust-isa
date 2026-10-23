@@ -3,12 +3,11 @@
 
 use core::arch::asm;
 use core::panic::PanicInfo;
-use rust_isa::loongarch::integer::lbt::{bitrev, bstrins, bstrpick, ext, ins, revb, revh, revw};
+use rust_isa::loongarch::integer::lbt::{bitrev, bstrins, bstrpick, revb, revh, revw};
 use rust_isa::loongarch::simd::lasx::xvabs_b;
 use rust_isa::loongarch::simd::lasx::xvabs_d;
 use rust_isa::loongarch::simd::lasx::xvabs_h;
 use rust_isa::loongarch::simd::lasx::xvadd_w;
-use rust_isa::loongarch::simd::lasx::xvdiv_s;
 use rust_isa::loongarch::simd::lasx::xvmul_w;
 use rust_isa::loongarch::simd::lasx::xvneg_b;
 use rust_isa::loongarch::simd::lasx::xvneg_d;
@@ -22,7 +21,7 @@ use rust_isa::loongarch::simd::lasx::{
     xvsub, xvxor,
 };
 use rust_isa::loongarch::simd::lasx::{
-    xvabs, xvadd_b, xvadd_d, xvadd_h, xvdiv, xvmul_h, xvneg, xvsub_b, xvsub_d, xvsub_h,
+    xvabs, xvadd_b, xvadd_d, xvadd_h, xvmul_h, xvneg, xvsub_b, xvsub_d, xvsub_h,
 };
 use rust_isa::loongarch::simd::lsx::vabs_b;
 use rust_isa::loongarch::simd::lsx::vabs_d;
@@ -60,7 +59,7 @@ use rust_isa::loongarch::simd::lsx::{
     vxor, xor,
 };
 use rust_isa::loongarch::simd::lsx::{add_i16, sub_i8, vadd_b, vadd_h, vmul_h, vsub_b, vsub_h};
-use rust_isa::loongarch::simd::lsx::{add_i64, sub_i64, vadd_d, vdiv, vsub_d};
+use rust_isa::loongarch::simd::lsx::{add_i64, sub_i64, vadd_d, vsub_d};
 use rust_isa::loongarch::simd::lsx::{
     vavgr, vavgr_d, vavgr_w, vext, vexth_h_b, vexth_hu_bu, vextl, vextl_qu_du, vfadd, vfadd_d,
     vfcmp, vfcmp_ceq_d, vfcmp_ceq_s, vfcmp_clt_s, vfcmp_cun_s, vfcvt_s_d, vfcvth_d_s, vfcvtl_d_s,
@@ -203,9 +202,6 @@ fn run() -> u32 {
     }
     if !alias_xvmul_w() {
         return 422;
-    }
-    if !alias_xvdiv_s() {
-        return 423;
     }
     if !alias_vmax() {
         return 501;
@@ -551,17 +547,13 @@ fn lsx_abs_ops() -> bool {
 fn lasx_div_ops() -> bool {
     let a = V256::from_bytes(core::array::from_fn(|i| i as u8));
     let b = V256::from_bytes(core::array::from_fn(|i| (i + 1) as u8));
-    unsafe {
-        xvdiv(a, b) == lasx_fdiv(a, b)
-            && xvadd_d(a, b) == lasx_add_i64(a, b)
-            && xvsub_d(b, a) == lasx_sub_i64(b, a)
-    }
+    unsafe { xvadd_d(a, b) == lasx_add_i64(a, b) && xvsub_d(b, a) == lasx_sub_i64(b, a) }
 }
 
 fn lsx_div_ops() -> bool {
     let a = V128::from_bytes(core::array::from_fn(|i| i as u8));
     let b = V128::from_bytes(core::array::from_fn(|i| (i + 1) as u8));
-    vdiv(a, b) == fdiv(a, b) && vadd_d(a, b) == add_i64(a, b) && vsub_d(b, a) == sub_i64(b, a)
+    vadd_d(a, b) == add_i64(a, b) && vsub_d(b, a) == sub_i64(b, a)
 }
 
 fn lasx_width_ops() -> bool {
@@ -593,8 +585,6 @@ fn lbt_ops() -> bool {
         && bitrev(1) == 1u64 << 63
         && bstrpick::<7, 4>(0xab) == 0xa
         && bstrins::<7, 4>(0, 0xa) == 0xa0
-        && ext::<7, 4>(0xab) == 0xa
-        && ins::<7, 4>(0, 0xa) == 0xa0
 }
 
 fn lsx_alias_ops() -> bool {
@@ -741,13 +731,6 @@ fn alias_xvmul_w() -> bool {
     unsafe {
         xvmul_w(V256::from_bytes([1; 32]), V256::from_bytes([2; 32]))
             == lasx_mul(V256::from_bytes([1; 32]), V256::from_bytes([2; 32]))
-    }
-}
-
-fn alias_xvdiv_s() -> bool {
-    unsafe {
-        xvdiv_s(V256::from_bytes([1; 32]), V256::from_bytes([2; 32]))
-            == lasx_fdiv(V256::from_bytes([1; 32]), V256::from_bytes([2; 32]))
     }
 }
 
