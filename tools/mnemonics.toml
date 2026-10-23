@@ -1,0 +1,13 @@
+# Instruction mnemonics checked by tools/mnemonics.py.
+#
+# Add an arch to [targets] to enable the check for that arch. The triple and
+# features are passed to llvm-mc. Names that are intentionally not single
+# mnemonics (family names, pseudo instructions, or LLVM gaps) go in
+# [allow.<arch>] with a reason.
+
+[targets.s390x]
+triple = "s390x"
+features = "+vector,+vector-enhancements-1,+vector-enhancements-2,+vector-enhancements-3"
+
+[allow.s390x]
+vle = "Family name; vleb, vleh, vlef, and vleg are the concrete instructions."

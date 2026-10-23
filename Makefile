@@ -65,6 +65,10 @@ coverage:
 coverage-check:
 	$(PODMAN_RUN) python3 tools/coverage.py --check
 
+.PHONY: check-mnemonics
+check-mnemonics:
+	$(PODMAN_RUN) python3 tools/mnemonics.py
+
 .PHONY: duplicates
 duplicates:
 	$(PODMAN_RUN) python3 tools/duplicates.py $(DUPLICATES_ARGS)
@@ -88,7 +92,7 @@ check-docs:
 		CARGO_TARGET_DIR=$(WASM_DOC_TARGET_DIR) RUSTDOCFLAGS="-D warnings -C target-feature=+simd128,+relaxed-simd" cargo doc --no-deps --features wide-arithmetic --target $(WASM_UNKNOWN_TARGET)'
 
 .PHONY: test
-test: fmt-check coverage-check check-docs test-host test-wasip1 test-wasip1-wide-arithmetic
+test: fmt-check coverage-check check-mnemonics check-docs test-host test-wasip1 test-wasip1-wide-arithmetic
 
 .PHONY: test-host
 test-host:
