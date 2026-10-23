@@ -64,6 +64,7 @@ coverage:
 .PHONY: coverage-check
 coverage-check:
 	$(PODMAN_RUN) python3 tools/coverage.py --check
+	$(PODMAN_RUN) python3 tools/doc_names.py --check
 
 .PHONY: check-mnemonics
 check-mnemonics:
