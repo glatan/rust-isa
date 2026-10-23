@@ -60,7 +60,7 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 | 32-bit ARM | `neon`                     | `vadd.i32`、`vmul.i32`          | なし   | なし                | ゼロコスト |
 | PowerPC    | `altivec`                  | `vadduwm`、`vmuluwm`、`vperm`   | なし   | なし                | ゼロコスト |
 | PowerPC    | `altivec` fixture          | `vadduwm`、`vmuluwm`            | なし   | なし                | ゼロコスト |
-| MIPS       | `msa`                      | `addv.w`、`mulv.w`、`vshf.w`    | なし   | なし                | ゼロコスト |
+| MIPS       | `msa`                      | `addv.w`、`mulv.w`              | なし   | なし                | ゼロコスト |
 | wasm32     | `wide-arithmetic`          | `i64.add128` など               | なし   | なし                | wat で確認 |
 
 ## IR レベルの確認
@@ -102,7 +102,7 @@ shuffle は命令ごとに結果が違う。
 | RISC-V    | `vrgather`              | store/load が残る                           |
 | LoongArch | `xvshuf.b`              | store/load が残る                           |
 | s390x     | `vec_perm`              | zero-cost                                   |
-| MIPS      | `vshf.w`                | zero-cost                                   |
+| MIPS      | `vshf.w`                | スカラー C フォールバック                   |
 | ARMv7     | `vtbl1_s8` / `vtbl2_s8` | 8-byte table のみ。128-bit の単一命令はない |
 
 `intrinsics` が必要な shuffle は、SROA が一時値を消せず、往復が残ることがある。命令ごとに disassembly を確認する。
