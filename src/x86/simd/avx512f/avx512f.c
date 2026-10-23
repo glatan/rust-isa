@@ -157,12 +157,12 @@ void rust_isa_avx512f_vblendmpd(const uint8_t *a, const uint8_t *b, uint8_t mask
 }
 
 __attribute__((always_inline))
-void rust_isa_avx512f_vmovmps(const uint8_t *a, const uint8_t *src, uint16_t mask, uint8_t *out) {
+void rust_isa_avx512f_vmovaps(const uint8_t *a, const uint8_t *src, uint16_t mask, uint8_t *out) {
     _mm512_storeu_ps((float *)(void *)out, _mm512_mask_mov_ps(_mm512_loadu_ps((const float *)(const void *)a), (__mmask16)mask, _mm512_loadu_ps((const float *)(const void *)src)));
 }
 
 __attribute__((always_inline))
-void rust_isa_avx512f_vmovmpd(const uint8_t *a, const uint8_t *src, uint8_t mask, uint8_t *out) {
+void rust_isa_avx512f_vmovapd(const uint8_t *a, const uint8_t *src, uint8_t mask, uint8_t *out) {
     _mm512_storeu_pd((double *)(void *)out, _mm512_mask_mov_pd(_mm512_loadu_pd((const double *)(const void *)a), (__mmask8)mask, _mm512_loadu_pd((const double *)(const void *)src)));
 }
 

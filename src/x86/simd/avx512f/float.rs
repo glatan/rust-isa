@@ -368,10 +368,10 @@ pub unsafe fn vblendmpd(a: V512, b: V512, mask: u8) -> V512 {
 }
 
 unsafe extern "C" {
-    fn rust_isa_avx512f_vmovmps(a: *const u8, src: *const u8, mask: u16, out: *mut u8);
+    fn rust_isa_avx512f_vmovaps(a: *const u8, src: *const u8, mask: u16, out: *mut u8);
 }
 
-/// `vmovmps`
+/// `vmovaps`
 /// Move the 32-bit float lanes selected by `mask` from `src` and the rest from `a`.
 ///
 /// # Safety
@@ -379,19 +379,19 @@ unsafe extern "C" {
 /// The caller must enable AVX-512F.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vmovmps(a: V512, src: V512, mask: u16) -> V512 {
+pub unsafe fn vmovaps(a: V512, src: V512, mask: u16) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512f_vmovmps(a.as_ptr(), src.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512f_vmovaps(a.as_ptr(), src.as_ptr(), mask, out.as_mut_ptr());
     }
     out
 }
 
 unsafe extern "C" {
-    fn rust_isa_avx512f_vmovmpd(a: *const u8, src: *const u8, mask: u8, out: *mut u8);
+    fn rust_isa_avx512f_vmovapd(a: *const u8, src: *const u8, mask: u8, out: *mut u8);
 }
 
-/// `vmovmpd`
+/// `vmovapd`
 /// Move the 64-bit float lanes selected by `mask` from `src` and the rest from `a`.
 ///
 /// # Safety
@@ -399,10 +399,10 @@ unsafe extern "C" {
 /// The caller must enable AVX-512F.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vmovmpd(a: V512, src: V512, mask: u8) -> V512 {
+pub unsafe fn vmovapd(a: V512, src: V512, mask: u8) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512f_vmovmpd(a.as_ptr(), src.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512f_vmovapd(a.as_ptr(), src.as_ptr(), mask, out.as_mut_ptr());
     }
     out
 }

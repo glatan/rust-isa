@@ -342,22 +342,22 @@ void rust_isa_avx512vl_vblendmpd_v256(const uint8_t *a, const uint8_t *b, uint8_
 }
 
 __attribute__((always_inline))
-void rust_isa_avx512vl_vmovmps_v128(const uint8_t *a, const uint8_t *src, uint8_t mask, uint8_t *out) {
+void rust_isa_avx512vl_vmovaps_v128(const uint8_t *a, const uint8_t *src, uint8_t mask, uint8_t *out) {
     _mm_storeu_ps((float *)(void *)out, _mm_mask_mov_ps(_mm_loadu_ps((const float *)(const void *)a), (__mmask8)mask, _mm_loadu_ps((const float *)(const void *)src)));
 }
 
 __attribute__((always_inline))
-void rust_isa_avx512vl_vmovmps_v256(const uint8_t *a, const uint8_t *src, uint8_t mask, uint8_t *out) {
+void rust_isa_avx512vl_vmovaps_v256(const uint8_t *a, const uint8_t *src, uint8_t mask, uint8_t *out) {
     _mm256_storeu_ps((float *)(void *)out, _mm256_mask_mov_ps(_mm256_loadu_ps((const float *)(const void *)a), (__mmask8)mask, _mm256_loadu_ps((const float *)(const void *)src)));
 }
 
 __attribute__((always_inline))
-void rust_isa_avx512vl_vmovmpd_v128(const uint8_t *a, const uint8_t *src, uint8_t mask, uint8_t *out) {
+void rust_isa_avx512vl_vmovapd_v128(const uint8_t *a, const uint8_t *src, uint8_t mask, uint8_t *out) {
     _mm_storeu_pd((double *)(void *)out, _mm_mask_mov_pd(_mm_loadu_pd((const double *)(const void *)a), (__mmask8)mask, _mm_loadu_pd((const double *)(const void *)src)));
 }
 
 __attribute__((always_inline))
-void rust_isa_avx512vl_vmovmpd_v256(const uint8_t *a, const uint8_t *src, uint8_t mask, uint8_t *out) {
+void rust_isa_avx512vl_vmovapd_v256(const uint8_t *a, const uint8_t *src, uint8_t mask, uint8_t *out) {
     _mm256_storeu_pd((double *)(void *)out, _mm256_mask_mov_pd(_mm256_loadu_pd((const double *)(const void *)a), (__mmask8)mask, _mm256_loadu_pd((const double *)(const void *)src)));
 }
 

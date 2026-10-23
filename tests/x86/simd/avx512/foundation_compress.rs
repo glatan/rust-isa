@@ -18,7 +18,7 @@ fn foundation_compress_expand_blend_and_move() {
     assert_eq!(blended[3], 3.0);
     assert_eq!(blended[4], 100.0);
 
-    let moved = f32_lanes(unsafe { vmovmps(other, source, 0x0003) });
+    let moved = f32_lanes(unsafe { vmovaps(other, source, 0x0003) });
     assert_eq!(moved[0], 0.0);
     assert_eq!(moved[1], 1.0);
     assert_eq!(moved[2], 100.0);
