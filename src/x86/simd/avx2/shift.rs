@@ -1,4 +1,5 @@
 use super::V256;
+
 unsafe extern "C" {
     fn rust_isa_avx2_vpsllvd(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_avx2_vpsllvq(a: *const u8, b: *const u8, out: *mut u8);

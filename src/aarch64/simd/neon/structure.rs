@@ -22,9 +22,6 @@ unsafe extern "C" {
     fn rust_isa_neon_ld1r_i16(p: *const u8, out: *mut u8);
     fn rust_isa_neon_ld1r_i32(p: *const u8, out: *mut u8);
     fn rust_isa_neon_ld1r_i64(p: *const u8, out: *mut u8);
-}
-
-unsafe extern "C" {
     fn rust_isa_neon_ld2r_i8(p: *const u8, o0: *mut u8, o1: *mut u8);
     fn rust_isa_neon_ld2r_i16(p: *const u8, o0: *mut u8, o1: *mut u8);
     fn rust_isa_neon_ld2r_i32(p: *const u8, o0: *mut u8, o1: *mut u8);

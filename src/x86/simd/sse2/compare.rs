@@ -7,6 +7,18 @@ unsafe extern "C" {
     fn rust_isa_sse2_comisd(a: *const u8, b: *const u8) -> i32;
     fn rust_isa_sse2_ucomiss(a: *const u8, b: *const u8) -> i32;
     fn rust_isa_sse2_ucomisd(a: *const u8, b: *const u8) -> i32;
+    fn rust_isa_sse2_cmpeqps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_cmpltps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_cmpleps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_cmpeqpd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_cmpltpd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_cmplepd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pcmpeqb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pcmpgtb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pcmpeqw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pcmpgtw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pcmpeqd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pcmpgtd(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `comiss`
@@ -45,10 +57,6 @@ pub fn ucomisd(a: V128, b: V128) -> i32 {
     unsafe { rust_isa_sse2_ucomisd(a.as_ptr(), b.as_ptr()) }
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_cmpeqps(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `cmpeqps`
 ///
 /// Compare the four 32-bit float lanes for equality.
@@ -59,10 +67,6 @@ pub fn cmpeqps(a: V128, b: V128) -> V128 {
         rust_isa_sse2_cmpeqps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_cmpltps(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `cmpltps`
@@ -77,10 +81,6 @@ pub fn cmpltps(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_cmpleps(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `cmpleps`
 ///
 /// Compare the four 32-bit float lanes with less-than-or-equal.
@@ -91,10 +91,6 @@ pub fn cmpleps(a: V128, b: V128) -> V128 {
         rust_isa_sse2_cmpleps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_cmpeqpd(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `cmpeqpd`
@@ -109,10 +105,6 @@ pub fn cmpeqpd(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_cmpltpd(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `cmpltpd`
 ///
 /// Compare the two 64-bit float lanes with less-than.
@@ -123,10 +115,6 @@ pub fn cmpltpd(a: V128, b: V128) -> V128 {
         rust_isa_sse2_cmpltpd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_cmplepd(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `cmplepd`
@@ -141,10 +129,6 @@ pub fn cmplepd(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_pcmpeqb(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `pcmpeqb`
 ///
 /// Compare the 16 byte lanes. A true lane is all bits one.
@@ -155,10 +139,6 @@ pub fn pcmpeqb(a: V128, b: V128) -> V128 {
         rust_isa_sse2_pcmpeqb(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_pcmpgtb(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `pcmpgtb`
@@ -173,10 +153,6 @@ pub fn pcmpgtb(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_pcmpeqw(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `pcmpeqw`
 ///
 /// Compare the eight 16-bit integer lanes. A true lane is all bits one.
@@ -187,10 +163,6 @@ pub fn pcmpeqw(a: V128, b: V128) -> V128 {
         rust_isa_sse2_pcmpeqw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_pcmpgtw(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `pcmpgtw`
@@ -205,10 +177,6 @@ pub fn pcmpgtw(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_pcmpeqd(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `pcmpeqd`
 ///
 /// Compare the four 32-bit integer lanes. A true lane is all bits one.
@@ -219,10 +187,6 @@ pub fn pcmpeqd(a: V128, b: V128) -> V128 {
         rust_isa_sse2_pcmpeqd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_pcmpgtd(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `pcmpgtd`

@@ -11,13 +11,23 @@ unsafe extern "C" {
     fn rust_isa_neon_fmulx_f64(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_neon_fabd_f32(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_neon_fabd_f64(a: *const u8, b: *const u8, out: *mut u8);
-}
-
-unsafe extern "C" {
     fn rust_isa_neon_fmla_f32(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
     fn rust_isa_neon_fmla_f64(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
     fn rust_isa_neon_fmls_f32(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
     fn rust_isa_neon_fmls_f64(a: *const u8, b: *const u8, c: *const u8, out: *mut u8);
+    fn rust_isa_neon_fsub(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_fdiv(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_fmin(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_fmax(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_fabs(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_fneg(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_fsqrt(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_fadd_f64(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_fmul_f64(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_fsub_f64(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_fdiv_f64(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_fadd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_fmul(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `fmaxnm_f32`
@@ -164,20 +174,6 @@ pub fn fabd_f64(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_neon_fsub(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_fdiv(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_fmin(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_fmax(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_fabs(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_fneg(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_fsqrt(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_fadd_f64(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_fmul_f64(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_fsub_f64(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_fdiv_f64(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 macro_rules! binary {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
         $(#[$meta])*
@@ -264,10 +260,6 @@ binary!(
     rust_isa_neon_fdiv_f64
 );
 
-unsafe extern "C" {
-    fn rust_isa_neon_fadd(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `fadd`
 ///
 /// Add the four 32-bit float lanes.
@@ -278,10 +270,6 @@ pub fn fadd(a: V128, b: V128) -> V128 {
         rust_isa_neon_fadd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_neon_fmul(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `fmul`

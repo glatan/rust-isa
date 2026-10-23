@@ -7,6 +7,10 @@ unsafe extern "C" {
     fn rust_isa_sse2_pandn(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_sse2_por(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_sse2_pxor(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_andps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_andnps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_orps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_xorps(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `pand`
@@ -57,10 +61,6 @@ pub fn pxor(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_andps(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `andps`
 ///
 /// Bitwise AND of the 16 bytes.
@@ -71,10 +71,6 @@ pub fn andps(a: V128, b: V128) -> V128 {
         rust_isa_sse2_andps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_andnps(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `andnps`
@@ -89,10 +85,6 @@ pub fn andnps(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_orps(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `orps`
 ///
 /// Bitwise OR of the 16 bytes.
@@ -103,10 +95,6 @@ pub fn orps(a: V128, b: V128) -> V128 {
         rust_isa_sse2_orps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_xorps(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `xorps`

@@ -4,6 +4,13 @@ use super::V256;
 
 unsafe extern "C" {
     fn rust_isa_avx2_vpunpcklbw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpunpckhbw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpunpcklwd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpunpckhwd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpunpckldq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpunpckhdq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpunpcklqdq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_avx2_vpunpckhqdq(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `vpunpcklbw`
@@ -23,10 +30,6 @@ pub unsafe fn vpunpcklbw(a: V256, b: V256) -> V256 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_avx2_vpunpckhbw(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `vpunpckhbw`
 ///
 /// Interleave the high 8 bytes of each 128-bit lane.
@@ -42,10 +45,6 @@ pub unsafe fn vpunpckhbw(a: V256, b: V256) -> V256 {
         rust_isa_avx2_vpunpckhbw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_avx2_vpunpcklwd(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `vpunpcklwd`
@@ -65,10 +64,6 @@ pub unsafe fn vpunpcklwd(a: V256, b: V256) -> V256 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_avx2_vpunpckhwd(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `vpunpckhwd`
 ///
 /// Interleave the high 4 16-bit lanes of each 128-bit lane.
@@ -84,10 +79,6 @@ pub unsafe fn vpunpckhwd(a: V256, b: V256) -> V256 {
         rust_isa_avx2_vpunpckhwd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_avx2_vpunpckldq(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `vpunpckldq`
@@ -107,10 +98,6 @@ pub unsafe fn vpunpckldq(a: V256, b: V256) -> V256 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_avx2_vpunpckhdq(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `vpunpckhdq`
 ///
 /// Interleave the high 2 32-bit lanes of each 128-bit lane.
@@ -128,10 +115,6 @@ pub unsafe fn vpunpckhdq(a: V256, b: V256) -> V256 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_avx2_vpunpcklqdq(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `vpunpcklqdq`
 ///
 /// Interleave the low 64-bit lane of each 128-bit lane.
@@ -147,10 +130,6 @@ pub unsafe fn vpunpcklqdq(a: V256, b: V256) -> V256 {
         rust_isa_avx2_vpunpcklqdq(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_avx2_vpunpckhqdq(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `vpunpckhqdq`

@@ -4,6 +4,47 @@ use super::V128;
 
 unsafe extern "C" {
     fn rust_isa_sse2_addps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_subps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_mulps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_divps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_minps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_maxps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_sqrtps(a: *const u8, out: *mut u8);
+    fn rust_isa_sse2_addpd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_subpd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_mulpd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_divpd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_minpd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_maxpd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_sqrtpd(a: *const u8, out: *mut u8);
+    fn rust_isa_sse2_paddb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_psubb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pminub(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pmaxub(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pavgb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_paddsb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_paddusb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_psubsb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_psubusb(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_paddw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_psubw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pmullw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pmaddwd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pminw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pmaxw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pavgw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_paddsw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_paddusw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_psubsw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_psubusw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pmulhw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pmulhuw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_paddd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_psubd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_pmuludq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_paddq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_psubq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_psadbw(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `addps`
@@ -18,10 +59,6 @@ pub fn addps(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_subps(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `subps`
 ///
 /// Subtract the four 32-bit float lanes.
@@ -32,10 +69,6 @@ pub fn subps(a: V128, b: V128) -> V128 {
         rust_isa_sse2_subps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_mulps(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `mulps`
@@ -50,10 +83,6 @@ pub fn mulps(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_divps(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `divps`
 ///
 /// Divide the four 32-bit float lanes.
@@ -64,10 +93,6 @@ pub fn divps(a: V128, b: V128) -> V128 {
         rust_isa_sse2_divps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_minps(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `minps`
@@ -82,10 +107,6 @@ pub fn minps(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_maxps(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `maxps`
 ///
 /// Take the maximum of the four 32-bit float lanes.
@@ -96,10 +117,6 @@ pub fn maxps(a: V128, b: V128) -> V128 {
         rust_isa_sse2_maxps(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_sqrtps(a: *const u8, out: *mut u8);
 }
 
 /// `sqrtps`
@@ -114,10 +131,6 @@ pub fn sqrtps(a: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_addpd(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `addpd`
 ///
 /// Add the two 64-bit float lanes.
@@ -128,10 +141,6 @@ pub fn addpd(a: V128, b: V128) -> V128 {
         rust_isa_sse2_addpd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_subpd(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `subpd`
@@ -146,10 +155,6 @@ pub fn subpd(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_mulpd(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `mulpd`
 ///
 /// Multiply the two 64-bit float lanes.
@@ -160,10 +165,6 @@ pub fn mulpd(a: V128, b: V128) -> V128 {
         rust_isa_sse2_mulpd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_divpd(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `divpd`
@@ -178,10 +179,6 @@ pub fn divpd(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_minpd(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `minpd`
 ///
 /// Take the minimum of the two 64-bit float lanes.
@@ -192,10 +189,6 @@ pub fn minpd(a: V128, b: V128) -> V128 {
         rust_isa_sse2_minpd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_maxpd(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `maxpd`
@@ -210,10 +203,6 @@ pub fn maxpd(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_sqrtpd(a: *const u8, out: *mut u8);
-}
-
 /// `sqrtpd`
 ///
 /// Take the square root of the two 64-bit float lanes.
@@ -224,10 +213,6 @@ pub fn sqrtpd(a: V128) -> V128 {
         rust_isa_sse2_sqrtpd(a.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_paddb(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `paddb`
@@ -242,10 +227,6 @@ pub fn paddb(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_psubb(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `psubb`
 ///
 /// Subtract the 16 byte lanes, wrapping at 8 bits.
@@ -256,10 +237,6 @@ pub fn psubb(a: V128, b: V128) -> V128 {
         rust_isa_sse2_psubb(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_pminub(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `pminub`
@@ -274,10 +251,6 @@ pub fn pminub(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_pmaxub(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `pmaxub`
 ///
 /// Take the maximum of the 16 unsigned byte lanes.
@@ -288,10 +261,6 @@ pub fn pmaxub(a: V128, b: V128) -> V128 {
         rust_isa_sse2_pmaxub(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_pavgb(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `pavgb`
@@ -306,10 +275,6 @@ pub fn pavgb(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_paddsb(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `paddsb`
 ///
 /// Add the 16 signed byte lanes with signed saturation.
@@ -320,10 +285,6 @@ pub fn paddsb(a: V128, b: V128) -> V128 {
         rust_isa_sse2_paddsb(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_paddusb(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `paddusb`
@@ -338,10 +299,6 @@ pub fn paddusb(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_psubsb(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `psubsb`
 ///
 /// Subtract the 16 signed byte lanes with signed saturation.
@@ -352,10 +309,6 @@ pub fn psubsb(a: V128, b: V128) -> V128 {
         rust_isa_sse2_psubsb(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_psubusb(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `psubusb`
@@ -370,10 +323,6 @@ pub fn psubusb(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_paddw(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `paddw`
 ///
 /// Add the eight 16-bit integer lanes, wrapping at 16 bits.
@@ -384,10 +333,6 @@ pub fn paddw(a: V128, b: V128) -> V128 {
         rust_isa_sse2_paddw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_psubw(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `psubw`
@@ -402,10 +347,6 @@ pub fn psubw(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_pmullw(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `pmullw`
 ///
 /// Multiply the eight 16-bit integer lanes, keeping the low 16 bits.
@@ -416,10 +357,6 @@ pub fn pmullw(a: V128, b: V128) -> V128 {
         rust_isa_sse2_pmullw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_pmaddwd(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `pmaddwd`
@@ -434,10 +371,6 @@ pub fn pmaddwd(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_pminw(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `pminw`
 ///
 /// Take the minimum of the eight signed 16-bit integer lanes.
@@ -450,10 +383,6 @@ pub fn pminw(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_pmaxw(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `pmaxw`
 ///
 /// Take the maximum of the eight signed 16-bit integer lanes.
@@ -464,10 +393,6 @@ pub fn pmaxw(a: V128, b: V128) -> V128 {
         rust_isa_sse2_pmaxw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_pavgw(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `pavgw`
@@ -498,10 +423,6 @@ pub fn pmaxsw(a: V128, b: V128) -> V128 {
     pmaxw(a, b)
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_paddsw(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `paddsw`
 ///
 /// Add the eight signed 16-bit lanes with signed saturation.
@@ -512,10 +433,6 @@ pub fn paddsw(a: V128, b: V128) -> V128 {
         rust_isa_sse2_paddsw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_paddusw(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `paddusw`
@@ -530,10 +447,6 @@ pub fn paddusw(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_psubsw(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `psubsw`
 ///
 /// Subtract the eight signed 16-bit lanes with signed saturation.
@@ -544,10 +457,6 @@ pub fn psubsw(a: V128, b: V128) -> V128 {
         rust_isa_sse2_psubsw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_psubusw(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `psubusw`
@@ -562,10 +471,6 @@ pub fn psubusw(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_pmulhw(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `pmulhw`
 ///
 /// Multiply the eight signed 16-bit lanes and keep the high 16 bits.
@@ -578,10 +483,6 @@ pub fn pmulhw(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_pmulhuw(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `pmulhuw`
 ///
 /// Multiply the eight unsigned 16-bit lanes and keep the high 16 bits.
@@ -592,10 +493,6 @@ pub fn pmulhuw(a: V128, b: V128) -> V128 {
         rust_isa_sse2_pmulhuw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_paddd(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `paddd`
@@ -624,10 +521,6 @@ pub fn paddd(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_psubd(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `psubd`
 ///
 /// Subtract the four 32-bit integer lanes, wrapping at 32 bits.
@@ -638,10 +531,6 @@ pub fn psubd(a: V128, b: V128) -> V128 {
         rust_isa_sse2_psubd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_pmuludq(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `pmuludq`
@@ -656,10 +545,6 @@ pub fn pmuludq(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_paddq(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `paddq`
 ///
 /// Add the two 64-bit integer lanes, wrapping at 64 bits.
@@ -672,10 +557,6 @@ pub fn paddq(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_psubq(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `psubq`
 ///
 /// Subtract the two 64-bit integer lanes, wrapping at 64 bits.
@@ -686,10 +567,6 @@ pub fn psubq(a: V128, b: V128) -> V128 {
         rust_isa_sse2_psubq(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_psadbw(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `psadbw`

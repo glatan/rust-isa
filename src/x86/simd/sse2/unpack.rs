@@ -4,6 +4,17 @@ use super::V128;
 
 unsafe extern "C" {
     fn rust_isa_sse2_punpcklbw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_punpckhbw(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_punpcklwd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_punpckhwd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_punpckldq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_punpckhdq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_punpcklqdq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_punpckhqdq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_unpcklps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_unpckhps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_unpcklpd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse2_unpckhpd(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `punpcklbw`
@@ -18,10 +29,6 @@ pub fn punpcklbw(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_punpckhbw(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `punpckhbw`
 ///
 /// Interleave the high 8 bytes of `a` and `b`.
@@ -32,10 +39,6 @@ pub fn punpckhbw(a: V128, b: V128) -> V128 {
         rust_isa_sse2_punpckhbw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_punpcklwd(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `punpcklwd`
@@ -50,10 +53,6 @@ pub fn punpcklwd(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_punpckhwd(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `punpckhwd`
 ///
 /// Interleave the high four 16-bit lanes of `a` and `b`.
@@ -64,10 +63,6 @@ pub fn punpckhwd(a: V128, b: V128) -> V128 {
         rust_isa_sse2_punpckhwd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_punpckldq(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `punpckldq`
@@ -82,10 +77,6 @@ pub fn punpckldq(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_punpckhdq(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `punpckhdq`
 ///
 /// Interleave the high two 32-bit lanes of `a` and `b`.
@@ -96,10 +87,6 @@ pub fn punpckhdq(a: V128, b: V128) -> V128 {
         rust_isa_sse2_punpckhdq(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_punpcklqdq(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `punpcklqdq`
@@ -114,10 +101,6 @@ pub fn punpcklqdq(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_punpckhqdq(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `punpckhqdq`
 ///
 /// Interleave the high 64-bit lane of `a` and `b`.
@@ -128,10 +111,6 @@ pub fn punpckhqdq(a: V128, b: V128) -> V128 {
         rust_isa_sse2_punpckhqdq(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_unpcklps(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `unpcklps`
@@ -146,10 +125,6 @@ pub fn unpcklps(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_unpckhps(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `unpckhps`
 ///
 /// Interleave the high two 32-bit float lanes of `a` and `b`.
@@ -162,10 +137,6 @@ pub fn unpckhps(a: V128, b: V128) -> V128 {
     out
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_unpcklpd(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `unpcklpd`
 ///
 /// Interleave the low 64-bit float lane of `a` and `b`.
@@ -176,10 +147,6 @@ pub fn unpcklpd(a: V128, b: V128) -> V128 {
         rust_isa_sse2_unpcklpd(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_unpckhpd(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `unpckhpd`

@@ -2,6 +2,11 @@
 
 use super::V128;
 
+unsafe extern "C" {
+    fn rust_isa_sse2_movd(a: *const u8) -> u32;
+    fn rust_isa_sse2_movq(a: *const u8) -> u64;
+}
+
 /// `movss`
 ///
 /// Copy the low 32-bit float lane from `b` into `a` and preserve the upper
@@ -66,20 +71,12 @@ pub fn movhlps(a: V128, b: V128) -> V128 {
     V128::from_bytes(bytes)
 }
 
-unsafe extern "C" {
-    fn rust_isa_sse2_movd(a: *const u8) -> u32;
-}
-
 /// `movd`
 ///
 /// Return the low 32 bits of the value.
 #[inline(always)]
 pub fn movd(a: V128) -> u32 {
     unsafe { rust_isa_sse2_movd(a.as_ptr()) }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sse2_movq(a: *const u8) -> u64;
 }
 
 /// `movq`

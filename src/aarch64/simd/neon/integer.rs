@@ -1,6 +1,7 @@
 //! NEON integer instructions.
 
 use super::V128;
+
 unsafe extern "C" {
     fn rust_isa_neon_add_i8(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_neon_add_i16(a: *const u8, b: *const u8, out: *mut u8);
@@ -46,6 +47,8 @@ unsafe extern "C" {
     fn rust_isa_neon_rev32(a: *const u8, out: *mut u8);
     fn rust_isa_neon_rev64(a: *const u8, out: *mut u8);
     fn rust_isa_neon_abs_i64(a: *const u8, out: *mut u8);
+    fn rust_isa_neon_add(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_mul(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 macro_rules! binary {
@@ -321,10 +324,6 @@ unary!(
     rust_isa_neon_abs_i64
 );
 
-unsafe extern "C" {
-    fn rust_isa_neon_add(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 /// `add`
 ///
 /// Add the four 32-bit integer lanes.
@@ -335,10 +334,6 @@ pub fn add(a: V128, b: V128) -> V128 {
         rust_isa_neon_add(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-unsafe extern "C" {
-    fn rust_isa_neon_mul(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `mul`

@@ -9,6 +9,20 @@ unsafe extern "C" {
     fn rust_isa_neon_cmpgt_i8(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_neon_cmpgt_i16(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_neon_cmpgt_i32(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_cmpeq_i64(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_cmpgt_i64(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_cmge_i8(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_cmge_i16(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_cmge_i32(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_cmle_i8(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_cmle_i16(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_cmle_i32(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_cmlt_i8(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_cmlt_i16(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_cmlt_i32(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_cmtst_i8(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_cmtst_i16(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_neon_cmtst_i32(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 macro_rules! compare {
@@ -56,11 +70,6 @@ compare!(
     rust_isa_neon_cmpgt_i32
 );
 
-unsafe extern "C" {
-    fn rust_isa_neon_cmpeq_i64(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_cmpgt_i64(a: *const u8, b: *const u8, out: *mut u8);
-}
-
 compare!(
     /// Compare 64-bit lanes for equality. A true lane is all bits one.
     cmpeq_i64,
@@ -71,21 +80,6 @@ compare!(
     cmpgt_i64,
     rust_isa_neon_cmpgt_i64
 );
-
-unsafe extern "C" {
-    fn rust_isa_neon_cmge_i8(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_cmge_i16(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_cmge_i32(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_cmle_i8(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_cmle_i16(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_cmle_i32(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_cmlt_i8(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_cmlt_i16(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_cmlt_i32(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_cmtst_i8(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_cmtst_i16(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_cmtst_i32(a: *const u8, b: *const u8, out: *mut u8);
-}
 
 /// `cmge_i8`
 ///
