@@ -8,7 +8,7 @@ x86_64 で、C の関数を Rust の関数へインラインし、命令の間�
    - Rust `lto = "thin"` と C `-flto=thin`
    - Rust `lto = "fat"` と C `-flto`
 2. Rust に `-C linker-plugin-lto` を付ける。
-3. C の target-features を Rust の target-features の部分集合にする。
+3. C の target-features を Rust の target-features の部分集合にする。 `avx512vl.c` は f/bw/dq/vl の baseline でコンパイルし、IFMA / VBMI / VBMI2 / VNNI / BITALG / VPOPCNTDQ / VP2INTERSECT は関数単位の `target` 属性で有効にする。
    - `-mno-mmx -mno-x87 -mno-popcnt -mno-xsave` を付ける。
    - `cmov` と `cx8` は残ってもインラインされた。
 4. C の関数を `__attribute__((always_inline))` にする。

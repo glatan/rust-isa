@@ -724,19 +724,11 @@ fn main() {
             &out_dir,
             &avx512vl_c,
             "rust_isa_avx512vl",
-            &[
-                "-mavx512f",
-                "-mavx512bw",
-                "-mavx512dq",
-                "-mavx512vl",
-                "-mavx512ifma",
-                "-mavx512vbmi",
-                "-mavx512vbmi2",
-                "-mavx512vnni",
-                "-mavx512bitalg",
-                "-mavx512vpopcntdq",
-                "-mavx512vp2intersect",
-            ],
+            // The C file uses per-function target attributes for the
+            // optional subextensions (IFMA, VBMI, VBMI2, VNNI, BITALG,
+            // VPOPCNTDQ, VP2INTERSECT). Compile it with the AVX-512VL
+            // baseline so the object does not globally require them.
+            &["-mavx512f", "-mavx512bw", "-mavx512dq", "-mavx512vl"],
         );
         compile_native(&out_dir, &aes_c, "rust_isa_aes", &["-maes"]);
         compile_native(&out_dir, &sha_c, "rust_isa_sha", &["-msha"]);
