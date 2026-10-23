@@ -63,15 +63,3 @@ pub fn bstrpick<const MSB: u32, const LSB: u32>(src: u64) -> u64 {
     };
     (src >> LSB) & mask
 }
-
-/// `ext` alias for [`bstrpick`].
-#[inline(always)]
-pub fn ext<const MSB: u32, const LSB: u32>(src: u64) -> u64 {
-    bstrpick::<MSB, LSB>(src)
-}
-
-/// `ins` alias for [`bstrins`].
-#[inline(always)]
-pub fn ins<const MSB: u32, const LSB: u32>(dst: u64, src: u64) -> u64 {
-    bstrins::<MSB, LSB>(dst, src)
-}

@@ -236,16 +236,6 @@ pub unsafe fn xvneg(a: V256) -> V256 {
     V256::from_bytes(out)
 }
 
-/// `xvdiv.s`.
-///
-/// # Safety
-///
-/// The caller must enable LASX.
-#[target_feature(enable = "lasx")]
-#[inline]
-pub unsafe fn xvdiv(a: V256, b: V256) -> V256 {
-    unsafe { fdiv(a, b) }
-}
 /// `xvadd.d`.
 ///
 /// # Safety
@@ -471,17 +461,6 @@ pub unsafe fn xvsub_w(a: V256, b: V256) -> V256 {
 #[inline]
 pub unsafe fn xvmul_w(a: V256, b: V256) -> V256 {
     unsafe { mul(a, b) }
-}
-
-/// `xvdiv.s`.
-///
-/// # Safety
-///
-/// The caller must enable LASX.
-#[target_feature(enable = "lasx")]
-#[inline]
-pub unsafe fn xvdiv_s(a: V256, b: V256) -> V256 {
-    unsafe { fdiv(a, b) }
 }
 
 /// `xvmax.w` on signed 32-bit lanes.
@@ -841,7 +820,7 @@ pub unsafe fn xvpackod(a: V256, b: V256) -> V256 {
     }))
 }
 
-/// `xvext2xv.h.b`.
+/// `vext2xv.h.b`.
 ///
 /// Sign-extend the low 16 bytes of `a` to 16-bit lanes. The high half of `a`
 /// is ignored.
@@ -851,7 +830,7 @@ pub unsafe fn xvpackod(a: V256, b: V256) -> V256 {
 /// The caller must enable LASX.
 #[target_feature(enable = "lasx")]
 #[inline]
-pub unsafe fn xvext(a: V256) -> V256 {
+pub unsafe fn vext2xv_h_b(a: V256) -> V256 {
     let a = a.to_bytes();
     let mut out = [0u8; 32];
     for lane in 0..16 {

@@ -62,41 +62,26 @@ vle = "Family name; vleb, vleh, vlef, and vleg are the concrete instructions."
 "fmvp.d.x" = "LLVM 23 does not recognize this Zfa mnemonic; the C uses the encoding for a newer assembler."
 zip = "LLVM 23 does not recognize this Zbkb mnemonic; the C uses the encoding for a newer assembler."
 unzip = "LLVM 23 does not recognize this Zbkb mnemonic; the C uses the encoding for a newer assembler."
+"fcvtmod.w.h" = "LLVM 23 does not recognize this Zfa mnemonic; the C uses the encoding for a newer assembler."
 
 [allow.aarch64]
 extract = "Semantic lane extraction; the implementation selects a lane, not a single mnemonic."
 replace = "Semantic lane replacement; the implementation selects a lane, not a single mnemonic."
 
-# Known debt. New invalid names still fail; remove an entry after fixing it.
+[allow.loongarch]
+"revw.d" = "Semantic word reversal; LLVM 23 does not list revw.d."
+"vabs.w" = "Semantic absolute value; LSX has vabsd (absolute difference), not vabs."
+"vabs.b" = "Semantic absolute value; LSX has vabsd (absolute difference), not vabs."
+"vabs.h" = "Semantic absolute value; LSX has vabsd (absolute difference), not vabs."
+"vabs.d" = "Semantic absolute value; LSX has vabsd (absolute difference), not vabs."
+"vfcmp" = "Family; condition-specific wrappers are generated from the base form."
+"xvabs.w" = "Semantic absolute value; LASX has xvabsd (absolute difference), not xvabs."
+"xvabs.b" = "Semantic absolute value; LASX has xvabsd (absolute difference), not xvabs."
+"xvabs.h" = "Semantic absolute value; LASX has xvabsd (absolute difference), not xvabs."
+"xvabs.d" = "Semantic absolute value; LASX has xvabsd (absolute difference), not xvabs."
+"xvfcmp" = "Family; condition-specific wrappers are generated from the base form."
 
-[baseline.aarch64]
-
-[baseline.arm]
-
-[baseline.loongarch]
-"ext" = "LLVM feature-model gap; pending review."
-"ins" = "LLVM feature-model gap; pending review."
-"revw.d" = "LLVM feature-model gap; pending review."
-"vabs.b" = "LLVM feature-model gap; pending review."
-"vabs.d" = "LLVM feature-model gap; pending review."
-"vabs.h" = "LLVM feature-model gap; pending review."
-"vabs.w" = "LLVM feature-model gap; pending review."
-"vdiv.s" = "LLVM feature-model gap; pending review."
-"vfcmp" = "LLVM feature-model gap; pending review."
-"xvabs.b" = "LLVM feature-model gap; pending review."
-"xvabs.d" = "LLVM feature-model gap; pending review."
-"xvabs.h" = "LLVM feature-model gap; pending review."
-"xvabs.w" = "LLVM feature-model gap; pending review."
-"xvdiv.s" = "LLVM feature-model gap; pending review."
-"xvext2xv.h.b" = "LLVM feature-model gap; pending review."
-"xvfcmp" = "LLVM feature-model gap; pending review."
-
-[baseline.powerpc]
-
-[baseline.riscv]
-"fcvtmod.w.h" = "LLVM 23 gap; pending review."
-
-[baseline.x86]
-"vcompressb" = "Existing name pending rename or semantic-helper decision."
-"vcompressw" = "Existing name pending rename or semantic-helper decision."
-"vexpandw" = "Existing name pending rename or semantic-helper decision."
+[allow.x86]
+vcompressb = "LLVM 23 does not recognize this AVX10.1 mnemonic; the C uses the encoding."
+vcompressw = "LLVM 23 does not recognize this AVX10.1 mnemonic; the C uses the encoding."
+vexpandw = "LLVM 23 does not recognize this AVX10.1 mnemonic; the C uses the encoding."
