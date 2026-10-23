@@ -1,8 +1,8 @@
 //! PowerPC Power9 vector instructions.
 //!
 //! Power9 vector instructions are not part of the PowerPC baseline. Every
-//! operation is `unsafe` and the caller must enable the Power9 feature set. The
-//! C file is compiled with clang and `-mcpu=power9`.
+//! operation is `unsafe` and the caller must enable the `power9-vector` target
+//! feature. The C file is compiled with clang and `-mcpu=power9`.
 //!
 //! The values are [`V128`].
 //!
@@ -22,7 +22,7 @@ unsafe extern "C" {
 ///
 /// # Safety
 ///
-/// The caller must enable the Power9 vector feature set.
+/// The caller must enable the `power9-vector` target feature.
 #[inline(always)]
 pub unsafe fn neg_i32(a: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
@@ -36,7 +36,7 @@ pub unsafe fn neg_i32(a: V128) -> V128 {
 ///
 /// # Safety
 ///
-/// The caller must enable the Power9 vector feature set.
+/// The caller must enable the `power9-vector` target feature.
 #[inline(always)]
 pub unsafe fn neg_i64(a: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
@@ -50,7 +50,7 @@ pub unsafe fn neg_i64(a: V128) -> V128 {
 ///
 /// # Safety
 ///
-/// The caller must enable the Power9 vector feature set.
+/// The caller must enable the `power9-vector` target feature.
 #[inline(always)]
 pub unsafe fn abs_i32(a: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
@@ -83,7 +83,7 @@ macro_rules! unary9 {
         ///
         /// # Safety
         ///
-        /// The caller must enable the Power9 vector feature set.
+        /// The caller must enable the `power9-vector` target feature.
         #[inline(always)]
         pub unsafe fn $name(a: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -99,7 +99,7 @@ macro_rules! binary9 {
         ///
         /// # Safety
         ///
-        /// The caller must enable the Power9 vector feature set.
+        /// The caller must enable the `power9-vector` target feature.
         #[inline(always)]
         pub unsafe fn $name(a: V128, b: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -181,7 +181,7 @@ unary9!(
 ///
 /// # Safety
 ///
-/// The caller must enable the Power9 vector feature set.
+/// The caller must enable the `power9-vector` target feature.
 #[inline(always)]
 pub unsafe fn vctzlsbb(a: V128) -> u32 {
     unsafe { rust_isa_power9_vector_vctzlsbb(a.as_ptr()) }
