@@ -1591,27 +1591,27 @@ unsafe fn sve_ext_ops() -> bool {
         return false;
     }
 
-    unsafe { sve::abd_f32(&[1.0, 5.0], &[3.0, 2.0], &mut of32[..2]) };
+    unsafe { sve::fabd_f32(&[1.0, 5.0], &[3.0, 2.0], &mut of32[..2]) };
     if of32[..2] != [2.0, 3.0] {
         return false;
     }
-    unsafe { sve::mulx_f32(&[2.0, 3.0], &[4.0, 5.0], &mut of32[..2]) };
+    unsafe { sve::fmulx_f32(&[2.0, 3.0], &[4.0, 5.0], &mut of32[..2]) };
     if of32[..2] != [8.0, 15.0] {
         return false;
     }
-    unsafe { sve::recps_f32(&[1.0], &[1.0], &mut of32[..1]) };
+    unsafe { sve::frecps_f32(&[1.0], &[1.0], &mut of32[..1]) };
     if of32[0] != 1.0 {
         return false;
     }
-    unsafe { sve::rsqrts_f32(&[1.0], &[1.0], &mut of32[..1]) };
+    unsafe { sve::frsqrts_f32(&[1.0], &[1.0], &mut of32[..1]) };
     if of32[0] != 1.0 {
         return false;
     }
-    unsafe { sve::recpe_f32(&[2.0], &mut of32[..1]) };
+    unsafe { sve::frecpe_f32(&[2.0], &mut of32[..1]) };
     if of32[0] == 0.0 || !of32[0].is_finite() {
         return false;
     }
-    unsafe { sve::rsqrte_f32(&[4.0], &mut of32[..1]) };
+    unsafe { sve::frsqrte_f32(&[4.0], &mut of32[..1]) };
     if of32[0] == 0.0 || !of32[0].is_finite() {
         return false;
     }

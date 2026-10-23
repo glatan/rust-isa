@@ -1670,43 +1670,15 @@ void rust_isa_sve_usra_u32(const uint32_t *a, int32_t shift, const uint32_t *acc
     for (size_t i = 0; i < len; i++) out[i] = (uint32_t)(acc[i] + (a[i] >> (shift & 63)));
 }
 
-void rust_isa_sve_abd_f32(const float *a, const float *b, float *out, size_t len) {
-    for (size_t i = 0; i < len; i += svcntw()) {
-        svbool_t pg = svwhilelt_b32_u64(i, len);
-        svst1_f32(pg, out + i, svabd_f32_z(pg, svld1_f32(pg, a + i), svld1_f32(pg, b + i)));
-    }
-}
 
-void rust_isa_sve_mulx_f32(const float *a, const float *b, float *out, size_t len) {
-    for (size_t i = 0; i < len; i += svcntw()) {
-        svbool_t pg = svwhilelt_b32_u64(i, len);
-        svst1_f32(pg, out + i, svmulx_f32_z(pg, svld1_f32(pg, a + i), svld1_f32(pg, b + i)));
-    }
-}
 
-void rust_isa_sve_recps_f32(const float *a, const float *b, float *out, size_t len) {
-    for (size_t i = 0; i < len; i += svcntw()) {
-        svbool_t pg = svwhilelt_b32_u64(i, len);
-        svfloat32_t r = svrecps_f32(svld1_f32(pg, a + i), svld1_f32(pg, b + i));
-        svst1_f32(svwhilelt_b32_u64(i, len), out + i, r);
-    }
-}
 
-void rust_isa_sve_rsqrts_f32(const float *a, const float *b, float *out, size_t len) {
-    for (size_t i = 0; i < len; i += svcntw()) {
-        svbool_t pg = svwhilelt_b32_u64(i, len);
-        svfloat32_t r = svrsqrts_f32(svld1_f32(pg, a + i), svld1_f32(pg, b + i));
-        svst1_f32(svwhilelt_b32_u64(i, len), out + i, r);
-    }
-}
 
-void rust_isa_sve_recpe_f32(const float *a, float *out, size_t len) {
-    for (size_t i = 0; i < len; i += svcntw()) {
-        svbool_t pg = svwhilelt_b32_u64(i, len);
-        svfloat32_t r = svrecpe_f32(svld1_f32(pg, a + i));
-        svst1_f32(svwhilelt_b32_u64(i, len), out + i, r);
-    }
-}
+
+
+
+
+
 
 void rust_isa_sve_rsqrte_f32(const float *a, float *out, size_t len) {
     for (size_t i = 0; i < len; i += svcntw()) {
@@ -1716,43 +1688,15 @@ void rust_isa_sve_rsqrte_f32(const float *a, float *out, size_t len) {
     }
 }
 
-void rust_isa_sve_abd_f64(const double *a, const double *b, double *out, size_t len) {
-    for (size_t i = 0; i < len; i += svcntd()) {
-        svbool_t pg = svwhilelt_b64_u64(i, len);
-        svst1_f64(pg, out + i, svabd_f64_z(pg, svld1_f64(pg, a + i), svld1_f64(pg, b + i)));
-    }
-}
 
-void rust_isa_sve_mulx_f64(const double *a, const double *b, double *out, size_t len) {
-    for (size_t i = 0; i < len; i += svcntd()) {
-        svbool_t pg = svwhilelt_b64_u64(i, len);
-        svst1_f64(pg, out + i, svmulx_f64_z(pg, svld1_f64(pg, a + i), svld1_f64(pg, b + i)));
-    }
-}
 
-void rust_isa_sve_recps_f64(const double *a, const double *b, double *out, size_t len) {
-    for (size_t i = 0; i < len; i += svcntd()) {
-        svbool_t pg = svwhilelt_b64_u64(i, len);
-        svfloat64_t r = svrecps_f64(svld1_f64(pg, a + i), svld1_f64(pg, b + i));
-        svst1_f64(svwhilelt_b64_u64(i, len), out + i, r);
-    }
-}
 
-void rust_isa_sve_rsqrts_f64(const double *a, const double *b, double *out, size_t len) {
-    for (size_t i = 0; i < len; i += svcntd()) {
-        svbool_t pg = svwhilelt_b64_u64(i, len);
-        svfloat64_t r = svrsqrts_f64(svld1_f64(pg, a + i), svld1_f64(pg, b + i));
-        svst1_f64(svwhilelt_b64_u64(i, len), out + i, r);
-    }
-}
 
-void rust_isa_sve_recpe_f64(const double *a, double *out, size_t len) {
-    for (size_t i = 0; i < len; i += svcntd()) {
-        svbool_t pg = svwhilelt_b64_u64(i, len);
-        svfloat64_t r = svrecpe_f64(svld1_f64(pg, a + i));
-        svst1_f64(svwhilelt_b64_u64(i, len), out + i, r);
-    }
-}
+
+
+
+
+
 
 void rust_isa_sve_rsqrte_f64(const double *a, double *out, size_t len) {
     for (size_t i = 0; i < len; i += svcntd()) {
@@ -3730,7 +3674,11 @@ void rust_isa_sve_fsqrt_f32(const float *a, float *out, size_t len) {
 }
 
 void rust_isa_sve_frecpe_f32(const float *a, float *out, size_t len) {
-    rust_isa_sve_recpe_f32(a, out, len);
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svfloat32_t r = svrecpe_f32(svld1_f32(pg, a + i));
+        svst1_f32(svwhilelt_b32_u64(i, len), out + i, r);
+    }
 }
 
 void rust_isa_sve_frinta_f32(const float *a, float *out, size_t len) {
@@ -3761,21 +3709,13 @@ void rust_isa_sve_frintz_f32(const float *a, float *out, size_t len) {
     rust_isa_sve_trunc_f32(a, out, len);
 }
 
-void rust_isa_sve_rintm_f32(const float *a, float *out, size_t len) {
-    rust_isa_sve_floor_f32(a, out, len);
-}
 
-void rust_isa_sve_rintn_f32(const float *a, float *out, size_t len) {
-    rust_isa_sve_rint_f32(a, out, len);
-}
 
-void rust_isa_sve_rintp_f32(const float *a, float *out, size_t len) {
-    rust_isa_sve_ceil_f32(a, out, len);
-}
 
-void rust_isa_sve_rintz_f32(const float *a, float *out, size_t len) {
-    rust_isa_sve_trunc_f32(a, out, len);
-}
+
+
+
+
 
 void rust_isa_sve_fadd_f32(const float *a, const float *b, float *out, size_t len) {
     rust_isa_sve_add_f32(a, b, out, len);
@@ -3810,19 +3750,33 @@ void rust_isa_sve_fminnm_f32(const float *a, const float *b, float *out, size_t 
 }
 
 void rust_isa_sve_fabd_f32(const float *a, const float *b, float *out, size_t len) {
-    rust_isa_sve_abd_f32(a, b, out, len);
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svst1_f32(pg, out + i, svabd_f32_z(pg, svld1_f32(pg, a + i), svld1_f32(pg, b + i)));
+    }
 }
 
 void rust_isa_sve_fmulx_f32(const float *a, const float *b, float *out, size_t len) {
-    rust_isa_sve_mulx_f32(a, b, out, len);
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svst1_f32(pg, out + i, svmulx_f32_z(pg, svld1_f32(pg, a + i), svld1_f32(pg, b + i)));
+    }
 }
 
 void rust_isa_sve_frecps_f32(const float *a, const float *b, float *out, size_t len) {
-    rust_isa_sve_recps_f32(a, b, out, len);
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svfloat32_t r = svrecps_f32(svld1_f32(pg, a + i), svld1_f32(pg, b + i));
+        svst1_f32(svwhilelt_b32_u64(i, len), out + i, r);
+    }
 }
 
 void rust_isa_sve_frsqrts_f32(const float *a, const float *b, float *out, size_t len) {
-    rust_isa_sve_rsqrts_f32(a, b, out, len);
+    for (size_t i = 0; i < len; i += svcntw()) {
+        svbool_t pg = svwhilelt_b32_u64(i, len);
+        svfloat32_t r = svrsqrts_f32(svld1_f32(pg, a + i), svld1_f32(pg, b + i));
+        svst1_f32(svwhilelt_b32_u64(i, len), out + i, r);
+    }
 }
 
 void rust_isa_sve_fscale_f32(const float *a, const int32_t *b, float *out, size_t len) {
@@ -3870,7 +3824,11 @@ void rust_isa_sve_fsqrt_f64(const double *a, double *out, size_t len) {
 }
 
 void rust_isa_sve_frecpe_f64(const double *a, double *out, size_t len) {
-    rust_isa_sve_recpe_f64(a, out, len);
+    for (size_t i = 0; i < len; i += svcntd()) {
+        svbool_t pg = svwhilelt_b64_u64(i, len);
+        svfloat64_t r = svrecpe_f64(svld1_f64(pg, a + i));
+        svst1_f64(svwhilelt_b64_u64(i, len), out + i, r);
+    }
 }
 
 void rust_isa_sve_frinta_f64(const double *a, double *out, size_t len) {
@@ -3901,21 +3859,13 @@ void rust_isa_sve_frintz_f64(const double *a, double *out, size_t len) {
     rust_isa_sve_trunc_f64(a, out, len);
 }
 
-void rust_isa_sve_rintm_f64(const double *a, double *out, size_t len) {
-    rust_isa_sve_floor_f64(a, out, len);
-}
 
-void rust_isa_sve_rintn_f64(const double *a, double *out, size_t len) {
-    rust_isa_sve_rint_f64(a, out, len);
-}
 
-void rust_isa_sve_rintp_f64(const double *a, double *out, size_t len) {
-    rust_isa_sve_ceil_f64(a, out, len);
-}
 
-void rust_isa_sve_rintz_f64(const double *a, double *out, size_t len) {
-    rust_isa_sve_trunc_f64(a, out, len);
-}
+
+
+
+
 
 void rust_isa_sve_fadd_f64(const double *a, const double *b, double *out, size_t len) {
     rust_isa_sve_add_f64(a, b, out, len);
@@ -3950,19 +3900,33 @@ void rust_isa_sve_fminnm_f64(const double *a, const double *b, double *out, size
 }
 
 void rust_isa_sve_fabd_f64(const double *a, const double *b, double *out, size_t len) {
-    rust_isa_sve_abd_f64(a, b, out, len);
+    for (size_t i = 0; i < len; i += svcntd()) {
+        svbool_t pg = svwhilelt_b64_u64(i, len);
+        svst1_f64(pg, out + i, svabd_f64_z(pg, svld1_f64(pg, a + i), svld1_f64(pg, b + i)));
+    }
 }
 
 void rust_isa_sve_fmulx_f64(const double *a, const double *b, double *out, size_t len) {
-    rust_isa_sve_mulx_f64(a, b, out, len);
+    for (size_t i = 0; i < len; i += svcntd()) {
+        svbool_t pg = svwhilelt_b64_u64(i, len);
+        svst1_f64(pg, out + i, svmulx_f64_z(pg, svld1_f64(pg, a + i), svld1_f64(pg, b + i)));
+    }
 }
 
 void rust_isa_sve_frecps_f64(const double *a, const double *b, double *out, size_t len) {
-    rust_isa_sve_recps_f64(a, b, out, len);
+    for (size_t i = 0; i < len; i += svcntd()) {
+        svbool_t pg = svwhilelt_b64_u64(i, len);
+        svfloat64_t r = svrecps_f64(svld1_f64(pg, a + i), svld1_f64(pg, b + i));
+        svst1_f64(svwhilelt_b64_u64(i, len), out + i, r);
+    }
 }
 
 void rust_isa_sve_frsqrts_f64(const double *a, const double *b, double *out, size_t len) {
-    rust_isa_sve_rsqrts_f64(a, b, out, len);
+    for (size_t i = 0; i < len; i += svcntd()) {
+        svbool_t pg = svwhilelt_b64_u64(i, len);
+        svfloat64_t r = svrsqrts_f64(svld1_f64(pg, a + i), svld1_f64(pg, b + i));
+        svst1_f64(svwhilelt_b64_u64(i, len), out + i, r);
+    }
 }
 
 void rust_isa_sve_fscale_f64(const double *a, const int64_t *b, double *out, size_t len) {

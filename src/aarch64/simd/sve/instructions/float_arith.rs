@@ -1,74 +1,9 @@
 //! SVE floating-point arithmetic instructions.
 
 unsafe extern "C" {
-    fn rust_isa_sve_recps_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
-}
-/// `recps` from `f32` to `f32` slices.
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn recps_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
-    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_recps_f32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sve_rsqrts_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
-}
-/// `rsqrts` from `f32` to `f32` slices.
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn rsqrts_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
-    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_rsqrts_f32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sve_recpe_f32(a: *const f32, out: *mut f32, len: usize);
-}
-/// `recpe` from `f32` to `f32` slices.
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn recpe_f32(a: &[f32], out: &mut [f32]) {
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_recpe_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
     fn rust_isa_sve_rsqrte_f32(a: *const f32, out: *mut f32, len: usize);
 }
-/// `rsqrte` from `f32` to `f32` slices.
+/// `frsqrte` from `f32` to `f32` slices.
 ///
 /// # Panics
 ///
@@ -79,7 +14,7 @@ unsafe extern "C" {
 /// The caller must enable SVE and the CPU must support it.
 #[target_feature(enable = "sve")]
 #[inline]
-pub unsafe fn rsqrte_f32(a: &[f32], out: &mut [f32]) {
+pub unsafe fn frsqrte_f32(a: &[f32], out: &mut [f32]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     unsafe {
         rust_isa_sve_rsqrte_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
@@ -87,74 +22,9 @@ pub unsafe fn rsqrte_f32(a: &[f32], out: &mut [f32]) {
 }
 
 unsafe extern "C" {
-    fn rust_isa_sve_recps_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
-}
-/// `recps` from `f64` to `f64` slices.
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn recps_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
-    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_recps_f64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sve_rsqrts_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
-}
-/// `rsqrts` from `f64` to `f64` slices.
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn rsqrts_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
-    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_rsqrts_f64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sve_recpe_f64(a: *const f64, out: *mut f64, len: usize);
-}
-/// `recpe` from `f64` to `f64` slices.
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn recpe_f64(a: &[f64], out: &mut [f64]) {
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_recpe_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
     fn rust_isa_sve_rsqrte_f64(a: *const f64, out: *mut f64, len: usize);
 }
-/// `rsqrte` from `f64` to `f64` slices.
+/// `frsqrte` from `f64` to `f64` slices.
 ///
 /// # Panics
 ///
@@ -165,7 +35,7 @@ unsafe extern "C" {
 /// The caller must enable SVE and the CPU must support it.
 #[target_feature(enable = "sve")]
 #[inline]
-pub unsafe fn rsqrte_f64(a: &[f64], out: &mut [f64]) {
+pub unsafe fn frsqrte_f64(a: &[f64], out: &mut [f64]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     unsafe {
         rust_isa_sve_rsqrte_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
@@ -465,90 +335,6 @@ pub unsafe fn frintz_f32(a: &[f32], out: &mut [f32]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     unsafe {
         rust_isa_sve_frintz_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sve_rintm_f32(a: *const f32, out: *mut f32, len: usize);
-}
-/// `rintm` on `f32` slices (alias of `floor`).
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn rintm_f32(a: &[f32], out: &mut [f32]) {
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_rintm_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sve_rintn_f32(a: *const f32, out: *mut f32, len: usize);
-}
-/// `rintn` on `f32` slices (alias of `rint`).
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn rintn_f32(a: &[f32], out: &mut [f32]) {
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_rintn_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sve_rintp_f32(a: *const f32, out: *mut f32, len: usize);
-}
-/// `rintp` on `f32` slices (alias of `ceil`).
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn rintp_f32(a: &[f32], out: &mut [f32]) {
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_rintp_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sve_rintz_f32(a: *const f32, out: *mut f32, len: usize);
-}
-/// `rintz` on `f32` slices (alias of `trunc`).
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn rintz_f32(a: &[f32], out: &mut [f32]) {
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_rintz_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
     }
 }
 
@@ -1070,90 +856,6 @@ pub unsafe fn frintz_f64(a: &[f64], out: &mut [f64]) {
 }
 
 unsafe extern "C" {
-    fn rust_isa_sve_rintm_f64(a: *const f64, out: *mut f64, len: usize);
-}
-/// `rintm` on `f64` slices (alias of `floor`).
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn rintm_f64(a: &[f64], out: &mut [f64]) {
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_rintm_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sve_rintn_f64(a: *const f64, out: *mut f64, len: usize);
-}
-/// `rintn` on `f64` slices (alias of `rint`).
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn rintn_f64(a: &[f64], out: &mut [f64]) {
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_rintn_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sve_rintp_f64(a: *const f64, out: *mut f64, len: usize);
-}
-/// `rintp` on `f64` slices (alias of `ceil`).
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn rintp_f64(a: &[f64], out: &mut [f64]) {
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_rintp_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sve_rintz_f64(a: *const f64, out: *mut f64, len: usize);
-}
-/// `rintz` on `f64` slices (alias of `trunc`).
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn rintz_f64(a: &[f64], out: &mut [f64]) {
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_rintz_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
     fn rust_isa_sve_fadd_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
 /// `fadd` on `f64` slices (alias of `add`).
@@ -1436,93 +1138,5 @@ pub unsafe fn fscale_f64(a: &[f64], b: &[i64], out: &mut [f64]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     unsafe {
         rust_isa_sve_fscale_f64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sve_abd_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
-}
-/// `abd` on `f32` slices.
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn abd_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
-    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_abd_f32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sve_mulx_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
-}
-/// `mulx` on `f32` slices.
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn mulx_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
-    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_mulx_f32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sve_abd_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
-}
-/// `abd` on `f64` slices.
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn abd_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
-    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_abd_f64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
-    }
-}
-
-unsafe extern "C" {
-    fn rust_isa_sve_mulx_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
-}
-/// `mulx` on `f64` slices.
-///
-/// # Panics
-///
-/// Panics when the input slices do not satisfy the operation's length requirement.
-///
-/// # Safety
-///
-/// The caller must enable SVE and the CPU must support it.
-#[target_feature(enable = "sve")]
-#[inline]
-pub unsafe fn mulx_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
-    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
-    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    unsafe {
-        rust_isa_sve_mulx_f64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
     }
 }
