@@ -1,6 +1,13 @@
 //! RISC-V vector cryptography extensions.
 //!
 //! The module is split into Zvkn, Zvks, Zvkg, and Zvbc.
+//!
+//! - `zvkn`: Zvkn (AES, SHA-2). `vaes*`, `vsha2*`.
+//! - `zvks`: Zvks (SM3, SM4). `vsm3*`, `vsm4*`.
+//! - `zvkg`: Zvkg (GCM). `vghsh`, `vgmul`.
+//! - `zvbc`: Zvbc (carryless multiply). `vclmul`, `vclmulh`.
+//!
+//! Enable the feature of the submodule that contains the called function.
 
 macro_rules! crypto_binary {
     ($(#[$meta:meta])* $name:ident, $c:ident) => {
@@ -8,8 +15,8 @@ macro_rules! crypto_binary {
         ///
         /// # Safety
         ///
-        /// The caller must compile with the vector cryptography extensions
-        /// enabled.
+        /// The caller must compile with the vector cryptography extension for
+        /// the containing module enabled.
         #[inline(always)]
         pub unsafe fn $name(state: V128, key: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -30,8 +37,8 @@ macro_rules! crypto_key_schedule {
         ///
         /// # Safety
         ///
-        /// The caller must compile with the vector cryptography extensions
-        /// enabled and pass a valid round number.
+        /// The caller must compile with the vector cryptography extension for
+        /// the containing module enabled and pass a valid round number.
         #[inline(always)]
         pub unsafe fn $name(key: V128, round: u32) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -49,8 +56,8 @@ macro_rules! crypto_ternary {
         ///
         /// # Safety
         ///
-        /// The caller must compile with the vector cryptography extensions
-        /// enabled.
+        /// The caller must compile with the vector cryptography extension for
+        /// the containing module enabled.
         #[inline(always)]
         pub unsafe fn $name(a: V128, b: V128, c: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
