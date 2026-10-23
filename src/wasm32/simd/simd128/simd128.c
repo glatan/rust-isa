@@ -766,44 +766,23 @@ void rust_isa_simd128_i32x4_splat(int32_t value, uint8_t out[16]) {
 }
 
 __attribute__((always_inline))
-int32_t rust_isa_simd128_i32x4_extract_lane_s_0(const uint8_t a[16]) {
+int32_t rust_isa_simd128_i32x4_extract_lane_0(const uint8_t a[16]) {
     return (int32_t)wasm_i32x4_extract_lane((v128_t)RUST_ISA_LOAD(a), 0);
 }
 
 __attribute__((always_inline))
-int32_t rust_isa_simd128_i32x4_extract_lane_s_1(const uint8_t a[16]) {
+int32_t rust_isa_simd128_i32x4_extract_lane_1(const uint8_t a[16]) {
     return (int32_t)wasm_i32x4_extract_lane((v128_t)RUST_ISA_LOAD(a), 1);
 }
 
 __attribute__((always_inline))
-int32_t rust_isa_simd128_i32x4_extract_lane_s_2(const uint8_t a[16]) {
+int32_t rust_isa_simd128_i32x4_extract_lane_2(const uint8_t a[16]) {
     return (int32_t)wasm_i32x4_extract_lane((v128_t)RUST_ISA_LOAD(a), 2);
 }
 
 __attribute__((always_inline))
-int32_t rust_isa_simd128_i32x4_extract_lane_s_3(const uint8_t a[16]) {
+int32_t rust_isa_simd128_i32x4_extract_lane_3(const uint8_t a[16]) {
     return (int32_t)wasm_i32x4_extract_lane((v128_t)RUST_ISA_LOAD(a), 3);
-}
-
-
-__attribute__((always_inline))
-uint32_t rust_isa_simd128_i32x4_extract_lane_u_0(const uint8_t a[16]) {
-    return (uint32_t)wasm_u32x4_extract_lane((v128_t)RUST_ISA_LOAD(a), 0);
-}
-
-__attribute__((always_inline))
-uint32_t rust_isa_simd128_i32x4_extract_lane_u_1(const uint8_t a[16]) {
-    return (uint32_t)wasm_u32x4_extract_lane((v128_t)RUST_ISA_LOAD(a), 1);
-}
-
-__attribute__((always_inline))
-uint32_t rust_isa_simd128_i32x4_extract_lane_u_2(const uint8_t a[16]) {
-    return (uint32_t)wasm_u32x4_extract_lane((v128_t)RUST_ISA_LOAD(a), 2);
-}
-
-__attribute__((always_inline))
-uint32_t rust_isa_simd128_i32x4_extract_lane_u_3(const uint8_t a[16]) {
-    return (uint32_t)wasm_u32x4_extract_lane((v128_t)RUST_ISA_LOAD(a), 3);
 }
 
 
@@ -834,24 +813,13 @@ void rust_isa_simd128_i64x2_splat(int64_t value, uint8_t out[16]) {
 }
 
 __attribute__((always_inline))
-int64_t rust_isa_simd128_i64x2_extract_lane_s_0(const uint8_t a[16]) {
+int64_t rust_isa_simd128_i64x2_extract_lane_0(const uint8_t a[16]) {
     return (int64_t)wasm_i64x2_extract_lane((v128_t)RUST_ISA_LOAD(a), 0);
 }
 
 __attribute__((always_inline))
-int64_t rust_isa_simd128_i64x2_extract_lane_s_1(const uint8_t a[16]) {
+int64_t rust_isa_simd128_i64x2_extract_lane_1(const uint8_t a[16]) {
     return (int64_t)wasm_i64x2_extract_lane((v128_t)RUST_ISA_LOAD(a), 1);
-}
-
-
-__attribute__((always_inline))
-uint64_t rust_isa_simd128_i64x2_extract_lane_u_0(const uint8_t a[16]) {
-    return (uint64_t)wasm_u64x2_extract_lane((v128_t)RUST_ISA_LOAD(a), 0);
-}
-
-__attribute__((always_inline))
-uint64_t rust_isa_simd128_i64x2_extract_lane_u_1(const uint8_t a[16]) {
-    return (uint64_t)wasm_u64x2_extract_lane((v128_t)RUST_ISA_LOAD(a), 1);
 }
 
 

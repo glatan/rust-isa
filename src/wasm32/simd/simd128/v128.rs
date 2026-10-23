@@ -13,12 +13,12 @@ impl V128 {
     /// Keep the 16 bytes unchanged. Multi-byte lanes are little-endian.
     ///
     /// ```
-    /// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane_s, V128};
+    /// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane, V128};
     ///
     /// let value = V128::from_bytes([
     ///     0x78, 0x56, 0x34, 0x12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     /// ]);
-    /// assert_eq!(i32x4_extract_lane_s::<0>(value), 0x1234_5678);
+    /// assert_eq!(i32x4_extract_lane::<0>(value), 0x1234_5678);
     /// assert_eq!(value.to_bytes()[0], 0x78);
     /// ```
     pub const fn from_bytes(bytes: [u8; 16]) -> Self {

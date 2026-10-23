@@ -5,7 +5,7 @@ mod common;
 use common::*;
 use std::collections::BTreeMap;
 
-const SYMBOL_COUNT: usize = 374;
+const SYMBOL_COUNT: usize = 368;
 
 #[test]
 fn check_rust_and_c_symbols() {
@@ -287,5 +287,5 @@ fn check_lane_arms_match_width() {
             assert_eq!(arms, want, "{name}");
         }
     }
-    assert_eq!(seen, 24);
+    assert_eq!(seen, 22);
 }

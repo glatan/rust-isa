@@ -20,50 +20,25 @@ pub fn i64x2_splat(value: i64) -> V128 {
 }
 
 unsafe extern "C" {
-    fn rust_isa_simd128_i64x2_extract_lane_s_0(a: *const u8) -> i64;
+    fn rust_isa_simd128_i64x2_extract_lane_0(a: *const u8) -> i64;
 }
 unsafe extern "C" {
-    fn rust_isa_simd128_i64x2_extract_lane_s_1(a: *const u8) -> i64;
+    fn rust_isa_simd128_i64x2_extract_lane_1(a: *const u8) -> i64;
 }
-/// `i64x2.extract_lane_s`
+/// `i64x2.extract_lane`
 ///
 /// Return the lane bits as `i64`.
 ///
 /// `LANE` is an immediate in `0..2`. A constant outside that range does not compile.
 #[inline(always)]
-pub fn i64x2_extract_lane_s<const LANE: u32>(a: V128) -> i64 {
+pub fn i64x2_extract_lane<const LANE: u32>(a: V128) -> i64 {
     const {
         assert!(LANE < 2);
     }
     unsafe {
         match LANE {
-            0 => rust_isa_simd128_i64x2_extract_lane_s_0(a.as_ptr()),
-            1 => rust_isa_simd128_i64x2_extract_lane_s_1(a.as_ptr()),
-            _ => core::hint::unreachable_unchecked(),
-        }
-    }
-}
-
-unsafe extern "C" {
-    fn rust_isa_simd128_i64x2_extract_lane_u_0(a: *const u8) -> u64;
-}
-unsafe extern "C" {
-    fn rust_isa_simd128_i64x2_extract_lane_u_1(a: *const u8) -> u64;
-}
-/// `i64x2.extract_lane_u`
-///
-/// Return the lane bits as `u64`.
-///
-/// `LANE` is an immediate in `0..2`. A constant outside that range does not compile.
-#[inline(always)]
-pub fn i64x2_extract_lane_u<const LANE: u32>(a: V128) -> u64 {
-    const {
-        assert!(LANE < 2);
-    }
-    unsafe {
-        match LANE {
-            0 => rust_isa_simd128_i64x2_extract_lane_u_0(a.as_ptr()),
-            1 => rust_isa_simd128_i64x2_extract_lane_u_1(a.as_ptr()),
+            0 => rust_isa_simd128_i64x2_extract_lane_0(a.as_ptr()),
+            1 => rust_isa_simd128_i64x2_extract_lane_1(a.as_ptr()),
             _ => core::hint::unreachable_unchecked(),
         }
     }
@@ -299,10 +274,10 @@ unsafe extern "C" {
 /// # Examples
 ///
 /// ```
-/// use rust_isa::wasm32::simd::simd128::{i64x2_add, i64x2_extract_lane_s, i64x2_splat};
+/// use rust_isa::wasm32::simd::simd128::{i64x2_add, i64x2_extract_lane, i64x2_splat};
 ///
 /// assert_eq!(
-///     i64x2_extract_lane_s::<0>(i64x2_add(i64x2_splat(i64::MAX), i64x2_splat(1))),
+///     i64x2_extract_lane::<0>(i64x2_add(i64x2_splat(i64::MAX), i64x2_splat(1))),
 ///     i64::MIN,
 /// );
 /// ```

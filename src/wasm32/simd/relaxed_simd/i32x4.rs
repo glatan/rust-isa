@@ -15,14 +15,14 @@ unsafe extern "C" {
 ///
 /// ```
 /// use rust_isa::wasm32::simd::relaxed_simd::i32x4_relaxed_trunc_f32x4_s;
-/// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane_s, V128};
+/// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane, V128};
 ///
 /// let mut bytes = [0u8; 16];
 /// bytes[0..4].copy_from_slice(&1.9f32.to_le_bytes());
 /// bytes[4..8].copy_from_slice(&(-1.9f32).to_le_bytes());
 /// let lanes = i32x4_relaxed_trunc_f32x4_s(V128::from_bytes(bytes));
-/// assert_eq!(i32x4_extract_lane_s::<0>(lanes), 1);
-/// assert_eq!(i32x4_extract_lane_s::<1>(lanes), -1);
+/// assert_eq!(i32x4_extract_lane::<0>(lanes), 1);
+/// assert_eq!(i32x4_extract_lane::<1>(lanes), -1);
 /// ```
 #[inline(always)]
 pub fn i32x4_relaxed_trunc_f32x4_s(a: V128) -> V128 {
@@ -44,12 +44,12 @@ unsafe extern "C" {
 ///
 /// ```
 /// use rust_isa::wasm32::simd::relaxed_simd::i32x4_relaxed_trunc_f32x4_u;
-/// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane_u, V128};
+/// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane, V128};
 ///
 /// let mut bytes = [0u8; 16];
 /// bytes[0..4].copy_from_slice(&1.9f32.to_le_bytes());
 /// let lanes = i32x4_relaxed_trunc_f32x4_u(V128::from_bytes(bytes));
-/// assert_eq!(i32x4_extract_lane_u::<0>(lanes), 1);
+/// assert_eq!(i32x4_extract_lane::<0>(lanes), 1);
 /// ```
 #[inline(always)]
 pub fn i32x4_relaxed_trunc_f32x4_u(a: V128) -> V128 {
@@ -71,15 +71,15 @@ unsafe extern "C" {
 ///
 /// ```
 /// use rust_isa::wasm32::simd::relaxed_simd::i32x4_relaxed_trunc_f64x2_s_zero;
-/// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane_s, V128};
+/// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane, V128};
 ///
 /// let mut bytes = [0u8; 16];
 /// bytes[..8].copy_from_slice(&1.9f64.to_le_bytes());
 /// bytes[8..].copy_from_slice(&(-1.9f64).to_le_bytes());
 /// let lanes = i32x4_relaxed_trunc_f64x2_s_zero(V128::from_bytes(bytes));
-/// assert_eq!(i32x4_extract_lane_s::<0>(lanes), 1);
-/// assert_eq!(i32x4_extract_lane_s::<1>(lanes), -1);
-/// assert_eq!(i32x4_extract_lane_s::<2>(lanes), 0);
+/// assert_eq!(i32x4_extract_lane::<0>(lanes), 1);
+/// assert_eq!(i32x4_extract_lane::<1>(lanes), -1);
+/// assert_eq!(i32x4_extract_lane::<2>(lanes), 0);
 /// ```
 #[inline(always)]
 pub fn i32x4_relaxed_trunc_f64x2_s_zero(a: V128) -> V128 {
@@ -101,14 +101,14 @@ unsafe extern "C" {
 ///
 /// ```
 /// use rust_isa::wasm32::simd::relaxed_simd::i32x4_relaxed_trunc_f64x2_u_zero;
-/// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane_u, V128};
+/// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane, V128};
 ///
 /// let mut bytes = [0u8; 16];
 /// bytes[8..].copy_from_slice(&4.2f64.to_le_bytes());
 /// let lanes = i32x4_relaxed_trunc_f64x2_u_zero(V128::from_bytes(bytes));
-/// assert_eq!(i32x4_extract_lane_u::<0>(lanes), 0);
-/// assert_eq!(i32x4_extract_lane_u::<1>(lanes), 4);
-/// assert_eq!(i32x4_extract_lane_u::<2>(lanes), 0);
+/// assert_eq!(i32x4_extract_lane::<0>(lanes), 0);
+/// assert_eq!(i32x4_extract_lane::<1>(lanes), 4);
+/// assert_eq!(i32x4_extract_lane::<2>(lanes), 0);
 /// ```
 #[inline(always)]
 pub fn i32x4_relaxed_trunc_f64x2_u_zero(a: V128) -> V128 {
@@ -135,13 +135,13 @@ unsafe extern "C" {
 ///
 /// ```
 /// use rust_isa::wasm32::simd::relaxed_simd::i32x4_relaxed_dot_i8x16_i7x16_add_s;
-/// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane_s, V128};
+/// use rust_isa::wasm32::simd::simd128::{i32x4_extract_lane, V128};
 ///
 /// let a = V128::from_bytes([1, 2, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 /// let b = V128::from_bytes([5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 /// let c = V128::from_bytes([0; 16]);
 /// let dot = i32x4_relaxed_dot_i8x16_i7x16_add_s(a, b, c);
-/// assert_eq!(i32x4_extract_lane_s::<0>(dot), 70);
+/// assert_eq!(i32x4_extract_lane::<0>(dot), 70);
 /// ```
 #[inline(always)]
 pub fn i32x4_relaxed_dot_i8x16_i7x16_add_s(a: V128, b: V128, c: V128) -> V128 {
