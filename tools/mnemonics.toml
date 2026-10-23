@@ -120,5 +120,5 @@ replace = "Semantic lane replacement; the implementation selects a lane, not a s
 "vcompressb" = "Existing name pending rename or semantic-helper decision."
 "vcompressw" = "Existing name pending rename or semantic-helper decision."
 "vexpandw" = "Existing name pending rename or semantic-helper decision."
-"vmovmpd" = "Existing name pending rename or semantic-helper decision."
-"vmovmps" = "Existing name pending rename or semantic-helper decision."
+"vmovapd" = "Existing name pending rename or semantic-helper decision."
+"vmovaps" = "Existing name pending rename or semantic-helper decision."

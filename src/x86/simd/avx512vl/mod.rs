@@ -2211,10 +2211,10 @@ pub unsafe fn vblendmpd_v256(a: V256, b: V256, mask: u8) -> V256 {
 }
 
 unsafe extern "C" {
-    fn rust_isa_avx512vl_vmovmps_v128(a: *const u8, src: *const u8, mask: u8, out: *mut u8);
+    fn rust_isa_avx512vl_vmovaps_v128(a: *const u8, src: *const u8, mask: u8, out: *mut u8);
 }
 
-/// `vmovmps_v128`
+/// `vmovaps_v128`
 /// Move the lanes selected by `mask` from `src` and the rest from `a`.
 ///
 /// # Safety
@@ -2223,19 +2223,19 @@ unsafe extern "C" {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
-pub unsafe fn vmovmps_v128(a: V128, src: V128, mask: u8) -> V128 {
+pub unsafe fn vmovaps_v128(a: V128, src: V128, mask: u8) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_avx512vl_vmovmps_v128(a.as_ptr(), src.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512vl_vmovaps_v128(a.as_ptr(), src.as_ptr(), mask, out.as_mut_ptr());
     }
     out
 }
 
 unsafe extern "C" {
-    fn rust_isa_avx512vl_vmovmps_v256(a: *const u8, src: *const u8, mask: u8, out: *mut u8);
+    fn rust_isa_avx512vl_vmovaps_v256(a: *const u8, src: *const u8, mask: u8, out: *mut u8);
 }
 
-/// `vmovmps_v256`
+/// `vmovaps_v256`
 /// Move the lanes selected by `mask` from `src` and the rest from `a`.
 ///
 /// # Safety
@@ -2244,19 +2244,19 @@ unsafe extern "C" {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
-pub unsafe fn vmovmps_v256(a: V256, src: V256, mask: u8) -> V256 {
+pub unsafe fn vmovaps_v256(a: V256, src: V256, mask: u8) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
-        rust_isa_avx512vl_vmovmps_v256(a.as_ptr(), src.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512vl_vmovaps_v256(a.as_ptr(), src.as_ptr(), mask, out.as_mut_ptr());
     }
     out
 }
 
 unsafe extern "C" {
-    fn rust_isa_avx512vl_vmovmpd_v128(a: *const u8, src: *const u8, mask: u8, out: *mut u8);
+    fn rust_isa_avx512vl_vmovapd_v128(a: *const u8, src: *const u8, mask: u8, out: *mut u8);
 }
 
-/// `vmovmpd_v128`
+/// `vmovapd_v128`
 /// Move the lanes selected by `mask` from `src` and the rest from `a`.
 ///
 /// # Safety
@@ -2265,19 +2265,19 @@ unsafe extern "C" {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
-pub unsafe fn vmovmpd_v128(a: V128, src: V128, mask: u8) -> V128 {
+pub unsafe fn vmovapd_v128(a: V128, src: V128, mask: u8) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_avx512vl_vmovmpd_v128(a.as_ptr(), src.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512vl_vmovapd_v128(a.as_ptr(), src.as_ptr(), mask, out.as_mut_ptr());
     }
     out
 }
 
 unsafe extern "C" {
-    fn rust_isa_avx512vl_vmovmpd_v256(a: *const u8, src: *const u8, mask: u8, out: *mut u8);
+    fn rust_isa_avx512vl_vmovapd_v256(a: *const u8, src: *const u8, mask: u8, out: *mut u8);
 }
 
-/// `vmovmpd_v256`
+/// `vmovapd_v256`
 /// Move the lanes selected by `mask` from `src` and the rest from `a`.
 ///
 /// # Safety
@@ -2286,10 +2286,10 @@ unsafe extern "C" {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512vl")]
 #[inline]
-pub unsafe fn vmovmpd_v256(a: V256, src: V256, mask: u8) -> V256 {
+pub unsafe fn vmovapd_v256(a: V256, src: V256, mask: u8) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
-        rust_isa_avx512vl_vmovmpd_v256(a.as_ptr(), src.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512vl_vmovapd_v256(a.as_ptr(), src.as_ptr(), mask, out.as_mut_ptr());
     }
     out
 }
