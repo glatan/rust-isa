@@ -2,6 +2,8 @@
 
 mod basic;
 mod bitwise;
+mod blend_imm;
+mod blend_variable;
 mod broadcast;
 mod gather;
 mod horizontal;
