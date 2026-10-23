@@ -1640,7 +1640,7 @@ unsafe fn sve_ext_ops() -> bool {
     if of32[0] != 4.0 {
         return false;
     }
-    unsafe { sve::cadd_f32(&[1.0, 2.0], &[3.0, 4.0], &mut of32[..2]) };
+    unsafe { sve::fcadd_f32(&[1.0, 2.0], &[3.0, 4.0], &mut of32[..2]) };
     if of32[..2] != [-3.0, 5.0] {
         return false;
     }
