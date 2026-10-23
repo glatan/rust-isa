@@ -124,7 +124,7 @@ pub unsafe fn xvi4ger8(_acc: &mut MmaAccumulator, a: &[u8], b: &[u8]) { /* ... *
 - RVV のスライス API: 実装済み。`add` / `mul` / `sub` / `div` / `min` / `max`、比較、load / store の f32 / i32。QEMU-RISC-V で値テストを実行する。VL は C の `vsetvl` が決める。
 - SME: `SmeGuard` とストリーミングの `add` / `mul` (f32) を実装した。ZA は対象外。 no_std の fixture は Arm SME ABI ランタイムの `__arm_get_current_vg` をリンク
   しないため、SME の値テストはまだない。
-- AMX: `TileConfig`、`AmxGuard`、`tilezero` を実装した。タイル load / store と matrix multiply は未実装。OS のタイル状態の許可が必要なため、値テストはまだない。
+- AMX: `TileConfig`、`AmxGuard`、`tilezero`、タイル load / store、matrix multiply を実装した。状態を要求する命令は `&AmxGuard` を取る。OS のタイル状態の許可が必要なため、値テストは限定的である。
 - PowerPC MMA: `MmaAccumulator`、`xvi4ger8` 系、`xxmfacc`、`xxmtacc`、`xxsetaccz` を実装した。アキュムレータは 64 バイトの値として保持し、各命令
   の前後でハードウェアのアキュムレータへ移動する。QEMU の power10 で値テスト
   を実行する。

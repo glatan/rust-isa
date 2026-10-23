@@ -37,7 +37,7 @@ pub unsafe fn ldtilecfg(config: &TileConfig) {
 /// The CPU and operating system must allow AMX tile state and the caller must
 /// hold an [`super::AmxGuard`] or an equivalent active tile state.
 #[inline]
-pub unsafe fn sttilecfg(config: &mut TileConfig) {
+pub unsafe fn sttilecfg(_guard: &super::AmxGuard, config: &mut TileConfig) {
     unsafe {
         asm!(
             "sttilecfg [{config}]",
@@ -57,7 +57,11 @@ macro_rules! tile_memory {
         /// state, and pass a valid base pointer and row stride. `TILE` must be
         /// in `0..=7`; a larger value is a compile-time error.
         #[inline]
-        pub unsafe fn $name<const TILE: u8>(base: $pointer, stride: usize) {
+        pub unsafe fn $name<const TILE: u8>(
+            _guard: &super::AmxGuard,
+            base: $pointer,
+            stride: usize,
+        ) {
             const { assert!(TILE <= 7, "AMX tile number must be in 0..=7") };
             macro_rules! arm {
                         ($number:literal) => {
@@ -110,7 +114,7 @@ tile_memory!(
 /// pass a valid base pointer and row stride. `TILE` must be in `0..=7`; a
 /// larger value is a compile-time error.
 #[inline]
-pub unsafe fn tilestored<const TILE: u8>(base: *mut u8, stride: usize) {
+pub unsafe fn tilestored<const TILE: u8>(_guard: &super::AmxGuard, base: *mut u8, stride: usize) {
     const { assert!(TILE <= 7, "AMX tile number must be in 0..=7") };
     macro_rules! arm {
         ($number:literal) => {
@@ -231,7 +235,7 @@ macro_rules! mma {
         /// `DST`, `A`, and `B` must be in `0..=7`; larger values are compile-time
         /// errors.
         #[inline]
-        pub unsafe fn $name<const DST: u8, const A: u8, const B: u8>() {
+        pub unsafe fn $name<const DST: u8, const A: u8, const B: u8>(_guard: &super::AmxGuard) {
             const {
                 assert!(DST <= 7, "AMX tile number must be in 0..=7");
                 assert!(A <= 7, "AMX tile number must be in 0..=7");

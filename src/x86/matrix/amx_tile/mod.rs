@@ -12,9 +12,9 @@
 //! [`AmxGuard`] releases the tile state in its `Drop` implementation and is not
 //! `Send` or `Sync`. Nested guards are not allowed.
 //!
-//! The module contains the guard and `tilezero`. Tile loads, stores and
-//! matrix-multiply instructions require tile numbers and memory strides; they
-//! are intentionally omitted until the tile-state API is extended.
+//! The module contains the guard, the tile configuration, and the tile
+//! load/store and matrix-multiply wrappers. Instructions that read or write
+//! tile state take `&AmxGuard`.
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 //!
@@ -108,7 +108,7 @@ impl Drop for AmxGuard {
 /// # Safety
 ///
 /// The caller must hold an [`AmxGuard`] and enable AMX.
-pub unsafe fn tilezero<const TILE: u8>() {
+pub unsafe fn tilezero<const TILE: u8>(_guard: &AmxGuard) {
     const { assert!(TILE <= 7, "AMX tile number must be in 0..=7") };
     macro_rules! call {
         ($f:ident) => {
