@@ -334,12 +334,12 @@ binary!(
     rust_isa_s390x_vector_vsg
 );
 binary!(
-    /// `vmin`.
+    /// `vmnf`.
     vmin,
     rust_isa_s390x_vector_vmin
 );
 binary!(
-    /// `vmax`.
+    /// `vmxf`.
     vmax,
     rust_isa_s390x_vector_vmax
 );
@@ -364,7 +364,7 @@ binary!(
     rust_isa_s390x_vector_vch
 );
 binary!(
-    /// `vcl`.
+    /// `vchf`.
     vcl,
     rust_isa_s390x_vector_vcl
 );
@@ -374,7 +374,7 @@ binary!(
     rust_isa_s390x_vector_vsl
 );
 binary!(
-    /// `vsr`.
+    /// `vesrlvg`.
     vsr,
     rust_isa_s390x_vector_vsr
 );
@@ -406,17 +406,17 @@ unsafe extern "C" {
 }
 
 binary!(
-    /// `vclf`.
+    /// Compare single-precision lanes with less-than.
     vclf,
     rust_isa_s390x_vector_vclf
 );
 binary!(
-    /// `vclg`.
+    /// Compare double-precision lanes with less-than.
     vclg,
     rust_isa_s390x_vector_vclg
 );
 binary!(
-    /// `vclh`.
+    /// `vchh`.
     vclh,
     rust_isa_s390x_vector_vclh
 );

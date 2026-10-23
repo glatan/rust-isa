@@ -106,22 +106,22 @@ binary!(
     rust_isa_lasx_xor
 );
 binary!(
-    /// `xvadd.s` on 32-bit float lanes.
+    /// `xvfadd.s` on 32-bit float lanes.
     fadd,
     rust_isa_lasx_fadd
 );
 binary!(
-    /// `xvsub.s` on 32-bit float lanes.
+    /// `xvfsub.s` on 32-bit float lanes.
     fsub,
     rust_isa_lasx_fsub
 );
 binary!(
-    /// `xvmul.s` on 32-bit float lanes.
+    /// `xvfmul.s` on 32-bit float lanes.
     fmul,
     rust_isa_lasx_fmul
 );
 binary!(
-    /// `xvdiv.s` on 32-bit float lanes.
+    /// `xvfdiv.s` on 32-bit float lanes.
     fdiv,
     rust_isa_lasx_fdiv
 );

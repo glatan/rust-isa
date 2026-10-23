@@ -170,82 +170,82 @@ macro_rules! vtern {
     };
 }
 vbin!(
-    /// `xvadd`.
+    /// `xvadddp`.
     xvadd,
     rust_isa_vsx_xvadd
 );
 vbin!(
-    /// `xvsub`.
+    /// `xvsubdp`.
     xvsub,
     rust_isa_vsx_xvsub
 );
 vbin!(
-    /// `xvmul`.
+    /// `xvmuldp`.
     xvmul,
     rust_isa_vsx_xvmul
 );
 vbin!(
-    /// `xvdiv`.
+    /// `xvdivdp`.
     xvdiv,
     rust_isa_vsx_xvdiv
 );
 vbin!(
-    /// `xvmax`.
+    /// `xvmaxdp`.
     xvmax,
     rust_isa_vsx_xvmax
 );
 vbin!(
-    /// `xvmin`.
+    /// `xvmindp`.
     xvmin,
     rust_isa_vsx_xvmin
 );
 vbin!(
-    /// `xvcmpeq`.
+    /// `xvcmpeqdp`.
     xvcmpeq,
     rust_isa_vsx_xvcmpeq
 );
 vbin!(
-    /// `vcmpgt`.
+    /// `xvcmpgtdp`.
     vcmpgt,
     rust_isa_vsx_vcmpgt
 );
 vbin!(
-    /// `xvand`.
+    /// `xxland`.
     xvand,
     rust_isa_vsx_xvand
 );
 vbin!(
-    /// `xvor`.
+    /// `xxlor`.
     xvor,
     rust_isa_vsx_xvor
 );
 vbin!(
-    /// `xvxor`.
+    /// `xxlxor`.
     xvxor,
     rust_isa_vsx_xvxor
 );
 vbin!(
-    /// `xvsl`.
+    /// `vsld`.
     xvsl,
     rust_isa_vsx_xvsl
 );
 vbin!(
-    /// `xvsr`.
+    /// `vsrd`.
     xvsr,
     rust_isa_vsx_xvsr
 );
 vbin!(
-    /// `xvcpsgn`.
+    /// `xvcpsgndp`.
     xvcpsgn,
     rust_isa_vsx_xvcpsgn
 );
 vun!(
-    /// `xvabs`.
+    /// `xvabsdp`.
     xvabs,
     rust_isa_vsx_xvabs
 );
 vun!(
-    /// `xvneg`.
+    /// `xvnegdp`.
     xvneg,
     rust_isa_vsx_xvneg
 );
@@ -275,12 +275,12 @@ vun!(
     rust_isa_vsx_xvrdpiz
 );
 vtern!(
-    /// `xvsel`.
+    /// `xxsel`.
     xvsel,
     rust_isa_vsx_xvsel
 );
 vtern!(
-    /// `xvperm`.
+    /// `vperm`.
     xvperm,
     rust_isa_vsx_xvperm
 );

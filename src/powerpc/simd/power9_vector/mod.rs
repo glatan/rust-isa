@@ -125,7 +125,7 @@ binary9!(
     rust_isa_power9_vector_vabsduw
 );
 binary9!(
-    /// `vabsd`
+    /// Absolute difference of signed 32-bit lanes (subtract and absolute value).
     vabsd,
     rust_isa_power9_vector_vabsd
 );

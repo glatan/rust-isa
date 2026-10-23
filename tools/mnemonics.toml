@@ -82,6 +82,5 @@ replace = "Semantic lane replacement; the implementation selects a lane, not a s
 "xvfcmp" = "Family; condition-specific wrappers are generated from the base form."
 
 [allow.x86]
-vpcompressb = "LLVM 23 does not recognize this AVX10.1 mnemonic; the C uses the encoding."
-vpcompressw = "LLVM 23 does not recognize this AVX10.1 mnemonic; the C uses the encoding."
-vpexpandw = "LLVM 23 does not recognize this AVX10.1 mnemonic; the C uses the encoding."
+vpmacssdu = "LLVM has no XOP encoding; the C uses a scalar saturating fallback."
+vpmacsdu = "LLVM has no XOP encoding; the C uses a scalar fallback."
