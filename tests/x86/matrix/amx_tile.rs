@@ -54,7 +54,9 @@ fn amx_api_is_gated() {
     if !amx_tile_available() {
         return;
     }
-    use rust_isa::x86::matrix::amx_tile::{AmxGuard, TileConfig, ldtilecfg, sttilecfg};
+    use rust_isa::x86::matrix::amx_tile::{
+        AmxGuard, TileConfig, ldtilecfg, sttilecfg, tileloadd, tilestored, tilezero,
+    };
     assert_eq!(core::mem::align_of::<TileConfig>(), 64);
     let mut bytes = [0u8; 64];
     bytes[0] = 1;
@@ -65,8 +67,12 @@ fn amx_api_is_gated() {
     let mut readback = TileConfig::from_bytes([0; 64]);
     unsafe {
         ldtilecfg(&config);
-        let _guard = AmxGuard::enter(&config);
-        sttilecfg(&mut readback);
+        let guard = AmxGuard::enter(&config);
+        sttilecfg(&guard, &mut readback);
+        let mut tile = [0u8; 1024];
+        tilezero::<0>(&guard);
+        tileloadd::<0>(&guard, tile.as_ptr(), 64);
+        tilestored::<0>(&guard, tile.as_mut_ptr(), 64);
     }
     assert_eq!(readback.to_bytes(), config.to_bytes());
 }

@@ -80,10 +80,10 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 ### 行列
 
-| extension                                            | 実装済み命令                                                                                                                                                                       | 未実装命令 | 値テスト         |
-| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------- |
-| `amx-tile`                                           | `enter`, `ldtilecfg`, `tilezero`, `sttilecfg`, `tileloadd`, `tileloaddt1`, `tilestored`, `tdpbf16ps`, `tdpbssd`, `tdpbsud`, `tdpbuud`, `tdpfp16ps`, `tcmmimfp16ps`, `tcmmrlfp16ps` | なし       | ホストでは未実行 |
-| `amx-int8` / `amx-bf16` / `amx-fp16` / `amx-complex` | `amx-tile` の `tdp*` / `tcmm*`                                                                                                                                                     | なし       | ホストでは未実行 |
+| extension                                            | 実装済み命令                                                                                                                                                              | 未実装命令 | 値テスト         |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------- |
+| `amx-tile`                                           | `ldtilecfg`, `tilezero`, `sttilecfg`, `tileloadd`, `tileloaddt1`, `tilestored`, `tdpbf16ps`, `tdpbssd`, `tdpbsud`, `tdpbuud`, `tdpfp16ps`, `tcmmimfp16ps`, `tcmmrlfp16ps` | なし       | ホストでは未実行 |
+| `amx-int8` / `amx-bf16` / `amx-fp16` / `amx-complex` | `amx-tile` の `tdp*` / `tcmm*`                                                                                                                                            | なし       | ホストでは未実行 |
 
 ## 実装方式
 
