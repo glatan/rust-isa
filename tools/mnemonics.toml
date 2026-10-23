@@ -18,6 +18,10 @@ features = "+neon,+sve,+sme,+fp16,+dotprod,+i8mm,+bf16,+f32mm,+f64mm,+fcma,+fhm,
 triple = "armv7"
 features = "+neon,+i8mm,+dotprod"
 
+[targets.arm.overrides.fp16]
+triple = "armv8.2-a"
+features = "+fp16,+neon"
+
 [targets.arm.overrides.mve]
 triple = "thumbv8.1m.main"
 features = "+mve"
@@ -89,9 +93,6 @@ replace = "Semantic lane replacement; the implementation selects a lane, not a s
 "usubltb" = "Existing SVE variant or duplicate name; pending ISA review."
 
 [baseline.arm]
-"vcmpeq.f16" = "Existing ARM name or feature-model gap; pending review."
-"vcmpeq.i32" = "Existing ARM name or feature-model gap; pending review."
-"vcvt.f16.f32" = "Existing ARM name or feature-model gap; pending review."
 
 [baseline.loongarch]
 "ext" = "LLVM feature-model gap; pending review."

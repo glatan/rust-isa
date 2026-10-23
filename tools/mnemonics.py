@@ -104,12 +104,16 @@ def probe(target, tokens):
             result[token] = "ok"
             continue
         joined = " ".join(messages)
-        invalid = (
+        if "too few operands" in joined or "any one of the following" in joined:
+            result[token] = "ok"
+        elif (
             "invalid instruction" in joined
             or "unrecognized instruction mnemonic" in joined
             or "invalid instruction mnemonic" in joined
-        )
-        result[token] = "invalid" if invalid else "ok"
+        ):
+            result[token] = "invalid"
+        else:
+            result[token] = "ok"
     return result
 
 
@@ -117,6 +121,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--arch", action="append", help="arch to check (default: all configured)")
     parser.add_argument("--verbose", action="store_true", help="print allow and baseline entries")
+    parser.add_argument("--no-baseline", action="store_true", help="fail on baseline entries too")
     args = parser.parse_args()
 
     config = load_config()
@@ -151,7 +156,7 @@ def main():
                     if reason:
                         if args.verbose:
                             print("allow", arch, token, "(" + reason + ")")
-                    elif token in baseline.get(arch, {}):
+                    elif token in baseline.get(arch, {}) and not args.no_baseline:
                         baseline_count += 1
                         if args.verbose:
                             print("baseline", arch, token, "(" + baseline[arch][token] + ")")
