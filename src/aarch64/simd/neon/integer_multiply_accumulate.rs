@@ -1,4 +1,4 @@
-//! NEON multiply-accumulate instructions.
+//! NEON integer multiply-accumulate instructions (`mla`, `mls`).
 
 use super::V128;
 
