@@ -132,20 +132,8 @@ void rust_isa_arm_neon_splat_i32(int32_t value, uint8_t *out) {
 }
 
 __attribute__((always_inline))
-void rust_isa_arm_neon_zip1_u8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
-    vst1q_u8(out, vzipq_u8(vld1q_u8(a), vld1q_u8(b)).val[0]);
-}
-
 __attribute__((always_inline))
-void rust_isa_arm_neon_uzp1_u8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
-    vst1q_u8(out, vuzpq_u8(vld1q_u8(a), vld1q_u8(b)).val[0]);
-}
-
 __attribute__((always_inline))
-void rust_isa_arm_neon_trn1_u8(const uint8_t *a, const uint8_t *b, uint8_t *out) {
-    vst1q_u8(out, vtrnq_u8(vld1q_u8(a), vld1q_u8(b)).val[0]);
-}
-
 __attribute__((always_inline))
 void rust_isa_arm_neon_fadd(const uint8_t *a, const uint8_t *b, uint8_t *out) {
     vst1q_f32((float *)(void *)out, vaddq_f32(vld1q_f32((const float *)(const void *)a), vld1q_f32((const float *)(const void *)b)));
