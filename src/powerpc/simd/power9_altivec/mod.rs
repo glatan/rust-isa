@@ -3,8 +3,9 @@
 //! The Power9 vector instructions are exposed in [`power9_vector`](super::power9_vector). This
 //! module provides the Altivec-named entry points for the same operations.
 //!
-//! Power9 Altivec is not part of the PowerPC baseline. The re-exported
-//! operations are `unsafe` and require the Power9 feature set. The values are
+//! The module name follows the `power9-altivec` target feature. The re-exported
+//! operations are `unsafe` and require the `power9-vector` target feature;
+//! `power9-altivec` alone is insufficient. The values are
 //! [`V128`](super::altivec::V128).
 //!
 //! Instruction behavior follows the [Power ISA](https://openpowerfoundation.org/specifications/isa/).
