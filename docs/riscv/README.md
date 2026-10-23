@@ -8,6 +8,8 @@ V 拡張は `rvv`、そのスライス API は `rvv_slice` と書く（rustc の
 
 Zv* 暗号拡張は `zv` にまとめる（rustc の feature 名は `zvkn`、`zvks`、`zvkg`、`zvbc`）。
 
+鍵スケジュール関数（`vaeskf1/2`、`vsm4k`、`vsm3c`）は runtime の round 番号を取る。
+
 ## 実装状況
 
 対象は各 extension の全命令である。次の表は、現在公開している命令と、
