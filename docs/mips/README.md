@@ -29,6 +29,8 @@ family は命令の種類に合わせて決める（`simd`、`system` など）�
 - `sld` の index は `index % 4` を使う。
 - `sld`、`vshf`、`shf` は、現在スカラー C で実装している。
 
+`fp64` は `msa` の FP64 サブセットであり、公開パスは `mips::simd::msa` である。
+
 ## 実装方式
 
 - `msa` は不安定であり、cfg ゲート方式を使えない。関数を無条件に置き、`unsafe fn` として公開する。
