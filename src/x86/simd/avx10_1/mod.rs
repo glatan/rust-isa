@@ -3427,77 +3427,77 @@ pub unsafe fn vscatterqps_v512(base: *mut u8, indices: V512, a: V256, mask: u8) 
 }
 
 unsafe extern "C" {
-    fn rust_isa_avx10_1_vcompressb_v256(a: *const u8, mask: u32, out: *mut u8);
+    fn rust_isa_avx10_1_vpcompressb_v256(a: *const u8, mask: u32, out: *mut u8);
 }
 
-/// `vcompressb_v256`
+/// `vpcompressb_v256`
 /// Pack or expand the selected lanes and zero the rest.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vcompressb_v256(a: V256, mask: u32) -> V256 {
+pub unsafe fn vpcompressb_v256(a: V256, mask: u32) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
-        rust_isa_avx10_1_vcompressb_v256(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vpcompressb_v256(a.as_ptr(), mask, out.as_mut_ptr());
     }
     out
 }
 
 unsafe extern "C" {
-    fn rust_isa_avx10_1_vcompressb_v512(a: *const u8, mask: u64, out: *mut u8);
+    fn rust_isa_avx10_1_vpcompressb_v512(a: *const u8, mask: u64, out: *mut u8);
 }
 
-/// `vcompressb_v512`
+/// `vpcompressb_v512`
 /// Pack or expand the selected lanes and zero the rest.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vcompressb_v512(a: V512, mask: u64) -> V512 {
+pub unsafe fn vpcompressb_v512(a: V512, mask: u64) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx10_1_vcompressb_v512(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vpcompressb_v512(a.as_ptr(), mask, out.as_mut_ptr());
     }
     out
 }
 
 unsafe extern "C" {
-    fn rust_isa_avx10_1_vcompressw_v256(a: *const u8, mask: u16, out: *mut u8);
+    fn rust_isa_avx10_1_vpcompressw_v256(a: *const u8, mask: u16, out: *mut u8);
 }
 
-/// `vcompressw_v256`
+/// `vpcompressw_v256`
 /// Pack or expand the selected lanes and zero the rest.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vcompressw_v256(a: V256, mask: u16) -> V256 {
+pub unsafe fn vpcompressw_v256(a: V256, mask: u16) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
-        rust_isa_avx10_1_vcompressw_v256(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vpcompressw_v256(a.as_ptr(), mask, out.as_mut_ptr());
     }
     out
 }
 
 unsafe extern "C" {
-    fn rust_isa_avx10_1_vcompressw_v512(a: *const u8, mask: u32, out: *mut u8);
+    fn rust_isa_avx10_1_vpcompressw_v512(a: *const u8, mask: u32, out: *mut u8);
 }
 
-/// `vcompressw_v512`
+/// `vpcompressw_v512`
 /// Pack or expand the selected lanes and zero the rest.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vcompressw_v512(a: V512, mask: u32) -> V512 {
+pub unsafe fn vpcompressw_v512(a: V512, mask: u32) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx10_1_vcompressw_v512(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vpcompressw_v512(a.as_ptr(), mask, out.as_mut_ptr());
     }
     out
 }
@@ -3541,39 +3541,39 @@ pub unsafe fn vpexpandb_v512(a: V512, mask: u64) -> V512 {
 }
 
 unsafe extern "C" {
-    fn rust_isa_avx10_1_vexpandw_v256(a: *const u8, mask: u16, out: *mut u8);
+    fn rust_isa_avx10_1_vpexpandw_v256(a: *const u8, mask: u16, out: *mut u8);
 }
 
-/// `vexpandw_v256`
+/// `vpexpandw_v256`
 /// Pack or expand the selected lanes and zero the rest.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vexpandw_v256(a: V256, mask: u16) -> V256 {
+pub unsafe fn vpexpandw_v256(a: V256, mask: u16) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
-        rust_isa_avx10_1_vexpandw_v256(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vpexpandw_v256(a.as_ptr(), mask, out.as_mut_ptr());
     }
     out
 }
 
 unsafe extern "C" {
-    fn rust_isa_avx10_1_vexpandw_v512(a: *const u8, mask: u32, out: *mut u8);
+    fn rust_isa_avx10_1_vpexpandw_v512(a: *const u8, mask: u32, out: *mut u8);
 }
 
-/// `vexpandw_v512`
+/// `vpexpandw_v512`
 /// Pack or expand the selected lanes and zero the rest.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vexpandw_v512(a: V512, mask: u32) -> V512 {
+pub unsafe fn vpexpandw_v512(a: V512, mask: u32) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx10_1_vexpandw_v512(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vpexpandw_v512(a.as_ptr(), mask, out.as_mut_ptr());
     }
     out
 }
