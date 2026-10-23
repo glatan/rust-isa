@@ -18,10 +18,10 @@ use rust_isa::arm::simd::neon::{
 use rust_isa::arm::simd::neon::{
     V128, add, add_i8, add_i16, add_i64, and, cmpeq_i8, cmpeq_i16, cmpeq_i32, cmpgt_i8, cmpgt_i16,
     cmpgt_i32, eor, fadd, fmul, fsub, mul, mul_i16, mul_i32, orr, splat_i32, sub_i8, sub_i16,
-    sub_i32, sub_i64, trn1, uzp1, v128_load, v128_store, vaba, vabd, vabs, vbic, vbsl, vceq, vcge,
-    vcgt, vcle, vcls, vclt, vclz, vcnt, vcvt, vfma, vfms, vfnma, vfnms, vhadd, vhsub, vmax, vmin,
-    vmla, vmls, vmvn, vneg, vorn, vqabs, vqadd, vqdmulh, vqneg, vqrdmulh, vqshl, vqsub, vrecpe,
-    vrecps, vrshl, vrsqrte, vrsqrts, vshl, vtst, zip1,
+    sub_i32, sub_i64, v128_load, v128_store, vaba, vabd, vabs, vbic, vbsl, vceq, vcge, vcgt, vcle,
+    vcls, vclt, vclz, vcnt, vcvt, vfma, vfms, vfnma, vfnms, vhadd, vhsub, vmax, vmin, vmla, vmls,
+    vmvn, vneg, vorn, vqabs, vqadd, vqdmulh, vqneg, vqrdmulh, vqshl, vqsub, vrecpe, vrecps, vrshl,
+    vrsqrte, vrsqrts, vshl, vtst,
 };
 use rust_isa::arm::simd::neon::{
     vabal, vabdl, vaddhn, vaddl, vaddw, vmlal, vmlsl, vmovn, vmull, vpadal, vqdmlal, vqdmlsl,
@@ -945,9 +945,17 @@ fn shuffle_ops() -> bool {
     let a = V128::from_bytes(core::array::from_fn(|index| index as u8));
     let b = V128::from_bytes(core::array::from_fn(|index| index as u8 + 16));
     unsafe {
-        zip1(a, b).to_bytes() == [0, 16, 1, 17, 2, 18, 3, 19, 4, 20, 5, 21, 6, 22, 7, 23]
-            && uzp1(a, b).to_bytes() == [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
-            && trn1(a, b).to_bytes() == [0, 16, 2, 18, 4, 20, 6, 22, 8, 24, 10, 26, 12, 28, 14, 30]
+        vzip(a, b).0.to_bytes() == [0, 16, 1, 17, 2, 18, 3, 19, 4, 20, 5, 21, 6, 22, 7, 23]
+            && vzip(a, b).1.to_bytes()
+                == [8, 24, 9, 25, 10, 26, 11, 27, 12, 28, 13, 29, 14, 30, 15, 31]
+            && vuzp(a, b).0.to_bytes()
+                == [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+            && vuzp(a, b).1.to_bytes()
+                == [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31]
+            && vtrn(a, b).0.to_bytes()
+                == [0, 16, 2, 18, 4, 20, 6, 22, 8, 24, 10, 26, 12, 28, 14, 30]
+            && vtrn(a, b).1.to_bytes()
+                == [1, 17, 3, 19, 5, 21, 7, 23, 9, 25, 11, 27, 13, 29, 15, 31]
     }
 }
 
