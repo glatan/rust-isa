@@ -20,12 +20,6 @@ unsafe extern "C" {
     fn rust_isa_neon_bic(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_neon_orn(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_neon_not(a: *const u8, out: *mut u8);
-    fn rust_isa_neon_min_i8(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_max_i8(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_min_i16(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_max_i16(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_min_i32(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_neon_max_i32(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_neon_abs_i8(a: *const u8, out: *mut u8);
     fn rust_isa_neon_abs_i16(a: *const u8, out: *mut u8);
     fn rust_isa_neon_abs_i32(a: *const u8, out: *mut u8);
@@ -163,36 +157,6 @@ unary!(
     /// Bitwise NOT.
     not,
     rust_isa_neon_not
-);
-binary!(
-    /// Signed minimum on 8-bit lanes.
-    min_i8,
-    rust_isa_neon_min_i8
-);
-binary!(
-    /// Signed maximum on 8-bit lanes.
-    max_i8,
-    rust_isa_neon_max_i8
-);
-binary!(
-    /// Signed minimum on 16-bit lanes.
-    min_i16,
-    rust_isa_neon_min_i16
-);
-binary!(
-    /// Signed maximum on 16-bit lanes.
-    max_i16,
-    rust_isa_neon_max_i16
-);
-binary!(
-    /// Signed minimum on 32-bit lanes.
-    min_i32,
-    rust_isa_neon_min_i32
-);
-binary!(
-    /// Signed maximum on 32-bit lanes.
-    max_i32,
-    rust_isa_neon_max_i32
 );
 unary!(
     /// Absolute value on 8-bit lanes.
