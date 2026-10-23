@@ -76,7 +76,10 @@ fn main() {
     let a64_crc_c = manifest.join("src/aarch64/crypto/crc/crc.c");
     let rvv_c = manifest.join("src/riscv/simd/rvv/rvv.c");
     let rvv_slice_c = manifest.join("src/riscv/simd/rvv_slice/rvv_slice.c");
-    let zv_c = manifest.join("src/riscv/simd/zv/zv.c");
+    let zvkn_c = manifest.join("src/riscv/simd/zv/zvkn/zvkn.c");
+    let zvks_c = manifest.join("src/riscv/simd/zv/zvks/zvks.c");
+    let zvkg_c = manifest.join("src/riscv/simd/zv/zvkg/zvkg.c");
+    let zvbc_c = manifest.join("src/riscv/simd/zv/zvbc/zvbc.c");
     let rv_zba_c = manifest.join("src/riscv/integer/zba/zba.c");
     let rv_zbb_c = manifest.join("src/riscv/integer/zbb/zbb.c");
     let rv_zbc_c = manifest.join("src/riscv/integer/zbc/zbc.c");
@@ -181,7 +184,10 @@ fn main() {
         &a64_crc_c,
         &rvv_c,
         &rvv_slice_c,
-        &zv_c,
+        &zvkn_c,
+        &zvks_c,
+        &zvkg_c,
+        &zvbc_c,
         &rv_zba_c,
         &rv_zbb_c,
         &rv_zbc_c,
@@ -450,8 +456,29 @@ fn main() {
         );
         compile_archive(
             &out_dir,
-            &zv_c,
-            "rust_isa_rvv_zv",
+            &zvkn_c,
+            "rust_isa_rvv_zvkn",
+            &["-march=rv64gcv", "-mabi=lp64d", "-mno-relax"],
+            Some("riscv64-unknown-linux-gnu"),
+        );
+        compile_archive(
+            &out_dir,
+            &zvks_c,
+            "rust_isa_rvv_zvks",
+            &["-march=rv64gcv", "-mabi=lp64d", "-mno-relax"],
+            Some("riscv64-unknown-linux-gnu"),
+        );
+        compile_archive(
+            &out_dir,
+            &zvkg_c,
+            "rust_isa_rvv_zvkg",
+            &["-march=rv64gcv", "-mabi=lp64d", "-mno-relax"],
+            Some("riscv64-unknown-linux-gnu"),
+        );
+        compile_archive(
+            &out_dir,
+            &zvbc_c,
+            "rust_isa_rvv_zvbc",
             &["-march=rv64gcv", "-mabi=lp64d", "-mno-relax"],
             Some("riscv64-unknown-linux-gnu"),
         );
