@@ -17,7 +17,7 @@ unsafe extern "C" {
 /// # Safety
 ///
 /// The module must be validated with the `wide-arithmetic` feature enabled.
-pub unsafe fn add128(a: (u64, u64), b: (u64, u64)) -> (u64, u64) {
+pub unsafe fn i64_add128(a: (u64, u64), b: (u64, u64)) -> (u64, u64) {
     let mut out = [0u64; 2];
     unsafe {
         rust_isa_wide_arithmetic_add128(a.0, a.1, b.0, b.1, out.as_mut_ptr());
@@ -32,7 +32,7 @@ pub unsafe fn add128(a: (u64, u64), b: (u64, u64)) -> (u64, u64) {
 /// # Safety
 ///
 /// The module must be validated with the `wide-arithmetic` feature enabled.
-pub unsafe fn sub128(a: (u64, u64), b: (u64, u64)) -> (u64, u64) {
+pub unsafe fn i64_sub128(a: (u64, u64), b: (u64, u64)) -> (u64, u64) {
     let mut out = [0u64; 2];
     unsafe {
         rust_isa_wide_arithmetic_sub128(a.0, a.1, b.0, b.1, out.as_mut_ptr());
@@ -47,7 +47,7 @@ pub unsafe fn sub128(a: (u64, u64), b: (u64, u64)) -> (u64, u64) {
 /// # Safety
 ///
 /// The module must be validated with the `wide-arithmetic` feature enabled.
-pub unsafe fn mul_wide_u(a: u64, b: u64) -> (u64, u64) {
+pub unsafe fn i64_mul_wide_u(a: u64, b: u64) -> (u64, u64) {
     let mut out = [0u64; 2];
     unsafe {
         rust_isa_wide_arithmetic_mul_wide_u(a, b, out.as_mut_ptr());
@@ -62,7 +62,7 @@ pub unsafe fn mul_wide_u(a: u64, b: u64) -> (u64, u64) {
 /// # Safety
 ///
 /// The module must be validated with the `wide-arithmetic` feature enabled.
-pub unsafe fn mul_wide_s(a: i64, b: i64) -> (i64, i64) {
+pub unsafe fn i64_mul_wide_s(a: i64, b: i64) -> (i64, i64) {
     let mut out = [0i64; 2];
     unsafe {
         rust_isa_wide_arithmetic_mul_wide_s(a, b, out.as_mut_ptr());
