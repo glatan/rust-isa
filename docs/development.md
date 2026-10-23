@@ -16,10 +16,11 @@ make test-wasip1
 make test-wasip1-wide-arithmetic
 make coverage
 make coverage-check
+make check-mnemonics
 make duplicates
 ```
 
-`make test` が既定で、`fmt-check`、`coverage-check`、`check-docs`、`test-host`、`test-wasip1`、`test-wasip1-wide-arithmetic` を実行する。すべてのテストはイメージ内で、対象 triple を明示して実行する。
+`make test` が既定で、`fmt-check`、`coverage-check`、`check-mnemonics`、`check-docs`、`test-host`、`test-wasip1`、`test-wasip1-wide-arithmetic` を実行する。すべてのテストはイメージ内で、対象 triple を明示して実行する。
 
 - `make check-docs`: 全ターゲットの rustdoc を `-D warnings` で検査する。クロスターゲットは `-Z build-std=core` で core をビルドし、wasm32 は `simd128` / `relaxed-simd` と `wide-arithmetic` を有効にして検査する
 - `make test-host`: `x86_64-unknown-linux-gnu` で実行する全テストと doctest。新しい統合テストも自動的に対象になる
@@ -28,6 +29,7 @@ make duplicates
 - `make test-check-wasm-link`: `wasm32-unknown-unknown` のリンクと simd128 無効時の検査
 - `make test-wasip1`: `wasm32-wasip1` の nextest と doctest
 - `make test-wasip1-wide-arithmetic`: `wide-arithmetic` feature を有効にした wasm32-wasip1 の nextest、doctest、リンク検査
+- `make check-mnemonics`: rustdoc の命令名を `llvm-mc` で検証する。現在は s390x を対象にしている。単一の命令名ではない名前は `tools/mnemonics.toml` の `[allow.<arch>]` に理由付きで書く
 
 arch ごとの `test-i686`、`test-aarch64`、`test-armv7`、`test-riscv64`、`test-loongarch64`、`test-s390x`、`test-powerpc64le`、`test-mips64` は、対応する `tests/<arch>.rs` のテストだけを実行する。`make test` は `test-host` 経由でこれらも実行する。
 

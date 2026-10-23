@@ -8,3 +8,5 @@
 /fixtures/arm-values/target
 /fixtures/powerpc-values/target
 /fixtures/mips-values/target
+
+__pycache__/
