@@ -11,10 +11,12 @@ unsafe extern "C" {
 crypto_binary!(
     /// `vclmul.vv` on 64-bit lanes.
     vclmul,
-    rust_isa_rvv_vclmul
+    rust_isa_rvv_vclmul,
+    "zvbc"
 );
 crypto_binary!(
     /// `vclmulh.vv` on 64-bit lanes.
     vclmulh,
-    rust_isa_rvv_vclmulh
+    rust_isa_rvv_vclmulh,
+    "zvbc"
 );

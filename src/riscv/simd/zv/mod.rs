@@ -7,16 +7,17 @@
 //! - `zvkg`: Zvkg (GCM). `vghsh`, `vgmul`.
 //! - `zvbc`: Zvbc (carryless multiply). `vclmul`, `vclmulh`.
 //!
-//! Enable the feature of the submodule that contains the called function.
+//! Enable the target feature named by the submodule: `zvkn`, `zvks`, `zvkg`,
+//! or `zvbc`. Key-schedule functions take a runtime round number; the valid
+//! range is documented on each function.
 
 macro_rules! crypto_binary {
-    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+    ($(#[$meta:meta])* $name:ident, $c:ident, $feature:literal) => {
         $(#[$meta])*
         ///
         /// # Safety
         ///
-        /// The caller must compile with the vector cryptography extension for
-        /// the containing module enabled.
+        #[doc = concat!("The caller must compile with the `", $feature, "` target feature enabled.")]
         #[inline(always)]
         pub unsafe fn $name(state: V128, key: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -29,7 +30,7 @@ macro_rules! crypto_binary {
 }
 
 macro_rules! crypto_key_schedule {
-    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+    ($(#[$meta:meta])* $name:ident, $c:ident, $feature:literal) => {
         $(#[$meta])*
         ///
         /// `round` must be at most the largest immediate accepted by the
@@ -37,8 +38,7 @@ macro_rules! crypto_key_schedule {
         ///
         /// # Safety
         ///
-        /// The caller must compile with the vector cryptography extension for
-        /// the containing module enabled and pass a valid round number.
+        #[doc = concat!("The caller must compile with the `", $feature, "` target feature enabled and pass a valid round number.")]
         #[inline(always)]
         pub unsafe fn $name(key: V128, round: u32) -> V128 {
             let mut out = V128::from_bytes([0; 16]);
@@ -51,13 +51,12 @@ macro_rules! crypto_key_schedule {
 }
 
 macro_rules! crypto_ternary {
-    ($(#[$meta:meta])* $name:ident, $c:ident) => {
+    ($(#[$meta:meta])* $name:ident, $c:ident, $feature:literal) => {
         $(#[$meta])*
         ///
         /// # Safety
         ///
-        /// The caller must compile with the vector cryptography extension for
-        /// the containing module enabled.
+        #[doc = concat!("The caller must compile with the `", $feature, "` target feature enabled.")]
         #[inline(always)]
         pub unsafe fn $name(a: V128, b: V128, c: V128) -> V128 {
             let mut out = V128::from_bytes([0; 16]);

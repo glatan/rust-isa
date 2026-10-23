@@ -11,13 +11,14 @@ unsafe extern "C" {
 crypto_ternary!(
     /// `vghsh.vv`.
     vghsh,
-    rust_isa_rvv_vghsh
+    rust_isa_rvv_vghsh,
+    "zvkg"
 );
 /// `vgmul.vv`.
 ///
 /// # Safety
 ///
-/// The caller must compile with the vector cryptography extensions enabled.
+/// The caller must compile with the `zvkg` target feature enabled.
 #[inline(always)]
 pub unsafe fn vgmul(acc: V128, key: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);

@@ -16,8 +16,8 @@ unsafe extern "C" {
 ///
 /// # Safety
 ///
-/// The caller must compile with the vector cryptography extensions enabled and
-/// pass a valid round number.
+/// The caller must compile with the `zvks` target feature enabled and pass a
+/// valid round number.
 #[inline(always)]
 pub unsafe fn vsm3c(state: [V128; 2], round: u32) -> [V128; 2] {
     let mut out = [V128::from_bytes([0; 16]); 2];
@@ -30,7 +30,7 @@ pub unsafe fn vsm3c(state: [V128; 2], round: u32) -> [V128; 2] {
 ///
 /// # Safety
 ///
-/// The caller must compile with the vector cryptography extensions enabled.
+/// The caller must compile with the `zvks` target feature enabled.
 #[inline(always)]
 pub unsafe fn vsm3me(a: [V128; 2], b: [V128; 2]) -> [V128; 2] {
     let mut out = [V128::from_bytes([0; 16]); 2];
@@ -46,10 +46,12 @@ pub unsafe fn vsm3me(a: [V128; 2], b: [V128; 2]) -> [V128; 2] {
 crypto_key_schedule!(
     /// `vsm4k.vi`, with `round` in `0..=7`.
     vsm4k,
-    rust_isa_rvv_vsm4k
+    rust_isa_rvv_vsm4k,
+    "zvks"
 );
 crypto_binary!(
     /// `vsm4r.vv`.
     vsm4r,
-    rust_isa_rvv_vsm4r
+    rust_isa_rvv_vsm4r,
+    "zvks"
 );

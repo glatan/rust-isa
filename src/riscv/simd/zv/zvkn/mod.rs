@@ -19,50 +19,60 @@ unsafe extern "C" {
 crypto_binary!(
     /// `vaesdf.vv`.
     vaesdf,
-    rust_isa_rvv_vaesdf
+    rust_isa_rvv_vaesdf,
+    "zvkn"
 );
 crypto_binary!(
     /// `vaesdm.vv`.
     vaesdm,
-    rust_isa_rvv_vaesdm
+    rust_isa_rvv_vaesdm,
+    "zvkn"
 );
 crypto_binary!(
     /// `vaesef.vv`.
     vaesef,
-    rust_isa_rvv_vaesef
+    rust_isa_rvv_vaesef,
+    "zvkn"
 );
 crypto_binary!(
     /// `vaesem.vv`.
     vaesem,
-    rust_isa_rvv_vaesem
+    rust_isa_rvv_vaesem,
+    "zvkn"
 );
 crypto_key_schedule!(
     /// `vaeskf1.vi`, with `round` in `1..=10`.
     vaeskf1,
-    rust_isa_rvv_vaeskf1
+    rust_isa_rvv_vaeskf1,
+    "zvkn"
 );
 crypto_key_schedule!(
     /// `vaeskf2.vi`, with `round` in `2..=10`.
     vaeskf2,
-    rust_isa_rvv_vaeskf2
+    rust_isa_rvv_vaeskf2,
+    "zvkn"
 );
 crypto_binary!(
     /// `vaesz.vs`.
     vaesz,
-    rust_isa_rvv_vaesz
+    rust_isa_rvv_vaesz,
+    "zvkn"
 );
 crypto_ternary!(
     /// `vsha2ch.vv`.
     vsha2ch,
-    rust_isa_rvv_vsha2ch
+    rust_isa_rvv_vsha2ch,
+    "zvkn"
 );
 crypto_ternary!(
     /// `vsha2cl.vv`.
     vsha2cl,
-    rust_isa_rvv_vsha2cl
+    rust_isa_rvv_vsha2cl,
+    "zvkn"
 );
 crypto_ternary!(
     /// `vsha2ms.vv`.
     vsha2ms,
-    rust_isa_rvv_vsha2ms
+    rust_isa_rvv_vsha2ms,
+    "zvkn"
 );
