@@ -422,26 +422,6 @@ pub unsafe fn vcvtph2pd(a: V128) -> V512 {
 }
 
 unsafe extern "C" {
-    fn rust_isa_avx512fp16_vcvtph2ps(a: *const u8, out: *mut u8);
-}
-
-/// `vcvtph2ps`
-/// Convert sixteen binary16 lanes to 32-bit float lanes.
-///
-/// # Safety
-///
-/// The caller must enable AVX-512FP16.
-#[target_feature(enable = "avx512fp16")]
-#[inline]
-pub unsafe fn vcvtph2ps(a: V256) -> V512 {
-    let mut out = V512::from_bytes([0; 64]);
-    unsafe {
-        rust_isa_avx512fp16_vcvtph2ps(a.as_ptr(), out.as_mut_ptr());
-    }
-    out
-}
-
-unsafe extern "C" {
     fn rust_isa_avx512fp16_vcvtpd2ph(a: *const u8, out: *mut u8);
 }
 
@@ -457,26 +437,6 @@ pub unsafe fn vcvtpd2ph(a: V512) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
         rust_isa_avx512fp16_vcvtpd2ph(a.as_ptr(), out.as_mut_ptr());
-    }
-    out
-}
-
-unsafe extern "C" {
-    fn rust_isa_avx512fp16_vcvtps2ph(a: *const u8, out: *mut u8);
-}
-
-/// `vcvtps2ph`
-/// Convert sixteen 32-bit float lanes to binary16 lanes, rounding to nearest even.
-///
-/// # Safety
-///
-/// The caller must enable AVX-512FP16.
-#[target_feature(enable = "avx512fp16")]
-#[inline]
-pub unsafe fn vcvtps2ph(a: V512) -> V256 {
-    let mut out = V256::from_bytes([0; 32]);
-    unsafe {
-        rust_isa_avx512fp16_vcvtps2ph(a.as_ptr(), out.as_mut_ptr());
     }
     out
 }

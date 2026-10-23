@@ -306,3 +306,13 @@ __attribute__((always_inline))
 void rust_isa_avx512f_vscatterqpd(uint8_t *base, const uint8_t *indices, const uint8_t *a, uint8_t mask) {
     _mm512_mask_i64scatter_pd((void *)base, (__mmask8)mask, _mm512_loadu_si512((const void *)indices), _mm512_loadu_pd((const double *)(const void *)a), 8);
 }
+
+__attribute__((always_inline))
+void rust_isa_avx512f_vcvtph2ps(const uint8_t *a, uint8_t *out) {
+    _mm512_storeu_ps((float *)(void *)out, _mm512_cvtph_ps((__m256i)_mm256_loadu_si256((const __m256i *)(const void *)a)));
+}
+
+__attribute__((always_inline))
+void rust_isa_avx512f_vcvtps2ph(const uint8_t *a, uint8_t *out) {
+    _mm256_storeu_si256((__m256i *)(void *)out, (__m256i)_mm512_cvtps_ph(_mm512_loadu_ps((const float *)(const void *)a), _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC));
+}
