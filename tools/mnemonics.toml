@@ -6,6 +6,10 @@
 # directory. Names that are intentionally not single mnemonics (family names,
 # pseudo instructions, or LLVM gaps) go in [allow.<arch>] with a reason.
 
+# wasm32 is intentionally not listed: llvm-mc's wasm32 backend does not
+# provide stable mnemonic diagnostics (some instructions crash the assembler).
+# The wasm tests and wasm-tools validate the API names instead.
+
 [targets.x86]
 triple = "x86_64"
 features = "+sse2,+avx,+avx2,+avx512f,+avx512bw,+avx512dq,+avx512vl,+fma,+f16c,+bmi,+bmi2,+popcnt,+lzcnt,+movbe,+adx,+rdrnd,+rdseed,+gfni,+vaes,+vpclmulqdq,+sha,+sm3,+sm4,+avx512vbmi,+avx512ifma,+avx512vnni,+avx512bf16,+avx512fp16,+avx512vpopcntdq,+avx512bitalg,+avx512vbmi2,+avx512vp2intersect,+avxifma,+avxneconvert,+avxvnni,+avxvnniint8,+avxvnniint16"
