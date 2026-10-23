@@ -6,9 +6,9 @@
 //! instructions without a clang intrinsic use `asm!` with the
 //! `vector-enhancements-1` target feature.
 //!
-//! The values are [`V128`]. `cntlz` and `popcnt` operate on the lane type in
-//! the function name. Immediate operands are const generics unless documented
-//! otherwise. The byte order is big-endian.
+//! The values are [`V128`]. `popcnt` operates on the lane type in the function
+//! name. Immediate operands are const generics unless documented otherwise. The
+//! byte order is big-endian.
 //!
 //! Instruction behavior follows the [IBM z/Architecture Principles of Operation](https://www.ibm.com/docs/en/module_1678991624569/pdf/SA22-7832-14.pdf).
 //!
@@ -18,27 +18,12 @@ use super::vector::V128;
 use core::arch::asm;
 
 unsafe extern "C" {
-    fn rust_isa_s390x_enh_cntlz_i32(a: *const u8, out: *mut u8);
     fn rust_isa_s390x_enh_popcnt_i8(a: *const u8, out: *mut u8);
     fn rust_isa_s390x_enh_popcnt_i32(a: *const u8, out: *mut u8);
     fn rust_isa_s390x_enh_fma(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
 }
 
-/// `vclzf` on 32-bit lanes.
-///
-/// # Safety
-///
-/// The caller must enable the vector-enhancement facility.
-#[inline(always)]
-pub unsafe fn cntlz_i32(a: V128) -> V128 {
-    let mut out = V128::from_bytes([0; 16]);
-    unsafe {
-        rust_isa_s390x_enh_cntlz_i32(a.as_ptr(), out.as_mut_ptr());
-    }
-    out
-}
-
-/// `vpopct` on byte lanes.
+/// `vpopctb` on byte lanes.
 ///
 /// # Safety
 ///
@@ -93,9 +78,7 @@ unsafe extern "C" {
     fn rust_isa_s390x_enh_vfce(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_s390x_enh_vfch(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_s390x_enh_vfche(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_vclz(a: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_vctz(a: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_vpopct(a: *const u8, out: *mut u8);
+    fn rust_isa_s390x_enh_vpopctb(a: *const u8, out: *mut u8);
 }
 
 macro_rules! bin_enh {
@@ -205,66 +188,10 @@ bin_enh!(
     rust_isa_s390x_enh_vfche
 );
 un_enh!(
-    /// `vclz`.
-    vclz,
-    rust_isa_s390x_enh_vclz
+    /// `vpopctb`.
+    vpopctb,
+    rust_isa_s390x_enh_vpopctb
 );
-un_enh!(
-    /// `vctz`.
-    vctz,
-    rust_isa_s390x_enh_vctz
-);
-un_enh!(
-    /// `vpopct`.
-    vpopct,
-    rust_isa_s390x_enh_vpopct
-);
-
-/// `vclzg`.
-///
-/// Count the leading zero bits in each 64-bit lane.
-///
-/// # Safety
-///
-/// The caller must enable the vector-enhancements-1 facility.
-#[target_feature(enable = "vector-enhancements-1")]
-#[inline]
-pub unsafe fn vclzg(a: V128) -> V128 {
-    let input = u128::from_be_bytes(a.to_bytes());
-    let out: u128;
-    unsafe {
-        asm!(
-            "vclzg {out}, {input}",
-            out = lateout(vreg) out,
-            input = in(vreg) input,
-            options(nostack, nomem, pure)
-        );
-    }
-    V128::from_bytes(out.to_be_bytes())
-}
-
-/// `vctzg`.
-///
-/// Count the trailing zero bits in each 64-bit lane.
-///
-/// # Safety
-///
-/// The caller must enable the vector-enhancements-1 facility.
-#[target_feature(enable = "vector-enhancements-1")]
-#[inline]
-pub unsafe fn vctzg(a: V128) -> V128 {
-    let input = u128::from_be_bytes(a.to_bytes());
-    let out: u128;
-    unsafe {
-        asm!(
-            "vctzg {out}, {input}",
-            out = lateout(vreg) out,
-            input = in(vreg) input,
-            options(nostack, nomem, pure)
-        );
-    }
-    V128::from_bytes(out.to_be_bytes())
-}
 
 /// `vftci` on single-precision lanes.
 ///
@@ -404,6 +331,29 @@ pub unsafe fn vnn(a: V128, b: V128) -> V128 {
             out = lateout(vreg) out,
             a = in(vreg) a,
             b = in(vreg) b,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(out.to_be_bytes())
+}
+
+/// `vpopctg`.
+///
+/// Count the set bits in each 64-bit lane.
+///
+/// # Safety
+///
+/// The caller must enable the vector-enhancements-1 facility.
+#[target_feature(enable = "vector-enhancements-1")]
+#[inline]
+pub unsafe fn vpopctg(a: V128) -> V128 {
+    let input = u128::from_be_bytes(a.to_bytes());
+    let out: u128;
+    unsafe {
+        asm!(
+            "vpopctg {out}, {input}",
+            out = lateout(vreg) out,
+            input = in(vreg) input,
             options(nostack, nomem, pure)
         );
     }

@@ -10,18 +10,21 @@ use rust_isa::s390x::simd::vector::{
     v128_store, vab, vaf, vag, vah, vavg, vavgl, vceq, vch, vcl, vmax, vmin, vsb, vsel, vsf, vsg,
     vsh, vsl, vsr, xor,
 };
+use rust_isa::s390x::simd::vector::{
+    cntlz_i32, vclzb, vclzg, vctzb, vctzg, vgbm, vrepb, vrepf, vrepg, vreph, vuph, vupl, vuplh,
+    vupll,
+};
 use rust_isa::s390x::simd::vector::{vchl, vclf, vclg, vclh, vle, vperm, vpks, vst};
 use rust_isa::s390x::simd::vector::{vcksm, vlef, vme, vmh, vml, vmo, vpkls, vstef};
 use rust_isa::s390x::simd::vector::{
     vfae, vfee, vfene, vfi_f64, vftci_f64, vgef, vgeg, vistr, vlgv, vmle, vmlh, vmlo, vrep, vscbi,
     vseg, vstrc,
 };
-use rust_isa::s390x::simd::vector::{vgbm, vrepb, vrepf, vrepg, vreph, vuph, vupl, vuplh, vupll};
 use rust_isa::s390x::simd::vector_enhancements_1::{
-    cntlz_i32, fma, popcnt_i8, popcnt_i32, vclz, vclzg, vctz, vctzg, vfa, vfce, vfch, vfche, vfd,
-    vfi_f32, vfll, vflr, vfm, vfma, vfms, vfnma, vfnms, vfs, vfsq, vftci_f32, vnn, vpopct,
+    fma, popcnt_i8, popcnt_i32, vfa, vfce, vfch, vfche, vfd, vfi_f32, vfll, vflr, vfm, vfma, vfms,
+    vfnma, vfnms, vfs, vfsq, vftci_f32, vnn, vpopctb, vpopctg,
 };
-use rust_isa::s390x::simd::vector_enhancements_2::{vpopctg, vsld, vsrd};
+use rust_isa::s390x::simd::vector_enhancements_2::{vsld, vsrd};
 use rust_isa::s390x::simd::vector_packed_decimal::{
     vap, vcvb, vcvbg, vcvd, vpkz, vsdp, vsp, vsrp, vstrl, vupkz, vupkzh, vupkzl,
 };
@@ -153,9 +156,9 @@ fn enhancement_ops() -> bool {
             || vfce(a, a).to_bytes() != [0xff; 16]
             || vfch(b, a).to_bytes() != [0xff; 16]
             || vfche(a, a).to_bytes() != [0xff; 16]
-            || vclz(V128::from_bytes([1; 16])).to_bytes() != [7; 16]
-            || vctz(V128::from_bytes([2; 16])).to_bytes() != [1; 16]
-            || vpopct(V128::from_bytes([0xff; 16])).to_bytes() != [8; 16]
+            || vclzb(V128::from_bytes([1; 16])).to_bytes() != [7; 16]
+            || vctzb(V128::from_bytes([2; 16])).to_bytes() != [1; 16]
+            || vpopctb(V128::from_bytes([0xff; 16])).to_bytes() != [8; 16]
             || {
                 let b = vclzg(V128::from_bytes([0; 16])).to_bytes();
                 b[7] != 64 || b[15] != 64
