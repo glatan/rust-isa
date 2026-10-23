@@ -316,3 +316,41 @@ pub fn uminp_u32(a: V128, b: V128) -> V128 {
     }
     out
 }
+
+// Historical names kept as aliases for the concrete instructions.
+
+/// Signed minimum on 8-bit lanes. Alias for [`smin_s8`].
+#[inline(always)]
+pub fn min_i8(a: V128, b: V128) -> V128 {
+    smin_s8(a, b)
+}
+
+/// Signed maximum on 8-bit lanes. Alias for [`smax_s8`].
+#[inline(always)]
+pub fn max_i8(a: V128, b: V128) -> V128 {
+    smax_s8(a, b)
+}
+
+/// Signed minimum on 16-bit lanes. Alias for [`smin_s16`].
+#[inline(always)]
+pub fn min_i16(a: V128, b: V128) -> V128 {
+    smin_s16(a, b)
+}
+
+/// Signed maximum on 16-bit lanes. Alias for [`smax_s16`].
+#[inline(always)]
+pub fn max_i16(a: V128, b: V128) -> V128 {
+    smax_s16(a, b)
+}
+
+/// Signed minimum on 32-bit lanes. Alias for [`smin_s32`].
+#[inline(always)]
+pub fn min_i32(a: V128, b: V128) -> V128 {
+    smin_s32(a, b)
+}
+
+/// Signed maximum on 32-bit lanes. Alias for [`smax_s32`].
+#[inline(always)]
+pub fn max_i32(a: V128, b: V128) -> V128 {
+    smax_s32(a, b)
+}
