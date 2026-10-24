@@ -161,121 +161,145 @@ uint8_t rust_isa_avx512vl_vptestnmq_v256(const uint8_t *a, const uint8_t *b) {
     return (uint8_t)(_mm256_testn_epi64_mask(_mm256_loadu_si256((const __m256i *)(const void *)a), _mm256_loadu_si256((const __m256i *)(const void *)b)));
 }
 
+__attribute__((target("avx512bw")))
 __attribute__((always_inline))
 uint16_t rust_isa_avx512vl_vptestmb_v128(const uint8_t *a, const uint8_t *b) {
     return (uint16_t)(_mm_test_epi8_mask(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
 }
 
+__attribute__((target("avx512bw")))
 __attribute__((always_inline))
 uint32_t rust_isa_avx512vl_vptestmb_v256(const uint8_t *a, const uint8_t *b) {
     return (uint32_t)(_mm256_test_epi8_mask(_mm256_loadu_si256((const __m256i *)(const void *)a), _mm256_loadu_si256((const __m256i *)(const void *)b)));
 }
 
+__attribute__((target("avx512bw")))
 __attribute__((always_inline))
 uint16_t rust_isa_avx512vl_vptestnmb_v128(const uint8_t *a, const uint8_t *b) {
     return (uint16_t)(_mm_testn_epi8_mask(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
 }
 
+__attribute__((target("avx512bw")))
 __attribute__((always_inline))
 uint32_t rust_isa_avx512vl_vptestnmb_v256(const uint8_t *a, const uint8_t *b) {
     return (uint32_t)(_mm256_testn_epi8_mask(_mm256_loadu_si256((const __m256i *)(const void *)a), _mm256_loadu_si256((const __m256i *)(const void *)b)));
 }
 
+__attribute__((target("avx512bw")))
 __attribute__((always_inline))
 uint8_t rust_isa_avx512vl_vptestmw_v128(const uint8_t *a, const uint8_t *b) {
     return (uint8_t)(_mm_test_epi16_mask(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
 }
 
+__attribute__((target("avx512bw")))
 __attribute__((always_inline))
 uint16_t rust_isa_avx512vl_vptestmw_v256(const uint8_t *a, const uint8_t *b) {
     return (uint16_t)(_mm256_test_epi16_mask(_mm256_loadu_si256((const __m256i *)(const void *)a), _mm256_loadu_si256((const __m256i *)(const void *)b)));
 }
 
+__attribute__((target("avx512bw")))
 __attribute__((always_inline))
 uint8_t rust_isa_avx512vl_vptestnmw_v128(const uint8_t *a, const uint8_t *b) {
     return (uint8_t)(_mm_testn_epi16_mask(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
 }
 
+__attribute__((target("avx512bw")))
 __attribute__((always_inline))
 uint16_t rust_isa_avx512vl_vptestnmw_v256(const uint8_t *a, const uint8_t *b) {
     return (uint16_t)(_mm256_testn_epi16_mask(_mm256_loadu_si256((const __m256i *)(const void *)a), _mm256_loadu_si256((const __m256i *)(const void *)b)));
 }
 
+__attribute__((target("avx512bw")))
 __attribute__((always_inline))
 void rust_isa_avx512vl_vpmovm2b_v128(uint16_t mask, uint8_t *out) {
     _mm_storeu_si128((__m128i *)(void *)out, _mm_movm_epi8((__mmask16)mask));
 }
 
+__attribute__((target("avx512bw")))
 __attribute__((always_inline))
 void rust_isa_avx512vl_vpmovm2b_v256(uint32_t mask, uint8_t *out) {
     _mm256_storeu_si256((__m256i *)(void *)out, _mm256_movm_epi8((__mmask32)mask));
 }
 
+__attribute__((target("avx512bw")))
 __attribute__((always_inline))
 void rust_isa_avx512vl_vpmovm2w_v128(uint8_t mask, uint8_t *out) {
     _mm_storeu_si128((__m128i *)(void *)out, _mm_movm_epi16((__mmask8)mask));
 }
 
+__attribute__((target("avx512bw")))
 __attribute__((always_inline))
 void rust_isa_avx512vl_vpmovm2w_v256(uint16_t mask, uint8_t *out) {
     _mm256_storeu_si256((__m256i *)(void *)out, _mm256_movm_epi16((__mmask16)mask));
 }
 
+__attribute__((target("avx512dq")))
 __attribute__((always_inline))
 void rust_isa_avx512vl_vpmovm2d_v128(uint8_t mask, uint8_t *out) {
     _mm_storeu_si128((__m128i *)(void *)out, _mm_movm_epi32((__mmask8)mask));
 }
 
+__attribute__((target("avx512dq")))
 __attribute__((always_inline))
 void rust_isa_avx512vl_vpmovm2d_v256(uint8_t mask, uint8_t *out) {
     _mm256_storeu_si256((__m256i *)(void *)out, _mm256_movm_epi32((__mmask8)mask));
 }
 
+__attribute__((target("avx512dq")))
 __attribute__((always_inline))
 void rust_isa_avx512vl_vpmovm2q_v128(uint8_t mask, uint8_t *out) {
     _mm_storeu_si128((__m128i *)(void *)out, _mm_movm_epi64((__mmask8)mask));
 }
 
+__attribute__((target("avx512dq")))
 __attribute__((always_inline))
 void rust_isa_avx512vl_vpmovm2q_v256(uint8_t mask, uint8_t *out) {
     _mm256_storeu_si256((__m256i *)(void *)out, _mm256_movm_epi64((__mmask8)mask));
 }
 
+__attribute__((target("avx512bw")))
 __attribute__((always_inline))
 uint16_t rust_isa_avx512vl_vpmovb2m_v128(const uint8_t *a) {
     return (uint16_t)(_mm_movepi8_mask(_mm_loadu_si128((const __m128i *)(const void *)a)));
 }
 
+__attribute__((target("avx512bw")))
 __attribute__((always_inline))
 uint32_t rust_isa_avx512vl_vpmovb2m_v256(const uint8_t *a) {
     return (uint32_t)(_mm256_movepi8_mask(_mm256_loadu_si256((const __m256i *)(const void *)a)));
 }
 
+__attribute__((target("avx512bw")))
 __attribute__((always_inline))
 uint8_t rust_isa_avx512vl_vpmovw2m_v128(const uint8_t *a) {
     return (uint8_t)(_mm_movepi16_mask(_mm_loadu_si128((const __m128i *)(const void *)a)));
 }
 
+__attribute__((target("avx512bw")))
 __attribute__((always_inline))
 uint16_t rust_isa_avx512vl_vpmovw2m_v256(const uint8_t *a) {
     return (uint16_t)(_mm256_movepi16_mask(_mm256_loadu_si256((const __m256i *)(const void *)a)));
 }
 
+__attribute__((target("avx512dq")))
 __attribute__((always_inline))
 uint8_t rust_isa_avx512vl_vpmovd2m_v128(const uint8_t *a) {
     return (uint8_t)(_mm_movepi32_mask(_mm_loadu_si128((const __m128i *)(const void *)a)));
 }
 
+__attribute__((target("avx512dq")))
 __attribute__((always_inline))
 uint8_t rust_isa_avx512vl_vpmovd2m_v256(const uint8_t *a) {
     return (uint8_t)(_mm256_movepi32_mask(_mm256_loadu_si256((const __m256i *)(const void *)a)));
 }
 
+__attribute__((target("avx512dq")))
 __attribute__((always_inline))
 uint8_t rust_isa_avx512vl_vpmovq2m_v128(const uint8_t *a) {
     return (uint8_t)(_mm_movepi64_mask(_mm_loadu_si128((const __m128i *)(const void *)a)));
 }
 
+__attribute__((target("avx512dq")))
 __attribute__((always_inline))
 uint8_t rust_isa_avx512vl_vpmovq2m_v256(const uint8_t *a) {
     return (uint8_t)(_mm256_movepi64_mask(_mm256_loadu_si256((const __m256i *)(const void *)a)));
@@ -441,11 +465,13 @@ void rust_isa_avx512vl_vscatterqpd_v256(uint8_t *base, const uint8_t *indices, c
     _mm256_mask_i64scatter_pd((void *)base, (__mmask8)mask, _mm256_loadu_si256((const __m256i *)(const void *)indices), _mm256_loadu_pd((const double *)(const void *)a), 8);
 }
 
+__attribute__((target("avx512dq")))
 __attribute__((always_inline))
 void rust_isa_avx512vl_vpmullq_v128(const uint8_t *a, const uint8_t *b, uint8_t *out) {
     _mm_storeu_si128((__m128i *)(void *)out, _mm_mullo_epi64(_mm_loadu_si128((const __m128i *)(const void *)a), _mm_loadu_si128((const __m128i *)(const void *)b)));
 }
 
+__attribute__((target("avx512dq")))
 __attribute__((always_inline))
 void rust_isa_avx512vl_vpmullq_v256(const uint8_t *a, const uint8_t *b, uint8_t *out) {
     _mm256_storeu_si256((__m256i *)(void *)out, _mm256_mullo_epi64(_mm256_loadu_si256((const __m256i *)(const void *)a), _mm256_loadu_si256((const __m256i *)(const void *)b)));
