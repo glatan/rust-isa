@@ -62,17 +62,20 @@ ZA タイル、SME2、`smstart` / `smstop` の直接 API は対象外である�
 
 `AmxGuard` がタイル状態を管理し、状態を要求する関数は `&AmxGuard` を引数に取る。`TileConfig` は `ldtilecfg` の入力を保持し、`TileConfig::builder()` で構築する。
 
-| API                                                       | カバーする命令             |
-| --------------------------------------------------------- | -------------------------- |
-| `ldtilecfg`、`AmxGuard::enter`                            | `LDTILECFG`                |
-| `sttilecfg`                                               | `STTILECFG`                |
-| `tilezero::<TILE>`                                        | `TILEZERO`                 |
-| `tileloadd::<TILE>`、`tileloaddt1::<TILE>`                | `TILELOADD`、`TILELOADDT1` |
-| `tilestored::<TILE>`                                      | `TILESTORED`               |
-| `tdpbf16ps`、`tdpbssd`、`tdpbsud`、`tdpbuud`、`tdpfp16ps` | 行列積                     |
-| `tcmmimfp16ps`、`tcmmrlfp16ps`                            | 複素行列積                 |
+| API                                                       | カバーする命令                 |
+| --------------------------------------------------------- | ------------------------------ |
+| `ldtilecfg`、`AmxGuard::enter`                            | `LDTILECFG`                    |
+| `sttilecfg`                                               | `STTILECFG`                    |
+| `tilezero::<TILE>`                                        | `TILEZERO`                     |
+| `tileloadd::<TILE>`、`tileloaddt1::<TILE>`                | `TILELOADD`、`TILELOADDT1`     |
+| `tileloaddrs::<TILE>`、`tileloaddrst1::<TILE>`            | `TILELOADDRS`、`TILELOADDRST1` |
+| `tilestored::<TILE>`                                      | `TILESTORED`                   |
+| `tilemovrow::<TILE>`、`tilemovrow_imm::<TILE, ROW>`       | `TILEMOVROW`                   |
+| `tcvtrowd2ps`、`tcvtrowps2bf16h/l`、`tcvtrowps2phh/l`     | `TCVTROW*`                     |
+| `tdpbf16ps`、`tdpbssd`、`tdpbsud`、`tdpbuud`、`tdpfp16ps` | 行列積                         |
+| `tcmmimfp16ps`、`tcmmrlfp16ps`                            | 複素行列積                     |
 
-`amx-avx512` と `amx-movrs` は未実装である。全 API は [x86 の実装状況](x86/README.md#実装状況) を見る。
+`amx-avx512` の変換命令はランタイム行と即値行の両方を提供する。全 API は [x86 の実装状況](x86/README.md#実装状況) を見る。
 
 ## PowerPC MMA
 

@@ -83,11 +83,13 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 ### 行列
 
-| extension  | 実装済み命令                                                                                                                                                              | 未実装命令 | 値テスト         |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------- |
-| `amx-tile` | `ldtilecfg`, `tilezero`, `sttilecfg`, `tileloadd`, `tileloaddt1`, `tilestored`, `tdpbf16ps`, `tdpbssd`, `tdpbsud`, `tdpbuud`, `tdpfp16ps`, `tcmmimfp16ps`, `tcmmrlfp16ps` | なし       | ホストでは未実行 |
+| extension    | 実装済み命令                                                                                                                                                                                                                     | 未実装命令 | 値テスト         |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------- |
+| `amx-tile`   | `ldtilecfg`, `tilezero`, `sttilecfg`, `tileloadd`, `tileloaddt1`, `tilestored`, `tdpbf16ps`, `tdpbssd`, `tdpbsud`, `tdpbuud`, `tdpfp16ps`, `tcmmimfp16ps`, `tcmmrlfp16ps`                                                        | なし       | ホストでは未実行 |
+| `amx-avx512` | `tilemovrow`, `tilemovrow_imm`, `tcvtrowd2ps`, `tcvtrowd2ps_imm`, `tcvtrowps2bf16h`, `tcvtrowps2bf16h_imm`, `tcvtrowps2bf16l`, `tcvtrowps2bf16l_imm`, `tcvtrowps2phh`, `tcvtrowps2phh_imm`, `tcvtrowps2phl`, `tcvtrowps2phl_imm` | なし       | ホストでは未実行 |
+| `amx-movrs`  | `tileloaddrs`, `tileloaddrst1`                                                                                                                                                                                                   | なし       | ホストでは未実行 |
 
-`amx-int8`、`amx-bf16`、`amx-fp16`、`amx-complex` は、`amx-tile` の `tdp*` / `tcmm*` を再公開する。`amx-avx512` と `amx-movrs` は未実装である。
+`amx-int8`、`amx-bf16`、`amx-fp16`、`amx-complex` は、`amx-tile` の `tdp*` / `tcmm*` を再公開する。`amx-avx512` はタイル行の `zmm` への移動と変換、`amx-movrs` は read-shared ヒント付きのタイルロードを提供する。どちらも `AmxGuard` を要求する。
 
 ## 実装方式
 
@@ -97,6 +99,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 - C は extension ごとに分ける。`-mavx2` のようなファイル全体のフラグを使うか、`__attribute__((target("avx2")))` を関数単位で付ける。
 - stable な feature は、呼び出し側のカーネルに `#[target_feature(enable = "...")]` を付ける。ラッパーは `#[inline(always)]` だけにし、`#[target_feature]` を付けない。unstable な feature は付けない。
 - `asm!` は補助として使える。`xmm_reg` は `u128` を受け付ける。`ymm_reg` は `avx` を要求し、256-bit の値型を `core::arch` なしでは表せないため、256-bit 以上は C を主とする。
+- AMX のタイル番号は値型で表せないため `asm!` を使う。AMX-AVX512 の `zmm` 出力はメモリに退避して `V512` として返す。
 
 ## ソースの分割
 
@@ -136,7 +139,7 @@ x86_64 で条件付きのゼロコストを確認した。条件、Cargo の設�
 ## 未対応
 
 - i686 の暗号の値テスト。
-- AMX の `amx-avx512` と `amx-movrs`。`amx-tile` の load / store / matrix multiply は実装済みである。
+- AMX の `amx-avx512` と `amx-movrs` の実機値テスト。命令の実装は済みである。
 - AVX10.1 / AVX10.2 で `#[target_feature]` を使えない制約の再確認。
 - shuffle / compress のうち、intrinsics が往復を残す命令の個別確認。
 - 追加した SSE3 以降の命令のゼロコスト確認。現在の zero-cost は

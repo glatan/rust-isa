@@ -77,3 +77,4 @@
 - `-C target-feature=+avx10.1` は警告を出し、`avx10.1` の cfg は立たなかった。
 - `__attribute__((target("avx10.1")))` の C は clang 23.1.1 でコンパイルできた。
 - `__attribute__((target("avx2")))` の C は `-mavx2` なしでコンパイルでき、`vpaddd ymm` を出した。
+- clang 23.1.3 の `amxavx512intrin.h` / `amxmovrsintrin.h` は `-mamx-avx512 -mavx10.2` / `-mamx-movrs` でコンパイルでき、`tilemovrow`、`tcvtrowd2ps`、`tileloaddrs` を出した。Rust の `asm!` でも同じ命令を出力できた。
