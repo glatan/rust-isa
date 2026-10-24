@@ -10,7 +10,7 @@ fn aarch64_pipeline() {
         return;
     }
     let dir = nested_dir("aarch64-values");
-    let rustflags = "-C target-feature=+aes,+sha2,+crc,+fp16,+fhm,+sha3,+sm4,+i8mm -C linker-plugin-lto -C linker=clang -C link-arg=--target=aarch64-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
+    let rustflags = "-C target-feature=+aes,+sha2,+crc,+fp16,+fhm,+sha3,+sm4,+i8mm,+bf16,+jsconv -C linker-plugin-lto -C linker=clang -C link-arg=--target=aarch64-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
     let output = cargo(&dir)
         .env("RUSTC_BOOTSTRAP", "1")
         .env("RUSTFLAGS", rustflags)
@@ -257,5 +257,67 @@ fn aarch64_pipeline() {
         smmla_count[1],
         smmla_count[0] + 1,
         "smmla is not adjacent:\n{i8mm}"
+    );
+
+    let bf16 = function_at(&text, "<kernel_bf16>:");
+    assert!(
+        !bf16
+            .lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
+        "kernel_bf16 calls C:\n{bf16}"
+    );
+    let lines: Vec<_> = bf16.lines().collect();
+    let bfdot_count: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("bfdot"))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(bfdot_count.len(), 2, "kernel_bf16 body:\n{bf16}");
+    assert_eq!(
+        bfdot_count[1],
+        bfdot_count[0] + 1,
+        "bfdot is not adjacent:\n{bf16}"
+    );
+
+    let fhm = function_at(&text, "<kernel_fhm>:");
+    assert!(
+        !fhm.lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
+        "kernel_fhm calls C:\n{fhm}"
+    );
+    let lines: Vec<_> = fhm.lines().collect();
+    let fmla_count: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("fmla"))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(fmla_count.len(), 2, "kernel_fhm body:\n{fhm}");
+    assert_eq!(
+        fmla_count[1],
+        fmla_count[0] + 1,
+        "fmla is not adjacent:\n{fhm}"
+    );
+
+    let jsconv = function_at(&text, "<kernel_jsconv>:");
+    assert!(
+        !jsconv
+            .lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
+        "kernel_jsconv calls C:\n{jsconv}"
+    );
+    let lines: Vec<_> = jsconv.lines().collect();
+    let fjcvtzs_count: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("fjcvtzs"))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(fjcvtzs_count.len(), 2, "kernel_jsconv body:\n{jsconv}");
+    assert_eq!(
+        fjcvtzs_count[1],
+        fjcvtzs_count[0] + 1,
+        "fjcvtzs is not adjacent:\n{jsconv}"
     );
 }
