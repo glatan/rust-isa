@@ -78,6 +78,29 @@ fn amx_api_is_gated() {
 }
 
 #[test]
+fn tile_config_builder_layout() {
+    use rust_isa::x86::matrix::amx_tile::TileConfig;
+
+    const CONFIG: TileConfig = TileConfig::builder()
+        .start_row(2)
+        .tile::<0>(16, 64)
+        .tile::<7>(4, 16)
+        .build();
+    let bytes = CONFIG.to_bytes();
+    assert_eq!(bytes[0], 1);
+    assert_eq!(bytes[1], 2);
+    assert_eq!(&bytes[16..18], &64u16.to_le_bytes());
+    assert_eq!(&bytes[30..32], &16u16.to_le_bytes());
+    assert_eq!(bytes[48], 16);
+    assert_eq!(bytes[55], 4);
+    assert!(bytes[2..16].iter().all(|byte| *byte == 0));
+    assert!(bytes[18..30].iter().all(|byte| *byte == 0));
+    assert!(bytes[32..48].iter().all(|byte| *byte == 0));
+    assert!(bytes[49..55].iter().all(|byte| *byte == 0));
+    assert!(bytes[56..64].iter().all(|byte| *byte == 0));
+}
+
+#[test]
 fn amx_stateful_api_takes_guard() {
     use rust_isa::x86::matrix::amx_tile::{
         AmxGuard, TileConfig, sttilecfg, tcmmimfp16ps, tdpbf16ps, tileloadd, tileloaddt1,
