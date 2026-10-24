@@ -279,7 +279,7 @@ fn x86_zero_cost_pipeline() {
         return;
     }
     let dir = nested_dir("x86-zero-cost-link");
-    let rustflags = "-C target-feature=+sse3,+ssse3,+sse4.1,+sse4.2,+avx,+sha,+avx512cd,+avx512vbmi,+avx512vpopcntdq,+avx,+avx2,+avx512f,+avx512bw,+avx512dq,+avx512ifma,+avx512vnni,+avx512vl,+gfni,+vaes,+vpclmulqdq,+avx10.1 -C linker-plugin-lto -C linker=clang -C link-arg=-fuse-ld=lld";
+    let rustflags = "-C target-feature=+sse3,+ssse3,+sse4.1,+sse4.2,+avx,+sha,+avx512cd,+avx512vbmi,+avx512vpopcntdq,+avx512bitalg,+avx512vbmi2,+avx512bf16,+avx512fp16,+avx512vp2intersect,+avx,+avx2,+avx512f,+avx512bw,+avx512dq,+avx512ifma,+avx512vnni,+avx512vl,+gfni,+vaes,+vpclmulqdq,+avx10.1 -C linker-plugin-lto -C linker=clang -C link-arg=-fuse-ld=lld";
     let output = cargo(&dir)
         .env("RUSTFLAGS", rustflags)
         .args(["build", "-p", "x86-zero-cost-link", "--release"])
@@ -307,6 +307,11 @@ fn x86_zero_cost_pipeline() {
         ("<kernel_cd>:", "vplzcntd"),
         ("<kernel_vbmi>:", "vpermb"),
         ("<kernel_vpopcnt>:", "vpopcntd"),
+        ("<kernel_bitalg>:", "vpopcntb"),
+        ("<kernel_vbmi2>:", "vpcompressb"),
+        ("<kernel_bf16>:", "vdpbf16ps"),
+        ("<kernel_fp16>:", "vaddph"),
+        ("<kernel_vp2intersect>:", "vp2intersectd"),
         ("<kernel_sha>:", "sha256rnds2"),
         ("<kernel_bw>:", "vpaddb"),
         ("<kernel_dq>:", "vpmullq"),

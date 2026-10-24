@@ -7,13 +7,18 @@ use rust_isa::x86::crypto::vpclmulqdq::vpclmulqdq_v256;
 use rust_isa::x86::simd::avx::{V256, vaddps, vmulps};
 use rust_isa::x86::simd::avx2::vpshufb;
 use rust_isa::x86::simd::avx10_1::{vpaddd_v512, vpmulld_v512};
+use rust_isa::x86::simd::avx512bf16::vdpbf16ps;
+use rust_isa::x86::simd::avx512bitalg::vpopcntb;
 use rust_isa::x86::simd::avx512bw::vpaddb;
 use rust_isa::x86::simd::avx512cd::vplzcntd;
 use rust_isa::x86::simd::avx512dq::vpmullq;
 use rust_isa::x86::simd::avx512f::V512;
+use rust_isa::x86::simd::avx512fp16::vaddph;
 use rust_isa::x86::simd::avx512ifma::vpmadd52luq;
 use rust_isa::x86::simd::avx512vbmi::vpermb;
+use rust_isa::x86::simd::avx512vbmi2::vpcompressb;
 use rust_isa::x86::simd::avx512vnni::vpdpbusd;
+use rust_isa::x86::simd::avx512vp2intersect::vp2intersectd;
 use rust_isa::x86::simd::avx512vpopcntdq::vpopcntd;
 use rust_isa::x86::simd::sse2::V128;
 use rust_isa::x86::simd::sse3::addsubps;
@@ -76,6 +81,43 @@ pub unsafe extern "C" fn kernel_vbmi(a: &V512, idx: &V512) -> V512 {
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn kernel_vpopcnt(a: &V512) -> V512 {
     unsafe { vpopcntd(vpopcntd(*a)) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "avx512f,avx512bitalg")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_bitalg(a: &V512) -> V512 {
+    unsafe { vpopcntb(vpopcntb(*a)) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "avx512f,avx512vbmi2")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_vbmi2(a: &V512, mask: u64) -> V512 {
+    unsafe { vpcompressb(vpcompressb(*a, mask), mask) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "avx512f,avx512bf16")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_bf16(acc: &V512, a: &V512, b: &V512) -> V512 {
+    unsafe { vdpbf16ps(vdpbf16ps(*acc, *a, *b), *a, *b) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "avx512f,avx512fp16")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_fp16(a: &V512, b: &V512, c: &V512) -> V512 {
+    unsafe { vaddph(vaddph(*a, *b), *c) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "avx512f,avx512vp2intersect")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_vp2intersect(a: &V512, b: &V512) -> (u16, u16) {
+    let (a1, b1) = unsafe { vp2intersectd(*a, *b) };
+    let (a2, b2) = unsafe { vp2intersectd(*b, *a) };
+    (a1 | a2, b1 | b2)
 }
 
 #[inline(never)]
@@ -164,6 +206,11 @@ fn main() {
     black_box(unsafe { kernel_cd(&a512) });
     black_box(unsafe { kernel_vbmi(&a512, &b512) });
     black_box(unsafe { kernel_vpopcnt(&a512) });
+    black_box(unsafe { kernel_bitalg(&a512) });
+    black_box(unsafe { kernel_vbmi2(&a512, black_box(0x5555_5555_5555_5555)) });
+    black_box(unsafe { kernel_bf16(&a512, &a512, &b512) });
+    black_box(unsafe { kernel_fp16(&a512, &b512, &a512) });
+    black_box(unsafe { kernel_vp2intersect(&a512, &b512) });
     black_box(unsafe { kernel_ssse3(&a128, &b128) });
     black_box(unsafe { kernel_sha(&a128, &b128, &k128) });
     black_box(unsafe { kernel_bw(&a512, &b512) });
