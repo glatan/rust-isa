@@ -1,6 +1,6 @@
 # x86
 
-対象は `x86_64-unknown-linux-gnu` と `i686-unknown-linux-gnu` である。x86_64 を先に扱う。i686 は `sse2` と `avx2` のゼロコストを確認した。ほかの extension はまだ測っていない。
+対象は `x86_64-unknown-linux-gnu` と `i686-unknown-linux-gnu` である。x86_64 を先に扱う。i686 は `sse2` と `avx2` のゼロコスト、`avx512f` の値テストを確認した。ほかの extension はまだ測っていない。
 
 family は命令の種類に合わせて決める（`simd`、`crypto`、`integer` など）。公開パスは `x86::{family}::{extension}::{instruction}` とする。extension の名前は rustc の feature 名の `.` と `-` を `_` に置き換える（`sse4.1` は `sse4_1`、`avx10.1` は `avx10_1`）。
 
@@ -135,7 +135,7 @@ x86_64 で条件付きのゼロコストを確認した。条件、Cargo の設�
 
 ## 未対応
 
-- i686 の AVX-512 と暗号・整数の値テスト。
+- i686 の暗号・整数の値テスト。
 - AMX の `amx-avx512` と `amx-movrs`。`amx-tile` の load / store / matrix multiply は実装済みである。
 - AVX10.1 / AVX10.2 で `#[target_feature]` を使えない制約の再確認。
 - shuffle / compress のうち、intrinsics が往復を残す命令の個別確認。
