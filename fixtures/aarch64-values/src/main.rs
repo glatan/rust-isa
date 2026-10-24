@@ -200,6 +200,22 @@ pub unsafe extern "C" fn kernel_sve_add(a: &[f32; 4], b: &[f32; 4], out: &mut [f
     out[0]
 }
 
+#[inline(never)]
+#[target_feature(enable = "sve")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_sve_mul(a: &[f32; 4], b: &[f32; 4], out: &mut [f32; 4]) -> f32 {
+    unsafe { sve::mul_f32(a, b, out) };
+    out[0]
+}
+
+#[inline(never)]
+#[target_feature(enable = "sve")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_sve_sub(a: &[f32; 4], b: &[f32; 4], out: &mut [f32; 4]) -> f32 {
+    unsafe { sve::sub_f32(a, b, out) };
+    out[0]
+}
+
 fn run() -> u32 {
     let a = V128::from_bytes([1; 16]);
     let b = V128::from_bytes([2; 16]);
@@ -216,6 +232,8 @@ fn run() -> u32 {
     core::hint::black_box(unsafe { kernel_jsconv(1.0, 2.0) });
     let mut f32_out = [0.0f32; 4];
     core::hint::black_box(unsafe { kernel_sve_add(&[1.0; 4], &[2.0; 4], &mut f32_out) });
+    core::hint::black_box(unsafe { kernel_sve_mul(&[1.0; 4], &[2.0; 4], &mut f32_out) });
+    core::hint::black_box(unsafe { kernel_sve_sub(&[1.0; 4], &[2.0; 4], &mut f32_out) });
     core::hint::black_box(unsafe { kernel_f32mm(&[1.0; 4], &[2.0; 4], &mut f32_out) });
     let mut f64_out = [0.0f64; 2];
     core::hint::black_box(unsafe { kernel_f64mm(&[1.0; 2], &[2.0; 2], &mut f64_out) });

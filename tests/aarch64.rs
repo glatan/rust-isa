@@ -332,6 +332,30 @@ fn aarch64_pipeline() {
         "kernel_sve_add has no SVE add:\n{sve}"
     );
 
+    let sve_mul = function_at(&text, "<kernel_sve_mul>:");
+    assert!(
+        !sve_mul
+            .lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
+        "kernel_sve_mul calls C:\n{sve_mul}"
+    );
+    assert!(
+        sve_mul.lines().any(|line| line.contains("fmul\tz")),
+        "kernel_sve_mul has no SVE fmul:\n{sve_mul}"
+    );
+
+    let sve_sub = function_at(&text, "<kernel_sve_sub>:");
+    assert!(
+        !sve_sub
+            .lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
+        "kernel_sve_sub calls C:\n{sve_sub}"
+    );
+    assert!(
+        sve_sub.lines().any(|line| line.contains("fsub\tz")),
+        "kernel_sve_sub has no SVE fsub:\n{sve_sub}"
+    );
+
     let f32mm = function_at(&text, "<kernel_f32mm>:");
     assert!(
         !f32mm
