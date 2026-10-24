@@ -17,7 +17,8 @@
 //! in this module are not exposed.
 //!
 //! The value tests are not executed because QEMU does not implement this
-//! facility.
+//! facility. The `vblendq`, `veval`, `vmahg`, `vmalhg`, `vmahq`, and
+//! `vmalhq` wrappers use inline assembly and have not been value-tested.
 
 use super::vector::V128;
 use core::arch::asm;

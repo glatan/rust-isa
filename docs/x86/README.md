@@ -138,7 +138,7 @@ x86_64 で条件付きのゼロコストを確認した。条件、Cargo の設�
 
 ## 未対応
 
-- i686 の暗号の値テスト。
+- i686 の暗号の値テスト。AES / SHA / GFNI の `asm!` は i686 でリンクできず、QEMU-i386 は SM4 でも SIGILL を返す。
 - AMX の `amx-avx512` と `amx-movrs` の実機値テスト。命令の実装は済みである。
 - AVX10.1 / AVX10.2 で `#[target_feature]` を使えない制約の再確認。
 - shuffle / compress のうち、intrinsics が往復を残す命令の個別確認。
