@@ -13,7 +13,7 @@
 | 不安定    | `+name` は警告を出し、cfg は立たない        |
 | LLVM のみ | rustc の feature 名ではない。cfg に書けない |
 
-「ゼロコスト」の列は、確認した条件で命令間の store/load が消えるかを分ける。確認していない arch は未確認とする。条件は [実装方針](policy.md) に書く。
+ゼロコストはこの表に含めない。確認方法と結果は [ゼロコストの確認](zero-cost.md) に置く。
 
 警告が無く cfg も立たない指定は、上の四語に入れない。「属性には入るが cfg には出ない指定」として arch ごとの表に書く。
 
@@ -30,29 +30,26 @@ wasm32 では、モジュールが含む命令の feature を全体として要�
 ## 観測環境
 
 - rustc 1.99.1（58cf8f9c3、2026-10-13）
-- clang 23.1.1
-- 表の「実装」は、このリポジトリにその関数があるかを分ける。済みはあり、未は無い。未は、実装できない、という意味ではない。
+- clang 23.1.1。ARM と PowerPC の一部は clang 23.1.3 で再確認した。
 
 ## arch ごとの表
 
-| arch       | 対象                                                 | 既定の SIMD   | 安定の例                          | 実装                                                                   | ゼロコスト              | 表                                    |
-| ---------- | ---------------------------------------------------- | ------------- | --------------------------------- | ---------------------------------------------------------------------- | ----------------------- | ------------------------------------- |
-| x86        | `x86_64-unknown-linux-gnu`、`i686-unknown-linux-gnu` | `sse`、`sse2` | `avx2`、`avx512f`、`aes`、`bmi2`  | `sse` から `avx512`、暗号・整数の一部                                  | x86_64、i686 で条件付き | [x86](x86/feasibility.md)             |
-| AArch64    | `aarch64-unknown-linux-gnu`                          | `neon`        | `sve`、`sve2`、`dotprod`、`i8mm`  | `neon`、dotprod、fp16、bf16、i8mm、rdm、fcma、fhm、暗号、SVE の一部    | `neon`、SVE で条件付き  | [AArch64](aarch64/feasibility.md)     |
-| 32-bit ARM | `armv7-unknown-linux-gnueabihf`                      | なし          | 今回測った範囲ではなし            | `neon`、dotprod、fp16、i8mm、mve、mve.fp、暗号の一部                   | `neon` で条件付き       | [32-bit ARM](arm/feasibility.md)      |
-| PowerPC    | `powerpc64le-unknown-linux-gnu`                      | なし          | 今回測った範囲ではなし            | `altivec`、VSX、Power8 vector / crypto、Power9 / Power10 vector の一部 | 条件付き                | [PowerPC](powerpc/feasibility.md)     |
-| RISC-V     | `riscv64gc-unknown-linux-gnu`                        | なし          | `zba`、`zbb`、`zbc`、`zbs`、`zk*` | `zba` から `zbs`、`zkn` / `zks`、`v` の一部                            | `v` で条件付き          | [RISC-V](riscv/feasibility.md)        |
-| LoongArch  | `loongarch64-unknown-linux-gnu`                      | `lsx`         | `lasx`、`lbt`                     | `lsx`、`lasx` の一部                                                   | `lasx` で条件付き       | [LoongArch](loongarch/feasibility.md) |
-| s390x      | `s390x-unknown-linux-gnu`                            | なし          | `vector`、`vector-enhancements-*` | `vector` と vector-enhancements-1 の一部                               | `vector` で条件付き     | [s390x](s390x/feasibility.md)         |
-| MIPS       | `mips64-unknown-linux-gnuabi64`                      | なし          | 今回測った範囲ではなし            | `msa` と fp64 の一部                                                   | 条件付き                | [MIPS](mips/feasibility.md)           |
-| wasm32     | `wasm32-unknown-unknown`                             | なし          | `simd128`、`relaxed-simd`         | `simd128`、`relaxed-simd`、`wide-arithmetic`                           | 確認済み                | [wasm32](wasm32/feasibility.md)       |
+| arch       | 対象                                                 | 既定の SIMD   | 安定の例                          | 表                                    |
+| ---------- | ---------------------------------------------------- | ------------- | --------------------------------- | ------------------------------------- |
+| x86        | `x86_64-unknown-linux-gnu`、`i686-unknown-linux-gnu` | `sse`、`sse2` | `avx2`、`avx512f`、`aes`、`bmi2`  | [x86](x86/feasibility.md)             |
+| AArch64    | `aarch64-unknown-linux-gnu`                          | `neon`        | `sve`、`sve2`、`dotprod`、`i8mm`  | [AArch64](aarch64/feasibility.md)     |
+| 32-bit ARM | `armv7-unknown-linux-gnueabihf`                      | なし          | 今回測った範囲ではなし            | [32-bit ARM](arm/feasibility.md)      |
+| PowerPC    | `powerpc64le-unknown-linux-gnu`                      | なし          | 今回測った範囲ではなし            | [PowerPC](powerpc/feasibility.md)     |
+| RISC-V     | `riscv64gc-unknown-linux-gnu`                        | なし          | `zba`、`zbb`、`zbc`、`zbs`、`zk*` | [RISC-V](riscv/feasibility.md)        |
+| LoongArch  | `loongarch64-unknown-linux-gnu`                      | `lsx`         | `lasx`、`lbt`                     | [LoongArch](loongarch/feasibility.md) |
+| s390x      | `s390x-unknown-linux-gnu`                            | なし          | `vector`、`vector-enhancements-*` | [s390x](s390x/feasibility.md)         |
+| MIPS       | `mips64-unknown-linux-gnuabi64`                      | なし          | 今回測った範囲ではなし            | [MIPS](mips/feasibility.md)           |
+| wasm32     | `wasm32-unknown-unknown`                             | なし          | `simd128`、`relaxed-simd`         | [wasm32](wasm32/feasibility.md)       |
 
-## ゼロコストの状態
-
-wasm32 の `simd128` と `relaxed-simd` は、往復が消えることを確認してある。native は x86_64、AArch64、RISC-V、LoongArch、s390x、32-bit ARM、PowerPC、MIPS で条件付きのゼロコストを確認した。LTO モードを Rust と C で一致させ、C の target-features を Rust の部分集合にすると、C の関数がインラインされる。128-bit は x86_64 で `asm!` と `u128` でも確認した。詳しくは [ゼロコストの確認](zero-cost.md) を参照する。
+実装状況は各 arch の `README.md` を正とする。ゼロコストの方法と結果は [ゼロコストの確認](zero-cost.md) に置く。この文書には状態表を置かない。
 
 ## 表の限界
 
 - 表は、調べた feature だけを含む。rustc がそのターゲットに持つ feature の全体ではない。
 - cfg は、そのクレートをコンパイルするときのフラグを見る。呼び出し側の `#[target_feature]` や `cargo rustc -- -C target-feature` は、依存クレートの cfg を変えない。
-- cfg が立つかは、rustc のバージョンで変わる。観測したバージョンを各 arch の表に書く。
+- cfg が立つかは、rustc のバージョンで変わる。観測したバージョンを各 arch の「確認したこと」に書く。

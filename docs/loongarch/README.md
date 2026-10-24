@@ -30,9 +30,10 @@ family は命令の種類に合わせて決める（`simd`、`system` など）�
 
 ### システム
 
-| extension        | 実装済み命令 | 未実装命令                      | 値テスト |
-| ---------------- | ------------ | ------------------------------- | -------- |
-| `lamcas` / `scq` | なし         | 同期命令のため命令 API にしない | 対象外   |
+| extension | 実装済み命令 | 未実装命令 | 値テスト |
+| --------- | ------------ | ---------- | -------- |
+| `lamcas`  | なし         | なし       | 対象外   |
+| `scq`     | なし         | なし       | 対象外   |
 
 ## 実装方式
 
@@ -46,7 +47,7 @@ family は命令の種類に合わせて決める（`simd`、`system` など）�
 
 ## ゼロコスト
 
-- 条件付きでゼロコストを確認した。`xvadd.w` と `xvmul.w` が並び、`call` と命令間の store/load が無かった。
+- 結果は [ゼロコストの確認](../zero-cost.md) を見る。
 - `xvshuf.b` は intrinsics（`__lasx_xvshuf_b`）が必要で、2 命令を合成すると `xvshuf.b` の間に store/load が残った。shuffle 系は命令ごとに zero-cost を確認する。
 - C は `-mlasx` を使う。`__lasx_xvld` / `__lasx_xvst` の intrinsics では、インライン後も一時値の store/load が残った。GCC の vector 拡張と通常のロード・ストアを使う。
 - `#[target_feature(enable = "lasx")]` をカーネルに付ける。
@@ -67,7 +68,7 @@ family は命令の種類に合わせて決める（`simd`、`system` など）�
 
 ## 未対応
 
-- `lbt`、`lamcas`、`scq`。
+- `lamcas`、`scq`。同期命令のため、値 API にしない。
 - LASX の shuffle。`xvshuf.b` は intrinsics で往復が残るため、現在の API には
   含めていない。
 - 追加した LSX / LASX の命令のゼロコスト確認。現在の zero-cost は `xvadd.w` と `xvmul.w` だけである。

@@ -74,6 +74,12 @@ pub extern "C" fn kernel_add(a: &V128, b: &V128) -> V128 {
 
 #[inline(never)]
 #[unsafe(no_mangle)]
+pub extern "C" fn kernel_mul(a: &V128, b: &V128) -> V128 {
+    mul(mul(*a, *b), *b)
+}
+
+#[inline(never)]
+#[unsafe(no_mangle)]
 pub extern "C" fn kernel_tbl(a: &V128, idx: &V128) -> V128 {
     tbl(tbl(*a, *idx), *idx)
 }
@@ -188,6 +194,9 @@ unsafe fn dot() -> bool {
         if value != 16 {
             return false;
         }
+    }
+    if kernel_mul(&a, &b).to_bytes() != mul(mul(a, b), b).to_bytes() {
+        return false;
     }
     true
 }

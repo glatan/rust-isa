@@ -20,17 +20,9 @@ make duplicates DUPLICATES_ARGS='--arch powerpc'
 
 一つでも違う場合は、extension ごとに C 関数を分ける。公開ラッパーは常に extension ごとに置く。
 
-## 主な重複
+## arch ごとの重複
 
-| arch    | 重複の種類                                          | 扱い                                                                               |
-| ------- | --------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| x86     | SSE2 / AVX / AVX2 / AVX-512 の 128/256/512-bit 形式 | 形式ごとにラッパーを分ける。同じ形式の演算は内部カーネルを共有できる。             |
-| x86     | AVX-512F / BW / DQ / VL / AVX10                     | feature と値幅が同じ場合だけ共有する。マスクの有無は別関数にする。                 |
-| PowerPC | Altivec / VSX / Power8〜10                          | 同じ mnemonic でも feature と値型が違うことがある。dedup表で確認してから共有する。 |
-| AArch64 | NEON / SVE                                          | API の形が違う（`V128` とスライス）。C も共有しない。                              |
-| AArch64 | NEON / fp16 / fcma / fhm                            | 同じ mnemonic でも要素型が違う。別関数にする。                                     |
-| RISC-V  | V の固定長 API / スライス API                       | API の形が違う。C も共有しない。                                                   |
-| ARM     | NEON / MVE                                          | MVE は対象外。共有しない。                                                         |
+現在の重複と扱いは、各 arch の `README.md` の実装方式と `make duplicates` の出力を見る。この文書は判定規則だけを置き、arch ごとのスナップショットは持たない。
 
 ## レビュー
 

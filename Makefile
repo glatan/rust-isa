@@ -50,7 +50,10 @@ help:
 		'test-wasip1                  wasm32-wasip1 の nextest と doctest' \
 		'test-wasip1-wide-arithmetic  wide-arithmetic 有効時の nextest と doctest' \
 		'coverage                     arch/extension ごとの実装状況を表示する' \
-		'coverage-check               README の表の形式を検査する' \
+		'coverage-check               README とゼロコスト結果表の形式を検査する' \
+		'zero-cost-check              ゼロコスト結果表の fixture と kernel を検査する' \
+		'docs-check                   文書間リンク・アンカー・索引からの到達性を検査する' \
+		'fixtures-check               fixtures/・target-nested と fixture-matrix.md の対応を検査する' \
 		'duplicates                   同じ arch で重複する命令名を表示する'
 
 .PHONY: image
@@ -61,10 +64,22 @@ image:
 coverage:
 	$(PODMAN_RUN) python3 tools/coverage.py $(COVERAGE_ARGS)
 
+.PHONY: zero-cost-check
+zero-cost-check:
+	$(PODMAN_RUN) python3 tools/zero_cost.py --check
+
 .PHONY: coverage-check
-coverage-check:
+coverage-check: zero-cost-check
 	$(PODMAN_RUN) python3 tools/coverage.py --check
 	$(PODMAN_RUN) python3 tools/doc_names.py --check
+
+.PHONY: docs-check
+docs-check:
+	$(PODMAN_RUN) python3 tools/doc_links.py --check
+
+.PHONY: fixtures-check
+fixtures-check:
+	$(PODMAN_RUN) python3 tools/fixtures.py --check
 
 .PHONY: check-mnemonics
 check-mnemonics:
@@ -93,7 +108,7 @@ check-docs:
 		CARGO_TARGET_DIR=$(WASM_DOC_TARGET_DIR) RUSTDOCFLAGS="-D warnings -C target-feature=+simd128,+relaxed-simd" cargo doc --no-deps --features wide-arithmetic --target $(WASM_UNKNOWN_TARGET)'
 
 .PHONY: test
-test: fmt-check coverage-check check-mnemonics check-docs test-host test-wasip1 test-wasip1-wide-arithmetic
+test: fmt-check coverage-check docs-check fixtures-check check-mnemonics check-docs test-host test-wasip1 test-wasip1-wide-arithmetic
 
 .PHONY: test-host
 test-host:

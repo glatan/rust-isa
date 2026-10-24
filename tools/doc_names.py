@@ -31,6 +31,8 @@ MACRO_ARG = re.compile(r"^\s*([A-Za-z_][A-Za-z0-9_]*)\s*,")
 SKIP_ROWS = {
     ("mips", "fp64"),
     ("riscv", "unaligned_vector_mem"),
+    # Zbkc is the crypto subset of Zbc. The wrappers live in zbc.
+    ("riscv", "zbkc"),
 }
 
 # Families whose lane/suffix variants are intentionally represented by one

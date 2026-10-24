@@ -74,4 +74,30 @@ fn loongarch_pipeline() {
         .collect();
     assert_eq!(found.len(), 2, "kernel_mul body:\n{mul}");
     assert_eq!(found[1], found[0] + 1, "vmul.w is not adjacent:\n{mul}");
+
+    for (symbol, mnemonic) in [
+        ("<kernel_xvadd>:", "xvadd.w"),
+        ("<kernel_xvmul>:", "xvmul.w"),
+    ] {
+        let body = function_at(&text, symbol);
+        assert!(
+            !body
+                .lines()
+                .any(|line| line.split_whitespace().any(|word| word == "bl")),
+            "{symbol} calls C:\n{body}"
+        );
+        let lines: Vec<_> = body.lines().collect();
+        let found: Vec<_> = lines
+            .iter()
+            .enumerate()
+            .filter(|(_, line)| line.contains(mnemonic))
+            .map(|(index, _)| index)
+            .collect();
+        assert_eq!(found.len(), 2, "{symbol} body:\n{body}");
+        assert_eq!(
+            found[1],
+            found[0] + 1,
+            "{mnemonic} is not adjacent:\n{body}"
+        );
+    }
 }

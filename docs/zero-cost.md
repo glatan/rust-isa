@@ -1,8 +1,8 @@
 # ゼロコストの確認
 
-この文書は、native のゼロコストをどのように確認したかと、arch ごとの結果をまとめる。条件と方針は [実装方針](policy.md) に置く。
+この文書は、native のゼロコストをどのように確認したかと、arch ごとの結果をまとめる。条件と方針は [実装方針](policy.md) に置く。`make zero-cost-check` は、結果表の fixture と kernel の実在、`fixtures/*-link` の網羅、LTO / call / store-load / 結果の値、ゼロコスト行の整合を検査する。
 
-確認した環境は rustc 1.99.1、clang/lld 23.1.1 である。
+確認した環境は rustc 1.99.1、clang/lld 23.1.1 である。ARM と PowerPC の一部は clang 23.1.3 で再確認した。
 
 ## 方法
 
@@ -27,43 +27,57 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 
 ## 結果
 
-| arch       | extension                   | 確認した命令                    | `call` | 命令間の store/load | 結果       |
-| ---------- | --------------------------- | ------------------------------- | ------ | ------------------- | ---------- |
-| x86_64     | `sse2`                      | `paddd`                         | なし   | なし                | ゼロコスト |
-| i686       | `sse2`                      | `paddd`、`pmuludq`              | なし   | なし                | ゼロコスト |
-| i686       | `avx2`                      | `vpaddd`、`vpmulld`             | なし   | なし                | ゼロコスト |
-| x86_64     | `avx2`                      | `vpaddd`、`vpmulld`、`vpshufb`  | なし   | なし                | ゼロコスト |
-| x86_64     | `aes` + `fma` fixture       | `aesenc`、`vfmadd`              | なし   | なし                | ゼロコスト |
-| x86_64     | `avx512f`                   | `vpaddd`                        | なし   | なし                | ゼロコスト |
-| x86_64     | `aes`                       | `aesenc`                        | なし   | なし                | ゼロコスト |
-| x86_64     | `fma`                       | `vfmadd`                        | なし   | なし                | ゼロコスト |
-| x86_64     | `avx10.1`                   | `vpaddd`、`vpmulld`             | なし   | なし                | ゼロコスト |
-| x86_64     | `sha`                       | `sha256rnds2`                   | なし   | なし                | ゼロコスト |
-| x86_64     | `avx512bw`                  | `vpaddb`                        | なし   | なし                | ゼロコスト |
-| x86_64     | `avx512vl`                  | `vpaddb`                        | なし   | なし                | ゼロコスト |
-| x86_64     | `avx512vl` fixture          | `vpaddb`                        | なし   | なし                | ゼロコスト |
-| x86_64     | `avx512vl` + `vbmi` fixture | `vpermb`                        | なし   | なし                | ゼロコスト |
-| x86_64     | `avx512dq`                  | `vpmullq`                       | なし   | なし                | ゼロコスト |
-| x86_64     | `avx512ifma`                | `vpmadd52luq`                   | なし   | なし                | ゼロコスト |
-| x86_64     | `avx512vbmi`                | `vpermb`                        | なし   | なし                | ゼロコスト |
-| x86_64     | `avx512vnni`                | `vpdpbusd`                      | なし   | なし                | ゼロコスト |
-| x86_64     | `gfni`                      | `gf2p8affineqb`                 | なし   | なし                | ゼロコスト |
-| x86_64     | `vaes`                      | `vaesenc`                       | なし   | なし                | ゼロコスト |
-| x86_64     | `vpclmulqdq`                | `vpclmulqdq`                    | なし   | なし                | ゼロコスト |
-| AArch64    | `neon`                      | `add v0.4s`、`mul v0.4s`、`tbl` | なし   | なし                | ゼロコスト |
-| AArch64    | `neon` + `dotprod` fixture  | `add`、`tbl`、`sdot`            | なし   | なし                | ゼロコスト |
-| AArch64    | `dotprod`                   | `sdot`                          | なし   | なし                | ゼロコスト |
-| RISC-V     | `v`                         | `vadd.vv`、`vmul.vv`            | なし   | なし                | ゼロコスト |
-| RISC-V     | `v` fixture                 | `vadd.vv`、`vmul.vv`            | なし   | なし                | ゼロコスト |
-| LoongArch  | `lasx`                      | `xvadd.w`、`xvmul.w`            | なし   | なし                | ゼロコスト |
-| LoongArch  | `lsx` fixture               | `vadd.w`、`vmul.w`              | なし   | なし                | ゼロコスト |
-| LoongArch  | `lasx` shuffle              | `xvshuf.b`                      | なし   | あり                | 往復が残る |
-| s390x      | `vector`                    | `vaf`、`vmlf`、`vperm`          | なし   | なし                | ゼロコスト |
-| 32-bit ARM | `neon`                      | `vadd.i32`、`vmul.i32`          | なし   | なし                | ゼロコスト |
-| PowerPC    | `altivec`                   | `vadduwm`、`vmuluwm`、`vperm`   | なし   | なし                | ゼロコスト |
-| PowerPC    | `altivec` fixture           | `vadduwm`、`vmuluwm`            | なし   | なし                | ゼロコスト |
-| MIPS       | `msa`                       | `addv.w`、`mulv.w`              | なし   | なし                | ゼロコスト |
-| wasm32     | `wide-arithmetic`           | `i64.add128` など               | なし   | なし                | wat で確認 |
+`fixture` は測定に使ったビルド、`kernel` は disassembly した関数である。`manual` はこの文書の方法で作った一時バイナリで、リポジトリの fixture ではない。`(arch, fixture, kernel, extension, 確認した命令)` を測定のキーとする。どの行も Rust と C の LTO モードを一致させ、`lto = "thin"` で確認した。fat は「LTO」の節で arch ごとに確認する。
+
+`manual` の行は、[方法](#方法) の `RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release` で作った `no_std` / `no_main` のバイナリを `llvm-objdump` で見る。再現手順は [再現の例](#再現の例) に従う。`make zero-cost-check` は `manual` の行を fixture / kernel の検査対象にしないが、各行に理由があることは検査する。
+
+`manual` が残るのは、RISC-V の `vrgather` / `vcompress`、LoongArch の `xvshuf.b`、s390x、32-bit ARM、MIPS の `vshf.w` である。値テスト fixture にゼロコスト用カーネルがない、ビルド条件がゼロコスト条件と一致しない、または `llvm-mc` でバイト列をデコードする必要があるため、個別の link fixture にしていない。
+
+| arch       | fixture                         | kernel                                                     | LTO  | extension                  | 確認した命令                      | `call` | 命令間の store/load | 結果                      |
+| ---------- | ------------------------------- | ---------------------------------------------------------- | ---- | -------------------------- | --------------------------------- | ------ | ------------------- | ------------------------- |
+| x86_64     | `fixtures/sse2-link`            | `kernel`                                                   | thin | `sse2`                     | `paddd`                           | なし   | なし                | ゼロコスト                |
+| i686       | `fixtures/i686-values`          | `kernel_sse2`                                              | thin | `sse2`                     | `paddd`、`pmuludq`                | なし   | なし                | ゼロコスト                |
+| i686       | `fixtures/i686-values`          | `kernel_avx2`                                              | thin | `avx2`                     | `vpaddd`、`vpmulld`               | なし   | なし                | ゼロコスト                |
+| x86_64     | `fixtures/avx2-link`            | `kernel`                                                   | thin | `avx2`                     | `vpaddd`、`vpmulld`               | なし   | なし                | ゼロコスト                |
+| x86_64     | `fixtures/x86-zero-cost-link`   | `kernel_pshufb`                                            | thin | `avx2`                     | `vpshufb`                         | なし   | なし                | ゼロコスト                |
+| x86_64     | `fixtures/avx512f-link`         | `kernel`                                                   | thin | `avx512f`                  | `vpaddd`                          | なし   | なし                | ゼロコスト                |
+| x86_64     | `fixtures/aes-link`             | `kernel_aes`                                               | thin | `aes`                      | `aesenc`                          | なし   | なし                | ゼロコスト                |
+| x86_64     | `fixtures/fma-link`             | `kernel_fma`                                               | thin | `fma`                      | `vfmadd`                          | なし   | なし                | ゼロコスト                |
+| x86_64     | `fixtures/x86-zero-cost-link`   | `kernel_avx10_1`                                           | thin | `avx10.1`                  | `vpaddd`、`vpmulld`               | なし   | なし                | ゼロコスト                |
+| x86_64     | `fixtures/x86-zero-cost-link`   | `kernel_sha`                                               | thin | `sha`                      | `sha256rnds2`                     | なし   | なし                | ゼロコスト                |
+| x86_64     | `fixtures/x86-zero-cost-link`   | `kernel_bw`                                                | thin | `avx512bw`                 | `vpaddb`                          | なし   | なし                | ゼロコスト                |
+| x86_64     | `fixtures/avx512vl-link`        | `kernel_add`、`kernel_perm`                                | thin | `avx512vl` + `avx512vbmi`  | `vpaddb`、`vpermb`                | なし   | なし                | ゼロコスト                |
+| x86_64     | `fixtures/x86-zero-cost-link`   | `kernel_dq`                                                | thin | `avx512dq`                 | `vpmullq`                         | なし   | なし                | ゼロコスト                |
+| x86_64     | `fixtures/x86-zero-cost-link`   | `kernel_ifma`                                              | thin | `avx512ifma`               | `vpmadd52luq`                     | なし   | なし                | ゼロコスト                |
+| x86_64     | `fixtures/x86-zero-cost-link`   | `kernel_vnni`                                              | thin | `avx512vnni`               | `vpdpbusd`                        | なし   | なし                | ゼロコスト                |
+| x86_64     | `fixtures/x86-zero-cost-link`   | `kernel_gfni`                                              | thin | `gfni`                     | `gf2p8affineqb`                   | なし   | なし                | ゼロコスト                |
+| x86_64     | `fixtures/x86-zero-cost-link`   | `kernel_vaes`                                              | thin | `vaes`                     | `vaesenc`                         | なし   | なし                | ゼロコスト                |
+| x86_64     | `fixtures/x86-zero-cost-link`   | `kernel_vpclmul`                                           | thin | `vpclmulqdq`               | `vpclmulqdq`                      | なし   | なし                | ゼロコスト                |
+| AArch64    | `fixtures/aarch64-values`       | `kernel_add`                                               | thin | `neon`                     | `add v0.4s`                       | なし   | なし                | ゼロコスト                |
+| AArch64    | `fixtures/aarch64-values`       | `kernel_mul`                                               | thin | `neon`                     | `mul v0.4s`                       | なし   | なし                | ゼロコスト                |
+| AArch64    | `fixtures/aarch64-values`       | `kernel_tbl`                                               | thin | `neon`                     | `tbl`                             | なし   | なし                | ゼロコスト                |
+| AArch64    | `fixtures/aarch64-values`       | `kernel_dot`                                               | thin | `dotprod`                  | `sdot`                            | なし   | なし                | ゼロコスト                |
+| RISC-V     | `fixtures/riscv-values`         | `kernel_add`                                               | thin | `v`                        | `vadd.vv`                         | なし   | なし                | ゼロコスト                |
+| RISC-V     | `fixtures/riscv-values`         | `kernel_mul`                                               | thin | `v`                        | `vmul.vv`                         | なし   | なし                | ゼロコスト                |
+| RISC-V     | manual                          | —                                                          | thin | `v`                        | `vrgather`                        | なし   | あり                | 往復が残る                |
+| RISC-V     | manual                          | —                                                          | thin | `v`                        | `vcompress`                       | なし   | あり                | 往復が残る                |
+| LoongArch  | `fixtures/loongarch-values`     | `kernel_add`                                               | thin | `lsx`                      | `vadd.w`                          | なし   | なし                | ゼロコスト                |
+| LoongArch  | `fixtures/loongarch-values`     | `kernel_mul`                                               | thin | `lsx`                      | `vmul.w`                          | なし   | なし                | ゼロコスト                |
+| LoongArch  | `fixtures/loongarch-values`     | `kernel_xvadd`                                             | thin | `lasx`                     | `xvadd.w`                         | なし   | なし                | ゼロコスト                |
+| LoongArch  | `fixtures/loongarch-values`     | `kernel_xvmul`                                             | thin | `lasx`                     | `xvmul.w`                         | なし   | なし                | ゼロコスト                |
+| LoongArch  | manual                          | —                                                          | thin | `lasx`                     | `xvshuf.b`                        | なし   | あり                | 往復が残る                |
+| s390x      | manual                          | —                                                          | thin | `vector`                   | `vaf`、`vmlf`                     | なし   | なし                | ゼロコスト                |
+| s390x      | manual                          | —                                                          | thin | `vector`                   | `vperm`                           | なし   | なし                | ゼロコスト                |
+| 32-bit ARM | manual                          | —                                                          | thin | `neon`                     | `vadd.i32`、`vmul.i32`            | なし   | なし                | ゼロコスト                |
+| 32-bit ARM | manual                          | —                                                          | thin | `neon`                     | `vtbl1_s8`、`vtbl2_s8`            | —      | —                   | 8-byte table のみ         |
+| PowerPC    | `fixtures/powerpc-values`       | `kernel_add`                                               | thin | `altivec`                  | `vadduwm`                         | なし   | なし                | ゼロコスト                |
+| PowerPC    | `fixtures/powerpc-values`       | `kernel_mul`                                               | thin | `altivec`                  | `vmuluwm`                         | なし   | なし                | ゼロコスト                |
+| PowerPC    | `fixtures/powerpc-values`       | `kernel_perm`                                              | thin | `altivec`                  | `vperm`                           | なし   | なし                | ゼロコスト                |
+| MIPS       | `fixtures/mips-values`          | `kernel_add`                                               | thin | `msa`                      | `addv.w`                          | なし   | なし                | ゼロコスト                |
+| MIPS       | `fixtures/mips-values`          | `kernel_mul`                                               | thin | `msa`                      | `mulv.w`                          | なし   | なし                | ゼロコスト                |
+| MIPS       | manual                          | —                                                          | thin | `msa`                      | `vshf.w`                          | —      | —                   | スカラー C フォールバック |
+| wasm32     | `fixtures/wasm-simd-link`       | `kernel_one`、`kernel_two`、`kernel_relaxed`               | thin | `simd128` + `relaxed-simd` | `f32x4.add`、`f32x4.relaxed_madd` | なし   | なし                | wat で確認                |
+| wasm32     | `fixtures/wide-arithmetic-link` | `kernel_add`、`kernel_sub`、`kernel_mul_u`、`kernel_mul_s` | thin | `wide-arithmetic`          | `i64.add128` など                 | なし   | なし                | wat で確認                |
 
 ## IR レベルの確認
 
@@ -74,15 +88,7 @@ PowerPC は ELF のリンクが `.TOC.` で失敗したため、最初は Rust �
 
 ## 未確認
 
-現在、ゼロコストを確認していない arch はない。値テストは native の多くの arch で未整備である。
-
-イメージには `qemu-user-static` を入れ、静的な `no_std` テストを QEMU で実行した。
-
-- AArch64、ARMv7、RISC-V、LoongArch、s390x、PowerPC、MIPS、i686 は、Rust から C を呼ぶ値テストが通った。
-- MIPS は、共有の静的配列や lane を引数で選ぶ関数を使うと codegen の都合で一致しなかった。lane ごとに独立した関数にすると通った。
-- 終了コードのインライン asm は、レジスタを明示する。`in(reg)` と `li` の組み合わせで、宛先レジスタとオペランドが同じになり、値が壊れることがあった。
-
-QEMU の runner と確認方法は [開発環境](development.md) に書く。
+arch 単位では、ゼロコストを確認していない arch はない。extension や命令単位の未確認は、各 arch の README と上の結果表にある。
 
 ## スケーラブルベクタ
 
@@ -92,32 +98,9 @@ RVV のスライス API も RISC-V で確認した。C のループを Rust の�
 
 どちらも命令ごとの API ではなく、スライスに対するループになる。固定長 API の「命令間の store/load」とは別に扱う。
 
-## shuffle
+## shuffle と compress
 
-shuffle は命令ごとに結果が違う。
-
-| arch      | 命令                    | 結果                                        |
-| --------- | ----------------------- | ------------------------------------------- |
-| x86_64    | `vpshufb`               | zero-cost                                   |
-| AArch64   | `tbl`                   | zero-cost                                   |
-| PowerPC   | `vperm`                 | zero-cost                                   |
-| RISC-V    | `vrgather`              | store/load が残る                           |
-| LoongArch | `xvshuf.b`              | store/load が残る                           |
-| s390x     | `vec_perm`              | zero-cost                                   |
-| MIPS      | `vshf.w`                | スカラー C フォールバック                   |
-| ARMv7     | `vtbl1_s8` / `vtbl2_s8` | 8-byte table のみ。128-bit の単一命令はない |
-
-`intrinsics` が必要な shuffle は、SROA が一時値を消せず、往復が残ることがある。命令ごとに disassembly を確認する。
-
-## dot / compress
-
-| arch    | 命令        | 結果              |
-| ------- | ----------- | ----------------- |
-| x86_64  | `vpdpbusd`  | zero-cost         |
-| AArch64 | `sdot`      | zero-cost         |
-| RISC-V  | `vcompress` | store/load が残る |
-
-`expand` など、まだ確認していない命令は、実装時に個別に確認する。
+shuffle と compress は、intrinsics が必要な場合に SROA が一時値を消せず、往復が残ることがある。結果は上の表の `vpshufb`、`tbl`、`vperm`（PowerPC と s390x）、`vrgather`、`xvshuf.b`、`vshf.w`、`vcompress` の行を見る。`expand` など未確認の命令は、実装時に個別に確認する。
 
 ## Rust の属性
 

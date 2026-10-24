@@ -85,7 +85,18 @@ pub unsafe extern "C" fn kernel_mul(a: &V128, b: &V128) -> V128 {
     unsafe { mul(mul(*a, *b), *b) }
 }
 
+#[inline(never)]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_perm(a: &V128, b: &V128, c: &V128) -> V128 {
+    unsafe { vperm(vperm(*a, *b, *c), *b, *c) }
+}
+
 fn run() -> u32 {
+    let a = V128::from_bytes([1; 16]);
+    let b = V128::from_bytes([2; 16]);
+    let c = V128::from_bytes([3; 16]);
+    core::hint::black_box(unsafe { kernel_perm(&a, &b, &c) });
+
     if !load_store() {
         return 1;
     }

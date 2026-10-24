@@ -1,13 +1,12 @@
 # native の値テスト
 
-この文書は、native arch の値テストを `tests/` に追加するときの設計である。i686 の SSE2 / AVX2 値テストを `fixtures/i686-values` で実行している。
+この文書は、native arch の値テストを `tests/` に追加するときの設計である。実行状況と runner は [値テストの fixture](fixture-matrix.md) と各 arch の `README.md` を参照する。
 
 ## 前提
 
 - 開発イメージには `qemu-user-static` と、arch ごとの runner が入っている。
 - QEMU の runner は、静的にリンクしたテストバイナリを前提にする。
 - テストは `no_std` のバイナリとしてビルドし、終了コードで合否を返す。
-- 2026-10-20 の調査では、Rust の `_start` から C を呼ぶ形で、AArch64、ARMv7、RISC-V、LoongArch、s390x、PowerPC、MIPS、i686 の値テストが通った。
 
 ## 置き場所
 
@@ -46,12 +45,6 @@ native の API を実装したら、extension ごとに次を追加する。
 
 `tests/<arch>.rs` には、`cargo build`、QEMU の実行、終了コードの確認を追加する。失敗時は build log と終了コードを表示する。
 
-## 現在の状態
+## 実行できない命令
 
-- `fixtures/i686-values` は `no_std` の `_start` を持ち、終了コードで合否を返す。
-- i686 は `cargo build -Z build-std=core --target i686-unknown-linux-gnu` でビルドし、QEMU-i386 で SSE2 と AVX2 の値テストを実行する。
-- AArch64 は同じ形でビルドし、QEMU-AArch64 で NEON と dotprod の値テストを実行する。
-- RISC-V、LoongArch、s390x、ARMv7、PowerPC、MIPS も同じ形でビルドし、それぞれの QEMU で主要な SIMD 命令を実行する。
-- wasm32 は `fixtures/wide-arithmetic-link` をビルドし、`wasm2wat` で `wide-arithmetic` の命令を確認する。
-- 追加した extension の値テストは、NEON / fp16 / dotprod / i8mm / fcma / fhm / AES / SHA-2 / SHA-3 / SM4 / CRC / SVE を AArch64、`zba` から `zbs` / `zkn` / `zks` / Zfh / Zfa / V / スライス API を RISC-V、LSX / LASX を LoongArch、vector を s390x、 NEON / dotprod / fp16 / 暗号を ARM、Altivec / VSX / Power8 を PowerPC、 MSA を MIPS に追加した。
-- QEMU が実行しない命令（AArch64 の RDM / BF16、AArch64 SME の `__arm_get_current_vg`）は、API のコンパイルだけを確認する。
+QEMU が実行しない命令は、API のコンパイルだけを確認する。arch ごとの対象は [値テストの fixture](fixture-matrix.md) の「実行できないもの」に置く。

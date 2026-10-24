@@ -272,3 +272,62 @@ fn avx512vl_pipeline() {
         "store or load between vpermb:\n{perm}"
     );
 }
+
+#[test]
+fn x86_zero_cost_pipeline() {
+    if std::env::var_os("RUST_ISA_NESTED").is_some() {
+        return;
+    }
+    let dir = nested_dir("x86-zero-cost-link");
+    let rustflags = "-C target-feature=+sha,+avx,+avx2,+avx512f,+avx512bw,+avx512dq,+avx512ifma,+avx512vnni,+avx512vl,+gfni,+vaes,+vpclmulqdq,+avx10.1 -C linker-plugin-lto -C linker=clang -C link-arg=-fuse-ld=lld";
+    let output = cargo(&dir)
+        .env("RUSTFLAGS", rustflags)
+        .args(["build", "-p", "x86-zero-cost-link", "--release"])
+        .output()
+        .expect("cargo");
+    assert!(output.status.success(), "{}", output_text(&output));
+
+    let binary = dir.join("release/x86-zero-cost-link");
+    assert!(binary.is_file(), "missing {}", binary.display());
+    let output = Command::new("llvm-objdump")
+        .args(["-d", "--no-show-raw-insn"])
+        .arg(&binary)
+        .output()
+        .expect("llvm-objdump");
+    assert!(output.status.success(), "{}", output_text(&output));
+    let text = String::from_utf8_lossy(&output.stdout);
+
+    for (symbol, mnemonic) in [
+        ("<kernel_sha>:", "sha256rnds2"),
+        ("<kernel_bw>:", "vpaddb"),
+        ("<kernel_dq>:", "vpmullq"),
+        ("<kernel_ifma>:", "vpmadd52luq"),
+        ("<kernel_vnni>:", "vpdpbusd"),
+        ("<kernel_gfni>:", "gf2p8affineqb"),
+        ("<kernel_pshufb>:", "vpshufb"),
+        ("<kernel_vaes>:", "vaesenc"),
+        ("<kernel_vpclmul>:", "vpclmulqdq"),
+        ("<kernel_avx10_1>:", "vpaddd"),
+        ("<kernel_avx10_1>:", "vpmulld"),
+    ] {
+        assert_adjacent(&text, symbol, mnemonic);
+    }
+}
+
+fn assert_adjacent(text: &str, symbol: &str, mnemonic: &str) {
+    let body = function_at(text, symbol);
+    assert!(!body.contains("call"), "{symbol} calls C:\n{body}");
+    let lines: Vec<_> = body.lines().collect();
+    let found: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains(mnemonic))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(found.len(), 2, "{symbol} {mnemonic} body:\n{body}");
+    assert_eq!(
+        found[1],
+        found[0] + 1,
+        "store or load between {mnemonic} in {symbol}:\n{body}"
+    );
+}

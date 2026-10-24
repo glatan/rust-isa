@@ -1,10 +1,10 @@
 # スケーラブルベクタと状態を持つ拡張の設計
 
-この文書は、SVE、RVV、SME、AMX、PowerPC MMA の API 設計である。実装状況は末尾に書く。
+この文書は、SVE、RVV、SME、AMX、PowerPC MMA の API 設計である。実装状況は各 arch の `README.md` を参照する。
 
 ## 共通の考え方
 
-- 固定長の `V128` / `V256` で表せない値は、命令ごとの関数にしない。
+- 固定長の `V128` / `V256` で表せない値は、固定長レジスタ型の命令別 API にしない。スライス操作として、命令名に対応する関数を出す。
 - 状態を持つ拡張は、状態の開始と終了を guard 型で表す。
 - guard の作成は `unsafe fn` とする。CPU の対応と状態の初期化は呼び出し側の責任である。
 - guard はスレッドをまたいで移動しない。`PhantomData<*const ()>` などで `Send` と `Sync` を外す。
@@ -17,7 +17,7 @@
 
 SVE のベクタ長は実行時に決まる。固定長の値型では表せない。
 
-**決定**: スライス API だけを提供する。命令ごとの API は出さない。
+**決定**: スライス API だけを提供する。固定長レジスタ型の命令別 API は出さない。スライス操作として、命令名に対応する関数を出す。
 
 ```rust
 pub fn add_f32(a: &[f32], b: &[f32], out: &mut [f32])
@@ -116,25 +116,12 @@ pub unsafe fn xvi4ger8(_acc: &mut MmaAccumulator, a: &[u8], b: &[u8]) { /* ... *
 - 命令は `&mut MmaAccumulator` を引数に取る。
 - `xxmfacc` に相当する値の取り出しは、別の関数にする。
 
-## 実装状況
+## 実装状況の参照
 
-- SVE のスライス API: 実装済み。`add` / `mul` の f32 / f64 / i32。QEMU-AArch64 で
-  値テストを実行する。C のループは `#[target_feature(enable = "sve")]` の
-  カーネルへインラインされる。
-- RVV のスライス API: 実装済み。`add` / `mul` / `sub` / `div` / `min` / `max`、比較、load / store の f32 / i32。QEMU-RISC-V で値テストを実行する。VL は C の `vsetvl` が決める。
-- SME: `SmeGuard` とストリーミングの `add` / `mul` (f32) を実装した。ZA は対象外。 no_std の fixture は Arm SME ABI ランタイムの `__arm_get_current_vg` をリンク
-  しないため、SME の値テストはまだない。
-- AMX: `TileConfig`、`AmxGuard`、`tilezero`、タイル load / store、matrix multiply を実装した。状態を要求する命令は `&AmxGuard` を取る。OS のタイル状態の許可が必要なため、値テストは限定的である。
-- PowerPC MMA: `MmaAccumulator`、`xvi4ger8` 系、`xxmfacc`、`xxmtacc`、`xxsetaccz` を実装した。アキュムレータは 64 バイトの値として保持し、各命令
-  の前後でハードウェアのアキュムレータへ移動する。QEMU の power10 で値テスト
-  を実行する。
-
-順序は、SVE / RVV のスライス API、SME / AMX / MMA の guard の順とする。
+実装状況は各 arch の `README.md` を正とする。API と ISA 命令の対応は [スケーラブル・状態付き extension の API 対応](scalable-mapping.md) に置く。この文書には状態を書かない。
 
 ## 未決定
 
-- SVE のスライス API の境界条件（長さが違う場合に panic するか、短い方に合わせるか）。
-- RVV のスライス API で、要素型ごとにどの LMUL を使うか。
 - AMX の `TileConfig` の構築 API。
 - guard を safe にできる範囲。
 

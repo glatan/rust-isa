@@ -3,6 +3,8 @@
 mod common;
 
 use common::*;
+use std::io::Write;
+use std::process::Stdio;
 
 #[test]
 fn mips_values() {
@@ -41,4 +43,74 @@ fn mips_values() {
         output.status,
         output_text(&output)
     );
+
+    let output = Command::new("llvm-objdump")
+        .args(["-d"])
+        .arg(&binary)
+        .output()
+        .expect("llvm-objdump");
+    assert!(output.status.success(), "{}", output_text(&output));
+    let text = String::from_utf8_lossy(&output.stdout);
+    for (symbol, mnemonic) in [("<kernel_add>:", "addv.w"), ("<kernel_mul>:", "mulv.w")] {
+        let decoded = decode_msa(&text, symbol);
+        let lines: Vec<_> = decoded.lines().collect();
+        assert!(
+            !lines.iter().any(|line| line.contains("jal")),
+            "{symbol} calls C:\n{decoded}"
+        );
+        assert_eq!(
+            lines.iter().filter(|line| line.contains(mnemonic)).count(),
+            2,
+            "{symbol} {mnemonic} body:\n{decoded}"
+        );
+        assert!(
+            !lines.iter().any(|line| {
+                let op = line.split_whitespace().next().unwrap_or("");
+                matches!(op, "lw" | "sw" | "ld" | "sd" | "st")
+            }),
+            "{symbol} has a memory operation:\n{decoded}"
+        );
+    }
+}
+
+fn decode_msa(text: &str, symbol: &str) -> String {
+    let body = function_at(text, symbol);
+    let mut hex = String::new();
+    for line in body.lines() {
+        let Some((_, rest)) = line.split_once(':') else {
+            continue;
+        };
+        let mut count = 0;
+        for token in rest.split_whitespace() {
+            if token.len() != 2 || !token.chars().all(|ch| ch.is_ascii_hexdigit()) {
+                break;
+            }
+            hex.push_str("0x");
+            hex.push_str(token);
+            hex.push(' ');
+            count += 1;
+            if count == 4 {
+                break;
+            }
+        }
+    }
+    let mut child = Command::new("llvm-mc")
+        .args([
+            "--disassemble",
+            "--triple=mips64-unknown-linux-gnuabi64",
+            "--mattr=+msa",
+        ])
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .spawn()
+        .expect("llvm-mc");
+    child
+        .stdin
+        .as_mut()
+        .expect("llvm-mc stdin")
+        .write_all(hex.as_bytes())
+        .expect("write llvm-mc stdin");
+    let output = child.wait_with_output().expect("llvm-mc");
+    assert!(output.status.success(), "llvm-mc failed");
+    String::from_utf8_lossy(&output.stdout).into_owned()
 }
