@@ -17,8 +17,8 @@
 //! in this module are not exposed.
 //!
 //! The value tests are not executed because QEMU does not implement this
-//! facility. The `vblendq`, `veval`, `vmahg`, `vmalhg`, `vmahq`, and
-//! `vmalhq` wrappers use inline assembly and have not been value-tested.
+//! facility. The `vblendq` and `veval` wrappers use inline assembly and have
+//! not been value-tested.
 
 use super::vector::V128;
 use core::arch::asm;
@@ -80,6 +80,10 @@ unsafe extern "C" {
     fn rust_isa_s390x_ve3_vaccq(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_s390x_ve3_vacq(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_s390x_ve3_vacccq(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmahg(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmalhg(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmahq(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmalhq(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
 }
 
 macro_rules! binary {
@@ -608,60 +612,31 @@ ternary!(
     rust_isa_s390x_ve3_vacccq
 );
 
-macro_rules! asm_ternary {
-    ($(#[$meta:meta])* $name:ident, $instruction:literal) => {
-        $(#[$meta])*
-        ///
-        /// # Safety
-        ///
-        /// The caller must enable the vector-enhancements-3 facility.
-        #[target_feature(enable = "vector-enhancements-3")]
-        #[inline]
-        pub unsafe fn $name(acc: V128, a: V128, b: V128) -> V128 {
-            let acc = u128::from_be_bytes(acc.to_bytes());
-            let a = u128::from_be_bytes(a.to_bytes());
-            let b = u128::from_be_bytes(b.to_bytes());
-            let out: u128;
-            unsafe {
-                asm!(
-                    concat!($instruction, " {out}, {a}, {b}, {acc}"),
-                    out = lateout(vreg) out,
-                    a = in(vreg) a,
-                    b = in(vreg) b,
-                    acc = in(vreg) acc,
-                    options(nostack, nomem, pure)
-                );
-            }
-            V128::from_bytes(out.to_be_bytes())
-        }
-    };
-}
-
-asm_ternary!(
+ternary!(
     /// `vmahg`.
     ///
     /// High 64 bits of the signed 64-bit lane products, added to `acc`.
     vmahg,
-    "vmahg"
+    rust_isa_s390x_ve3_vmahg
 );
-asm_ternary!(
+ternary!(
     /// `vmalhg`.
     ///
     /// High 64 bits of the unsigned 64-bit lane products, added to `acc`.
     vmalhg,
-    "vmalhg"
+    rust_isa_s390x_ve3_vmalhg
 );
-asm_ternary!(
+ternary!(
     /// `vmahq`.
     ///
     /// High 128 bits of the signed 128-bit lane product, added to `acc`.
     vmahq,
-    "vmahq"
+    rust_isa_s390x_ve3_vmahq
 );
-asm_ternary!(
+ternary!(
     /// `vmalhq`.
     ///
     /// High 128 bits of the unsigned 128-bit lane product, added to `acc`.
     vmalhq,
-    "vmalhq"
+    rust_isa_s390x_ve3_vmalhq
 );
