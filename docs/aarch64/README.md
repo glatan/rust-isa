@@ -54,6 +54,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`system`
 - 結果は [ゼロコストの確認](../zero-cost.md) を見る。
 - C は `-march=armv8-a+simd -flto=thin`、`__attribute__((always_inline))` を使う。Rust は `profile.release.lto = "thin"` と `-C linker-plugin-lto` を使う。
 - LTO モード、C の feature 集合、呼び出し側の feature を一致させる。条件を満たさない場合は `call` が残る。
+- AES / SHA2 / CRC の C は `-march=armv8-a` に `-Xclang -target-feature +aes`、`+sha2`、`+crc` を足す。`+crypto` は余分な feature を含み、Rust の `+aes` / `+sha2` と一致しない。
 - カーネルに `#[target_feature]` を付けると、命令間の値がレジスタに残る。ループの外側など、feature の無い関数から呼ぶと、境界の `call` は残る。
 
 ## ツールチェーン
@@ -85,7 +86,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`system`
   値 API にしない。
 - `bti`、`paca`、`pacg`、`mte` は分岐保護・ポインタ認証・メモリタグのため、
   命令 API にしない。
-- 追加した NEON 以降の命令のゼロコスト確認。現在の zero-cost は `kernel_add`、`kernel_tbl`、`kernel_dot` だけである。
+- 追加した NEON 以降の命令のゼロコスト確認。現在の zero-cost は NEON の `kernel_add`、`kernel_mul`、`kernel_tbl`、dotprod の `kernel_dot`、AES の `kernel_aes`、SHA2 の `kernel_sha2`、CRC の `kernel_crc` だけである。
 
 ## 文書
 

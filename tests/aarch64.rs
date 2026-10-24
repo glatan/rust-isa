@@ -10,7 +10,7 @@ fn aarch64_pipeline() {
         return;
     }
     let dir = nested_dir("aarch64-values");
-    let rustflags = "-C linker-plugin-lto -C linker=clang -C link-arg=--target=aarch64-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
+    let rustflags = "-C target-feature=+aes,+sha2,+crc -C linker-plugin-lto -C linker=clang -C link-arg=--target=aarch64-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
     let output = cargo(&dir)
         .env("RUSTC_BOOTSTRAP", "1")
         .env("RUSTFLAGS", rustflags)
@@ -114,4 +114,65 @@ fn aarch64_pipeline() {
         .collect();
     assert_eq!(sdots.len(), 2, "kernel_dot body:\n{dot}");
     assert_eq!(sdots[1], sdots[0] + 1, "sdot is not adjacent:\n{dot}");
+
+    let aes = function_at(&text, "<kernel_aes>:");
+    assert!(
+        !aes.lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
+        "kernel_aes calls C:\n{aes}"
+    );
+    let lines: Vec<_> = aes.lines().collect();
+    let aes_count: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("aese"))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(aes_count.len(), 2, "kernel_aes body:\n{aes}");
+    assert_eq!(
+        aes_count[1],
+        aes_count[0] + 1,
+        "aese is not adjacent:\n{aes}"
+    );
+
+    let sha2 = function_at(&text, "<kernel_sha2>:");
+    assert!(
+        !sha2
+            .lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
+        "kernel_sha2 calls C:\n{sha2}"
+    );
+    let lines: Vec<_> = sha2.lines().collect();
+    let sha2_count: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("sha256h"))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(sha2_count.len(), 2, "kernel_sha2 body:\n{sha2}");
+    assert_eq!(
+        sha2_count[1],
+        sha2_count[0] + 1,
+        "sha256h is not adjacent:\n{sha2}"
+    );
+
+    let crc = function_at(&text, "<kernel_crc>:");
+    assert!(
+        !crc.lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
+        "kernel_crc calls C:\n{crc}"
+    );
+    let lines: Vec<_> = crc.lines().collect();
+    let crc_count: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("crc32b"))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(crc_count.len(), 2, "kernel_crc body:\n{crc}");
+    assert_eq!(
+        crc_count[1],
+        crc_count[0] + 1,
+        "crc32b is not adjacent:\n{crc}"
+    );
 }
