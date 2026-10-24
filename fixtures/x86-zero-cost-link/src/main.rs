@@ -4,7 +4,7 @@ use rust_isa::x86::crypto::gfni::gf2p8affineqb;
 use rust_isa::x86::crypto::sha::sha256rnds2;
 use rust_isa::x86::crypto::vaes::vaesenc;
 use rust_isa::x86::crypto::vpclmulqdq::vpclmulqdq_v256;
-use rust_isa::x86::simd::avx::V256;
+use rust_isa::x86::simd::avx::{V256, vaddps, vmulps};
 use rust_isa::x86::simd::avx2::vpshufb;
 use rust_isa::x86::simd::avx10_1::{vpaddd_v512, vpmulld_v512};
 use rust_isa::x86::simd::avx512bw::vpaddb;
@@ -44,6 +44,14 @@ pub unsafe extern "C" fn kernel_sse41(a: &V128, b: &V128) -> V128 {
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn kernel_sse42(a: &V128, b: &V128) -> V128 {
     unsafe { pcmpgtq(pcmpgtq(*a, *b), *b) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "avx")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_avx(a: &V256, b: &V256) -> V256 {
+    let sum = unsafe { vaddps(vaddps(*a, *b), *b) };
+    unsafe { vmulps(vmulps(sum, *b), *b) }
 }
 
 #[inline(never)]
@@ -128,6 +136,7 @@ fn main() {
     black_box(unsafe { kernel_sse3(&a128, &b128) });
     black_box(unsafe { kernel_sse41(&a128, &b128) });
     black_box(unsafe { kernel_sse42(&a128, &b128) });
+    black_box(unsafe { kernel_avx(&a256, &b256) });
     black_box(unsafe { kernel_ssse3(&a128, &b128) });
     black_box(unsafe { kernel_sha(&a128, &b128, &k128) });
     black_box(unsafe { kernel_bw(&a512, &b512) });

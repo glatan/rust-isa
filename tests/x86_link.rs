@@ -279,7 +279,7 @@ fn x86_zero_cost_pipeline() {
         return;
     }
     let dir = nested_dir("x86-zero-cost-link");
-    let rustflags = "-C target-feature=+sse3,+ssse3,+sse4.1,+sse4.2,+sha,+avx,+avx2,+avx512f,+avx512bw,+avx512dq,+avx512ifma,+avx512vnni,+avx512vl,+gfni,+vaes,+vpclmulqdq,+avx10.1 -C linker-plugin-lto -C linker=clang -C link-arg=-fuse-ld=lld";
+    let rustflags = "-C target-feature=+sse3,+ssse3,+sse4.1,+sse4.2,+avx,+sha,+avx,+avx2,+avx512f,+avx512bw,+avx512dq,+avx512ifma,+avx512vnni,+avx512vl,+gfni,+vaes,+vpclmulqdq,+avx10.1 -C linker-plugin-lto -C linker=clang -C link-arg=-fuse-ld=lld";
     let output = cargo(&dir)
         .env("RUSTFLAGS", rustflags)
         .args(["build", "-p", "x86-zero-cost-link", "--release"])
@@ -302,6 +302,8 @@ fn x86_zero_cost_pipeline() {
         ("<kernel_ssse3>:", "pshufb"),
         ("<kernel_sse41>:", "pmulld"),
         ("<kernel_sse42>:", "pcmpgtq"),
+        ("<kernel_avx>:", "vaddps"),
+        ("<kernel_avx>:", "vmulps"),
         ("<kernel_sha>:", "sha256rnds2"),
         ("<kernel_bw>:", "vpaddb"),
         ("<kernel_dq>:", "vpmullq"),
