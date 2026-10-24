@@ -30,15 +30,20 @@ fn i686_values() {
 
     let binary = dir.join("i686-unknown-linux-gnu/release/i686-values");
     assert!(binary.is_file(), "missing {}", binary.display());
-    let output = Command::new("qemu-i386-static")
-        .arg("-cpu")
-        .arg("max")
+    let sde = std::env::var("RUST_ISA_SDE32").unwrap_or_else(|_| "sde".to_string());
+    let flags = std::env::var("RUST_ISA_SDE_FLAGS").unwrap_or_else(|_| "-future".to_string());
+    let mut command = Command::new(&sde);
+    for flag in flags.split_whitespace() {
+        command.arg(flag);
+    }
+    let output = command
+        .arg("--")
         .arg(&binary)
         .output()
-        .expect("qemu-i386-static");
+        .unwrap_or_else(|error| panic!("failed to run {sde}: {error}"));
     assert!(
         output.status.success(),
-        "i686 value test failed: {}\n{}",
+        "i686 value test failed under SDE: {}\n{}",
         output.status,
         output_text(&output)
     );
