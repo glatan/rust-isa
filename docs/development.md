@@ -10,6 +10,8 @@ make test
 make check-docs
 make test-host
 make test-x86_64
+make test-cross
+make test-doc
 make test-check-static
 make test-check-wasm-link
 make test-wasip1
@@ -23,13 +25,16 @@ make check-mnemonics
 make duplicates
 ```
 
-`make test` が既定で、`fmt-check`、`coverage-check`、`docs-check`、`fixtures-check`、`check-mnemonics`、`check-docs`、`test-host`、`test-wasip1`、`test-wasip1-wide-arithmetic` を実行する。すべてのテストはイメージ内で、対象 triple を明示して実行する。
+`make test` が既定で、`fmt-check`、`coverage-check`、`docs-check`、`fixtures-check`、`check-mnemonics`、`check-docs`、`test-host`、`test-doc`、`test-wasip1`、`test-wasip1-wide-arithmetic` を実行する。すべてのテストはイメージ内で、対象 triple を明示して実行する。
 
 - `make docs-check`: Markdown の相対リンク、見出しアンカー、`docs/README.md` からの到達性を検査する
 - `make fixtures-check`: `fixtures/` と `target-nested` の実ディレクトリが `fixture-matrix.md` と対応するか検査する
 - `make check-docs`: 全ターゲットの rustdoc を `-D warnings` で検査する。クロスターゲットは `-Z build-std=core` で core をビルドし、wasm32 は `simd128` / `relaxed-simd` と `wide-arithmetic` を有効にして検査する
-- `make test-host`: `x86_64-unknown-linux-gnu` で実行する全テストと doctest。新しい統合テストも自動的に対象になる
-- `make test-x86_64`: x86_64 の値テスト、doctest、x86 のゼロコスト検査だけを実行する
+- `make test-host`: x86_64 のテストを SDE で実行し、cross-arch の値テストも実行する。`test-x86_64` と `test-cross` の合成である
+- `make test-x86_64`: x86_64 の値テスト、doctest、x86 のゼロコスト検査、静的検査を SDE で実行する。SDE の既知不一致は skip する
+- `make test-cross`: i686 を SDE、その他の native arch を QEMU で実行する
+- `make test-doc`: x86_64 以外の arch の doctest を QEMU、wasm32 を wasmtime で実行する。クロスターゲットは `-Z build-std=std` を使う
+- `make test-i686`: i686 fixture を SDE で実行する。テストドライバは x86_64 で動かし、ターゲットコードは SDE に限定する
 - `make test-check-static`: シンボル一致、rustdoc の言語、レーン即値の検査
 - `make test-check-wasm-link`: `wasm32-unknown-unknown` のリンクと simd128 無効時の検査
 - `make test-wasip1`: `wasm32-wasip1` の nextest と doctest
@@ -60,18 +65,26 @@ Rust は dprint ではなく rustfmt を使う。`make test` は最初に `fmt-c
 
 ## arch ごとの確認
 
-すべての値テストはイメージ内で実行する。x86_64 は `cargo test --target x86_64-unknown-linux-gnu`、wasm32 は wasmtime、その他の native arch は QEMU の runner を使う。runner と必要なツールは `docs/<arch>/README.md` に書く。
+すべての値テストはイメージ内で実行する。x86_64 と i686 は SDE、wasm32 は wasmtime、その他の native arch は QEMU の runner を使う。runner と必要なツールは `docs/<arch>/README.md` に書く。
 
-イメージには `qemu-user-static` が入っている。次の runner を `Containerfile` で設定してある。`tests/<arch>.rs` は、native arch の値を QEMU で実行するときにこれらを使う。
+SDE はイメージ内の `/opt/sde` に固定してある。ホストからマウントしない。32-bit SDE のため、Arch Linux の `lib32-glibc` と `lib32-gcc-libs` もイメージに入れてある。SDE のテスト runner は次のとおり。
 
-- `aarch64-unknown-linux-gnu`: `qemu-aarch64-static`
-- `armv7-unknown-linux-gnueabihf`: `qemu-arm-static`
-- `riscv64gc-unknown-linux-gnu`: `qemu-riscv64-static`
-- `loongarch64-unknown-linux-gnu`: `qemu-loongarch64-static`
-- `s390x-unknown-linux-gnu`: `qemu-s390x-static`
-- `powerpc64le-unknown-linux-gnu`: `qemu-ppc64le-static`
-- `mips64-unknown-linux-gnuabi64`: `qemu-mips64-static`
-- `i686-unknown-linux-gnu`: `qemu-i386-static`
+- `x86_64-unknown-linux-gnu`: `/opt/sde/sde64 -future --`
+- `i686-unknown-linux-gnu`: `/opt/sde/sde -future --`
+
+QEMU の runner は次のとおり。`tests/<arch>.rs` は、native arch の値を QEMU で実行するときにこれらを使う。
+
+- `aarch64-unknown-linux-gnu`: `qemu-aarch64-static -cpu max`
+- `armv7-unknown-linux-gnueabihf`: NEON/FP16 は `qemu-arm-static -cpu max`、MVE/MVE-FP は `qemu-arm-static -cpu cortex-m55`
+- `riscv64gc-unknown-linux-gnu`: `qemu-riscv64-static -cpu max`
+- `loongarch64-unknown-linux-gnu`: `qemu-loongarch64-static -cpu max`
+- `s390x-unknown-linux-gnu`: `qemu-s390x-static -cpu max`（VE3 は実行しない）
+- `powerpc64le-unknown-linux-gnu`: `qemu-ppc64le-static -cpu max`
+- `mips64-unknown-linux-gnuabi64`: `qemu-mips64-static -cpu max`
+
+ターゲットコードをホストで直接実行しない。テストドライバ（`tests/<arch>.rs` の x86_64 バイナリ）はホストで動かすが、値テストの対象バイナリは SDE / QEMU で実行する。
+
+SDE の SM4 と AVX-VNNI は既知の不一致がある。`make test-x86_64` は `sm4_instruction_reference`、`sm4_key_schedule_and_rounds`、`avx_vnni` を skip する。SDE を更新したら skip を外して再確認する。
 
 QEMU の runner は、静的にリンクしたテストバイナリを前提にする。動的リンクのバイナリは、ターゲットの loader と libc が無いため動かない。
 

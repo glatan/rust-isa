@@ -4,8 +4,9 @@
 
 ## 前提
 
-- 開発イメージには `qemu-user-static` と、arch ごとの runner が入っている。
-- QEMU の runner は、静的にリンクしたテストバイナリを前提にする。
+- 開発イメージには `qemu-user-static`、SDE、wasmtime と、arch ごとの runner が入っている。
+- x86_64 と i686 は SDE、その他の native arch は QEMU の runner を使う。
+- QEMU / SDE の runner は、静的にリンクしたテストバイナリを前提にする。
 - テストは `no_std` のバイナリとしてビルドし、終了コードで合否を返す。
 
 ## 置き場所
@@ -16,7 +17,7 @@ fixtures/i686-values/
   src/main.rs
 ```
 
-`fixtures/i686-values` は workspace のメンバーにしない。`tests/<arch>.rs` から `cargo build --target <triple>` でビルドし、QEMU で実行する。wasm の `fixtures/wasm-simd-link` と同じ形にする。
+`fixtures/i686-values` は workspace のメンバーにしない。`tests/<arch>.rs` から `cargo build --target <triple>` でビルドし、SDE / QEMU で実行する。wasm の `fixtures/wasm-simd-link` と同じ形にする。
 
 ## テストの形
 
@@ -29,9 +30,9 @@ arch 固有の注意:
 
 - **MIPS**: 共有の静的配列や lane を引数で選ぶ関数は codegen で一致しなかった。lane ごとに独立した関数を使う。
 - **PowerPC**: `_start` から C を呼ぶ場合、`.quad .TOC.` を持つ非 LTO オブジェクトをリンクに加える。
-- **i686**: C に `-mstackrealign` を付ける。
+- **i686**: C に `-mstackrealign` を付ける。値テストは SDE の 32-bit runner で実行する。
 - **s390x**: `llvm-objdump` がベクタ命令を表示しない。`llvm-mc` でバイト列をデコードする。
-- **静的リンク**: 動的リンクのバイナリは、ターゲットの loader と libc が無いため QEMU で動かない。
+- **静的リンク**: 動的リンクのバイナリは、ターゲットの loader と libc が無いため SDE / QEMU で動かない。
 
 ## 追加するテスト
 
@@ -43,8 +44,8 @@ native の API を実装したら、extension ごとに次を追加する。
 4. 値テストが通ること
 5. 必要なら zero-cost の disassembly 確認
 
-`tests/<arch>.rs` には、`cargo build`、QEMU の実行、終了コードの確認を追加する。失敗時は build log と終了コードを表示する。
+`tests/<arch>.rs` には、`cargo build`、SDE / QEMU の実行、終了コードの確認を追加する。失敗時は build log と終了コードを表示する。
 
 ## 実行できない命令
 
-QEMU が実行しない命令は、API のコンパイルだけを確認する。arch ごとの対象は [値テストの fixture](fixture-matrix.md) の「実行できないもの」に置く。
+SDE / QEMU が実行しない命令は、API のコンパイルだけを確認する。arch ごとの対象は [値テストの fixture](fixture-matrix.md) の「実行できないもの」に置く。

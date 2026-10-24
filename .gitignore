@@ -10,3 +10,6 @@
 /fixtures/mips-values/target
 
 __pycache__/
+
+/pin-log.txt
+/pin.log
