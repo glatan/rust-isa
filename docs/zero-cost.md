@@ -90,6 +90,16 @@ PowerPC は ELF のリンクが `.TOC.` で失敗したため、最初は Rust �
 
 arch 単位では、ゼロコストを確認していない arch はない。extension や命令単位の未確認は、各 arch の README と上の結果表にある。
 
+## fixture 化できない測定
+
+### s390x
+
+`build.rs` は base vector の C を `-march=z13 -mzvector` でコンパイルする。Rust の既定 target-cpu は `z10` である。C の target-features から `vector-enhancements-1` と `transactional-execution` を外しても、target-cpu が `z13` のままで、値テスト fixture では C がインラインされない。`-march=z10` にすると vecintrin の宣言が不足する。専用 fixture には、base vector と vector enhancements の C 分割か、z10 で vecintrin を使えるビルド方法が必要になる。
+
+### 32-bit ARM
+
+文書の `-Xclang -target-feature` 調整を `build.rs` に入れると、LTO リンクで LLVM の ARM Instruction Selection が `Do not know how to split this operator's operand!` でクラッシュする。専用 link fixture でも同じクラッシュを再現した。LLVM の修正版を待つか、C を分割して feature 集合を合わせる必要がある。
+
 ## スケーラブルベクタ
 
 SVE のスライス API を AArch64 で確認した。C のループを `#[target_feature(enable = "sve")]` の Rust カーネルへインラインすると、`cntw`、`whilelt`、`ld1w`、`add z0.s`、`st1w` がカーネルに並び、`call` が無かった。
