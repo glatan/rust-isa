@@ -76,3 +76,19 @@ fn amx_api_is_gated() {
     }
     assert_eq!(readback.to_bytes(), config.to_bytes());
 }
+
+#[test]
+fn amx_stateful_api_takes_guard() {
+    use rust_isa::x86::matrix::amx_tile::{
+        AmxGuard, TileConfig, sttilecfg, tcmmimfp16ps, tdpbf16ps, tileloadd, tileloaddt1,
+        tilestored, tilezero,
+    };
+
+    let _: unsafe fn(&AmxGuard) = tilezero::<0>;
+    let _: unsafe fn(&AmxGuard, *const u8, usize) = tileloadd::<0>;
+    let _: unsafe fn(&AmxGuard, *const u8, usize) = tileloaddt1::<0>;
+    let _: unsafe fn(&AmxGuard, *mut u8, usize) = tilestored::<0>;
+    let _: unsafe fn(&AmxGuard, &mut TileConfig) = sttilecfg;
+    let _: unsafe fn(&AmxGuard) = tdpbf16ps::<0, 0, 0>;
+    let _: unsafe fn(&AmxGuard) = tcmmimfp16ps::<0, 0, 0>;
+}
