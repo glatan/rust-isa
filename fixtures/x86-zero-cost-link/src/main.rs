@@ -24,6 +24,7 @@ use rust_isa::x86::simd::sse2::V128;
 use rust_isa::x86::simd::sse3::addsubps;
 use rust_isa::x86::simd::sse4_1::pmulld;
 use rust_isa::x86::simd::sse4_2::pcmpgtq;
+use rust_isa::x86::simd::sse4a::insertq;
 use rust_isa::x86::simd::ssse3::pshufb;
 
 #[inline(never)]
@@ -121,6 +122,13 @@ pub unsafe extern "C" fn kernel_vp2intersect(a: &V512, b: &V512) -> (u16, u16) {
 }
 
 #[inline(never)]
+#[target_feature(enable = "sse4a")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_sse4a(a: &V128, b: &V128) -> V128 {
+    unsafe { insertq(insertq(*a, *b), *b) }
+}
+
+#[inline(never)]
 #[target_feature(enable = "sha")]
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn kernel_sha(a: &V128, b: &V128, k: &V128) -> V128 {
@@ -202,6 +210,7 @@ fn main() {
     black_box(unsafe { kernel_sse3(&a128, &b128) });
     black_box(unsafe { kernel_sse41(&a128, &b128) });
     black_box(unsafe { kernel_sse42(&a128, &b128) });
+    black_box(unsafe { kernel_sse4a(&a128, &b128) });
     black_box(unsafe { kernel_avx(&a256, &b256) });
     black_box(unsafe { kernel_cd(&a512) });
     black_box(unsafe { kernel_vbmi(&a512, &b512) });
