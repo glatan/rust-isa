@@ -2,7 +2,7 @@
 
 この文書は、native のゼロコストをどのように確認したかと、arch ごとの結果をまとめる。条件と方針は [実装方針](policy.md) に置く。`make zero-cost-check` は、結果表の fixture と kernel の実在、`fixtures/*-link` の網羅、LTO / call / store-load / 結果の値、ゼロコスト行の整合を検査する。
 
-確認した環境は rustc 1.99.1、clang/lld 23.1.1 である。ARM と PowerPC の一部は clang 23.1.3 で再確認した。
+確認した環境は rustc 1.99.1、clang/lld 23.1.1 である。ARM、AArch64、s390x、PowerPC の一部は clang 23.1.3 で再確認した。
 
 ## 方法
 
@@ -127,7 +127,7 @@ arch 単位では、ゼロコストを確認していない arch はない。ext
 
 ## スケーラブルベクタ
 
-SVE のスライス API を AArch64 で確認した。C のループを `#[target_feature(enable = "sve")]` の Rust カーネルへインラインすると、`cntw`、`whilelt`、`ld1w`、`add z0.s`、`st1w` がカーネルに並び、`call` が無かった。SVE の行はスライス API のロード・ストアを含むが、対象命令の間に追加の store/load はない。
+SVE のスライス API を AArch64 で確認した。C のループを `#[target_feature(enable = "sve")]` の Rust カーネルへインラインすると、`cntw`、`whilelt`、`ld1w`、`add z0.s`、`st1w` がカーネルに並び、`call` が無かった。SVE / F32MM / F64MM の行はスライス API のロード・ストアを含むが、対象命令の間に追加の store/load はない。
 
 RVV のスライス API も RISC-V で確認した。C のループを Rust のカーネルへインラインすると、`vsetvli`、`vle32.v`、`vadd.vv`、`vse32.v` がカーネルに並び、`call` が無かった。
 
