@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <arm_sve.h>
 
+__attribute__((always_inline))
 void rust_isa_f32mm_fmmla(const float *a, const float *b, float *acc, size_t len) {
     for (size_t i = 0; i < len; i += svcntw()) {
         svbool_t pg = svwhilelt_b32_u64(i, len);

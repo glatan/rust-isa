@@ -25,6 +25,11 @@ use rust_isa::s390x::simd::vector_enhancements_1::{
     vfnma, vfnms, vfs, vfsq, vftci_f32, vnn, vpopctb, vpopctg,
 };
 use rust_isa::s390x::simd::vector_enhancements_2::{vsld, vsrd};
+use rust_isa::s390x::simd::vector_enhancements_3::{
+    vaq, vavglq, vavgq, vblendb, vblendf, vblendg, vblendh, vblendq, vclzq, vctzq, vdf, vdg, vdlf,
+    vdlg, vdlq, vdq, veval, vgemb, vgemf, vgemg, vgemh, vgemq, vlcq, vlpq, vmalq, vmnlq, vmnq,
+    vmxlq, vmxq, vrf, vrg, vrlf, vrlg, vrlq, vrq, vsq, vuphg, vuplg, vuplhg, vupllg,
+};
 use rust_isa::s390x::simd::vector_packed_decimal::{
     vap, vcvb, vcvbg, vcvd, vpkz, vsdp, vsp, vsrp, vstrl, vupkz, vupkzh, vupkzl,
 };
@@ -78,6 +83,46 @@ pub extern "C" fn compile_only() {
         let _ = vclfnh(x);
         let _ = vclfnl(x);
         let _ = vcrnf(x, x);
+        let _ = vaq(x, x);
+        let _ = vsq(x, x);
+        let _ = vmalq(x, x, x);
+        let _ = vmxq(x, x);
+        let _ = vmnq(x, x);
+        let _ = vmxlq(x, x);
+        let _ = vmnlq(x, x);
+        let _ = vavgq(x, x);
+        let _ = vavglq(x, x);
+        let _ = vclzq(x);
+        let _ = vctzq(x);
+        let _ = vlcq(x);
+        let _ = vlpq(x);
+        let _ = vuphg(x);
+        let _ = vuplg(x);
+        let _ = vuplhg(x);
+        let _ = vupllg(x);
+        let _ = vblendb(x, x, x);
+        let _ = vblendh(x, x, x);
+        let _ = vblendf(x, x, x);
+        let _ = vblendg(x, x, x);
+        let _ = vblendq(x, x, x);
+        let _ = veval::<0>(x, x, x);
+        let _ = vgemb(x);
+        let _ = vgemh(x);
+        let _ = vgemf(x);
+        let _ = vgemg(x);
+        let _ = vgemq(x);
+        let _ = vdq(x, x);
+        let _ = vrq(x, x);
+        let _ = vdlq(x, x);
+        let _ = vrlq(x, x);
+        let _ = vdf(x, x);
+        let _ = vdg(x, x);
+        let _ = vdlf(x, x);
+        let _ = vdlg(x, x);
+        let _ = vrf(x, x);
+        let _ = vrg(x, x);
+        let _ = vrlf(x, x);
+        let _ = vrlg(x, x);
     }
 }
 
