@@ -127,7 +127,7 @@ arch 単位では、ゼロコストを確認していない arch はない。ext
 
 ## スケーラブルベクタ
 
-SVE のスライス API を AArch64 で確認した。C のループを `#[target_feature(enable = "sve")]` の Rust カーネルへインラインすると、`cntw`、`whilelt`、`ld1w`、`add z0.s`、`st1w` がカーネルに並び、`call` が無かった。
+SVE のスライス API を AArch64 で確認した。C のループを `#[target_feature(enable = "sve")]` の Rust カーネルへインラインすると、`cntw`、`whilelt`、`ld1w`、`add z0.s`、`st1w` がカーネルに並び、`call` が無かった。SVE の行はスライス API のロード・ストアを含むが、対象命令の間に追加の store/load はない。
 
 RVV のスライス API も RISC-V で確認した。C のループを Rust のカーネルへインラインすると、`vsetvli`、`vle32.v`、`vadd.vv`、`vse32.v` がカーネルに並び、`call` が無かった。
 

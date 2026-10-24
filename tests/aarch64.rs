@@ -323,9 +323,8 @@ fn aarch64_pipeline() {
 
     let sve = function_at(&text, "<kernel_sve_add>:");
     assert!(
-        !sve.lines().any(|line| {
-            line.split_whitespace().any(|word| word == "bl") && !line.contains("panicking")
-        }),
+        !sve.lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
         "kernel_sve_add calls C:\n{sve}"
     );
     assert!(
@@ -335,9 +334,9 @@ fn aarch64_pipeline() {
 
     let f32mm = function_at(&text, "<kernel_f32mm>:");
     assert!(
-        !f32mm.lines().any(|line| {
-            line.split_whitespace().any(|word| word == "bl") && !line.contains("panicking")
-        }),
+        !f32mm
+            .lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
         "kernel_f32mm calls C:\n{f32mm}"
     );
     assert!(
@@ -347,9 +346,9 @@ fn aarch64_pipeline() {
 
     let f64mm = function_at(&text, "<kernel_f64mm>:");
     assert!(
-        !f64mm.lines().any(|line| {
-            line.split_whitespace().any(|word| word == "bl") && !line.contains("panicking")
-        }),
+        !f64mm
+            .lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
         "kernel_f64mm calls C:\n{f64mm}"
     );
     assert!(

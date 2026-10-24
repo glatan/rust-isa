@@ -166,21 +166,23 @@ pub unsafe extern "C" fn kernel_jsconv(a: f64, b: f64) -> i32 {
 #[inline(never)]
 #[target_feature(enable = "sve")]
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn kernel_f32mm(a: &[f32], b: &[f32], acc: &mut [f32]) {
+pub unsafe extern "C" fn kernel_f32mm(a: &[f32; 4], b: &[f32; 4], acc: &mut [f32; 4]) -> f32 {
     unsafe {
         fmmla_f32(a, b, acc);
         fmmla_f32(a, b, acc);
     }
+    acc[0]
 }
 
 #[inline(never)]
 #[target_feature(enable = "sve")]
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn kernel_f64mm(a: &[f64], b: &[f64], acc: &mut [f64]) {
+pub unsafe extern "C" fn kernel_f64mm(a: &[f64; 2], b: &[f64; 2], acc: &mut [f64; 2]) -> f64 {
     unsafe {
         fmmla_f64(a, b, acc);
         fmmla_f64(a, b, acc);
     }
+    acc[0]
 }
 
 #[inline(never)]
@@ -193,8 +195,9 @@ pub unsafe extern "C" fn kernel_fcma(acc: &V128, a: &V128, b: &V128) -> V128 {
 #[inline(never)]
 #[target_feature(enable = "sve")]
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn kernel_sve_add(a: &[f32], b: &[f32], out: &mut [f32]) {
-    unsafe { sve::add_f32(a, b, out) }
+pub unsafe extern "C" fn kernel_sve_add(a: &[f32; 4], b: &[f32; 4], out: &mut [f32; 4]) -> f32 {
+    unsafe { sve::add_f32(a, b, out) };
+    out[0]
 }
 
 fn run() -> u32 {
