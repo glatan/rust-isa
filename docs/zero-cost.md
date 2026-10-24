@@ -95,7 +95,7 @@ arch 単位では、ゼロコストを確認していない arch はない。ext
 
 ### 32-bit ARM
 
-文書の `-Xclang -target-feature` 調整を `build.rs` に入れると、LTO リンクで LLVM の ARM Instruction Selection が `Do not know how to split this operator's operand!` でクラッシュする。専用 link fixture でも同じクラッシュを再現した。LLVM の修正版を待つか、C を分割して feature 集合を合わせる必要がある。
+文書の `-Xclang -target-feature` 調整を `build.rs` に入れると、LTO リンクで LLVM の ARM Instruction Selection が `Do not know how to split this operator's operand!` でクラッシュする。thin / fat の両方の LTO モードで、専用 link fixture でも同じクラッシュを再現した。LLVM の修正版を待つか、C を分割して feature 集合を合わせる必要がある。
 
 ## スケーラブルベクタ
 
