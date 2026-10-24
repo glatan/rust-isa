@@ -20,9 +20,13 @@
 //!
 //! The build compiles the bundled C with clang; some wrappers use `asm!`.
 
-mod instructions;
+mod config;
+mod mma;
+mod tile;
 
-pub use instructions::*;
+pub use config::*;
+pub use mma::*;
+pub use tile::*;
 
 use core::marker::PhantomData;
 
@@ -56,14 +60,6 @@ impl TileConfig {
 unsafe extern "C" {
     fn rust_isa_amx_tile_load_config(config: *const u8);
     fn rust_isa_amx_tile_release();
-    fn rust_isa_amx_tile_zero_0();
-    fn rust_isa_amx_tile_zero_1();
-    fn rust_isa_amx_tile_zero_2();
-    fn rust_isa_amx_tile_zero_3();
-    fn rust_isa_amx_tile_zero_4();
-    fn rust_isa_amx_tile_zero_5();
-    fn rust_isa_amx_tile_zero_6();
-    fn rust_isa_amx_tile_zero_7();
 }
 
 /// An active AMX tile state.
@@ -97,33 +93,5 @@ impl Drop for AmxGuard {
         unsafe {
             rust_isa_amx_tile_release();
         }
-    }
-}
-
-/// `tilezero::<TILE>`
-///
-/// Set all bytes of the selected tile to zero. `TILE` must be in `0..=7`; a
-/// larger value is a compile-time error.
-///
-/// # Safety
-///
-/// The caller must hold an [`AmxGuard`] and enable AMX.
-pub unsafe fn tilezero<const TILE: u8>(_guard: &AmxGuard) {
-    const { assert!(TILE <= 7, "AMX tile number must be in 0..=7") };
-    macro_rules! call {
-        ($f:ident) => {
-            unsafe { $f() }
-        };
-    }
-    match TILE {
-        0 => call!(rust_isa_amx_tile_zero_0),
-        1 => call!(rust_isa_amx_tile_zero_1),
-        2 => call!(rust_isa_amx_tile_zero_2),
-        3 => call!(rust_isa_amx_tile_zero_3),
-        4 => call!(rust_isa_amx_tile_zero_4),
-        5 => call!(rust_isa_amx_tile_zero_5),
-        6 => call!(rust_isa_amx_tile_zero_6),
-        7 => call!(rust_isa_amx_tile_zero_7),
-        _ => unreachable!(),
     }
 }

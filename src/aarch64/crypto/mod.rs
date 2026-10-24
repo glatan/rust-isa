@@ -1,4 +1,4 @@
-//! AArch64 cryptographic instructions.
+//! AArch64 cryptographic and checksum instructions.
 
 pub mod aes;
 pub mod crc;

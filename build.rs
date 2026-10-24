@@ -84,9 +84,12 @@ fn main() {
     let rv_zbb_c = manifest.join("src/riscv/integer/zbb/zbb.c");
     let rv_zbc_c = manifest.join("src/riscv/integer/zbc/zbc.c");
     let rv_zbkb_c = manifest.join("src/riscv/integer/zbkb/zbkb.c");
+    let rv_zbkx_c = manifest.join("src/riscv/integer/zbkx/zbkx.c");
     let rv_zbs_c = manifest.join("src/riscv/integer/zbs/zbs.c");
     let rv_zkn_c = manifest.join("src/riscv/crypto/zkn/zkn.c");
-    let rv_zfh_c = manifest.join("src/riscv/float/zfh/zfh.c");
+    let rv_scalar_c = manifest.join("src/riscv/float/scalar/scalar.c");
+    let rv_zfa_c = manifest.join("src/riscv/float/zfa/zfa.c");
+    let rv_fp_helpers_h = manifest.join("src/riscv/float/fp_helpers.h");
     let rv_zks_c = manifest.join("src/riscv/crypto/zks/zks.c");
     let lsx_c = manifest.join("src/loongarch/simd/lsx/lsx.c");
     let lasx_c = manifest.join("src/loongarch/simd/lasx/lasx.c");
@@ -190,9 +193,12 @@ fn main() {
         &rv_zbb_c,
         &rv_zbc_c,
         &rv_zbkb_c,
+        &rv_zbkx_c,
         &rv_zbs_c,
         &rv_zkn_c,
-        &rv_zfh_c,
+        &rv_scalar_c,
+        &rv_zfa_c,
+        &rv_fp_helpers_h,
         &rv_zks_c,
         &lsx_c,
         &lasx_c,
@@ -476,14 +482,16 @@ fn main() {
             (&rv_zba_c, "rust_isa_rv_zba", &["-march=rv64gc_zba"][..]),
             (&rv_zbb_c, "rust_isa_rv_zbb", &["-march=rv64gc_zbb"][..]),
             (&rv_zbc_c, "rust_isa_rv_zbc", &["-march=rv64gc_zbc"][..]),
-            (
-                &rv_zbkb_c,
-                "rust_isa_rv_zbkb",
-                &["-march=rv64gc_zbkb_zbkx"][..],
-            ),
+            (&rv_zbkb_c, "rust_isa_rv_zbkb", &["-march=rv64gc_zbkb"][..]),
+            (&rv_zbkx_c, "rust_isa_rv_zbkx", &["-march=rv64gc_zbkx"][..]),
             (&rv_zbs_c, "rust_isa_rv_zbs", &["-march=rv64gc_zbs"][..]),
             (&rv_zkn_c, "rust_isa_rv_zkn", &["-march=rv64gc_zkn"][..]),
-            (&rv_zfh_c, "rust_isa_rv_zfh", &["-march=rv64gc_zfh_zfa"][..]),
+            (
+                &rv_scalar_c,
+                "rust_isa_rv_scalar",
+                &["-march=rv64gc_zfh"][..],
+            ),
+            (&rv_zfa_c, "rust_isa_rv_zfa", &["-march=rv64gc_zfh_zfa"][..]),
             (&rv_zks_c, "rust_isa_rv_zks", &["-march=rv64gc_zks"][..]),
         ] {
             let mut flags = march.to_vec();

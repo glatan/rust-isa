@@ -3,6 +3,13 @@
 version = 4
 
 [[package]]
+name = "aes-link"
+version = "0.1.0"
+dependencies = [
+ "rust-isa",
+]
+
+[[package]]
 name = "avx2-link"
 version = "0.1.0"
 dependencies = [
@@ -10,7 +17,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "avx512-link"
+name = "avx512f-link"
 version = "0.1.0"
 dependencies = [
  "rust-isa",
@@ -24,7 +31,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "crypto-link"
+name = "fma-link"
 version = "0.1.0"
 dependencies = [
  "rust-isa",
@@ -35,13 +42,6 @@ name = "rust-isa"
 version = "0.1.0"
 
 [[package]]
-name = "simd128-link"
-version = "0.0.0"
-dependencies = [
- "rust-isa",
-]
-
-[[package]]
 name = "sse2-link"
 version = "0.1.0"
 dependencies = [
@@ -49,7 +49,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "wide-link"
+name = "wasm-simd-link"
+version = "0.0.0"
+dependencies = [
+ "rust-isa",
+]
+
+[[package]]
+name = "wide-arithmetic-link"
 version = "0.1.0"
 dependencies = [
  "rust-isa",

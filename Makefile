@@ -155,4 +155,4 @@ test-wasip1:
 test-wasip1-wide-arithmetic:
 	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --features wide-arithmetic --target $(WASIP1_TARGET) $(CARGO_ARGS)
 	$(PODMAN_RUN) cargo test --features wide-arithmetic --target $(WASIP1_TARGET) --doc $(CARGO_ARGS)
-	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test wide_link $(CARGO_ARGS)
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test wide_arithmetic_link $(CARGO_ARGS)

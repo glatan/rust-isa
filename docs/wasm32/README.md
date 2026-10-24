@@ -44,7 +44,7 @@ family は `simd` である。extension は次である。
 
 - feature 名は `wide-arithmetic` とする。既定では無効にする。
 - 有効なとき、`build.rs` は C を `-mwide-arithmetic` でコンパイルし、モジュールを `cfg(feature = "wide-arithmetic")` で公開する。
-- `fixtures/wide-link` をビルドし、`wasm2wat` で四つの命令を確認する。`make test-wasip1-wide-arithmetic` では、加算・減算・乗算の値テストを実行する。
+- `fixtures/wide-arithmetic-link` をビルドし、`wasm2wat` で四つの命令を確認する。`make test-wasip1-wide-arithmetic` では、加算・減算・乗算の値テストを実行する。
 - この feature を有効にした wasm モジュールは、`wide-arithmetic` を要求する。利用者はこの条件を受け入れる場合だけ有効にする。
 - `docs.rs` のメタデータで all-features を使う場合も、この条件を rustdoc に書く。
 

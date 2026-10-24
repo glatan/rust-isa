@@ -5,31 +5,25 @@ use core::arch::asm;
 use core::panic::PanicInfo;
 use rust_isa::riscv::crypto::zkn::{aes64es, aes64ks1i, sha256sum0};
 use rust_isa::riscv::crypto::zks::{sm3p0, sm4ed};
-use rust_isa::riscv::float::zfh::{
-    fadd_d, fadd_s, fdiv_d, fdiv_s, feq_d, feq_s, fle_d, fle_s, flt_d, flt_s, fmax_d, fmax_s,
-    fmaxm_d, fmaxm_s, fmin_d, fmin_s, fminm_d, fminm_s, fmul_d, fmul_s, fround_d, fround_s,
-    froundnx_d, froundnx_s, fsqrt_d, fsqrt_s, fsub_d, fsub_s,
-}; // single and double precision
-use rust_isa::riscv::float::zfh::{
-    fadd_h, fdiv_h, feq_h, fle_h, flh, flt_h, fmax_h, fmin_h, fmul_h, fsh, fsqrt_h, fsub_h,
+use rust_isa::riscv::float::scalar::{
+    fadd_d, fadd_h, fadd_s, fclass_h, fcvt_d_h, fcvt_d_l, fcvt_d_lu, fcvt_d_s, fcvt_d_w, fcvt_d_wu,
+    fcvt_h_d, fcvt_h_l, fcvt_h_lu, fcvt_h_s, fcvt_h_w, fcvt_h_wu, fcvt_l_d, fcvt_l_h, fcvt_l_s,
+    fcvt_lu_d, fcvt_lu_h, fcvt_lu_s, fcvt_s_d, fcvt_s_h, fcvt_s_l, fcvt_s_lu, fcvt_s_w, fcvt_s_wu,
+    fcvt_w_d, fcvt_w_h, fcvt_w_s, fcvt_wu_d, fcvt_wu_h, fcvt_wu_s, fdiv_d, fdiv_h, fdiv_s, feq_d,
+    feq_h, feq_s, fle_d, fle_h, fle_s, flh, flt_d, flt_h, flt_s, fmax_d, fmax_h, fmax_s, fmin_d,
+    fmin_h, fmin_s, fmul_d, fmul_h, fmul_s, fmv_d_x, fmv_h_x, fmv_w_x, fmv_x_d, fmv_x_h, fmv_x_w,
+    fsh, fsqrt_d, fsqrt_h, fsqrt_s, fsub_d, fsub_h, fsub_s,
 };
-use rust_isa::riscv::float::zfh::{
-    fclass_h, fcvt_d_h, fcvt_h_d, fcvt_h_l, fcvt_h_lu, fcvt_h_s, fcvt_h_w, fcvt_h_wu, fcvt_l_h,
-    fcvt_lu_h, fcvt_s_h, fcvt_w_h, fcvt_wu_h, fli_h, fmv_h_x, fmv_x_h,
-}; // conversions
-use rust_isa::riscv::float::zfh::{
-    fcvt_d_l, fcvt_d_lu, fcvt_d_s, fcvt_d_w, fcvt_d_wu, fcvt_l_d, fcvt_l_s, fcvt_lu_d, fcvt_lu_s,
-    fcvt_s_d, fcvt_s_l, fcvt_s_lu, fcvt_s_w, fcvt_s_wu, fcvt_w_d, fcvt_w_s, fcvt_wu_d, fcvt_wu_s,
-    fli_d, fli_s, fmv_d_x, fmv_w_x, fmv_x_d, fmv_x_w, fmvh_x_d, fmvp_d_x,
-}; // single and double precision conversions
-use rust_isa::riscv::float::zfh::{fcvtmod_w_d, fleq_d, fleq_s, fltq_d, fltq_s}; // zfa single and double precision
-use rust_isa::riscv::float::zfh::{
-    fcvtmod_w_h, fleq_h, fltq_h, fmaxm_h, fminm_h, fround_h, froundnx_h,
-}; // zfa
+use rust_isa::riscv::float::zfa::{
+    fcvtmod_w_d, fcvtmod_w_h, fleq_d, fleq_h, fleq_s, fli_d, fli_h, fli_s, fltq_d, fltq_h, fltq_s,
+    fmaxm_d, fmaxm_h, fmaxm_s, fminm_d, fminm_h, fminm_s, fmvh_x_d, fmvp_d_x, fround_d, fround_h,
+    fround_s, froundnx_d, froundnx_h, froundnx_s,
+};
 use rust_isa::riscv::integer::zba::{sh1add, sh2add, sh3add};
 use rust_isa::riscv::integer::zbb::{andn, clz, cpop, rol, sext_b, xnor};
 use rust_isa::riscv::integer::zbc::clmul;
-use rust_isa::riscv::integer::zbkb::{brev8, pack, packh, unzip, xperm4, xperm8, zip};
+use rust_isa::riscv::integer::zbkb::{brev8, pack, packh, unzip, zip};
+use rust_isa::riscv::integer::zbkx::{xperm4, xperm8};
 use rust_isa::riscv::integer::zbs::{bclr, bext, binv, bset};
 use rust_isa::riscv::simd::rvv::{
     V128, add, add_i8, add_i16, and, cmpeq_i32, cmpgt_i32, fadd, fmul, mul, mul_i16, or, splat_i32,
@@ -120,7 +114,7 @@ fn run() -> u32 {
     if !crypto_ops() {
         return 6;
     }
-    if !unsafe { zfh_ops() } {
+    if !unsafe { fp16_zfa_ops() } {
         return 7;
     }
     if !unsafe { scalar_float_ops() } {
@@ -1087,7 +1081,7 @@ pub unsafe extern "C" fn bcmp(a: *const u8, b: *const u8, n: usize) -> i32 {
     0
 }
 
-unsafe fn zfh_ops() -> bool {
+unsafe fn fp16_zfa_ops() -> bool {
     let one = 0x3c00u16;
     let two = 0x4000u16;
     let four = 0x4400u16;

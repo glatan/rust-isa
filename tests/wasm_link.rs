@@ -19,7 +19,7 @@ fn check_link() {
         .args([
             "build",
             "-p",
-            "simd128-link",
+            "wasm-simd-link",
             "--release",
             "--target",
             "wasm32-unknown-unknown",
@@ -28,10 +28,10 @@ fn check_link() {
         .expect("cargo");
     assert!(output.status.success(), "{}", output_text(&output));
 
-    let wasm = dir.join("wasm32-unknown-unknown/release/simd128_link.wasm");
+    let wasm = dir.join("wasm32-unknown-unknown/release/wasm_simd_link.wasm");
     assert!(wasm.is_file(), "missing {}", wasm.display());
-    let opt = dir.join("simd128-link.opt.wasm");
-    let wat = dir.join("simd128-link.wat");
+    let opt = dir.join("wasm-simd-link.opt.wasm");
+    let wat = dir.join("wasm-simd-link.wat");
     let status = Command::new("wasm-opt")
         .args(["-O3"])
         .arg(&wasm)
@@ -111,7 +111,7 @@ fn check_without_simd128() {
         .args([
             "build",
             "-p",
-            "simd128-link",
+            "wasm-simd-link",
             "--target",
             "wasm32-unknown-unknown",
         ])
@@ -120,10 +120,10 @@ fn check_without_simd128() {
     let text = output_text(&output);
     assert!(
         !output.status.success(),
-        "simd128-link built without simd128:\n{text}"
+        "wasm-simd-link built without simd128:\n{text}"
     );
     assert!(
-        text.contains("simd128-link requires target_feature simd128 and relaxed-simd"),
+        text.contains("wasm-simd-link requires target_feature simd128 and relaxed-simd"),
         "{text}"
     );
 }

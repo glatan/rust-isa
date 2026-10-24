@@ -8,6 +8,7 @@
 
 - `family` は名前空間である。`simd`、`crypto`、`integer`、`matrix` などを使う。
 - `extension` は rustc の feature 名の `.` と `-` を `_` に置き換える。`sse4.1` は `sse4_1`、`relaxed-simd` は `relaxed_simd` である。
+- 複数の extension をまとめるグループ（`riscv::simd::zv`、`riscv::float::scalar`）と、API 形状を表すモジュール（`riscv::simd::rvv_slice`）は、arch の `README.md` に規則を書いた場合だけ例外とする。
 - 命令は extension から再公開する。extension の中のモジュールは非公開にする。
 - family を持たない extension は arch 直下に置く。`wasm32::wide_arithmetic` が該当する。`wide-arithmetic` は cfg ゲートを持てず Cargo feature で opt-in するため、`simd` などの family に属さない。
 - 関数名は `{接頭辞}_{命令名}` とする。接頭辞は arch の規則に従う。

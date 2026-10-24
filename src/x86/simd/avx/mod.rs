@@ -16,22 +16,25 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
-pub use super::avx2::V256;
 pub use super::sse2::V128;
 
 mod blend;
-mod mask;
+mod load;
+mod masked_memory;
 mod moves;
 mod permute;
 mod round;
 mod shuffle;
+mod v256;
 
 pub use blend::*;
-pub use mask::*;
+pub use load::*;
+pub use masked_memory::*;
 pub use moves::*;
 pub use permute::*;
 pub use round::*;
 pub use shuffle::*;
+pub use v256::*;
 
 mod arithmetic;
 mod bitwise;
