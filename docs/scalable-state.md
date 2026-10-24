@@ -97,6 +97,8 @@ const CONFIG: TileConfig = TileConfig::builder()
 ```
 
 - タイル命令は `&AmxGuard` を引数に取る。
+- `amx-avx512` の行移動は `&AmxGuard` を取り、行を `V512` として返す。行はランタイムの32ビット値または即値で指定する。
+- `amx-movrs` のタイルロードも `&AmxGuard` を取る。
 - OS のタイル状態の許可は、クレートの外で設定する。クレートは許可を行わない。
 - `TileConfig` は `TileConfig::builder()` で構築する。palette 1 の8タイルを対象とし、タイルごとに rows と colsb を設定する。未設定のタイルは0のままにする。
 - 生の64バイトが必要な場合は `TileConfig::from_bytes` を使う。
