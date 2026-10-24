@@ -10,7 +10,7 @@ fn aarch64_pipeline() {
         return;
     }
     let dir = nested_dir("aarch64-values");
-    let rustflags = "-C target-feature=+aes,+sha2,+crc -C linker-plugin-lto -C linker=clang -C link-arg=--target=aarch64-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
+    let rustflags = "-C target-feature=+aes,+sha2,+crc,+fp16,+fhm,+sha3,+sm4,+i8mm -C linker-plugin-lto -C linker=clang -C link-arg=--target=aarch64-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
     let output = cargo(&dir)
         .env("RUSTC_BOOTSTRAP", "1")
         .env("RUSTFLAGS", rustflags)
@@ -174,5 +174,88 @@ fn aarch64_pipeline() {
         crc_count[1],
         crc_count[0] + 1,
         "crc32b is not adjacent:\n{crc}"
+    );
+
+    let fp16 = function_at(&text, "<kernel_fp16>:");
+    assert!(
+        !fp16
+            .lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
+        "kernel_fp16 calls C:\n{fp16}"
+    );
+    let lines: Vec<_> = fp16.lines().collect();
+    let fadd_count: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("fadd"))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(fadd_count.len(), 2, "kernel_fp16 body:\n{fp16}");
+    assert_eq!(
+        fadd_count[1],
+        fadd_count[0] + 1,
+        "fadd is not adjacent:\n{fp16}"
+    );
+
+    let sha3 = function_at(&text, "<kernel_sha3>:");
+    assert!(
+        !sha3
+            .lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
+        "kernel_sha3 calls C:\n{sha3}"
+    );
+    let lines: Vec<_> = sha3.lines().collect();
+    let eor3_count: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("eor3"))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(eor3_count.len(), 2, "kernel_sha3 body:\n{sha3}");
+    assert_eq!(
+        eor3_count[1],
+        eor3_count[0] + 1,
+        "eor3 is not adjacent:\n{sha3}"
+    );
+
+    let sm4 = function_at(&text, "<kernel_sm4>:");
+    assert!(
+        !sm4.lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
+        "kernel_sm4 calls C:\n{sm4}"
+    );
+    let lines: Vec<_> = sm4.lines().collect();
+    let sm4e_count: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("sm4e"))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(sm4e_count.len(), 2, "kernel_sm4 body:\n{sm4}");
+    assert_eq!(
+        sm4e_count[1],
+        sm4e_count[0] + 1,
+        "sm4e is not adjacent:\n{sm4}"
+    );
+
+    let i8mm = function_at(&text, "<kernel_i8mm>:");
+    assert!(
+        !i8mm
+            .lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
+        "kernel_i8mm calls C:\n{i8mm}"
+    );
+    let lines: Vec<_> = i8mm.lines().collect();
+    let smmla_count: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("smmla"))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(smmla_count.len(), 2, "kernel_i8mm body:\n{i8mm}");
+    assert_eq!(
+        smmla_count[1],
+        smmla_count[0] + 1,
+        "smmla is not adjacent:\n{i8mm}"
     );
 }

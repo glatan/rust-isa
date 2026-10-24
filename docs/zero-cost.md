@@ -74,6 +74,10 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 | AArch64    | `fixtures/aarch64-values`       | `kernel_aes`                                               | thin | `aes`                      | `aese`                            | なし   | なし                | ゼロコスト                |
 | AArch64    | `fixtures/aarch64-values`       | `kernel_sha2`                                              | thin | `sha2`                     | `sha256h`                         | なし   | なし                | ゼロコスト                |
 | AArch64    | `fixtures/aarch64-values`       | `kernel_crc`                                               | thin | `crc`                      | `crc32b`                          | なし   | なし                | ゼロコスト                |
+| AArch64    | `fixtures/aarch64-values`       | `kernel_fp16`                                              | thin | `fp16` + `fhm`             | `fadd v0.8h`                      | なし   | なし                | ゼロコスト                |
+| AArch64    | `fixtures/aarch64-values`       | `kernel_sha3`                                              | thin | `sha3`                     | `eor3`                            | なし   | なし                | ゼロコスト                |
+| AArch64    | `fixtures/aarch64-values`       | `kernel_sm4`                                               | thin | `sm4`                      | `sm4e`                            | なし   | なし                | ゼロコスト                |
+| AArch64    | `fixtures/aarch64-values`       | `kernel_i8mm`                                              | thin | `i8mm`                     | `smmla`                           | なし   | なし                | ゼロコスト                |
 | RISC-V     | `fixtures/riscv-values`         | `kernel_add`                                               | thin | `v`                        | `vadd.vv`                         | なし   | なし                | ゼロコスト                |
 | RISC-V     | `fixtures/riscv-values`         | `kernel_mul`                                               | thin | `v`                        | `vmul.vv`                         | なし   | なし                | ゼロコスト                |
 | RISC-V     | manual                          | —                                                          | thin | `v`                        | `vrgather`                        | なし   | あり                | 往復が残る                |
@@ -167,7 +171,7 @@ GCC の vector 拡張に置き換えると、どちらも store/load が消え�
 
 - **RISC-V**: `-mno-relax` を付けないと、C の関数がインラインされなかった。C は `-march=rv64gcv -mabi=lp64d -mno-relax`。
 - **s390x**: Rust の target-cpu は `z10` である。C は `-march=z10 -fzvector -Xclang -target-feature -Xclang +vector` で一致した。`-march=z13 -mzvector` では `+vector-enhancements-1` と `+transactional-execution` が付き、インラインされなかった。
-- **AArch64**: NEON は `-march=armv8-a+simd`、dotprod は `+dotprod`、AES は `-Xclang -target-feature +aes`、SHA2 は `+sha2`、CRC は `+crc` で一致した。
+- **AArch64**: NEON は `-march=armv8-a+simd`、dotprod は `+dotprod`、AES は `-Xclang -target-feature +aes`、SHA2 は `+sha2`、CRC は `+crc` で一致した。FP16 は C の `+fullfp16` / `+fp16fml` を Rust の `+fp16` / `+fhm` に、SHA3 / SM4 / I8MM は `+sha3` / `+sm4` / `+i8mm` に合わせた。
 - **LoongArch**: `-mlasx` で一致した。
 - **MIPS**: C は `-march=mips64r2 -mmsa -mabicalls -mxgot`、Rust は `-C target-feature=+msa,+fp64` を使う。`llvm-objdump` は MSA 命令を `<unknown>` と表示するため、バイト列を `llvm-mc --disassemble --triple=mips64-unknown-linux-gnuabi64 --mattr=+msa` でデコードする。
 - **PowerPC**: `.TOC.` は lld が `addReservedSymbols` で定義するが、LTO 後のオブジェクトにだけ参照があると定義されない。`.TOC.` を参照する非 LTO オブジェクトをリンクに加えると解決する。`.quad .TOC.` を持つ小さなアセンブリオブジェクトで確認した。
