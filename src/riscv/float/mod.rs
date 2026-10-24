@@ -1,3 +1,4 @@
 //! RISC-V floating-point extensions.
 
-pub mod zfh;
+pub mod scalar;
+pub mod zfa;

@@ -1,0 +1,42 @@
+//! RISC-V Zbkx bit-manipulation instructions.
+//!
+//! Zbkx is not part of the baseline. Every instruction wrapper is `unsafe` and
+//! the caller must enable Zbkx with `#[target_feature]` or a global target
+//! feature. The functions operate on 64-bit scalar values.
+//!
+//! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
+//!
+//! The build compiles the bundled C with clang.
+//!
+//! Instructions not listed in this module are not exposed.
+
+unsafe extern "C" {
+    fn rust_isa_riscv_zbkx_xperm4(a: u64, b: u64) -> u64;
+    fn rust_isa_riscv_zbkx_xperm8(a: u64, b: u64) -> u64;
+}
+
+/// `xperm4`.
+///
+/// Permute nibbles with the indices in `b`.
+///
+/// # Safety
+///
+/// The caller must enable Zbkx.
+#[target_feature(enable = "zbkx")]
+#[inline]
+pub unsafe fn xperm4(a: u64, b: u64) -> u64 {
+    unsafe { rust_isa_riscv_zbkx_xperm4(a, b) }
+}
+
+/// `xperm8`.
+///
+/// Permute bytes with the indices in `b`.
+///
+/// # Safety
+///
+/// The caller must enable Zbkx.
+#[target_feature(enable = "zbkx")]
+#[inline]
+pub unsafe fn xperm8(a: u64, b: u64) -> u64 {
+    unsafe { rust_isa_riscv_zbkx_xperm8(a, b) }
+}

@@ -20,7 +20,7 @@
 //!
 //! The build compiles the bundled C with clang.
 
-mod instructions;
-mod operations;
-pub use instructions::*;
-pub use operations::*;
+mod mnemonics;
+mod semantic;
+pub use mnemonics::*;
+pub use semantic::*;

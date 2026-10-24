@@ -17,7 +17,7 @@ fixtures/i686-values/
   src/main.rs
 ```
 
-`fixtures/i686-values` は workspace のメンバーにしない。`tests/<arch>.rs` から `cargo build --target <triple>` でビルドし、QEMU で実行する。wasm の `fixtures/simd128-link` と同じ形にする。
+`fixtures/i686-values` は workspace のメンバーにしない。`tests/<arch>.rs` から `cargo build --target <triple>` でビルドし、QEMU で実行する。wasm の `fixtures/wasm-simd-link` と同じ形にする。
 
 ## テストの形
 
@@ -52,6 +52,6 @@ native の API を実装したら、extension ごとに次を追加する。
 - i686 は `cargo build -Z build-std=core --target i686-unknown-linux-gnu` でビルドし、QEMU-i386 で SSE2 と AVX2 の値テストを実行する。
 - AArch64 は同じ形でビルドし、QEMU-AArch64 で NEON と dotprod の値テストを実行する。
 - RISC-V、LoongArch、s390x、ARMv7、PowerPC、MIPS も同じ形でビルドし、それぞれの QEMU で主要な SIMD 命令を実行する。
-- wasm32 は `fixtures/wide-link` をビルドし、`wasm2wat` で `wide-arithmetic` の命令を確認する。
+- wasm32 は `fixtures/wide-arithmetic-link` をビルドし、`wasm2wat` で `wide-arithmetic` の命令を確認する。
 - 追加した extension の値テストは、NEON / fp16 / dotprod / i8mm / fcma / fhm / AES / SHA-2 / SHA-3 / SM4 / CRC / SVE を AArch64、`zba` から `zbs` / `zkn` / `zks` / Zfh / Zfa / V / スライス API を RISC-V、LSX / LASX を LoongArch、vector を s390x、 NEON / dotprod / fp16 / 暗号を ARM、Altivec / VSX / Power8 を PowerPC、 MSA を MIPS に追加した。
 - QEMU が実行しない命令（AArch64 の RDM / BF16、AArch64 SME の `__arm_get_current_vg`）は、API のコンパイルだけを確認する。

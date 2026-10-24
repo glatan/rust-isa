@@ -91,21 +91,21 @@ fn avx2_pipeline() {
 }
 
 #[test]
-fn avx512_pipeline() {
+fn avx512f_pipeline() {
     if std::env::var_os("RUST_ISA_NESTED").is_some() {
         return;
     }
-    let dir = nested_dir("avx512-link");
+    let dir = nested_dir("avx512f-link");
     let rustflags =
         "-C target-feature=+avx512f -C linker-plugin-lto -C linker=clang -C link-arg=-fuse-ld=lld";
     let output = cargo(&dir)
         .env("RUSTFLAGS", rustflags)
-        .args(["build", "-p", "avx512-link", "--release"])
+        .args(["build", "-p", "avx512f-link", "--release"])
         .output()
         .expect("cargo");
     assert!(output.status.success(), "{}", output_text(&output));
 
-    let binary = dir.join("release/avx512-link");
+    let binary = dir.join("release/avx512f-link");
     assert!(binary.is_file(), "missing {}", binary.display());
     let output = Command::new("llvm-objdump")
         .args(["-d", "--no-show-raw-insn"])
@@ -134,20 +134,21 @@ fn avx512_pipeline() {
 }
 
 #[test]
-fn crypto_pipeline() {
+fn aes_pipeline() {
     if std::env::var_os("RUST_ISA_NESTED").is_some() {
         return;
     }
-    let dir = nested_dir("crypto-link");
-    let rustflags = "-C target-feature=+aes,+avx2,+fma -C linker-plugin-lto -C linker=clang -C link-arg=-fuse-ld=lld";
+    let dir = nested_dir("aes-link");
+    let rustflags =
+        "-C target-feature=+aes -C linker-plugin-lto -C linker=clang -C link-arg=-fuse-ld=lld";
     let output = cargo(&dir)
         .env("RUSTFLAGS", rustflags)
-        .args(["build", "-p", "crypto-link", "--release"])
+        .args(["build", "-p", "aes-link", "--release"])
         .output()
         .expect("cargo");
     assert!(output.status.success(), "{}", output_text(&output));
 
-    let binary = dir.join("release/crypto-link");
+    let binary = dir.join("release/aes-link");
     assert!(binary.is_file(), "missing {}", binary.display());
     let output = Command::new("llvm-objdump")
         .args(["-d", "--no-show-raw-insn"])
@@ -172,6 +173,31 @@ fn crypto_pipeline() {
         aesenc[0] + 1,
         "store or load between aesenc:\n{aes}"
     );
+}
+
+#[test]
+fn fma_pipeline() {
+    if std::env::var_os("RUST_ISA_NESTED").is_some() {
+        return;
+    }
+    let dir = nested_dir("fma-link");
+    let rustflags = "-C target-feature=+avx2,+fma -C linker-plugin-lto -C linker=clang -C link-arg=-fuse-ld=lld";
+    let output = cargo(&dir)
+        .env("RUSTFLAGS", rustflags)
+        .args(["build", "-p", "fma-link", "--release"])
+        .output()
+        .expect("cargo");
+    assert!(output.status.success(), "{}", output_text(&output));
+
+    let binary = dir.join("release/fma-link");
+    assert!(binary.is_file(), "missing {}", binary.display());
+    let output = Command::new("llvm-objdump")
+        .args(["-d", "--no-show-raw-insn"])
+        .arg(&binary)
+        .output()
+        .expect("llvm-objdump");
+    assert!(output.status.success(), "{}", output_text(&output));
+    let text = String::from_utf8_lossy(&output.stdout);
 
     let fma = function_at(&text, "<kernel_fma>:");
     assert!(!fma.contains("call"), "kernel_fma calls C:\n{fma}");

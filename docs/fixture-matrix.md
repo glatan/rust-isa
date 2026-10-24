@@ -19,19 +19,21 @@ QEMU が命令を実行しない場合は、ビルドと API の存在確認だ�
 
 ## wasm32
 
-| fixture                 | target                   | runner     | 内容                                             |
-| ----------------------- | ------------------------ | ---------- | ------------------------------------------------ |
-| `fixtures/simd128-link` | `wasm32-unknown-unknown` | `wasm2wat` | `simd128` と `relaxed-simd` のリンクと zero-cost |
-| `fixtures/wide-link`    | `wasm32-unknown-unknown` | `wasm2wat` | `wide-arithmetic` のリンク                       |
+| fixture                         | target                   | runner     | 内容                                             |
+| ------------------------------- | ------------------------ | ---------- | ------------------------------------------------ |
+| `fixtures/wasm-simd-link`       | `wasm32-unknown-unknown` | `wasm2wat` | `simd128` と `relaxed-simd` のリンクと zero-cost |
+| `fixtures/wide-arithmetic-link` | `wasm32-unknown-unknown` | `wasm2wat` | `wide-arithmetic` のリンク                       |
 
 ## x86_64 のリンク検査
 
-| fixture                | 内容                                       |
-| ---------------------- | ------------------------------------------ |
-| `fixtures/sse2-link`   | `paddd` が隣接し、C への `call` が無いこと |
-| `fixtures/avx2-link`   | `vpaddd` と `vpmulld` が隣接すること       |
-| `fixtures/avx512-link` | `vpaddd` が隣接すること                    |
-| `fixtures/crypto-link` | `aesenc` と `vfmadd` が隣接すること        |
+| fixture                  | 内容                                       |
+| ------------------------ | ------------------------------------------ |
+| `fixtures/sse2-link`     | `paddd` が隣接し、C への `call` が無いこと |
+| `fixtures/avx2-link`     | `vpaddd` と `vpmulld` が隣接すること       |
+| `fixtures/avx512f-link`  | `vpaddd` が隣接すること                    |
+| `fixtures/avx512vl-link` | `vpaddb` と `vpermb` が隣接すること        |
+| `fixtures/aes-link`      | `aesenc` が隣接すること                    |
+| `fixtures/fma-link`      | `vfmadd` が隣接すること                    |
 
 ## 追加するとき
 

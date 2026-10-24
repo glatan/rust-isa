@@ -105,12 +105,12 @@ QEMU の runner は、静的にリンクしたテストバイナリを前提に�
 
 現在のテストが使うディレクトリは十五ある。
 
-- `target-nested/link` は `fixtures/simd128-link` の `wasm32-unknown-unknown` release ビルドである。確認する内容は [wasm32 のリンク](wasm32/linking.md) に書く。
-- `target-nested/no-simd` は、`simd128` も `relaxed-simd` も付けない wasm32 ビルドと、その状態で `fixtures/simd128-link` がコンパイルに失敗することの確認である。
+- `target-nested/link` は `fixtures/wasm-simd-link` の `wasm32-unknown-unknown` release ビルドである。確認する内容は [wasm32 のリンク](wasm32/linking.md) に書く。
+- `target-nested/no-simd` は、`simd128` も `relaxed-simd` も付けない wasm32 ビルドと、その状態で `fixtures/wasm-simd-link` がコンパイルに失敗することの確認である。
 - `target-nested/sse2-link` は `fixtures/sse2-link` の release ビルドである。`kernel` に `call` が無く、`paddd` が 2 つ残ることを確認する。
 - `target-nested/avx2-link` は `fixtures/avx2-link` の release ビルドである。`kernel` に `call` が無く、`vpaddd` の直後に `vpmulld` が残ることを確認する。
-- `target-nested/avx512-link` は `fixtures/avx512-link` の release ビルドである。`kernel` に `call` が無く、`vpaddd` が 2 つ隣接することを確認する。
-- `target-nested/crypto-link` は `fixtures/crypto-link` の release ビルドである。`kernel_aes` と `kernel_fma` に `call` が無く、`aesenc` と `vfmadd` が隣接することを確認する。
+- `target-nested/avx512f-link` は `fixtures/avx512f-link` の release ビルドである。`kernel` に `call` が無く、`vpaddd` が 2 つ隣接することを確認する。
+- `target-nested/aes-link` は `fixtures/aes-link` の release ビルドである。`target-nested/fma-link` は `fixtures/fma-link` の release ビルドである。それぞれの kernel に `call` が無く、`aes-link` は `aesenc`、`fma-link` は `vfmadd` が隣接することを確認する。
 - `target-nested/i686-values` は `fixtures/i686-values` の i686 release ビルドである。QEMU-i386 で SSE2 と AVX2 の値テストを実行する。
 - `target-nested/aarch64-values` は `fixtures/aarch64-values` の AArch64 release ビルドである。QEMU-AArch64 で NEON と dotprod の値テストを実行し、`add` / `tbl` / `sdot` の disassembly を確認する。
 - `target-nested/riscv-values` は RISC-V の固定長 V128 値テストである。
@@ -119,7 +119,7 @@ QEMU の runner は、静的にリンクしたテストバイナリを前提に�
 - `target-nested/arm-values` は ARMv7 NEON の値テストである。
 - `target-nested/powerpc-values` は PowerPC Altivec の値テストである。
 - `target-nested/mips-values` は MIPS MSA の値テストである。
-- `target-nested/wide-link` は wasm32 の `wide-arithmetic` リンク検査に使うビルドである。
+- `target-nested/wide-arithmetic-link` は wasm32 の `wide-arithmetic` リンク検査に使うビルドである。
 
 `target-nested` は `.gitignore` と `.dockerignore` に入っている。消しても次の `cargo test` が作り直す。
 

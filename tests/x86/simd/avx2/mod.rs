@@ -1,14 +1,16 @@
 //! AVX2 test modules.
 
-mod basic;
+mod arithmetic;
 mod bitwise;
 mod blend_imm;
 mod blend_variable;
 mod broadcast;
+mod compare;
 mod gather;
 mod horizontal;
 mod immediate_forms;
-mod mask;
+mod load;
+mod masked_memory;
 mod minmax;
 mod movemask;
 mod multiply;

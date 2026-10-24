@@ -1,4 +1,4 @@
-//! x86 cryptographic instructions.
+//! x86 cryptographic and Galois-field instructions.
 
 pub mod aes;
 pub mod gfni;

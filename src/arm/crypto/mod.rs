@@ -1,4 +1,4 @@
-//! 32-bit ARM cryptographic instructions.
+//! 32-bit ARM cryptographic and checksum instructions.
 
 pub mod aes;
 pub mod crc;

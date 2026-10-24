@@ -40,7 +40,7 @@ features = "+crypto,+sha2,+aes,+crc"
 
 [targets.riscv]
 triple = "riscv64"
-features = "+v,+zba,+zbb,+zbc,+zbs,+zbkb,+zkn,+zks,+zfh,+zfa,+zvkn,+zvks,+zvkg,+zvbc"
+features = "+v,+zba,+zbb,+zbc,+zbs,+zbkb,+zbkx,+zkn,+zks,+zfh,+zfa,+zvkn,+zvks,+zvkg,+zvbc"
 
 [targets.s390x]
 triple = "s390x"

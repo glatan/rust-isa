@@ -1,4 +1,4 @@
-//! RISC-V Zbkb and Zbkx bit-manipulation instructions.
+//! RISC-V Zbkb bit-manipulation instructions.
 //!
 //! These extensions are not part of the baseline. Every instruction wrapper is `unsafe`
 //! and the caller must enable the extension with `#[target_feature]` or a
@@ -14,8 +14,6 @@ unsafe extern "C" {
     fn rust_isa_riscv_zbkb_pack(a: u64, b: u64) -> u64;
     fn rust_isa_riscv_zbkb_packh(a: u64, b: u64) -> u64;
     fn rust_isa_riscv_zbkb_brev8(a: u64) -> u64;
-    fn rust_isa_riscv_zbkb_xperm4(a: u64, b: u64) -> u64;
-    fn rust_isa_riscv_zbkb_xperm8(a: u64, b: u64) -> u64;
     fn rust_isa_riscv_zbkb_zip(value: u64) -> u64;
     fn rust_isa_riscv_zbkb_unzip(value: u64) -> u64;
 }
@@ -57,32 +55,6 @@ binary!(
 #[inline]
 pub unsafe fn brev8(a: u64) -> u64 {
     unsafe { rust_isa_riscv_zbkb_brev8(a) }
-}
-
-/// `xperm4`.
-///
-/// Permute nibbles with the indices in `b`.
-///
-/// # Safety
-///
-/// The caller must enable Zbkx.
-#[target_feature(enable = "zbkx")]
-#[inline]
-pub unsafe fn xperm4(a: u64, b: u64) -> u64 {
-    unsafe { rust_isa_riscv_zbkb_xperm4(a, b) }
-}
-
-/// `xperm8`.
-///
-/// Permute bytes with the indices in `b`.
-///
-/// # Safety
-///
-/// The caller must enable Zbkx.
-#[target_feature(enable = "zbkx")]
-#[inline]
-pub unsafe fn xperm8(a: u64, b: u64) -> u64 {
-    unsafe { rust_isa_riscv_zbkb_xperm8(a, b) }
 }
 
 /// `zip`.

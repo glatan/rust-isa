@@ -1,4 +1,4 @@
-use rust_isa::x86::simd::avx2::{vpsllvd, vpsllvq, vpsravd, vpsrlvd, vpsrlvq};
+use rust_isa::x86::simd::avx2::{vpslld, vpsllvd, vpsllvq, vpsravd, vpsrld, vpsrlvd, vpsrlvq};
 
 use super::support::*;
 
@@ -31,5 +31,20 @@ fn variable_shifts() {
     assert_eq!(
         i64_lanes(unsafe { vpsrlvq(i64x4([64; 4]), i64x4([0, 1, 2, 3])) }),
         [64, 32, 16, 8]
+    );
+}
+
+#[test]
+fn immediate_shifts() {
+    if !enabled() {
+        return;
+    }
+    assert_eq!(
+        i32_lanes(unsafe { vpslld(i32x8([1, 2, 3, 4, 5, 6, 7, 8]), 1) }),
+        [2, 4, 6, 8, 10, 12, 14, 16]
+    );
+    assert_eq!(
+        i32_lanes(unsafe { vpsrld(i32x8([-1; 8]), 1) }),
+        [0x7fff_ffff; 8]
     );
 }
