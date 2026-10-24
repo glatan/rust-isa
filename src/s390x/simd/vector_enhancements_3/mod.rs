@@ -608,7 +608,7 @@ ternary!(
 );
 
 macro_rules! asm_ternary {
-    ($(#[$meta:meta])* $name:ident, $instruction:literal, $doc:literal) => {
+    ($(#[$meta:meta])* $name:ident, $instruction:literal) => {
         $(#[$meta])*
         ///
         /// # Safety
@@ -641,30 +641,26 @@ asm_ternary!(
     ///
     /// High 64 bits of the signed 64-bit lane products, added to `acc`.
     vmahg,
-    "vmahg",
-    ""
+    "vmahg"
 );
 asm_ternary!(
     /// `vmalhg`.
     ///
     /// High 64 bits of the unsigned 64-bit lane products, added to `acc`.
     vmalhg,
-    "vmalhg",
-    ""
+    "vmalhg"
 );
 asm_ternary!(
     /// `vmahq`.
     ///
     /// High 128 bits of the signed 128-bit lane product, added to `acc`.
     vmahq,
-    "vmahq",
-    ""
+    "vmahq"
 );
 asm_ternary!(
     /// `vmalhq`.
     ///
     /// High 128 bits of the unsigned 128-bit lane product, added to `acc`.
     vmalhq,
-    "vmalhq",
-    ""
+    "vmalhq"
 );
