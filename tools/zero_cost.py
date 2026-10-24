@@ -36,8 +36,6 @@ MANUAL = {
     ("RISC-V", "`v`", "`vrgather`"): "store/load remains",
     ("RISC-V", "`v`", "`vcompress`"): "store/load remains",
     ("LoongArch", "`lasx`", "`xvshuf.b`"): "store/load remains",
-    ("s390x", "`vector`", "`vaf`、`vmlf`"): "value fixture does not inline C",
-    ("s390x", "`vector`", "`vperm`"): "value fixture does not inline C",
     ("32-bit ARM", "`neon`", "`vadd.i32`、`vmul.i32`"): "value fixture does not inline C",
     ("32-bit ARM", "`neon`", "`vtbl1_s8`、`vtbl2_s8`"): "8-byte table only",
     ("MIPS", "`msa`", "`vshf.w`"): "scalar C fallback",

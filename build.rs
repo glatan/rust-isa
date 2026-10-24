@@ -399,7 +399,14 @@ fn main() {
             &out_dir,
             &s390x_vector_c,
             "rust_isa_s390x_vector",
-            &["-march=z13", "-mzvector"],
+            &[
+                "-march=z10",
+                "-fzvector",
+                "-Xclang",
+                "-target-feature",
+                "-Xclang",
+                "+vector",
+            ],
             Some("s390x-unknown-linux-gnu"),
         );
         compile_archive(
