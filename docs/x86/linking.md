@@ -4,16 +4,11 @@ x86_64 で、C の関数を Rust の関数へインラインし、命令の間�
 
 ## 条件
 
-1. Rust と C の LTO モードを一致させる。
-   - Rust `lto = "thin"` と C `-flto=thin`
-   - Rust `lto = "fat"` と C `-flto`
-2. Rust に `-C linker-plugin-lto` を付ける。
-3. C の target-features を Rust の target-features の部分集合にする。 `avx512vl.c` は f/vl の baseline でコンパイルし、BW / DQ と IFMA / VBMI / VBMI2 / VNNI / BITALG / VPOPCNTDQ / VP2INTERSECT は関数単位の `target` 属性で有効にする。
-   - `-mno-mmx -mno-x87 -mno-popcnt -mno-xsave` を付ける。
-   - `cmov` と `cx8` は残ってもインラインされた。
-4. C の関数を `__attribute__((always_inline))` にする。
-5. 呼び出し側の関数に `#[target_feature]` を付けるか、`-C target-feature=+...` を付ける。
-6. LTO を扱えるリンカを使う。clang + lld で確認した。
+LTO モード、`-C linker-plugin-lto`、`always_inline`、呼び出し側の feature、リンカという一般条件は [実装方針](../policy.md) の「native の条件」に従う。x86 固有の条件は次のとおりである。
+
+- C の target-features を Rust の target-features の部分集合にする。`avx512vl.c` は f/vl の baseline でコンパイルし、BW / DQ と IFMA / VBMI / VBMI2 / VNNI / BITALG / VPOPCNTDQ / VP2INTERSECT は関数単位の `target` 属性で有効にする。
+- `-mno-mmx -mno-x87 -mno-popcnt -mno-xsave` を付ける。
+- `cmov` と `cx8` は残ってもインラインされた。
 
 ## Cargo の設定
 
@@ -80,26 +75,26 @@ llvm-objdump -d --no-show-raw-insn target/release/app | sed -n "/<$sym>:/,/^$/p"
 
 この範囲に `call` が無く、SIMD 命令が並ぶことを確認する。AVX2 の確認では、`vpaddd` の結果が `ymm1` のまま `vpmulld` に入り、間の store/load が無かった。入力のロードと出力のストアは関数境界にだけ残る。現在は `fixtures/sse2-link`、`fixtures/avx2-link`、`fixtures/avx512f-link`、`fixtures/avx512vl-link`、`fixtures/aes-link`、`fixtures/fma-link` を `tests/x86_link.rs` がビルドして確認する。
 
-確認した feature と命令は次のとおりである。すべて `-mno-mmx -mno-x87 -mno-popcnt -mno-xsave` を付けた。
+確認した feature と C のフラグは次のとおりである。すべて `-mno-mmx -mno-x87 -mno-popcnt -mno-xsave` を付けた。命令と結果は [ゼロコストの確認](../zero-cost.md) の結果表に置く。
 
-| feature      | C のフラグ                                 | 確認した命令                   |
-| ------------ | ------------------------------------------ | ------------------------------ |
-| `sse2`       | `-msse2`                                   | `paddd`                        |
-| `avx2`       | `-mavx2`                                   | `vpaddd`、`vpmulld`、`vpshufb` |
-| `avx512f`    | `-mavx512f`                                | `vpaddd`                       |
-| `aes`        | `-maes`                                    | `aesenc`                       |
-| `fma`        | `-mfma`                                    | `vfmadd`                       |
-| `avx10.1`    | `-mavx10.1`                                | `vpaddd`、`vpmulld`            |
-| `sha`        | `-msha`                                    | `sha256rnds2`                  |
-| `avx512bw`   | `-mavx512bw`                               | `vpaddb`                       |
-| `avx512vl`   | `-mavx512vl -mavx512bw`                    | `vpaddb`                       |
-| `avx512dq`   | `-mavx512dq -mavx512f`                     | `vpmullq`                      |
-| `avx512ifma` | `-mavx512ifma -mavx512f`                   | `vpmadd52luq`                  |
-| `avx512vbmi` | `-mavx512vbmi -mavx512bw`                  | `vpermb`                       |
-| `avx512vnni` | `-mavx512vnni -mavx512f`                   | `vpdpbusd`                     |
-| `gfni`       | `-mgfni`                                   | `gf2p8affineqb`                |
-| `vaes`       | `-mvaes -mavx2`                            | `vaesenc`                      |
-| `vpclmulqdq` | `-mvpclmulqdq -mavx2 -mavx512f -mavx512vl` | `vpclmulqdq`                   |
+| feature      | C のフラグ                                 |
+| ------------ | ------------------------------------------ |
+| `sse2`       | `-msse2`                                   |
+| `avx2`       | `-mavx2`                                   |
+| `avx512f`    | `-mavx512f`                                |
+| `aes`        | `-maes`                                    |
+| `fma`        | `-mfma`                                    |
+| `avx10.1`    | `-mavx10.1`                                |
+| `sha`        | `-msha`                                    |
+| `avx512bw`   | `-mavx512bw`                               |
+| `avx512vl`   | `-mavx512vl -mavx512bw`                    |
+| `avx512dq`   | `-mavx512dq -mavx512f`                     |
+| `avx512ifma` | `-mavx512ifma -mavx512f`                   |
+| `avx512vbmi` | `-mavx512vbmi -mavx512bw`                  |
+| `avx512vnni` | `-mavx512vnni -mavx512f`                   |
+| `gfni`       | `-mgfni`                                   |
+| `vaes`       | `-mvaes -mavx2`                            |
+| `vpclmulqdq` | `-mvpclmulqdq -mavx2 -mavx512f -mavx512vl` |
 
 ## unstable feature
 

@@ -4,24 +4,26 @@
 
 不安定の feature は cfg が立たない。native では公開条件に cfg を使わない（[実装方針](../policy.md)）。実装方式は [32-bit ARM](README.md) に書く。
 
-| feature    | 種別   | 判定   | 実装   |
-| ---------- | ------ | ------ | ------ |
-| `neon`     | SIMD   | 不安定 | 一部   |
-| `vfp2`     | SIMD   | 不安定 | 対象外 |
-| `vfp3`     | SIMD   | 不安定 | 対象外 |
-| `vfp4`     | SIMD   | 不安定 | 対象外 |
-| `fp-armv8` | SIMD   | 不安定 | 対象外 |
-| `fp16`     | SIMD   | 不安定 | 一部   |
-| `d32`      | SIMD   | 不安定 | 対象外 |
-| `fpregs`   | SIMD   | 不安定 | 対象外 |
-| `mve`      | SIMD   | 不安定 | 一部   |
-| `mve.fp`   | SIMD   | 不安定 | 一部   |
-| `dotprod`  | SIMD   | 不安定 | 一部   |
-| `i8mm`     | SIMD   | 不安定 | 一部   |
-| `aes`      | 暗号   | 不安定 | 一部   |
-| `sha2`     | 暗号   | 不安定 | 一部   |
-| `crc`      | 暗号   | 不安定 | 一部   |
-| `dsp`      | その他 | 不安定 | 対象外 |
+> 実装状況は [README](README.md) を参照する。この表は cfg の観測だけを扱う。
+
+| feature    | 種別   | 判定   |
+| ---------- | ------ | ------ |
+| `neon`     | SIMD   | 不安定 |
+| `vfp2`     | SIMD   | 不安定 |
+| `vfp3`     | SIMD   | 不安定 |
+| `vfp4`     | SIMD   | 不安定 |
+| `fp-armv8` | SIMD   | 不安定 |
+| `fp16`     | SIMD   | 不安定 |
+| `d32`      | SIMD   | 不安定 |
+| `fpregs`   | SIMD   | 不安定 |
+| `mve`      | SIMD   | 不安定 |
+| `mve.fp`   | SIMD   | 不安定 |
+| `dotprod`  | SIMD   | 不安定 |
+| `i8mm`     | SIMD   | 不安定 |
+| `aes`      | 暗号   | 不安定 |
+| `sha2`     | 暗号   | 不安定 |
+| `crc`      | 暗号   | 不安定 |
+| `dsp`      | その他 | 不安定 |
 
 ## 属性には入るが cfg には出ない指定
 
@@ -36,4 +38,3 @@
 - `-C target-feature=+neon` は警告を出し、`neon` の cfg は立たなかった。
 - `-mfpu=neon -mfloat-abi=hard` の C は `vadd.i32 q0` を出した。
 - `-march=armv8.1-m.main+mve` の C は MVE の `vadd.i8 q0` を出し、`armv7-unknown-linux-gnueabihf` の Rust とリンクできた。
-- QEMU の `-cpu cortex-m55` は MVE を実行できる。`-cpu max` は MVE を実行できない。

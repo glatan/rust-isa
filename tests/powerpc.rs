@@ -51,7 +51,11 @@ fn powerpc_pipeline() {
     assert!(output.status.success(), "{}", output_text(&output));
     let text = String::from_utf8_lossy(&output.stdout);
 
-    for (symbol, mnemonic) in [("<kernel_add>:", "vadduwm"), ("<kernel_mul>:", "vmuluwm")] {
+    for (symbol, mnemonic) in [
+        ("<kernel_add>:", "vadduwm"),
+        ("<kernel_mul>:", "vmuluwm"),
+        ("<kernel_perm>:", "vperm"),
+    ] {
         let body = function_at(&text, symbol);
         assert!(
             !body

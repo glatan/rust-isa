@@ -19,11 +19,16 @@ NUMBERED = re.compile(r"^(\d+)\s*命令")
 
 def count_items(cell: str) -> int:
     cell = cell.strip()
-    if not cell or cell == "なし":
+    if not cell or cell.startswith("なし"):
         return 0
     numbered = NUMBERED.match(cell)
     if numbered:
         return int(numbered.group(1))
+    # Parentheses hold explanations and references, not inventory items.
+    # For example, a row says "no dedicated instructions, but `vle8` ..."
+    # or refers to another extension such as `avx512vl`.
+    cell = re.sub(r"（[^）]*）", "", cell)
+    cell = re.sub(r"\([^)]*\)", "", cell)
     return len(BACKTICK.findall(cell))
 
 
@@ -71,6 +76,10 @@ def check_tables(root: Path) -> list[str]:
                 )
                 continue
             extension = cells[0].replace("`", "").strip()
+            if not re.fullmatch(r"[A-Za-z0-9_.-]+", extension):
+                problems.append(
+                    f"{readme}:{number}: extension must be one name, found {extension!r}"
+                )
             if extension in seen:
                 problems.append(f"{readme}:{number}: duplicate extension {extension}")
             seen.add(extension)
@@ -78,6 +87,11 @@ def check_tables(root: Path) -> list[str]:
                 problems.append(
                     f"{readme}:{number}: implemented and unimplemented cells must be filled"
                 )
+            for index, label in ((1, "implemented"), (2, "unimplemented")):
+                if cells[index].startswith("なし") and "`" in cells[index]:
+                    problems.append(
+                        f"{readme}:{number}: {label} cell starts with なし but contains names"
+                    )
         if rows == 0:
             problems.append(f"{readme}: no extension rows")
     return problems

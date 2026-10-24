@@ -370,7 +370,25 @@ fn float_ops() -> u32 {
 
 #[inline(never)]
 #[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_add(a: &V128, b: &V128, c: &V128) -> V128 {
+    unsafe { add(add(*a, *b), *c) }
+}
+
+#[inline(never)]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_mul(a: &V128, b: &V128, c: &V128) -> V128 {
+    unsafe { mul(mul(*a, *b), *c) }
+}
+
+#[inline(never)]
+#[unsafe(no_mangle)]
 pub extern "C" fn run() -> u32 {
+    let a = V128::from_bytes([1; 16]);
+    let b = V128::from_bytes([2; 16]);
+    let c = V128::from_bytes([3; 16]);
+    core::hint::black_box(unsafe { kernel_add(&a, &b, &c) });
+    core::hint::black_box(unsafe { kernel_mul(&a, &b, &c) });
+
     if !load_store() {
         return 1;
     }

@@ -67,6 +67,22 @@ fn aarch64_pipeline() {
     assert_eq!(adds.len(), 2, "kernel_add body:\n{add}");
     assert_eq!(adds[1], adds[0] + 1, "add is not adjacent:\n{add}");
 
+    let mul = function_at(&text, "<kernel_mul>:");
+    assert!(
+        !mul.lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
+        "kernel_mul calls C:\n{mul}"
+    );
+    let lines: Vec<_> = mul.lines().collect();
+    let muls: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("mul\tv"))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(muls.len(), 2, "kernel_mul body:\n{mul}");
+    assert_eq!(muls[1], muls[0] + 1, "mul is not adjacent:\n{mul}");
+
     let tbl = function_at(&text, "<kernel_tbl>:");
     assert!(
         !tbl.lines()

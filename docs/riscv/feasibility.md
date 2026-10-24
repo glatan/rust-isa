@@ -6,60 +6,62 @@
 
 安定の feature は cfg が立つ。不安定の feature は立たない。native では公開条件に cfg を使わない（[実装方針](../policy.md)）。実装方式は [RISC-V](README.md) に書く。
 
-| feature                | 種別   | 判定   | 実装 |
-| ---------------------- | ------ | ------ | ---- |
-| `zba`                  | 整数   | 安定   | 一部 |
-| `zbb`                  | 整数   | 安定   | 一部 |
-| `zbc`                  | 整数   | 安定   | 一部 |
-| `zbs`                  | 整数   | 安定   | 一部 |
-| `zk`                   | 暗号   | 安定   | 一部 |
-| `zkn`                  | 暗号   | 安定   | 一部 |
-| `zknd`                 | 暗号   | 安定   | 一部 |
-| `zkne`                 | 暗号   | 安定   | 一部 |
-| `zknh`                 | 暗号   | 安定   | 一部 |
-| `zkr`                  | 暗号   | 安定   | 未   |
-| `zks`                  | 暗号   | 安定   | 一部 |
-| `zksed`                | 暗号   | 安定   | 一部 |
-| `zksh`                 | 暗号   | 安定   | 一部 |
-| `zkt`                  | 暗号   | 安定   | 未   |
-| `zbkb`                 | 暗号   | 安定   | 一部 |
-| `zbkc`                 | 暗号   | 安定   | 未   |
-| `zbkx`                 | 暗号   | 安定   | 一部 |
-| `v`                    | SIMD   | 不安定 | 一部 |
-| `zve32x`               | SIMD   | 不安定 | 一部 |
-| `zve32f`               | SIMD   | 不安定 | 一部 |
-| `zve64x`               | SIMD   | 不安定 | 一部 |
-| `zve64f`               | SIMD   | 不安定 | 一部 |
-| `zve64d`               | SIMD   | 不安定 | 一部 |
-| `zvfh`                 | SIMD   | 不安定 | 未   |
-| `zvfhmin`              | SIMD   | 不安定 | 未   |
-| `zvfbfmin`             | SIMD   | 不安定 | 未   |
-| `zvfbfwma`             | SIMD   | 不安定 | 未   |
-| `zvl32b`               | SIMD   | 不安定 | 未   |
-| `zvl64b`               | SIMD   | 不安定 | 未   |
-| `zvl128b`              | SIMD   | 不安定 | 未   |
-| `zvl256b`              | SIMD   | 不安定 | 未   |
-| `zvl512b`              | SIMD   | 不安定 | 未   |
-| `zvl1024b`             | SIMD   | 不安定 | 未   |
-| `zfh`                  | その他 | 不安定 | 一部 |
-| `zfhmin`               | その他 | 不安定 | 一部 |
-| `zfa`                  | その他 | 不安定 | 一部 |
-| `unaligned-vector-mem` | SIMD   | 不安定 | 未   |
-| `zvkn`                 | 暗号   | 不安定 | 未   |
-| `zvknc`                | 暗号   | 不安定 | 未   |
-| `zvkned`               | 暗号   | 不安定 | 未   |
-| `zvkng`                | 暗号   | 不安定 | 未   |
-| `zvknha`               | 暗号   | 不安定 | 未   |
-| `zvknhb`               | 暗号   | 不安定 | 未   |
-| `zvks`                 | 暗号   | 不安定 | 未   |
-| `zvksc`                | 暗号   | 不安定 | 未   |
-| `zvksed`               | 暗号   | 不安定 | 未   |
-| `zvksg`                | 暗号   | 不安定 | 未   |
-| `zvksh`                | 暗号   | 不安定 | 未   |
-| `zvkb`                 | 暗号   | 不安定 | 未   |
-| `zvkg`                 | 暗号   | 不安定 | 未   |
-| `zvkt`                 | 暗号   | 不安定 | 未   |
-| `zvbc`                 | 暗号   | 不安定 | 未   |
+> 実装状況は [README](README.md) を参照する。この表は cfg の観測だけを扱う。
+
+| feature                | 種別   | 判定   |
+| ---------------------- | ------ | ------ |
+| `zba`                  | 整数   | 安定   |
+| `zbb`                  | 整数   | 安定   |
+| `zbc`                  | 整数   | 安定   |
+| `zbs`                  | 整数   | 安定   |
+| `zk`                   | 暗号   | 安定   |
+| `zkn`                  | 暗号   | 安定   |
+| `zknd`                 | 暗号   | 安定   |
+| `zkne`                 | 暗号   | 安定   |
+| `zknh`                 | 暗号   | 安定   |
+| `zkr`                  | 暗号   | 安定   |
+| `zks`                  | 暗号   | 安定   |
+| `zksed`                | 暗号   | 安定   |
+| `zksh`                 | 暗号   | 安定   |
+| `zkt`                  | 暗号   | 安定   |
+| `zbkb`                 | 暗号   | 安定   |
+| `zbkc`                 | 暗号   | 安定   |
+| `zbkx`                 | 暗号   | 安定   |
+| `v`                    | SIMD   | 不安定 |
+| `zve32x`               | SIMD   | 不安定 |
+| `zve32f`               | SIMD   | 不安定 |
+| `zve64x`               | SIMD   | 不安定 |
+| `zve64f`               | SIMD   | 不安定 |
+| `zve64d`               | SIMD   | 不安定 |
+| `zvfh`                 | SIMD   | 不安定 |
+| `zvfhmin`              | SIMD   | 不安定 |
+| `zvfbfmin`             | SIMD   | 不安定 |
+| `zvfbfwma`             | SIMD   | 不安定 |
+| `zvl32b`               | SIMD   | 不安定 |
+| `zvl64b`               | SIMD   | 不安定 |
+| `zvl128b`              | SIMD   | 不安定 |
+| `zvl256b`              | SIMD   | 不安定 |
+| `zvl512b`              | SIMD   | 不安定 |
+| `zvl1024b`             | SIMD   | 不安定 |
+| `zfh`                  | その他 | 不安定 |
+| `zfhmin`               | その他 | 不安定 |
+| `zfa`                  | その他 | 不安定 |
+| `unaligned-vector-mem` | SIMD   | 不安定 |
+| `zvkn`                 | 暗号   | 不安定 |
+| `zvknc`                | 暗号   | 不安定 |
+| `zvkned`               | 暗号   | 不安定 |
+| `zvkng`                | 暗号   | 不安定 |
+| `zvknha`               | 暗号   | 不安定 |
+| `zvknhb`               | 暗号   | 不安定 |
+| `zvks`                 | 暗号   | 不安定 |
+| `zvksc`                | 暗号   | 不安定 |
+| `zvksed`               | 暗号   | 不安定 |
+| `zvksg`                | 暗号   | 不安定 |
+| `zvksh`                | 暗号   | 不安定 |
+| `zvkb`                 | 暗号   | 不安定 |
+| `zvkg`                 | 暗号   | 不安定 |
+| `zvkt`                 | 暗号   | 不安定 |
+| `zvbc`                 | 暗号   | 不安定 |
 
 ## 属性には入るが cfg には出ない指定
 

@@ -106,6 +106,20 @@ pub extern "C" fn kernel_mul(a: &V128, b: &V128) -> V128 {
     mul(mul(*a, *b), *b)
 }
 
+#[inline(never)]
+#[target_feature(enable = "lasx")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_xvadd(a: &V256, b: &V256, c: &V256) -> V256 {
+    unsafe { xvadd(xvadd(*a, *b), *c) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "lasx")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_xvmul(a: &V256, b: &V256, c: &V256) -> V256 {
+    unsafe { xvmul(xvmul(*a, *b), *c) }
+}
+
 fn run() -> u32 {
     if !load_store() {
         return 1;
@@ -415,6 +429,12 @@ fn f32x8_lanes(value: V256) -> [f32; 8] {
 
 #[target_feature(enable = "lasx")]
 unsafe fn lasx_ops() -> bool {
+    let a = V256::from_bytes([1; 32]);
+    let b = V256::from_bytes([2; 32]);
+    let c = V256::from_bytes([3; 32]);
+    core::hint::black_box(unsafe { kernel_xvadd(&a, &b, &c) });
+    core::hint::black_box(unsafe { kernel_xvmul(&a, &b, &c) });
+
     let source = core::array::from_fn::<u8, 32, _>(|index| index as u8);
     let mut unaligned = [0u8; 33];
     unaligned[1..].copy_from_slice(&source);

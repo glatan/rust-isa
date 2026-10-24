@@ -13,42 +13,21 @@ extension の `mod.rs` には、次を書く。
 - そのモジュールの公開条件（無条件、`cfg`、Cargo feature のいずれか）
 - 利用者が付けるフラグのうち、必須のものとゼロコストのためのもの
 - ビルドに必要な外部ツール
-- safe と `unsafe` の境界、即値の規則
+- safe と `unsafe` の境界、即値の規則（[API契約](api-contract.md)）
 - 意図的に含めていない命令
 
-命令ごとの動作と例は、その関数の rustdoc に書く。
+命令ごとの動作と例は、その関数の rustdoc に書く。rustdoc の必須項目は [API契約](api-contract.md) の「rustdoc」に従う。
 
 ## arch ごとの文書
 
-`docs/<arch>/README.md` には、次を書く。
+`docs/<arch>/README.md` は、その arch のプロファイルと実装状況を置く。表の形式は [実装状況の集計](coverage.md) に従う。
 
-- 対象の triple
-- 既定の feature と、実装の順序
-- 実装状況（extension ごとの実装済み命令と未実装命令の表）
-- 実装方式（C、`asm!`、純 Rust）
-- 値の型と C との受け渡し
-- ゼロコストの条件と、測定したかどうか
-- ツールチェーンと、確認した clang のバージョン
-- 未決定の設計（スケーラブルベクタ、状態管理など）
-- 対象外とする命令と、その理由
+`docs/<arch>/feasibility.md` は、`cfg(target_feature)` の観測だけを置く。用語と共通の注意は [実装可否](feasibility.md) に置く。実装状況は `README.md` を参照し、この文書には置かない。
 
-ゼロコストを確認した arch は、リンクの条件と確認手順を `linking.md` に分ける。例は [x86](x86/linking.md) にある。
+リンクの条件が一般則と異なる arch だけ、`linking.md` に分ける。例は [x86](x86/linking.md) と [wasm32](wasm32/linking.md) にある。
 
-`docs/<arch>/feasibility.md` には、その arch の `cfg(target_feature)` の観測表を置く。用語と共通の注意は [実装可否](feasibility.md) に置く。
+## 索引
 
-## 共通の文書
+文書の一覧は [docs/README.md](README.md) にだけ置く。この文書には索引を置かない。
 
-- [実装方針](policy.md): 可用性、ゼロコスト、実装方式、安全境界
-- [API契約](api-contract.md): 公開パス、値型、即値、状態型の形
-- [実装状況の集計](coverage.md): `make coverage` と表の形式
-- [実装可否](feasibility.md): cfg の用語と arch ごとの表への索引
-- [ゼロコストの確認](zero-cost.md): 確認方法と arch ごとの結果
-- [スケーラブルベクタと状態](scalable-state.md): SVE、RVV、SME、AMX、MMA の API 設計
-- [スケーラブル・状態付き extension の対応表](scalable-coverage.md): ISA 命令と API の対応
-- [native の値テスト](native-testing.md): QEMU を使う値テストの設計
-- [値テストの fixture](fixture-matrix.md): fixture と runner の対応
-- [重複する命令名](dedup.md): extension 間で共有できる C 関数の判定
-- [ソースの置き方](source-layout.md): ディレクトリと公開パス
-- [開発環境](development.md): リポジトリのコマンド
-
-この `docs/` には、リポジトリを変更する手順を置く。arch や extension に固有の手順は、その arch のディレクトリに分ける。
+この `docs/` には、リポジトリを変更する手順と、その判断の記録を置く。arch や extension に固有の手順は、その arch のディレクトリに分ける。

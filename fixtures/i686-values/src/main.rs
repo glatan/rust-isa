@@ -3,8 +3,8 @@
 
 use core::arch::asm;
 use core::panic::PanicInfo;
-use rust_isa::x86::simd::avx2::{V256, vpaddd};
-use rust_isa::x86::simd::sse2::{V128, paddd, pslld, punpcklbw, v128_load, v128_store};
+use rust_isa::x86::simd::avx2::{V256, vpaddd, vpmulld};
+use rust_isa::x86::simd::sse2::{V128, paddd, pmuludq, pslld, punpcklbw, v128_load, v128_store};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {
@@ -31,7 +31,27 @@ fn panic(_info: &PanicInfo) -> ! {
     }
 }
 
+#[inline(never)]
+#[unsafe(no_mangle)]
+pub extern "C" fn kernel_sse2(a: &V128, b: &V128) -> V128 {
+    pmuludq(paddd(paddd(*a, *b), *b), *b)
+}
+
+#[inline(never)]
+#[target_feature(enable = "avx2")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_avx2(a: &V256, b: &V256) -> V256 {
+    unsafe { vpmulld(vpaddd(vpaddd(*a, *b), *b), *b) }
+}
+
 fn run() -> u32 {
+    let a128 = V128::from_bytes([1; 16]);
+    let b128 = V128::from_bytes([2; 16]);
+    let a256 = V256::from_bytes([1; 32]);
+    let b256 = V256::from_bytes([2; 32]);
+    core::hint::black_box(kernel_sse2(&a128, &b128));
+    core::hint::black_box(unsafe { kernel_avx2(&a256, &b256) });
+
     let load = load_store();
     if load != 0 {
         return load;

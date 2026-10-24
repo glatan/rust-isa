@@ -17,9 +17,9 @@ SVE、RVV、SME、AMX、PowerPC MMA は、固定長の値型と1命令1関数の
 
 - SVE と RVV は、スライス API の操作を単位とする。
 - SME、AMX、PowerPC MMA は、guard 型または状態型と、その状態を要求する操作を単位とする。
-- ISA 命令と API の対応表を `docs/<arch>/` に置く。
-- 対応表の各命令は「APIで提供」「別APIでカバー」「対象外」「延期」のいずれかに分類する。
-- 対応表にない命令を残さない。全体の対応表が揃うまで、coverage の blocking 検査を有効にしない。
+- ISA 命令と API の対応を [スケーラブル・状態付き extension の API 対応](scalable-mapping.md) に置く。
+- 実装状況は各 arch の `README.md` を正とする。対応表は状態を持たず、実装済み・未実装・対象外の理由は arch の表に書く。
+- 対応表は代表的な対応を示し、全 API は arch の `README.md` に置く。全 ISA 命令の列挙は外部仕様に依存するため行わず、対象範囲は [実装状況の集計](coverage.md) に定義する。
 
 ## 非目標
 
@@ -45,27 +45,11 @@ SVE、RVV、SME、AMX、PowerPC MMA は、固定長の値型と1命令1関数の
 
 ## 可用性
 
-### wasm32
+公開条件の規則は [API契約](api-contract.md) に置く。ここでは決定の理由だけを書く。
 
-- extension の `cfg(target_feature)` でモジュールを公開する。
-- wasm のモジュールは、含む命令の feature を全体として要求する。feature が無効なビルドに関数を置くと、モジュールがその feature を要求する。
-- `simd128` と `relaxed-simd` はこの方式である。
-
-### native
-
-- 原則として無条件に公開する。`core::arch` の intrinsic と同じく、API の存在を呼び出し側のフラグに依存させない。
-- 任意の feature を要求する命令は `unsafe fn` とする。CPU の対応と feature の有効化は呼び出し側の責任である。
-- rustc が stable に扱う feature は、呼び出し側のカーネルに `#[target_feature(enable = "...")]` を付ける。
-- ラッパーは `#[inline(always)]` だけにし、`#[target_feature]` を付けない。rustc 1.99.1 では `#[inline(always)]` と `#[target_feature]` を同じ関数に付けられない（E0658）。
-- ラッパーに `#[target_feature]` を付ける場合は、`#[inline(always)]` を外す。`#[inline]` は併用できる。
-- unstable または LLVM のみの feature は、`#[target_feature]` を付けず、rustdoc に条件を書く。
-- ABI や状態を変える拡張（SVE、SME、AMX、RVV）は、無条件公開の前に型と状態の設計を行う。
-
-### Cargo feature
-
-- 今は採用しない。extension の組み合わせが additive でない場合があり、wasm の cfg ゲートと二重になるため。
-- 代替として検討する場合は、extension ごとに opt-in し、docs.rs と利用者の設定を arch 文書に書く。
-- 例外として、wasm32 の `wide-arithmetic` のように、cfg ゲートとモジュール全体の feature 要件が両立しない extension は、extension 名の Cargo feature で opt-in する。既定では無効にし、有効なビルドが feature を要求することを rustdoc に書く。
+- wasm32: モジュールが含む命令の feature を全体として要求するため、cfg ゲートでモジュールを公開する。
+- native: API の存在を呼び出し側の rustflags に依存させないため、無条件に公開する。任意の feature を要求する命令は `unsafe fn` とする。
+- Cargo feature: extension の組み合わせが additive でない場合があり、wasm の cfg ゲートと二重になるため、原則として採用しない。`wide-arithmetic` だけ例外とする。
 
 ## 実装方式
 
@@ -92,16 +76,9 @@ SVE、RVV、SME、AMX、PowerPC MMA は、固定長の値型と1命令1関数の
 - 実行時ディスパッチ: std の feature 検出マクロが必要で、`no_std` の既定にできない。保留する。
 - 純 Rust のスカラー実装: 命令の存在を保証できない。値の構築とビット操作だけに使う。
 
-## ゼロコストの現状
+## ゼロコスト
 
-| 対象                                                                         | 方式                                                                | 状態                                               |
-| ---------------------------------------------------------------------------- | ------------------------------------------------------------------- | -------------------------------------------------- |
-| wasm32 の `simd128`、`relaxed-simd`                                          | cfg ゲート、C + clang + LTO                                         | 往復が消えることを `tests/wasm_link.rs` で確認済み |
-| native の x86_64 / i686                                                      | 無条件公開、`#[target_feature]`、C + clang + LTO                    | 条件付きで確認済み（i686 は SSE2 / AVX2）          |
-| native の AArch64 / RISC-V / LoongArch / s390x / 32-bit ARM / PowerPC / MIPS | 無条件公開、`#[target_feature]` または global flag、C + clang + LTO | 条件付きで確認済み                                 |
-| native の 128-bit `asm!`                                                     | `u128` と `xmm_reg`                                                 | x86_64 で確認済み                                  |
-
-確認の方法と arch ごとの結果は [ゼロコストの確認](zero-cost.md) に書く。
+確認の方法と arch ごとの結果は [ゼロコストの確認](zero-cost.md) に置く。この文書には状態表を置かない。
 
 ### native の条件
 
@@ -144,15 +121,15 @@ x86 の `avx10.1` で確認した。`-C target-feature=+avx10.1` は警告を出
 
 ## スケーラブルベクタと状態を持つ拡張
 
-SVE、RVV、SME、AMX、PowerPC の MMA は、固定長の `V128` と 1 命令 1 関数の形にそのまま当てはまらない。無条件公開の前に、次の点を設計する。
+SVE、RVV、SME、AMX、PowerPC の MMA は、固定長の `V128` と 1 命令 1 関数の形にそのまま当てはまらない。API の形は次のように決めた。
 
-- SVE: ベクタ長は実行時に決まる。固定長の値型では表せない。`Vl` を引数に取る API、またはメモリ上のスライスに対する API になる。命令ごとの関数を並べても、値がレジスタに残る保証はない。スライス API は AArch64 で、C のループが `#[target_feature(enable = "sve")]` のカーネルへインラインされ、`call` が無いことを確認した。
+- SVE: ベクタ長は実行時に決まる。固定長の値型では表せない。`Vl` を引数に取る API、またはメモリ上のスライスに対する API になる。固定長レジスタ型の命令別関数を並べても、値がレジスタに残る保証はない。スライス API は AArch64 で、C のループが `#[target_feature(enable = "sve")]` のカーネルへインラインされ、`call` が無いことを確認した。
 - RVV: 固定長の `V128` 部分集合なら、`vadd.vv` / `vmul.vv` でゼロコストを確認した。VL を実行時にするスライス API も、`vsetvli` / `vle32.v` / `vadd.vv` / `vse32.v` のループがカーネルへインラインされ、`call` が無いことを確認した。
 - SME: ストリーミングモードと ZA の状態を持つ。`SMSTART` / `SMSTOP` に対応する guard 型が必要になる。
 - AMX: タイル設定とタイル解放の状態を持つ。設定用の guard 型と、OS のタイル状態サポートが必要になる。
 - PowerPC MMA: アキュムレータの状態を持つ。設定と解放を含む API になる。
 
-これらは「cfg が立たない」問題ではない。API の形を決める問題である。決まるまで、命令ごとの関数を公開しない。検討案は [スケーラブルベクタと状態](scalable-state.md) に書く。
+これらは「cfg が立たない」問題ではなく、API の形を決める問題である。固定長レジスタ型の命令別 API は出さず、スライス操作または guard を取る関数として公開する。設計は [スケーラブルベクタと状態](scalable-state.md) に置く。
 
 clang 23.1.1 で確認したこと:
 
@@ -160,28 +137,9 @@ clang 23.1.1 で確認したこと:
 - SME は `-march=armv9-a+sme` で C がコンパイルできた。`__arm_streaming` は宣言子の後ろに置く。関数は `smstart` / `smstop` を出さないため、呼び出し側がストリーミングモードに入る guard を持つ必要がある。
 - PowerPC の MMA は `-mcpu=power10 -mmma` で C がコンパイルでき、`xvi4ger8` と `xxmfacc` を出した。アキュムレータの状態を持つ。
 
-## API 設計
+## API の参照
 
-- 関数名は `{接頭辞}_{命令名}` とする。`.` と `-` は `_` に置き換える。
-- extension の名前も同じ規則で付ける。`sse4.1` は `sse4_1`、`relaxed-simd` は `relaxed_simd` である。
-- 値の型は `V128`、`V256`、`V512` を arch ごとに定義する。`core::arch` の型は公開しない。
-- レイアウトは `#[repr(C, align(N))]` のバイト列とする。レーンの意味は命令が決める。
-- C との境界ではポインタを使う。値渡しの ABI は環境依存なので使わない。
-- 128-bit は `u128` を内部に持つ形も許す。`asm!` の `xmm_reg` は `u128` を受け付ける（x86 で確認）。
-- 値の型に `Add` などの演算子を実装しない。同じビット列でも命令によって意味が変わるためである。
-- レーン即値は `const LANE: u32` とする。範囲外はコンパイルエラーにする。
-- 比較の結果は、真のレーンをすべて 1、偽のレーンをすべて 0 にする。NaN の扱いは命令の rustdoc に書く。
-- エンディアンは arch ごとに rustdoc へ書く。バイト列の順序とレーンの順序を混同しない。
-
-## 安全境界
-
-- 既定の feature に含まれる演算は safe にできる。
-- 既定の feature を無効化したビルドはサポートしない。safe な API は、そのターゲットの既定の feature を前提にする。
-- 任意の feature を要求する命令の `unsafe` の条件は、可用性の節と同じである。
-- wasm32 の cfg ゲートされた演算は safe にできる。モジュールが feature を要求するため、feature 無効の環境では動かない。
-- メモリ命令は常に `unsafe` とする。ポインタの有効性、境界、アラインメントは呼び出し側の責任である。
-- `#[target_feature]` を付けた関数は、その feature を持つ呼び出し元からだけ呼ぶ。rustdoc に条件を書く。
-- ラッパーは panic しない。panic する可能性がある処理を入れない。
+公開APIの形、値型、即値、エンディアン、安全境界は [API契約](api-contract.md) に置く。この文書には重複して書かない。
 
 ## 機能検出とディスパッチ
 
@@ -204,17 +162,16 @@ clang 23.1.1 で確認したこと:
 - LTO を使うときは、Rust と C の LTO モードを一致させる。Rust `-C lto=thin` と C `-flto=thin`、または Rust `-C lto=fat` と C `-flto` の組にする。
 - `-ffreestanding`、`-fno-builtin`、`-fno-vectorize`、`-fno-slp-vectorize` を使い、意図しない命令を出さない。
 - `build.rs` は C のパスと環境変数を `cargo:rerun-if-changed` と `cargo:rerun-if-env-changed` に登録する。ネットワークから取得しない。
-- 値テストのランナーは arch ごとに決める（ホスト、QEMU、wasmtime）。
 
 ## テスト
 
-- 値テスト: ホストまたはエミュレータで実行する。開発イメージには `qemu-user-static` と各ターゲットの runner を入れてある。native の値テストは、実装を足すときに `tests/` へ追加する。設計は [native の値テスト](native-testing.md) にある。
-- 命令の存在: `llvm-objdump` または `wasm2wat` で確認する。
-- ゼロコスト: wasm32 は `tests/wasm_link.rs`。native は 2 命令を合成する fixture のカーネルを disassembly し、`call` と命令間の store/load が無いことを確認する。C への `call` は `callq *...` の間接呼び出しになることがあるため、シンボル名だけで探さない。x86_64 の確認は済みである。`lto = "thin"` と C `-flto=thin`、`lto = "fat"` と C `-flto`、LTO なしの三つを確認する。
-- ELF のリンクが通らない arch は、Rust と C の bitcode を `llvm-link` し、`opt -passes="default<O3>"` で最適化して IR を確認する。これはバイナリでの確認の代わりではなく、リンク前の確認である。
-- cfg の観測: `rustc --print cfg`。結果は `docs/<arch>/feasibility.md` に置く。
-- 未対応の CPU でテストを走らせない。native の任意 feature は、実行時検出でスキップするか、`cfg(target_feature)` でテストを分ける。
-- C と Rust のシンボルが一致することを確認する（`tests/consistency.rs` と同じ形）。
+実装したら、値テスト、命令の存在、シンボル一致のテストを同じ変更に追加する。
+
+- 値テストの設計と arch 別の注意: [native の値テスト](native-testing.md)
+- fixture と runner: [値テストの fixture](fixture-matrix.md)
+- ゼロコストの確認方法: [ゼロコストの確認](zero-cost.md)
+- cfg の観測: [実装可否](feasibility.md)
+- 実行するコマンド: [開発環境](development.md)
 
 ## セキュリティ
 
@@ -222,27 +179,17 @@ clang 23.1.1 で確認したこと:
 - 秘密値のゼロ化、メモリのロック、サイドチャネル対策は提供しない。利用者の責任とする。
 - メモリ命令の境界とアラインメントは、呼び出し側が保証する。
 
-## バージョンと互換性
+## 互換性の参照
 
-- 公開 API は semver に従う。
-- wasm32 の cfg ゲートされた API は、feature を有効にしたビルドの API として semver の対象にする。
-- C のシンボルと値型のメモリ配置は公開 ABI ではない。クレート間で C シンボルを直接呼ばない。
-- extension の追加は minor とする。命令の削除、意味の変更、公開条件の変更は major とする。
-- ツールチェーンの最小バージョンを上げる変更は minor とし、arch 文書に書く。
+semver と互換性の規則は [API契約](api-contract.md) の「変更」に置く。この文書には重複して書かない。
 
-## 対象の階層
+## テストの実行環境
 
-| 階層 | 意味                                                 | arch                                                   |
-| ---- | ---------------------------------------------------- | ------------------------------------------------------ |
-| 1    | ホストまたは wasmtime で値テストを実行する           | x86_64、wasm32                                         |
-| 2    | クロスコンパイルだけ確認する。値テストは未整備       | AArch64、32-bit ARM、PowerPC、RISC-V、LoongArch、s390x |
-| 3    | rustc の標準ライブラリが無い、または実行環境が未整備 | MIPS                                                   |
-
-階層は実装の可否ではない。テストと検証の度合いである。
+arch ごとの値テストの runner と実行状況は [値テストの fixture](fixture-matrix.md) に置く。実装状況は各 arch の `README.md` を正とし、この文書には置かない。
 
 ## arch と extension を追加する手順
 
-実装の順序と命令ごとの状態は、各 arch の `README.md` と `feasibility.md` に置く。
+実装の順序と命令ごとの状態は、各 arch の `README.md` に置く。ISA 命令と API の対応は [API 対応](scalable-mapping.md) に置く。
 
 1. 対象 triple と既定の feature を決める。
 2. `docs/<arch>/feasibility.md` に cfg の観測表を置く。
