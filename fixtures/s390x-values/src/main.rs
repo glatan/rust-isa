@@ -84,18 +84,32 @@ pub extern "C" fn compile_only() {
 #[target_feature(enable = "vector")]
 #[inline(never)]
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn kernel_add(a: &V128, b: &V128) -> V128 {
-    unsafe { add(add(*a, *b), *b) }
+pub unsafe extern "C" fn kernel_add(a: &V128, b: &V128, c: &V128) -> V128 {
+    unsafe { add(add(*a, *b), *c) }
 }
 
 #[target_feature(enable = "vector")]
 #[inline(never)]
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn kernel_mul(a: &V128, b: &V128) -> V128 {
-    unsafe { mul(mul(*a, *b), *b) }
+pub unsafe extern "C" fn kernel_mul(a: &V128, b: &V128, c: &V128) -> V128 {
+    unsafe { mul(mul(*a, *b), *c) }
+}
+
+#[target_feature(enable = "vector")]
+#[inline(never)]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_perm(a: &V128, b: &V128, index: &V128) -> V128 {
+    unsafe { permute(permute(*a, *b, *index), *b, *index) }
 }
 
 fn run() -> u32 {
+    let a = V128::from_bytes([1; 16]);
+    let b = V128::from_bytes([2; 16]);
+    let c = V128::from_bytes([3; 16]);
+    core::hint::black_box(unsafe { kernel_add(&a, &b, &c) });
+    core::hint::black_box(unsafe { kernel_mul(&a, &b, &c) });
+    core::hint::black_box(unsafe { kernel_perm(&a, &b, &c) });
+
     if !load_store() {
         return 1;
     }
@@ -337,8 +351,8 @@ fn integer() -> bool {
     unsafe {
         lanes(add(a, b)) == [11, 22, 33, 44]
             && lanes(mul(a, b)) == [10, 40, 90, 160]
-            && lanes(kernel_add(&a, &b)) == [21, 42, 63, 84]
-            && lanes(kernel_mul(&a, &b)) == [100, 800, 2700, 6400]
+            && lanes(kernel_add(&a, &b, &b)) == [21, 42, 63, 84]
+            && lanes(kernel_mul(&a, &b, &b)) == [100, 800, 2700, 6400]
     }
 }
 

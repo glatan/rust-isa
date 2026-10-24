@@ -11,7 +11,7 @@
 | `fixtures/arm-values`       | `armv7-unknown-linux-gnueabihf` | `qemu-arm-static -cpu max`         | NEON、dotprod、fp16、i8mm、AES、SHA-2、CRC                                      | MVE                          |
 | `fixtures/riscv-values`     | `riscv64gc-unknown-linux-gnu`   | `qemu-riscv64-static -cpu max`     | zba、zbb、zbc、zbs、zkn、zks、V、スライス API                                   | 将来の `zfh` / `zfa` / `zv*` |
 | `fixtures/loongarch-values` | `loongarch64-unknown-linux-gnu` | `qemu-loongarch64-static -cpu max` | LSX、LASX（`kernel_xvadd` / `kernel_xvmul` の zero-cost を含む）                | LBT                          |
-| `fixtures/s390x-values`     | `s390x-unknown-linux-gnu`       | `qemu-s390x-static`                | vector                                                                          | enhancements の一部          |
+| `fixtures/s390x-values`     | `s390x-unknown-linux-gnu`       | `qemu-s390x-static`                | vector（`kernel_add` / `kernel_mul` / `kernel_perm` の zero-cost を含む）       | enhancements の一部          |
 | `fixtures/powerpc-values`   | `powerpc64le-unknown-linux-gnu` | `qemu-ppc64le-static -cpu power9`  | Altivec、VSX、Power8 vector、Power8 crypto（`kernel_perm` の zero-cost を含む） | Power10、MMA                 |
 | `fixtures/mips-values`      | `mips64-unknown-linux-gnuabi64` | `qemu-mips64-static`               | MSA（`kernel_add` / `kernel_mul` の zero-cost を含む）                          | virt                         |
 
@@ -55,7 +55,7 @@ QEMU が命令を実行しない場合は、ビルドと API の存在確認だ�
 | `target-nested/aarch64-values`       | `fixtures/aarch64-values`              | QEMU-AArch64 で NEON / dotprod の値テストと `add` / `tbl` / `sdot` の disassembly                                                                     |
 | `target-nested/riscv-values`         | `fixtures/riscv-values`                | RISC-V の固定長 V128 値テストと `vadd.vv` / `vmul.vv` の disassembly                                                                                  |
 | `target-nested/loongarch-values`     | `fixtures/loongarch-values`            | LoongArch LSX / LASX の値テストと `vadd.w` / `vmul.w` / `xvadd.w` / `xvmul.w` の disassembly                                                          |
-| `target-nested/s390x-values`         | `fixtures/s390x-values`                | s390x vector の値テスト                                                                                                                               |
+| `target-nested/s390x-values`         | `fixtures/s390x-values`                | s390x vector の値テストと `kernel_add` / `kernel_mul` / `kernel_perm` の `llvm-mc` デコード                                                           |
 | `target-nested/arm-values`           | `fixtures/arm-values`                  | ARMv7 NEON の値テスト                                                                                                                                 |
 | `target-nested/arm-mve-values`       | `fixtures/arm-values`（`mve` feature） | QEMU `cortex-m55` で MVE / MVE-FP の値テスト                                                                                                          |
 | `target-nested/powerpc-values`       | `fixtures/powerpc-values`              | PowerPC Altivec の値テストと `vadduwm` / `vmuluwm` / `vperm` の disassembly                                                                           |

@@ -31,7 +31,7 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 
 `manual` の行は、[方法](#方法) の `RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release` で作った `no_std` / `no_main` のバイナリを `llvm-objdump` で見る。再現手順は [再現の例](#再現の例) に従う。`make zero-cost-check` は `manual` の行を fixture / kernel の検査対象にしないが、各行に理由があることは検査する。
 
-`manual` が残るのは、RISC-V の `vrgather` / `vcompress`、LoongArch の `xvshuf.b`、s390x、32-bit ARM、MIPS の `vshf.w` である。値テスト fixture にゼロコスト用カーネルがない、ビルド条件がゼロコスト条件と一致しない、または `llvm-mc` でバイト列をデコードする必要があるため、個別の link fixture にしていない。
+`manual` が残るのは、RISC-V の `vrgather` / `vcompress`、LoongArch の `xvshuf.b`、32-bit ARM、MIPS の `vshf.w` である。値テスト fixture にゼロコスト用カーネルがない、ビルド条件がゼロコスト条件と一致しない、または `llvm-mc` でバイト列をデコードする必要があるため、個別の link fixture にしていない。
 
 | arch       | fixture                         | kernel                                                     | LTO  | extension                  | 確認した命令                      | `call` | 命令間の store/load | 結果                      |
 | ---------- | ------------------------------- | ---------------------------------------------------------- | ---- | -------------------------- | --------------------------------- | ------ | ------------------- | ------------------------- |
@@ -66,8 +66,9 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 | LoongArch  | `fixtures/loongarch-values`     | `kernel_xvadd`                                             | thin | `lasx`                     | `xvadd.w`                         | なし   | なし                | ゼロコスト                |
 | LoongArch  | `fixtures/loongarch-values`     | `kernel_xvmul`                                             | thin | `lasx`                     | `xvmul.w`                         | なし   | なし                | ゼロコスト                |
 | LoongArch  | manual                          | —                                                          | thin | `lasx`                     | `xvshuf.b`                        | なし   | あり                | 往復が残る                |
-| s390x      | manual                          | —                                                          | thin | `vector`                   | `vaf`、`vmlf`                     | なし   | なし                | ゼロコスト                |
-| s390x      | manual                          | —                                                          | thin | `vector`                   | `vperm`                           | なし   | なし                | ゼロコスト                |
+| s390x      | `fixtures/s390x-values`         | `kernel_add`                                               | thin | `vector`                   | `vaf`                             | なし   | なし                | ゼロコスト                |
+| s390x      | `fixtures/s390x-values`         | `kernel_mul`                                               | thin | `vector`                   | `vmlf`                            | なし   | なし                | ゼロコスト                |
+| s390x      | `fixtures/s390x-values`         | `kernel_perm`                                              | thin | `vector`                   | `vperm`                           | なし   | なし                | ゼロコスト                |
 | 32-bit ARM | manual                          | —                                                          | thin | `neon`                     | `vadd.i32`、`vmul.i32`            | なし   | なし                | ゼロコスト                |
 | 32-bit ARM | manual                          | —                                                          | thin | `neon`                     | `vtbl1_s8`、`vtbl2_s8`            | —      | —                   | 8-byte table のみ         |
 | PowerPC    | `fixtures/powerpc-values`       | `kernel_add`                                               | thin | `altivec`                  | `vadduwm`                         | なし   | なし                | ゼロコスト                |
@@ -91,10 +92,6 @@ PowerPC は ELF のリンクが `.TOC.` で失敗したため、最初は Rust �
 arch 単位では、ゼロコストを確認していない arch はない。extension や命令単位の未確認は、各 arch の README と上の結果表にある。
 
 ## fixture 化できない測定
-
-### s390x
-
-`build.rs` は base vector の C を `-march=z13 -mzvector` でコンパイルする。Rust の既定 target-cpu は `z10` である。C の target-features から `vector-enhancements-1` と `transactional-execution` を外しても、target-cpu が `z13` のままで、値テスト fixture では C がインラインされない。`-march=z10` にすると vecintrin の宣言が不足する。専用 fixture には、base vector と vector enhancements の C 分割か、z10 で vecintrin を使えるビルド方法が必要になる。
 
 ### 32-bit ARM
 
@@ -152,7 +149,7 @@ GCC の vector 拡張に置き換えると、どちらも store/load が消え�
 ### target-cpu と feature 集合
 
 - **RISC-V**: `-mno-relax` を付けないと、C の関数がインラインされなかった。C は `-march=rv64gcv -mabi=lp64d -mno-relax`。
-- **s390x**: Rust の target-cpu は `z10` である。C を `-march=z10 -mzvector` でコンパイルすると一致した。`-march=z13 -mzvector` では `+vector-enhancements-1` と `+transactional-execution` が付き、インラインされなかった。`vec_perm` は z13 のヘッダが必要で、`-march=z13 -Xclang -target-cpu -Xclang z10 -Xclang -target-feature -Xclang +vector -mno-htm` で合わせた。
+- **s390x**: Rust の target-cpu は `z10` である。C は `-march=z10 -fzvector -Xclang -target-feature -Xclang +vector` で一致した。`-march=z13 -mzvector` では `+vector-enhancements-1` と `+transactional-execution` が付き、インラインされなかった。
 - **AArch64**: `-march=armv8-a+simd` で一致した。
 - **LoongArch**: `-mlasx` で一致した。
 - **MIPS**: C は `-march=mips64r2 -mmsa -mabicalls -mxgot`、Rust は `-C target-feature=+msa,+fp64` を使う。`llvm-objdump` は MSA 命令を `<unknown>` と表示するため、バイト列を `llvm-mc --disassemble --triple=mips64-unknown-linux-gnuabi64 --mattr=+msa` でデコードする。
