@@ -256,3 +256,23 @@ void rust_isa_s390x_ve3_vacccq(const uint8_t *acc, const uint8_t *a,
     STORE(v1u128, out, vec_addec(LOAD(v1u128, a), LOAD(v1u128, b),
                                  LOAD(v1u128, acc)));
 }
+
+void rust_isa_s390x_ve3_vmahg(const uint8_t *acc, const uint8_t *a,
+                              const uint8_t *b, uint8_t *out) {
+    STORE(v2i64, out, vec_mhadd(LOAD(v2i64, acc), LOAD(v2i64, a), LOAD(v2i64, b)));
+}
+
+void rust_isa_s390x_ve3_vmalhg(const uint8_t *acc, const uint8_t *a,
+                               const uint8_t *b, uint8_t *out) {
+    STORE(v2u64, out, vec_mhadd(LOAD(v2u64, acc), LOAD(v2u64, a), LOAD(v2u64, b)));
+}
+
+void rust_isa_s390x_ve3_vmahq(const uint8_t *acc, const uint8_t *a,
+                              const uint8_t *b, uint8_t *out) {
+    STORE(v1i128, out, vec_mhadd(LOAD(v1i128, acc), LOAD(v1i128, a), LOAD(v1i128, b)));
+}
+
+void rust_isa_s390x_ve3_vmalhq(const uint8_t *acc, const uint8_t *a,
+                               const uint8_t *b, uint8_t *out) {
+    STORE(v1u128, out, vec_mhadd(LOAD(v1u128, acc), LOAD(v1u128, a), LOAD(v1u128, b)));
+}
