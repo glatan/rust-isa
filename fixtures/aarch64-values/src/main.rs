@@ -8,6 +8,7 @@ use rust_isa::aarch64::crypto::crc::crc32b;
 use rust_isa::aarch64::crypto::sha2::{sha256h, sha256h2, sha256su0, sha256su1};
 use rust_isa::aarch64::crypto::sha3::{bcax, eor3, rax1};
 use rust_isa::aarch64::crypto::sm4::{sm4e, sm4ekey};
+use rust_isa::aarch64::simd::bf16::bfdot;
 use rust_isa::aarch64::simd::dotprod::{sdot, udot};
 use rust_isa::aarch64::simd::f32mm::fmmla_f32;
 use rust_isa::aarch64::simd::f64mm::fmmla_f64;
@@ -141,6 +142,27 @@ pub unsafe extern "C" fn kernel_i8mm(acc: &V128, a: &V128, b: &V128) -> V128 {
     unsafe { smmla(smmla(*acc, *a, *b), *a, *b) }
 }
 
+#[inline(never)]
+#[target_feature(enable = "bf16")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_bf16(acc: &V128, a: &V128, b: &V128) -> V128 {
+    unsafe { bfdot(bfdot(*acc, *a, *b), *a, *b) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "fp16,fhm")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_fhm(acc: &V128, a: &V128, b: &V128) -> V128 {
+    unsafe { fmla_f16(fmla_f16(*acc, *a, *b), *a, *b) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "jsconv")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_jsconv(a: f64, b: f64) -> i32 {
+    unsafe { fjcvtzs(a) ^ fjcvtzs(b) }
+}
+
 fn run() -> u32 {
     let a = V128::from_bytes([1; 16]);
     let b = V128::from_bytes([2; 16]);
@@ -152,6 +174,9 @@ fn run() -> u32 {
     core::hint::black_box(unsafe { kernel_sha3(&a, &b, &c) });
     core::hint::black_box(unsafe { kernel_sm4(&a, &b) });
     core::hint::black_box(unsafe { kernel_i8mm(&a, &b, &c) });
+    core::hint::black_box(unsafe { kernel_bf16(&a, &b, &c) });
+    core::hint::black_box(unsafe { kernel_fhm(&a, &b, &c) });
+    core::hint::black_box(unsafe { kernel_jsconv(1.0, 2.0) });
     if !load_store() {
         return 1;
     }
