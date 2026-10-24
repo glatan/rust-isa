@@ -95,6 +95,7 @@ fn main() {
     let lasx_c = manifest.join("src/loongarch/simd/lasx/lasx.c");
     let s390x_vector_c = manifest.join("src/s390x/simd/vector/vector.c");
     let s390x_enh_c = manifest.join("src/s390x/simd/vector_enhancements_1/vector_enhancements_1.c");
+    let s390x_ve3_c = manifest.join("src/s390x/simd/vector_enhancements_3/vector_enhancements_3.c");
     let arm_neon_c = manifest.join("src/arm/simd/neon/neon.c");
     let arm_dotprod_c = manifest.join("src/arm/simd/dotprod/dotprod.c");
     let arm_fp16_c = manifest.join("src/arm/simd/fp16/fp16.c");
@@ -204,6 +205,7 @@ fn main() {
         &lasx_c,
         &s390x_vector_c,
         &s390x_enh_c,
+        &s390x_ve3_c,
         &arm_neon_c,
         &arm_dotprod_c,
         &arm_fp16_c,
@@ -416,6 +418,13 @@ fn main() {
             &["-march=z14", "-mzvector"],
             Some("s390x-unknown-linux-gnu"),
         );
+        compile_archive(
+            &out_dir,
+            &s390x_ve3_c,
+            "rust_isa_s390x_ve3",
+            &["-march=z17", "-fzvector"],
+            Some("s390x-unknown-linux-gnu"),
+        );
         return;
     }
 
@@ -572,7 +581,13 @@ fn main() {
             (
                 &a64_fcma_c,
                 "rust_isa_a64_fcma",
-                &["-march=armv8.3-a+fcma"][..],
+                &[
+                    "-march=armv8-a",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+complxnum",
+                ][..],
             ),
             (
                 &a64_fhm_c,
@@ -592,12 +607,32 @@ fn main() {
             (
                 &a64_f32mm_c,
                 "rust_isa_a64_f32mm",
-                &["-march=armv8.6-a+sve+f32mm"][..],
+                &[
+                    "-march=armv8-a",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+sve",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+f32mm",
+                ][..],
             ),
             (
                 &a64_f64mm_c,
                 "rust_isa_a64_f64mm",
-                &["-march=armv8.6-a+sve+f64mm"][..],
+                &[
+                    "-march=armv8-a",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+sve",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+f64mm",
+                ][..],
             ),
             (
                 &a64_jsconv_c,
@@ -610,7 +645,17 @@ fn main() {
                     "+jsconv",
                 ][..],
             ),
-            (&a64_sve_c, "rust_isa_a64_sve", &["-march=armv8-a+sve"][..]),
+            (
+                &a64_sve_c,
+                "rust_isa_a64_sve",
+                &[
+                    "-march=armv8-a",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+sve",
+                ][..],
+            ),
             (&a64_sme_c, "rust_isa_a64_sme", &["-march=armv9-a+sme"][..]),
             (
                 &a64_aes_c,

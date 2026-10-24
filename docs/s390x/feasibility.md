@@ -31,3 +31,4 @@
 - `-C target-feature=+vector` は警告を出さず、`vector` の cfg が立った。
 - `-march=z14 -mzvector` の C はコンパイルできた。`llvm-objdump` は命令名を表示しなかった。
 - `vector-enhancements-2`、`vector-packed-decimal`、`nnp-assist` は `#[target_feature]` と `asm!` で扱える。
+- `-march=z17 -fzvector` の C は `vaq`、`vclzq`、`vblendb`、`vgemq`、`vdq` を出した。QEMU は vector-enhancements-3 を実行できないため、値テストは未実行である。

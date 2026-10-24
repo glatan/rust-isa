@@ -1,6 +1,7 @@
 #include <arm_sve.h>
 #include <stddef.h>
 
+__attribute__((always_inline))
 void rust_isa_sve_add_f32(const float *a, const float *b, float *out, size_t len) {
     for (size_t i = 0; i < len; i += svcntw()) {
         svbool_t pg = svwhilelt_b32_u64(i, len);

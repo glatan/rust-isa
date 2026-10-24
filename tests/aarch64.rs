@@ -10,7 +10,7 @@ fn aarch64_pipeline() {
         return;
     }
     let dir = nested_dir("aarch64-values");
-    let rustflags = "-C target-feature=+aes,+sha2,+crc,+fp16,+fhm,+sha3,+sm4,+i8mm,+bf16,+jsconv -C linker-plugin-lto -C linker=clang -C link-arg=--target=aarch64-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
+    let rustflags = "-C target-feature=+aes,+sha2,+crc,+fp16,+fhm,+sha3,+sm4,+i8mm,+bf16,+jsconv,+sve,+f32mm,+f64mm,+fcma -C linker-plugin-lto -C linker=clang -C link-arg=--target=aarch64-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
     let output = cargo(&dir)
         .env("RUSTC_BOOTSTRAP", "1")
         .env("RUSTFLAGS", rustflags)
@@ -319,5 +319,62 @@ fn aarch64_pipeline() {
         fjcvtzs_count[1],
         fjcvtzs_count[0] + 1,
         "fjcvtzs is not adjacent:\n{jsconv}"
+    );
+
+    let sve = function_at(&text, "<kernel_sve_add>:");
+    assert!(
+        !sve.lines().any(|line| {
+            line.split_whitespace().any(|word| word == "bl") && !line.contains("panicking")
+        }),
+        "kernel_sve_add calls C:\n{sve}"
+    );
+    assert!(
+        sve.lines().any(|line| line.contains("add\tz")),
+        "kernel_sve_add has no SVE add:\n{sve}"
+    );
+
+    let f32mm = function_at(&text, "<kernel_f32mm>:");
+    assert!(
+        !f32mm.lines().any(|line| {
+            line.split_whitespace().any(|word| word == "bl") && !line.contains("panicking")
+        }),
+        "kernel_f32mm calls C:\n{f32mm}"
+    );
+    assert!(
+        f32mm.lines().any(|line| line.contains("fmmla")),
+        "kernel_f32mm has no fmmla:\n{f32mm}"
+    );
+
+    let f64mm = function_at(&text, "<kernel_f64mm>:");
+    assert!(
+        !f64mm.lines().any(|line| {
+            line.split_whitespace().any(|word| word == "bl") && !line.contains("panicking")
+        }),
+        "kernel_f64mm calls C:\n{f64mm}"
+    );
+    assert!(
+        f64mm.lines().any(|line| line.contains("fmmla")),
+        "kernel_f64mm has no fmmla:\n{f64mm}"
+    );
+
+    let fcma = function_at(&text, "<kernel_fcma>:");
+    assert!(
+        !fcma
+            .lines()
+            .any(|line| line.split_whitespace().any(|word| word == "bl")),
+        "kernel_fcma calls C:\n{fcma}"
+    );
+    let lines: Vec<_> = fcma.lines().collect();
+    let fcmla_count: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("fcmla"))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(fcmla_count.len(), 2, "kernel_fcma body:\n{fcma}");
+    assert_eq!(
+        fcmla_count[1],
+        fcmla_count[0] + 1,
+        "fcmla is not adjacent:\n{fcma}"
     );
 }

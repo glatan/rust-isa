@@ -163,6 +163,40 @@ pub unsafe extern "C" fn kernel_jsconv(a: f64, b: f64) -> i32 {
     unsafe { fjcvtzs(a) ^ fjcvtzs(b) }
 }
 
+#[inline(never)]
+#[target_feature(enable = "sve")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_f32mm(a: &[f32], b: &[f32], acc: &mut [f32]) {
+    unsafe {
+        fmmla_f32(a, b, acc);
+        fmmla_f32(a, b, acc);
+    }
+}
+
+#[inline(never)]
+#[target_feature(enable = "sve")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_f64mm(a: &[f64], b: &[f64], acc: &mut [f64]) {
+    unsafe {
+        fmmla_f64(a, b, acc);
+        fmmla_f64(a, b, acc);
+    }
+}
+
+#[inline(never)]
+#[target_feature(enable = "fcma")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_fcma(acc: &V128, a: &V128, b: &V128) -> V128 {
+    unsafe { fcmla(fcmla(*acc, *a, *b), *a, *b) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "sve")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_sve_add(a: &[f32], b: &[f32], out: &mut [f32]) {
+    unsafe { sve::add_f32(a, b, out) }
+}
+
 fn run() -> u32 {
     let a = V128::from_bytes([1; 16]);
     let b = V128::from_bytes([2; 16]);
@@ -177,6 +211,12 @@ fn run() -> u32 {
     core::hint::black_box(unsafe { kernel_bf16(&a, &b, &c) });
     core::hint::black_box(unsafe { kernel_fhm(&a, &b, &c) });
     core::hint::black_box(unsafe { kernel_jsconv(1.0, 2.0) });
+    let mut f32_out = [0.0f32; 4];
+    core::hint::black_box(unsafe { kernel_sve_add(&[1.0; 4], &[2.0; 4], &mut f32_out) });
+    core::hint::black_box(unsafe { kernel_f32mm(&[1.0; 4], &[2.0; 4], &mut f32_out) });
+    let mut f64_out = [0.0f64; 2];
+    core::hint::black_box(unsafe { kernel_f64mm(&[1.0; 2], &[2.0; 2], &mut f64_out) });
+    core::hint::black_box(unsafe { kernel_fcma(&a, &b, &c) });
     if !load_store() {
         return 1;
     }
