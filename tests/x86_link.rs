@@ -189,3 +189,60 @@ fn crypto_pipeline() {
         "store or load between vfmadd:\n{fma}"
     );
 }
+
+#[test]
+fn avx512vl_pipeline() {
+    if std::env::var_os("RUST_ISA_NESTED").is_some() {
+        return;
+    }
+    let dir = nested_dir("avx512vl-link");
+    let rustflags = "-C target-feature=+avx512f,+avx512bw,+avx512vl,+avx512vbmi -C linker-plugin-lto -C linker=clang -C link-arg=-fuse-ld=lld";
+    let output = cargo(&dir)
+        .env("RUSTFLAGS", rustflags)
+        .args(["build", "-p", "avx512vl-link", "--release"])
+        .output()
+        .expect("cargo");
+    assert!(output.status.success(), "{}", output_text(&output));
+
+    let binary = dir.join("release/avx512vl-link");
+    assert!(binary.is_file(), "missing {}", binary.display());
+    let output = Command::new("llvm-objdump")
+        .args(["-d", "--no-show-raw-insn"])
+        .arg(&binary)
+        .output()
+        .expect("llvm-objdump");
+    assert!(output.status.success(), "{}", output_text(&output));
+    let text = String::from_utf8_lossy(&output.stdout);
+
+    let add = function_at(&text, "<kernel_add>:");
+    assert!(!add.contains("call"), "kernel_add calls C:\n{add}");
+    let add_lines: Vec<_> = add.lines().collect();
+    let vpaddb: Vec<_> = add_lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("vpaddb"))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(vpaddb.len(), 2, "kernel_add body:\n{add}");
+    assert_eq!(
+        vpaddb[1],
+        vpaddb[0] + 1,
+        "store or load between vpaddb:\n{add}"
+    );
+
+    let perm = function_at(&text, "<kernel_perm>:");
+    assert!(!perm.contains("call"), "kernel_perm calls C:\n{perm}");
+    let perm_lines: Vec<_> = perm.lines().collect();
+    let vpermb: Vec<_> = perm_lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("vpermb"))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(vpermb.len(), 2, "kernel_perm body:\n{perm}");
+    assert_eq!(
+        vpermb[1],
+        vpermb[0] + 1,
+        "store or load between vpermb:\n{perm}"
+    );
+}

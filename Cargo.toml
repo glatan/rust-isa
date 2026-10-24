@@ -4,6 +4,7 @@ members = [
   ".",
   "fixtures/avx2-link",
   "fixtures/avx512-link",
+  "fixtures/avx512vl-link",
   "fixtures/crypto-link",
   "fixtures/simd128-link",
   "fixtures/sse2-link",
