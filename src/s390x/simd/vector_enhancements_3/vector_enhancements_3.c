@@ -171,3 +171,88 @@ void rust_isa_s390x_ve3_vrlf(const uint8_t *a, const uint8_t *b, uint8_t *out) {
 void rust_isa_s390x_ve3_vrlg(const uint8_t *a, const uint8_t *b, uint8_t *out) {
     STORE(v2u64, out, LOAD(v2u64, a) % LOAD(v2u64, b));
 }
+
+void rust_isa_s390x_ve3_vmalg(const uint8_t *acc, const uint8_t *a,
+                              const uint8_t *b, uint8_t *out) {
+    STORE(v2u64, out, LOAD(v2u64, acc) + LOAD(v2u64, a) * LOAD(v2u64, b));
+}
+
+void rust_isa_s390x_ve3_vmaeg(const uint8_t *acc, const uint8_t *a,
+                              const uint8_t *b, uint8_t *out) {
+    STORE(v1u128, out, (v1u128)LOAD(v2i64, acc)
+                           + (v1u128)vec_mule(LOAD(v2i64, a), LOAD(v2i64, b)));
+}
+
+void rust_isa_s390x_ve3_vmaleg(const uint8_t *acc, const uint8_t *a,
+                               const uint8_t *b, uint8_t *out) {
+    STORE(v1u128, out, LOAD(v1u128, acc)
+                           + (v1u128)vec_mule(LOAD(v2u64, a), LOAD(v2u64, b)));
+}
+
+void rust_isa_s390x_ve3_vmaog(const uint8_t *acc, const uint8_t *a,
+                              const uint8_t *b, uint8_t *out) {
+    STORE(v1u128, out, (v1u128)LOAD(v2i64, acc)
+                           + (v1u128)vec_mulo(LOAD(v2i64, a), LOAD(v2i64, b)));
+}
+
+void rust_isa_s390x_ve3_vmalog(const uint8_t *acc, const uint8_t *a,
+                               const uint8_t *b, uint8_t *out) {
+    STORE(v1u128, out, LOAD(v1u128, acc)
+                           + (v1u128)vec_mulo(LOAD(v2u64, a), LOAD(v2u64, b)));
+}
+
+void rust_isa_s390x_ve3_vmhg(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    STORE(v2i64, out, vec_mulh(LOAD(v2i64, a), LOAD(v2i64, b)));
+}
+
+void rust_isa_s390x_ve3_vmhq(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    STORE(v1i128, out, vec_mulh(LOAD(v1i128, a), LOAD(v1i128, b)));
+}
+
+void rust_isa_s390x_ve3_vmlhg(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    STORE(v2u64, out, vec_mulh(LOAD(v2u64, a), LOAD(v2u64, b)));
+}
+
+void rust_isa_s390x_ve3_vmlhq(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    STORE(v1u128, out, vec_mulh(LOAD(v1u128, a), LOAD(v1u128, b)));
+}
+
+void rust_isa_s390x_ve3_vmlg(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    STORE(v2u64, out, LOAD(v2u64, a) * LOAD(v2u64, b));
+}
+
+void rust_isa_s390x_ve3_vmlq(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    STORE(v1u128, out, LOAD(v1u128, a) * LOAD(v1u128, b));
+}
+
+void rust_isa_s390x_ve3_vmeg(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    STORE(v1u128, out, (v1u128)vec_mule(LOAD(v2i64, a), LOAD(v2i64, b)));
+}
+
+void rust_isa_s390x_ve3_vmleg(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    STORE(v1u128, out, (v1u128)vec_mule(LOAD(v2u64, a), LOAD(v2u64, b)));
+}
+
+void rust_isa_s390x_ve3_vmog(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    STORE(v1u128, out, (v1u128)vec_mulo(LOAD(v2i64, a), LOAD(v2i64, b)));
+}
+
+void rust_isa_s390x_ve3_vmlog(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    STORE(v1u128, out, (v1u128)vec_mulo(LOAD(v2u64, a), LOAD(v2u64, b)));
+}
+
+void rust_isa_s390x_ve3_vaccq(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    STORE(v1u128, out, vec_addc(LOAD(v1u128, a), LOAD(v1u128, b)));
+}
+
+void rust_isa_s390x_ve3_vacq(const uint8_t *acc, const uint8_t *a,
+                             const uint8_t *b, uint8_t *out) {
+    STORE(v1u128, out, vec_adde(LOAD(v1u128, a), LOAD(v1u128, b),
+                                LOAD(v1u128, acc)));
+}
+
+void rust_isa_s390x_ve3_vacccq(const uint8_t *acc, const uint8_t *a,
+                               const uint8_t *b, uint8_t *out) {
+    STORE(v1u128, out, vec_addec(LOAD(v1u128, a), LOAD(v1u128, b),
+                                 LOAD(v1u128, acc)));
+}

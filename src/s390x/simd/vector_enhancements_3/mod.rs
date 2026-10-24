@@ -61,6 +61,24 @@ unsafe extern "C" {
     fn rust_isa_s390x_ve3_vrg(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_s390x_ve3_vrlf(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_s390x_ve3_vrlg(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmalg(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmaeg(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmaleg(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmaog(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmalog(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmhg(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmhq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmlhg(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmlhq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmlg(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmlq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmeg(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmleg(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmog(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vmlog(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vaccq(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vacq(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve3_vacccq(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
 }
 
 macro_rules! binary {
@@ -461,3 +479,192 @@ pub unsafe fn veval<const IMM: u8>(a: V128, b: V128, c: V128) -> V128 {
     }
     V128::from_bytes(out.to_be_bytes())
 }
+
+ternary!(
+    /// `vmalg`.
+    ///
+    /// Multiply the signed 64-bit lanes and add `acc`; the low 64 bits are kept.
+    vmalg,
+    rust_isa_s390x_ve3_vmalg
+);
+ternary!(
+    /// `vmaeg`.
+    ///
+    /// Multiply the even 64-bit lanes and add `acc` into a 128-bit lane.
+    vmaeg,
+    rust_isa_s390x_ve3_vmaeg
+);
+ternary!(
+    /// `vmaleg`.
+    ///
+    /// Multiply the even 64-bit lanes, add `acc`, and keep the low 128 bits.
+    vmaleg,
+    rust_isa_s390x_ve3_vmaleg
+);
+ternary!(
+    /// `vmaog`.
+    ///
+    /// Multiply the odd 64-bit lanes and add `acc` into a 128-bit lane.
+    vmaog,
+    rust_isa_s390x_ve3_vmaog
+);
+ternary!(
+    /// `vmalog`.
+    ///
+    /// Multiply the odd 64-bit lanes, add `acc`, and keep the low 128 bits.
+    vmalog,
+    rust_isa_s390x_ve3_vmalog
+);
+binary!(
+    /// `vmhg`.
+    ///
+    /// High 64 bits of the signed 64-bit lane products.
+    vmhg,
+    rust_isa_s390x_ve3_vmhg
+);
+binary!(
+    /// `vmhq`.
+    ///
+    /// High 128 bits of the signed 128-bit lane product.
+    vmhq,
+    rust_isa_s390x_ve3_vmhq
+);
+binary!(
+    /// `vmlhg`.
+    ///
+    /// High 64 bits of the unsigned 64-bit lane products.
+    vmlhg,
+    rust_isa_s390x_ve3_vmlhg
+);
+binary!(
+    /// `vmlhq`.
+    ///
+    /// High 128 bits of the unsigned 128-bit lane product.
+    vmlhq,
+    rust_isa_s390x_ve3_vmlhq
+);
+binary!(
+    /// `vmlg`.
+    ///
+    /// Low 64 bits of the 64-bit lane products.
+    vmlg,
+    rust_isa_s390x_ve3_vmlg
+);
+binary!(
+    /// `vmlq`.
+    ///
+    /// Low 128 bits of the 128-bit lane product.
+    vmlq,
+    rust_isa_s390x_ve3_vmlq
+);
+binary!(
+    /// `vmeg`.
+    ///
+    /// Multiply the even 64-bit lanes with sign extension.
+    vmeg,
+    rust_isa_s390x_ve3_vmeg
+);
+binary!(
+    /// `vmleg`.
+    ///
+    /// Multiply the even 64-bit lanes with zero extension.
+    vmleg,
+    rust_isa_s390x_ve3_vmleg
+);
+binary!(
+    /// `vmog`.
+    ///
+    /// Multiply the odd 64-bit lanes with sign extension.
+    vmog,
+    rust_isa_s390x_ve3_vmog
+);
+binary!(
+    /// `vmlog`.
+    ///
+    /// Multiply the odd 64-bit lanes with zero extension.
+    vmlog,
+    rust_isa_s390x_ve3_vmlog
+);
+binary!(
+    /// `vaccq`.
+    ///
+    /// Add the 128-bit lanes and return the carry.
+    vaccq,
+    rust_isa_s390x_ve3_vaccq
+);
+ternary!(
+    /// `vacq`.
+    ///
+    /// Add the 128-bit lanes with `acc` as the carry input.
+    vacq,
+    rust_isa_s390x_ve3_vacq
+);
+ternary!(
+    /// `vacccq`.
+    ///
+    /// Add the 128-bit lanes with `acc` as the carry input and return the carry.
+    vacccq,
+    rust_isa_s390x_ve3_vacccq
+);
+
+macro_rules! asm_ternary {
+    ($(#[$meta:meta])* $name:ident, $instruction:literal, $doc:literal) => {
+        $(#[$meta])*
+        ///
+        /// # Safety
+        ///
+        /// The caller must enable the vector-enhancements-3 facility.
+        #[target_feature(enable = "vector-enhancements-3")]
+        #[inline]
+        pub unsafe fn $name(acc: V128, a: V128, b: V128) -> V128 {
+            let acc = u128::from_be_bytes(acc.to_bytes());
+            let a = u128::from_be_bytes(a.to_bytes());
+            let b = u128::from_be_bytes(b.to_bytes());
+            let out: u128;
+            unsafe {
+                asm!(
+                    concat!($instruction, " {out}, {a}, {b}, {acc}"),
+                    out = lateout(vreg) out,
+                    a = in(vreg) a,
+                    b = in(vreg) b,
+                    acc = in(vreg) acc,
+                    options(nostack, nomem, pure)
+                );
+            }
+            V128::from_bytes(out.to_be_bytes())
+        }
+    };
+}
+
+asm_ternary!(
+    /// `vmahg`.
+    ///
+    /// High 64 bits of the signed 64-bit lane products, added to `acc`.
+    vmahg,
+    "vmahg",
+    ""
+);
+asm_ternary!(
+    /// `vmalhg`.
+    ///
+    /// High 64 bits of the unsigned 64-bit lane products, added to `acc`.
+    vmalhg,
+    "vmalhg",
+    ""
+);
+asm_ternary!(
+    /// `vmahq`.
+    ///
+    /// High 128 bits of the signed 128-bit lane product, added to `acc`.
+    vmahq,
+    "vmahq",
+    ""
+);
+asm_ternary!(
+    /// `vmalhq`.
+    ///
+    /// High 128 bits of the unsigned 128-bit lane product, added to `acc`.
+    vmalhq,
+    "vmalhq",
+    ""
+);
