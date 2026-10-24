@@ -534,7 +534,17 @@ fn main() {
             (
                 &a64_fp16_c,
                 "rust_isa_a64_fp16",
-                &["-march=armv8.2-a+fp16+fp16fml"][..],
+                &[
+                    "-march=armv8-a",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+fullfp16",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+fp16fml",
+                ][..],
             ),
             (
                 &a64_bf16_c,
@@ -544,7 +554,13 @@ fn main() {
             (
                 &a64_i8mm_c,
                 "rust_isa_a64_i8mm",
-                &["-march=armv8.6-a+i8mm"][..],
+                &[
+                    "-march=armv8-a",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+i8mm",
+                ][..],
             ),
             (&a64_rdm_c, "rust_isa_a64_rdm", &["-march=armv8.1-a"][..]),
             (
@@ -605,12 +621,24 @@ fn main() {
             (
                 &a64_sha3_c,
                 "rust_isa_a64_sha3",
-                &["-march=armv8.2-a+sha3"][..],
+                &[
+                    "-march=armv8-a",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+sha3",
+                ][..],
             ),
             (
                 &a64_sm4_c,
                 "rust_isa_a64_sm4",
-                &["-march=armv8.2-a+sm4"][..],
+                &[
+                    "-march=armv8-a",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+sm4",
+                ][..],
             ),
             (&a64_crc_c, "rust_isa_a64_crc", &["-march=armv8-a+crc"][..]),
         ] {

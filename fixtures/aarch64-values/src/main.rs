@@ -113,6 +113,34 @@ pub unsafe extern "C" fn kernel_crc(crc: u32, value: u8) -> u32 {
     unsafe { crc32b(crc32b(crc, value), value) }
 }
 
+#[inline(never)]
+#[target_feature(enable = "fp16,fhm")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_fp16(a: &V128, b: &V128) -> V128 {
+    unsafe { fadd_f16(fadd_f16(*a, *b), *b) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "sha3")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_sha3(a: &V128, b: &V128, c: &V128) -> V128 {
+    unsafe { eor3(eor3(*a, *b, *c), *b, *c) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "sm4")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_sm4(a: &V128, b: &V128) -> V128 {
+    unsafe { sm4e(sm4e(*a, *b), *b) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "i8mm")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_i8mm(acc: &V128, a: &V128, b: &V128) -> V128 {
+    unsafe { smmla(smmla(*acc, *a, *b), *a, *b) }
+}
+
 fn run() -> u32 {
     let a = V128::from_bytes([1; 16]);
     let b = V128::from_bytes([2; 16]);
@@ -120,6 +148,10 @@ fn run() -> u32 {
     core::hint::black_box(unsafe { kernel_aes(&a, &b) });
     core::hint::black_box(unsafe { kernel_sha2(&a, &b, &c) });
     core::hint::black_box(unsafe { kernel_crc(0, 1) });
+    core::hint::black_box(unsafe { kernel_fp16(&a, &b) });
+    core::hint::black_box(unsafe { kernel_sha3(&a, &b, &c) });
+    core::hint::black_box(unsafe { kernel_sm4(&a, &b) });
+    core::hint::black_box(unsafe { kernel_i8mm(&a, &b, &c) });
     if !load_store() {
         return 1;
     }
