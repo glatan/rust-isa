@@ -57,7 +57,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 ## ツールチェーン
 
-- ゼロコストは rustc 1.99.1、clang/lld 23.1.1 で確認した。C は `-march=z10 -mzvector` と GCC の vector 拡張を使う。`llvm-objdump` はベクタ命令を表示しないため、`llvm-mc` でデコードする。
+- ゼロコストは rustc 1.99.1、clang/lld 23.1.1 で確認した。vector-enhancements-3 の確認は clang 23.1.3 で行った。C は `-march=z10 -mzvector` と GCC の vector 拡張を使う。`llvm-objdump` はベクタ命令を表示しないため、`llvm-mc` でデコードする。
 - clang、llvm-ar、llvm-objdump。
 - clang 23.1.1 で、`-march=z14 -mzvector` の C がコンパイルできることを確認した。`llvm-objdump` は命令名を表示しなかったため、命令の確認は `llvm-mc` か実機で行う。
 - `llvm-objdump` のバージョンと s390x の対応を確認する。

@@ -59,7 +59,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`system`
 
 ## ツールチェーン
 
-- ゼロコストは rustc 1.99.1、clang/lld 23.1.1 で確認した。C は `-march=armv8-a+simd -flto=thin`。
+- ゼロコストは rustc 1.99.1、clang/lld 23.1.1 で確認した。追試は clang 23.1.3 で行った。C は `-march=armv8-a+simd -flto=thin`。
 - clang、llvm-ar、llvm-objdump。
 - clang 23.1.1 で、NEON の `vaddq_s32` が `add v0.4s` を、SVE の `svadd_s32_z` が `add z0.s` を出すことを確認した。
 - `-march=armv8-a+neon` は clang では受け付けられない。NEON は `+simd` を使う。
