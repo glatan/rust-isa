@@ -6,9 +6,10 @@
 //! system must allow AMX tile state.
 //!
 //! [`TileConfig`] is the 64-byte tile configuration consumed by
-//! [`AmxGuard::enter`]. The caller builds it; this crate does not interpret it.
-//! The guard and instruction wrappers are `unsafe`. Tile numbers are const
-//! generics, and the tile configuration is caller-provided state.
+//! [`AmxGuard::enter`]. [`TileConfig::builder`] configures palette 1 and its
+//! eight tiles; the raw [`TileConfig::from_bytes`] constructor remains
+//! available. The guard and instruction wrappers are `unsafe`. Tile numbers
+//! are const generics, and the tile configuration is caller-provided state.
 //! [`AmxGuard`] releases the tile state in its `Drop` implementation and is not
 //! `Send` or `Sync`. Nested guards are not allowed.
 //!
@@ -54,6 +55,55 @@ impl TileConfig {
     /// Mutable pointer to the first byte. The alignment is 64.
     pub fn as_mut_ptr(&mut self) -> *mut u8 {
         self.0.as_mut_ptr()
+    }
+
+    /// Start building a tile configuration with palette 1.
+    pub const fn builder() -> TileConfigBuilder {
+        let mut bytes = [0u8; 64];
+        bytes[0] = 1;
+        TileConfigBuilder {
+            config: TileConfig(bytes),
+        }
+    }
+}
+
+/// A builder for the 64-byte AMX tile configuration.
+///
+/// Palette 1 provides eight tiles. A tile is configured with its number of
+/// rows and bytes per row. Tiles that are not configured stay zero and are
+/// inactive.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct TileConfigBuilder {
+    config: TileConfig,
+}
+
+impl TileConfigBuilder {
+    /// Set the restart row. Use 0 for a new configuration.
+    pub const fn start_row(mut self, start_row: u8) -> Self {
+        self.config.0[1] = start_row;
+        self
+    }
+
+    /// Configure `TILE` with `rows` rows and `colsb` bytes per row.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `TILE` is not in `0..8`, `rows` is not in `1..=16`, or
+    /// `colsb` is not in `1..=64`.
+    pub const fn tile<const TILE: usize>(mut self, rows: u8, colsb: u16) -> Self {
+        assert!(TILE < 8, "AMX tile index must be in 0..8");
+        assert!(rows >= 1 && rows <= 16, "AMX rows must be in 1..=16");
+        assert!(colsb >= 1 && colsb <= 64, "AMX colsb must be in 1..=64");
+        let offset = 16 + TILE * 2;
+        self.config.0[offset] = colsb as u8;
+        self.config.0[offset + 1] = (colsb >> 8) as u8;
+        self.config.0[48 + TILE] = rows;
+        self
+    }
+
+    /// Finish the configuration.
+    pub const fn build(self) -> TileConfig {
+        self.config
     }
 }
 

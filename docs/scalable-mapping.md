@@ -60,7 +60,7 @@ ZA タイル、SME2、`smstart` / `smstop` の直接 API は対象外である�
 
 ## AMX
 
-`AmxGuard` がタイル状態を管理し、状態を要求する関数は `&AmxGuard` を引数に取る。`TileConfig` は `ldtilecfg` の入力を保持する。
+`AmxGuard` がタイル状態を管理し、状態を要求する関数は `&AmxGuard` を引数に取る。`TileConfig` は `ldtilecfg` の入力を保持し、`TileConfig::builder()` で構築する。
 
 | API                                                       | カバーする命令             |
 | --------------------------------------------------------- | -------------------------- |

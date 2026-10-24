@@ -89,11 +89,17 @@ impl AmxGuard {
 impl Drop for AmxGuard {
     fn drop(&mut self) { /* TILERELEASE */ }
 }
+
+const CONFIG: TileConfig = TileConfig::builder()
+    .tile::<0>(16, 64)
+    .tile::<1>(16, 64)
+    .build();
 ```
 
 - タイル命令は `&AmxGuard` を引数に取る。
 - OS のタイル状態の許可は、クレートの外で設定する。クレートは許可を行わない。
-- `TileConfig` の構築は利用者が行う。生の64バイトとして扱い、クレートは解釈しない。構築用のビルダーは、必要になった時点で追加する。
+- `TileConfig` は `TileConfig::builder()` で構築する。palette 1 の8タイルを対象とし、タイルごとに rows と colsb を設定する。未設定のタイルは0のままにする。
+- 生の64バイトが必要な場合は `TileConfig::from_bytes` を使う。
 
 ## PowerPC MMA
 
@@ -122,7 +128,6 @@ pub unsafe fn xvi4ger8(_acc: &mut MmaAccumulator, a: &[u8], b: &[u8]) { /* ... *
 
 ## 未決定
 
-- AMX の `TileConfig` の構築 API。
 - guard を safe にできる範囲。
 
 ## 対象外
