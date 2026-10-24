@@ -13,6 +13,22 @@ use rust_isa::x86::simd::avx512f::V512;
 use rust_isa::x86::simd::avx512ifma::vpmadd52luq;
 use rust_isa::x86::simd::avx512vnni::vpdpbusd;
 use rust_isa::x86::simd::sse2::V128;
+use rust_isa::x86::simd::sse3::addsubps;
+use rust_isa::x86::simd::ssse3::pshufb;
+
+#[inline(never)]
+#[target_feature(enable = "sse3")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_sse3(a: &V128, b: &V128) -> V128 {
+    unsafe { addsubps(addsubps(*a, *b), *b) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "ssse3")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_ssse3(a: &V128, b: &V128) -> V128 {
+    unsafe { pshufb(pshufb(*a, *b), *b) }
+}
 
 #[inline(never)]
 #[target_feature(enable = "sha")]
@@ -93,6 +109,8 @@ fn main() {
     let a512 = black_box(V512::from_bytes([1; 64]));
     let b512 = black_box(V512::from_bytes([2; 64]));
 
+    black_box(unsafe { kernel_sse3(&a128, &b128) });
+    black_box(unsafe { kernel_ssse3(&a128, &b128) });
     black_box(unsafe { kernel_sha(&a128, &b128, &k128) });
     black_box(unsafe { kernel_bw(&a512, &b512) });
     black_box(unsafe { kernel_dq(&a512, &b512) });
