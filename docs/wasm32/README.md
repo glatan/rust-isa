@@ -15,13 +15,13 @@ family は `simd` である。extension は次である。
 
 ### SIMD と整数
 
-| extension         | 実装済み命令                                                                   | 未実装命令                         | 値テスト |
-| ----------------- | ------------------------------------------------------------------------------ | ---------------------------------- | -------- |
-| `simd128`         | 212 命令（`i8x16` / `i16x8` / `i32x4` / `i64x2` / `f32x4` / `f64x2` / `v128`） | `i8x16.shuffle` など（API 未整備） | wasmtime |
-| `relaxed-simd`    | 20 命令                                                                        | なし                               | wasmtime |
-| `wide-arithmetic` | `i64_add128` / `i64_sub128` / `i64_mul_wide_u` / `i64_mul_wide_s`              | なし                               | wasmtime |
-| `atomics`         | なし                                                                           | なし                               | 対象外   |
-| `fp16`            | なし                                                                           | なし                               | 対象外   |
+| extension         | 実装済み命令                                                                   | 未実装命令 | 値テスト |
+| ----------------- | ------------------------------------------------------------------------------ | ---------- | -------- |
+| `simd128`         | 212 命令（`i8x16` / `i16x8` / `i32x4` / `i64x2` / `f32x4` / `f64x2` / `v128`） | なし       | wasmtime |
+| `relaxed-simd`    | 20 命令                                                                        | なし       | wasmtime |
+| `wide-arithmetic` | `i64_add128` / `i64_sub128` / `i64_mul_wide_u` / `i64_mul_wide_s`              | なし       | wasmtime |
+| `atomics`         | なし                                                                           | なし       | 対象外   |
+| `fp16`            | なし                                                                           | なし       | 対象外   |
 
 ## 実装方式
 
@@ -50,6 +50,7 @@ family は `simd` である。extension は次である。
 
 ## 未対応
 
+- `i8x16.shuffle`。16個のレーン即値を stable Rust の const generics で表せず、`core::arch` を使わない方針とも両立しないため、API にしない。レーン選択には `i8x16_swizzle` を使う。
 - `atomics`。共有メモリとスレッドを要求するため、値 API にしない。
 - `fp16`。LLVM のみで rustc の cfg が立たないため、対象外にする。
 - Cargo feature を有効にしたときの docs.rs の表示。

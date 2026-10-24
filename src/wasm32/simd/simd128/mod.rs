@@ -29,7 +29,8 @@
 //! A comparison writes all bits one to a true lane and all bits zero to a false lane.
 //! For `f32` and `f64`, a comparison involving NaN is false, except `ne`, which is true.
 //!
-//! `i8x16.shuffle` is not provided: its 16 lane indices are an immediate in the instruction encoding.
+//! `i8x16.shuffle` is intentionally excluded: its 16 lane indices are an immediate in the
+//! instruction encoding, and stable Rust cannot express them without `core::arch`.
 //! [`i8x16_swizzle`] takes those indices from a register.
 //!
 //! ```
