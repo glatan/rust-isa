@@ -26,9 +26,11 @@ use rust_isa::s390x::simd::vector_enhancements_1::{
 };
 use rust_isa::s390x::simd::vector_enhancements_2::{vsld, vsrd};
 use rust_isa::s390x::simd::vector_enhancements_3::{
-    vaq, vavglq, vavgq, vblendb, vblendf, vblendg, vblendh, vblendq, vclzq, vctzq, vdf, vdg, vdlf,
-    vdlg, vdlq, vdq, veval, vgemb, vgemf, vgemg, vgemh, vgemq, vlcq, vlpq, vmalq, vmnlq, vmnq,
-    vmxlq, vmxq, vrf, vrg, vrlf, vrlg, vrlq, vrq, vsq, vuphg, vuplg, vuplhg, vupllg,
+    vacccq, vaccq, vacq, vaq, vavglq, vavgq, vblendb, vblendf, vblendg, vblendh, vblendq, vclzq,
+    vctzq, vdf, vdg, vdlf, vdlg, vdlq, vdq, veval, vgemb, vgemf, vgemg, vgemh, vgemq, vlcq, vlpq,
+    vmaeg, vmahg, vmahq, vmaleg, vmalg, vmalhg, vmalhq, vmalog, vmalq, vmaog, vmeg, vmhg, vmhq,
+    vmleg, vmlg, vmlhg, vmlhq, vmlog, vmlq, vmnlq, vmnq, vmog, vmxlq, vmxq, vrf, vrg, vrlf, vrlg,
+    vrlq, vrq, vsq, vuphg, vuplg, vuplhg, vupllg,
 };
 use rust_isa::s390x::simd::vector_packed_decimal::{
     vap, vcvb, vcvbg, vcvd, vpkz, vsdp, vsp, vsrp, vstrl, vupkz, vupkzh, vupkzl,
@@ -123,6 +125,28 @@ pub extern "C" fn compile_only() {
         let _ = vrg(x, x);
         let _ = vrlf(x, x);
         let _ = vrlg(x, x);
+        let _ = vmalg(x, x, x);
+        let _ = vmahg(x, x, x);
+        let _ = vmalhg(x, x, x);
+        let _ = vmahq(x, x, x);
+        let _ = vmalhq(x, x, x);
+        let _ = vmaeg(x, x, x);
+        let _ = vmaleg(x, x, x);
+        let _ = vmaog(x, x, x);
+        let _ = vmalog(x, x, x);
+        let _ = vmhg(x, x);
+        let _ = vmhq(x, x);
+        let _ = vmlhg(x, x);
+        let _ = vmlhq(x, x);
+        let _ = vmlg(x, x);
+        let _ = vmlq(x, x);
+        let _ = vmeg(x, x);
+        let _ = vmleg(x, x);
+        let _ = vmog(x, x);
+        let _ = vmlog(x, x);
+        let _ = vaccq(x, x);
+        let _ = vacq(x, x, x);
+        let _ = vacccq(x, x, x);
     }
 }
 
