@@ -6,7 +6,7 @@
 
 | fixture                     | triple                          | runner                             | 主な対象                                                                        | 実行できないもの             |
 | --------------------------- | ------------------------------- | ---------------------------------- | ------------------------------------------------------------------------------- | ---------------------------- |
-| `fixtures/i686-values`      | `i686-unknown-linux-gnu`        | `qemu-i386-static`                 | SSE2、AVX2（`kernel_sse2` / `kernel_avx2` の zero-cost を含む）                 | CPU 非対応の命令             |
+| `fixtures/i686-values`      | `i686-unknown-linux-gnu`        | `qemu-i386-static`                 | SSE2、AVX2、AVX-512F（`kernel_sse2` / `kernel_avx2` の zero-cost を含む）       | CPU 非対応の命令             |
 | `fixtures/aarch64-values`   | `aarch64-unknown-linux-gnu`     | `qemu-aarch64-static -cpu max`     | NEON、dotprod、fp16、i8mm、fcma、fhm、AES、SHA-2、SHA-3、SM4、CRC、SVE、JSCONV  | RDM、BF16、SME の一部        |
 | `fixtures/arm-values`       | `armv7-unknown-linux-gnueabihf` | `qemu-arm-static -cpu max`         | NEON、dotprod、fp16、i8mm、AES、SHA-2、CRC                                      | MVE                          |
 | `fixtures/riscv-values`     | `riscv64gc-unknown-linux-gnu`   | `qemu-riscv64-static -cpu max`     | zba、zbb、zbc、zbs、zkn、zks、V、スライス API                                   | 将来の `zfh` / `zfa` / `zv*` |
@@ -51,7 +51,7 @@ QEMU が命令を実行しない場合は、ビルドと API の存在確認だ�
 | `target-nested/x86-zero-cost-link`   | `fixtures/x86-zero-cost-link`          | `sha`、`avx512bw`、`avx512dq`、`avx512ifma`、`avx512vnni`、`gfni`、`vaes`、`vpclmulqdq`、`avx10.1` の各 kernel に `call` と命令間の store/load が無い |
 | `target-nested/aes-link`             | `fixtures/aes-link`                    | `kernel_aes` に `call` が無く、`aesenc` が隣接する                                                                                                    |
 | `target-nested/fma-link`             | `fixtures/fma-link`                    | `kernel_fma` に `call` が無く、`vfmadd` が隣接する                                                                                                    |
-| `target-nested/i686-values`          | `fixtures/i686-values`                 | QEMU-i386 で SSE2 / AVX2 の値テストと `kernel_sse2` / `kernel_avx2` の disassembly                                                                    |
+| `target-nested/i686-values`          | `fixtures/i686-values`                 | QEMU-i386 で SSE2 / AVX2 / AVX-512F の値テストと `kernel_sse2` / `kernel_avx2` の disassembly                                                         |
 | `target-nested/aarch64-values`       | `fixtures/aarch64-values`              | QEMU-AArch64 で NEON / dotprod の値テストと `add` / `tbl` / `sdot` の disassembly                                                                     |
 | `target-nested/riscv-values`         | `fixtures/riscv-values`                | RISC-V の固定長 V128 値テストと `vadd.vv` / `vmul.vv` の disassembly                                                                                  |
 | `target-nested/loongarch-values`     | `fixtures/loongarch-values`            | LoongArch LSX / LASX の値テストと `vadd.w` / `vmul.w` / `xvadd.w` / `xvmul.w` の disassembly                                                          |

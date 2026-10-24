@@ -4,6 +4,7 @@
 use core::arch::asm;
 use core::panic::PanicInfo;
 use rust_isa::x86::simd::avx2::{V256, vpaddd, vpmulld};
+use rust_isa::x86::simd::avx512f::{V512, vpaddd as vpaddd_512, vpmulld as vpmulld_512};
 use rust_isa::x86::simd::sse2::{V128, paddd, pmuludq, pslld, punpcklbw, v128_load, v128_store};
 
 #[unsafe(no_mangle)]
@@ -44,6 +45,28 @@ pub unsafe extern "C" fn kernel_avx2(a: &V256, b: &V256) -> V256 {
     unsafe { vpmulld(vpaddd(vpaddd(*a, *b), *b), *b) }
 }
 
+#[target_feature(enable = "avx512f")]
+unsafe fn avx512() -> bool {
+    let mut a = [0u8; 64];
+    let mut b = [0u8; 64];
+    for lane in 0..16 {
+        a[lane * 4..lane * 4 + 4].copy_from_slice(&(lane as i32 + 1).to_le_bytes());
+        b[lane * 4..lane * 4 + 4].copy_from_slice(&((lane as i32 + 1) * 10).to_le_bytes());
+    }
+    let sum = unsafe { vpaddd_512(V512::from_bytes(a), V512::from_bytes(b)) }.to_bytes();
+    let product = unsafe { vpmulld_512(V512::from_bytes(a), V512::from_bytes(b)) }.to_bytes();
+    for lane in 0..16 {
+        let sum_lane = i32::from_le_bytes(sum[lane * 4..lane * 4 + 4].try_into().unwrap());
+        let product_lane = i32::from_le_bytes(product[lane * 4..lane * 4 + 4].try_into().unwrap());
+        if sum_lane != (lane as i32 + 1) * 11
+            || product_lane != (lane as i32 + 1) * (lane as i32 + 1) * 10
+        {
+            return false;
+        }
+    }
+    true
+}
+
 fn run() -> u32 {
     let a128 = V128::from_bytes([1; 16]);
     let b128 = V128::from_bytes([2; 16]);
@@ -64,6 +87,9 @@ fn run() -> u32 {
     }
     if !unsafe { avx2() } {
         return 4;
+    }
+    if !unsafe { avx512() } {
+        return 5;
     }
     0
 }
