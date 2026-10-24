@@ -140,7 +140,7 @@ x86_64 で条件付きのゼロコストを確認した。条件、Cargo の設�
 - AVX10.1 / AVX10.2 で `#[target_feature]` を使えない制約の再確認。
 - shuffle / compress のうち、intrinsics が往復を残す命令の個別確認。
 - 追加した SSE3 以降の命令のゼロコスト確認。現在の zero-cost は
-  [リンクとゼロコスト](linking.md) に書いた命令と、`fixtures/x86-zero-cost-link` の SSE3 / SSSE3 だけである。
+  [リンクとゼロコスト](linking.md) に書いた命令と、`fixtures/x86-zero-cost-link` の SSE3 / SSSE3 / SSE4.1 / SSE4.2 だけである。
 
 ## 文書
 
