@@ -8,10 +8,13 @@ use rust_isa::x86::simd::avx::{V256, vaddps, vmulps};
 use rust_isa::x86::simd::avx2::vpshufb;
 use rust_isa::x86::simd::avx10_1::{vpaddd_v512, vpmulld_v512};
 use rust_isa::x86::simd::avx512bw::vpaddb;
+use rust_isa::x86::simd::avx512cd::vplzcntd;
 use rust_isa::x86::simd::avx512dq::vpmullq;
 use rust_isa::x86::simd::avx512f::V512;
 use rust_isa::x86::simd::avx512ifma::vpmadd52luq;
+use rust_isa::x86::simd::avx512vbmi::vpermb;
 use rust_isa::x86::simd::avx512vnni::vpdpbusd;
+use rust_isa::x86::simd::avx512vpopcntdq::vpopcntd;
 use rust_isa::x86::simd::sse2::V128;
 use rust_isa::x86::simd::sse3::addsubps;
 use rust_isa::x86::simd::sse4_1::pmulld;
@@ -52,6 +55,27 @@ pub unsafe extern "C" fn kernel_sse42(a: &V128, b: &V128) -> V128 {
 pub unsafe extern "C" fn kernel_avx(a: &V256, b: &V256) -> V256 {
     let sum = unsafe { vaddps(vaddps(*a, *b), *b) };
     unsafe { vmulps(vmulps(sum, *b), *b) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "avx512f,avx512cd")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_cd(a: &V512) -> V512 {
+    unsafe { vplzcntd(vplzcntd(*a)) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "avx512f,avx512bw,avx512vbmi")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_vbmi(a: &V512, idx: &V512) -> V512 {
+    unsafe { vpermb(vpermb(*a, *idx), *idx) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "avx512f,avx512vpopcntdq")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_vpopcnt(a: &V512) -> V512 {
+    unsafe { vpopcntd(vpopcntd(*a)) }
 }
 
 #[inline(never)]
@@ -137,6 +161,9 @@ fn main() {
     black_box(unsafe { kernel_sse41(&a128, &b128) });
     black_box(unsafe { kernel_sse42(&a128, &b128) });
     black_box(unsafe { kernel_avx(&a256, &b256) });
+    black_box(unsafe { kernel_cd(&a512) });
+    black_box(unsafe { kernel_vbmi(&a512, &b512) });
+    black_box(unsafe { kernel_vpopcnt(&a512) });
     black_box(unsafe { kernel_ssse3(&a128, &b128) });
     black_box(unsafe { kernel_sha(&a128, &b128, &k128) });
     black_box(unsafe { kernel_bw(&a512, &b512) });
