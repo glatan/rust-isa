@@ -92,7 +92,34 @@ pub unsafe extern "C" fn kernel_dot(a: &V128, b: &V128, acc: &V128) -> V128 {
     unsafe { sdot(*a, *b, first) }
 }
 
+#[inline(never)]
+#[target_feature(enable = "aes")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_aes(a: &V128, b: &V128) -> V128 {
+    unsafe { aese(aese(*a, *b), *b) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "sha2")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_sha2(a: &V128, b: &V128, c: &V128) -> V128 {
+    unsafe { sha256h(sha256h(*a, *b, *c), *b, *c) }
+}
+
+#[inline(never)]
+#[target_feature(enable = "crc")]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn kernel_crc(crc: u32, value: u8) -> u32 {
+    unsafe { crc32b(crc32b(crc, value), value) }
+}
+
 fn run() -> u32 {
+    let a = V128::from_bytes([1; 16]);
+    let b = V128::from_bytes([2; 16]);
+    let c = V128::from_bytes([3; 16]);
+    core::hint::black_box(unsafe { kernel_aes(&a, &b) });
+    core::hint::black_box(unsafe { kernel_sha2(&a, &b, &c) });
+    core::hint::black_box(unsafe { kernel_crc(0, 1) });
     if !load_store() {
         return 1;
     }

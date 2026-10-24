@@ -583,12 +583,24 @@ fn main() {
             (
                 &a64_aes_c,
                 "rust_isa_a64_aes",
-                &["-march=armv8-a+crypto"][..],
+                &[
+                    "-march=armv8-a",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+aes",
+                ][..],
             ),
             (
                 &a64_sha2_c,
                 "rust_isa_a64_sha2",
-                &["-march=armv8-a+crypto"][..],
+                &[
+                    "-march=armv8-a",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+sha2",
+                ][..],
             ),
             (
                 &a64_sha3_c,
