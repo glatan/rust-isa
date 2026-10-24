@@ -3,6 +3,13 @@
 
 use core::arch::asm;
 use core::panic::PanicInfo;
+use rust_isa::x86::integer::bmi1::{andn, bextr, blsi, blsmsk, blsr};
+use rust_isa::x86::integer::bmi2::{bzhi, pdep, pext, rorx, sarx, shlx, shrx};
+use rust_isa::x86::integer::lzcnt::lzcnt_u32;
+use rust_isa::x86::integer::movbe::{
+    movbe_load_u16, movbe_load_u32, movbe_store_u16, movbe_store_u32,
+};
+use rust_isa::x86::integer::popcnt::{popcnt_u32, popcnt_u64};
 use rust_isa::x86::simd::avx2::{V256, vpaddd, vpmulld};
 use rust_isa::x86::simd::avx512f::{V512, vpaddd as vpaddd_512, vpmulld as vpmulld_512};
 use rust_isa::x86::simd::sse2::{V128, paddd, pmuludq, pslld, punpcklbw, v128_load, v128_store};
@@ -67,6 +74,57 @@ unsafe fn avx512() -> bool {
     true
 }
 
+#[target_feature(enable = "bmi1")]
+unsafe fn bmi1_ops() -> bool {
+    unsafe {
+        andn(0b1010, 0b1100) == 0b0100
+            && bextr(0b1111_0000, 4, 4) == 0b1111
+            && blsi(0b1010_1000) == 0b1000
+            && blsmsk(0b1010_1000) == 0b1111
+            && blsr(0b1010_1000) == 0b1010_0000
+    }
+}
+
+#[target_feature(enable = "bmi2")]
+unsafe fn bmi2_ops() -> bool {
+    unsafe {
+        bzhi(u32::MAX, 8) == 0xff
+            && pdep(0b101, 0b1010_1010) == 0b0010_0010
+            && pext(0b1010_1010, 0b1010_1010) == 0b1111
+            && sarx(0x8000_0000, 4) == 0xf800_0000
+            && shlx(1, 4) == 16
+            && shrx(0x8000_0000, 4) == 0x0800_0000
+            && rorx::<4>(0x1234_5678) == 0x8123_4567
+    }
+}
+
+#[target_feature(enable = "popcnt")]
+unsafe fn popcnt_ops() -> bool {
+    unsafe { popcnt_u32(0b1011) == 3 && popcnt_u64(0xffff_ffff_ffff_ffff) == 64 }
+}
+
+#[target_feature(enable = "lzcnt")]
+unsafe fn lzcnt_ops() -> bool {
+    unsafe { lzcnt_u32(1) == 31 && lzcnt_u32(0) == 32 }
+}
+
+#[target_feature(enable = "movbe")]
+unsafe fn movbe_ops() -> bool {
+    let mut bytes = [0u8; 8];
+    unsafe {
+        movbe_store_u16(bytes.as_mut_ptr(), 0x1234);
+        if &bytes[..2] != &[0x12, 0x34] || movbe_load_u16(bytes.as_ptr()) != 0x1234 {
+            return false;
+        }
+        movbe_store_u32(bytes.as_mut_ptr(), 0x1234_5678);
+        if &bytes[..4] != &[0x12, 0x34, 0x56, 0x78] || movbe_load_u32(bytes.as_ptr()) != 0x1234_5678
+        {
+            return false;
+        }
+    }
+    true
+}
+
 fn run() -> u32 {
     let a128 = V128::from_bytes([1; 16]);
     let b128 = V128::from_bytes([2; 16]);
@@ -90,6 +148,21 @@ fn run() -> u32 {
     }
     if !unsafe { avx512() } {
         return 5;
+    }
+    if !unsafe { bmi1_ops() } {
+        return 6;
+    }
+    if !unsafe { bmi2_ops() } {
+        return 7;
+    }
+    if !unsafe { popcnt_ops() } {
+        return 8;
+    }
+    if !unsafe { lzcnt_ops() } {
+        return 9;
+    }
+    if !unsafe { movbe_ops() } {
+        return 10;
     }
     0
 }
