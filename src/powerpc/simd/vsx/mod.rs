@@ -14,6 +14,16 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::powerpc::simd::altivec::V128;
+//! use rust_isa::powerpc::simd::vsx::abs_f64;
+//!
+//! let value = V128::from_bytes([0; 16]);
+//! assert_eq!(unsafe { abs_f64(value) }.to_bytes(), [0; 16]);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

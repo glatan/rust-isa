@@ -9,6 +9,14 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::loongarch::integer::lbt::revb;
+//!
+//! assert_eq!(revb(0x0102_0304_0506_0708), 0x0807_0605_0403_0201);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

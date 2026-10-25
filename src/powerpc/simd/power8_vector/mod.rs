@@ -16,6 +16,16 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::powerpc::simd::altivec::V128;
+//! use rust_isa::powerpc::simd::power8_vector::vaddudm;
+//!
+//! let value = V128::from_bytes([0; 16]);
+//! assert_eq!(unsafe { vaddudm(value, value) }.to_bytes(), [0; 16]);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

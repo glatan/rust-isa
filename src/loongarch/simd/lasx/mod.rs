@@ -15,6 +15,17 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::loongarch::simd::lasx::{splat_i32, xvadd, V256};
+//!
+//! let left = unsafe { splat_i32(1) };
+//! let right = unsafe { splat_i32(2) };
+//! let sum = unsafe { xvadd(left, right) };
+//! assert_eq!(sum.to_bytes(), unsafe { splat_i32(3) }.to_bytes());
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

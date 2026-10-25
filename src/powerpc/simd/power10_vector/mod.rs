@@ -10,6 +10,16 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```no_run
+//! use rust_isa::powerpc::simd::altivec::V128;
+//! use rust_isa::powerpc::simd::power10_vector::popcnt_i32;
+//!
+//! let value = V128::from_bytes([0; 16]);
+//! let _ = unsafe { popcnt_i32(value) };
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

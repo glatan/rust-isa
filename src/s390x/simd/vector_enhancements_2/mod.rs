@@ -11,6 +11,17 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```no_run
+//! use rust_isa::s390x::simd::vector::V128;
+//! use rust_isa::s390x::simd::vector_enhancements_2::vsld;
+//!
+//! let a = V128::from_bytes([1; 16]);
+//! let b = V128::from_bytes([2; 16]);
+//! let _ = unsafe { vsld::<1>(a, b) };
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
