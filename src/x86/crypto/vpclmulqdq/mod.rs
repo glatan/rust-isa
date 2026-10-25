@@ -13,12 +13,15 @@
 
 //! # Examples
 //!
-//! ```no_run
+//! ```
+//! #[cfg(target_arch = "x86_64")]
+//! if std::env::var_os("RUST_ISA_SDE_FLAGS").is_some() {
 //! use rust_isa::x86::crypto::vpclmulqdq::vpclmulqdq_v256;
 //! use rust_isa::x86::simd::avx::V256;
 //!
 //! let v = V256::from_bytes([0; 32]);
 //! let _ = unsafe { vpclmulqdq_v256(v, v, 0) };
+//! }
 //! ```
 //!
 //! # Behavior example

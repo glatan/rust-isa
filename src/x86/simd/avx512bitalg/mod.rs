@@ -17,12 +17,15 @@
 
 //! # Examples
 //!
-//! ```no_run
+//! ```
+//! #[cfg(target_arch = "x86_64")]
+//! if std::env::var_os("RUST_ISA_SDE_FLAGS").is_some() {
 //! use rust_isa::x86::simd::avx512bitalg::vpopcntb;
 //! use rust_isa::x86::simd::avx512f::V512;
 //!
 //! let v = V512::from_bytes([0; 64]);
 //! let _ = unsafe { vpopcntb(v) };
+//! }
 //! ```
 //!
 //! # Behavior example

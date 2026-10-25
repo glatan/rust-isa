@@ -18,7 +18,9 @@
 
 //! # Examples
 //!
-//! ```no_run
+//! ```
+//! #[cfg(target_arch = "x86_64")]
+//! if std::env::var_os("RUST_ISA_SDE_FLAGS").is_some() {
 //! use rust_isa::x86::crypto::sha512::vsha512msg1;
 //! use rust_isa::x86::simd::avx::V256;
 //! use rust_isa::x86::simd::sse2::V128;
@@ -26,6 +28,7 @@
 //! let a = V256::from_bytes([0; 32]);
 //! let b = V128::from_bytes([0; 16]);
 //! let _ = unsafe { vsha512msg1(a, b) };
+//! }
 //! ```
 //!
 //! # Behavior example
