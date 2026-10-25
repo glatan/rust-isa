@@ -20,6 +20,36 @@
 //! assert_eq!(unsafe { neg_i32(value) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::powerpc::simd::power9_vector::*;
+//! use rust_isa::powerpc::simd::altivec::V128;
+//! use rust_isa::powerpc::matrix::mma::MmaAccumulator;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { abs_i32(v128) };
+//!     let _ = unsafe { neg_i32(v128) };
+//!     let _ = unsafe { neg_i64(v128) };
+//!     let _ = unsafe { vabsd(v128, v128) };
+//!     let _ = unsafe { vabsduw(v128, v128) };
+//!     let _ = unsafe { vctzb(v128) };
+//!     let _ = unsafe { vctzd(v128) };
+//!     let _ = unsafe { vctzh(v128) };
+//!     let _ = unsafe { vctzlsbb(v128) };
+//!     let _ = unsafe { vctzw(v128) };
+//!     let _ = unsafe { vextsb2d(v128) };
+//!     let _ = unsafe { vextsb2w(v128) };
+//!     let _ = unsafe { vextsh2d(v128) };
+//!     let _ = unsafe { vextsh2w(v128) };
+//!     let _ = unsafe { vextsw2d(v128) };
+//!     let _ = unsafe { vnegd(v128) };
+//!     let _ = unsafe { vnegw(v128) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
