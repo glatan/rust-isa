@@ -23,6 +23,21 @@
 //! assert_eq!(unsafe { sqrdmlah(zero, zero, zero) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::aarch64::simd::rdm::*;
+//! use rust_isa::aarch64::simd::neon::V128;
+//! use rust_isa::aarch64::simd::sme::SmeGuard;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { sqrdmlah(v128, v128, v128) };
+//!     let _ = unsafe { sqrdmlsh(v128, v128, v128) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

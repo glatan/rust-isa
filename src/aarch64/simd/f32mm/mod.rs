@@ -21,6 +21,20 @@
 //! unsafe { fmmla_f32(&a, &b, &mut acc) };
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::aarch64::simd::f32mm::*;
+//! use rust_isa::aarch64::simd::neon::V128;
+//! use rust_isa::aarch64::simd::sme::SmeGuard;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { fmmla_f32(&[], &[], &mut []) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

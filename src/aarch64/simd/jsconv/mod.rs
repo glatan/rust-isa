@@ -17,6 +17,21 @@
 //! assert_eq!(unsafe { fjcvtzs(1.9) }, 1);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::aarch64::simd::jsconv::*;
+//! use rust_isa::aarch64::simd::neon::V128;
+//! use rust_isa::aarch64::simd::sme::SmeGuard;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { fjcvtzs(0.0f64) };
+//!     let _ = unsafe { fjcvtzs_v128(v128) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

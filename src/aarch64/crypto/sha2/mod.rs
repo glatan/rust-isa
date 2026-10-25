@@ -26,6 +26,23 @@
 //! assert_ne!(unsafe { sha256h(a, b, c) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::aarch64::crypto::sha2::*;
+//! use rust_isa::aarch64::simd::neon::V128;
+//! use rust_isa::aarch64::simd::sme::SmeGuard;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { sha256h(v128, v128, v128) };
+//!     let _ = unsafe { sha256h2(v128, v128, v128) };
+//!     let _ = unsafe { sha256su0(v128, v128) };
+//!     let _ = unsafe { sha256su1(v128, v128, v128) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

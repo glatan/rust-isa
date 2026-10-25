@@ -29,6 +29,22 @@
 //! unsafe { add_f32(&guard, &a, &b, &mut out) };
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::aarch64::simd::sme::*;
+//! use rust_isa::aarch64::simd::neon::V128;
+//! use rust_isa::aarch64::simd::sme::SmeGuard;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let guard = unsafe { SmeGuard::enter() };
+//!
+//! unsafe {
+//!     let _ = unsafe { add_f32(&guard, &[], &[], &mut []) };
+//!     let _ = unsafe { mul_f32(&guard, &[], &[], &mut []) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

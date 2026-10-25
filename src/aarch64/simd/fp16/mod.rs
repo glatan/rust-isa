@@ -28,6 +28,66 @@
 //!                             0x00, 0x42, 0x00, 0x42, 0x00, 0x42, 0x00, 0x42]);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::aarch64::simd::fp16::*;
+//! use rust_isa::aarch64::simd::neon::V128;
+//! use rust_isa::aarch64::simd::sme::SmeGuard;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { fabd_f16(v128, v128) };
+//!     let _ = unsafe { fabs_f16(v128) };
+//!     let _ = unsafe { facge_f16(v128, v128) };
+//!     let _ = unsafe { facgt_f16(v128, v128) };
+//!     let _ = unsafe { fadd_f16(v128, v128) };
+//!     let _ = unsafe { fcmeq_f16(v128, v128) };
+//!     let _ = unsafe { fcmge_f16(v128, v128) };
+//!     let _ = unsafe { fcmgt_f16(v128, v128) };
+//!     let _ = unsafe { fcmle_f16(v128, v128) };
+//!     let _ = unsafe { fcmlt_f16(v128, v128) };
+//!     let _ = unsafe { fcvt_f16_f32(0.0f32) };
+//!     let _ = unsafe { fcvt_f16_f64(0.0f64) };
+//!     let _ = unsafe { fcvt_f32_f16(0) };
+//!     let _ = unsafe { fcvt_f64_f16(0) };
+//!     let _ = unsafe { fcvtl2_f32_f16(v128) };
+//!     let _ = unsafe { fcvtl_f32_f16(v128) };
+//!     let _ = unsafe { fcvtn2_f16_f32(v128, v128) };
+//!     let _ = unsafe { fcvtn_f16_f32(v128) };
+//!     let _ = unsafe { fcvtxn_f16_f64(v128) };
+//!     let _ = unsafe { fcvtzs_f16_s32(v128) };
+//!     let _ = unsafe { fcvtzs_f16_s64(v128) };
+//!     let _ = unsafe { fcvtzu_f16_u32(v128) };
+//!     let _ = unsafe { fcvtzu_f16_u64(v128) };
+//!     let _ = unsafe { fdiv_f16(v128, v128) };
+//!     let _ = unsafe { fmax_f16(v128, v128) };
+//!     let _ = unsafe { fmaxnm_f16(v128, v128) };
+//!     let _ = unsafe { fmin_f16(v128, v128) };
+//!     let _ = unsafe { fminnm_f16(v128, v128) };
+//!     let _ = unsafe { fmla_f16(v128, v128, v128) };
+//!     let _ = unsafe { fmlal2_f16(v128, v128, v128) };
+//!     let _ = unsafe { fmlal_f16(v128, v128, v128) };
+//!     let _ = unsafe { fmls_f16(v128, v128, v128) };
+//!     let _ = unsafe { fmlsl2_f16(v128, v128, v128) };
+//!     let _ = unsafe { fmlsl_f16(v128, v128, v128) };
+//!     let _ = unsafe { fmul_f16(v128, v128) };
+//!     let _ = unsafe { fneg_f16(v128) };
+//!     let _ = unsafe { frecpe_f16(v128) };
+//!     let _ = unsafe { frecps_f16(v128, v128) };
+//!     let _ = unsafe { frecpx_f16(0) };
+//!     let _ = unsafe { frsqrte_f16(v128) };
+//!     let _ = unsafe { frsqrts_f16(v128, v128) };
+//!     let _ = unsafe { fsqrt_f16(v128) };
+//!     let _ = unsafe { fsub_f16(v128, v128) };
+//!     let _ = unsafe { scvtf_f16_s32(v128) };
+//!     let _ = unsafe { scvtf_f16_s64(v128) };
+//!     let _ = unsafe { ucvtf_f16_u32(v128) };
+//!     let _ = unsafe { ucvtf_f16_u64(v128) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
