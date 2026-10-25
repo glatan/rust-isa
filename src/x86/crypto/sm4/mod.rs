@@ -53,23 +53,9 @@
 //!
 //! let _ = unsafe { vsm4key4(v128, v128) };
 //! let _ = unsafe { vsm4rnds4(v128, v128) };
+//!
 //! ```
 //!
-//! # Compile-only instruction examples
-//!
-//! ```no_run
-//! use rust_isa::x86::crypto::sm4::*;
-//! use rust_isa::x86::simd::sse2::V128;
-//! use rust_isa::x86::simd::avx::V256;
-//! use rust_isa::x86::simd::avx512f::V512;
-//!
-//! let v128 = V128::from_bytes([0; 16]);
-//! let v256 = V256::from_bytes([0; 32]);
-//! let v512 = V512::from_bytes([0; 64]);
-//!
-//! let _ = unsafe { vsm4key4(v128, v128) };
-//! let _ = unsafe { vsm4rnds4(v128, v128) };
-//! ```
 //!
 //! </details>
 //!

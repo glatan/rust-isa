@@ -43,25 +43,9 @@
 //! let _ = unsafe { vpconflictq(v512) };
 //! let _ = unsafe { vplzcntd(v512) };
 //! let _ = unsafe { vplzcntq(v512) };
+//!
 //! ```
 //!
-//! # Compile-only instruction examples
-//!
-//! ```no_run
-//! use rust_isa::x86::simd::avx512cd::*;
-//! use rust_isa::x86::simd::sse2::V128;
-//! use rust_isa::x86::simd::avx::V256;
-//! use rust_isa::x86::simd::avx512f::V512;
-//!
-//! let v128 = V128::from_bytes([0; 16]);
-//! let v256 = V256::from_bytes([0; 32]);
-//! let v512 = V512::from_bytes([0; 64]);
-//!
-//! let _ = unsafe { vpconflictd(v512) };
-//! let _ = unsafe { vpconflictq(v512) };
-//! let _ = unsafe { vplzcntd(v512) };
-//! let _ = unsafe { vplzcntq(v512) };
-//! ```
 //!
 //! </details>
 //!

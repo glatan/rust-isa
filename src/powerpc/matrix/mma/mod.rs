@@ -16,6 +16,14 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::powerpc::matrix::mma::*;
+//!
+//! assert_eq!(unsafe { MmaAccumulator::new() }.to_bytes(), [0; 64]);
+//! ```
+//!
 //! # Examples
 //!
 //! ```no_run

@@ -14,6 +14,15 @@
 //! <details>
 //! <summary>Instruction examples</summary>
 //!
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::loongarch::simd::lsx::*;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! assert_eq!(add(v, v).to_bytes(), [0; 16]);
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```

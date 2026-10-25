@@ -11,6 +11,15 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::arm::simd::neon::*;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! assert_eq!(unsafe { add(v, v) }.to_bytes(), [0; 16]);
+//! ```
+//!
 //! <details>
 //! <summary>Compile-only instruction examples</summary>
 //!
