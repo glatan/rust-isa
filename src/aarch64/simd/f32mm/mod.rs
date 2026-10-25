@@ -1,8 +1,8 @@
 //! AArch64 SVE floating-point matrix multiply-accumulate (F32MM).
 //!
 //! F32MM is not part of the AArch64 baseline. Every instruction wrapper is `unsafe` and
-//! the caller must compile with F32MM and SVE enabled. The slice length must be
-//! a multiple of the SVE vector length in 32-bit elements.
+//! the caller must compile with F32MM and SVE enabled. The three slice lengths
+//! must match; the C loop handles a final partial SVE vector.
 //!
 //! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
 //!
