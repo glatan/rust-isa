@@ -13,7 +13,7 @@
 
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::loongarch::simd::lsx::*;
 //! use rust_isa::loongarch::simd::lsx::V128;
 //! use rust_isa::loongarch::simd::lasx::V256;
@@ -44,8 +44,6 @@
 //! let _ = sub_i32(v128, v128);
 //! let _ = sub_i64(v128, v128);
 //! let _ = sub_i8(v128, v128);
-//! let _ = unsafe { v128_load(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { v128_store(storage.0.as_mut_ptr().cast(), v128) };
 //! let _ = vabs(v128);
 //! let _ = vabs_b(v128);
 //! let _ = vabs_d(v128);
@@ -174,7 +172,6 @@
 //! let _ = vftintrz_w_d(v128, v128);
 //! let _ = vftintrz_w_s(v128);
 //! let _ = vftintrz_wu_s(v128);
-//! let _ = unsafe { vld(storage.0.as_ptr().cast(), 0) };
 //! let _ = vldi::<0>();
 //! let _ = vmax(v128, v128);
 //! let _ = vmin(v128, v128);
@@ -230,7 +227,6 @@
 //! let _ = vssrln_wu_du::<0>(v128, v128);
 //! let _ = vssrlrn_w_d::<0>(v128, v128);
 //! let _ = vssrlrn_wu_du::<0>(v128, v128);
-//! let _ = unsafe { vst(storage.0.as_mut_ptr().cast(), 0, v128) };
 //! let _ = vsub(v128, v128);
 //! let _ = vsub_b(v128, v128);
 //! let _ = vsub_d(v128, v128);
@@ -238,6 +234,25 @@
 //! let _ = vsub_w(v128, v128);
 //! let _ = vxor(v128, v128);
 //! let _ = xor(v128, v128);
+//! ```
+//!
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::loongarch::simd::lsx::*;
+//! use rust_isa::loongarch::simd::lsx::V128;
+//! use rust_isa::loongarch::simd::lasx::V256;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//!
+//! let _ = unsafe { v128_load(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { v128_store(storage.0.as_mut_ptr().cast(), v128) };
+//! let _ = unsafe { vld(storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { vst(storage.0.as_mut_ptr().cast(), 0, v128) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

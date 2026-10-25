@@ -230,13 +230,16 @@ def inventory_names(text: str) -> set[str]:
 
 
 EXAMPLE_START = "//! # Instruction examples"
+EXAMPLE_START_COMPILE = "//! # Compile-only instruction examples"
 
 
 def example_names(text: str) -> set[str]:
     """Return instruction names invoked by the # Instruction examples block."""
-    start = text.find(EXAMPLE_START)
-    if start < 0:
+    starts = [text.find(EXAMPLE_START), text.find(EXAMPLE_START_COMPILE)]
+    starts = [index for index in starts if index >= 0]
+    if not starts:
         return set()
+    start = min(starts)
     end = text.find(START, start)
     block = text[start:end] if end >= 0 else text[start:]
     names = set(

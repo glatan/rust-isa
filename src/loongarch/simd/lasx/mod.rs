@@ -28,7 +28,7 @@
 //!
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::loongarch::simd::lasx::*;
 //! use rust_isa::loongarch::simd::lsx::V128;
 //! use rust_isa::loongarch::simd::lasx::V256;
@@ -52,8 +52,6 @@
 //! let _ = unsafe { splat_i32(0) };
 //! let _ = unsafe { sub(v256, v256) };
 //! let _ = unsafe { sub_i64(v256, v256) };
-//! let _ = unsafe { v256_load(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { v256_store(storage.0.as_mut_ptr().cast(), v256) };
 //! let _ = unsafe { vext2xv_h_b(v256) };
 //! let _ = unsafe { xor(v256, v256) };
 //! let _ = unsafe { xvabs(v256) };
@@ -80,7 +78,6 @@
 //! let _ = unsafe { xvfmul(v256, v256) };
 //! let _ = unsafe { xvfsub(v256, v256) };
 //! let _ = unsafe { xvftint(v256) };
-//! let _ = unsafe { xvld(storage.0.as_ptr().cast(), 0) };
 //! let _ = unsafe { xvldi::<0>() };
 //! let _ = unsafe { xvmax(v256, v256) };
 //! let _ = unsafe { xvmin(v256, v256) };
@@ -112,13 +109,31 @@
 //! let _ = unsafe { xvsrl(v256, 0) };
 //! let _ = unsafe { xvsrli::<0>(v256) };
 //! let _ = unsafe { xvssr(v256, v256) };
-//! let _ = unsafe { xvst(storage.0.as_mut_ptr().cast(), 0, v256) };
 //! let _ = unsafe { xvsub(v256, v256) };
 //! let _ = unsafe { xvsub_b(v256, v256) };
 //! let _ = unsafe { xvsub_d(v256, v256) };
 //! let _ = unsafe { xvsub_h(v256, v256) };
 //! let _ = unsafe { xvsub_w(v256, v256) };
 //! let _ = unsafe { xvxor(v256, v256) };
+//! ```
+//!
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::loongarch::simd::lasx::*;
+//! use rust_isa::loongarch::simd::lsx::V128;
+//! use rust_isa::loongarch::simd::lasx::V256;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//!
+//! let _ = unsafe { v256_load(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { v256_store(storage.0.as_mut_ptr().cast(), v256) };
+//! let _ = unsafe { xvld(storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { xvst(storage.0.as_mut_ptr().cast(), 0, v256) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

@@ -22,7 +22,7 @@
 //! let _ = unsafe { vsld::<1>(a, b) };
 //! ```
 //!
-//! # Instruction examples
+//! # Compile-only instruction examples
 //!
 //! ```no_run
 //! use rust_isa::s390x::simd::vector_enhancements_2::*;

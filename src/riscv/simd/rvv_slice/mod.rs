@@ -31,7 +31,7 @@
 //! assert_eq!(out, [11.0, 22.0]);
 //! ```
 //!
-//! # Instruction examples
+//! # Compile-only instruction examples
 //!
 //! ```no_run
 //! use rust_isa::riscv::simd::rvv_slice::*;

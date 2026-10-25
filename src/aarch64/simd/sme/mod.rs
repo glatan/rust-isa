@@ -30,7 +30,7 @@
 //! assert_eq!(out, [11.0, 22.0]);
 //! ```
 //!
-//! # Instruction examples
+//! # Compile-only instruction examples
 //!
 //! ```no_run
 //! use rust_isa::aarch64::simd::sme::*;
@@ -42,6 +42,7 @@
 //!
 //! let _ = unsafe { add_f32(&guard, &[0.0f32; 4], &[0.0f32; 4], &mut[0.0f32; 4]) };
 //! let _ = unsafe { mul_f32(&guard, &[0.0f32; 4], &[0.0f32; 4], &mut[0.0f32; 4]) };
+//! let _ = unsafe { SmeGuard::enter() };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

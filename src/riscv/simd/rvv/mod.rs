@@ -23,7 +23,7 @@
 //!
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::riscv::simd::rvv::*;
 //! use rust_isa::riscv::simd::rvv::V128;
 //!
@@ -52,8 +52,6 @@
 //! let _ = unsafe { sub_i32(v128, v128) };
 //! let _ = unsafe { sub_i64(v128, v128) };
 //! let _ = unsafe { sub_i8(v128, v128) };
-//! let _ = unsafe { v128_load(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { v128_store(storage.0.as_mut_ptr().cast(), v128) };
 //! let _ = unsafe { vaadd(v128, v128) };
 //! let _ = unsafe { vaaddu(v128, v128) };
 //! let _ = unsafe { vadd(v128, v128) };
@@ -108,37 +106,6 @@
 //! let _ = unsafe { vfwsub(v128, v128) };
 //! let _ = unsafe { vid() };
 //! let _ = unsafe { viota(0) };
-//! let _ = unsafe { vle16(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { vle32(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { vle64(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { vle8(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { vlm(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { vloxei16(storage.0.as_ptr().cast(), v128) };
-//! let _ = unsafe { vloxei32(storage.0.as_ptr().cast(), v128) };
-//! let _ = unsafe { vloxei64(storage.0.as_ptr().cast(), v128) };
-//! let _ = unsafe { vloxei8(storage.0.as_ptr().cast(), v128) };
-//! let _ = unsafe { vlse16(storage.0.as_ptr().cast(), 0) };
-//! let _ = unsafe { vlse32(storage.0.as_ptr().cast(), 0) };
-//! let _ = unsafe { vlse64(storage.0.as_ptr().cast(), 0) };
-//! let _ = unsafe { vlse8(storage.0.as_ptr().cast(), 0) };
-//! let _ = unsafe { vlseg2(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { vlseg3(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { vlseg4(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { vlseg5(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { vlseg6(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { vlseg7(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { vlseg8(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { vlsseg2(storage.0.as_ptr().cast(), 0) };
-//! let _ = unsafe { vlsseg3(storage.0.as_ptr().cast(), 0) };
-//! let _ = unsafe { vlsseg4(storage.0.as_ptr().cast(), 0) };
-//! let _ = unsafe { vlsseg5(storage.0.as_ptr().cast(), 0) };
-//! let _ = unsafe { vlsseg6(storage.0.as_ptr().cast(), 0) };
-//! let _ = unsafe { vlsseg7(storage.0.as_ptr().cast(), 0) };
-//! let _ = unsafe { vlsseg8(storage.0.as_ptr().cast(), 0) };
-//! let _ = unsafe { vluxei16(storage.0.as_ptr().cast(), v128) };
-//! let _ = unsafe { vluxei32(storage.0.as_ptr().cast(), v128) };
-//! let _ = unsafe { vluxei64(storage.0.as_ptr().cast(), v128) };
-//! let _ = unsafe { vluxei8(storage.0.as_ptr().cast(), v128) };
 //! let _ = unsafe { vmacc(v128, v128, v128) };
 //! let _ = unsafe { vmadd(v128, v128, v128) };
 //! let _ = unsafe { vmand(0, 0) };
@@ -203,23 +170,88 @@
 //! let _ = unsafe { vrgatherei16(v128, v128) };
 //! let _ = unsafe { vsadd(v128, v128) };
 //! let _ = unsafe { vsaddu(v128, v128) };
-//! let _ = unsafe { vse16(storage.0.as_mut_ptr().cast(), v128) };
-//! let _ = unsafe { vse32(storage.0.as_mut_ptr().cast(), v128) };
-//! let _ = unsafe { vse64(storage.0.as_mut_ptr().cast(), v128) };
-//! let _ = unsafe { vse8(storage.0.as_mut_ptr().cast(), v128) };
 //! let _ = unsafe { vsext(v128) };
 //! let _ = unsafe { vslide1down(v128, 0) };
 //! let _ = unsafe { vslide1up(v128, 0) };
 //! let _ = unsafe { vslidedown(v128, 0) };
 //! let _ = unsafe { vslideup(v128, v128, 0) };
 //! let _ = unsafe { vsll(v128, v128) };
+//! let _ = unsafe { vsra(v128, v128) };
+//! let _ = unsafe { vsrl(v128, v128) };
+//! let _ = unsafe { vssub(v128, v128) };
+//! let _ = unsafe { vssubu(v128, v128) };
+//! let _ = unsafe { vsub(v128, v128) };
+//! let _ = unsafe { vwadd(v128, v128) };
+//! let _ = unsafe { vwaddu(v128, v128) };
+//! let _ = unsafe { vwmacc(v128, v128, v128) };
+//! let _ = unsafe { vwmaccsu(v128, v128, v128) };
+//! let _ = unsafe { vwmaccu(v128, v128, v128) };
+//! let _ = unsafe { vwmaccus(v128, 0, v128) };
+//! let _ = unsafe { vwmul(v128, v128) };
+//! let _ = unsafe { vwmulsu(v128, v128) };
+//! let _ = unsafe { vwmulu(v128, v128) };
+//! let _ = unsafe { vwredsum(v128) };
+//! let _ = unsafe { vwredsumu(v128) };
+//! let _ = unsafe { vwsub(v128, v128) };
+//! let _ = unsafe { vwsubu(v128, v128) };
+//! let _ = unsafe { vxor(v128, v128) };
+//! let _ = unsafe { vzext(v128) };
+//! let _ = unsafe { xor(v128, v128) };
+//! ```
+//!
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::riscv::simd::rvv::*;
+//! use rust_isa::riscv::simd::rvv::V128;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//!
+//! let _ = unsafe { v128_load(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { v128_store(storage.0.as_mut_ptr().cast(), v128) };
+//! let _ = unsafe { vle16(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { vle32(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { vle64(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { vle8(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { vlm(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { vloxei16(storage.0.as_ptr().cast(), v128) };
+//! let _ = unsafe { vloxei32(storage.0.as_ptr().cast(), v128) };
+//! let _ = unsafe { vloxei64(storage.0.as_ptr().cast(), v128) };
+//! let _ = unsafe { vloxei8(storage.0.as_ptr().cast(), v128) };
+//! let _ = unsafe { vlse16(storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { vlse32(storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { vlse64(storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { vlse8(storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { vlseg2(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { vlseg3(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { vlseg4(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { vlseg5(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { vlseg6(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { vlseg7(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { vlseg8(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { vlsseg2(storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { vlsseg3(storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { vlsseg4(storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { vlsseg5(storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { vlsseg6(storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { vlsseg7(storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { vlsseg8(storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { vluxei16(storage.0.as_ptr().cast(), v128) };
+//! let _ = unsafe { vluxei32(storage.0.as_ptr().cast(), v128) };
+//! let _ = unsafe { vluxei64(storage.0.as_ptr().cast(), v128) };
+//! let _ = unsafe { vluxei8(storage.0.as_ptr().cast(), v128) };
+//! let _ = unsafe { vse16(storage.0.as_mut_ptr().cast(), v128) };
+//! let _ = unsafe { vse32(storage.0.as_mut_ptr().cast(), v128) };
+//! let _ = unsafe { vse64(storage.0.as_mut_ptr().cast(), v128) };
+//! let _ = unsafe { vse8(storage.0.as_mut_ptr().cast(), v128) };
 //! let _ = unsafe { vsm(storage.0.as_mut_ptr().cast(), 0) };
 //! let _ = unsafe { vsoxei16(storage.0.as_mut_ptr().cast(), v128, v128) };
 //! let _ = unsafe { vsoxei32(storage.0.as_mut_ptr().cast(), v128, v128) };
 //! let _ = unsafe { vsoxei64(storage.0.as_mut_ptr().cast(), v128, v128) };
 //! let _ = unsafe { vsoxei8(storage.0.as_mut_ptr().cast(), v128, v128) };
-//! let _ = unsafe { vsra(v128, v128) };
-//! let _ = unsafe { vsrl(v128, v128) };
 //! let _ = unsafe { vsse16(storage.0.as_mut_ptr().cast(), 0, v128) };
 //! let _ = unsafe { vsse32(storage.0.as_mut_ptr().cast(), 0, v128) };
 //! let _ = unsafe { vsse64(storage.0.as_mut_ptr().cast(), 0, v128) };
@@ -238,29 +270,10 @@
 //! let _ = unsafe { vssseg6(storage.0.as_mut_ptr().cast(), 0, [v128; 6]) };
 //! let _ = unsafe { vssseg7(storage.0.as_mut_ptr().cast(), 0, [v128; 7]) };
 //! let _ = unsafe { vssseg8(storage.0.as_mut_ptr().cast(), 0, [v128; 8]) };
-//! let _ = unsafe { vssub(v128, v128) };
-//! let _ = unsafe { vssubu(v128, v128) };
-//! let _ = unsafe { vsub(v128, v128) };
 //! let _ = unsafe { vsuxei16(storage.0.as_mut_ptr().cast(), v128, v128) };
 //! let _ = unsafe { vsuxei32(storage.0.as_mut_ptr().cast(), v128, v128) };
 //! let _ = unsafe { vsuxei64(storage.0.as_mut_ptr().cast(), v128, v128) };
 //! let _ = unsafe { vsuxei8(storage.0.as_mut_ptr().cast(), v128, v128) };
-//! let _ = unsafe { vwadd(v128, v128) };
-//! let _ = unsafe { vwaddu(v128, v128) };
-//! let _ = unsafe { vwmacc(v128, v128, v128) };
-//! let _ = unsafe { vwmaccsu(v128, v128, v128) };
-//! let _ = unsafe { vwmaccu(v128, v128, v128) };
-//! let _ = unsafe { vwmaccus(v128, 0, v128) };
-//! let _ = unsafe { vwmul(v128, v128) };
-//! let _ = unsafe { vwmulsu(v128, v128) };
-//! let _ = unsafe { vwmulu(v128, v128) };
-//! let _ = unsafe { vwredsum(v128) };
-//! let _ = unsafe { vwredsumu(v128) };
-//! let _ = unsafe { vwsub(v128, v128) };
-//! let _ = unsafe { vwsubu(v128, v128) };
-//! let _ = unsafe { vxor(v128, v128) };
-//! let _ = unsafe { vzext(v128) };
-//! let _ = unsafe { xor(v128, v128) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

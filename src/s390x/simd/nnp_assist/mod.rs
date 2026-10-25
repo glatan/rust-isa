@@ -35,7 +35,7 @@
 //! assert_eq!(unsafe { vcrnf(v, v) }.to_bytes().len(), 16);
 //! ```
 //!
-//! # Instruction examples
+//! # Compile-only instruction examples
 //!
 //! ```no_run
 //! use rust_isa::s390x::simd::nnp_assist::*;

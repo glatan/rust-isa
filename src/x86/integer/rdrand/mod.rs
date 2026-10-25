@@ -27,7 +27,7 @@
 //! }
 //! ```
 //!
-//! # Instruction examples
+//! # Compile-only instruction examples
 //!
 //! ```no_run
 //! use rust_isa::x86::integer::rdrand::*;
@@ -39,11 +39,23 @@
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //!
-//! if let Some(value) = unsafe { rdrand_u32() } {
-//!     let _ = value;
-//! } else {
-//!     // The instruction may report failure; the caller can retry.
-//! }
+//! let _ = unsafe { rdrand_u32() };
+//! #[cfg(target_arch = "x86_64")] let _ = unsafe { rdrand_u64() };
+//! ```
+//!
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::x86::integer::rdrand::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//!
+//! let _ = unsafe { rdrand_u32() };
 //! #[cfg(target_arch = "x86_64")] let _ = unsafe { rdrand_u64() };
 //! ```
 //!

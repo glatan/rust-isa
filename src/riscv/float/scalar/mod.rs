@@ -26,7 +26,7 @@
 //!
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::riscv::float::scalar::*;
 //! use rust_isa::riscv::simd::rvv::V128;
 //!
@@ -78,7 +78,6 @@
 //! let _ = unsafe { fle_d(0, 0) };
 //! let _ = unsafe { fle_h(0, 0) };
 //! let _ = unsafe { fle_s(0, 0) };
-//! let _ = unsafe { flh(storage.0.as_ptr().cast()) };
 //! let _ = unsafe { flt_d(0, 0) };
 //! let _ = unsafe { flt_h(0, 0) };
 //! let _ = unsafe { flt_s(0, 0) };
@@ -97,13 +96,27 @@
 //! let _ = unsafe { fmv_x_d(0) };
 //! let _ = unsafe { fmv_x_h(0) };
 //! let _ = unsafe { fmv_x_w(0) };
-//! let _ = unsafe { fsh(storage.0.as_mut_ptr().cast(), 0) };
 //! let _ = unsafe { fsqrt_d(0) };
 //! let _ = unsafe { fsqrt_h(0) };
 //! let _ = unsafe { fsqrt_s(0) };
 //! let _ = unsafe { fsub_d(0, 0) };
 //! let _ = unsafe { fsub_h(0, 0) };
 //! let _ = unsafe { fsub_s(0, 0) };
+//! ```
+//!
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::riscv::float::scalar::*;
+//! use rust_isa::riscv::simd::rvv::V128;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//!
+//! let _ = unsafe { flh(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { fsh(storage.0.as_mut_ptr().cast(), 0) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

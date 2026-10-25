@@ -35,7 +35,24 @@
 //! assert_eq!(unsafe { vpopcntb(v) }.to_bytes(), [0; 64]);
 //! ```
 //!
-//! # Instruction examples
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::avx512bitalg::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//!
+//! let _ = unsafe { vpopcntb(v512) };
+//! let _ = unsafe { vpopcntw(v512) };
+//! let _ = unsafe { vpshufbitqmb(v512, v512) };
+//! ```
+//!
+//! # Compile-only instruction examples
 //!
 //! ```no_run
 //! use rust_isa::x86::simd::avx512bitalg::*;

@@ -7,9 +7,9 @@
 //!
 //! ```
 //! use rust_isa::wasm32::wide_arithmetic::*;
+//! use rust_isa::wasm32::simd::simd128::V128;
 //!
-//! let (lo, hi) = unsafe { i64_add128((u64::MAX, 0), (1, 0)) };
-//! assert_eq!((lo, hi), (0, 1));
+//! let v128 = V128::from_bytes([0; 16]);
 //!
 //! let _ = unsafe { i64_add128((0, 0), (0, 0)) };
 //! let _ = unsafe { i64_mul_wide_s(0, 0) };

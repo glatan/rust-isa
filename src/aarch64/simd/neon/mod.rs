@@ -12,7 +12,7 @@
 
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::aarch64::simd::neon::*;
 //! use rust_isa::aarch64::simd::neon::V128;
 //!
@@ -151,28 +151,6 @@
 //! let _ = ins_i32::<0>(v128, 0);
 //! let _ = ins_i64::<0>(v128, 0);
 //! let _ = ins_i8::<0>(v128, 0);
-//! let _ = unsafe { ld1(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld1r_i16(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld1r_i32(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld1r_i64(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld1r_i8(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld2(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld2r_i16(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld2r_i32(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld2r_i64(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld2r_i8(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld3(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld3r_i16(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld3r_i32(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld3r_i64(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld3r_i8(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld4(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld4r_i16(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld4r_i32(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld4r_i64(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ld4r_i8(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ldnp(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { ldp(storage.0.as_ptr().cast()) };
 //! let _ = max_i16(v128, v128);
 //! let _ = max_i32(v128, v128);
 //! let _ = max_i8(v128, v128);
@@ -409,12 +387,6 @@
 //! let _ = ssubw_s16(v128, v128);
 //! let _ = ssubw_s32(v128, v128);
 //! let _ = ssubw_s8(v128, v128);
-//! let _ = unsafe { st1(storage.0.as_mut_ptr().cast(), v128) };
-//! let _ = unsafe { st2(storage.0.as_mut_ptr().cast(), v128, v128) };
-//! let _ = unsafe { st3(storage.0.as_mut_ptr().cast(), v128, v128, v128) };
-//! let _ = unsafe { st4(storage.0.as_mut_ptr().cast(), v128, v128, v128, v128) };
-//! let _ = unsafe { stnp(storage.0.as_mut_ptr().cast(), v128, v128) };
-//! let _ = unsafe { stp(storage.0.as_mut_ptr().cast(), v128, v128) };
 //! let _ = sub_f64(v128, v128);
 //! let _ = sub_i16(v128, v128);
 //! let _ = sub_i32(v128, v128);
@@ -535,8 +507,6 @@
 //! let _ = usubw_u8(v128, v128);
 //! let _ = uzp1(v128, v128);
 //! let _ = uzp2(v128, v128);
-//! let _ = unsafe { v128_load(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { v128_store(storage.0.as_mut_ptr().cast(), v128) };
 //! let _ = xtn2_s16(v128, v128);
 //! let _ = xtn2_s32(v128, v128);
 //! let _ = xtn2_s8(v128, v128);
@@ -551,6 +521,49 @@
 //! let _ = xtn_u8(v128);
 //! let _ = zip1(v128, v128);
 //! let _ = zip2(v128, v128);
+//! ```
+//!
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::aarch64::simd::neon::*;
+//! use rust_isa::aarch64::simd::neon::V128;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//!
+//! let _ = unsafe { ld1(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld1r_i16(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld1r_i32(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld1r_i64(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld1r_i8(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld2(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld2r_i16(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld2r_i32(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld2r_i64(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld2r_i8(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld3(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld3r_i16(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld3r_i32(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld3r_i64(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld3r_i8(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld4(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld4r_i16(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld4r_i32(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld4r_i64(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ld4r_i8(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ldnp(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { ldp(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { st1(storage.0.as_mut_ptr().cast(), v128) };
+//! let _ = unsafe { st2(storage.0.as_mut_ptr().cast(), v128, v128) };
+//! let _ = unsafe { st3(storage.0.as_mut_ptr().cast(), v128, v128, v128) };
+//! let _ = unsafe { st4(storage.0.as_mut_ptr().cast(), v128, v128, v128, v128) };
+//! let _ = unsafe { stnp(storage.0.as_mut_ptr().cast(), v128, v128) };
+//! let _ = unsafe { stp(storage.0.as_mut_ptr().cast(), v128, v128) };
+//! let _ = unsafe { v128_load(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { v128_store(storage.0.as_mut_ptr().cast(), v128) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

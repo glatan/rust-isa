@@ -42,7 +42,7 @@
 //! assert_eq!(unsafe { vblendq(v, v, v) }.to_bytes(), [0; 16]);
 //! ```
 //!
-//! # Instruction examples
+//! # Compile-only instruction examples
 //!
 //! ```no_run
 //! use rust_isa::s390x::simd::vector_enhancements_3::*;

@@ -36,7 +36,33 @@
 //! assert_eq!(unsafe { vpdpwsud(v, v, v) }.to_bytes(), [0; 32]);
 //! ```
 //!
-//! # Instruction examples
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::avxvnniint16::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//!
+//! let _ = unsafe { vpdpwsud(v256, v256, v256) };
+//! let _ = unsafe { vpdpwsud_v128(v128, v128, v128) };
+//! let _ = unsafe { vpdpwsuds(v256, v256, v256) };
+//! let _ = unsafe { vpdpwsuds_v128(v128, v128, v128) };
+//! let _ = unsafe { vpdpwusd(v256, v256, v256) };
+//! let _ = unsafe { vpdpwusd_v128(v128, v128, v128) };
+//! let _ = unsafe { vpdpwusds(v256, v256, v256) };
+//! let _ = unsafe { vpdpwusds_v128(v128, v128, v128) };
+//! let _ = unsafe { vpdpwuud(v256, v256, v256) };
+//! let _ = unsafe { vpdpwuud_v128(v128, v128, v128) };
+//! let _ = unsafe { vpdpwuuds(v256, v256, v256) };
+//! let _ = unsafe { vpdpwuuds_v128(v128, v128, v128) };
+//! ```
+//!
+//! # Compile-only instruction examples
 //!
 //! ```no_run
 //! use rust_isa::x86::simd::avxvnniint16::*;

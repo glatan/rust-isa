@@ -28,7 +28,7 @@
 //!
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::x86::simd::avx::*;
 //! use rust_isa::x86::simd::sse2::V128;
 //! use rust_isa::x86::simd::avx::V256;
@@ -55,7 +55,6 @@
 //! let _ = unsafe { vblendps::<0>(v256, v256) };
 //! let _ = unsafe { vblendvpd(v256, v256, v256) };
 //! let _ = unsafe { vblendvps(v256, v256, v256) };
-//! let _ = unsafe { vbroadcastf128(storage.0.as_ptr().cast()) };
 //! let _ = unsafe { vbroadcastsd(0.0f64) };
 //! let _ = unsafe { vbroadcastss(0.0f32) };
 //! let _ = unsafe { vcmppd::<0>(v256, v256) };
@@ -77,11 +76,6 @@
 //! let _ = unsafe { vdpps::<0>(v256, v256) };
 //! let _ = unsafe { vextractf128::<0>(v256) };
 //! let _ = unsafe { vinsertf128::<0>(v256, v128) };
-//! let _ = unsafe { vlddqu(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { vmaskmovpd_load(storage.0.as_ptr().cast(), v256) };
-//! let _ = unsafe { vmaskmovpd_store(storage.0.as_mut_ptr().cast(), v256, v256) };
-//! let _ = unsafe { vmaskmovps_load(storage.0.as_ptr().cast(), v256) };
-//! let _ = unsafe { vmaskmovps_store(storage.0.as_mut_ptr().cast(), v256, v256) };
 //! let _ = unsafe { vmaxpd(v256, v256) };
 //! let _ = unsafe { vmaxps(v256, v256) };
 //! let _ = unsafe { vminpd(v256, v256) };
@@ -91,8 +85,6 @@
 //! let _ = unsafe { vmovddup(v256) };
 //! let _ = unsafe { vmovmskpd(v256) };
 //! let _ = unsafe { vmovmskps(v256) };
-//! let _ = unsafe { vmovntpd(storage.0.as_mut_ptr().cast(), v256) };
-//! let _ = unsafe { vmovntps(storage.0.as_mut_ptr().cast(), v256) };
 //! #[cfg(target_arch = "x86_64")] let _ = unsafe { vmovq(0) };
 //! #[cfg(target_arch = "x86_64")] let _ = unsafe { vmovq_to_u64(v128) };
 //! let _ = unsafe { vmovshdup(v256) };
@@ -128,6 +120,31 @@
 //! let _ = unsafe { vxorpd(v256, v256) };
 //! let _ = unsafe { vxorps(v256, v256) };
 //! let _ = unsafe { vzeroupper() };
+//! ```
+//!
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::avx::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//!
+//! let _ = unsafe { vbroadcastf128(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { vlddqu(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { vmaskmovpd_load(storage.0.as_ptr().cast(), v256) };
+//! let _ = unsafe { vmaskmovpd_store(storage.0.as_mut_ptr().cast(), v256, v256) };
+//! let _ = unsafe { vmaskmovps_load(storage.0.as_ptr().cast(), v256) };
+//! let _ = unsafe { vmaskmovps_store(storage.0.as_mut_ptr().cast(), v256, v256) };
+//! let _ = unsafe { vmovntpd(storage.0.as_mut_ptr().cast(), v256) };
+//! let _ = unsafe { vmovntps(storage.0.as_mut_ptr().cast(), v256) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

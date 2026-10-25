@@ -36,7 +36,23 @@
 //! assert_eq!(unsafe { vp2intersectd(v, v) }, (0, 0));
 //! ```
 //!
-//! # Instruction examples
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::avx512vp2intersect::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//!
+//! let _ = unsafe { vp2intersectd(v512, v512) };
+//! let _ = unsafe { vp2intersectq(v512, v512) };
+//! ```
+//!
+//! # Compile-only instruction examples
 //!
 //! ```no_run
 //! use rust_isa::x86::simd::avx512vp2intersect::*;
