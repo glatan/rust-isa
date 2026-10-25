@@ -32,6 +32,80 @@
 //! let _ = unsafe { vblendq(a, b, mask) };
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::s390x::simd::vector_enhancements_3::*;
+//! use rust_isa::s390x::simd::vector::V128;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { vacccq(v128, v128, v128) };
+//!     let _ = unsafe { vaccq(v128, v128) };
+//!     let _ = unsafe { vacq(v128, v128, v128) };
+//!     let _ = unsafe { vaq(v128, v128) };
+//!     let _ = unsafe { vavglq(v128, v128) };
+//!     let _ = unsafe { vavgq(v128, v128) };
+//!     let _ = unsafe { vblendb(v128, v128, v128) };
+//!     let _ = unsafe { vblendf(v128, v128, v128) };
+//!     let _ = unsafe { vblendg(v128, v128, v128) };
+//!     let _ = unsafe { vblendh(v128, v128, v128) };
+//!     let _ = unsafe { vblendq(v128, v128, v128) };
+//!     let _ = unsafe { vclzq(v128) };
+//!     let _ = unsafe { vctzq(v128) };
+//!     let _ = unsafe { vdf(v128, v128) };
+//!     let _ = unsafe { vdg(v128, v128) };
+//!     let _ = unsafe { vdlf(v128, v128) };
+//!     let _ = unsafe { vdlg(v128, v128) };
+//!     let _ = unsafe { vdlq(v128, v128) };
+//!     let _ = unsafe { vdq(v128, v128) };
+//!     let _ = unsafe { veval::<0>(v128, v128, v128) };
+//!     let _ = unsafe { vgemb(v128) };
+//!     let _ = unsafe { vgemf(v128) };
+//!     let _ = unsafe { vgemg(v128) };
+//!     let _ = unsafe { vgemh(v128) };
+//!     let _ = unsafe { vgemq(v128) };
+//!     let _ = unsafe { vlcq(v128) };
+//!     let _ = unsafe { vlpq(v128) };
+//!     let _ = unsafe { vmaeg(v128, v128, v128) };
+//!     let _ = unsafe { vmahg(v128, v128, v128) };
+//!     let _ = unsafe { vmahq(v128, v128, v128) };
+//!     let _ = unsafe { vmaleg(v128, v128, v128) };
+//!     let _ = unsafe { vmalg(v128, v128, v128) };
+//!     let _ = unsafe { vmalhg(v128, v128, v128) };
+//!     let _ = unsafe { vmalhq(v128, v128, v128) };
+//!     let _ = unsafe { vmalog(v128, v128, v128) };
+//!     let _ = unsafe { vmalq(v128, v128, v128) };
+//!     let _ = unsafe { vmaog(v128, v128, v128) };
+//!     let _ = unsafe { vmeg(v128, v128) };
+//!     let _ = unsafe { vmhg(v128, v128) };
+//!     let _ = unsafe { vmhq(v128, v128) };
+//!     let _ = unsafe { vmleg(v128, v128) };
+//!     let _ = unsafe { vmlg(v128, v128) };
+//!     let _ = unsafe { vmlhg(v128, v128) };
+//!     let _ = unsafe { vmlhq(v128, v128) };
+//!     let _ = unsafe { vmlog(v128, v128) };
+//!     let _ = unsafe { vmlq(v128, v128) };
+//!     let _ = unsafe { vmnlq(v128, v128) };
+//!     let _ = unsafe { vmnq(v128, v128) };
+//!     let _ = unsafe { vmog(v128, v128) };
+//!     let _ = unsafe { vmxlq(v128, v128) };
+//!     let _ = unsafe { vmxq(v128, v128) };
+//!     let _ = unsafe { vrf(v128, v128) };
+//!     let _ = unsafe { vrg(v128, v128) };
+//!     let _ = unsafe { vrlf(v128, v128) };
+//!     let _ = unsafe { vrlg(v128, v128) };
+//!     let _ = unsafe { vrlq(v128, v128) };
+//!     let _ = unsafe { vrq(v128, v128) };
+//!     let _ = unsafe { vsq(v128, v128) };
+//!     let _ = unsafe { vuphg(v128) };
+//!     let _ = unsafe { vuplg(v128) };
+//!     let _ = unsafe { vuplhg(v128) };
+//!     let _ = unsafe { vupllg(v128) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

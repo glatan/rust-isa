@@ -25,6 +25,23 @@
 //! let _ = unsafe { vcrnf(a, b) };
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::s390x::simd::nnp_assist::*;
+//! use rust_isa::s390x::simd::vector::V128;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { vcfn(v128) };
+//!     let _ = unsafe { vclfnh(v128) };
+//!     let _ = unsafe { vclfnl(v128) };
+//!     let _ = unsafe { vcnf(v128) };
+//!     let _ = unsafe { vcrnf(v128, v128) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

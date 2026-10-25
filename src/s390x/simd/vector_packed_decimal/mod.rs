@@ -27,6 +27,30 @@
 //! let _ = unsafe { vsdp::<0, 0>(a, b) };
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::s390x::simd::vector_packed_decimal::*;
+//! use rust_isa::s390x::simd::vector::V128;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { vap::<0, 0>(v128, v128) };
+//!     let _ = unsafe { vcvb::<0>(v128) };
+//!     let _ = unsafe { vcvbg::<0>(v128) };
+//!     let _ = unsafe { vcvd::<0, 0>(0) };
+//!     let _ = unsafe { vpkz::<0>(core::ptr::null()) };
+//!     let _ = unsafe { vsdp::<0, 0>(v128, v128) };
+//!     let _ = unsafe { vsp::<0, 0>(v128, v128) };
+//!     let _ = unsafe { vsrp::<0, 0, 0>(v128) };
+//!     let _ = unsafe { vstrl::<0>(v128, core::ptr::null_mut()) };
+//!     let _ = unsafe { vupkz::<0>(v128, core::ptr::null_mut()) };
+//!     let _ = unsafe { vupkzh::<0>(v128) };
+//!     let _ = unsafe { vupkzl::<0>(v128) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
