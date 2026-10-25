@@ -42,6 +42,7 @@
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //! let mut config = rust_isa::x86::matrix::amx_tile::TileConfig::from_bytes([0; 64]);
+//! let _ = rust_isa::x86::matrix::amx_tile::TileConfig::builder();
 //! let guard = unsafe { rust_isa::x86::matrix::amx_tile::AmxGuard::enter(&config) };
 //!
 //! unsafe {
