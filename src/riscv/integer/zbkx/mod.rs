@@ -18,6 +18,20 @@
 //! assert_ne!(unsafe { xperm8(0x0123_4567_89ab_cdef, 0) }, 0);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::riscv::integer::zbkx::*;
+//! use rust_isa::riscv::simd::rvv::V128;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { xperm4(0, 0) };
+//!     let _ = unsafe { xperm8(0, 0) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

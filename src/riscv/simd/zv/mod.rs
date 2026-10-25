@@ -22,6 +22,36 @@
 //! let _ = unsafe { vgmul(acc, key) };
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::riscv::simd::zv::*;
+//! use rust_isa::riscv::simd::rvv::V128;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { vaesdf(v128, v128) };
+//!     let _ = unsafe { vaesdm(v128, v128) };
+//!     let _ = unsafe { vaesef(v128, v128) };
+//!     let _ = unsafe { vaesem(v128, v128) };
+//!     let _ = unsafe { vaeskf1(v128, 0) };
+//!     let _ = unsafe { vaeskf2(v128, 0) };
+//!     let _ = unsafe { vaesz(v128, v128) };
+//!     let _ = unsafe { vclmul(v128, v128) };
+//!     let _ = unsafe { vclmulh(v128, v128) };
+//!     let _ = unsafe { vghsh(v128, v128, v128) };
+//!     let _ = unsafe { vgmul(v128, v128) };
+//!     let _ = unsafe { vsha2ch(v128, v128, v128) };
+//!     let _ = unsafe { vsha2cl(v128, v128, v128) };
+//!     let _ = unsafe { vsha2ms(v128, v128, v128) };
+//!     let _ = unsafe { vsm3c([v128; 2], 0) };
+//!     let _ = unsafe { vsm3me([v128; 2], [v128; 2]) };
+//!     let _ = unsafe { vsm4k(v128, 0) };
+//!     let _ = unsafe { vsm4r(v128, v128) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

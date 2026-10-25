@@ -22,6 +22,22 @@
 //! assert_ne!(unsafe { sm3p0(1) }, 1);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::riscv::crypto::zks::*;
+//! use rust_isa::riscv::simd::rvv::V128;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { sm3p0(0) };
+//!     let _ = unsafe { sm3p1(0) };
+//!     let _ = unsafe { sm4ed::<0>(0, 0) };
+//!     let _ = unsafe { sm4ks::<0>(0, 0) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
