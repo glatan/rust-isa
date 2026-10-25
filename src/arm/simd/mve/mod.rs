@@ -34,6 +34,80 @@
 //! );
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::arm::simd::mve::*;
+//! use rust_isa::arm::simd::neon::V128;
+//! use rust_isa::arm::simd::neon::V64;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { abav(0, v128, v128) };
+//!     let _ = unsafe { abd(v128, v128) };
+//!     let _ = unsafe { abs(v128) };
+//!     let _ = unsafe { add(v128, v128) };
+//!     let _ = unsafe { addlv(v128) };
+//!     let _ = unsafe { addv(v128) };
+//!     let _ = unsafe { and(v128, v128) };
+//!     let _ = unsafe { bic(v128, v128) };
+//!     let _ = unsafe { brsr(v128, 0) };
+//!     let _ = unsafe { clz(v128) };
+//!     let _ = unsafe { cmp(v128, v128) };
+//!     let _ = unsafe { ctp(0) };
+//!     let _ = unsafe { dup(0) };
+//!     let _ = unsafe { eor(v128, v128) };
+//!     let _ = unsafe { fma(v128, v128, v128) };
+//!     let _ = unsafe { fms(v128, v128, v128) };
+//!     let _ = unsafe { hadd(v128, v128) };
+//!     let _ = unsafe { hsub(v128, v128) };
+//!     let _ = unsafe { idup(0, 0) };
+//!     let _ = unsafe { iwdup(0, 0, 0) };
+//!     let _ = unsafe { ldr(core::ptr::null()) };
+//!     let _ = unsafe { ldrb(core::ptr::null()) };
+//!     let _ = unsafe { max(v128, v128) };
+//!     let _ = unsafe { maxv(v128) };
+//!     let _ = unsafe { min(v128, v128) };
+//!     let _ = unsafe { minv(v128) };
+//!     let _ = unsafe { mla(v128, v128, v128) };
+//!     let _ = unsafe { mlal(v128, v128, v128) };
+//!     let _ = unsafe { mls(v128, v128, v128) };
+//!     let _ = unsafe { mlsl(v128, v128, v128) };
+//!     let _ = unsafe { mov(v128) };
+//!     let _ = unsafe { mul(v128, v128) };
+//!     let _ = unsafe { mull(v128, v128) };
+//!     let _ = unsafe { mvn(v128) };
+//!     let _ = unsafe { neg(v128) };
+//!     let _ = unsafe { orn(v128, v128) };
+//!     let _ = unsafe { orr(v128, v128) };
+//!     let _ = unsafe { qabs(v128) };
+//!     let _ = unsafe { qadd(v128, v128) };
+//!     let _ = unsafe { qdmulh(v128, v128) };
+//!     let _ = unsafe { qdmull(v128, v128) };
+//!     let _ = unsafe { qmovn(v128) };
+//!     let _ = unsafe { qneg(v128) };
+//!     let _ = unsafe { qrdmulh(v128, v128) };
+//!     let _ = unsafe { qshl(v128, 0) };
+//!     let _ = unsafe { qsub(v128, v128) };
+//!     let _ = unsafe { rev16(v128) };
+//!     let _ = unsafe { rev32(v128) };
+//!     let _ = unsafe { rev64(v128) };
+//!     let _ = unsafe { rmulh(v128, v128) };
+//!     let _ = unsafe { shl(v128, 0) };
+//!     let _ = unsafe { shr(v128, 0) };
+//!     let _ = unsafe { sli(v128, v128, 0) };
+//!     let _ = unsafe { sri(v128, v128, 0) };
+//!     let _ = unsafe { str(core::ptr::null_mut(), v128) };
+//!     let _ = unsafe { strb(core::ptr::null_mut(), v128) };
+//!     let _ = unsafe { sub(v128, v128) };
+//!     let _ = unsafe { subn(v128, v128) };
+//!     let _ = unsafe { subw(v128, v128) };
+//!     let _ = unsafe { uzp(v128, v128) };
+//!     let _ = unsafe { zip(v128, v128) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
