@@ -26,6 +26,100 @@
 //! assert_eq!(sum.to_bytes(), unsafe { splat_i32(3) }.to_bytes());
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::loongarch::simd::lasx::*;
+//! use rust_isa::loongarch::simd::lsx::V128;
+//! use rust_isa::loongarch::simd::lasx::V256;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//!
+//! unsafe {
+//!     let _ = unsafe { add(v256, v256) };
+//!     let _ = unsafe { add_i64(v256, v256) };
+//!     let _ = unsafe { and(v256, v256) };
+//!     let _ = unsafe { fadd(v256, v256) };
+//!     let _ = unsafe { fdiv(v256, v256) };
+//!     let _ = unsafe { fmul(v256, v256) };
+//!     let _ = unsafe { fsub(v256, v256) };
+//!     let _ = unsafe { mul(v256, v256) };
+//!     let _ = unsafe { mul_i32(v256, v256) };
+//!     let _ = unsafe { or(v256, v256) };
+//!     let _ = unsafe { splat_i32(0) };
+//!     let _ = unsafe { sub(v256, v256) };
+//!     let _ = unsafe { sub_i64(v256, v256) };
+//!     let _ = unsafe { v256_load(core::ptr::null()) };
+//!     let _ = unsafe { v256_store(core::ptr::null_mut(), v256) };
+//!     let _ = unsafe { vext2xv_h_b(v256) };
+//!     let _ = unsafe { xor(v256, v256) };
+//!     let _ = unsafe { xvabs(v256) };
+//!     let _ = unsafe { xvabs_b(v256) };
+//!     let _ = unsafe { xvabs_d(v256) };
+//!     let _ = unsafe { xvabs_h(v256) };
+//!     let _ = unsafe { xvadd(v256, v256) };
+//!     let _ = unsafe { xvadd_b(v256, v256) };
+//!     let _ = unsafe { xvadd_d(v256, v256) };
+//!     let _ = unsafe { xvadd_h(v256, v256) };
+//!     let _ = unsafe { xvadd_w(v256, v256) };
+//!     let _ = unsafe { xvand(v256, v256) };
+//!     let _ = unsafe { xvavgr(v256, v256) };
+//!     let _ = unsafe { xvbitsel(v256, v256, v256) };
+//!     let _ = unsafe { xvexth(v256) };
+//!     let _ = unsafe { xvextl(v256) };
+//!     let _ = unsafe { xvfadd(v256, v256) };
+//!     let _ = unsafe { xvfcmp::<0>(v256, v256) };
+//!     let _ = unsafe { xvfcvt(v256, v256) };
+//!     let _ = unsafe { xvfdiv(v256, v256) };
+//!     let _ = unsafe { xvffint(v256) };
+//!     let _ = unsafe { xvfmax(v256, v256) };
+//!     let _ = unsafe { xvfmin(v256, v256) };
+//!     let _ = unsafe { xvfmul(v256, v256) };
+//!     let _ = unsafe { xvfsub(v256, v256) };
+//!     let _ = unsafe { xvftint(v256) };
+//!     let _ = unsafe { xvld(core::ptr::null(), 0) };
+//!     let _ = unsafe { xvldi::<0>() };
+//!     let _ = unsafe { xvmax(v256, v256) };
+//!     let _ = unsafe { xvmin(v256, v256) };
+//!     let _ = unsafe { xvmul(v256, v256) };
+//!     let _ = unsafe { xvmul_h(v256, v256) };
+//!     let _ = unsafe { xvmul_w(v256, v256) };
+//!     let _ = unsafe { xvneg(v256) };
+//!     let _ = unsafe { xvneg_b(v256) };
+//!     let _ = unsafe { xvneg_d(v256) };
+//!     let _ = unsafe { xvneg_h(v256) };
+//!     let _ = unsafe { xvnor(v256, v256) };
+//!     let _ = unsafe { xvor(v256, v256) };
+//!     let _ = unsafe { xvpackev(v256, v256) };
+//!     let _ = unsafe { xvpackod(v256, v256) };
+//!     let _ = unsafe { xvrepl(0) };
+//!     let _ = unsafe { xvsat::<0>(v256) };
+//!     let _ = unsafe { xvseq(v256, v256) };
+//!     let _ = unsafe { xvseqi(v256, 0) };
+//!     let _ = unsafe { xvshuf(v256, v256, v256) };
+//!     let _ = unsafe { xvshuf4i::<0>(v256) };
+//!     let _ = unsafe { xvsle(v256, v256) };
+//!     let _ = unsafe { xvslei(v256, 0) };
+//!     let _ = unsafe { xvsll(v256, 0) };
+//!     let _ = unsafe { xvslli::<0>(v256) };
+//!     let _ = unsafe { xvslt(v256, v256) };
+//!     let _ = unsafe { xvslti(v256, 0) };
+//!     let _ = unsafe { xvsra(v256, 0) };
+//!     let _ = unsafe { xvsrai::<0>(v256) };
+//!     let _ = unsafe { xvsrl(v256, 0) };
+//!     let _ = unsafe { xvsrli::<0>(v256) };
+//!     let _ = unsafe { xvssr(v256, v256) };
+//!     let _ = unsafe { xvst(core::ptr::null_mut(), 0, v256) };
+//!     let _ = unsafe { xvsub(v256, v256) };
+//!     let _ = unsafe { xvsub_b(v256, v256) };
+//!     let _ = unsafe { xvsub_d(v256, v256) };
+//!     let _ = unsafe { xvsub_h(v256, v256) };
+//!     let _ = unsafe { xvsub_w(v256, v256) };
+//!     let _ = unsafe { xvxor(v256, v256) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
