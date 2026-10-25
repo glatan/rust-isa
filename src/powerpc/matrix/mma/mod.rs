@@ -34,6 +34,7 @@
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //! let mut acc = unsafe { MmaAccumulator::new() };
+//! assert_eq!(unsafe { MmaAccumulator::new() }.to_bytes(), [0; 64]);
 //!
 //! let _ = unsafe { xvi16ger2(&mut acc, v128, v128) };
 //! let _ = unsafe { xvi16ger2pp(&mut acc, v128, v128) };

@@ -22,6 +22,16 @@
 //! let _ = unsafe { vgmul(acc, key) };
 //! ```
 //!
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::riscv::simd::zv::*;
+//! use rust_isa::riscv::simd::rvv::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! assert_eq!(unsafe { vgmul(v, v) }.to_bytes(), [0; 16]);
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```

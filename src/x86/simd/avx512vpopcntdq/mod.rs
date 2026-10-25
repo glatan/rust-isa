@@ -24,6 +24,16 @@
 //! let _ = unsafe { vpopcntd(v) };
 //! ```
 //!
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::avx512vpopcntdq::*;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v = V512::from_bytes([0; 64]);
+//! assert_eq!(unsafe { vpopcntd(v) }.to_bytes(), [0; 64]);
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```no_run

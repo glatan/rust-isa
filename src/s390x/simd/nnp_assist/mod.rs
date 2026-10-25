@@ -25,6 +25,16 @@
 //! let _ = unsafe { vcrnf(a, b) };
 //! ```
 //!
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::s390x::simd::nnp_assist::*;
+//! use rust_isa::s390x::simd::vector::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! assert_eq!(unsafe { vcrnf(v, v) }.to_bytes().len(), 16);
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```no_run

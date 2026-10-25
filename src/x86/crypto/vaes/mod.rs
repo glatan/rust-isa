@@ -20,6 +20,16 @@
 //! let _ = unsafe { vaesenc_v128(v, v) };
 //! ```
 //!
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::x86::crypto::vaes::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! assert_eq!(unsafe { vaesenc_v128(v, v) }.to_bytes(), [0x63; 16]);
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```no_run

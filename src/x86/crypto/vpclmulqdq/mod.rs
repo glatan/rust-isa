@@ -21,6 +21,16 @@
 //! let _ = unsafe { vpclmulqdq_v256(v, v, 0) };
 //! ```
 //!
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::x86::crypto::vpclmulqdq::*;
+//! use rust_isa::x86::simd::avx::V256;
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! assert_eq!(unsafe { vpclmulqdq_v256(v, v, 0) }.to_bytes(), [0; 32]);
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```no_run

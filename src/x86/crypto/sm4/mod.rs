@@ -23,6 +23,16 @@
 //! let _ = unsafe { vsm4key4(v, v) };
 //! ```
 //!
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::x86::crypto::sm4::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! assert_ne!(unsafe { vsm4key4(v, v) }.to_bytes(), [0; 16]);
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```no_run

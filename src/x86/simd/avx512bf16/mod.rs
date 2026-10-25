@@ -26,6 +26,16 @@
 //! let _ = unsafe { vdpbf16ps(v, v, v) };
 //! ```
 //!
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::avx512bf16::*;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v = V512::from_bytes([0; 64]);
+//! assert_eq!(unsafe { vdpbf16ps(v, v, v) }.to_bytes(), [0; 64]);
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```no_run

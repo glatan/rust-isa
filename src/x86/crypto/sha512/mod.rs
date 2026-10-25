@@ -28,6 +28,18 @@
 //! let _ = unsafe { vsha512msg1(a, b) };
 //! ```
 //!
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::x86::crypto::sha512::*;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let a = V256::from_bytes([0; 32]);
+//! let b = V128::from_bytes([0; 16]);
+//! assert_ne!(unsafe { vsha512msg1(a, b) }.to_bytes(), [0; 32]);
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```no_run

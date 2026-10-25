@@ -24,6 +24,16 @@
 //! let _ = unsafe { vpmadd52luq(v, v, v) };
 //! ```
 //!
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::avxifma::*;
+//! use rust_isa::x86::simd::avx::V256;
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! assert_eq!(unsafe { vpmadd52luq(v, v, v) }.to_bytes(), [0; 32]);
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```no_run

@@ -20,6 +20,16 @@
 //! let _ = unsafe { popcnt_i32(value) };
 //! ```
 //!
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::powerpc::simd::power10_vector::*;
+//! use rust_isa::powerpc::simd::altivec::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! assert_eq!(unsafe { popcnt_i32(v) }.to_bytes(), [0; 16]);
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```no_run

@@ -26,6 +26,16 @@
 //! let _ = unsafe { vpdpbssd(v, v, v) };
 //! ```
 //!
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::avxvnniint8::*;
+//! use rust_isa::x86::simd::avx::V256;
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! assert_eq!(unsafe { vpdpbssd(v, v, v) }.to_bytes(), [0; 32]);
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```no_run
