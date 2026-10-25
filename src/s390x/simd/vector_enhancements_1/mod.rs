@@ -25,6 +25,40 @@
 //! assert_eq!(count.to_bytes(), [4; 16]);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::s390x::simd::vector_enhancements_1::*;
+//! use rust_isa::s390x::simd::vector::V128;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { fma(v128, v128, v128) };
+//!     let _ = unsafe { popcnt_i32(v128) };
+//!     let _ = unsafe { popcnt_i8(v128) };
+//!     let _ = unsafe { vfa(v128, v128) };
+//!     let _ = unsafe { vfce(v128, v128) };
+//!     let _ = unsafe { vfch(v128, v128) };
+//!     let _ = unsafe { vfche(v128, v128) };
+//!     let _ = unsafe { vfd(v128, v128) };
+//!     let _ = unsafe { vfi_f32::<0, 0>(v128) };
+//!     let _ = unsafe { vfll(v128) };
+//!     let _ = unsafe { vflr::<0, 0>(v128) };
+//!     let _ = unsafe { vfm(v128, v128) };
+//!     let _ = unsafe { vfma(v128, v128, v128) };
+//!     let _ = unsafe { vfms(v128, v128, v128) };
+//!     let _ = unsafe { vfnma(v128, v128, v128) };
+//!     let _ = unsafe { vfnms(v128, v128, v128) };
+//!     let _ = unsafe { vfs(v128, v128) };
+//!     let _ = unsafe { vfsq(v128) };
+//!     let _ = unsafe { vftci_f32::<0>(v128) };
+//!     let _ = unsafe { vnn(v128, v128) };
+//!     let _ = unsafe { vpopctb(v128) };
+//!     let _ = unsafe { vpopctg(v128) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

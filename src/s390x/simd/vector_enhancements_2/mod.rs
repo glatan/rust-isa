@@ -22,6 +22,20 @@
 //! let _ = unsafe { vsld::<1>(a, b) };
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::s390x::simd::vector_enhancements_2::*;
+//! use rust_isa::s390x::simd::vector::V128;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { vsld::<0>(v128, v128) };
+//!     let _ = unsafe { vsrd::<0>(v128, v128) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
