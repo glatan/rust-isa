@@ -14,6 +14,16 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::aarch64::crypto::sha3::eor3;
+//! use rust_isa::aarch64::simd::neon::V128;
+//!
+//! let zero = V128::from_bytes([0; 16]);
+//! assert_eq!(unsafe { eor3(zero, zero, zero) }.to_bytes(), [0; 16]);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

@@ -14,6 +14,18 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::aarch64::crypto::sha2::sha256h;
+//! use rust_isa::aarch64::simd::neon::V128;
+//!
+//! let a = V128::from_bytes([1; 16]);
+//! let b = V128::from_bytes([2; 16]);
+//! let c = V128::from_bytes([3; 16]);
+//! assert_ne!(unsafe { sha256h(a, b, c) }.to_bytes(), [0; 16]);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

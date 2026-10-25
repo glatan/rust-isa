@@ -13,6 +13,14 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::aarch64::crypto::crc::crc32b;
+//!
+//! assert_eq!(unsafe { crc32b(0, 0) }, 0);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
