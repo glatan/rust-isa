@@ -20,6 +20,16 @@
 //! let _ = unsafe { vpdpbusd(v, v, v) };
 //! ```
 //!
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::avx512vnni::*;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v = V512::from_bytes([0; 64]);
+//! assert_eq!(unsafe { vpdpbusd(v, v, v) }.to_bytes(), [0; 64]);
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```no_run

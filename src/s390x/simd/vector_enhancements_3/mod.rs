@@ -32,6 +32,16 @@
 //! let _ = unsafe { vblendq(a, b, mask) };
 //! ```
 //!
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::s390x::simd::vector_enhancements_3::*;
+//! use rust_isa::s390x::simd::vector::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! assert_eq!(unsafe { vblendq(v, v, v) }.to_bytes(), [0; 16]);
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```no_run

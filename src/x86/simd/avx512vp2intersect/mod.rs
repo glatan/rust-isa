@@ -26,6 +26,16 @@
 //! let _ = unsafe { vp2intersectd(v, v) };
 //! ```
 //!
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::avx512vp2intersect::*;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v = V512::from_bytes([0; 64]);
+//! assert_eq!(unsafe { vp2intersectd(v, v) }, (0, 0));
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```no_run
