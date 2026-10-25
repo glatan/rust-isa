@@ -19,11 +19,9 @@
 //! ```no_run
 //! use rust_isa::x86::integer::rdseed::rdseed_u32;
 //!
-//! if let Some(value) = unsafe { rdseed_u32() } {
-//!     let _ = value;
-//! } else {
-//!     // The instruction may report failure; the caller can retry.
-//! }
+//! let value = unsafe { rdseed_u32() };
+//! // RDRAND/RDSEED is nondeterministic and may report failure.
+//! assert!(value.is_some() || value.is_none());
 //! ```
 //!
 //! <details>
