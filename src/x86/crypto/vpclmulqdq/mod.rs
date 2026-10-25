@@ -31,21 +31,8 @@
 //! assert_eq!(unsafe { vpclmulqdq_v256(v, v, 0) }.to_bytes(), [0; 32]);
 //! ```
 //!
-//! # Compile-only instruction examples
-//!
-//! ```no_run
-//! use rust_isa::x86::crypto::vpclmulqdq::*;
-//! use rust_isa::x86::simd::sse2::V128;
-//! use rust_isa::x86::simd::avx::V256;
-//! use rust_isa::x86::simd::avx512f::V512;
-//!
-//! let v128 = V128::from_bytes([0; 16]);
-//! let v256 = V256::from_bytes([0; 32]);
-//! let v512 = V512::from_bytes([0; 64]);
-//!
-//! let _ = unsafe { vpclmulqdq_v256(v256, v256, 0) };
-//! let _ = unsafe { vpclmulqdq_v512(v512, v512, 0) };
-//! ```
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
 //!
 //! # Compile-only instruction examples
 //!
@@ -62,6 +49,27 @@
 //! let _ = unsafe { vpclmulqdq_v256(v256, v256, 0) };
 //! let _ = unsafe { vpclmulqdq_v512(v512, v512, 0) };
 //! ```
+//!
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::x86::crypto::vpclmulqdq::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//!
+//! let _ = unsafe { vpclmulqdq_v256(v256, v256, 0) };
+//! let _ = unsafe { vpclmulqdq_v512(v512, v512, 0) };
+//! ```
+//!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!
@@ -72,6 +80,8 @@
 //! use rust_isa::x86::crypto::vpclmulqdq::vpclmulqdq_v512 as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;

@@ -28,6 +28,9 @@
 //!                             0x00, 0x42, 0x00, 0x42, 0x00, 0x42, 0x00, 0x42]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -85,6 +88,11 @@
 //! let _ = unsafe { ucvtf_f16_u64(v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -139,6 +147,8 @@
 //! use rust_isa::aarch64::simd::fp16::ucvtf_f16_u64 as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use crate::aarch64::simd::neon::V128;
 

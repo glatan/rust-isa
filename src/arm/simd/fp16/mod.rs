@@ -36,6 +36,9 @@
 //! );
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -63,6 +66,11 @@
 //! let _ = unsafe { sub(v128, v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -86,6 +94,8 @@
 //! use rust_isa::arm::simd::fp16::sub as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use super::neon::V128;
 

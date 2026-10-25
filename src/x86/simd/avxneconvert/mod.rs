@@ -35,26 +35,8 @@
 //! assert_eq!(unsafe { vcvtneps2bf16(v) }.to_bytes(), [0; 16]);
 //! ```
 //!
-//! # Compile-only instruction examples
-//!
-//! ```no_run
-//! use rust_isa::x86::simd::avxneconvert::*;
-//! use rust_isa::x86::simd::sse2::V128;
-//! use rust_isa::x86::simd::avx::V256;
-//! use rust_isa::x86::simd::avx512f::V512;
-//!
-//! let v128 = V128::from_bytes([0; 16]);
-//! let v256 = V256::from_bytes([0; 32]);
-//! let v512 = V512::from_bytes([0; 64]);
-//!
-//! let _ = unsafe { vbcstnebf162ps(0) };
-//! let _ = unsafe { vbcstnesh2ps(0) };
-//! let _ = unsafe { vcvtneebf162ps(v256) };
-//! let _ = unsafe { vcvtneeph2ps(v256) };
-//! let _ = unsafe { vcvtneobf162ps(v256) };
-//! let _ = unsafe { vcvtneoph2ps(v256) };
-//! let _ = unsafe { vcvtneps2bf16(v256) };
-//! ```
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
 //!
 //! # Compile-only instruction examples
 //!
@@ -76,6 +58,32 @@
 //! let _ = unsafe { vcvtneoph2ps(v256) };
 //! let _ = unsafe { vcvtneps2bf16(v256) };
 //! ```
+//!
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::avxneconvert::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//!
+//! let _ = unsafe { vbcstnebf162ps(0) };
+//! let _ = unsafe { vbcstnesh2ps(0) };
+//! let _ = unsafe { vcvtneebf162ps(v256) };
+//! let _ = unsafe { vcvtneeph2ps(v256) };
+//! let _ = unsafe { vcvtneobf162ps(v256) };
+//! let _ = unsafe { vcvtneoph2ps(v256) };
+//! let _ = unsafe { vcvtneps2bf16(v256) };
+//! ```
+//!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!
@@ -91,6 +99,8 @@
 //! use rust_isa::x86::simd::avxneconvert::vcvtneps2bf16 as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use super::avx2::V256;
 use super::sse2::V128;

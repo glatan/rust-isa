@@ -18,6 +18,9 @@
 //! assert_eq!(unsafe { andn(0b1010, 0b1100) }, 0b0100);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -37,6 +40,11 @@
 //! let _ = unsafe { blsr(0) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -49,6 +57,8 @@
 //! use rust_isa::x86::integer::bmi1::blsr as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 unsafe extern "C" {
     fn rust_isa_bmi1_andn(a: u32, b: u32) -> u32;

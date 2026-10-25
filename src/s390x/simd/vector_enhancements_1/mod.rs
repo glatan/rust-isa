@@ -25,6 +25,9 @@
 //! assert_eq!(count.to_bytes(), [4; 16]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -57,6 +60,11 @@
 //! let _ = unsafe { vpopctg(v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -86,6 +94,8 @@
 //! use rust_isa::s390x::simd::vector_enhancements_1::vpopctg as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use super::vector::V128;
 use core::arch::asm;

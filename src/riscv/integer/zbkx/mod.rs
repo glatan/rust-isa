@@ -18,6 +18,9 @@
 //! assert_ne!(unsafe { xperm8(0x0123_4567_89ab_cdef, 0) }, 0);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -30,6 +33,11 @@
 //! let _ = unsafe { xperm8(0, 0) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -39,6 +47,8 @@
 //! use rust_isa::riscv::integer::zbkx::xperm8 as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 unsafe extern "C" {
     fn rust_isa_riscv_zbkx_xperm4(a: u64, b: u64) -> u64;

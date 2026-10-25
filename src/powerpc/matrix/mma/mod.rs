@@ -25,6 +25,9 @@
 //! let _ = acc;
 //! ```
 //!
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
+//!
 //! # Compile-only instruction examples
 //!
 //! ```no_run
@@ -50,6 +53,11 @@
 //! let _ = unsafe { MmaAccumulator::new() };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -71,6 +79,8 @@
 //! let _ = MmaAccumulator::new;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use core::marker::PhantomData;
 

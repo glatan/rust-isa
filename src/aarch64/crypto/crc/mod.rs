@@ -21,6 +21,9 @@
 //! assert_eq!(unsafe { crc32b(0, 0) }, 0);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -35,6 +38,11 @@
 //! let _ = unsafe { crc32x(0, 0) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -46,6 +54,8 @@
 //! use rust_isa::aarch64::crypto::crc::crc32x as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 unsafe extern "C" {
     fn rust_isa_crc_crc32b(crc: u32, value: u8) -> u32;

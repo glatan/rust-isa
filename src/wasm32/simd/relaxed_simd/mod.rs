@@ -32,6 +32,9 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -62,6 +65,11 @@
 //! let _ = i8x16_relaxed_swizzle(v128, v128);
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -90,6 +98,8 @@
 //! use rust_isa::wasm32::simd::relaxed_simd::i8x16_relaxed_swizzle as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 pub use super::simd128::V128;
 

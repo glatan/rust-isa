@@ -42,6 +42,9 @@
 //! assert_eq!(unsafe { vblendq(v, v, v) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
+//!
 //! # Compile-only instruction examples
 //!
 //! ```no_run
@@ -114,6 +117,11 @@
 //! let _ = unsafe { vupllg(v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -183,6 +191,8 @@
 //! use rust_isa::s390x::simd::vector_enhancements_3::vupllg as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use super::vector::V128;
 use core::arch::asm;

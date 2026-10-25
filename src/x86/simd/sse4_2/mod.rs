@@ -25,6 +25,9 @@
 //! assert_eq!(unsafe { pcmpgtq(v, v) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -48,6 +51,11 @@
 //! let _ = unsafe { pcmpistrm(v128, v128, 0) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -65,6 +73,8 @@
 //! use rust_isa::x86::simd::sse4_2::pcmpistrm as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use super::sse2::V128;
 

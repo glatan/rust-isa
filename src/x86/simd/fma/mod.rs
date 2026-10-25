@@ -21,6 +21,9 @@
 //! assert_eq!(unsafe { vfmadd132ps(v, v, v) }.to_bytes(), [0; 32]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -95,6 +98,11 @@
 //! let _ = unsafe { vfnmsub231ss(v128, v128, v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -162,6 +170,8 @@
 //! use rust_isa::x86::simd::fma::vfnmsub231ss as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::sse2::V128;

@@ -26,6 +26,9 @@
 //! assert_eq!(sum.to_bytes(), unsafe { splat_i32(3) }.to_bytes());
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -117,6 +120,11 @@
 //! let _ = unsafe { xvxor(v256, v256) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
+//!
 //! # Compile-only instruction examples
 //!
 //! ```no_run
@@ -135,6 +143,11 @@
 //! let _ = unsafe { xvld(storage.0.as_ptr().cast(), 0) };
 //! let _ = unsafe { xvst(storage.0.as_mut_ptr().cast(), 0, v256) };
 //! ```
+//!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!
@@ -223,6 +236,8 @@
 //! use rust_isa::loongarch::simd::lasx::xvxor as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 mod v256;
 

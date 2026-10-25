@@ -20,6 +20,9 @@
 //! assert_eq!(unsafe { clmul(1, 1) }, 1);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -33,6 +36,11 @@
 //! let _ = unsafe { clmulr(0, 0) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -43,6 +51,8 @@
 //! use rust_isa::riscv::integer::zbc::clmulr as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 unsafe extern "C" {
     fn rust_isa_riscv_zbc_clmul(a: u64, b: u64) -> u64;

@@ -22,6 +22,9 @@
 //! assert_ne!(unsafe { vcipher(zero, zero) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -48,6 +51,11 @@
 //! let _ = unsafe { vshasigmaw::<0, 0>(v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -71,6 +79,8 @@
 //! use rust_isa::powerpc::crypto::power8_crypto::vshasigmaw as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use crate::powerpc::simd::altivec::V128;
 

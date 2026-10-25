@@ -25,6 +25,9 @@
 //! assert_ne!(unsafe { smmla(zero, ones, ones) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -38,6 +41,11 @@
 //! let _ = unsafe { usmmla(v128, v128, v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -48,6 +56,8 @@
 //! use rust_isa::aarch64::simd::i8mm::usmmla as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use crate::aarch64::simd::neon::V128;
 

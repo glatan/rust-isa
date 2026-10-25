@@ -33,29 +33,8 @@
 //! assert_eq!(unsafe { vpcompressb(v, 0) }.to_bytes(), [0; 64]);
 //! ```
 //!
-//! # Compile-only instruction examples
-//!
-//! ```no_run
-//! use rust_isa::x86::simd::avx512vbmi2::*;
-//! use rust_isa::x86::simd::sse2::V128;
-//! use rust_isa::x86::simd::avx::V256;
-//! use rust_isa::x86::simd::avx512f::V512;
-//!
-//! let v128 = V128::from_bytes([0; 16]);
-//! let v256 = V256::from_bytes([0; 32]);
-//! let v512 = V512::from_bytes([0; 64]);
-//!
-//! let _ = unsafe { vpcompressb(v512, 0) };
-//! let _ = unsafe { vpcompressw(v512, 0) };
-//! let _ = unsafe { vpexpandb(v512, 0) };
-//! let _ = unsafe { vpexpandw(v512, 0) };
-//! let _ = unsafe { vpshldd::<0>(v512, v512) };
-//! let _ = unsafe { vpshldq::<0>(v512, v512) };
-//! let _ = unsafe { vpshldw::<0>(v512, v512) };
-//! let _ = unsafe { vpshrdd::<0>(v512, v512) };
-//! let _ = unsafe { vpshrdq::<0>(v512, v512) };
-//! let _ = unsafe { vpshrdw::<0>(v512, v512) };
-//! ```
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
 //!
 //! # Compile-only instruction examples
 //!
@@ -80,6 +59,35 @@
 //! let _ = unsafe { vpshrdq::<0>(v512, v512) };
 //! let _ = unsafe { vpshrdw::<0>(v512, v512) };
 //! ```
+//!
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::avx512vbmi2::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//!
+//! let _ = unsafe { vpcompressb(v512, 0) };
+//! let _ = unsafe { vpcompressw(v512, 0) };
+//! let _ = unsafe { vpexpandb(v512, 0) };
+//! let _ = unsafe { vpexpandw(v512, 0) };
+//! let _ = unsafe { vpshldd::<0>(v512, v512) };
+//! let _ = unsafe { vpshldq::<0>(v512, v512) };
+//! let _ = unsafe { vpshldw::<0>(v512, v512) };
+//! let _ = unsafe { vpshrdd::<0>(v512, v512) };
+//! let _ = unsafe { vpshrdq::<0>(v512, v512) };
+//! let _ = unsafe { vpshrdw::<0>(v512, v512) };
+//! ```
+//!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!
@@ -98,6 +106,8 @@
 //! use rust_isa::x86::simd::avx512vbmi2::vpshrdw as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use crate::x86::simd::avx512f::V512;
 use core::arch::asm;

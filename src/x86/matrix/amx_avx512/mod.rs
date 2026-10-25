@@ -25,34 +25,8 @@
 //! let _ = unsafe { tcvtrowd2ps::<0>(&guard, 0) };
 //! ```
 //!
-//! # Compile-only instruction examples
-//!
-//! ```no_run
-//! use rust_isa::x86::matrix::amx_avx512::*;
-//! use rust_isa::x86::simd::sse2::V128;
-//! use rust_isa::x86::simd::avx::V256;
-//! use rust_isa::x86::simd::avx512f::V512;
-//!
-//! let v128 = V128::from_bytes([0; 16]);
-//! let v256 = V256::from_bytes([0; 32]);
-//! let v512 = V512::from_bytes([0; 64]);
-//! use rust_isa::x86::matrix::amx_tile::{AmxGuard, TileConfig};
-//! let mut config = TileConfig::builder().tile::<0>(1, 64).build();
-//! let amx_guard = unsafe { AmxGuard::enter(&config) };
-//!
-//! let _ = unsafe { tcvtrowd2ps::<0>(&amx_guard, 0) };
-//! let _ = unsafe { tcvtrowd2ps_imm::<0, 0>(&amx_guard) };
-//! let _ = unsafe { tcvtrowps2bf16h::<0>(&amx_guard, 0) };
-//! let _ = unsafe { tcvtrowps2bf16h_imm::<0, 0>(&amx_guard) };
-//! let _ = unsafe { tcvtrowps2bf16l::<0>(&amx_guard, 0) };
-//! let _ = unsafe { tcvtrowps2bf16l_imm::<0, 0>(&amx_guard) };
-//! let _ = unsafe { tcvtrowps2phh::<0>(&amx_guard, 0) };
-//! let _ = unsafe { tcvtrowps2phh_imm::<0, 0>(&amx_guard) };
-//! let _ = unsafe { tcvtrowps2phl::<0>(&amx_guard, 0) };
-//! let _ = unsafe { tcvtrowps2phl_imm::<0, 0>(&amx_guard) };
-//! let _ = unsafe { tilemovrow::<0>(&amx_guard, 0) };
-//! let _ = unsafe { tilemovrow_imm::<0, 0>(&amx_guard) };
-//! ```
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
 //!
 //! # Compile-only instruction examples
 //!
@@ -82,6 +56,40 @@
 //! let _ = unsafe { tilemovrow::<0>(&amx_guard, 0) };
 //! let _ = unsafe { tilemovrow_imm::<0, 0>(&amx_guard) };
 //! ```
+//!
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::x86::matrix::amx_avx512::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//! use rust_isa::x86::matrix::amx_tile::{AmxGuard, TileConfig};
+//! let mut config = TileConfig::builder().tile::<0>(1, 64).build();
+//! let amx_guard = unsafe { AmxGuard::enter(&config) };
+//!
+//! let _ = unsafe { tcvtrowd2ps::<0>(&amx_guard, 0) };
+//! let _ = unsafe { tcvtrowd2ps_imm::<0, 0>(&amx_guard) };
+//! let _ = unsafe { tcvtrowps2bf16h::<0>(&amx_guard, 0) };
+//! let _ = unsafe { tcvtrowps2bf16h_imm::<0, 0>(&amx_guard) };
+//! let _ = unsafe { tcvtrowps2bf16l::<0>(&amx_guard, 0) };
+//! let _ = unsafe { tcvtrowps2bf16l_imm::<0, 0>(&amx_guard) };
+//! let _ = unsafe { tcvtrowps2phh::<0>(&amx_guard, 0) };
+//! let _ = unsafe { tcvtrowps2phh_imm::<0, 0>(&amx_guard) };
+//! let _ = unsafe { tcvtrowps2phl::<0>(&amx_guard, 0) };
+//! let _ = unsafe { tcvtrowps2phl_imm::<0, 0>(&amx_guard) };
+//! let _ = unsafe { tilemovrow::<0>(&amx_guard, 0) };
+//! let _ = unsafe { tilemovrow_imm::<0, 0>(&amx_guard) };
+//! ```
+//!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!
@@ -102,6 +110,8 @@
 //! use rust_isa::x86::matrix::amx_avx512::tilemovrow_imm as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use core::arch::asm;
 

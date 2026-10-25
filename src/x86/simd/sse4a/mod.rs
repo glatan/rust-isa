@@ -25,28 +25,8 @@
 //! let _ = unsafe { extrq_imm::<63, 0>(v) };
 //! ```
 //!
-//! # Compile-only instruction examples
-//!
-//! ```no_run
-//! use rust_isa::x86::simd::sse4a::*;
-//! use rust_isa::x86::simd::sse2::V128;
-//! use rust_isa::x86::simd::avx::V256;
-//! use rust_isa::x86::simd::avx512f::V512;
-//!
-//! let v128 = V128::from_bytes([0; 16]);
-//! let v256 = V256::from_bytes([0; 32]);
-//! let v512 = V512::from_bytes([0; 64]);
-//! #[repr(align(64))]
-//! struct Aligned([u8; 4096]);
-//! let mut storage = Aligned([0; 4096]);
-//!
-//! let _ = unsafe { extrq(v128, v128) };
-//! let _ = unsafe { extrq_imm::<0, 0>(v128) };
-//! let _ = unsafe { insertq(v128, v128) };
-//! let _ = unsafe { insertq_imm::<0, 0>(v128, v128) };
-//! let _ = unsafe { movntsd(storage.0.as_mut_ptr().cast(), v128) };
-//! let _ = unsafe { movntss(storage.0.as_mut_ptr().cast(), v128) };
-//! ```
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
 //!
 //! # Compile-only instruction examples
 //!
@@ -70,6 +50,34 @@
 //! let _ = unsafe { movntsd(storage.0.as_mut_ptr().cast(), v128) };
 //! let _ = unsafe { movntss(storage.0.as_mut_ptr().cast(), v128) };
 //! ```
+//!
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::sse4a::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//!
+//! let _ = unsafe { extrq(v128, v128) };
+//! let _ = unsafe { extrq_imm::<0, 0>(v128) };
+//! let _ = unsafe { insertq(v128, v128) };
+//! let _ = unsafe { insertq_imm::<0, 0>(v128, v128) };
+//! let _ = unsafe { movntsd(storage.0.as_mut_ptr().cast(), v128) };
+//! let _ = unsafe { movntss(storage.0.as_mut_ptr().cast(), v128) };
+//! ```
+//!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!
@@ -84,6 +92,8 @@
 //! use rust_isa::x86::simd::sse4a::movntss as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use super::sse2::V128;
 

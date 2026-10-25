@@ -21,6 +21,9 @@
 //! assert_eq!(unsafe { bset(0, 3) }, 8);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -35,6 +38,11 @@
 //! let _ = unsafe { bset(0, 0) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -46,6 +54,8 @@
 //! use rust_isa::riscv::integer::zbs::bset as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 unsafe extern "C" {
     fn rust_isa_riscv_zbs_bset(value: u64, index: u64) -> u64;

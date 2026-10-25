@@ -26,6 +26,9 @@
 //! );
 //! ```
 //!
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
+//!
 //! # Compile-only instruction examples
 //!
 //! ```no_run
@@ -172,6 +175,11 @@
 //! let _ = xorps(v128, v128);
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -309,6 +317,8 @@
 //! use rust_isa::x86::simd::sse2::xorps as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 // Internal modules are grouped by operation.
 mod arithmetic;

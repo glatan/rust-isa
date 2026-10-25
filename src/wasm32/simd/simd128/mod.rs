@@ -47,6 +47,9 @@
 //! assert_eq!(i8x16_eq(i8x16_splat(1), i8x16_splat(2)).to_bytes(), [0; 16]);
 //! ```
 
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -272,6 +275,11 @@
 //! let _ = v128_xor(v128, v128);
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
+//!
 //! # Compile-only instruction examples
 //!
 //! ```no_run
@@ -306,6 +314,11 @@
 //! let _ = unsafe { v128_store64_lane::<0>(storage.0.as_mut_ptr().cast(), v128) };
 //! let _ = unsafe { v128_store8_lane::<0>(storage.0.as_mut_ptr().cast(), v128) };
 //! ```
+//!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!
@@ -548,6 +561,8 @@
 //! use rust_isa::wasm32::simd::simd128::v128_xor as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 mod f32x4;
 mod f64x2;

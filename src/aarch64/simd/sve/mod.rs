@@ -32,6 +32,9 @@
 //! assert_eq!(out, [11.0, 22.0]);
 //! ```
 //!
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
+//!
 //! # Compile-only instruction examples
 //!
 //! ```no_run
@@ -639,6 +642,11 @@
 //! let _ = unsafe { zip2_i32(&[0; 4], &[0; 4], &mut[0; 4]) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -1243,6 +1251,8 @@
 //! use rust_isa::aarch64::simd::sve::zip2_i32 as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 mod mnemonics;
 mod semantic;

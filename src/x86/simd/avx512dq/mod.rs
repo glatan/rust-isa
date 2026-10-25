@@ -23,84 +23,8 @@
 //! assert_eq!(unsafe { vpmullq(v, v) }.to_bytes(), [0; 64]);
 //! ```
 //!
-//! # Compile-only instruction examples
-//!
-//! ```no_run
-//! use rust_isa::x86::simd::avx512dq::*;
-//! use rust_isa::x86::simd::sse2::V128;
-//! use rust_isa::x86::simd::avx::V256;
-//! use rust_isa::x86::simd::avx512f::V512;
-//!
-//! let v128 = V128::from_bytes([0; 16]);
-//! let v256 = V256::from_bytes([0; 32]);
-//! let v512 = V512::from_bytes([0; 64]);
-//!
-//! let _ = unsafe { vandnpd(v512, v512) };
-//! let _ = unsafe { vandnps(v512, v512) };
-//! let _ = unsafe { vandpd(v512, v512) };
-//! let _ = unsafe { vandps(v512, v512) };
-//! let _ = unsafe { vcmppd::<0>(v512, v512) };
-//! let _ = unsafe { vcmpps::<0>(v512, v512) };
-//! let _ = unsafe { vcmpsd::<0>(v128, v128) };
-//! let _ = unsafe { vcmpss::<0>(v128, v128) };
-//! let _ = unsafe { vcvtpd2qq(v512) };
-//! let _ = unsafe { vcvtpd2uqq(v512) };
-//! let _ = unsafe { vcvtps2qq(v256) };
-//! let _ = unsafe { vcvtps2uqq(v256) };
-//! let _ = unsafe { vcvtqq2pd(v512) };
-//! let _ = unsafe { vcvtqq2ps(v512) };
-//! let _ = unsafe { vcvttpd2qq(v512) };
-//! let _ = unsafe { vcvttpd2uqq(v512) };
-//! let _ = unsafe { vcvttps2qq(v256) };
-//! let _ = unsafe { vcvttps2uqq(v256) };
-//! let _ = unsafe { vcvtuqq2pd(v512) };
-//! let _ = unsafe { vcvtuqq2ps(v512) };
-//! let _ = unsafe { vfixupimmpd::<0>(v512, v512, v512) };
-//! let _ = unsafe { vfixupimmps::<0>(v512, v512, v512) };
-//! let _ = unsafe { vfixupimmsd::<0>(v128, v128, v128) };
-//! let _ = unsafe { vfixupimmss::<0>(v128, v128, v128) };
-//! let _ = unsafe { vfpclasspd::<0>(v512) };
-//! let _ = unsafe { vfpclassps::<0>(v512) };
-//! let _ = unsafe { vfpclasssd::<0>(v128) };
-//! let _ = unsafe { vfpclassss::<0>(v128) };
-//! let _ = unsafe { vgetexppd(v512) };
-//! let _ = unsafe { vgetexpps(v512) };
-//! let _ = unsafe { vgetexpsd(v128, v128) };
-//! let _ = unsafe { vgetexpss(v128, v128) };
-//! let _ = unsafe { vgetmantpd::<0>(v512) };
-//! let _ = unsafe { vgetmantps::<0>(v512) };
-//! let _ = unsafe { vgetmantsd::<0>(v128, v128) };
-//! let _ = unsafe { vgetmantss::<0>(v128, v128) };
-//! let _ = unsafe { vorpd(v512, v512) };
-//! let _ = unsafe { vorps(v512, v512) };
-//! let _ = unsafe { vpmovd2m(v512) };
-//! let _ = unsafe { vpmovm2d(0) };
-//! let _ = unsafe { vpmovm2q(0) };
-//! let _ = unsafe { vpmovq2m(v512) };
-//! let _ = unsafe { vpmullq(v512, v512) };
-//! let _ = unsafe { vrangepd::<0>(v512, v512) };
-//! let _ = unsafe { vrangeps::<0>(v512, v512) };
-//! let _ = unsafe { vrangesd::<0>(v128, v128) };
-//! let _ = unsafe { vrangess::<0>(v128, v128) };
-//! let _ = unsafe { vrcp14pd(v512) };
-//! let _ = unsafe { vrcp14ps(v512) };
-//! let _ = unsafe { vrcp14sd(v128, v128) };
-//! let _ = unsafe { vrcp14ss(v128, v128) };
-//! let _ = unsafe { vreducepd::<0>(v512) };
-//! let _ = unsafe { vreduceps::<0>(v512) };
-//! let _ = unsafe { vreducesd::<0>(v128, v128) };
-//! let _ = unsafe { vreducess::<0>(v128, v128) };
-//! let _ = unsafe { vrsqrt14pd(v512) };
-//! let _ = unsafe { vrsqrt14ps(v512) };
-//! let _ = unsafe { vrsqrt14sd(v128, v128) };
-//! let _ = unsafe { vrsqrt14ss(v128, v128) };
-//! let _ = unsafe { vscalefpd(v512, v512) };
-//! let _ = unsafe { vscalefps(v512, v512) };
-//! let _ = unsafe { vscalefsd(v128, v128) };
-//! let _ = unsafe { vscalefss(v128, v128) };
-//! let _ = unsafe { vxorpd(v512, v512) };
-//! let _ = unsafe { vxorps(v512, v512) };
-//! ```
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
 //!
 //! # Compile-only instruction examples
 //!
@@ -180,6 +104,90 @@
 //! let _ = unsafe { vxorpd(v512, v512) };
 //! let _ = unsafe { vxorps(v512, v512) };
 //! ```
+//!
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::avx512dq::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//!
+//! let _ = unsafe { vandnpd(v512, v512) };
+//! let _ = unsafe { vandnps(v512, v512) };
+//! let _ = unsafe { vandpd(v512, v512) };
+//! let _ = unsafe { vandps(v512, v512) };
+//! let _ = unsafe { vcmppd::<0>(v512, v512) };
+//! let _ = unsafe { vcmpps::<0>(v512, v512) };
+//! let _ = unsafe { vcmpsd::<0>(v128, v128) };
+//! let _ = unsafe { vcmpss::<0>(v128, v128) };
+//! let _ = unsafe { vcvtpd2qq(v512) };
+//! let _ = unsafe { vcvtpd2uqq(v512) };
+//! let _ = unsafe { vcvtps2qq(v256) };
+//! let _ = unsafe { vcvtps2uqq(v256) };
+//! let _ = unsafe { vcvtqq2pd(v512) };
+//! let _ = unsafe { vcvtqq2ps(v512) };
+//! let _ = unsafe { vcvttpd2qq(v512) };
+//! let _ = unsafe { vcvttpd2uqq(v512) };
+//! let _ = unsafe { vcvttps2qq(v256) };
+//! let _ = unsafe { vcvttps2uqq(v256) };
+//! let _ = unsafe { vcvtuqq2pd(v512) };
+//! let _ = unsafe { vcvtuqq2ps(v512) };
+//! let _ = unsafe { vfixupimmpd::<0>(v512, v512, v512) };
+//! let _ = unsafe { vfixupimmps::<0>(v512, v512, v512) };
+//! let _ = unsafe { vfixupimmsd::<0>(v128, v128, v128) };
+//! let _ = unsafe { vfixupimmss::<0>(v128, v128, v128) };
+//! let _ = unsafe { vfpclasspd::<0>(v512) };
+//! let _ = unsafe { vfpclassps::<0>(v512) };
+//! let _ = unsafe { vfpclasssd::<0>(v128) };
+//! let _ = unsafe { vfpclassss::<0>(v128) };
+//! let _ = unsafe { vgetexppd(v512) };
+//! let _ = unsafe { vgetexpps(v512) };
+//! let _ = unsafe { vgetexpsd(v128, v128) };
+//! let _ = unsafe { vgetexpss(v128, v128) };
+//! let _ = unsafe { vgetmantpd::<0>(v512) };
+//! let _ = unsafe { vgetmantps::<0>(v512) };
+//! let _ = unsafe { vgetmantsd::<0>(v128, v128) };
+//! let _ = unsafe { vgetmantss::<0>(v128, v128) };
+//! let _ = unsafe { vorpd(v512, v512) };
+//! let _ = unsafe { vorps(v512, v512) };
+//! let _ = unsafe { vpmovd2m(v512) };
+//! let _ = unsafe { vpmovm2d(0) };
+//! let _ = unsafe { vpmovm2q(0) };
+//! let _ = unsafe { vpmovq2m(v512) };
+//! let _ = unsafe { vpmullq(v512, v512) };
+//! let _ = unsafe { vrangepd::<0>(v512, v512) };
+//! let _ = unsafe { vrangeps::<0>(v512, v512) };
+//! let _ = unsafe { vrangesd::<0>(v128, v128) };
+//! let _ = unsafe { vrangess::<0>(v128, v128) };
+//! let _ = unsafe { vrcp14pd(v512) };
+//! let _ = unsafe { vrcp14ps(v512) };
+//! let _ = unsafe { vrcp14sd(v128, v128) };
+//! let _ = unsafe { vrcp14ss(v128, v128) };
+//! let _ = unsafe { vreducepd::<0>(v512) };
+//! let _ = unsafe { vreduceps::<0>(v512) };
+//! let _ = unsafe { vreducesd::<0>(v128, v128) };
+//! let _ = unsafe { vreducess::<0>(v128, v128) };
+//! let _ = unsafe { vrsqrt14pd(v512) };
+//! let _ = unsafe { vrsqrt14ps(v512) };
+//! let _ = unsafe { vrsqrt14sd(v128, v128) };
+//! let _ = unsafe { vrsqrt14ss(v128, v128) };
+//! let _ = unsafe { vscalefpd(v512, v512) };
+//! let _ = unsafe { vscalefps(v512, v512) };
+//! let _ = unsafe { vscalefsd(v128, v128) };
+//! let _ = unsafe { vscalefss(v128, v128) };
+//! let _ = unsafe { vxorpd(v512, v512) };
+//! let _ = unsafe { vxorps(v512, v512) };
+//! ```
+//!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!
@@ -253,6 +261,8 @@
 //! use rust_isa::x86::simd::avx512dq::vxorps as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;
