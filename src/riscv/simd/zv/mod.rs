@@ -11,6 +11,17 @@
 //! or `zvbc`. Key-schedule functions take a runtime round number; the valid
 //! range is documented on each function.
 
+//! # Examples
+//!
+//! ```no_run
+//! use rust_isa::riscv::simd::rvv::V128;
+//! use rust_isa::riscv::simd::zv::vgmul;
+//!
+//! let acc = V128::from_bytes([0; 16]);
+//! let key = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vgmul(acc, key) };
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

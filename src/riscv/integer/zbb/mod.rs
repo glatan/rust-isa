@@ -13,6 +13,14 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::riscv::integer::zbb::clz;
+//!
+//! assert_eq!(unsafe { clz(1) }, 63);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

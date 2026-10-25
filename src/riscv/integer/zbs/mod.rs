@@ -13,6 +13,14 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::riscv::integer::zbs::bset;
+//!
+//! assert_eq!(unsafe { bset(0, 3) }, 8);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

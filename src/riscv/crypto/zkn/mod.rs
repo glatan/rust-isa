@@ -14,6 +14,14 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::riscv::crypto::zkn::sha256sum0;
+//!
+//! assert_ne!(unsafe { sha256sum0(1) }, 1);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

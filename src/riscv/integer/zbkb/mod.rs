@@ -10,6 +10,14 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::riscv::integer::zbkb::brev8;
+//!
+//! assert_eq!(unsafe { brev8(1) }, 0x80);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

@@ -16,6 +16,14 @@
 //!
 //! The build compiles the bundled C with clang.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::riscv::float::scalar::fclass_h;
+//!
+//! assert_eq!(fclass_h(0x3c00), 1 << 6);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

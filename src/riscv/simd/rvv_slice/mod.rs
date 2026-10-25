@@ -19,6 +19,18 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::riscv::simd::rvv_slice::add_f32;
+//!
+//! let a = [1.0f32, 2.0];
+//! let b = [10.0f32, 20.0];
+//! let mut out = [0.0f32; 2];
+//! unsafe { add_f32(&a, &b, &mut out) };
+//! assert_eq!(out, [11.0, 22.0]);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

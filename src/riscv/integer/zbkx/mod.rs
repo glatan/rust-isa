@@ -10,6 +10,14 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::riscv::integer::zbkx::xperm8;
+//!
+//! assert_ne!(unsafe { xperm8(0x0123_4567_89ab_cdef, 0) }, 0);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
