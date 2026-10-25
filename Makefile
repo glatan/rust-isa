@@ -80,6 +80,7 @@ help:
 		'test-wasip1-wide-arithmetic  wide-arithmetic 有効時の nextest と doctest' \
 		'coverage                     arch/extension ごとの実装状況を表示する' \
 		'coverage-check               README・ゼロコスト結果表・doctest 在庫を検査する' \
+		'doctest-coverage             doctest 網羅を検査して arch 別件数を表示する' \
 		'doctest-inventory-check      全公開命令の doctest 在庫を検査する' \
 		'zero-cost-check              ゼロコスト結果表の fixture と kernel を検査する' \
 		'docs-check                   文書間リンク・アンカー・索引からの到達性を検査する' \
@@ -117,6 +118,10 @@ coverage:
 .PHONY: zero-cost-check
 zero-cost-check:
 	$(PODMAN_RUN) python3 tools/zero_cost.py --check
+
+.PHONY: doctest-coverage
+doctest-coverage:
+	$(PODMAN_RUN) python3 tools/doctest_inventory.py --summary
 
 .PHONY: doctest-inventory-check
 doctest-inventory-check:
