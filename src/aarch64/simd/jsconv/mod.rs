@@ -9,6 +9,14 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::aarch64::simd::jsconv::fjcvtzs;
+//!
+//! assert_eq!(unsafe { fjcvtzs(1.9) }, 1);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

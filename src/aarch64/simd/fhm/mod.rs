@@ -13,6 +13,16 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::aarch64::simd::fhm::fmla_f16;
+//! use rust_isa::aarch64::simd::neon::V128;
+//!
+//! let zero = V128::from_bytes([0; 16]);
+//! assert_eq!(unsafe { fmla_f16(zero, zero, zero) }.to_bytes(), [0; 16]);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

@@ -10,6 +10,17 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```no_run
+//! use rust_isa::aarch64::simd::f64mm::fmmla_f64;
+//!
+//! let a = [1.0f64; 4];
+//! let b = [2.0f64; 4];
+//! let mut acc = [0.0f64; 4];
+//! unsafe { fmmla_f64(&a, &b, &mut acc) };
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

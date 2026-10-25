@@ -13,6 +13,16 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::aarch64::crypto::sm4::sm4e;
+//! use rust_isa::aarch64::simd::neon::V128;
+//!
+//! let zero = V128::from_bytes([0; 16]);
+//! assert_ne!(unsafe { sm4e(zero, zero) }.to_bytes(), [0; 16]);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

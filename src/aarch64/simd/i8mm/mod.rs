@@ -14,6 +14,17 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::aarch64::simd::i8mm::smmla;
+//! use rust_isa::aarch64::simd::neon::V128;
+//!
+//! let zero = V128::from_bytes([0; 16]);
+//! let ones = V128::from_bytes([1; 16]);
+//! assert_ne!(unsafe { smmla(zero, ones, ones) }.to_bytes(), [0; 16]);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

@@ -8,6 +8,22 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::aarch64::simd::dotprod::sdot;
+//! use rust_isa::aarch64::simd::neon::V128;
+//!
+//! let zero = V128::from_bytes([0; 16]);
+//! let a = V128::from_bytes([1; 16]);
+//! let b = V128::from_bytes([2; 16]);
+//! let sum = unsafe { sdot(a, b, zero) };
+//! assert_eq!(
+//!     sum.to_bytes(),
+//!     [8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0]
+//! );
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

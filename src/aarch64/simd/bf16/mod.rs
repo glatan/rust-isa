@@ -13,6 +13,19 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::aarch64::simd::bf16::bfdot;
+//! use rust_isa::aarch64::simd::neon::V128;
+//!
+//! let zero = V128::from_bytes([0; 16]);
+//! let a = V128::from_bytes([0x80, 0x3f, 0x80, 0x3f, 0x80, 0x3f, 0x80, 0x3f,
+//!                           0x80, 0x3f, 0x80, 0x3f, 0x80, 0x3f, 0x80, 0x3f]);
+//! let product = unsafe { bfdot(zero, a, a) };
+//! assert_ne!(product.to_bytes(), [0; 16]);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

@@ -17,6 +17,18 @@
 //!
 //! The build compiles the bundled C with clang.
 
+//! # Examples
+//!
+//! ```no_run
+//! use rust_isa::aarch64::simd::sme::{add_f32, SmeGuard};
+//!
+//! let guard = unsafe { SmeGuard::enter() };
+//! let a = [1.0f32, 2.0];
+//! let b = [10.0f32, 20.0];
+//! let mut out = [0.0f32; 2];
+//! unsafe { add_f32(&guard, &a, &b, &mut out) };
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
