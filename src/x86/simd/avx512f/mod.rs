@@ -22,6 +22,101 @@
 //! assert_eq!(unsafe { vpaddd(v, v) }.to_bytes(), [0; 64]);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::avx512f::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//!
+//! unsafe {
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { v512_load(core::ptr::null()) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { v512_store(core::ptr::null_mut(), v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vblendmpd(v512, v512, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vblendmps(v512, v512, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcompresspd(v512, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcompressps(v512, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtdq2ps(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtpd2dq(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtpd2ps(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtph2ps(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtps2dq(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtps2pd(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtps2ph(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtsd2ss(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtss2sd(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvttpd2dq(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvttps2dq(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vexpandpd(v512, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vexpandps(v512, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vextractf32x4::<0>(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vextractf64x4::<0>(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vgatherdpd(v512, core::ptr::null(), v256, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vgatherdps(v512, core::ptr::null(), v512, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vgatherqpd(v512, core::ptr::null(), v512, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vgatherqps(v256, core::ptr::null(), v512, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vgetexppd(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vgetexpps(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vgetmantpd::<0>(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vgetmantps::<0>(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vinsertf32x4::<0>(v512, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vinsertf64x4::<0>(v512, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vinsertps::<0>(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmovapd(v512, v512, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmovaps(v512, v512, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpaddd(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpaddq(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpandd(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpandnd(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpandnq(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpandq(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpbroadcastd(0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpbroadcastq(0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcmpd::<0>(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcmpq::<0>(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcmpud::<0>(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcmpuq::<0>(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpermd(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpermilpd::<0>(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpermilps::<0>(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpermq(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpmulld(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpord(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vporq(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpslld(v512, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpsrld(v512, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpsubd(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpsubq(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpternlogd::<0>(v512, v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpternlogq::<0>(v512, v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vptestmd(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vptestmq(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vptestnmd(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vptestnmq(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpxord(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpxorq(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vrcpps(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vrndscalepd::<0>(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vrndscaleps::<0>(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vrsqrtps(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vscalefpd(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vscalefps(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vscatterdpd(core::ptr::null_mut(), v256, v512, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vscatterdps(core::ptr::null_mut(), v512, v512, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vscatterqpd(core::ptr::null_mut(), v512, v512, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vscatterqps(core::ptr::null_mut(), v512, v256, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vshufpd::<0>(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vshufps::<0>(v512, v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vsqrtpd(v512) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vsqrtps(v512) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

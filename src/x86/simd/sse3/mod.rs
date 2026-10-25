@@ -24,6 +24,32 @@
 //! assert_eq!(unsafe { addsubps(v, v) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::sse3::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//!
+//! unsafe {
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { addsubpd(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { addsubps(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { haddpd(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { haddps(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { hsubpd(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { hsubps(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { lddqu(core::ptr::null()) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { movddup(v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { movshdup(v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { movsldup(v128) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

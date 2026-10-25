@@ -30,6 +30,37 @@
 //! assert_eq!(config.to_bytes()[48], 1);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::x86::matrix::amx_tile::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//! let mut config = rust_isa::x86::matrix::amx_tile::TileConfig::from_bytes([0; 64]);
+//! let guard = unsafe { rust_isa::x86::matrix::amx_tile::AmxGuard::enter(&config) };
+//!
+//! unsafe {
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { ldtilecfg(&config) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { sttilecfg(&guard, &mut config) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tcmmimfp16ps::<0, 0, 0>(&guard) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tcmmrlfp16ps::<0, 0, 0>(&guard) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tdpbf16ps::<0, 0, 0>(&guard) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tdpbssd::<0, 0, 0>(&guard) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tdpbsud::<0, 0, 0>(&guard) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tdpbuud::<0, 0, 0>(&guard) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tdpfp16ps::<0, 0, 0>(&guard) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tileloadd::<0>(&guard, core::ptr::null(), 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tileloaddt1::<0>(&guard, core::ptr::null(), 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tilestored::<0>(&guard, core::ptr::null_mut(), 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tilezero::<0>(&guard) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

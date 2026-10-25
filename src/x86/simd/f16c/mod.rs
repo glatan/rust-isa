@@ -25,6 +25,26 @@
 //! assert_eq!(unsafe { vcvtph2ps(v) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```
+//! use rust_isa::x86::simd::f16c::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//!
+//! unsafe {
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtph2ps(v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtph2ps_v256(v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtps2ph::<0>(v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtps2ph_v256::<0>(v256) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

@@ -24,6 +24,38 @@
 //! assert_eq!(unsafe { pabsb(v) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```
+//! use rust_isa::x86::simd::ssse3::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//!
+//! unsafe {
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { pabsb(v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { pabsd(v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { pabsw(v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { palignr::<0>(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { phaddd(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { phaddsw(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { phaddw(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { phsubd(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { phsubsw(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { phsubw(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { pmaddubsw(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { pmulhrsw(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { pshufb(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { psignb(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { psignd(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { psignw(v128, v128) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
