@@ -12,12 +12,15 @@
 
 //! # Examples
 //!
-//! ```no_run
+//! ```
+//! #[cfg(target_arch = "x86_64")]
+//! if std::env::var_os("RUST_ISA_SDE_FLAGS").is_some() {
 //! use rust_isa::x86::crypto::gfni::gf2p8mulb;
 //! use rust_isa::x86::simd::sse2::V128;
 //!
 //! let v = V128::from_bytes([0; 16]);
 //! assert_eq!(unsafe { gf2p8mulb(v, v) }.to_bytes(), [0; 16]);
+//! }
 //! ```
 //!
 //! <details>

@@ -15,12 +15,15 @@
 
 //! # Examples
 //!
-//! ```no_run
+//! ```
+//! #[cfg(target_arch = "x86_64")]
+//! if std::env::var_os("RUST_ISA_SDE_FLAGS").is_some() {
 //! use rust_isa::x86::crypto::sm4::vsm4key4;
 //! use rust_isa::x86::simd::sse2::V128;
 //!
 //! let v = V128::from_bytes([0; 16]);
 //! let _ = unsafe { vsm4key4(v, v) };
+//! }
 //! ```
 //!
 //! # Behavior example
