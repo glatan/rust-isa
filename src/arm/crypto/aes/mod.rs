@@ -12,6 +12,17 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::arm::crypto::aes::aese;
+//! use rust_isa::arm::simd::neon::V128;
+//!
+//! let zero = V128::from_bytes([0; 16]);
+//! let out = unsafe { aese(zero, zero) };
+//! assert_ne!(out.to_bytes(), [0; 16]);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

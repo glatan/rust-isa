@@ -12,6 +12,18 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::arm::crypto::crc::crc32b;
+//!
+//! let mut crc = 0xffff_ffffu32;
+//! for byte in b"123456789" {
+//!     crc = unsafe { crc32b(crc, *byte) };
+//! }
+//! assert_eq!(crc, 0x340b_c6d9);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
