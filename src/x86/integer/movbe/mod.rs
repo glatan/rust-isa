@@ -15,6 +15,16 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::x86::integer::movbe::{movbe_load_u32, movbe_store_u32};
+//!
+//! let mut bytes = [0u8; 4];
+//! unsafe { movbe_store_u32(bytes.as_mut_ptr(), 0x1234_5678) };
+//! assert_eq!(unsafe { movbe_load_u32(bytes.as_ptr()) }, 0x1234_5678);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

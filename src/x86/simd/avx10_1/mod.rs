@@ -16,6 +16,16 @@
 //!
 //! The build compiles the bundled C with clang; some wrappers use `asm!`.
 
+//! # Examples
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::avx10_1::vaddps_v256;
+//! use rust_isa::x86::simd::avx::V256;
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vaddps_v256(v, v) };
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

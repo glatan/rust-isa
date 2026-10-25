@@ -21,6 +21,15 @@
 //!
 //! The build compiles the bundled C with clang; some wrappers use `asm!`.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::x86::matrix::amx_tile::TileConfig;
+//!
+//! let config = TileConfig::builder().tile::<0>(1, 64).build();
+//! assert_eq!(config.to_bytes()[48], 1);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

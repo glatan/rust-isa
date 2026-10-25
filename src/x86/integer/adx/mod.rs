@@ -16,6 +16,14 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::x86::integer::adx::adcx_u32;
+//!
+//! assert_eq!(unsafe { adcx_u32(1, 2, false) }.0, 3);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

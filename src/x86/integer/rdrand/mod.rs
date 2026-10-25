@@ -15,6 +15,14 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```no_run
+//! use rust_isa::x86::integer::rdrand::rdrand_u32;
+//!
+//! let _ = unsafe { rdrand_u32() };
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

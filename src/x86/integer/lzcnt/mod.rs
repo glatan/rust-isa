@@ -13,6 +13,14 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::x86::integer::lzcnt::lzcnt_u32;
+//!
+//! assert_eq!(unsafe { lzcnt_u32(1) }, 31);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

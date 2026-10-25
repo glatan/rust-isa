@@ -11,6 +11,14 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::x86::integer::bmi2::pext;
+//!
+//! assert_eq!(unsafe { pext(0b1010, 0b1100) }, 0b0010);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
