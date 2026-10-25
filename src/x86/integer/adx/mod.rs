@@ -24,6 +24,26 @@
 //! assert_eq!(unsafe { adcx_u32(1, 2, false) }.0, 3);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```
+//! use rust_isa::x86::integer::adx::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//!
+//! unsafe {
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { adcx_u32(0, 0, false) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { adcx_u64(0, 0, false) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { adox_u32(0, 0, false) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { adox_u64(0, 0, false) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

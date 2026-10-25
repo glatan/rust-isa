@@ -26,6 +26,109 @@
 //! assert_eq!(unsafe { vaddps(v, v) }.to_bytes(), [0; 32]);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::avx::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//!
+//! unsafe {
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vaddpd(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vaddps(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vaddsd(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vaddss(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vaddsubpd(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vaddsubps(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vandnpd(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vandnps(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vandpd(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vandps(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vblendpd::<0>(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vblendps::<0>(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vblendvpd(v256, v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vblendvps(v256, v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vbroadcastf128(core::ptr::null()) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vbroadcastsd(0.0f64) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vbroadcastss(0.0f32) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcmppd::<0>(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcmpps::<0>(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcmpsd::<0>(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcmpss::<0>(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcomisd(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcomiss(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtdq2ps(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtpd2ps(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtps2dq(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtps2pd(v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtsd2ss(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtss2sd(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvttps2dq(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vdivpd(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vdivps(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vdppd::<0>(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vdpps::<0>(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vextractf128::<0>(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vinsertf128::<0>(v256, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vlddqu(core::ptr::null()) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmaskmovpd_load(core::ptr::null(), v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmaskmovpd_store(core::ptr::null_mut(), v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmaskmovps_load(core::ptr::null(), v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmaskmovps_store(core::ptr::null_mut(), v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmaxpd(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmaxps(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vminpd(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vminps(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmovd(0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmovd_to_u32(v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmovddup(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmovmskpd(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmovmskps(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmovntpd(core::ptr::null_mut(), v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmovntps(core::ptr::null_mut(), v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmovq(0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmovq_to_u64(v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmovshdup(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmovsldup(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmpsadbw::<0>(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmulpd(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vmulps(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vorps(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vperm2f128::<0>(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpermilpd::<0>(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpermilps::<0>(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpsadbw(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vptest(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vrcpps(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vroundpd::<0>(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vroundps::<0>(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vroundsd::<0>(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vroundss::<0>(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vshufpd::<0>(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vshufps::<0>(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vsqrtpd(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vsqrtps(v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vsubpd(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vsubps(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vtestpd(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vtestps(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vucomisd(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vucomiss(v128, v128) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vunpckhpd(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vunpckhps(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vunpcklpd(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vunpcklps(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vxorpd(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vxorps(v256, v256) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vzeroupper() };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

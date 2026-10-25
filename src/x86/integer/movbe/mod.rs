@@ -25,6 +25,28 @@
 //! assert_eq!(unsafe { movbe_load_u32(bytes.as_ptr()) }, 0x1234_5678);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::x86::integer::movbe::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//!
+//! unsafe {
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { movbe_load_u16(core::ptr::null()) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { movbe_load_u32(core::ptr::null()) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { movbe_load_u64(core::ptr::null()) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { movbe_store_u16(core::ptr::null_mut(), 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { movbe_store_u32(core::ptr::null_mut(), 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { movbe_store_u64(core::ptr::null_mut(), 0) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

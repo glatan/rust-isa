@@ -21,6 +21,24 @@
 //! assert_eq!(unsafe { lzcnt_u32(1) }, 31);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```
+//! use rust_isa::x86::integer::lzcnt::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//!
+//! unsafe {
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { lzcnt_u32(0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { lzcnt_u64(0) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

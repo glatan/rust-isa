@@ -19,6 +19,29 @@
 //! assert_eq!(unsafe { pext(0b1010, 0b1100) }, 0b0010);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```
+//! use rust_isa::x86::integer::bmi2::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//!
+//! unsafe {
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { bzhi(0, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { pdep(0, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { pext(0, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { rorx::<0>(0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { sarx(0, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { shlx(0, 0) };
+//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { shrx(0, 0) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
