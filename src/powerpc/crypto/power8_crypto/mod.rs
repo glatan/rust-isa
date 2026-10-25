@@ -12,6 +12,16 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::powerpc::crypto::power8_crypto::vcipher;
+//! use rust_isa::powerpc::simd::altivec::V128;
+//!
+//! let zero = V128::from_bytes([0; 16]);
+//! assert_ne!(unsafe { vcipher(zero, zero) }.to_bytes(), [0; 16]);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

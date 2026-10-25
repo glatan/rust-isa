@@ -16,6 +16,15 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```no_run
+//! use rust_isa::powerpc::matrix::mma::MmaAccumulator;
+//!
+//! let acc = unsafe { MmaAccumulator::new() };
+//! let _ = acc;
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

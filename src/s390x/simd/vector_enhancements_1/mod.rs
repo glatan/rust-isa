@@ -14,6 +14,17 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::s390x::simd::vector::V128;
+//! use rust_isa::s390x::simd::vector_enhancements_1::popcnt_i8;
+//!
+//! let value = V128::from_bytes([0x0f; 16]);
+//! let count = unsafe { popcnt_i8(value) };
+//! assert_eq!(count.to_bytes(), [4; 16]);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

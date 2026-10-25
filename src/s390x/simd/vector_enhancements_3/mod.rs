@@ -20,6 +20,18 @@
 //! facility. The `vblendq` and `veval` wrappers use inline assembly and have
 //! not been value-tested.
 
+//! # Examples
+//!
+//! ```no_run
+//! use rust_isa::s390x::simd::vector::V128;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vblendq;
+//!
+//! let a = V128::from_bytes([1; 16]);
+//! let b = V128::from_bytes([2; 16]);
+//! let mask = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vblendq(a, b, mask) };
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

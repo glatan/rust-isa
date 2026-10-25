@@ -16,6 +16,17 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```no_run
+//! use rust_isa::s390x::simd::vector::V128;
+//! use rust_isa::s390x::simd::vector_packed_decimal::vsdp;
+//!
+//! let a = V128::from_bytes([0; 16]);
+//! let b = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vsdp::<0, 0>(a, b) };
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
