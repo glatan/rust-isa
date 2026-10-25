@@ -36,6 +36,35 @@
 //! );
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::arm::simd::fp16::*;
+//! use rust_isa::arm::simd::neon::V128;
+//! use rust_isa::arm::simd::neon::V64;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { abs(v128) };
+//!     let _ = unsafe { add(v128, v128) };
+//!     let _ = unsafe { cmp(v128, v128) };
+//!     let _ = unsafe { cvt_f16(v128) };
+//!     let _ = unsafe { cvt_f32(v128) };
+//!     let _ = unsafe { cvt_high_f16(v128, v128) };
+//!     let _ = unsafe { cvt_high_f32(v128) };
+//!     let _ = unsafe { div(v128, v128) };
+//!     let _ = unsafe { fma(v128, v128, v128) };
+//!     let _ = unsafe { fms(v128, v128, v128) };
+//!     let _ = unsafe { max(v128, v128) };
+//!     let _ = unsafe { min(v128, v128) };
+//!     let _ = unsafe { mul(v128, v128) };
+//!     let _ = unsafe { neg(v128) };
+//!     let _ = unsafe { sqrt(v128) };
+//!     let _ = unsafe { sub(v128, v128) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

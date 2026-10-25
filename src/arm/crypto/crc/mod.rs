@@ -24,6 +24,22 @@
 //! assert_eq!(crc, 0x340b_c6d9);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::arm::crypto::crc::*;
+//! use rust_isa::arm::simd::neon::V128;
+//! use rust_isa::arm::simd::neon::V64;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { crc32b(0, 0) };
+//!     let _ = unsafe { crc32h(0, 0) };
+//!     let _ = unsafe { crc32w(0, 0) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
