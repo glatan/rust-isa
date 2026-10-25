@@ -68,8 +68,8 @@ doctest は命令の意味論を網羅しない。inventory は公開パスの�
 | ----------------------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | `test-x86_64`                 | x86_64 の値テスト、利用例、コード生成、ソース整合性 | `tests/x86`、x86_64 の doctest、`tests/x86_link`、`tests/consistency`（値テストと doctest だけ SDE） |
 | `test-cross`                  | native の値テストとコード生成                       | `tests/<arch>` と `fixtures/<arch>-values`                                                           |
-| `test-doc`                    | native の利用例（コンパイルのみ）                   | 各 native target の doctest（8 ターゲット）                                                                  |
-| `test-doc-debian`             | native の利用例（実行）                             | Debian イメージの各 native target の doctest（8 ターゲット）                                                 |
+| `test-doc`                    | native の利用例（コンパイルのみ）                   | 各 native target の doctest（8 ターゲット）                                                          |
+| `test-doc-debian`             | native の利用例（実行）                             | Debian イメージの各 native target の doctest（8 ターゲット）                                         |
 | `test-debian`                 | Debian イメージの全テスト                           | `test` 全体と native doctest の実行                                                                  |
 | `test-wasip1`                 | wasm32 の値テストと利用例                           | `tests/wasm32`、wasm32 の doctest                                                                    |
 | `test-wasip1-wide-arithmetic` | `wide-arithmetic` 有効時の値テスト、利用例、リンク  | feature 有効時の wasm32 のテストと `tests/wide_arithmetic_link`                                      |

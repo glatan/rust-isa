@@ -15,17 +15,17 @@
 `python3 tools/doctest_inventory.py --summary` の結果である。`--summary` は集計前に在庫の鮮度とこの表の一致を検査する。
 
 | arch      | extension | 延べ公開パス | 型 |
-| --------- | --------: | -------: | -: |
-| x86       |        54 |    1,589 |  4 |
-| aarch64   |        18 |    1,214 |  1 |
-| arm       |         9 |      229 |  0 |
-| riscv     |        13 |      418 |  0 |
-| loongarch |         3 |      300 |  0 |
-| s390x     |         6 |      204 |  0 |
-| powerpc   |         8 |      227 |  1 |
-| mips      |         1 |       82 |  0 |
-| wasm32    |         3 |      258 |  1 |
-| 合計      |       115 |    4,521 |  7 |
+| --------- | --------: | -----------: | -: |
+| x86       |        54 |        1,589 |  4 |
+| aarch64   |        18 |        1,214 |  1 |
+| arm       |         9 |          229 |  0 |
+| riscv     |        13 |          418 |  0 |
+| loongarch |         3 |          300 |  0 |
+| s390x     |         6 |          204 |  0 |
+| powerpc   |         8 |          227 |  1 |
+| mips      |         1 |           82 |  0 |
+| wasm32    |         3 |          258 |  1 |
+| 合計      |       115 |        4,521 |  7 |
 
 「延べ公開パス」は extension ごとの free function と associated function を合計した数で、reexport alias や同一命令の重複を含む。distinct な命令関数の数ではない。`SmeGuard::enter`、`MmaAccumulator::new`、`AmxGuard::enter`、`TileConfig::builder`、`TileConfig::from_bytes` の 5 件は状態管理 API として含む。「型」は `V128`、`SmeGuard` などの import で、命令数には含めない。x86 には x86_64 専用命令の cfg 付き import を含む。wasm32 の 3 extension は `simd128`、`relaxed-simd`、`wide-arithmetic` である。
 
