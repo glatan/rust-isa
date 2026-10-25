@@ -24,6 +24,9 @@
 //! assert_eq!(unsafe { pabsb(v) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -54,6 +57,11 @@
 //! let _ = unsafe { psignw(v128, v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -77,6 +85,8 @@
 //! use rust_isa::x86::simd::ssse3::psignw as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use super::sse2::V128;
 

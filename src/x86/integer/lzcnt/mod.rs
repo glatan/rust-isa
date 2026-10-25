@@ -21,6 +21,9 @@
 //! assert_eq!(unsafe { lzcnt_u32(1) }, 31);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -37,6 +40,11 @@
 //! #[cfg(target_arch = "x86_64")] let _ = unsafe { lzcnt_u64(0) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -47,6 +55,8 @@
 //! use rust_isa::x86::integer::lzcnt::lzcnt_u64 as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 unsafe extern "C" {
     fn rust_isa_lzcnt_u32(value: u32) -> u32;

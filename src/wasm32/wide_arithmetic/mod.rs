@@ -3,6 +3,9 @@
 //! Enabling the `wide-arithmetic` Cargo feature makes the module require the
 //! WebAssembly `wide-arithmetic` proposal.
 
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -17,6 +20,11 @@
 //! let _ = unsafe { i64_sub128((0, 0), (0, 0)) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -28,6 +36,8 @@
 //! use rust_isa::wasm32::wide_arithmetic::i64_sub128 as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 unsafe extern "C" {
     fn rust_isa_wide_arithmetic_add128(alo: u64, ahi: u64, blo: u64, bhi: u64, out: *mut u64);

@@ -31,6 +31,9 @@
 //! assert_eq!(out, [11.0, 22.0]);
 //! ```
 //!
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
+//!
 //! # Compile-only instruction examples
 //!
 //! ```no_run
@@ -72,6 +75,11 @@
 //! let _ = unsafe { sub_i32(&[0; 4], &[0; 4], &mut[0; 4]) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -107,6 +115,8 @@
 //! use rust_isa::riscv::simd::rvv_slice::sub_i32 as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 unsafe extern "C" {
     fn rust_isa_rvv_slice_add_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);

@@ -24,6 +24,9 @@
 //! assert_eq!(unsafe { adcx_u32(1, 2, false) }.0, 3);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -42,6 +45,11 @@
 //! #[cfg(target_arch = "x86_64")] let _ = unsafe { adox_u64(0, 0, false) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -55,6 +63,8 @@
 //! use rust_isa::x86::integer::adx::adox_u64 as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 /// `adcx` with 32-bit operands.
 ///

@@ -26,6 +26,9 @@
 //! assert_eq!(unsafe { vaddudm(value, value) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -58,6 +61,11 @@
 //! let _ = unsafe { vupklsw(v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -87,6 +95,8 @@
 //! use rust_isa::powerpc::simd::power8_vector::vupklsw as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use super::altivec::V128;
 

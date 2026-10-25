@@ -35,6 +35,9 @@
 //! assert_eq!(unsafe { vcrnf(v, v) }.to_bytes().len(), 16);
 //! ```
 //!
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
+//!
 //! # Compile-only instruction examples
 //!
 //! ```no_run
@@ -50,6 +53,11 @@
 //! let _ = unsafe { vcrnf(v128, v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -62,6 +70,8 @@
 //! use rust_isa::s390x::simd::nnp_assist::vcrnf as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use super::vector::V128;
 use core::arch::asm;

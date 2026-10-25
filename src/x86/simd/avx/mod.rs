@@ -26,6 +26,9 @@
 //! assert_eq!(unsafe { vaddps(v, v) }.to_bytes(), [0; 32]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -122,6 +125,11 @@
 //! let _ = unsafe { vzeroupper() };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
+//!
 //! # Compile-only instruction examples
 //!
 //! ```no_run
@@ -146,6 +154,11 @@
 //! let _ = unsafe { vmovntpd(storage.0.as_mut_ptr().cast(), v256) };
 //! let _ = unsafe { vmovntps(storage.0.as_mut_ptr().cast(), v256) };
 //! ```
+//!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!
@@ -244,6 +257,8 @@
 //! use rust_isa::x86::simd::avx::vzeroupper as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 pub use super::sse2::V128;
 

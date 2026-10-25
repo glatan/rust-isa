@@ -32,6 +32,9 @@
 //! assert_eq!(unsafe { vgmul(v, v) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -60,6 +63,11 @@
 //! let _ = unsafe { vsm4r(v128, v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -85,6 +93,8 @@
 //! use rust_isa::riscv::simd::zv::vsm4r as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 macro_rules! crypto_binary {
     ($(#[$meta:meta])* $name:ident, $c:ident, $feature:literal) => {

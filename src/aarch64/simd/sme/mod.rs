@@ -30,6 +30,9 @@
 //! assert_eq!(out, [11.0, 22.0]);
 //! ```
 //!
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
+//!
 //! # Compile-only instruction examples
 //!
 //! ```no_run
@@ -45,6 +48,11 @@
 //! let _ = unsafe { SmeGuard::enter() };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -56,6 +64,8 @@
 //! let _ = SmeGuard::enter;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use core::marker::PhantomData;
 

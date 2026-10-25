@@ -20,6 +20,9 @@
 //! assert_eq!(fli_h(0), 0xbc00);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -55,6 +58,11 @@
 //! let _ = unsafe { froundnx_s(0) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -87,6 +95,8 @@
 //! use rust_isa::riscv::float::zfa::froundnx_s as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 unsafe extern "C" {
     fn rust_isa_riscv_zfa_fminm(a: u16, b: u16) -> u16;

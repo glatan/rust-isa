@@ -24,6 +24,9 @@
 //! assert_eq!(fclass_h(0x3c00), 1 << 6);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -104,6 +107,11 @@
 //! let _ = unsafe { fsub_s(0, 0) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
+//!
 //! # Compile-only instruction examples
 //!
 //! ```no_run
@@ -118,6 +126,11 @@
 //! let _ = unsafe { flh(storage.0.as_ptr().cast()) };
 //! let _ = unsafe { fsh(storage.0.as_mut_ptr().cast(), 0) };
 //! ```
+//!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!
@@ -195,6 +208,8 @@
 //! use rust_isa::riscv::float::scalar::fsub_s as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 unsafe extern "C" {
     fn rust_isa_riscv_scalar_fadd(a: u16, b: u16) -> u16;

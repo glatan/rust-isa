@@ -11,6 +11,9 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
+//!
 //! # Compile-only instruction examples
 //!
 //! ```no_run
@@ -148,6 +151,11 @@
 //! let _ = unsafe { vzip(v128, v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -277,6 +285,8 @@
 //! use rust_isa::arm::simd::neon::vzip as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 mod arith;
 mod bitwise;

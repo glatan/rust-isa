@@ -24,6 +24,9 @@
 //! assert_eq!(unsafe { addsubps(v, v) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -50,6 +53,11 @@
 //! let _ = unsafe { movsldup(v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
+//!
 //! # Compile-only instruction examples
 //!
 //! ```no_run
@@ -68,6 +76,11 @@
 //! let _ = unsafe { lddqu(storage.0.as_ptr().cast()) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -85,6 +98,8 @@
 //! use rust_isa::x86::simd::sse3::movsldup as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use super::sse2::V128;
 

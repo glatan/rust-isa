@@ -17,6 +17,9 @@
 //! assert_eq!(unsafe { fjcvtzs(1.9) }, 1);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -29,6 +32,11 @@
 //! let _ = unsafe { fjcvtzs_v128(v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -38,6 +46,8 @@
 //! use rust_isa::aarch64::simd::jsconv::fjcvtzs_v128 as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use crate::aarch64::simd::neon::V128;
 

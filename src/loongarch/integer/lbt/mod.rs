@@ -17,6 +17,9 @@
 //! assert_eq!(revb(0x0102_0304_0506_0708), 0x0807_0605_0403_0201);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -35,6 +38,11 @@
 //! let _ = revw(0);
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -48,6 +56,8 @@
 //! use rust_isa::loongarch::integer::lbt::revw as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 /// `revb.d`: reverse the byte order of a 64-bit value.
 #[inline(always)]

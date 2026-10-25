@@ -27,6 +27,9 @@
 //! let _ = unsafe { vsdp::<0, 0>(a, b) };
 //! ```
 //!
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
+//!
 //! # Compile-only instruction examples
 //!
 //! ```no_run
@@ -52,6 +55,11 @@
 //! let _ = unsafe { vupkzl::<0>(v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -71,6 +79,8 @@
 //! use rust_isa::s390x::simd::vector_packed_decimal::vupkzl as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use super::vector::V128;
 use core::arch::asm;

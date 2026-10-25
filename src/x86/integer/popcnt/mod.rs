@@ -18,6 +18,9 @@
 //! assert_eq!(unsafe { popcnt_u32(0xf0) }, 4);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -34,6 +37,11 @@
 //! let _ = unsafe { popcnt_u64(0) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -43,6 +51,8 @@
 //! use rust_isa::x86::integer::popcnt::popcnt_u64 as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 unsafe extern "C" {
     fn rust_isa_popcnt_popcnt_u32(a: u32) -> u32;

@@ -34,63 +34,8 @@
 //! assert_eq!(unsafe { vaddph(v, v) }.to_bytes(), [0; 64]);
 //! ```
 //!
-//! # Compile-only instruction examples
-//!
-//! ```no_run
-//! use rust_isa::x86::simd::avx512fp16::*;
-//! use rust_isa::x86::simd::sse2::V128;
-//! use rust_isa::x86::simd::avx::V256;
-//! use rust_isa::x86::simd::avx512f::V512;
-//!
-//! let v128 = V128::from_bytes([0; 16]);
-//! let v256 = V256::from_bytes([0; 32]);
-//! let v512 = V512::from_bytes([0; 64]);
-//!
-//! let _ = unsafe { vaddph(v512, v512) };
-//! let _ = unsafe { vcmpph::<0>(v512, v512) };
-//! let _ = unsafe { vcomish(v128, v128) };
-//! let _ = unsafe { vcvtpd2ph(v512) };
-//! let _ = unsafe { vcvtph2pd(v128) };
-//! let _ = unsafe { vcvtph2psx(v256) };
-//! let _ = unsafe { vcvtps2phx(v512) };
-//! let _ = unsafe { vcvtsd2sh(v128, v128) };
-//! let _ = unsafe { vcvtsh2sd(v128, v128) };
-//! let _ = unsafe { vcvtsh2ss(v128, v128) };
-//! let _ = unsafe { vcvtss2sh(v128, v128) };
-//! let _ = unsafe { vdivph(v512, v512) };
-//! let _ = unsafe { vfmadd132ph(v512, v512, v512) };
-//! let _ = unsafe { vfmadd213ph(v512, v512, v512) };
-//! let _ = unsafe { vfmadd231ph(v512, v512, v512) };
-//! let _ = unsafe { vfmaddsub132ph(v512, v512, v512) };
-//! let _ = unsafe { vfmaddsub213ph(v512, v512, v512) };
-//! let _ = unsafe { vfmaddsub231ph(v512, v512, v512) };
-//! let _ = unsafe { vfmsub132ph(v512, v512, v512) };
-//! let _ = unsafe { vfmsub213ph(v512, v512, v512) };
-//! let _ = unsafe { vfmsub231ph(v512, v512, v512) };
-//! let _ = unsafe { vfmsubadd132ph(v512, v512, v512) };
-//! let _ = unsafe { vfmsubadd213ph(v512, v512, v512) };
-//! let _ = unsafe { vfmsubadd231ph(v512, v512, v512) };
-//! let _ = unsafe { vfnmadd132ph(v512, v512, v512) };
-//! let _ = unsafe { vfnmadd213ph(v512, v512, v512) };
-//! let _ = unsafe { vfnmadd231ph(v512, v512, v512) };
-//! let _ = unsafe { vfnmsub132ph(v512, v512, v512) };
-//! let _ = unsafe { vfnmsub213ph(v512, v512, v512) };
-//! let _ = unsafe { vfnmsub231ph(v512, v512, v512) };
-//! let _ = unsafe { vfpclassph::<0>(v512) };
-//! let _ = unsafe { vgetexpph(v512) };
-//! let _ = unsafe { vgetmantph::<0>(v512) };
-//! let _ = unsafe { vmaxph(v512, v512) };
-//! let _ = unsafe { vminph(v512, v512) };
-//! let _ = unsafe { vmulph(v512, v512) };
-//! let _ = unsafe { vrcpph(v512) };
-//! let _ = unsafe { vreduceph::<0>(v512) };
-//! let _ = unsafe { vrndscaleph::<0>(v512) };
-//! let _ = unsafe { vrsqrtph(v512) };
-//! let _ = unsafe { vscalefph(v512, v512) };
-//! let _ = unsafe { vsqrtph(v512) };
-//! let _ = unsafe { vsubph(v512, v512) };
-//! let _ = unsafe { vucomish(v128, v128) };
-//! ```
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
 //!
 //! # Compile-only instruction examples
 //!
@@ -149,6 +94,69 @@
 //! let _ = unsafe { vsubph(v512, v512) };
 //! let _ = unsafe { vucomish(v128, v128) };
 //! ```
+//!
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::x86::simd::avx512fp16::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//! use rust_isa::x86::simd::avx::V256;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! let v256 = V256::from_bytes([0; 32]);
+//! let v512 = V512::from_bytes([0; 64]);
+//!
+//! let _ = unsafe { vaddph(v512, v512) };
+//! let _ = unsafe { vcmpph::<0>(v512, v512) };
+//! let _ = unsafe { vcomish(v128, v128) };
+//! let _ = unsafe { vcvtpd2ph(v512) };
+//! let _ = unsafe { vcvtph2pd(v128) };
+//! let _ = unsafe { vcvtph2psx(v256) };
+//! let _ = unsafe { vcvtps2phx(v512) };
+//! let _ = unsafe { vcvtsd2sh(v128, v128) };
+//! let _ = unsafe { vcvtsh2sd(v128, v128) };
+//! let _ = unsafe { vcvtsh2ss(v128, v128) };
+//! let _ = unsafe { vcvtss2sh(v128, v128) };
+//! let _ = unsafe { vdivph(v512, v512) };
+//! let _ = unsafe { vfmadd132ph(v512, v512, v512) };
+//! let _ = unsafe { vfmadd213ph(v512, v512, v512) };
+//! let _ = unsafe { vfmadd231ph(v512, v512, v512) };
+//! let _ = unsafe { vfmaddsub132ph(v512, v512, v512) };
+//! let _ = unsafe { vfmaddsub213ph(v512, v512, v512) };
+//! let _ = unsafe { vfmaddsub231ph(v512, v512, v512) };
+//! let _ = unsafe { vfmsub132ph(v512, v512, v512) };
+//! let _ = unsafe { vfmsub213ph(v512, v512, v512) };
+//! let _ = unsafe { vfmsub231ph(v512, v512, v512) };
+//! let _ = unsafe { vfmsubadd132ph(v512, v512, v512) };
+//! let _ = unsafe { vfmsubadd213ph(v512, v512, v512) };
+//! let _ = unsafe { vfmsubadd231ph(v512, v512, v512) };
+//! let _ = unsafe { vfnmadd132ph(v512, v512, v512) };
+//! let _ = unsafe { vfnmadd213ph(v512, v512, v512) };
+//! let _ = unsafe { vfnmadd231ph(v512, v512, v512) };
+//! let _ = unsafe { vfnmsub132ph(v512, v512, v512) };
+//! let _ = unsafe { vfnmsub213ph(v512, v512, v512) };
+//! let _ = unsafe { vfnmsub231ph(v512, v512, v512) };
+//! let _ = unsafe { vfpclassph::<0>(v512) };
+//! let _ = unsafe { vgetexpph(v512) };
+//! let _ = unsafe { vgetmantph::<0>(v512) };
+//! let _ = unsafe { vmaxph(v512, v512) };
+//! let _ = unsafe { vminph(v512, v512) };
+//! let _ = unsafe { vmulph(v512, v512) };
+//! let _ = unsafe { vrcpph(v512) };
+//! let _ = unsafe { vreduceph::<0>(v512) };
+//! let _ = unsafe { vrndscaleph::<0>(v512) };
+//! let _ = unsafe { vrsqrtph(v512) };
+//! let _ = unsafe { vscalefph(v512, v512) };
+//! let _ = unsafe { vsqrtph(v512) };
+//! let _ = unsafe { vsubph(v512, v512) };
+//! let _ = unsafe { vucomish(v128, v128) };
+//! ```
+//!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!
@@ -201,6 +209,8 @@
 //! use rust_isa::x86::simd::avx512fp16::vucomish as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;

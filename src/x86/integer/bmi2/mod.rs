@@ -19,6 +19,9 @@
 //! assert_eq!(unsafe { pext(0b1010, 0b1100) }, 0b0010);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -40,6 +43,11 @@
 //! let _ = unsafe { shrx(0, 0) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -54,6 +62,8 @@
 //! use rust_isa::x86::integer::bmi2::shrx as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use core::arch::asm;
 

@@ -21,6 +21,9 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -34,6 +37,11 @@
 //! let _ = unsafe { sh3add(0, 0) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -44,6 +52,8 @@
 //! use rust_isa::riscv::integer::zba::sh3add as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 unsafe extern "C" {
     fn rust_isa_riscv_zba_sh1add(a: u64, b: u64) -> u64;

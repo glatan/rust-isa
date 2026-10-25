@@ -24,6 +24,9 @@
 //! );
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -36,6 +39,11 @@
 //! let _ = unsafe { udot(v128, v128, v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -45,6 +53,8 @@
 //! use rust_isa::aarch64::simd::dotprod::udot as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use crate::aarch64::simd::neon::V128;
 

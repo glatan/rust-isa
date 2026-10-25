@@ -11,6 +11,9 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -99,6 +102,11 @@
 //! let _ = unsafe { xor(v128, v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
+//!
 //! # Compile-only instruction examples
 //!
 //! ```no_run
@@ -121,6 +129,11 @@
 //! let _ = unsafe { v128_load(storage.0.as_ptr().cast()) };
 //! let _ = unsafe { v128_store(storage.0.as_mut_ptr().cast(), v128) };
 //! ```
+//!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!
@@ -214,6 +227,8 @@
 //! use rust_isa::powerpc::simd::altivec::xor as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 mod v128;
 

@@ -25,6 +25,9 @@
 //! assert_ne!(out.to_bytes(), [0; 16]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -40,6 +43,11 @@
 //! let _ = unsafe { sha256su1(v128, v128, v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -51,6 +59,8 @@
 //! use rust_isa::arm::crypto::sha2::sha256su1 as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use crate::arm::simd::neon::V128;
 

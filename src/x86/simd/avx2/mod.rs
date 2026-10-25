@@ -22,6 +22,9 @@
 //! assert_eq!(unsafe { vpaddsb(v, v) }.to_bytes(), [0; 32]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -125,6 +128,11 @@
 //! let _ = unsafe { vpxor(v256, v256) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
+//!
 //! # Compile-only instruction examples
 //!
 //! ```no_run
@@ -151,6 +159,11 @@
 //! let _ = unsafe { vpmaskmovq_load(storage.0.as_ptr().cast(), v256) };
 //! let _ = unsafe { vpmaskmovq_store(storage.0.as_mut_ptr().cast(), v256, v256) };
 //! ```
+//!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!
@@ -256,6 +269,8 @@
 //! use rust_isa::x86::simd::avx2::vpxor as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 mod arithmetic;
 mod bitwise;

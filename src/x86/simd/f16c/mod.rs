@@ -25,6 +25,9 @@
 //! assert_eq!(unsafe { vcvtph2ps(v) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -43,6 +46,11 @@
 //! let _ = unsafe { vcvtps2ph_v256::<0>(v256) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -54,6 +62,8 @@
 //! use rust_isa::x86::simd::f16c::vcvtps2ph_v256 as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use super::avx2::V256;
 use super::sse2::V128;

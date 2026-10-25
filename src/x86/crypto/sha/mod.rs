@@ -20,6 +20,9 @@
 //! assert_eq!(unsafe { sha1msg1(v, v) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -41,6 +44,11 @@
 //! let _ = unsafe { sha256rnds2(v128, v128, v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -55,6 +63,8 @@
 //! use rust_isa::x86::crypto::sha::sha256rnds2 as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use core::arch::asm;
 

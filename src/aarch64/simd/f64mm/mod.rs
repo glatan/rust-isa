@@ -21,6 +21,9 @@
 //! unsafe { fmmla_f64(&a, &b, &mut acc) };
 //! ```
 //!
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
+//!
 //! # Compile-only instruction examples
 //!
 //! ```no_run
@@ -32,6 +35,11 @@
 //! let _ = unsafe { fmmla_f64(&[0.0f64; 4], &[0.0f64; 4], &mut[0.0f64; 4]) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -40,6 +48,8 @@
 //! use rust_isa::aarch64::simd::f64mm::fmmla_f64 as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 unsafe extern "C" {
     fn rust_isa_f64mm_fmmla(a: *const f64, b: *const f64, acc: *mut f64, len: usize);

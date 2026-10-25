@@ -24,6 +24,9 @@
 //! assert_eq!(addps(v, v).to_bytes(), [0; 16]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -49,6 +52,11 @@
 //! let _ = subps(v128, v128);
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -67,6 +75,8 @@
 //! use rust_isa::x86::simd::sse::subps as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 pub use super::sse2::{
     addps, cmpeqps, cmpleps, cmpltps, divps, maxps, minps, mulps, shufps, sqrtps, subps,

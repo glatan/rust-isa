@@ -23,6 +23,9 @@
 //! assert_ne!(unsafe { sm4e(zero, zero) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -35,6 +38,11 @@
 //! let _ = unsafe { sm4ekey(v128, v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -44,6 +52,8 @@
 //! use rust_isa::aarch64::crypto::sm4::sm4ekey as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use crate::aarch64::simd::neon::V128;
 

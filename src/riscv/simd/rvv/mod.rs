@@ -21,6 +21,9 @@
 //! assert_eq!(sum.to_bytes(), unsafe { splat_i32(3) }.to_bytes());
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -199,6 +202,11 @@
 //! let _ = unsafe { xor(v128, v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Compile-only instruction examples</summary>
+//!
 //! # Compile-only instruction examples
 //!
 //! ```no_run
@@ -275,6 +283,11 @@
 //! let _ = unsafe { vsuxei64(storage.0.as_mut_ptr().cast(), v128, v128) };
 //! let _ = unsafe { vsuxei8(storage.0.as_mut_ptr().cast(), v128, v128) };
 //! ```
+//!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!
@@ -512,6 +525,8 @@
 //! use rust_isa::riscv::simd::rvv::xor as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 mod v128;
 

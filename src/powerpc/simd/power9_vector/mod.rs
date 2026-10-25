@@ -20,6 +20,9 @@
 //! assert_eq!(unsafe { neg_i32(value) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -47,6 +50,11 @@
 //! let _ = unsafe { vnegw(v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -71,6 +79,8 @@
 //! use rust_isa::powerpc::simd::power9_vector::vnegw as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use super::altivec::V128;
 

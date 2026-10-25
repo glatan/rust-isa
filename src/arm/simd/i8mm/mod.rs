@@ -25,6 +25,9 @@
 //! assert_ne!(product.to_bytes(), [0; 16]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -39,6 +42,11 @@
 //! let _ = unsafe { vusmmla(v128, v128, v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -49,6 +57,8 @@
 //! use rust_isa::arm::simd::i8mm::vusmmla as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use super::neon::V128;
 

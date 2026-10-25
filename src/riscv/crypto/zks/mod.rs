@@ -22,6 +22,9 @@
 //! assert_ne!(unsafe { sm3p0(1) }, 1);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -36,6 +39,11 @@
 //! let _ = unsafe { sm4ks::<0>(0, 0) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -47,6 +55,8 @@
 //! use rust_isa::riscv::crypto::zks::sm4ks as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 unsafe extern "C" {
     fn rust_isa_riscv_zks_sm3p0(value: u32) -> u32;

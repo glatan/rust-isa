@@ -20,6 +20,9 @@
 //! assert_ne!(unsafe { aesenc(v, v) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! <details>
+//! <summary>Instruction examples</summary>
+//!
 //! # Instruction examples
 //!
 //! ```
@@ -40,6 +43,11 @@
 //! #[cfg(target_arch = "x86_64")] let _ = unsafe { aeskeygenassist::<0>(v128) };
 //! ```
 //!
+//! </details>
+//!
+//! <details>
+//! <summary>Instruction inventory</summary>
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
@@ -53,6 +61,8 @@
 //! use rust_isa::x86::crypto::aes::aeskeygenassist as _;
 //! ```
 //! <!-- doctest-inventory:end -->
+//!
+//! </details>
 
 use core::arch::asm;
 
