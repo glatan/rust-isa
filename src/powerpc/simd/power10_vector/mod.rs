@@ -30,7 +30,7 @@
 //! assert_eq!(unsafe { popcnt_i32(v) }.to_bytes(), [0; 16]);
 //! ```
 //!
-//! # Instruction examples
+//! # Compile-only instruction examples
 //!
 //! ```no_run
 //! use rust_isa::powerpc::simd::power10_vector::*;

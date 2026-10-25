@@ -27,7 +27,7 @@
 //! let _ = unsafe { vsdp::<0, 0>(a, b) };
 //! ```
 //!
-//! # Instruction examples
+//! # Compile-only instruction examples
 //!
 //! ```no_run
 //! use rust_isa::s390x::simd::vector_packed_decimal::*;

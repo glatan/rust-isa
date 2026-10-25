@@ -28,7 +28,7 @@
 
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::s390x::simd::vector::*;
 //! use rust_isa::s390x::simd::vector::V128;
 //!
@@ -59,8 +59,6 @@
 //! let _ = unsafe { sub_i32(v128, v128) };
 //! let _ = unsafe { sub_i64(v128, v128) };
 //! let _ = unsafe { sub_i8(v128, v128) };
-//! let _ = unsafe { v128_load(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { v128_store(storage.0.as_mut_ptr().cast(), v128) };
 //! let _ = unsafe { vab(v128, v128) };
 //! let _ = unsafe { vaf(v128, v128) };
 //! let _ = unsafe { vag(v128, v128) };
@@ -97,11 +95,7 @@
 //! let _ = unsafe { vftci_f32::<0>(v128) };
 //! let _ = unsafe { vftci_f64::<0>(v128) };
 //! let _ = unsafe { vgbm::<0>() };
-//! let _ = unsafe { vgef::<0>(v128, v128, storage.0.as_ptr().cast()) };
-//! let _ = unsafe { vgeg::<0>(v128, v128, storage.0.as_ptr().cast()) };
 //! let _ = unsafe { vistr::<0>(v128) };
-//! let _ = unsafe { vle(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { vlef(storage.0.as_ptr().cast()) };
 //! let _ = unsafe { vlgv::<0, 0>(v128) };
 //! let _ = unsafe { vmax(v128, v128) };
 //! let _ = unsafe { vme(v128, v128, v128) };
@@ -130,14 +124,33 @@
 //! let _ = unsafe { vsh(v128, v128) };
 //! let _ = unsafe { vsl(v128, v128) };
 //! let _ = unsafe { vsr(v128, v128) };
-//! let _ = unsafe { vst(storage.0.as_mut_ptr().cast(), v128) };
-//! let _ = unsafe { vstef(storage.0.as_mut_ptr().cast(), v128) };
 //! let _ = unsafe { vstrc::<0, 0>(v128, v128, v128) };
 //! let _ = unsafe { vuph(v128) };
 //! let _ = unsafe { vupl(v128) };
 //! let _ = unsafe { vuplh(v128) };
 //! let _ = unsafe { vupll(v128) };
 //! let _ = unsafe { xor(v128, v128) };
+//! ```
+//!
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::s390x::simd::vector::*;
+//! use rust_isa::s390x::simd::vector::V128;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//!
+//! let _ = unsafe { v128_load(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { v128_store(storage.0.as_mut_ptr().cast(), v128) };
+//! let _ = unsafe { vgef::<0>(v128, v128, storage.0.as_ptr().cast()) };
+//! let _ = unsafe { vgeg::<0>(v128, v128, storage.0.as_ptr().cast()) };
+//! let _ = unsafe { vle(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { vlef(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { vst(storage.0.as_mut_ptr().cast(), v128) };
+//! let _ = unsafe { vstef(storage.0.as_mut_ptr().cast(), v128) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

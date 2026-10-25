@@ -13,7 +13,7 @@
 
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::powerpc::simd::altivec::*;
 //! use rust_isa::powerpc::simd::altivec::V128;
 //!
@@ -33,26 +33,16 @@
 //! let _ = unsafe { fdiv(v128, v128) };
 //! let _ = unsafe { fmul(v128, v128) };
 //! let _ = unsafe { fsub(v128, v128) };
-//! let _ = unsafe { lvebx(storage.0.as_ptr().cast(), 0) };
-//! let _ = unsafe { lvehx(storage.0.as_ptr().cast(), 0) };
-//! let _ = unsafe { lvewx(storage.0.as_ptr().cast(), 0) };
-//! let _ = unsafe { lvx(storage.0.as_ptr().cast()) };
 //! let _ = unsafe { mul(v128, v128) };
 //! let _ = unsafe { mul_i16(v128, v128) };
 //! let _ = unsafe { mul_i32(v128, v128) };
 //! let _ = unsafe { or(v128, v128) };
 //! let _ = unsafe { permute(v128, v128, v128) };
 //! let _ = unsafe { splat_i32(0) };
-//! let _ = unsafe { stvebx(storage.0.as_mut_ptr().cast(), 0, v128) };
-//! let _ = unsafe { stvehx(storage.0.as_mut_ptr().cast(), 0, v128) };
-//! let _ = unsafe { stvewx(storage.0.as_mut_ptr().cast(), 0, v128) };
-//! let _ = unsafe { stvx(storage.0.as_mut_ptr().cast(), v128) };
 //! let _ = unsafe { sub_i16(v128, v128) };
 //! let _ = unsafe { sub_i32(v128, v128) };
 //! let _ = unsafe { sub_i64(v128, v128) };
 //! let _ = unsafe { sub_i8(v128, v128) };
-//! let _ = unsafe { v128_load(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { v128_store(storage.0.as_mut_ptr().cast(), v128) };
 //! let _ = unsafe { vaddubm(v128, v128) };
 //! let _ = unsafe { vaddudm(v128, v128) };
 //! let _ = unsafe { vadduhm(v128, v128) };
@@ -107,6 +97,29 @@
 //! let _ = unsafe { vupk(v128) };
 //! let _ = unsafe { vxor(v128, v128) };
 //! let _ = unsafe { xor(v128, v128) };
+//! ```
+//!
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::powerpc::simd::altivec::*;
+//! use rust_isa::powerpc::simd::altivec::V128;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//!
+//! let _ = unsafe { lvebx(storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { lvehx(storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { lvewx(storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { lvx(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { stvebx(storage.0.as_mut_ptr().cast(), 0, v128) };
+//! let _ = unsafe { stvehx(storage.0.as_mut_ptr().cast(), 0, v128) };
+//! let _ = unsafe { stvewx(storage.0.as_mut_ptr().cast(), 0, v128) };
+//! let _ = unsafe { stvx(storage.0.as_mut_ptr().cast(), v128) };
+//! let _ = unsafe { v128_load(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { v128_store(storage.0.as_mut_ptr().cast(), v128) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

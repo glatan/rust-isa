@@ -11,7 +11,7 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
-//! # Instruction examples
+//! # Compile-only instruction examples
 //!
 //! ```no_run
 //! use rust_isa::arm::simd::neon::*;

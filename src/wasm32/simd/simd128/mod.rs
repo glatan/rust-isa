@@ -49,7 +49,7 @@
 
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::wasm32::simd::simd128::*;
 //! use rust_isa::wasm32::simd::simd128::V128;
 //!
@@ -267,6 +267,22 @@
 //! let _ = v128_andnot(v128, v128);
 //! let _ = v128_any_true(v128);
 //! let _ = v128_bitselect(v128, v128, v128);
+//! let _ = v128_not(v128);
+//! let _ = v128_or(v128, v128);
+//! let _ = v128_xor(v128, v128);
+//! ```
+//!
+//! # Compile-only instruction examples
+//!
+//! ```no_run
+//! use rust_isa::wasm32::simd::simd128::*;
+//! use rust_isa::wasm32::simd::simd128::V128;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//!
 //! let _ = unsafe { v128_load(storage.0.as_ptr().cast()) };
 //! let _ = unsafe { v128_load16_lane::<0>(storage.0.as_ptr().cast(), v128) };
 //! let _ = unsafe { v128_load16_splat(storage.0.as_ptr().cast()) };
@@ -284,14 +300,11 @@
 //! let _ = unsafe { v128_load8_splat(storage.0.as_ptr().cast()) };
 //! let _ = unsafe { v128_load8x8_s(storage.0.as_ptr().cast()) };
 //! let _ = unsafe { v128_load8x8_u(storage.0.as_ptr().cast()) };
-//! let _ = v128_not(v128);
-//! let _ = v128_or(v128, v128);
 //! let _ = unsafe { v128_store(storage.0.as_mut_ptr().cast(), v128) };
 //! let _ = unsafe { v128_store16_lane::<0>(storage.0.as_mut_ptr().cast(), v128) };
 //! let _ = unsafe { v128_store32_lane::<0>(storage.0.as_mut_ptr().cast(), v128) };
 //! let _ = unsafe { v128_store64_lane::<0>(storage.0.as_mut_ptr().cast(), v128) };
 //! let _ = unsafe { v128_store8_lane::<0>(storage.0.as_mut_ptr().cast(), v128) };
-//! let _ = v128_xor(v128, v128);
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

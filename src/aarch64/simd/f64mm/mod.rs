@@ -21,7 +21,7 @@
 //! unsafe { fmmla_f64(&a, &b, &mut acc) };
 //! ```
 //!
-//! # Instruction examples
+//! # Compile-only instruction examples
 //!
 //! ```no_run
 //! use rust_isa::aarch64::simd::f64mm::*;

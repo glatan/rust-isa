@@ -26,7 +26,7 @@
 //! );
 //! ```
 //!
-//! # Instruction examples
+//! # Compile-only instruction examples
 //!
 //! ```no_run
 //! use rust_isa::x86::simd::sse2::*;
@@ -156,7 +156,7 @@
 //! let _ = punpcklwd(v128, v128);
 //! let _ = pxor(v128, v128);
 //! let _ = shufpd::<0>(v128, v128);
-//! let _ = shufps::<0>(v128, v128);
+//! #[cfg(target_arch = "x86_64")] let _ = shufps::<0>(v128, v128);
 //! let _ = sqrtpd(v128);
 //! let _ = sqrtps(v128);
 //! let _ = subpd(v128, v128);

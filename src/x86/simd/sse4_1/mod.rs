@@ -23,7 +23,7 @@
 //! assert_eq!(unsafe { pmulld(v, v) }.to_bytes(), [0; 16]);
 //! ```
 //!
-//! # Instruction examples
+//! # Compile-only instruction examples
 //!
 //! ```no_run
 //! use rust_isa::x86::simd::sse4_1::*;
