@@ -13,6 +13,16 @@
 //!
 //! The build compiles the bundled C with clang; some wrappers use `asm!`.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::x86::simd::sse4_1::pmulld;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! assert_eq!(unsafe { pmulld(v, v) }.to_bytes(), [0; 16]);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

@@ -14,6 +14,17 @@
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
+//! # Examples
+//!
+//! ```no_run
+//! use rust_isa::x86::matrix::amx_avx512::tcvtrowd2ps;
+//! use rust_isa::x86::matrix::amx_tile::{AmxGuard, TileConfig};
+//!
+//! let config = TileConfig::builder().tile::<0>(1, 64).build();
+//! let guard = unsafe { AmxGuard::enter(&config) };
+//! let _ = unsafe { tcvtrowd2ps::<0>(&guard, 0) };
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

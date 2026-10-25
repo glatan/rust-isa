@@ -14,6 +14,14 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```no_run
+//! use rust_isa::x86::integer::rdseed::rdseed_u32;
+//!
+//! let _ = unsafe { rdseed_u32() };
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

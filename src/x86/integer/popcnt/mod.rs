@@ -10,6 +10,14 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::x86::integer::popcnt::popcnt_u32;
+//!
+//! assert_eq!(unsafe { popcnt_u32(0xf0) }, 4);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
