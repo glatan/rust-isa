@@ -20,7 +20,11 @@
 //! ```no_run
 //! use rust_isa::x86::integer::rdrand::rdrand_u32;
 //!
-//! let _ = unsafe { rdrand_u32() };
+//! if let Some(value) = unsafe { rdrand_u32() } {
+//!     let _ = value;
+//! } else {
+//!     // The instruction may report failure; the caller can retry.
+//! }
 //! ```
 //!
 //! # Instruction examples
@@ -35,10 +39,12 @@
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //!
-//! unsafe {
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { rdrand_u32() };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { rdrand_u64() };
+//! if let Some(value) = unsafe { rdrand_u32() } {
+//!     let _ = value;
+//! } else {
+//!     // The instruction may report failure; the caller can retry.
 //! }
+//! #[cfg(target_arch = "x86_64")] let _ = unsafe { rdrand_u64() };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

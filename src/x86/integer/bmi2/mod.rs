@@ -31,15 +31,13 @@
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //!
-//! unsafe {
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { bzhi(0, 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { pdep(0, 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { pext(0, 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { rorx::<0>(0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { sarx(0, 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { shlx(0, 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { shrx(0, 0) };
-//! }
+//! let _ = unsafe { bzhi(0, 0) };
+//! let _ = unsafe { pdep(0, 0) };
+//! let _ = unsafe { pext(0, 0) };
+//! let _ = unsafe { rorx::<0>(0) };
+//! let _ = unsafe { sarx(0, 0) };
+//! let _ = unsafe { shlx(0, 0) };
+//! let _ = unsafe { shrx(0, 0) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

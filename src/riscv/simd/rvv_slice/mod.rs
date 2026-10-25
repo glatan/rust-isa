@@ -38,37 +38,38 @@
 //! use rust_isa::riscv::simd::rvv::V128;
 //!
 //! let v128 = V128::from_bytes([0; 16]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
 //!
-//! unsafe {
-//!     let _ = unsafe { add_f32(&[], &[], &mut []) };
-//!     let _ = unsafe { add_i32(&[], &[], &mut []) };
-//!     let _ = unsafe { cmpeq_f32(&[], &[], &mut []) };
-//!     let _ = unsafe { cmpeq_i32(&[], &[], &mut []) };
-//!     let _ = unsafe { cmpge_f32(&[], &[], &mut []) };
-//!     let _ = unsafe { cmpge_i32(&[], &[], &mut []) };
-//!     let _ = unsafe { cmpgt_f32(&[], &[], &mut []) };
-//!     let _ = unsafe { cmpgt_i32(&[], &[], &mut []) };
-//!     let _ = unsafe { cmple_f32(&[], &[], &mut []) };
-//!     let _ = unsafe { cmple_i32(&[], &[], &mut []) };
-//!     let _ = unsafe { cmplt_f32(&[], &[], &mut []) };
-//!     let _ = unsafe { cmplt_i32(&[], &[], &mut []) };
-//!     let _ = unsafe { cmpne_f32(&[], &[], &mut []) };
-//!     let _ = unsafe { cmpne_i32(&[], &[], &mut []) };
-//!     let _ = unsafe { div_f32(&[], &[], &mut []) };
-//!     let _ = unsafe { div_i32(&[], &[], &mut []) };
-//!     let _ = unsafe { load_f32(core::ptr::null(), &mut []) };
-//!     let _ = unsafe { load_i32(core::ptr::null(), &mut []) };
-//!     let _ = unsafe { max_f32(&[], &[], &mut []) };
-//!     let _ = unsafe { max_i32(&[], &[], &mut []) };
-//!     let _ = unsafe { min_f32(&[], &[], &mut []) };
-//!     let _ = unsafe { min_i32(&[], &[], &mut []) };
-//!     let _ = unsafe { mul_f32(&[], &[], &mut []) };
-//!     let _ = unsafe { mul_i32(&[], &[], &mut []) };
-//!     let _ = unsafe { store_f32(core::ptr::null_mut(), &[]) };
-//!     let _ = unsafe { store_i32(core::ptr::null_mut(), &[]) };
-//!     let _ = unsafe { sub_f32(&[], &[], &mut []) };
-//!     let _ = unsafe { sub_i32(&[], &[], &mut []) };
-//! }
+//! let _ = unsafe { add_f32(&[0.0f32; 4], &[0.0f32; 4], &mut[0.0f32; 4]) };
+//! let _ = unsafe { add_i32(&[0; 4], &[0; 4], &mut[0; 4]) };
+//! let _ = unsafe { cmpeq_f32(&[0.0f32; 4], &[0.0f32; 4], &mut[0; 4]) };
+//! let _ = unsafe { cmpeq_i32(&[0; 4], &[0; 4], &mut[0; 4]) };
+//! let _ = unsafe { cmpge_f32(&[0.0f32; 4], &[0.0f32; 4], &mut[0; 4]) };
+//! let _ = unsafe { cmpge_i32(&[0; 4], &[0; 4], &mut[0; 4]) };
+//! let _ = unsafe { cmpgt_f32(&[0.0f32; 4], &[0.0f32; 4], &mut[0; 4]) };
+//! let _ = unsafe { cmpgt_i32(&[0; 4], &[0; 4], &mut[0; 4]) };
+//! let _ = unsafe { cmple_f32(&[0.0f32; 4], &[0.0f32; 4], &mut[0; 4]) };
+//! let _ = unsafe { cmple_i32(&[0; 4], &[0; 4], &mut[0; 4]) };
+//! let _ = unsafe { cmplt_f32(&[0.0f32; 4], &[0.0f32; 4], &mut[0; 4]) };
+//! let _ = unsafe { cmplt_i32(&[0; 4], &[0; 4], &mut[0; 4]) };
+//! let _ = unsafe { cmpne_f32(&[0.0f32; 4], &[0.0f32; 4], &mut[0; 4]) };
+//! let _ = unsafe { cmpne_i32(&[0; 4], &[0; 4], &mut[0; 4]) };
+//! let _ = unsafe { div_f32(&[0.0f32; 4], &[0.0f32; 4], &mut[0.0f32; 4]) };
+//! let _ = unsafe { div_i32(&[0; 4], &[0; 4], &mut[0; 4]) };
+//! let _ = unsafe { load_f32(storage.0.as_ptr().cast(), &mut[0.0f32; 4]) };
+//! let _ = unsafe { load_i32(storage.0.as_ptr().cast(), &mut[0; 4]) };
+//! let _ = unsafe { max_f32(&[0.0f32; 4], &[0.0f32; 4], &mut[0.0f32; 4]) };
+//! let _ = unsafe { max_i32(&[0; 4], &[0; 4], &mut[0; 4]) };
+//! let _ = unsafe { min_f32(&[0.0f32; 4], &[0.0f32; 4], &mut[0.0f32; 4]) };
+//! let _ = unsafe { min_i32(&[0; 4], &[0; 4], &mut[0; 4]) };
+//! let _ = unsafe { mul_f32(&[0.0f32; 4], &[0.0f32; 4], &mut[0.0f32; 4]) };
+//! let _ = unsafe { mul_i32(&[0; 4], &[0; 4], &mut[0; 4]) };
+//! let _ = unsafe { store_f32(storage.0.as_mut_ptr().cast(), &[0.0f32; 4]) };
+//! let _ = unsafe { store_i32(storage.0.as_mut_ptr().cast(), &[0; 4]) };
+//! let _ = unsafe { sub_f32(&[0.0f32; 4], &[0.0f32; 4], &mut[0.0f32; 4]) };
+//! let _ = unsafe { sub_i32(&[0; 4], &[0; 4], &mut[0; 4]) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

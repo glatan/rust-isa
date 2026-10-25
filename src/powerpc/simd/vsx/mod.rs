@@ -26,58 +26,55 @@
 //!
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::powerpc::simd::vsx::*;
 //! use rust_isa::powerpc::simd::altivec::V128;
-//! use rust_isa::powerpc::matrix::mma::MmaAccumulator;
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //!
-//! unsafe {
-//!     let _ = unsafe { abs_f64(v128) };
-//!     let _ = unsafe { add_f32(v128, v128) };
-//!     let _ = unsafe { add_f64(v128, v128) };
-//!     let _ = unsafe { div_f64(v128, v128) };
-//!     let _ = unsafe { mul_f64(v128, v128) };
-//!     let _ = unsafe { sqrt_f64(v128) };
-//!     let _ = unsafe { sub_f64(v128, v128) };
-//!     let _ = unsafe { vcmpgt(v128, v128) };
-//!     let _ = unsafe { vsldoi::<0>(v128, v128) };
-//!     let _ = unsafe { xscvdpsp(v128) };
-//!     let _ = unsafe { xscvdpspn(v128) };
-//!     let _ = unsafe { xscvspdp(v128) };
-//!     let _ = unsafe { xscvspdpn(v128) };
-//!     let _ = unsafe { xvabs(v128) };
-//!     let _ = unsafe { xvadd(v128, v128) };
-//!     let _ = unsafe { xvand(v128, v128) };
-//!     let _ = unsafe { xvcmpeq(v128, v128) };
-//!     let _ = unsafe { xvcpsgn(v128, v128) };
-//!     let _ = unsafe { xvcvdpsxds(v128) };
-//!     let _ = unsafe { xvcvdpsxws(v128) };
-//!     let _ = unsafe { xvcvdpuxds(v128) };
-//!     let _ = unsafe { xvcvdpuxws(v128) };
-//!     let _ = unsafe { xvcvsxdsp(v128) };
-//!     let _ = unsafe { xvcvsxwsp(v128) };
-//!     let _ = unsafe { xvcvuxdsp(v128) };
-//!     let _ = unsafe { xvcvuxwsp(v128) };
-//!     let _ = unsafe { xvdiv(v128, v128) };
-//!     let _ = unsafe { xvmax(v128, v128) };
-//!     let _ = unsafe { xvmin(v128, v128) };
-//!     let _ = unsafe { xvmul(v128, v128) };
-//!     let _ = unsafe { xvneg(v128) };
-//!     let _ = unsafe { xvor(v128, v128) };
-//!     let _ = unsafe { xvperm(v128, v128, v128) };
-//!     let _ = unsafe { xvrdpi(v128) };
-//!     let _ = unsafe { xvrdpic(v128) };
-//!     let _ = unsafe { xvrdpim(v128) };
-//!     let _ = unsafe { xvrdpip(v128) };
-//!     let _ = unsafe { xvrdpiz(v128) };
-//!     let _ = unsafe { xvsel(v128, v128, v128) };
-//!     let _ = unsafe { xvsl(v128, v128) };
-//!     let _ = unsafe { xvsr(v128, v128) };
-//!     let _ = unsafe { xvsub(v128, v128) };
-//!     let _ = unsafe { xvxor(v128, v128) };
-//! }
+//! let _ = unsafe { abs_f64(v128) };
+//! let _ = unsafe { add_f32(v128, v128) };
+//! let _ = unsafe { add_f64(v128, v128) };
+//! let _ = unsafe { div_f64(v128, v128) };
+//! let _ = unsafe { mul_f64(v128, v128) };
+//! let _ = unsafe { sqrt_f64(v128) };
+//! let _ = unsafe { sub_f64(v128, v128) };
+//! let _ = unsafe { vcmpgt(v128, v128) };
+//! let _ = unsafe { vsldoi::<0>(v128, v128) };
+//! let _ = unsafe { xscvdpsp(v128) };
+//! let _ = unsafe { xscvdpspn(v128) };
+//! let _ = unsafe { xscvspdp(v128) };
+//! let _ = unsafe { xscvspdpn(v128) };
+//! let _ = unsafe { xvabs(v128) };
+//! let _ = unsafe { xvadd(v128, v128) };
+//! let _ = unsafe { xvand(v128, v128) };
+//! let _ = unsafe { xvcmpeq(v128, v128) };
+//! let _ = unsafe { xvcpsgn(v128, v128) };
+//! let _ = unsafe { xvcvdpsxds(v128) };
+//! let _ = unsafe { xvcvdpsxws(v128) };
+//! let _ = unsafe { xvcvdpuxds(v128) };
+//! let _ = unsafe { xvcvdpuxws(v128) };
+//! let _ = unsafe { xvcvsxdsp(v128) };
+//! let _ = unsafe { xvcvsxwsp(v128) };
+//! let _ = unsafe { xvcvuxdsp(v128) };
+//! let _ = unsafe { xvcvuxwsp(v128) };
+//! let _ = unsafe { xvdiv(v128, v128) };
+//! let _ = unsafe { xvmax(v128, v128) };
+//! let _ = unsafe { xvmin(v128, v128) };
+//! let _ = unsafe { xvmul(v128, v128) };
+//! let _ = unsafe { xvneg(v128) };
+//! let _ = unsafe { xvor(v128, v128) };
+//! let _ = unsafe { xvperm(v128, v128, v128) };
+//! let _ = unsafe { xvrdpi(v128) };
+//! let _ = unsafe { xvrdpic(v128) };
+//! let _ = unsafe { xvrdpim(v128) };
+//! let _ = unsafe { xvrdpip(v128) };
+//! let _ = unsafe { xvrdpiz(v128) };
+//! let _ = unsafe { xvsel(v128, v128, v128) };
+//! let _ = unsafe { xvsl(v128, v128) };
+//! let _ = unsafe { xvsr(v128, v128) };
+//! let _ = unsafe { xvsub(v128, v128) };
+//! let _ = unsafe { xvxor(v128, v128) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

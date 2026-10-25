@@ -37,15 +37,13 @@
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //!
-//! unsafe {
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vbcstnebf162ps(0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vbcstnesh2ps(0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtneebf162ps(v256) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtneeph2ps(v256) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtneobf162ps(v256) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtneoph2ps(v256) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtneps2bf16(v256) };
-//! }
+//! let _ = unsafe { vbcstnebf162ps(0) };
+//! let _ = unsafe { vbcstnesh2ps(0) };
+//! let _ = unsafe { vcvtneebf162ps(v256) };
+//! let _ = unsafe { vcvtneeph2ps(v256) };
+//! let _ = unsafe { vcvtneobf162ps(v256) };
+//! let _ = unsafe { vcvtneoph2ps(v256) };
+//! let _ = unsafe { vcvtneps2bf16(v256) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

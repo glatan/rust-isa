@@ -27,18 +27,16 @@
 //!
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::arm::simd::i8mm::*;
 //! use rust_isa::arm::simd::neon::V128;
 //! use rust_isa::arm::simd::neon::V64;
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //!
-//! unsafe {
-//!     let _ = unsafe { smmla(v128, v128, v128) };
-//!     let _ = unsafe { vummla(v128, v128, v128) };
-//!     let _ = unsafe { vusmmla(v128, v128, v128) };
-//! }
+//! let _ = unsafe { smmla(v128, v128, v128) };
+//! let _ = unsafe { vummla(v128, v128, v128) };
+//! let _ = unsafe { vusmmla(v128, v128, v128) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

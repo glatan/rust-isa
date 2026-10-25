@@ -23,27 +23,25 @@
 //!
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::riscv::integer::zbb::*;
 //! use rust_isa::riscv::simd::rvv::V128;
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //!
-//! unsafe {
-//!     let _ = unsafe { andn(0, 0) };
-//!     let _ = unsafe { clz(0) };
-//!     let _ = unsafe { cpop(0) };
-//!     let _ = unsafe { ctz(0) };
-//!     let _ = unsafe { max(0, 0) };
-//!     let _ = unsafe { min(0, 0) };
-//!     let _ = unsafe { orn(0, 0) };
-//!     let _ = unsafe { rol(0, 0) };
-//!     let _ = unsafe { ror(0, 0) };
-//!     let _ = unsafe { sext_b(0) };
-//!     let _ = unsafe { sext_h(0) };
-//!     let _ = unsafe { xnor(0, 0) };
-//!     let _ = unsafe { zext_h(0) };
-//! }
+//! let _ = unsafe { andn(0, 0) };
+//! let _ = unsafe { clz(0) };
+//! let _ = unsafe { cpop(0) };
+//! let _ = unsafe { ctz(0) };
+//! let _ = unsafe { max(0, 0) };
+//! let _ = unsafe { min(0, 0) };
+//! let _ = unsafe { orn(0, 0) };
+//! let _ = unsafe { rol(0, 0) };
+//! let _ = unsafe { ror(0, 0) };
+//! let _ = unsafe { sext_b(0) };
+//! let _ = unsafe { sext_h(0) };
+//! let _ = unsafe { xnor(0, 0) };
+//! let _ = unsafe { zext_h(0) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

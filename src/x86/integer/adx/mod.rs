@@ -36,12 +36,10 @@
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //!
-//! unsafe {
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { adcx_u32(0, 0, false) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { adcx_u64(0, 0, false) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { adox_u32(0, 0, false) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { adox_u64(0, 0, false) };
-//! }
+//! let _ = unsafe { adcx_u32(0, 0, false) };
+//! #[cfg(target_arch = "x86_64")] let _ = unsafe { adcx_u64(0, 0, false) };
+//! let _ = unsafe { adox_u32(0, 0, false) };
+//! #[cfg(target_arch = "x86_64")] let _ = unsafe { adox_u64(0, 0, false) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

@@ -36,15 +36,16 @@
 //! let v128 = V128::from_bytes([0; 16]);
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
 //!
-//! unsafe {
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { extrq(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { extrq_imm::<0, 0>(v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { insertq(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { insertq_imm::<0, 0>(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { movntsd(core::ptr::null_mut(), v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { movntss(core::ptr::null_mut(), v128) };
-//! }
+//! let _ = unsafe { extrq(v128, v128) };
+//! let _ = unsafe { extrq_imm::<0, 0>(v128) };
+//! let _ = unsafe { insertq(v128, v128) };
+//! let _ = unsafe { insertq_imm::<0, 0>(v128, v128) };
+//! let _ = unsafe { movntsd(storage.0.as_mut_ptr().cast(), v128) };
+//! let _ = unsafe { movntss(storage.0.as_mut_ptr().cast(), v128) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

@@ -27,6 +27,7 @@
 //! let b = [10.0f32, 20.0];
 //! let mut out = [0.0f32; 2];
 //! unsafe { add_f32(&guard, &a, &b, &mut out) };
+//! assert_eq!(out, [11.0, 22.0]);
 //! ```
 //!
 //! # Instruction examples
@@ -39,10 +40,8 @@
 //! let v128 = V128::from_bytes([0; 16]);
 //! let guard = unsafe { SmeGuard::enter() };
 //!
-//! unsafe {
-//!     let _ = unsafe { add_f32(&guard, &[], &[], &mut []) };
-//!     let _ = unsafe { mul_f32(&guard, &[], &[], &mut []) };
-//! }
+//! let _ = unsafe { add_f32(&guard, &[0.0f32; 4], &[0.0f32; 4], &mut[0.0f32; 4]) };
+//! let _ = unsafe { mul_f32(&guard, &[0.0f32; 4], &[0.0f32; 4], &mut[0.0f32; 4]) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

@@ -21,7 +21,7 @@
 //! use rust_isa::x86::simd::sse2::V128;
 //!
 //! let v = V128::from_bytes([0; 16]);
-//! assert_eq!(unsafe { addps(v, v) }.to_bytes(), [0; 16]);
+//! assert_eq!(addps(v, v).to_bytes(), [0; 16]);
 //! ```
 //!
 //! # Instruction examples
@@ -36,19 +36,17 @@
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //!
-//! unsafe {
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { addps(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { cmpeqps(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { cmpleps(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { cmpltps(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { divps(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { maxps(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { minps(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { mulps(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { shufps::<0>(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { sqrtps(v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { subps(v128, v128) };
-//! }
+//! let _ = addps(v128, v128);
+//! let _ = cmpeqps(v128, v128);
+//! let _ = cmpleps(v128, v128);
+//! let _ = cmpltps(v128, v128);
+//! let _ = divps(v128, v128);
+//! let _ = maxps(v128, v128);
+//! let _ = minps(v128, v128);
+//! let _ = mulps(v128, v128);
+//! #[cfg(target_arch = "x86_64")] let _ = shufps::<0>(v128, v128);
+//! let _ = sqrtps(v128);
+//! let _ = subps(v128, v128);
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

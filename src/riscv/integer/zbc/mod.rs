@@ -22,17 +22,15 @@
 //!
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::riscv::integer::zbc::*;
 //! use rust_isa::riscv::simd::rvv::V128;
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //!
-//! unsafe {
-//!     let _ = unsafe { clmul(0, 0) };
-//!     let _ = unsafe { clmulh(0, 0) };
-//!     let _ = unsafe { clmulr(0, 0) };
-//! }
+//! let _ = unsafe { clmul(0, 0) };
+//! let _ = unsafe { clmulh(0, 0) };
+//! let _ = unsafe { clmulr(0, 0) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

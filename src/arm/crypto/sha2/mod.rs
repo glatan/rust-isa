@@ -27,19 +27,17 @@
 //!
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::arm::crypto::sha2::*;
 //! use rust_isa::arm::simd::neon::V128;
 //! use rust_isa::arm::simd::neon::V64;
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //!
-//! unsafe {
-//!     let _ = unsafe { sha256h(v128, v128, v128) };
-//!     let _ = unsafe { sha256h2(v128, v128, v128) };
-//!     let _ = unsafe { sha256su0(v128, v128) };
-//!     let _ = unsafe { sha256su1(v128, v128, v128) };
-//! }
+//! let _ = unsafe { sha256h(v128, v128, v128) };
+//! let _ = unsafe { sha256h2(v128, v128, v128) };
+//! let _ = unsafe { sha256su0(v128, v128) };
+//! let _ = unsafe { sha256su1(v128, v128, v128) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

@@ -24,29 +24,27 @@
 //!
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::riscv::crypto::zkn::*;
 //! use rust_isa::riscv::simd::rvv::V128;
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //!
-//! unsafe {
-//!     let _ = unsafe { aes64ds(0, 0) };
-//!     let _ = unsafe { aes64dsm(0, 0) };
-//!     let _ = unsafe { aes64es(0, 0) };
-//!     let _ = unsafe { aes64esm(0, 0) };
-//!     let _ = unsafe { aes64im(0) };
-//!     let _ = unsafe { aes64ks1i(0, 0) };
-//!     let _ = unsafe { aes64ks2(0, 0) };
-//!     let _ = unsafe { sha256sig0(0) };
-//!     let _ = unsafe { sha256sig1(0) };
-//!     let _ = unsafe { sha256sum0(0) };
-//!     let _ = unsafe { sha256sum1(0) };
-//!     let _ = unsafe { sha512sig0(0) };
-//!     let _ = unsafe { sha512sig1(0) };
-//!     let _ = unsafe { sha512sum0(0) };
-//!     let _ = unsafe { sha512sum1(0) };
-//! }
+//! let _ = unsafe { aes64ds(0, 0) };
+//! let _ = unsafe { aes64dsm(0, 0) };
+//! let _ = unsafe { aes64es(0, 0) };
+//! let _ = unsafe { aes64esm(0, 0) };
+//! let _ = unsafe { aes64im(0) };
+//! let _ = unsafe { aes64ks1i(0, 0) };
+//! let _ = unsafe { aes64ks2(0, 0) };
+//! let _ = unsafe { sha256sig0(0) };
+//! let _ = unsafe { sha256sig1(0) };
+//! let _ = unsafe { sha256sum0(0) };
+//! let _ = unsafe { sha256sum1(0) };
+//! let _ = unsafe { sha512sig0(0) };
+//! let _ = unsafe { sha512sig1(0) };
+//! let _ = unsafe { sha512sum0(0) };
+//! let _ = unsafe { sha512sum1(0) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->
