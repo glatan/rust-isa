@@ -16,6 +16,16 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::s390x::simd::vector_packed_decimal::*;
+//! use rust_isa::s390x::simd::vector::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! assert_eq!(unsafe { vsdp::<0, 0>(v, v) }.to_bytes().len(), 16);
+//! ```
+//!
 //! # Examples
 //!
 //! ```no_run

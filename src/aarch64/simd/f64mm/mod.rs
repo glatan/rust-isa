@@ -10,6 +10,18 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::aarch64::simd::f64mm::*;
+//!
+//! let a = [0.0f64; 4];
+//! let b = [0.0f64; 4];
+//! let mut acc = [0.0f64; 4];
+//! unsafe { fmmla_f64(&a, &b, &mut acc) };
+//! assert_eq!(acc, [0.0f64; 4]);
+//! ```
+//!
 //! # Examples
 //!
 //! ```no_run

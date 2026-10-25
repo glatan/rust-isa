@@ -19,6 +19,15 @@
 //! unsafe { tileloaddrs::<0>(&guard, data.as_ptr(), 64) };
 //! ```
 //!
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::x86::matrix::amx_tile::TileConfig;
+//!
+//! let config = TileConfig::builder().tile::<0>(1, 64).build();
+//! assert_eq!(config.to_bytes()[48], 1);
+//! ```
+//!
 //! <details>
 //! <summary>Compile-only instruction examples</summary>
 //!
@@ -42,29 +51,9 @@
 //!
 //! let _ = unsafe { tileloaddrs::<0>(&amx_guard, storage.0.as_ptr().cast(), 0) };
 //! let _ = unsafe { tileloaddrst1::<0>(&amx_guard, storage.0.as_ptr().cast(), 0) };
+//!
 //! ```
 //!
-//! # Compile-only instruction examples
-//!
-//! ```no_run
-//! use rust_isa::x86::matrix::amx_movrs::*;
-//! use rust_isa::x86::simd::sse2::V128;
-//! use rust_isa::x86::simd::avx::V256;
-//! use rust_isa::x86::simd::avx512f::V512;
-//!
-//! let v128 = V128::from_bytes([0; 16]);
-//! let v256 = V256::from_bytes([0; 32]);
-//! let v512 = V512::from_bytes([0; 64]);
-//! #[repr(align(64))]
-//! struct Aligned([u8; 4096]);
-//! let mut storage = Aligned([0; 4096]);
-//! use rust_isa::x86::matrix::amx_tile::{AmxGuard, TileConfig};
-//! let mut config = TileConfig::builder().tile::<0>(1, 64).build();
-//! let amx_guard = unsafe { AmxGuard::enter(&config) };
-//!
-//! let _ = unsafe { tileloaddrs::<0>(&amx_guard, storage.0.as_ptr().cast(), 0) };
-//! let _ = unsafe { tileloaddrst1::<0>(&amx_guard, storage.0.as_ptr().cast(), 0) };
-//! ```
 //!
 //! </details>
 //!

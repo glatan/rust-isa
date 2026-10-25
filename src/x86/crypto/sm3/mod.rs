@@ -15,6 +15,16 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Behavior example
+//!
+//! ```no_run
+//! use rust_isa::x86::crypto::sm3::*;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! assert_ne!(unsafe { vsm3msg1(v, v, v) }.to_bytes(), [0; 16]);
+//! ```
+//!
 //! # Examples
 //!
 //! ```no_run
@@ -43,24 +53,9 @@
 //! let _ = unsafe { vsm3msg1(v128, v128, v128) };
 //! let _ = unsafe { vsm3msg2(v128, v128, v128) };
 //! let _ = unsafe { vsm3rnds2::<0>(v128, v128, v128) };
+//!
 //! ```
 //!
-//! # Compile-only instruction examples
-//!
-//! ```no_run
-//! use rust_isa::x86::crypto::sm3::*;
-//! use rust_isa::x86::simd::sse2::V128;
-//! use rust_isa::x86::simd::avx::V256;
-//! use rust_isa::x86::simd::avx512f::V512;
-//!
-//! let v128 = V128::from_bytes([0; 16]);
-//! let v256 = V256::from_bytes([0; 32]);
-//! let v512 = V512::from_bytes([0; 64]);
-//!
-//! let _ = unsafe { vsm3msg1(v128, v128, v128) };
-//! let _ = unsafe { vsm3msg2(v128, v128, v128) };
-//! let _ = unsafe { vsm3rnds2::<0>(v128, v128, v128) };
-//! ```
 //!
 //! </details>
 //!

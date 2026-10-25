@@ -41,6 +41,9 @@
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //!
+//! #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcmpb::<0>(v512, v512) };
+//! #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcmpub::<0>(v512, v512) };
+//!
 //! let _ = unsafe { vpackssdw(v512, v512) };
 //! let _ = unsafe { vpacksswb(v512, v512) };
 //! let _ = unsafe { vpackusdw(v512, v512) };
@@ -55,8 +58,6 @@
 //! let _ = unsafe { vpavgw(v512, v512) };
 //! let _ = unsafe { vpbroadcastb(0) };
 //! let _ = unsafe { vpbroadcastw(0) };
-//! #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcmpb::<0>(v512, v512) };
-//! #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcmpub::<0>(v512, v512) };
 //! let _ = unsafe { vpcmpuw::<0>(v512, v512) };
 //! let _ = unsafe { vpcmpw::<0>(v512, v512) };
 //! let _ = unsafe { vpmaddubsw(v512, v512) };
@@ -108,88 +109,9 @@
 //! let _ = unsafe { vpunpckhwd(v512, v512) };
 //! let _ = unsafe { vpunpcklbw(v512, v512) };
 //! let _ = unsafe { vpunpcklwd(v512, v512) };
+//!
 //! ```
 //!
-//! # Compile-only instruction examples
-//!
-//! ```no_run
-//! use rust_isa::x86::simd::avx512bw::*;
-//! use rust_isa::x86::simd::sse2::V128;
-//! use rust_isa::x86::simd::avx::V256;
-//! use rust_isa::x86::simd::avx512f::V512;
-//!
-//! let v128 = V128::from_bytes([0; 16]);
-//! let v256 = V256::from_bytes([0; 32]);
-//! let v512 = V512::from_bytes([0; 64]);
-//!
-//! let _ = unsafe { vpackssdw(v512, v512) };
-//! let _ = unsafe { vpacksswb(v512, v512) };
-//! let _ = unsafe { vpackusdw(v512, v512) };
-//! let _ = unsafe { vpackuswb(v512, v512) };
-//! let _ = unsafe { vpaddb(v512, v512) };
-//! let _ = unsafe { vpaddsb(v512, v512) };
-//! let _ = unsafe { vpaddsw(v512, v512) };
-//! let _ = unsafe { vpaddusb(v512, v512) };
-//! let _ = unsafe { vpaddusw(v512, v512) };
-//! let _ = unsafe { vpaddw(v512, v512) };
-//! let _ = unsafe { vpavgb(v512, v512) };
-//! let _ = unsafe { vpavgw(v512, v512) };
-//! let _ = unsafe { vpbroadcastb(0) };
-//! let _ = unsafe { vpbroadcastw(0) };
-//! #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcmpb::<0>(v512, v512) };
-//! #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcmpub::<0>(v512, v512) };
-//! let _ = unsafe { vpcmpuw::<0>(v512, v512) };
-//! let _ = unsafe { vpcmpw::<0>(v512, v512) };
-//! let _ = unsafe { vpmaddubsw(v512, v512) };
-//! let _ = unsafe { vpmaddwd(v512, v512) };
-//! let _ = unsafe { vpmaxsb(v512, v512) };
-//! let _ = unsafe { vpmaxsw(v512, v512) };
-//! let _ = unsafe { vpmaxub(v512, v512) };
-//! let _ = unsafe { vpminsb(v512, v512) };
-//! let _ = unsafe { vpminsw(v512, v512) };
-//! let _ = unsafe { vpminub(v512, v512) };
-//! let _ = unsafe { vpmovb2m(v512) };
-//! let _ = unsafe { vpmovdb(v512) };
-//! let _ = unsafe { vpmovdw(v512) };
-//! let _ = unsafe { vpmovm2b(0) };
-//! let _ = unsafe { vpmovm2w(0) };
-//! let _ = unsafe { vpmovqb(v512) };
-//! let _ = unsafe { vpmovqw(v512) };
-//! let _ = unsafe { vpmovsdb(v512) };
-//! let _ = unsafe { vpmovsdw(v512) };
-//! let _ = unsafe { vpmovsqb(v512) };
-//! let _ = unsafe { vpmovsqw(v512) };
-//! let _ = unsafe { vpmovswb(v512) };
-//! let _ = unsafe { vpmovusdb(v512) };
-//! let _ = unsafe { vpmovusdw(v512) };
-//! let _ = unsafe { vpmovusqb(v512) };
-//! let _ = unsafe { vpmovusqw(v512) };
-//! let _ = unsafe { vpmovuswb(v512) };
-//! let _ = unsafe { vpmovw2m(v512) };
-//! let _ = unsafe { vpmovwb(v512) };
-//! let _ = unsafe { vpmulhuw(v512, v512) };
-//! let _ = unsafe { vpmulhw(v512, v512) };
-//! let _ = unsafe { vpmullw(v512, v512) };
-//! let _ = unsafe { vpslldq::<0>(v512) };
-//! let _ = unsafe { vpsllw(v512, 0) };
-//! let _ = unsafe { vpsraw(v512, 0) };
-//! let _ = unsafe { vpsrldq::<0>(v512) };
-//! let _ = unsafe { vpsrlw(v512, 0) };
-//! let _ = unsafe { vpsubb(v512, v512) };
-//! let _ = unsafe { vpsubsb(v512, v512) };
-//! let _ = unsafe { vpsubsw(v512, v512) };
-//! let _ = unsafe { vpsubusb(v512, v512) };
-//! let _ = unsafe { vpsubusw(v512, v512) };
-//! let _ = unsafe { vpsubw(v512, v512) };
-//! let _ = unsafe { vptestmb(v512, v512) };
-//! let _ = unsafe { vptestmw(v512, v512) };
-//! let _ = unsafe { vptestnmb(v512, v512) };
-//! let _ = unsafe { vptestnmw(v512, v512) };
-//! let _ = unsafe { vpunpckhbw(v512, v512) };
-//! let _ = unsafe { vpunpckhwd(v512, v512) };
-//! let _ = unsafe { vpunpcklbw(v512, v512) };
-//! let _ = unsafe { vpunpcklwd(v512, v512) };
-//! ```
 //!
 //! </details>
 //!

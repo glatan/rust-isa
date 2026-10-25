@@ -107,78 +107,9 @@
 //! let _ = unsafe { vpshld(v128, v128) };
 //! let _ = unsafe { vpshlq(v128, v128) };
 //! let _ = unsafe { vpshlw(v128, v128) };
+//!
 //! ```
 //!
-//! # Compile-only instruction examples
-//!
-//! ```no_run
-//! use rust_isa::x86::simd::xop::*;
-//! use rust_isa::x86::simd::sse2::V128;
-//! use rust_isa::x86::simd::avx::V256;
-//! use rust_isa::x86::simd::avx512f::V512;
-//!
-//! let v128 = V128::from_bytes([0; 16]);
-//! let v256 = V256::from_bytes([0; 32]);
-//! let v512 = V512::from_bytes([0; 64]);
-//!
-//! let _ = unsafe { vfrczpd(v128) };
-//! let _ = unsafe { vfrczps(v128) };
-//! let _ = unsafe { vfrczsd(v128) };
-//! let _ = unsafe { vfrczss(v128) };
-//! let _ = unsafe { vpcmov(v128, v128, v128) };
-//! let _ = unsafe { vpcomb(v128, v128, 0) };
-//! let _ = unsafe { vpcomd(v128, v128, 0) };
-//! let _ = unsafe { vpcomq(v128, v128, 0) };
-//! let _ = unsafe { vpcomub(v128, v128, 0) };
-//! let _ = unsafe { vpcomud(v128, v128, 0) };
-//! let _ = unsafe { vpcomuq(v128, v128, 0) };
-//! let _ = unsafe { vpcomuw(v128, v128, 0) };
-//! let _ = unsafe { vpcomw(v128, v128, 0) };
-//! let _ = unsafe { vpermil2pd(v128, v128, v128, 0) };
-//! let _ = unsafe { vpermil2ps(v128, v128, v128, 0) };
-//! let _ = unsafe { vphaddbd(v128) };
-//! let _ = unsafe { vphaddbq(v128) };
-//! let _ = unsafe { vphaddbw(v128) };
-//! let _ = unsafe { vphadddq(v128) };
-//! let _ = unsafe { vphaddubd(v128) };
-//! let _ = unsafe { vphaddubq(v128) };
-//! let _ = unsafe { vphaddubw(v128) };
-//! let _ = unsafe { vphaddudq(v128) };
-//! let _ = unsafe { vphadduwd(v128) };
-//! let _ = unsafe { vphadduwq(v128) };
-//! let _ = unsafe { vphaddwd(v128) };
-//! let _ = unsafe { vphaddwq(v128) };
-//! let _ = unsafe { vphsubbw(v128) };
-//! let _ = unsafe { vphsubdq(v128) };
-//! let _ = unsafe { vphsubwd(v128) };
-//! let _ = unsafe { vpmacsdd(v128, v128, v128) };
-//! let _ = unsafe { vpmacsdqh(v128, v128, v128) };
-//! let _ = unsafe { vpmacsdql(v128, v128, v128) };
-//! let _ = unsafe { vpmacsdu(v128, v128, v128) };
-//! let _ = unsafe { vpmacssdd(v128, v128, v128) };
-//! let _ = unsafe { vpmacssdqh(v128, v128, v128) };
-//! let _ = unsafe { vpmacssdql(v128, v128, v128) };
-//! let _ = unsafe { vpmacssdu(v128, v128, v128) };
-//! let _ = unsafe { vpmacsswd(v128, v128, v128) };
-//! let _ = unsafe { vpmacssww(v128, v128, v128) };
-//! let _ = unsafe { vpmacswd(v128, v128, v128) };
-//! let _ = unsafe { vpmacsww(v128, v128, v128) };
-//! let _ = unsafe { vpmadcsswd(v128, v128, v128) };
-//! let _ = unsafe { vpmadcswd(v128, v128, v128) };
-//! let _ = unsafe { vpperm(v128, v128, v128) };
-//! let _ = unsafe { vprotb(v128, v128) };
-//! let _ = unsafe { vprotd(v128, v128) };
-//! let _ = unsafe { vprotq(v128, v128) };
-//! let _ = unsafe { vprotw(v128, v128) };
-//! let _ = unsafe { vpshab(v128, v128) };
-//! let _ = unsafe { vpshad(v128, v128) };
-//! let _ = unsafe { vpshaq(v128, v128) };
-//! let _ = unsafe { vpshaw(v128, v128) };
-//! let _ = unsafe { vpshlb(v128, v128) };
-//! let _ = unsafe { vpshld(v128, v128) };
-//! let _ = unsafe { vpshlq(v128, v128) };
-//! let _ = unsafe { vpshlw(v128, v128) };
-//! ```
 //!
 //! </details>
 //!
