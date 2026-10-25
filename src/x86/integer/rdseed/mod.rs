@@ -14,6 +14,17 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::integer::rdseed::rdseed_u32 as _;
+//! #[cfg(target_arch = "x86_64")]
+//! use rust_isa::x86::integer::rdseed::rdseed_u64 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 unsafe extern "C" {
     fn rust_isa_rdseed_u32(out: *mut u32) -> i32;
     #[cfg(target_arch = "x86_64")]

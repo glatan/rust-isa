@@ -10,6 +10,31 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::powerpc::simd::power9_vector::abs_i32 as _;
+//! use rust_isa::powerpc::simd::power9_vector::neg_i32 as _;
+//! use rust_isa::powerpc::simd::power9_vector::neg_i64 as _;
+//! use rust_isa::powerpc::simd::power9_vector::vabsd as _;
+//! use rust_isa::powerpc::simd::power9_vector::vabsduw as _;
+//! use rust_isa::powerpc::simd::power9_vector::vctzb as _;
+//! use rust_isa::powerpc::simd::power9_vector::vctzd as _;
+//! use rust_isa::powerpc::simd::power9_vector::vctzh as _;
+//! use rust_isa::powerpc::simd::power9_vector::vctzlsbb as _;
+//! use rust_isa::powerpc::simd::power9_vector::vctzw as _;
+//! use rust_isa::powerpc::simd::power9_vector::vextsb2d as _;
+//! use rust_isa::powerpc::simd::power9_vector::vextsb2w as _;
+//! use rust_isa::powerpc::simd::power9_vector::vextsh2d as _;
+//! use rust_isa::powerpc::simd::power9_vector::vextsh2w as _;
+//! use rust_isa::powerpc::simd::power9_vector::vextsw2d as _;
+//! use rust_isa::powerpc::simd::power9_vector::vnegd as _;
+//! use rust_isa::powerpc::simd::power9_vector::vnegw as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::altivec::V128;
 
 unsafe extern "C" {

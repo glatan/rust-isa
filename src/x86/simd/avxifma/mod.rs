@@ -14,6 +14,18 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::avxifma::vpmadd52huq as _;
+//! use rust_isa::x86::simd::avxifma::vpmadd52huq_v128 as _;
+//! use rust_isa::x86::simd::avxifma::vpmadd52luq as _;
+//! use rust_isa::x86::simd::avxifma::vpmadd52luq_v128 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::avx2::V256;
 use super::sse2::V128;
 

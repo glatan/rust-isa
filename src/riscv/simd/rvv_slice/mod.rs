@@ -19,6 +19,42 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::riscv::simd::rvv_slice::add_f32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::add_i32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::cmpeq_f32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::cmpeq_i32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::cmpge_f32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::cmpge_i32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::cmpgt_f32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::cmpgt_i32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::cmple_f32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::cmple_i32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::cmplt_f32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::cmplt_i32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::cmpne_f32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::cmpne_i32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::div_f32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::div_i32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::load_f32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::load_i32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::max_f32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::max_i32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::min_f32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::min_i32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::mul_f32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::mul_i32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::store_f32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::store_i32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::sub_f32 as _;
+//! use rust_isa::riscv::simd::rvv_slice::sub_i32 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 unsafe extern "C" {
     fn rust_isa_rvv_slice_add_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
     fn rust_isa_rvv_slice_mul_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);

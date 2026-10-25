@@ -234,6 +234,56 @@ fn check_rustdoc_is_english() {
 }
 
 #[test]
+fn check_each_arch_has_a_doctest() {
+    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("src");
+    for arch in [
+        "x86",
+        "aarch64",
+        "arm",
+        "riscv",
+        "loongarch",
+        "s390x",
+        "powerpc",
+        "mips",
+        "wasm32",
+    ] {
+        let mut found = false;
+        for path in rust_sources(&root.join(arch)) {
+            let text = fs::read_to_string(&path).unwrap();
+            let mut in_inventory = false;
+            for line in text.lines() {
+                let line = line.trim_start();
+                if line.contains("doctest-inventory:start") {
+                    in_inventory = true;
+                    continue;
+                }
+                if line.contains("doctest-inventory:end") {
+                    in_inventory = false;
+                    continue;
+                }
+                if in_inventory {
+                    continue;
+                }
+                let Some(doc) = line
+                    .strip_prefix("///")
+                    .or_else(|| line.strip_prefix("//!"))
+                else {
+                    continue;
+                };
+                let Some(fence) = doc.trim_start().strip_prefix("```") else {
+                    continue;
+                };
+                let language = fence.trim();
+                if language.is_empty() || language.starts_with("rust") {
+                    found = true;
+                }
+            }
+        }
+        assert!(found, "src/{arch} has no representative doctest example");
+    }
+}
+
+#[test]
 fn check_all_c_symbols_match() {
     let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("src");
     let mut by_dir: BTreeMap<PathBuf, Vec<PathBuf>> = BTreeMap::new();

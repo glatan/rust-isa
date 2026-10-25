@@ -16,6 +16,104 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::avx::V128 as _;
+//! use rust_isa::x86::simd::avx::vaddpd as _;
+//! use rust_isa::x86::simd::avx::vaddps as _;
+//! use rust_isa::x86::simd::avx::vaddsd as _;
+//! use rust_isa::x86::simd::avx::vaddss as _;
+//! use rust_isa::x86::simd::avx::vaddsubpd as _;
+//! use rust_isa::x86::simd::avx::vaddsubps as _;
+//! use rust_isa::x86::simd::avx::vandnpd as _;
+//! use rust_isa::x86::simd::avx::vandnps as _;
+//! use rust_isa::x86::simd::avx::vandpd as _;
+//! use rust_isa::x86::simd::avx::vandps as _;
+//! use rust_isa::x86::simd::avx::vblendpd as _;
+//! use rust_isa::x86::simd::avx::vblendps as _;
+//! use rust_isa::x86::simd::avx::vblendvpd as _;
+//! use rust_isa::x86::simd::avx::vblendvps as _;
+//! use rust_isa::x86::simd::avx::vbroadcastf128 as _;
+//! use rust_isa::x86::simd::avx::vbroadcastsd as _;
+//! use rust_isa::x86::simd::avx::vbroadcastss as _;
+//! use rust_isa::x86::simd::avx::vcmppd as _;
+//! use rust_isa::x86::simd::avx::vcmpps as _;
+//! use rust_isa::x86::simd::avx::vcmpsd as _;
+//! use rust_isa::x86::simd::avx::vcmpss as _;
+//! use rust_isa::x86::simd::avx::vcomisd as _;
+//! use rust_isa::x86::simd::avx::vcomiss as _;
+//! use rust_isa::x86::simd::avx::vcvtdq2ps as _;
+//! use rust_isa::x86::simd::avx::vcvtpd2ps as _;
+//! use rust_isa::x86::simd::avx::vcvtps2dq as _;
+//! use rust_isa::x86::simd::avx::vcvtps2pd as _;
+//! use rust_isa::x86::simd::avx::vcvtsd2ss as _;
+//! use rust_isa::x86::simd::avx::vcvtss2sd as _;
+//! use rust_isa::x86::simd::avx::vcvttps2dq as _;
+//! use rust_isa::x86::simd::avx::vdivpd as _;
+//! use rust_isa::x86::simd::avx::vdivps as _;
+//! use rust_isa::x86::simd::avx::vdppd as _;
+//! use rust_isa::x86::simd::avx::vdpps as _;
+//! use rust_isa::x86::simd::avx::vextractf128 as _;
+//! use rust_isa::x86::simd::avx::vinsertf128 as _;
+//! use rust_isa::x86::simd::avx::vlddqu as _;
+//! use rust_isa::x86::simd::avx::vmaskmovpd_load as _;
+//! use rust_isa::x86::simd::avx::vmaskmovpd_store as _;
+//! use rust_isa::x86::simd::avx::vmaskmovps_load as _;
+//! use rust_isa::x86::simd::avx::vmaskmovps_store as _;
+//! use rust_isa::x86::simd::avx::vmaxpd as _;
+//! use rust_isa::x86::simd::avx::vmaxps as _;
+//! use rust_isa::x86::simd::avx::vminpd as _;
+//! use rust_isa::x86::simd::avx::vminps as _;
+//! use rust_isa::x86::simd::avx::vmovd as _;
+//! use rust_isa::x86::simd::avx::vmovd_to_u32 as _;
+//! use rust_isa::x86::simd::avx::vmovddup as _;
+//! use rust_isa::x86::simd::avx::vmovmskpd as _;
+//! use rust_isa::x86::simd::avx::vmovmskps as _;
+//! use rust_isa::x86::simd::avx::vmovntpd as _;
+//! use rust_isa::x86::simd::avx::vmovntps as _;
+//! #[cfg(target_arch = "x86_64")]
+//! use rust_isa::x86::simd::avx::vmovq as _;
+//! #[cfg(target_arch = "x86_64")]
+//! use rust_isa::x86::simd::avx::vmovq_to_u64 as _;
+//! use rust_isa::x86::simd::avx::vmovshdup as _;
+//! use rust_isa::x86::simd::avx::vmovsldup as _;
+//! use rust_isa::x86::simd::avx::vmpsadbw as _;
+//! use rust_isa::x86::simd::avx::vmulpd as _;
+//! use rust_isa::x86::simd::avx::vmulps as _;
+//! use rust_isa::x86::simd::avx::vorps as _;
+//! use rust_isa::x86::simd::avx::vperm2f128 as _;
+//! use rust_isa::x86::simd::avx::vpermilpd as _;
+//! use rust_isa::x86::simd::avx::vpermilps as _;
+//! use rust_isa::x86::simd::avx::vpsadbw as _;
+//! use rust_isa::x86::simd::avx::vptest as _;
+//! use rust_isa::x86::simd::avx::vrcpps as _;
+//! use rust_isa::x86::simd::avx::vroundpd as _;
+//! use rust_isa::x86::simd::avx::vroundps as _;
+//! use rust_isa::x86::simd::avx::vroundsd as _;
+//! use rust_isa::x86::simd::avx::vroundss as _;
+//! use rust_isa::x86::simd::avx::vshufpd as _;
+//! use rust_isa::x86::simd::avx::vshufps as _;
+//! use rust_isa::x86::simd::avx::vsqrtpd as _;
+//! use rust_isa::x86::simd::avx::vsqrtps as _;
+//! use rust_isa::x86::simd::avx::vsubpd as _;
+//! use rust_isa::x86::simd::avx::vsubps as _;
+//! use rust_isa::x86::simd::avx::vtestpd as _;
+//! use rust_isa::x86::simd::avx::vtestps as _;
+//! use rust_isa::x86::simd::avx::vucomisd as _;
+//! use rust_isa::x86::simd::avx::vucomiss as _;
+//! use rust_isa::x86::simd::avx::vunpckhpd as _;
+//! use rust_isa::x86::simd::avx::vunpckhps as _;
+//! use rust_isa::x86::simd::avx::vunpcklpd as _;
+//! use rust_isa::x86::simd::avx::vunpcklps as _;
+//! use rust_isa::x86::simd::avx::vxorpd as _;
+//! use rust_isa::x86::simd::avx::vxorps as _;
+//! use rust_isa::x86::simd::avx::vzeroupper as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 pub use super::sse2::V128;
 
 mod blend;

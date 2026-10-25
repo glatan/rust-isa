@@ -15,6 +15,20 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::sse4a::extrq as _;
+//! use rust_isa::x86::simd::sse4a::extrq_imm as _;
+//! use rust_isa::x86::simd::sse4a::insertq as _;
+//! use rust_isa::x86::simd::sse4a::insertq_imm as _;
+//! use rust_isa::x86::simd::sse4a::movntsd as _;
+//! use rust_isa::x86::simd::sse4a::movntss as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::sse2::V128;
 
 unsafe extern "C" {

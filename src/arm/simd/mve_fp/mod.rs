@@ -12,6 +12,28 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::arm::simd::mve_fp::abs as _;
+//! use rust_isa::arm::simd::mve_fp::add as _;
+//! use rust_isa::arm::simd::mve_fp::cmp as _;
+//! use rust_isa::arm::simd::mve_fp::cvt as _;
+//! use rust_isa::arm::simd::mve_fp::cvt_f32 as _;
+//! use rust_isa::arm::simd::mve_fp::div as _;
+//! use rust_isa::arm::simd::mve_fp::fma as _;
+//! use rust_isa::arm::simd::mve_fp::fms as _;
+//! use rust_isa::arm::simd::mve_fp::max as _;
+//! use rust_isa::arm::simd::mve_fp::min as _;
+//! use rust_isa::arm::simd::mve_fp::mul as _;
+//! use rust_isa::arm::simd::mve_fp::neg as _;
+//! use rust_isa::arm::simd::mve_fp::sqrt as _;
+//! use rust_isa::arm::simd::mve_fp::sub as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::neon::V128;
 
 unsafe extern "C" {

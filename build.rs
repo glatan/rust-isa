@@ -228,6 +228,7 @@ fn main() {
         println!("cargo:rerun-if-changed={}", path.display());
     }
     println!("cargo:rerun-if-env-changed=CARGO_CFG_TARGET_FEATURE");
+    println!("cargo:rerun-if-env-changed=RUST_ISA_DOCTEST");
 
     let target = env::var("TARGET").unwrap_or_default();
     let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
@@ -947,7 +948,6 @@ fn compile_archive(
     command.args([
         "-c",
         "-O2",
-        "-flto=thin",
         "-ffreestanding",
         "-fno-builtin",
         "-fno-vectorize",
@@ -955,6 +955,11 @@ fn compile_archive(
         "-Wall",
         "-Werror",
     ]);
+    // Cross GCC linkers cannot read clang's ThinLTO bitcode. Doctest builds
+    // use ELF objects so the GNU target linker can link the test harness.
+    if env::var("RUST_ISA_DOCTEST").ok().as_deref() != Some("1") {
+        command.arg("-flto=thin");
+    }
     command.args(flags);
     command.arg("-o").arg(&obj_path).arg(c_path);
     let status = command

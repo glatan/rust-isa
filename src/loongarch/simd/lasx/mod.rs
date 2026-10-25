@@ -15,6 +15,94 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::loongarch::simd::lasx::add as _;
+//! use rust_isa::loongarch::simd::lasx::add_i64 as _;
+//! use rust_isa::loongarch::simd::lasx::and as _;
+//! use rust_isa::loongarch::simd::lasx::fadd as _;
+//! use rust_isa::loongarch::simd::lasx::fdiv as _;
+//! use rust_isa::loongarch::simd::lasx::fmul as _;
+//! use rust_isa::loongarch::simd::lasx::fsub as _;
+//! use rust_isa::loongarch::simd::lasx::mul as _;
+//! use rust_isa::loongarch::simd::lasx::mul_i32 as _;
+//! use rust_isa::loongarch::simd::lasx::or as _;
+//! use rust_isa::loongarch::simd::lasx::splat_i32 as _;
+//! use rust_isa::loongarch::simd::lasx::sub as _;
+//! use rust_isa::loongarch::simd::lasx::sub_i64 as _;
+//! use rust_isa::loongarch::simd::lasx::v256_load as _;
+//! use rust_isa::loongarch::simd::lasx::v256_store as _;
+//! use rust_isa::loongarch::simd::lasx::vext2xv_h_b as _;
+//! use rust_isa::loongarch::simd::lasx::xor as _;
+//! use rust_isa::loongarch::simd::lasx::xvabs as _;
+//! use rust_isa::loongarch::simd::lasx::xvabs_b as _;
+//! use rust_isa::loongarch::simd::lasx::xvabs_d as _;
+//! use rust_isa::loongarch::simd::lasx::xvabs_h as _;
+//! use rust_isa::loongarch::simd::lasx::xvadd as _;
+//! use rust_isa::loongarch::simd::lasx::xvadd_b as _;
+//! use rust_isa::loongarch::simd::lasx::xvadd_d as _;
+//! use rust_isa::loongarch::simd::lasx::xvadd_h as _;
+//! use rust_isa::loongarch::simd::lasx::xvadd_w as _;
+//! use rust_isa::loongarch::simd::lasx::xvand as _;
+//! use rust_isa::loongarch::simd::lasx::xvavgr as _;
+//! use rust_isa::loongarch::simd::lasx::xvbitsel as _;
+//! use rust_isa::loongarch::simd::lasx::xvexth as _;
+//! use rust_isa::loongarch::simd::lasx::xvextl as _;
+//! use rust_isa::loongarch::simd::lasx::xvfadd as _;
+//! use rust_isa::loongarch::simd::lasx::xvfcmp as _;
+//! use rust_isa::loongarch::simd::lasx::xvfcvt as _;
+//! use rust_isa::loongarch::simd::lasx::xvfdiv as _;
+//! use rust_isa::loongarch::simd::lasx::xvffint as _;
+//! use rust_isa::loongarch::simd::lasx::xvfmax as _;
+//! use rust_isa::loongarch::simd::lasx::xvfmin as _;
+//! use rust_isa::loongarch::simd::lasx::xvfmul as _;
+//! use rust_isa::loongarch::simd::lasx::xvfsub as _;
+//! use rust_isa::loongarch::simd::lasx::xvftint as _;
+//! use rust_isa::loongarch::simd::lasx::xvld as _;
+//! use rust_isa::loongarch::simd::lasx::xvldi as _;
+//! use rust_isa::loongarch::simd::lasx::xvmax as _;
+//! use rust_isa::loongarch::simd::lasx::xvmin as _;
+//! use rust_isa::loongarch::simd::lasx::xvmul as _;
+//! use rust_isa::loongarch::simd::lasx::xvmul_h as _;
+//! use rust_isa::loongarch::simd::lasx::xvmul_w as _;
+//! use rust_isa::loongarch::simd::lasx::xvneg as _;
+//! use rust_isa::loongarch::simd::lasx::xvneg_b as _;
+//! use rust_isa::loongarch::simd::lasx::xvneg_d as _;
+//! use rust_isa::loongarch::simd::lasx::xvneg_h as _;
+//! use rust_isa::loongarch::simd::lasx::xvnor as _;
+//! use rust_isa::loongarch::simd::lasx::xvor as _;
+//! use rust_isa::loongarch::simd::lasx::xvpackev as _;
+//! use rust_isa::loongarch::simd::lasx::xvpackod as _;
+//! use rust_isa::loongarch::simd::lasx::xvrepl as _;
+//! use rust_isa::loongarch::simd::lasx::xvsat as _;
+//! use rust_isa::loongarch::simd::lasx::xvseq as _;
+//! use rust_isa::loongarch::simd::lasx::xvseqi as _;
+//! use rust_isa::loongarch::simd::lasx::xvshuf as _;
+//! use rust_isa::loongarch::simd::lasx::xvshuf4i as _;
+//! use rust_isa::loongarch::simd::lasx::xvsle as _;
+//! use rust_isa::loongarch::simd::lasx::xvslei as _;
+//! use rust_isa::loongarch::simd::lasx::xvsll as _;
+//! use rust_isa::loongarch::simd::lasx::xvslli as _;
+//! use rust_isa::loongarch::simd::lasx::xvslt as _;
+//! use rust_isa::loongarch::simd::lasx::xvslti as _;
+//! use rust_isa::loongarch::simd::lasx::xvsra as _;
+//! use rust_isa::loongarch::simd::lasx::xvsrai as _;
+//! use rust_isa::loongarch::simd::lasx::xvsrl as _;
+//! use rust_isa::loongarch::simd::lasx::xvsrli as _;
+//! use rust_isa::loongarch::simd::lasx::xvssr as _;
+//! use rust_isa::loongarch::simd::lasx::xvst as _;
+//! use rust_isa::loongarch::simd::lasx::xvsub as _;
+//! use rust_isa::loongarch::simd::lasx::xvsub_b as _;
+//! use rust_isa::loongarch::simd::lasx::xvsub_d as _;
+//! use rust_isa::loongarch::simd::lasx::xvsub_h as _;
+//! use rust_isa::loongarch::simd::lasx::xvsub_w as _;
+//! use rust_isa::loongarch::simd::lasx::xvxor as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 mod v256;
 
 pub use v256::*;

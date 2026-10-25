@@ -16,6 +16,17 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::crypto::sha512::vsha512msg1 as _;
+//! use rust_isa::x86::crypto::sha512::vsha512msg2 as _;
+//! use rust_isa::x86::crypto::sha512::vsha512rnds2 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::sse2::V128;
 

@@ -13,6 +13,18 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::riscv::integer::zbs::bclr as _;
+//! use rust_isa::riscv::integer::zbs::bext as _;
+//! use rust_isa::riscv::integer::zbs::binv as _;
+//! use rust_isa::riscv::integer::zbs::bset as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 unsafe extern "C" {
     fn rust_isa_riscv_zbs_bset(value: u64, index: u64) -> u64;
     fn rust_isa_riscv_zbs_bclr(value: u64, index: u64) -> u64;

@@ -12,6 +12,39 @@
 //!
 //! The build compiles the bundled C with clang.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::riscv::float::zfa::fcvtmod_w_d as _;
+//! use rust_isa::riscv::float::zfa::fcvtmod_w_h as _;
+//! use rust_isa::riscv::float::zfa::fleq_d as _;
+//! use rust_isa::riscv::float::zfa::fleq_h as _;
+//! use rust_isa::riscv::float::zfa::fleq_s as _;
+//! use rust_isa::riscv::float::zfa::fli_d as _;
+//! use rust_isa::riscv::float::zfa::fli_h as _;
+//! use rust_isa::riscv::float::zfa::fli_s as _;
+//! use rust_isa::riscv::float::zfa::fltq_d as _;
+//! use rust_isa::riscv::float::zfa::fltq_h as _;
+//! use rust_isa::riscv::float::zfa::fltq_s as _;
+//! use rust_isa::riscv::float::zfa::fmaxm_d as _;
+//! use rust_isa::riscv::float::zfa::fmaxm_h as _;
+//! use rust_isa::riscv::float::zfa::fmaxm_s as _;
+//! use rust_isa::riscv::float::zfa::fminm_d as _;
+//! use rust_isa::riscv::float::zfa::fminm_h as _;
+//! use rust_isa::riscv::float::zfa::fminm_s as _;
+//! use rust_isa::riscv::float::zfa::fmvh_x_d as _;
+//! use rust_isa::riscv::float::zfa::fmvp_d_x as _;
+//! use rust_isa::riscv::float::zfa::fround_d as _;
+//! use rust_isa::riscv::float::zfa::fround_h as _;
+//! use rust_isa::riscv::float::zfa::fround_s as _;
+//! use rust_isa::riscv::float::zfa::froundnx_d as _;
+//! use rust_isa::riscv::float::zfa::froundnx_h as _;
+//! use rust_isa::riscv::float::zfa::froundnx_s as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 unsafe extern "C" {
     fn rust_isa_riscv_zfa_fminm(a: u16, b: u16) -> u16;
     fn rust_isa_riscv_zfa_fmaxm(a: u16, b: u16) -> u16;

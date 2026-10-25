@@ -13,6 +13,64 @@
 //!
 //! The build compiles the bundled C with clang; some wrappers use `asm!`.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::sse4_1::blendpd as _;
+//! use rust_isa::x86::simd::sse4_1::blendps as _;
+//! use rust_isa::x86::simd::sse4_1::blendvpd as _;
+//! use rust_isa::x86::simd::sse4_1::blendvps as _;
+//! use rust_isa::x86::simd::sse4_1::dppd as _;
+//! use rust_isa::x86::simd::sse4_1::dpps as _;
+//! use rust_isa::x86::simd::sse4_1::insertps as _;
+//! use rust_isa::x86::simd::sse4_1::movntdqa as _;
+//! use rust_isa::x86::simd::sse4_1::mpsadbw as _;
+//! use rust_isa::x86::simd::sse4_1::packusdw as _;
+//! use rust_isa::x86::simd::sse4_1::pblendvb as _;
+//! use rust_isa::x86::simd::sse4_1::pblendw as _;
+//! use rust_isa::x86::simd::sse4_1::pextrb as _;
+//! use rust_isa::x86::simd::sse4_1::pextrd as _;
+//! #[cfg(target_arch = "x86_64")]
+//! use rust_isa::x86::simd::sse4_1::pextrq as _;
+//! use rust_isa::x86::simd::sse4_1::pextrw as _;
+//! use rust_isa::x86::simd::sse4_1::phminposuw as _;
+//! use rust_isa::x86::simd::sse4_1::pinsrb as _;
+//! use rust_isa::x86::simd::sse4_1::pinsrd as _;
+//! #[cfg(target_arch = "x86_64")]
+//! use rust_isa::x86::simd::sse4_1::pinsrq as _;
+//! use rust_isa::x86::simd::sse4_1::pinsrw as _;
+//! use rust_isa::x86::simd::sse4_1::pmaxsb as _;
+//! use rust_isa::x86::simd::sse4_1::pmaxsd as _;
+//! use rust_isa::x86::simd::sse4_1::pmaxud as _;
+//! use rust_isa::x86::simd::sse4_1::pmaxuw as _;
+//! use rust_isa::x86::simd::sse4_1::pminsb as _;
+//! use rust_isa::x86::simd::sse4_1::pminsd as _;
+//! use rust_isa::x86::simd::sse4_1::pminud as _;
+//! use rust_isa::x86::simd::sse4_1::pminuw as _;
+//! use rust_isa::x86::simd::sse4_1::pmovsxbd as _;
+//! use rust_isa::x86::simd::sse4_1::pmovsxbq as _;
+//! use rust_isa::x86::simd::sse4_1::pmovsxbw as _;
+//! use rust_isa::x86::simd::sse4_1::pmovsxdq as _;
+//! use rust_isa::x86::simd::sse4_1::pmovsxwd as _;
+//! use rust_isa::x86::simd::sse4_1::pmovsxwq as _;
+//! use rust_isa::x86::simd::sse4_1::pmovzxbd as _;
+//! use rust_isa::x86::simd::sse4_1::pmovzxbq as _;
+//! use rust_isa::x86::simd::sse4_1::pmovzxbw as _;
+//! use rust_isa::x86::simd::sse4_1::pmovzxdq as _;
+//! use rust_isa::x86::simd::sse4_1::pmovzxwd as _;
+//! use rust_isa::x86::simd::sse4_1::pmovzxwq as _;
+//! use rust_isa::x86::simd::sse4_1::pmuldq as _;
+//! use rust_isa::x86::simd::sse4_1::pmulld as _;
+//! use rust_isa::x86::simd::sse4_1::ptest as _;
+//! use rust_isa::x86::simd::sse4_1::roundpd as _;
+//! use rust_isa::x86::simd::sse4_1::roundps as _;
+//! use rust_isa::x86::simd::sse4_1::roundsd as _;
+//! use rust_isa::x86::simd::sse4_1::roundss as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::sse2::V128;
 use core::arch::asm;
 

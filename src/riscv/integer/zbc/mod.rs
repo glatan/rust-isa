@@ -12,6 +12,17 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::riscv::integer::zbc::clmul as _;
+//! use rust_isa::riscv::integer::zbc::clmulh as _;
+//! use rust_isa::riscv::integer::zbc::clmulr as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 unsafe extern "C" {
     fn rust_isa_riscv_zbc_clmul(a: u64, b: u64) -> u64;
     fn rust_isa_riscv_zbc_clmulh(a: u64, b: u64) -> u64;

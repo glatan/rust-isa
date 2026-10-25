@@ -16,6 +16,36 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::powerpc::simd::power8_vector::add_u64 as _;
+//! use rust_isa::powerpc::simd::power8_vector::mul_even_u16 as _;
+//! use rust_isa::powerpc::simd::power8_vector::mul_u32 as _;
+//! use rust_isa::powerpc::simd::power8_vector::sub_u64 as _;
+//! use rust_isa::powerpc::simd::power8_vector::vaddudm as _;
+//! use rust_isa::powerpc::simd::power8_vector::vclzd as _;
+//! use rust_isa::powerpc::simd::power8_vector::vctzd as _;
+//! use rust_isa::powerpc::simd::power8_vector::vmaxsd as _;
+//! use rust_isa::powerpc::simd::power8_vector::vmaxud as _;
+//! use rust_isa::powerpc::simd::power8_vector::vminsd as _;
+//! use rust_isa::powerpc::simd::power8_vector::vminud as _;
+//! use rust_isa::powerpc::simd::power8_vector::vmuleuh as _;
+//! use rust_isa::powerpc::simd::power8_vector::vmuleuw as _;
+//! use rust_isa::powerpc::simd::power8_vector::vmulouw as _;
+//! use rust_isa::powerpc::simd::power8_vector::vmuluwm as _;
+//! use rust_isa::powerpc::simd::power8_vector::vpksdss as _;
+//! use rust_isa::powerpc::simd::power8_vector::vpksdus as _;
+//! use rust_isa::powerpc::simd::power8_vector::vpkudum as _;
+//! use rust_isa::powerpc::simd::power8_vector::vpopcntd as _;
+//! use rust_isa::powerpc::simd::power8_vector::vsubudm as _;
+//! use rust_isa::powerpc::simd::power8_vector::vupkhsw as _;
+//! use rust_isa::powerpc::simd::power8_vector::vupklsw as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::altivec::V128;
 
 unsafe extern "C" {

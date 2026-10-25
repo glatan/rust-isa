@@ -10,6 +10,19 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::riscv::integer::zbkb::brev8 as _;
+//! use rust_isa::riscv::integer::zbkb::pack as _;
+//! use rust_isa::riscv::integer::zbkb::packh as _;
+//! use rust_isa::riscv::integer::zbkb::unzip as _;
+//! use rust_isa::riscv::integer::zbkb::zip as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 unsafe extern "C" {
     fn rust_isa_riscv_zbkb_pack(a: u64, b: u64) -> u64;
     fn rust_isa_riscv_zbkb_packh(a: u64, b: u64) -> u64;

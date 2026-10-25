@@ -11,6 +11,32 @@
 //! or `zvbc`. Key-schedule functions take a runtime round number; the valid
 //! range is documented on each function.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::riscv::simd::zv::vaesdf as _;
+//! use rust_isa::riscv::simd::zv::vaesdm as _;
+//! use rust_isa::riscv::simd::zv::vaesef as _;
+//! use rust_isa::riscv::simd::zv::vaesem as _;
+//! use rust_isa::riscv::simd::zv::vaeskf1 as _;
+//! use rust_isa::riscv::simd::zv::vaeskf2 as _;
+//! use rust_isa::riscv::simd::zv::vaesz as _;
+//! use rust_isa::riscv::simd::zv::vclmul as _;
+//! use rust_isa::riscv::simd::zv::vclmulh as _;
+//! use rust_isa::riscv::simd::zv::vghsh as _;
+//! use rust_isa::riscv::simd::zv::vgmul as _;
+//! use rust_isa::riscv::simd::zv::vsha2ch as _;
+//! use rust_isa::riscv::simd::zv::vsha2cl as _;
+//! use rust_isa::riscv::simd::zv::vsha2ms as _;
+//! use rust_isa::riscv::simd::zv::vsm3c as _;
+//! use rust_isa::riscv::simd::zv::vsm3me as _;
+//! use rust_isa::riscv::simd::zv::vsm4k as _;
+//! use rust_isa::riscv::simd::zv::vsm4r as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 macro_rules! crypto_binary {
     ($(#[$meta:meta])* $name:ident, $c:ident, $feature:literal) => {
         $(#[$meta])*

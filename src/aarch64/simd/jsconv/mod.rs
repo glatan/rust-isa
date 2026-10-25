@@ -9,6 +9,16 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::aarch64::simd::jsconv::fjcvtzs as _;
+//! use rust_isa::aarch64::simd::jsconv::fjcvtzs_v128 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use crate::aarch64::simd::neon::V128;
 
 unsafe extern "C" {

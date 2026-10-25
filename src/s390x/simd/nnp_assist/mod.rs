@@ -14,6 +14,19 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::s390x::simd::nnp_assist::vcfn as _;
+//! use rust_isa::s390x::simd::nnp_assist::vclfnh as _;
+//! use rust_isa::s390x::simd::nnp_assist::vclfnl as _;
+//! use rust_isa::s390x::simd::nnp_assist::vcnf as _;
+//! use rust_isa::s390x::simd::nnp_assist::vcrnf as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::vector::V128;
 use core::arch::asm;
 

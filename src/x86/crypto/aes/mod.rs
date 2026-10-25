@@ -10,6 +10,20 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::crypto::aes::aesdec as _;
+//! use rust_isa::x86::crypto::aes::aesdeclast as _;
+//! use rust_isa::x86::crypto::aes::aesenc as _;
+//! use rust_isa::x86::crypto::aes::aesenclast as _;
+//! use rust_isa::x86::crypto::aes::aesimc as _;
+//! use rust_isa::x86::crypto::aes::aeskeygenassist as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use core::arch::asm;
 
 use crate::x86::simd::sse2::V128;

@@ -1,6 +1,6 @@
 # native の値テスト
 
-この文書は、native arch の値テストを `tests/` に追加するときの設計である。実行状況と runner は [値テストの fixture](fixture-matrix.md) と各 arch の `README.md` を参照する。
+この文書は、native arch の値テストを `tests/` に追加するときの設計である。実行状況と runner は [値テストの fixture](fixture-matrix.md) と各 arch の `README.md` を参照する。値テストとゼロコスト検査の役割の分類は [テストの役割](testing.md) にある。
 
 ## 前提
 

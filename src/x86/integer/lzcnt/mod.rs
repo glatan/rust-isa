@@ -13,6 +13,17 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::integer::lzcnt::lzcnt_u32 as _;
+//! #[cfg(target_arch = "x86_64")]
+//! use rust_isa::x86::integer::lzcnt::lzcnt_u64 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 unsafe extern "C" {
     fn rust_isa_lzcnt_u32(value: u32) -> u32;
     #[cfg(target_arch = "x86_64")]

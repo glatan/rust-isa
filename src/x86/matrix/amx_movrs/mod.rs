@@ -7,6 +7,16 @@
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::matrix::amx_movrs::tileloaddrs as _;
+//! use rust_isa::x86::matrix::amx_movrs::tileloaddrst1 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use core::arch::asm;
 
 use super::amx_tile::AmxGuard;

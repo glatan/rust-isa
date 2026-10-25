@@ -10,6 +10,15 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::aarch64::simd::f64mm::fmmla_f64 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 unsafe extern "C" {
     fn rust_isa_f64mm_fmmla(a: *const f64, b: *const f64, acc: *mut f64, len: usize);
 }

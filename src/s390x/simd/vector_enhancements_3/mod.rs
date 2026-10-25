@@ -20,6 +20,76 @@
 //! facility. The `vblendq` and `veval` wrappers use inline assembly and have
 //! not been value-tested.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::s390x::simd::vector_enhancements_3::vacccq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vaccq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vacq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vaq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vavglq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vavgq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vblendb as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vblendf as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vblendg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vblendh as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vblendq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vclzq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vctzq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vdf as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vdg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vdlf as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vdlg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vdlq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vdq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::veval as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vgemb as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vgemf as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vgemg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vgemh as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vgemq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vlcq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vlpq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmaeg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmahg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmahq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmaleg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmalg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmalhg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmalhq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmalog as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmalq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmaog as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmeg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmhg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmhq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmleg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmlg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmlhg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmlhq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmlog as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmlq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmnlq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmnq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmog as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmxlq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vmxq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vrf as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vrg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vrlf as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vrlg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vrlq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vrq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vsq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vuphg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vuplg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vuplhg as _;
+//! use rust_isa::s390x::simd::vector_enhancements_3::vupllg as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::vector::V128;
 use core::arch::asm;
 

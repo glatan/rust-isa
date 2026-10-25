@@ -15,6 +15,24 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::sse4_2::crc32_u16 as _;
+//! use rust_isa::x86::simd::sse4_2::crc32_u32 as _;
+//! #[cfg(target_arch = "x86_64")]
+//! use rust_isa::x86::simd::sse4_2::crc32_u64 as _;
+//! use rust_isa::x86::simd::sse4_2::crc32_u8 as _;
+//! use rust_isa::x86::simd::sse4_2::pcmpestri as _;
+//! use rust_isa::x86::simd::sse4_2::pcmpestrm as _;
+//! use rust_isa::x86::simd::sse4_2::pcmpgtq as _;
+//! use rust_isa::x86::simd::sse4_2::pcmpistri as _;
+//! use rust_isa::x86::simd::sse4_2::pcmpistrm as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::sse2::V128;
 
 unsafe extern "C" {

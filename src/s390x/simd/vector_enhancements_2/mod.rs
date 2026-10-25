@@ -11,6 +11,16 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::s390x::simd::vector_enhancements_2::vsld as _;
+//! use rust_isa::s390x::simd::vector_enhancements_2::vsrd as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::vector::V128;
 use core::arch::asm;
 

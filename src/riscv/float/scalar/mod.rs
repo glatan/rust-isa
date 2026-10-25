@@ -16,6 +16,83 @@
 //!
 //! The build compiles the bundled C with clang.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::riscv::float::scalar::fadd_d as _;
+//! use rust_isa::riscv::float::scalar::fadd_h as _;
+//! use rust_isa::riscv::float::scalar::fadd_s as _;
+//! use rust_isa::riscv::float::scalar::fclass_h as _;
+//! use rust_isa::riscv::float::scalar::fcvt_d_h as _;
+//! use rust_isa::riscv::float::scalar::fcvt_d_l as _;
+//! use rust_isa::riscv::float::scalar::fcvt_d_lu as _;
+//! use rust_isa::riscv::float::scalar::fcvt_d_s as _;
+//! use rust_isa::riscv::float::scalar::fcvt_d_w as _;
+//! use rust_isa::riscv::float::scalar::fcvt_d_wu as _;
+//! use rust_isa::riscv::float::scalar::fcvt_h_d as _;
+//! use rust_isa::riscv::float::scalar::fcvt_h_l as _;
+//! use rust_isa::riscv::float::scalar::fcvt_h_lu as _;
+//! use rust_isa::riscv::float::scalar::fcvt_h_s as _;
+//! use rust_isa::riscv::float::scalar::fcvt_h_w as _;
+//! use rust_isa::riscv::float::scalar::fcvt_h_wu as _;
+//! use rust_isa::riscv::float::scalar::fcvt_l_d as _;
+//! use rust_isa::riscv::float::scalar::fcvt_l_h as _;
+//! use rust_isa::riscv::float::scalar::fcvt_l_s as _;
+//! use rust_isa::riscv::float::scalar::fcvt_lu_d as _;
+//! use rust_isa::riscv::float::scalar::fcvt_lu_h as _;
+//! use rust_isa::riscv::float::scalar::fcvt_lu_s as _;
+//! use rust_isa::riscv::float::scalar::fcvt_s_d as _;
+//! use rust_isa::riscv::float::scalar::fcvt_s_h as _;
+//! use rust_isa::riscv::float::scalar::fcvt_s_l as _;
+//! use rust_isa::riscv::float::scalar::fcvt_s_lu as _;
+//! use rust_isa::riscv::float::scalar::fcvt_s_w as _;
+//! use rust_isa::riscv::float::scalar::fcvt_s_wu as _;
+//! use rust_isa::riscv::float::scalar::fcvt_w_d as _;
+//! use rust_isa::riscv::float::scalar::fcvt_w_h as _;
+//! use rust_isa::riscv::float::scalar::fcvt_w_s as _;
+//! use rust_isa::riscv::float::scalar::fcvt_wu_d as _;
+//! use rust_isa::riscv::float::scalar::fcvt_wu_h as _;
+//! use rust_isa::riscv::float::scalar::fcvt_wu_s as _;
+//! use rust_isa::riscv::float::scalar::fdiv_d as _;
+//! use rust_isa::riscv::float::scalar::fdiv_h as _;
+//! use rust_isa::riscv::float::scalar::fdiv_s as _;
+//! use rust_isa::riscv::float::scalar::feq_d as _;
+//! use rust_isa::riscv::float::scalar::feq_h as _;
+//! use rust_isa::riscv::float::scalar::feq_s as _;
+//! use rust_isa::riscv::float::scalar::fle_d as _;
+//! use rust_isa::riscv::float::scalar::fle_h as _;
+//! use rust_isa::riscv::float::scalar::fle_s as _;
+//! use rust_isa::riscv::float::scalar::flh as _;
+//! use rust_isa::riscv::float::scalar::flt_d as _;
+//! use rust_isa::riscv::float::scalar::flt_h as _;
+//! use rust_isa::riscv::float::scalar::flt_s as _;
+//! use rust_isa::riscv::float::scalar::fmax_d as _;
+//! use rust_isa::riscv::float::scalar::fmax_h as _;
+//! use rust_isa::riscv::float::scalar::fmax_s as _;
+//! use rust_isa::riscv::float::scalar::fmin_d as _;
+//! use rust_isa::riscv::float::scalar::fmin_h as _;
+//! use rust_isa::riscv::float::scalar::fmin_s as _;
+//! use rust_isa::riscv::float::scalar::fmul_d as _;
+//! use rust_isa::riscv::float::scalar::fmul_h as _;
+//! use rust_isa::riscv::float::scalar::fmul_s as _;
+//! use rust_isa::riscv::float::scalar::fmv_d_x as _;
+//! use rust_isa::riscv::float::scalar::fmv_h_x as _;
+//! use rust_isa::riscv::float::scalar::fmv_w_x as _;
+//! use rust_isa::riscv::float::scalar::fmv_x_d as _;
+//! use rust_isa::riscv::float::scalar::fmv_x_h as _;
+//! use rust_isa::riscv::float::scalar::fmv_x_w as _;
+//! use rust_isa::riscv::float::scalar::fsh as _;
+//! use rust_isa::riscv::float::scalar::fsqrt_d as _;
+//! use rust_isa::riscv::float::scalar::fsqrt_h as _;
+//! use rust_isa::riscv::float::scalar::fsqrt_s as _;
+//! use rust_isa::riscv::float::scalar::fsub_d as _;
+//! use rust_isa::riscv::float::scalar::fsub_h as _;
+//! use rust_isa::riscv::float::scalar::fsub_s as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 unsafe extern "C" {
     fn rust_isa_riscv_scalar_fadd(a: u16, b: u16) -> u16;
     fn rust_isa_riscv_scalar_fsub(a: u16, b: u16) -> u16;

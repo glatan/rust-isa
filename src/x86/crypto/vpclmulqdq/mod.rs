@@ -11,6 +11,16 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::crypto::vpclmulqdq::vpclmulqdq_v256 as _;
+//! use rust_isa::x86::crypto::vpclmulqdq::vpclmulqdq_v512 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;
 

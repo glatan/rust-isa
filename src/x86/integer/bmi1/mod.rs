@@ -10,6 +10,19 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::integer::bmi1::andn as _;
+//! use rust_isa::x86::integer::bmi1::bextr as _;
+//! use rust_isa::x86::integer::bmi1::blsi as _;
+//! use rust_isa::x86::integer::bmi1::blsmsk as _;
+//! use rust_isa::x86::integer::bmi1::blsr as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 unsafe extern "C" {
     fn rust_isa_bmi1_andn(a: u32, b: u32) -> u32;
     fn rust_isa_bmi1_bextr(a: u32, start: u32, len: u32) -> u32;

@@ -12,6 +12,93 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::avx512f::v512_load as _;
+//! use rust_isa::x86::simd::avx512f::v512_store as _;
+//! use rust_isa::x86::simd::avx512f::vblendmpd as _;
+//! use rust_isa::x86::simd::avx512f::vblendmps as _;
+//! use rust_isa::x86::simd::avx512f::vcompresspd as _;
+//! use rust_isa::x86::simd::avx512f::vcompressps as _;
+//! use rust_isa::x86::simd::avx512f::vcvtdq2ps as _;
+//! use rust_isa::x86::simd::avx512f::vcvtpd2dq as _;
+//! use rust_isa::x86::simd::avx512f::vcvtpd2ps as _;
+//! use rust_isa::x86::simd::avx512f::vcvtph2ps as _;
+//! use rust_isa::x86::simd::avx512f::vcvtps2dq as _;
+//! use rust_isa::x86::simd::avx512f::vcvtps2pd as _;
+//! use rust_isa::x86::simd::avx512f::vcvtps2ph as _;
+//! use rust_isa::x86::simd::avx512f::vcvtsd2ss as _;
+//! use rust_isa::x86::simd::avx512f::vcvtss2sd as _;
+//! use rust_isa::x86::simd::avx512f::vcvttpd2dq as _;
+//! use rust_isa::x86::simd::avx512f::vcvttps2dq as _;
+//! use rust_isa::x86::simd::avx512f::vexpandpd as _;
+//! use rust_isa::x86::simd::avx512f::vexpandps as _;
+//! use rust_isa::x86::simd::avx512f::vextractf32x4 as _;
+//! use rust_isa::x86::simd::avx512f::vextractf64x4 as _;
+//! use rust_isa::x86::simd::avx512f::vgatherdpd as _;
+//! use rust_isa::x86::simd::avx512f::vgatherdps as _;
+//! use rust_isa::x86::simd::avx512f::vgatherqpd as _;
+//! use rust_isa::x86::simd::avx512f::vgatherqps as _;
+//! use rust_isa::x86::simd::avx512f::vgetexppd as _;
+//! use rust_isa::x86::simd::avx512f::vgetexpps as _;
+//! use rust_isa::x86::simd::avx512f::vgetmantpd as _;
+//! use rust_isa::x86::simd::avx512f::vgetmantps as _;
+//! use rust_isa::x86::simd::avx512f::vinsertf32x4 as _;
+//! use rust_isa::x86::simd::avx512f::vinsertf64x4 as _;
+//! use rust_isa::x86::simd::avx512f::vinsertps as _;
+//! use rust_isa::x86::simd::avx512f::vmovapd as _;
+//! use rust_isa::x86::simd::avx512f::vmovaps as _;
+//! use rust_isa::x86::simd::avx512f::vpaddd as _;
+//! use rust_isa::x86::simd::avx512f::vpaddq as _;
+//! use rust_isa::x86::simd::avx512f::vpandd as _;
+//! use rust_isa::x86::simd::avx512f::vpandnd as _;
+//! use rust_isa::x86::simd::avx512f::vpandnq as _;
+//! use rust_isa::x86::simd::avx512f::vpandq as _;
+//! use rust_isa::x86::simd::avx512f::vpbroadcastd as _;
+//! use rust_isa::x86::simd::avx512f::vpbroadcastq as _;
+//! use rust_isa::x86::simd::avx512f::vpcmpd as _;
+//! use rust_isa::x86::simd::avx512f::vpcmpq as _;
+//! use rust_isa::x86::simd::avx512f::vpcmpud as _;
+//! use rust_isa::x86::simd::avx512f::vpcmpuq as _;
+//! use rust_isa::x86::simd::avx512f::vpermd as _;
+//! use rust_isa::x86::simd::avx512f::vpermilpd as _;
+//! use rust_isa::x86::simd::avx512f::vpermilps as _;
+//! use rust_isa::x86::simd::avx512f::vpermq as _;
+//! use rust_isa::x86::simd::avx512f::vpmulld as _;
+//! use rust_isa::x86::simd::avx512f::vpord as _;
+//! use rust_isa::x86::simd::avx512f::vporq as _;
+//! use rust_isa::x86::simd::avx512f::vpslld as _;
+//! use rust_isa::x86::simd::avx512f::vpsrld as _;
+//! use rust_isa::x86::simd::avx512f::vpsubd as _;
+//! use rust_isa::x86::simd::avx512f::vpsubq as _;
+//! use rust_isa::x86::simd::avx512f::vpternlogd as _;
+//! use rust_isa::x86::simd::avx512f::vpternlogq as _;
+//! use rust_isa::x86::simd::avx512f::vptestmd as _;
+//! use rust_isa::x86::simd::avx512f::vptestmq as _;
+//! use rust_isa::x86::simd::avx512f::vptestnmd as _;
+//! use rust_isa::x86::simd::avx512f::vptestnmq as _;
+//! use rust_isa::x86::simd::avx512f::vpxord as _;
+//! use rust_isa::x86::simd::avx512f::vpxorq as _;
+//! use rust_isa::x86::simd::avx512f::vrcpps as _;
+//! use rust_isa::x86::simd::avx512f::vrndscalepd as _;
+//! use rust_isa::x86::simd::avx512f::vrndscaleps as _;
+//! use rust_isa::x86::simd::avx512f::vrsqrtps as _;
+//! use rust_isa::x86::simd::avx512f::vscalefpd as _;
+//! use rust_isa::x86::simd::avx512f::vscalefps as _;
+//! use rust_isa::x86::simd::avx512f::vscatterdpd as _;
+//! use rust_isa::x86::simd::avx512f::vscatterdps as _;
+//! use rust_isa::x86::simd::avx512f::vscatterqpd as _;
+//! use rust_isa::x86::simd::avx512f::vscatterqps as _;
+//! use rust_isa::x86::simd::avx512f::vshufpd as _;
+//! use rust_isa::x86::simd::avx512f::vshufps as _;
+//! use rust_isa::x86::simd::avx512f::vsqrtpd as _;
+//! use rust_isa::x86::simd::avx512f::vsqrtps as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 mod float;
 mod gather_scatter;
 mod integer;

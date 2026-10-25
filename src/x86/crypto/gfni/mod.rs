@@ -10,6 +10,16 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::crypto::gfni::gf2p8affineqb as _;
+//! use rust_isa::x86::crypto::gfni::gf2p8mulb as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use core::arch::asm;
 
 use crate::x86::simd::sse2::V128;

@@ -16,6 +16,20 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::integer::adx::adcx_u32 as _;
+//! #[cfg(target_arch = "x86_64")]
+//! use rust_isa::x86::integer::adx::adcx_u64 as _;
+//! use rust_isa::x86::integer::adx::adox_u32 as _;
+//! #[cfg(target_arch = "x86_64")]
+//! use rust_isa::x86::integer::adx::adox_u64 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 /// `adcx` with 32-bit operands.
 ///
 /// # Safety

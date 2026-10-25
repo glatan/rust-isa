@@ -1,6 +1,6 @@
 # 値テストの fixture
 
-この文書は、`fixtures/` と `tests/` の対応をまとめる。値テストの設計は [native の値テスト](native-testing.md)、ゼロコストの測定キーは [ゼロコストの確認](zero-cost.md) に書く。`make fixtures-check` は、この表と `fixtures/` の実ディレクトリ、および `target-nested` とテストの `nested_dir(...)` の対応を検査する。
+この文書は、`fixtures/` と `tests/` の対応をまとめる。テストの役割は [テストの役割](testing.md)、値テストの設計は [native の値テスト](native-testing.md)、ゼロコストの測定キーは [ゼロコストの確認](zero-cost.md) に書く。`make fixtures-check` は、この表と `fixtures/` の実ディレクトリ、および `target-nested` とテストの `nested_dir(...)` の対応を検査する。
 
 ## native
 

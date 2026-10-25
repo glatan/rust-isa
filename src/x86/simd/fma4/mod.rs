@@ -15,6 +15,34 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::fma4::vfmaddpd as _;
+//! use rust_isa::x86::simd::fma4::vfmaddps as _;
+//! use rust_isa::x86::simd::fma4::vfmaddsd as _;
+//! use rust_isa::x86::simd::fma4::vfmaddss as _;
+//! use rust_isa::x86::simd::fma4::vfmaddsubpd as _;
+//! use rust_isa::x86::simd::fma4::vfmaddsubps as _;
+//! use rust_isa::x86::simd::fma4::vfmsubaddpd as _;
+//! use rust_isa::x86::simd::fma4::vfmsubaddps as _;
+//! use rust_isa::x86::simd::fma4::vfmsubpd as _;
+//! use rust_isa::x86::simd::fma4::vfmsubps as _;
+//! use rust_isa::x86::simd::fma4::vfmsubsd as _;
+//! use rust_isa::x86::simd::fma4::vfmsubss as _;
+//! use rust_isa::x86::simd::fma4::vfnmaddpd as _;
+//! use rust_isa::x86::simd::fma4::vfnmaddps as _;
+//! use rust_isa::x86::simd::fma4::vfnmaddsd as _;
+//! use rust_isa::x86::simd::fma4::vfnmaddss as _;
+//! use rust_isa::x86::simd::fma4::vfnmsubpd as _;
+//! use rust_isa::x86::simd::fma4::vfnmsubps as _;
+//! use rust_isa::x86::simd::fma4::vfnmsubsd as _;
+//! use rust_isa::x86::simd::fma4::vfnmsubss as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::sse2::V128;
 
 unsafe extern "C" {

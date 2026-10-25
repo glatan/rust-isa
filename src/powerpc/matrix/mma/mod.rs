@@ -16,6 +16,28 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::powerpc::matrix::mma::xvi16ger2 as _;
+//! use rust_isa::powerpc::matrix::mma::xvi16ger2pp as _;
+//! use rust_isa::powerpc::matrix::mma::xvi16ger2s as _;
+//! use rust_isa::powerpc::matrix::mma::xvi16ger2spp as _;
+//! use rust_isa::powerpc::matrix::mma::xvi4ger8 as _;
+//! use rust_isa::powerpc::matrix::mma::xvi4ger8pp as _;
+//! use rust_isa::powerpc::matrix::mma::xvi8ger4 as _;
+//! use rust_isa::powerpc::matrix::mma::xvi8ger4pp as _;
+//! use rust_isa::powerpc::matrix::mma::xvi8ger4spp as _;
+//! use rust_isa::powerpc::matrix::mma::xxmfacc as _;
+//! use rust_isa::powerpc::matrix::mma::xxmtacc as _;
+//! use rust_isa::powerpc::matrix::mma::xxsetaccz as _;
+//! use rust_isa::powerpc::matrix::mma::MmaAccumulator;
+//! let _ = MmaAccumulator::new;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use core::marker::PhantomData;
 
 use crate::powerpc::simd::altivec::V128;

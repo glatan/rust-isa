@@ -32,6 +32,35 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::wasm32::simd::relaxed_simd::V128 as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::f32x4_relaxed_madd as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::f32x4_relaxed_max as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::f32x4_relaxed_min as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::f32x4_relaxed_nmadd as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::f64x2_relaxed_madd as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::f64x2_relaxed_max as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::f64x2_relaxed_min as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::f64x2_relaxed_nmadd as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::i16x8_relaxed_dot_i8x16_i7x16_s as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::i16x8_relaxed_laneselect as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::i16x8_relaxed_q15mulr_s as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::i32x4_relaxed_dot_i8x16_i7x16_add_s as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::i32x4_relaxed_laneselect as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::i32x4_relaxed_trunc_f32x4_s as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::i32x4_relaxed_trunc_f32x4_u as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::i32x4_relaxed_trunc_f64x2_s_zero as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::i32x4_relaxed_trunc_f64x2_u_zero as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::i64x2_relaxed_laneselect as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::i8x16_relaxed_laneselect as _;
+//! use rust_isa::wasm32::simd::relaxed_simd::i8x16_relaxed_swizzle as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 pub use super::simd128::V128;
 
 mod f32x4;

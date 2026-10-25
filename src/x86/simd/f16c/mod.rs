@@ -15,6 +15,18 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::f16c::vcvtph2ps as _;
+//! use rust_isa::x86::simd::f16c::vcvtph2ps_v256 as _;
+//! use rust_isa::x86::simd::f16c::vcvtps2ph as _;
+//! use rust_isa::x86::simd::f16c::vcvtps2ph_v256 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::avx2::V256;
 use super::sse2::V128;
 

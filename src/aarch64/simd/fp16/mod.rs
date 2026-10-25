@@ -13,6 +13,61 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::aarch64::simd::fp16::fabd_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fabs_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::facge_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::facgt_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fadd_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fcmeq_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fcmge_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fcmgt_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fcmle_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fcmlt_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fcvt_f16_f32 as _;
+//! use rust_isa::aarch64::simd::fp16::fcvt_f16_f64 as _;
+//! use rust_isa::aarch64::simd::fp16::fcvt_f32_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fcvt_f64_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fcvtl2_f32_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fcvtl_f32_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fcvtn2_f16_f32 as _;
+//! use rust_isa::aarch64::simd::fp16::fcvtn_f16_f32 as _;
+//! use rust_isa::aarch64::simd::fp16::fcvtxn_f16_f64 as _;
+//! use rust_isa::aarch64::simd::fp16::fcvtzs_f16_s32 as _;
+//! use rust_isa::aarch64::simd::fp16::fcvtzs_f16_s64 as _;
+//! use rust_isa::aarch64::simd::fp16::fcvtzu_f16_u32 as _;
+//! use rust_isa::aarch64::simd::fp16::fcvtzu_f16_u64 as _;
+//! use rust_isa::aarch64::simd::fp16::fdiv_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fmax_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fmaxnm_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fmin_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fminnm_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fmla_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fmlal2_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fmlal_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fmls_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fmlsl2_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fmlsl_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fmul_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fneg_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::frecpe_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::frecps_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::frecpx_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::frsqrte_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::frsqrts_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fsqrt_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::fsub_f16 as _;
+//! use rust_isa::aarch64::simd::fp16::scvtf_f16_s32 as _;
+//! use rust_isa::aarch64::simd::fp16::scvtf_f16_s64 as _;
+//! use rust_isa::aarch64::simd::fp16::ucvtf_f16_u32 as _;
+//! use rust_isa::aarch64::simd::fp16::ucvtf_f16_u64 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use crate::aarch64::simd::neon::V128;
 
 unsafe extern "C" {

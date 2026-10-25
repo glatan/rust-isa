@@ -17,6 +17,18 @@
 //!
 //! The build compiles the bundled C with clang.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::aarch64::simd::sme::add_f32 as _;
+//! use rust_isa::aarch64::simd::sme::mul_f32 as _;
+//! use rust_isa::aarch64::simd::sme::SmeGuard;
+//! let _ = SmeGuard::enter;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use core::marker::PhantomData;
 
 unsafe extern "C" {

@@ -13,6 +13,79 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::avx512dq::vandnpd as _;
+//! use rust_isa::x86::simd::avx512dq::vandnps as _;
+//! use rust_isa::x86::simd::avx512dq::vandpd as _;
+//! use rust_isa::x86::simd::avx512dq::vandps as _;
+//! use rust_isa::x86::simd::avx512dq::vcmppd as _;
+//! use rust_isa::x86::simd::avx512dq::vcmpps as _;
+//! use rust_isa::x86::simd::avx512dq::vcmpsd as _;
+//! use rust_isa::x86::simd::avx512dq::vcmpss as _;
+//! use rust_isa::x86::simd::avx512dq::vcvtpd2qq as _;
+//! use rust_isa::x86::simd::avx512dq::vcvtpd2uqq as _;
+//! use rust_isa::x86::simd::avx512dq::vcvtps2qq as _;
+//! use rust_isa::x86::simd::avx512dq::vcvtps2uqq as _;
+//! use rust_isa::x86::simd::avx512dq::vcvtqq2pd as _;
+//! use rust_isa::x86::simd::avx512dq::vcvtqq2ps as _;
+//! use rust_isa::x86::simd::avx512dq::vcvttpd2qq as _;
+//! use rust_isa::x86::simd::avx512dq::vcvttpd2uqq as _;
+//! use rust_isa::x86::simd::avx512dq::vcvttps2qq as _;
+//! use rust_isa::x86::simd::avx512dq::vcvttps2uqq as _;
+//! use rust_isa::x86::simd::avx512dq::vcvtuqq2pd as _;
+//! use rust_isa::x86::simd::avx512dq::vcvtuqq2ps as _;
+//! use rust_isa::x86::simd::avx512dq::vfixupimmpd as _;
+//! use rust_isa::x86::simd::avx512dq::vfixupimmps as _;
+//! use rust_isa::x86::simd::avx512dq::vfixupimmsd as _;
+//! use rust_isa::x86::simd::avx512dq::vfixupimmss as _;
+//! use rust_isa::x86::simd::avx512dq::vfpclasspd as _;
+//! use rust_isa::x86::simd::avx512dq::vfpclassps as _;
+//! use rust_isa::x86::simd::avx512dq::vfpclasssd as _;
+//! use rust_isa::x86::simd::avx512dq::vfpclassss as _;
+//! use rust_isa::x86::simd::avx512dq::vgetexppd as _;
+//! use rust_isa::x86::simd::avx512dq::vgetexpps as _;
+//! use rust_isa::x86::simd::avx512dq::vgetexpsd as _;
+//! use rust_isa::x86::simd::avx512dq::vgetexpss as _;
+//! use rust_isa::x86::simd::avx512dq::vgetmantpd as _;
+//! use rust_isa::x86::simd::avx512dq::vgetmantps as _;
+//! use rust_isa::x86::simd::avx512dq::vgetmantsd as _;
+//! use rust_isa::x86::simd::avx512dq::vgetmantss as _;
+//! use rust_isa::x86::simd::avx512dq::vorpd as _;
+//! use rust_isa::x86::simd::avx512dq::vorps as _;
+//! use rust_isa::x86::simd::avx512dq::vpmovd2m as _;
+//! use rust_isa::x86::simd::avx512dq::vpmovm2d as _;
+//! use rust_isa::x86::simd::avx512dq::vpmovm2q as _;
+//! use rust_isa::x86::simd::avx512dq::vpmovq2m as _;
+//! use rust_isa::x86::simd::avx512dq::vpmullq as _;
+//! use rust_isa::x86::simd::avx512dq::vrangepd as _;
+//! use rust_isa::x86::simd::avx512dq::vrangeps as _;
+//! use rust_isa::x86::simd::avx512dq::vrangesd as _;
+//! use rust_isa::x86::simd::avx512dq::vrangess as _;
+//! use rust_isa::x86::simd::avx512dq::vrcp14pd as _;
+//! use rust_isa::x86::simd::avx512dq::vrcp14ps as _;
+//! use rust_isa::x86::simd::avx512dq::vrcp14sd as _;
+//! use rust_isa::x86::simd::avx512dq::vrcp14ss as _;
+//! use rust_isa::x86::simd::avx512dq::vreducepd as _;
+//! use rust_isa::x86::simd::avx512dq::vreduceps as _;
+//! use rust_isa::x86::simd::avx512dq::vreducesd as _;
+//! use rust_isa::x86::simd::avx512dq::vreducess as _;
+//! use rust_isa::x86::simd::avx512dq::vrsqrt14pd as _;
+//! use rust_isa::x86::simd::avx512dq::vrsqrt14ps as _;
+//! use rust_isa::x86::simd::avx512dq::vrsqrt14sd as _;
+//! use rust_isa::x86::simd::avx512dq::vrsqrt14ss as _;
+//! use rust_isa::x86::simd::avx512dq::vscalefpd as _;
+//! use rust_isa::x86::simd::avx512dq::vscalefps as _;
+//! use rust_isa::x86::simd::avx512dq::vscalefsd as _;
+//! use rust_isa::x86::simd::avx512dq::vscalefss as _;
+//! use rust_isa::x86::simd::avx512dq::vxorpd as _;
+//! use rust_isa::x86::simd::avx512dq::vxorps as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;
 use crate::x86::simd::sse2::V128;

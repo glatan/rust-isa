@@ -12,6 +12,18 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::arm::crypto::aes::aesd as _;
+//! use rust_isa::arm::crypto::aes::aese as _;
+//! use rust_isa::arm::crypto::aes::aesimc as _;
+//! use rust_isa::arm::crypto::aes::aesmc as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use crate::arm::simd::neon::V128;
 
 unsafe extern "C" {
