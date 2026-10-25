@@ -10,7 +10,21 @@
 //! The build compiles the bundled C with clang.
 //!
 //! Instructions not listed in this module are not exposed.
-
+//!
+//! # Examples
+//!
+//! ```
+//! use rust_isa::mips::simd::msa::{mul_i16, V128};
+//!
+//! let a = V128::from_bytes([0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2]);
+//! let b = V128::from_bytes([0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3]);
+//! let product = unsafe { mul_i16(a, b) };
+//! assert_eq!(
+//!     product.to_bytes(),
+//!     [0, 6, 0, 6, 0, 6, 0, 6, 0, 6, 0, 6, 0, 6, 0, 6]
+//! );
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
