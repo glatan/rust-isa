@@ -20,6 +20,43 @@
 //! assert_eq!(fli_h(0), 0xbc00);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::riscv::float::zfa::*;
+//! use rust_isa::riscv::simd::rvv::V128;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { fcvtmod_w_d(0) };
+//!     let _ = unsafe { fcvtmod_w_h(0) };
+//!     let _ = unsafe { fleq_d(0, 0) };
+//!     let _ = unsafe { fleq_h(0, 0) };
+//!     let _ = unsafe { fleq_s(0, 0) };
+//!     let _ = unsafe { fli_d(0) };
+//!     let _ = unsafe { fli_h(0) };
+//!     let _ = unsafe { fli_s(0) };
+//!     let _ = unsafe { fltq_d(0, 0) };
+//!     let _ = unsafe { fltq_h(0, 0) };
+//!     let _ = unsafe { fltq_s(0, 0) };
+//!     let _ = unsafe { fmaxm_d(0, 0) };
+//!     let _ = unsafe { fmaxm_h(0, 0) };
+//!     let _ = unsafe { fmaxm_s(0, 0) };
+//!     let _ = unsafe { fminm_d(0, 0) };
+//!     let _ = unsafe { fminm_h(0, 0) };
+//!     let _ = unsafe { fminm_s(0, 0) };
+//!     let _ = unsafe { fmvh_x_d(0) };
+//!     let _ = unsafe { fmvp_d_x(0, 0) };
+//!     let _ = unsafe { fround_d(0) };
+//!     let _ = unsafe { fround_h(0) };
+//!     let _ = unsafe { fround_s(0) };
+//!     let _ = unsafe { froundnx_d(0) };
+//!     let _ = unsafe { froundnx_h(0) };
+//!     let _ = unsafe { froundnx_s(0) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
