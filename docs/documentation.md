@@ -20,7 +20,7 @@ extension の `mod.rs` には、次を書く。
 
 利用例は、公開パスや値の扱いが自明でない命令に置く。例は doctest としてコンパイルし、実行できるターゲットでは実行する。命令の意味論の網羅は値テストが担う。役割の分類は [テストの役割](testing.md) にある。
 
-公開命令を持つ各 extension の `mod.rs` には、公開命令を列挙した instruction inventory の doctest を置く。命令の追加・削除時は `python3 tools/doctest_inventory.py --write` で更新する。
+公開命令を持つ各 extension の `mod.rs` には、公開命令を列挙した instruction inventory の doctest を置く。命令の追加・削除時は `python3 tools/doctest_inventory.py --write` で更新し、件数が変わる場合は `docs/doctest-coverage.md` の表も更新する。
 
 ## arch ごとの文書
 

@@ -213,7 +213,7 @@ def inventory_blocks() -> dict[tuple[str, str], str]:
         if end < 0:
             continue
         relative = path.parent.relative_to(SOURCE)
-        found[(relative.parts[0], relative.name)] = text[start:end]
+        found[(relative.parts[0], relative.as_posix())] = text[start:end]
     return found
 
 
@@ -222,7 +222,41 @@ def inventory_names(text: str) -> set[str]:
         re.findall(r"use rust_isa::[^;]*::([A-Za-z_][A-Za-z0-9_]*) as _;", text)
     )
     names.update(re.findall(r"let _ = [A-Za-z_][A-Za-z0-9_]*::([A-Za-z_][A-Za-z0-9_]*);", text))
+    names.update(
+        re.findall(r"use rust_isa::[^;]*::([A-Z][A-Za-z0-9_]*);", text)
+    )
     return names
+
+
+def summary_rows() -> list[tuple[str, int, int, int]]:
+    blocks = inventory_blocks()
+    by_arch: dict[str, list[str]] = {}
+    for (arch, _), text in blocks.items():
+        by_arch.setdefault(arch, []).append(text)
+    rows = []
+    order = [
+        "x86",
+        "aarch64",
+        "arm",
+        "riscv",
+        "loongarch",
+        "s390x",
+        "powerpc",
+        "mips",
+        "wasm32",
+    ]
+    archs = [arch for arch in order if arch in by_arch]
+    archs.extend(sorted(arch for arch in by_arch if arch not in order))
+    for arch in archs:
+        texts = by_arch.get(arch, [])
+        instructions = 0
+        types = 0
+        for text in texts:
+            names = inventory_names(text)
+            instructions += sum(1 for name in names if name[0].islower())
+            types += sum(1 for name in names if name[0].isupper())
+        rows.append((arch, len(texts), instructions, types))
+    return rows
 
 
 def missing_documented() -> list[tuple[str, str, str]]:
@@ -234,8 +268,8 @@ def missing_documented() -> list[tuple[str, str, str]]:
             continue
         texts = [
             text
-            for (block_arch, block_name), text in blocks.items()
-            if block_arch == arch and block_name == key
+            for (block_arch, block_path), text in blocks.items()
+            if block_arch == arch and Path(block_path).name == key
         ]
         if not texts:
             # A re-export alias without its own module directory. The
@@ -265,6 +299,43 @@ def remove_block(text: str) -> str:
     return before + after
 
 
+def coverage_doc_mismatches(rows: list[tuple[str, int, int, int]]) -> list[str]:
+    doc = ROOT / "docs/doctest-coverage.md"
+    if not doc.is_file():
+        return [f"missing {doc.relative_to(ROOT)}"]
+    expected = {arch: (extensions, instructions, types) for arch, extensions, instructions, types in rows}
+    expected["合計"] = (
+        sum(row[1] for row in rows),
+        sum(row[2] for row in rows),
+        sum(row[3] for row in rows),
+    )
+    found: dict[str, tuple[int, int, int]] = {}
+    problems = []
+    for line in doc.read_text(encoding="utf-8").splitlines():
+        if not line.startswith("|"):
+            continue
+        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        if len(cells) != 4 or cells[0] == "arch":
+            continue
+        try:
+            value = (
+                int(cells[1].replace(",", "")),
+                int(cells[2].replace(",", "")),
+                int(cells[3].replace(",", "")),
+            )
+        except ValueError:
+            continue
+        if cells[0] in found:
+            problems.append(f"coverage table has a duplicate row: {cells[0]}")
+        found[cells[0]] = value
+    for key in sorted(set(found) - set(expected)):
+        problems.append(f"coverage table has an unknown row: {key}")
+    for key, value in expected.items():
+        if found.get(key) != value:
+            problems.append(f"coverage table mismatch: {key} expected {value}, found {found.get(key)}")
+    return problems
+
+
 def changed_files() -> list[tuple[Path, str, str]]:
     changes: list[tuple[Path, str, str]] = []
     for arch in sorted(path.name for path in SOURCE.iterdir() if path.is_dir()):
@@ -281,8 +352,39 @@ def changed_files() -> list[tuple[Path, str, str]]:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--write", action="store_true", help="write the inventories")
-    parser.add_argument("--check", action="store_true", help="fail if an inventory is stale")
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="check inventory freshness, README names, and the coverage table",
+    )
+    parser.add_argument(
+        "--summary",
+        action="store_true",
+        help="validate coverage and print per-arch counts",
+    )
     args = parser.parse_args()
+
+    if args.summary:
+        changes = changed_files()
+        missing = missing_documented()
+        rows = summary_rows()
+        problems = coverage_doc_mismatches(rows)
+        for path, _, _ in changes:
+            print(f"stale doctest inventory: {path.relative_to(ROOT)}")
+        for arch, extension, name in missing:
+            print(f"missing inventory entry: {arch} {extension} {name}")
+        for problem in problems:
+            print(problem)
+        if changes or missing or problems:
+            raise SystemExit(1)
+        print(f"{'arch':12} {'extensions':>10} {'instructions':>12} {'types':>6}")
+        for arch, extensions, instructions, types in rows:
+            print(f"{arch:12} {extensions:10} {instructions:12} {types:6}")
+        print(
+            f"{'合計':12} {sum(row[1] for row in rows):10} "
+            f"{sum(row[2] for row in rows):12} {sum(row[3] for row in rows):6}"
+        )
+        return
 
     changes = changed_files()
     if args.write:
@@ -296,7 +398,10 @@ def main() -> None:
         missing = missing_documented()
         for arch, extension, name in missing:
             print(f"missing inventory entry: {arch} {extension} {name}")
-        if changes or missing:
+        problems = coverage_doc_mismatches(summary_rows())
+        for problem in problems:
+            print(problem)
+        if changes or missing or problems:
             raise SystemExit(1)
         print("doctest inventories: ok")
         return

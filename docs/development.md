@@ -21,6 +21,7 @@ make test-wasip1
 make test-wasip1-wide-arithmetic
 make coverage
 make coverage-check
+make doctest-coverage
 make doctest-inventory-check
 make zero-cost-check
 make docs-check
@@ -42,6 +43,7 @@ make duplicates
 - `make test-doc`: x86_64 以外の native target の doctest をコンパイルする。`-Z build-std=std` と `RUSTDOCFLAGS=--no-run` を使う。native target は i686 を含む 8 件である。Arch イメージではコンパイルのみを確認し、`DOC_TEST=run` を付けた Debian イメージで cross GCC と QEMU により実行する。x86_64 と wasm32 の doctest は `test-x86_64` と `test-wasip1` が実行する
 - `make test-doc-debian`: Debian イメージで `DOC_TEST=run` の doctest を実行する
 - `make test-i686`: i686 fixture を SDE で実行する。テストドライバは x86_64 で動かし、ターゲットコードは SDE に限定する
+- `make doctest-coverage`: instruction inventory と網羅表を検査し、arch ごとの件数を表示する
 - `make doctest-inventory-check`: extension ごとの instruction inventory doctest が最新かを検査する
 - `make test-check-static`: シンボル一致、rustdoc の言語、レーン即値の検査
 - `make test-check-wasm-link`: `wasm32-unknown-unknown` のリンクと simd128 無効時の検査。`make test` に含まれる
@@ -156,7 +158,7 @@ native doctest のビルドでは `RUST_ISA_DOCTEST=1` を設定し、C を Thin
 
 `make test-doc` の成果物は `target-nested/doc-test` に置く。fixture ではないため `fixture-matrix.md` には載せない。
 
-命令を追加・削除したら `python3 tools/doctest_inventory.py --write` で extension の instruction inventory を更新する。`make coverage-check` は更新漏れと、arch の README に載る命令の欠落を失敗にする。
+命令を追加・削除したら `python3 tools/doctest_inventory.py --write` で extension の instruction inventory を更新する。件数が変わった場合は `docs/doctest-coverage.md` の表も `make doctest-coverage` の出力に合わせて更新する。`make coverage-check` は inventory の更新漏れ、arch の README に載る命令の欠落、網羅表の不一致を失敗にする。
 
 `target-nested` は `.gitignore` と `.dockerignore` に入っている。消しても次の `cargo test` が作り直す。
 

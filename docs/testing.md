@@ -55,7 +55,7 @@ rustdoc の例が、公開パスと基本的な使い方に対してコンパイ
 - i686: 1 件。Debian イメージの QEMU が実行する。
 - その他の native arch: 各 arch 1 件、合計 7 件。Arch イメージでは `--no-run` でコンパイルだけを確認し、Debian イメージでは cross GCC と QEMU で実行する。
 
-上記に加えて、公開命令を持つ 115 extension の rustdoc に **instruction inventory** の doctest を置く。各 extension の公開命令を `use ... as _;` で列挙し、rustdoc が全パスをコンパイルする。現在は 4,528 命令の import を覆っている。`make doctest-inventory-check` が在庫の更新漏れと、arch の README に載る命令の欠落を検査する。
+上記に加えて、公開命令を持つ 115 extension の rustdoc に **instruction inventory** の doctest を置く。各 extension の公開命令を `use ... as _;`、associated function を `let _ = Type::fn;`、型を `use ...::Type;` で列挙し、rustdoc が全パスをコンパイルする。現在は 4,521 命令関数（free function と associated function）のパスを覆っている。型 import 7 件は命令数に含めない。詳細は [doctest の網羅状況](doctest-coverage.md) にある。`make doctest-inventory-check` が在庫の更新漏れと、arch の README に載る命令の欠落を検査する。
 
 native arch の doctest は GNU target でビルドする。Debian イメージの `DOC_TEST=run` では、cross GCC と glibc をリンクして QEMU で実行する。Arch イメージではターゲット用の libc とリンカを用意しないため、コンパイルだけを確認する。
 
