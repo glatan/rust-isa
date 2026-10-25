@@ -38,20 +38,18 @@
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //!
-//! unsafe {
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpdpwsud(v256, v256, v256) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpdpwsud_v128(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpdpwsuds(v256, v256, v256) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpdpwsuds_v128(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpdpwusd(v256, v256, v256) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpdpwusd_v128(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpdpwusds(v256, v256, v256) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpdpwusds_v128(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpdpwuud(v256, v256, v256) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpdpwuud_v128(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpdpwuuds(v256, v256, v256) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpdpwuuds_v128(v128, v128, v128) };
-//! }
+//! let _ = unsafe { vpdpwsud(v256, v256, v256) };
+//! let _ = unsafe { vpdpwsud_v128(v128, v128, v128) };
+//! let _ = unsafe { vpdpwsuds(v256, v256, v256) };
+//! let _ = unsafe { vpdpwsuds_v128(v128, v128, v128) };
+//! let _ = unsafe { vpdpwusd(v256, v256, v256) };
+//! let _ = unsafe { vpdpwusd_v128(v128, v128, v128) };
+//! let _ = unsafe { vpdpwusds(v256, v256, v256) };
+//! let _ = unsafe { vpdpwusds_v128(v128, v128, v128) };
+//! let _ = unsafe { vpdpwuud(v256, v256, v256) };
+//! let _ = unsafe { vpdpwuud_v128(v128, v128, v128) };
+//! let _ = unsafe { vpdpwuuds(v256, v256, v256) };
+//! let _ = unsafe { vpdpwuuds_v128(v128, v128, v128) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

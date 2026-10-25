@@ -41,25 +41,27 @@
 //! let v128 = V128::from_bytes([0; 16]);
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
-//! let mut config = rust_isa::x86::matrix::amx_tile::TileConfig::from_bytes([0; 64]);
-//! let _ = rust_isa::x86::matrix::amx_tile::TileConfig::builder();
-//! let guard = unsafe { rust_isa::x86::matrix::amx_tile::AmxGuard::enter(&config) };
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//! use rust_isa::x86::matrix::amx_tile::{AmxGuard, TileConfig};
+//! let mut config = TileConfig::builder().tile::<0>(1, 64).build();
+//! let _ = TileConfig::from_bytes([0; 64]);
+//! let amx_guard = unsafe { AmxGuard::enter(&config) };
 //!
-//! unsafe {
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { ldtilecfg(&config) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { sttilecfg(&guard, &mut config) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tcmmimfp16ps::<0, 0, 0>(&guard) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tcmmrlfp16ps::<0, 0, 0>(&guard) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tdpbf16ps::<0, 0, 0>(&guard) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tdpbssd::<0, 0, 0>(&guard) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tdpbsud::<0, 0, 0>(&guard) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tdpbuud::<0, 0, 0>(&guard) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tdpfp16ps::<0, 0, 0>(&guard) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tileloadd::<0>(&guard, core::ptr::null(), 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tileloaddt1::<0>(&guard, core::ptr::null(), 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tilestored::<0>(&guard, core::ptr::null_mut(), 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tilezero::<0>(&guard) };
-//! }
+//! let _ = unsafe { ldtilecfg(&config) };
+//! let _ = unsafe { sttilecfg(&amx_guard, &mut config) };
+//! let _ = unsafe { tcmmimfp16ps::<0, 0, 0>(&amx_guard) };
+//! let _ = unsafe { tcmmrlfp16ps::<0, 0, 0>(&amx_guard) };
+//! let _ = unsafe { tdpbf16ps::<0, 0, 0>(&amx_guard) };
+//! let _ = unsafe { tdpbssd::<0, 0, 0>(&amx_guard) };
+//! let _ = unsafe { tdpbsud::<0, 0, 0>(&amx_guard) };
+//! let _ = unsafe { tdpbuud::<0, 0, 0>(&amx_guard) };
+//! let _ = unsafe { tdpfp16ps::<0, 0, 0>(&amx_guard) };
+//! let _ = unsafe { tileloadd::<0>(&amx_guard, storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { tileloaddt1::<0>(&amx_guard, storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { tilestored::<0>(&amx_guard, storage.0.as_mut_ptr().cast(), 0) };
+//! let _ = unsafe { tilezero::<0>(&amx_guard) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

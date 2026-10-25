@@ -26,13 +26,10 @@
 //! ```no_run
 //! use rust_isa::aarch64::simd::f32mm::*;
 //! use rust_isa::aarch64::simd::neon::V128;
-//! use rust_isa::aarch64::simd::sme::SmeGuard;
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //!
-//! unsafe {
-//!     let _ = unsafe { fmmla_f32(&[], &[], &mut []) };
-//! }
+//! let _ = unsafe { fmmla_f32(&[0.0f32; 4], &[0.0f32; 4], &mut[0.0f32; 4]) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

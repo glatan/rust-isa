@@ -32,15 +32,13 @@
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //!
-//! unsafe {
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { sha1msg1(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { sha1msg2(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { sha1nexte(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { sha1rnds4::<0>(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { sha256msg1(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { sha256msg2(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { sha256rnds2(v128, v128, v128) };
-//! }
+//! let _ = unsafe { sha1msg1(v128, v128) };
+//! let _ = unsafe { sha1msg2(v128, v128) };
+//! let _ = unsafe { sha1nexte(v128, v128) };
+//! #[cfg(target_arch = "x86_64")] let _ = unsafe { sha1rnds4::<0>(v128, v128) };
+//! let _ = unsafe { sha256msg1(v128, v128) };
+//! let _ = unsafe { sha256msg2(v128, v128) };
+//! let _ = unsafe { sha256rnds2(v128, v128, v128) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

@@ -228,6 +228,68 @@ def inventory_names(text: str) -> set[str]:
     return names
 
 
+
+EXAMPLE_START = "//! # Instruction examples"
+
+
+def example_names(text: str) -> set[str]:
+    """Return instruction names invoked by the # Instruction examples block."""
+    start = text.find(EXAMPLE_START)
+    if start < 0:
+        return set()
+    end = text.find(START, start)
+    block = text[start:end] if end >= 0 else text[start:]
+    names = set(
+        re.findall(
+            r"let _ = (?:unsafe \{ )?([A-Za-z_][A-Za-z0-9_]*)(?:::<[^>]*>)?\(",
+            block,
+        )
+    )
+    names.update(
+        re.findall(
+            r"let _ = (?:unsafe \{ )?([A-Z][A-Za-z0-9_]*::[A-Za-z_][A-Za-z0-9_]*)\b",
+            block,
+        )
+    )
+    names.update(
+        re.findall(
+            r"if let [^=]+ = (?:unsafe \{ )?([A-Za-z_][A-Za-z0-9_]*)\(",
+            block,
+        )
+    )
+    # Stateful setup bindings are also instruction examples.
+    names.update(
+        re.findall(
+            r"let (?:mut )?[a-z_][A-Za-z0-9_]* = (?:unsafe \{ )?([A-Z][A-Za-z0-9_]*::[A-Za-z_][A-Za-z0-9_]*)",
+            block,
+        )
+    )
+    return names
+
+
+def expected_example_names(directory: Path) -> set[str]:
+    names = {
+        name
+        for name, _ in instruction_entries(directory)
+        if name[:1].islower()
+    }
+    relative = directory.relative_to(SOURCE).as_posix()
+    names.update(f"{type_name}::{function}" for type_name, function in EXTRA.get(relative, []))
+    return names
+
+
+def example_mismatches() -> list[tuple[Path, list[str]]]:
+    problems: list[tuple[Path, list[str]]] = []
+    for arch in sorted(path.name for path in SOURCE.iterdir() if path.is_dir()):
+        for directory in public_leaves(arch):
+            text = (directory / "mod.rs").read_text(encoding="utf-8")
+            expected = expected_example_names(directory)
+            found = example_names(text)
+            missing = sorted(expected - found)
+            if missing:
+                problems.append((directory / "mod.rs", missing))
+    return problems
+
 def summary_rows() -> list[tuple[str, int, int, int]]:
     blocks = inventory_blocks()
     by_arch: dict[str, list[str]] = {}
@@ -369,13 +431,17 @@ def main() -> None:
         missing = missing_documented()
         rows = summary_rows()
         problems = coverage_doc_mismatches(rows)
+        examples = example_mismatches()
         for path, _, _ in changes:
             print(f"stale doctest inventory: {path.relative_to(ROOT)}")
         for arch, extension, name in missing:
             print(f"missing inventory entry: {arch} {extension} {name}")
         for problem in problems:
             print(problem)
-        if changes or missing or problems:
+        for path, names in examples:
+            for name in names:
+                print(f"missing instruction example: {path.relative_to(ROOT)} {name}")
+        if changes or missing or problems or examples:
             raise SystemExit(1)
         print(f"{'arch':12} {'extensions':>10} {'instructions':>12} {'types':>6}")
         for arch, extensions, instructions, types in rows:
@@ -399,9 +465,13 @@ def main() -> None:
         for arch, extension, name in missing:
             print(f"missing inventory entry: {arch} {extension} {name}")
         problems = coverage_doc_mismatches(summary_rows())
+        examples = example_mismatches()
         for problem in problems:
             print(problem)
-        if changes or missing or problems:
+        for path, names in examples:
+            for name in names:
+                print(f"missing instruction example: {path.relative_to(ROOT)} {name}")
+        if changes or missing or problems or examples:
             raise SystemExit(1)
         print("doctest inventories: ok")
         return

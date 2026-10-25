@@ -30,10 +30,8 @@
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //!
-//! unsafe {
-//!     let _ = unsafe { vsld::<0>(v128, v128) };
-//!     let _ = unsafe { vsrd::<0>(v128, v128) };
-//! }
+//! let _ = unsafe { vsld::<0>(v128, v128) };
+//! let _ = unsafe { vsrd::<0>(v128, v128) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

@@ -36,12 +36,10 @@
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //!
-//! unsafe {
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpconflictd(v512) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpconflictq(v512) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vplzcntd(v512) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vplzcntq(v512) };
-//! }
+//! let _ = unsafe { vpconflictd(v512) };
+//! let _ = unsafe { vpconflictq(v512) };
+//! let _ = unsafe { vplzcntd(v512) };
+//! let _ = unsafe { vplzcntq(v512) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

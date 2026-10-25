@@ -30,13 +30,15 @@
 //! let v128 = V128::from_bytes([0; 16]);
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
-//! let mut config = rust_isa::x86::matrix::amx_tile::TileConfig::from_bytes([0; 64]);
-//! let guard = unsafe { rust_isa::x86::matrix::amx_tile::AmxGuard::enter(&config) };
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//! use rust_isa::x86::matrix::amx_tile::{AmxGuard, TileConfig};
+//! let mut config = TileConfig::builder().tile::<0>(1, 64).build();
+//! let amx_guard = unsafe { AmxGuard::enter(&config) };
 //!
-//! unsafe {
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tileloaddrs::<0>(&guard, core::ptr::null(), 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tileloaddrst1::<0>(&guard, core::ptr::null(), 0) };
-//! }
+//! let _ = unsafe { tileloaddrs::<0>(&amx_guard, storage.0.as_ptr().cast(), 0) };
+//! let _ = unsafe { tileloaddrst1::<0>(&amx_guard, storage.0.as_ptr().cast(), 0) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

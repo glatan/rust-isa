@@ -28,37 +28,34 @@
 //!
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::powerpc::simd::power8_vector::*;
 //! use rust_isa::powerpc::simd::altivec::V128;
-//! use rust_isa::powerpc::matrix::mma::MmaAccumulator;
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //!
-//! unsafe {
-//!     let _ = unsafe { add_u64(v128, v128) };
-//!     let _ = unsafe { mul_even_u16(v128, v128) };
-//!     let _ = unsafe { mul_u32(v128, v128) };
-//!     let _ = unsafe { sub_u64(v128, v128) };
-//!     let _ = unsafe { vaddudm(v128, v128) };
-//!     let _ = unsafe { vclzd(v128) };
-//!     let _ = unsafe { vctzd(v128) };
-//!     let _ = unsafe { vmaxsd(v128, v128) };
-//!     let _ = unsafe { vmaxud(v128, v128) };
-//!     let _ = unsafe { vminsd(v128, v128) };
-//!     let _ = unsafe { vminud(v128, v128) };
-//!     let _ = unsafe { vmuleuh(v128, v128) };
-//!     let _ = unsafe { vmuleuw(v128, v128) };
-//!     let _ = unsafe { vmulouw(v128, v128) };
-//!     let _ = unsafe { vmuluwm(v128, v128) };
-//!     let _ = unsafe { vpksdss(v128, v128) };
-//!     let _ = unsafe { vpksdus(v128, v128) };
-//!     let _ = unsafe { vpkudum(v128, v128) };
-//!     let _ = unsafe { vpopcntd(v128) };
-//!     let _ = unsafe { vsubudm(v128, v128) };
-//!     let _ = unsafe { vupkhsw(v128) };
-//!     let _ = unsafe { vupklsw(v128) };
-//! }
+//! let _ = unsafe { add_u64(v128, v128) };
+//! let _ = unsafe { mul_even_u16(v128, v128) };
+//! let _ = unsafe { mul_u32(v128, v128) };
+//! let _ = unsafe { sub_u64(v128, v128) };
+//! let _ = unsafe { vaddudm(v128, v128) };
+//! let _ = unsafe { vclzd(v128) };
+//! let _ = unsafe { vctzd(v128) };
+//! let _ = unsafe { vmaxsd(v128, v128) };
+//! let _ = unsafe { vmaxud(v128, v128) };
+//! let _ = unsafe { vminsd(v128, v128) };
+//! let _ = unsafe { vminud(v128, v128) };
+//! let _ = unsafe { vmuleuh(v128, v128) };
+//! let _ = unsafe { vmuleuw(v128, v128) };
+//! let _ = unsafe { vmulouw(v128, v128) };
+//! let _ = unsafe { vmuluwm(v128, v128) };
+//! let _ = unsafe { vpksdss(v128, v128) };
+//! let _ = unsafe { vpksdus(v128, v128) };
+//! let _ = unsafe { vpkudum(v128, v128) };
+//! let _ = unsafe { vpopcntd(v128) };
+//! let _ = unsafe { vsubudm(v128, v128) };
+//! let _ = unsafe { vupkhsw(v128) };
+//! let _ = unsafe { vupklsw(v128) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

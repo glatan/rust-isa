@@ -19,7 +19,7 @@
 //!
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::loongarch::integer::lbt::*;
 //! use rust_isa::loongarch::simd::lsx::V128;
 //! use rust_isa::loongarch::simd::lasx::V256;
@@ -27,14 +27,12 @@
 //! let v128 = V128::from_bytes([0; 16]);
 //! let v256 = V256::from_bytes([0; 32]);
 //!
-//! unsafe {
-//!     let _ = unsafe { bitrev(0) };
-//!     let _ = unsafe { bstrins::<0, 0>(0, 0) };
-//!     let _ = unsafe { bstrpick::<0, 0>(0) };
-//!     let _ = unsafe { revb(0) };
-//!     let _ = unsafe { revh(0) };
-//!     let _ = unsafe { revw(0) };
-//! }
+//! let _ = bitrev(0);
+//! let _ = bstrins::<0, 0>(0, 0);
+//! let _ = bstrpick::<0, 0>(0);
+//! let _ = revb(0);
+//! let _ = revh(0);
+//! let _ = revw(0);
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

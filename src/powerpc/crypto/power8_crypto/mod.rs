@@ -24,31 +24,28 @@
 //!
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::powerpc::crypto::power8_crypto::*;
 //! use rust_isa::powerpc::simd::altivec::V128;
-//! use rust_isa::powerpc::matrix::mma::MmaAccumulator;
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //!
-//! unsafe {
-//!     let _ = unsafe { cipher(v128, v128) };
-//!     let _ = unsafe { cipherlast(v128, v128) };
-//!     let _ = unsafe { ncipher(v128, v128) };
-//!     let _ = unsafe { ncipherlast(v128, v128) };
-//!     let _ = unsafe { vcipher(v128, v128) };
-//!     let _ = unsafe { vcipherlast(v128, v128) };
-//!     let _ = unsafe { vncipher(v128, v128) };
-//!     let _ = unsafe { vncipherlast(v128, v128) };
-//!     let _ = unsafe { vpermxor(v128, v128, v128) };
-//!     let _ = unsafe { vpmsumb(v128, v128) };
-//!     let _ = unsafe { vpmsumd(v128, v128) };
-//!     let _ = unsafe { vpmsumh(v128, v128) };
-//!     let _ = unsafe { vpmsumw(v128, v128) };
-//!     let _ = unsafe { vsbox(v128) };
-//!     let _ = unsafe { vshasigmad::<0, 0>(v128) };
-//!     let _ = unsafe { vshasigmaw::<0, 0>(v128) };
-//! }
+//! let _ = unsafe { cipher(v128, v128) };
+//! let _ = unsafe { cipherlast(v128, v128) };
+//! let _ = unsafe { ncipher(v128, v128) };
+//! let _ = unsafe { ncipherlast(v128, v128) };
+//! let _ = unsafe { vcipher(v128, v128) };
+//! let _ = unsafe { vcipherlast(v128, v128) };
+//! let _ = unsafe { vncipher(v128, v128) };
+//! let _ = unsafe { vncipherlast(v128, v128) };
+//! let _ = unsafe { vpermxor(v128, v128, v128) };
+//! let _ = unsafe { vpmsumb(v128, v128) };
+//! let _ = unsafe { vpmsumd(v128, v128) };
+//! let _ = unsafe { vpmsumh(v128, v128) };
+//! let _ = unsafe { vpmsumw(v128, v128) };
+//! let _ = unsafe { vsbox(v128) };
+//! let _ = unsafe { vshasigmad::<0, 0>(v128) };
+//! let _ = unsafe { vshasigmaw::<0, 0>(v128) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

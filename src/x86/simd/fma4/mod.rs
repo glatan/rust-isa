@@ -37,28 +37,26 @@
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //!
-//! unsafe {
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfmaddpd(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfmaddps(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfmaddsd(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfmaddss(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfmaddsubpd(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfmaddsubps(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfmsubaddpd(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfmsubaddps(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfmsubpd(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfmsubps(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfmsubsd(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfmsubss(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfnmaddpd(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfnmaddps(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfnmaddsd(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfnmaddss(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfnmsubpd(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfnmsubps(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfnmsubsd(v128, v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vfnmsubss(v128, v128, v128) };
-//! }
+//! let _ = unsafe { vfmaddpd(v128, v128, v128) };
+//! let _ = unsafe { vfmaddps(v128, v128, v128) };
+//! let _ = unsafe { vfmaddsd(v128, v128, v128) };
+//! let _ = unsafe { vfmaddss(v128, v128, v128) };
+//! let _ = unsafe { vfmaddsubpd(v128, v128, v128) };
+//! let _ = unsafe { vfmaddsubps(v128, v128, v128) };
+//! let _ = unsafe { vfmsubaddpd(v128, v128, v128) };
+//! let _ = unsafe { vfmsubaddps(v128, v128, v128) };
+//! let _ = unsafe { vfmsubpd(v128, v128, v128) };
+//! let _ = unsafe { vfmsubps(v128, v128, v128) };
+//! let _ = unsafe { vfmsubsd(v128, v128, v128) };
+//! let _ = unsafe { vfmsubss(v128, v128, v128) };
+//! let _ = unsafe { vfnmaddpd(v128, v128, v128) };
+//! let _ = unsafe { vfnmaddps(v128, v128, v128) };
+//! let _ = unsafe { vfnmaddsd(v128, v128, v128) };
+//! let _ = unsafe { vfnmaddss(v128, v128, v128) };
+//! let _ = unsafe { vfnmsubpd(v128, v128, v128) };
+//! let _ = unsafe { vfnmsubps(v128, v128, v128) };
+//! let _ = unsafe { vfnmsubsd(v128, v128, v128) };
+//! let _ = unsafe { vfnmsubss(v128, v128, v128) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

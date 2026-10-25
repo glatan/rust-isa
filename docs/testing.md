@@ -50,16 +50,17 @@ LTO で C の関数が Rust のカーネルへインラインされ、`call` と
 
 rustdoc の例が、公開パスと基本的な使い方に対してコンパイル・実行できることを保証する。
 
-- wasm32: 72 件の実行例と 2 件の `compile_fail`。`wasm32-wasip1` で wasmtime が実行する。
-- x86_64: 1 件。SDE が実行する。
-- i686: 1 件。Debian イメージの QEMU が実行する。
-- その他の native arch: 各 arch 1 件、合計 7 件。Arch イメージでは `--no-run` でコンパイルだけを確認し、Debian イメージでは cross GCC と QEMU で実行する。
+各 extension の rustdoc には次の 3 種類の doctest がある。
 
-上記に加えて、公開命令を持つ 115 extension の rustdoc に **instruction inventory** の doctest を置く。各 extension の公開命令を `use ... as _;`、associated function を `let _ = Type::fn;`、型を `use ...::Type;` で列挙し、rustdoc が全パスをコンパイルする。現在は 4,521 命令関数（free function と associated function）のパスを覆っている。型 import 7 件は命令数に含めない。詳細は [doctest の網羅状況](doctest-coverage.md) にある。`make doctest-inventory-check` が在庫の更新漏れと、arch の README に載る命令の欠落を検査する。
+- **behavior examples**: 主に手書きの `# Examples`。実入力と期待値を `assert` する。
+- **instruction examples**: inventory の全 free function を実際に呼ぶ `# Instruction examples`。CPU 機能・状態・ポインタが必要な例は `no_run`。
+- **instruction inventory**: 公開パスの import だけを行う `# Instruction inventory`。全パスを rustdoc にコンパイルさせる。
+
+wasm32 は `wasm32-wasip1` で wasmtime が実行する。x86_64 は SDE、i686 とその他の native arch は Debian イメージの QEMU で実行する。`instruction inventory` と `no_run` の instruction examples はコンパイルだけを確認する。公開命令を持つ 115 extension の 4,521 延べ公開パス（reexport alias・重複・状態管理 API 5 件を含む）を覆っている。型 import 7 件は含めない。詳細は [doctest の網羅状況](doctest-coverage.md) にある。`make doctest-inventory-check` が在庫の更新漏れ、instruction examples の欠落、arch の README に載る命令の欠落を検査する。
 
 native arch の doctest は GNU target でビルドする。Debian イメージの `DOC_TEST=run` では、cross GCC と glibc をリンクして QEMU で実行する。Arch イメージではターゲット用の libc とリンカを用意しないため、コンパイルだけを確認する。
 
-doctest は命令の意味論を網羅しない。inventory は公開パスのコンパイルを保証し、値の実行は値テストが担う。利用例は、公開パスや値の扱いが自明でない命令に置く。
+doctest は命令の意味論を網羅しない。inventory は公開パスのコンパイルを、instruction examples は全命令の呼び出しのコンパイルを保証する。値の実行結果は値テストが担う。
 
 ## 実行単位
 
@@ -67,8 +68,8 @@ doctest は命令の意味論を網羅しない。inventory は公開パスの�
 | ----------------------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | `test-x86_64`                 | x86_64 の値テスト、利用例、コード生成、ソース整合性 | `tests/x86`、x86_64 の doctest、`tests/x86_link`、`tests/consistency`（値テストと doctest だけ SDE） |
 | `test-cross`                  | native の値テストとコード生成                       | `tests/<arch>` と `fixtures/<arch>-values`                                                           |
-| `test-doc`                    | native の利用例（コンパイルのみ）                   | 各 native target の doctest（8 件）                                                                  |
-| `test-doc-debian`             | native の利用例（実行）                             | Debian イメージの各 native target の doctest（8 件）                                                 |
+| `test-doc`                    | native の利用例（コンパイルのみ）                   | 各 native target の doctest（8 ターゲット）                                                                  |
+| `test-doc-debian`             | native の利用例（実行）                             | Debian イメージの各 native target の doctest（8 ターゲット）                                                 |
 | `test-debian`                 | Debian イメージの全テスト                           | `test` 全体と native doctest の実行                                                                  |
 | `test-wasip1`                 | wasm32 の値テストと利用例                           | `tests/wasm32`、wasm32 の doctest                                                                    |
 | `test-wasip1-wide-arithmetic` | `wide-arithmetic` 有効時の値テスト、利用例、リンク  | feature 有効時の wasm32 のテストと `tests/wide_arithmetic_link`                                      |

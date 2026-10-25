@@ -158,7 +158,7 @@ native doctest のビルドでは `RUST_ISA_DOCTEST=1` を設定し、C を Thin
 
 `make test-doc` の成果物は `target-nested/doc-test` に置く。fixture ではないため `fixture-matrix.md` には載せない。
 
-命令を追加・削除したら `python3 tools/doctest_inventory.py --write` で extension の instruction inventory を更新する。件数が変わった場合は `docs/doctest-coverage.md` の表も `make doctest-coverage` の出力に合わせて更新する。`make coverage-check` は inventory の更新漏れ、arch の README に載る命令の欠落、網羅表の不一致を失敗にする。
+命令を追加・削除したら `python3 tools/doctest_inventory.py --write` で extension の instruction inventory を更新する。`# Instruction examples` にも新しい命令の呼び出しを追加する。件数が変わった場合は `docs/doctest-coverage.md` の表も `make doctest-coverage` の出力に合わせて更新する。`make coverage-check` は inventory の更新漏れ、instruction examples の欠落、arch の README に載る命令の欠落、網羅表の不一致を失敗にする。
 
 `target-nested` は `.gitignore` と `.dockerignore` に入っている。消しても次の `cargo test` が作り直す。
 

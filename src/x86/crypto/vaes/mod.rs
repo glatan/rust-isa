@@ -32,20 +32,18 @@
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //!
-//! unsafe {
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vaesdec(v256, v256) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vaesdec_v128(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vaesdec_v512(v512, v512) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vaesdeclast(v256, v256) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vaesdeclast_v128(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vaesdeclast_v512(v512, v512) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vaesenc(v256, v256) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vaesenc_v128(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vaesenc_v512(v512, v512) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vaesenclast(v256, v256) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vaesenclast_v128(v128, v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vaesenclast_v512(v512, v512) };
-//! }
+//! let _ = unsafe { vaesdec(v256, v256) };
+//! let _ = unsafe { vaesdec_v128(v128, v128) };
+//! let _ = unsafe { vaesdec_v512(v512, v512) };
+//! let _ = unsafe { vaesdeclast(v256, v256) };
+//! let _ = unsafe { vaesdeclast_v128(v128, v128) };
+//! let _ = unsafe { vaesdeclast_v512(v512, v512) };
+//! let _ = unsafe { vaesenc(v256, v256) };
+//! let _ = unsafe { vaesenc_v128(v128, v128) };
+//! let _ = unsafe { vaesenc_v512(v512, v512) };
+//! let _ = unsafe { vaesenclast(v256, v256) };
+//! let _ = unsafe { vaesenclast_v128(v128, v128) };
+//! let _ = unsafe { vaesenclast_v512(v512, v512) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

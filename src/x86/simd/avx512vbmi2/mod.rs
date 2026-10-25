@@ -35,18 +35,16 @@
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //!
-//! unsafe {
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcompressb(v512, 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcompressw(v512, 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpexpandb(v512, 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpexpandw(v512, 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpshldd::<0>(v512, v512) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpshldq::<0>(v512, v512) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpshldw::<0>(v512, v512) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpshrdd::<0>(v512, v512) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpshrdq::<0>(v512, v512) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpshrdw::<0>(v512, v512) };
-//! }
+//! let _ = unsafe { vpcompressb(v512, 0) };
+//! let _ = unsafe { vpcompressw(v512, 0) };
+//! let _ = unsafe { vpexpandb(v512, 0) };
+//! let _ = unsafe { vpexpandw(v512, 0) };
+//! let _ = unsafe { vpshldd::<0>(v512, v512) };
+//! let _ = unsafe { vpshldq::<0>(v512, v512) };
+//! let _ = unsafe { vpshldw::<0>(v512, v512) };
+//! let _ = unsafe { vpshrdd::<0>(v512, v512) };
+//! let _ = unsafe { vpshrdq::<0>(v512, v512) };
+//! let _ = unsafe { vpshrdw::<0>(v512, v512) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

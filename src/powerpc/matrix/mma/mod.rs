@@ -35,20 +35,18 @@
 //! let v128 = V128::from_bytes([0; 16]);
 //! let mut acc = unsafe { MmaAccumulator::new() };
 //!
-//! unsafe {
-//!     let _ = unsafe { xvi16ger2(&mut acc, v128, v128) };
-//!     let _ = unsafe { xvi16ger2pp(&mut acc, v128, v128) };
-//!     let _ = unsafe { xvi16ger2s(&mut acc, v128, v128) };
-//!     let _ = unsafe { xvi16ger2spp(&mut acc, v128, v128) };
-//!     let _ = unsafe { xvi4ger8(&mut acc, v128, v128) };
-//!     let _ = unsafe { xvi4ger8pp(&mut acc, v128, v128) };
-//!     let _ = unsafe { xvi8ger4(&mut acc, v128, v128) };
-//!     let _ = unsafe { xvi8ger4pp(&mut acc, v128, v128) };
-//!     let _ = unsafe { xvi8ger4spp(&mut acc, v128, v128) };
-//!     let _ = unsafe { xxmfacc(&acc) };
-//!     let _ = unsafe { xxmtacc(&mut acc, [v128; 4]) };
-//!     let _ = unsafe { xxsetaccz(&mut acc) };
-//! }
+//! let _ = unsafe { xvi16ger2(&mut acc, v128, v128) };
+//! let _ = unsafe { xvi16ger2pp(&mut acc, v128, v128) };
+//! let _ = unsafe { xvi16ger2s(&mut acc, v128, v128) };
+//! let _ = unsafe { xvi16ger2spp(&mut acc, v128, v128) };
+//! let _ = unsafe { xvi4ger8(&mut acc, v128, v128) };
+//! let _ = unsafe { xvi4ger8pp(&mut acc, v128, v128) };
+//! let _ = unsafe { xvi8ger4(&mut acc, v128, v128) };
+//! let _ = unsafe { xvi8ger4pp(&mut acc, v128, v128) };
+//! let _ = unsafe { xvi8ger4spp(&mut acc, v128, v128) };
+//! let _ = unsafe { xxmfacc(&acc) };
+//! let _ = unsafe { xxmtacc(&mut acc, [v128; 4]) };
+//! let _ = unsafe { xxsetaccz(&mut acc) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

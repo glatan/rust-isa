@@ -31,10 +31,8 @@
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //!
-//! unsafe {
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpmadd52huq(v512, v512, v512) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vpmadd52luq(v512, v512, v512) };
-//! }
+//! let _ = unsafe { vpmadd52huq(v512, v512, v512) };
+//! let _ = unsafe { vpmadd52luq(v512, v512, v512) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

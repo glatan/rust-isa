@@ -26,19 +26,16 @@
 //!
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::aarch64::crypto::aes::*;
 //! use rust_isa::aarch64::simd::neon::V128;
-//! use rust_isa::aarch64::simd::sme::SmeGuard;
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //!
-//! unsafe {
-//!     let _ = unsafe { aesd(v128, v128) };
-//!     let _ = unsafe { aese(v128, v128) };
-//!     let _ = unsafe { aesimc(v128) };
-//!     let _ = unsafe { aesmc(v128) };
-//! }
+//! let _ = unsafe { aesd(v128, v128) };
+//! let _ = unsafe { aese(v128, v128) };
+//! let _ = unsafe { aesimc(v128) };
+//! let _ = unsafe { aesmc(v128) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

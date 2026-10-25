@@ -20,19 +20,17 @@
 //!
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::riscv::integer::zbkb::*;
 //! use rust_isa::riscv::simd::rvv::V128;
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //!
-//! unsafe {
-//!     let _ = unsafe { brev8(0) };
-//!     let _ = unsafe { pack(0, 0) };
-//!     let _ = unsafe { packh(0, 0) };
-//!     let _ = unsafe { unzip(0) };
-//!     let _ = unsafe { zip(0) };
-//! }
+//! let _ = unsafe { brev8(0) };
+//! let _ = unsafe { pack(0, 0) };
+//! let _ = unsafe { packh(0, 0) };
+//! let _ = unsafe { unzip(0) };
+//! let _ = unsafe { zip(0) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

@@ -37,12 +37,10 @@
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //!
-//! unsafe {
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtph2ps(v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtph2ps_v256(v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtps2ph::<0>(v128) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { vcvtps2ph_v256::<0>(v256) };
-//! }
+//! let _ = unsafe { vcvtph2ps(v128) };
+//! let _ = unsafe { vcvtph2ps_v256(v128) };
+//! let _ = unsafe { vcvtps2ph::<0>(v128) };
+//! let _ = unsafe { vcvtps2ph_v256::<0>(v256) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

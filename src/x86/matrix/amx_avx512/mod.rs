@@ -36,23 +36,22 @@
 //! let v128 = V128::from_bytes([0; 16]);
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
-//! let mut config = rust_isa::x86::matrix::amx_tile::TileConfig::from_bytes([0; 64]);
-//! let guard = unsafe { rust_isa::x86::matrix::amx_tile::AmxGuard::enter(&config) };
+//! use rust_isa::x86::matrix::amx_tile::{AmxGuard, TileConfig};
+//! let mut config = TileConfig::builder().tile::<0>(1, 64).build();
+//! let amx_guard = unsafe { AmxGuard::enter(&config) };
 //!
-//! unsafe {
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tcvtrowd2ps::<0>(&guard, 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tcvtrowd2ps_imm::<0, 0>(&guard) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tcvtrowps2bf16h::<0>(&guard, 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tcvtrowps2bf16h_imm::<0, 0>(&guard) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tcvtrowps2bf16l::<0>(&guard, 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tcvtrowps2bf16l_imm::<0, 0>(&guard) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tcvtrowps2phh::<0>(&guard, 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tcvtrowps2phh_imm::<0, 0>(&guard) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tcvtrowps2phl::<0>(&guard, 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tcvtrowps2phl_imm::<0, 0>(&guard) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tilemovrow::<0>(&guard, 0) };
-//!     #[cfg(target_arch = "x86_64")] let _ = unsafe { tilemovrow_imm::<0, 0>(&guard) };
-//! }
+//! let _ = unsafe { tcvtrowd2ps::<0>(&amx_guard, 0) };
+//! let _ = unsafe { tcvtrowd2ps_imm::<0, 0>(&amx_guard) };
+//! let _ = unsafe { tcvtrowps2bf16h::<0>(&amx_guard, 0) };
+//! let _ = unsafe { tcvtrowps2bf16h_imm::<0, 0>(&amx_guard) };
+//! let _ = unsafe { tcvtrowps2bf16l::<0>(&amx_guard, 0) };
+//! let _ = unsafe { tcvtrowps2bf16l_imm::<0, 0>(&amx_guard) };
+//! let _ = unsafe { tcvtrowps2phh::<0>(&amx_guard, 0) };
+//! let _ = unsafe { tcvtrowps2phh_imm::<0, 0>(&amx_guard) };
+//! let _ = unsafe { tcvtrowps2phl::<0>(&amx_guard, 0) };
+//! let _ = unsafe { tcvtrowps2phl_imm::<0, 0>(&amx_guard) };
+//! let _ = unsafe { tilemovrow::<0>(&amx_guard, 0) };
+//! let _ = unsafe { tilemovrow_imm::<0, 0>(&amx_guard) };
 //! ```
 //!
 //! <!-- doctest-inventory:start -->

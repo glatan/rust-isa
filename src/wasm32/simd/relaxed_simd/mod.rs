@@ -34,34 +34,32 @@
 
 //! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::wasm32::simd::relaxed_simd::*;
 //! use rust_isa::wasm32::simd::simd128::V128;
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //!
-//! unsafe {
-//!     let _ = unsafe { f32x4_relaxed_madd(v128, v128, v128) };
-//!     let _ = unsafe { f32x4_relaxed_max(v128, v128) };
-//!     let _ = unsafe { f32x4_relaxed_min(v128, v128) };
-//!     let _ = unsafe { f32x4_relaxed_nmadd(v128, v128, v128) };
-//!     let _ = unsafe { f64x2_relaxed_madd(v128, v128, v128) };
-//!     let _ = unsafe { f64x2_relaxed_max(v128, v128) };
-//!     let _ = unsafe { f64x2_relaxed_min(v128, v128) };
-//!     let _ = unsafe { f64x2_relaxed_nmadd(v128, v128, v128) };
-//!     let _ = unsafe { i16x8_relaxed_dot_i8x16_i7x16_s(v128, v128) };
-//!     let _ = unsafe { i16x8_relaxed_laneselect(v128, v128, v128) };
-//!     let _ = unsafe { i16x8_relaxed_q15mulr_s(v128, v128) };
-//!     let _ = unsafe { i32x4_relaxed_dot_i8x16_i7x16_add_s(v128, v128, v128) };
-//!     let _ = unsafe { i32x4_relaxed_laneselect(v128, v128, v128) };
-//!     let _ = unsafe { i32x4_relaxed_trunc_f32x4_s(v128) };
-//!     let _ = unsafe { i32x4_relaxed_trunc_f32x4_u(v128) };
-//!     let _ = unsafe { i32x4_relaxed_trunc_f64x2_s_zero(v128) };
-//!     let _ = unsafe { i32x4_relaxed_trunc_f64x2_u_zero(v128) };
-//!     let _ = unsafe { i64x2_relaxed_laneselect(v128, v128, v128) };
-//!     let _ = unsafe { i8x16_relaxed_laneselect(v128, v128, v128) };
-//!     let _ = unsafe { i8x16_relaxed_swizzle(v128, v128) };
-//! }
+//! let _ = f32x4_relaxed_madd(v128, v128, v128);
+//! let _ = f32x4_relaxed_max(v128, v128);
+//! let _ = f32x4_relaxed_min(v128, v128);
+//! let _ = f32x4_relaxed_nmadd(v128, v128, v128);
+//! let _ = f64x2_relaxed_madd(v128, v128, v128);
+//! let _ = f64x2_relaxed_max(v128, v128);
+//! let _ = f64x2_relaxed_min(v128, v128);
+//! let _ = f64x2_relaxed_nmadd(v128, v128, v128);
+//! let _ = i16x8_relaxed_dot_i8x16_i7x16_s(v128, v128);
+//! let _ = i16x8_relaxed_laneselect(v128, v128, v128);
+//! let _ = i16x8_relaxed_q15mulr_s(v128, v128);
+//! let _ = i32x4_relaxed_dot_i8x16_i7x16_add_s(v128, v128, v128);
+//! let _ = i32x4_relaxed_laneselect(v128, v128, v128);
+//! let _ = i32x4_relaxed_trunc_f32x4_s(v128);
+//! let _ = i32x4_relaxed_trunc_f32x4_u(v128);
+//! let _ = i32x4_relaxed_trunc_f64x2_s_zero(v128);
+//! let _ = i32x4_relaxed_trunc_f64x2_u_zero(v128);
+//! let _ = i64x2_relaxed_laneselect(v128, v128, v128);
+//! let _ = i8x16_relaxed_laneselect(v128, v128, v128);
+//! let _ = i8x16_relaxed_swizzle(v128, v128);
 //! ```
 //!
 //! <!-- doctest-inventory:start -->
