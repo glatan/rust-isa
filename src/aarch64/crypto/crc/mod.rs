@@ -13,6 +13,18 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::aarch64::crypto::crc::crc32b as _;
+//! use rust_isa::aarch64::crypto::crc::crc32h as _;
+//! use rust_isa::aarch64::crypto::crc::crc32w as _;
+//! use rust_isa::aarch64::crypto::crc::crc32x as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 unsafe extern "C" {
     fn rust_isa_crc_crc32b(crc: u32, value: u8) -> u32;
     fn rust_isa_crc_crc32h(crc: u32, value: u16) -> u32;

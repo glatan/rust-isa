@@ -13,6 +13,16 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::crypto::sm4::vsm4key4 as _;
+//! use rust_isa::x86::crypto::sm4::vsm4rnds4 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use crate::x86::simd::sse2::V128;
 
 unsafe extern "C" {

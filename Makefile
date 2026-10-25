@@ -1,22 +1,31 @@
 # 開発コマンドはイメージの中で動かす。ホストに cargo や clang は置かない。
 # テストはすべてイメージ内で、対象 triple を明示して実行する。
 
-# Containerfile のベースイメージ日付とイメージ改訂番号に合わせる。
+# Arch イメージのタグは Containerfile のベースイメージ日付と改訂番号に合わせる。
 IMAGE_TAG ?= 20261018.5
 IMAGE ?= localhost/rust-isa-dev:$(IMAGE_TAG)
+# Debian テストイメージのタグは Containerfile.debian の改訂番号に合わせる。
+DEBIAN_IMAGE_TAG ?= 20261025.2
+DEBIAN_IMAGE ?= localhost/rust-isa-debian:$(DEBIAN_IMAGE_TAG)
+DEBIAN_CONTAINERFILE ?= Containerfile.debian
 PODMAN ?= podman
 NEXTEST ?= cargo nextest run
 NEXTEST_FLAGS ?= --no-tests=fail
 COVERAGE_ARGS ?= --todo
 DUPLICATES_ARGS ?=
+DOC_TEST ?= compile
+TARGET_VOLUME ?= rust-isa-target
+CARGO_REGISTRY_VOLUME ?= rust-isa-cargo-registry
+CARGO_GIT_VOLUME ?= rust-isa-cargo-git
 
 X86_64_TARGET ?= x86_64-unknown-linux-gnu
 WASIP1_TARGET ?= wasm32-wasip1
 WASM_UNKNOWN_TARGET ?= wasm32-unknown-unknown
-DOC_TARGETS ?= aarch64-unknown-linux-gnu armv7-unknown-linux-gnueabihf powerpc64le-unknown-linux-gnu riscv64gc-unknown-linux-gnu s390x-unknown-linux-gnu loongarch64-unknown-linux-gnu mips64-unknown-linux-gnuabi64
-DOC_TARGET_DIR ?= target-nested/doc
-DOC_TEST_TARGET_DIR ?= target-nested/doc-test
-WASM_DOC_TARGET_DIR ?= target-nested/doc-wasm
+DOC_TARGETS ?= i686-unknown-linux-gnu aarch64-unknown-linux-gnu armv7-unknown-linux-gnueabihf powerpc64le-unknown-linux-gnu riscv64gc-unknown-linux-gnu s390x-unknown-linux-gnu loongarch64-unknown-linux-gnu mips64-unknown-linux-gnuabi64
+NESTED_DIR ?= target-nested
+DOC_TARGET_DIR ?= $(NESTED_DIR)/doc
+DOC_TEST_TARGET_DIR ?= $(NESTED_DIR)/doc-test
+WASM_DOC_TARGET_DIR ?= $(NESTED_DIR)/doc-wasm
 
 SDE64 ?= /opt/sde/sde64
 SDE32 ?= /opt/sde/sde
@@ -26,9 +35,10 @@ SDE_SKIP_ARGS := $(if $(SDE_SKIP),-- $(SDE_SKIP),)
 
 PODMAN_RUN_BASE := $(PODMAN) run --rm \
 	-v "$(CURDIR)":/src \
-	-v rust-isa-target:/src/target \
-	-v rust-isa-cargo-registry:/root/.cargo/registry \
-	-v rust-isa-cargo-git:/root/.cargo/git \
+	-v $(TARGET_VOLUME):/src/target \
+	-v $(CARGO_REGISTRY_VOLUME):/root/.cargo/registry \
+	-v $(CARGO_GIT_VOLUME):/root/.cargo/git \
+	-e RUST_ISA_NESTED=/src/$(NESTED_DIR) \
 	-w /src
 PODMAN_SDE_ENV := -e CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUNNER='$(SDE64) $(SDE_FLAGS) --' \
 	-e CARGO_TARGET_I686_UNKNOWN_LINUX_GNU_RUNNER='$(SDE32) $(SDE_FLAGS) --' \
@@ -45,28 +55,32 @@ PODMAN_RUN_I686 := $(PODMAN_RUN_BASE) $(PODMAN_I686_ENV) $(IMAGE)
 help:
 	@printf '%s\n' \
 		'image                        開発イメージを作る' \
+		'image-debian                 Debian ベースのテストイメージを作る' \
 		'test                         フォーマット検査・rustdoc・全 arch のテスト（QEMU / SDE / wasmtime）' \
+		'test-debian                  Debian イメージで全テストを実行する' \
+		'test-doc-debian              Debian イメージで native doctest を実行する' \
 		'check-docs                   全ターゲットの rustdoc を -D warnings で検査する' \
 		'fmt                          dprint と cargo fmt で整形する' \
 		'fmt-check                    dprint と cargo fmt の整形を検査する' \
 		'test-host                    x86_64 を SDE で実行するテストと cross-arch テスト' \
-		'test-x86_64                  x86_64 の SDE 値テスト・doctest・ゼロコスト検査' \
+		'test-x86_64                  x86_64 の SDE 値テスト・doctest とホスト側のゼロコスト検査' \
 		'test-check-static            シンボル・rustdoc・レーン即値の検査' \
 		'test-check-wasm-link         wasm32-unknown-unknown のリンク検査' \
-		'test-i686                    i686 の値テスト（SDE）' \
-		'test-aarch64                 AArch64 の値テスト' \
+		'test-i686                    i686 の値テストとゼロコスト検査（SDE）' \
+		'test-aarch64                 AArch64 の値テストとゼロコスト検査' \
 		'test-armv7                   ARMv7 の値テスト' \
-		'test-riscv64                 RISC-V の値テスト' \
-		'test-loongarch64             LoongArch の値テスト' \
-		'test-s390x                   s390x の値テスト' \
-		'test-powerpc64le             PowerPC の値テスト' \
-		'test-mips64                  MIPS64 の値テスト' \
-		'test-doc                     全 arch の doctest（QEMU / wasmtime）' \
-		'test-cross                   i686 と cross-arch の値テスト' \
+		'test-riscv64                 RISC-V の値テストとゼロコスト検査' \
+		'test-loongarch64             LoongArch の値テストとゼロコスト検査' \
+		'test-s390x                   s390x の値テストとゼロコスト検査' \
+		'test-powerpc64le             PowerPC の値テストとゼロコスト検査' \
+		'test-mips64                  MIPS64 の値テストとゼロコスト検査' \
+		'test-doc                     native target の doctest（DOC_TEST=run で実行）' \
+		'test-cross                   i686 と cross-arch の値テストとゼロコスト検査' \
 		'test-wasip1                  wasm32-wasip1 の nextest と doctest' \
 		'test-wasip1-wide-arithmetic  wide-arithmetic 有効時の nextest と doctest' \
 		'coverage                     arch/extension ごとの実装状況を表示する' \
-		'coverage-check               README とゼロコスト結果表の形式を検査する' \
+		'coverage-check               README・ゼロコスト結果表・doctest 在庫を検査する' \
+		'doctest-inventory-check      全公開命令の doctest 在庫を検査する' \
 		'zero-cost-check              ゼロコスト結果表の fixture と kernel を検査する' \
 		'docs-check                   文書間リンク・アンカー・索引からの到達性を検査する' \
 		'fixtures-check               fixtures/・target-nested と fixture-matrix.md の対応を検査する' \
@@ -76,6 +90,26 @@ help:
 image:
 	$(PODMAN) build -t $(IMAGE) -f Containerfile .
 
+.PHONY: image-debian
+image-debian:
+	$(PODMAN) build -t $(DEBIAN_IMAGE) -f $(DEBIAN_CONTAINERFILE) .
+
+.PHONY: test-debian
+test-debian: image-debian
+	$(MAKE) IMAGE=$(DEBIAN_IMAGE) DOC_TEST=run NESTED_DIR=target-nested-debian \
+		TARGET_VOLUME=$(TARGET_VOLUME)-debian \
+		CARGO_REGISTRY_VOLUME=$(CARGO_REGISTRY_VOLUME)-debian \
+		CARGO_GIT_VOLUME=$(CARGO_GIT_VOLUME)-debian \
+		test
+
+.PHONY: test-doc-debian
+test-doc-debian: image-debian
+	$(MAKE) IMAGE=$(DEBIAN_IMAGE) DOC_TEST=run NESTED_DIR=target-nested-debian \
+		TARGET_VOLUME=$(TARGET_VOLUME)-debian \
+		CARGO_REGISTRY_VOLUME=$(CARGO_REGISTRY_VOLUME)-debian \
+		CARGO_GIT_VOLUME=$(CARGO_GIT_VOLUME)-debian \
+		test-doc
+
 .PHONY: coverage
 coverage:
 	$(PODMAN_RUN) python3 tools/coverage.py $(COVERAGE_ARGS)
@@ -84,8 +118,12 @@ coverage:
 zero-cost-check:
 	$(PODMAN_RUN) python3 tools/zero_cost.py --check
 
+.PHONY: doctest-inventory-check
+doctest-inventory-check:
+	$(PODMAN_RUN) python3 tools/doctest_inventory.py --check
+
 .PHONY: coverage-check
-coverage-check: zero-cost-check
+coverage-check: zero-cost-check doctest-inventory-check
 	$(PODMAN_RUN) python3 tools/coverage.py --check
 	$(PODMAN_RUN) python3 tools/doc_names.py --check
 
@@ -124,7 +162,7 @@ check-docs:
 		CARGO_TARGET_DIR=$(WASM_DOC_TARGET_DIR) RUSTDOCFLAGS="-D warnings -C target-feature=+simd128,+relaxed-simd" cargo doc --no-deps --features wide-arithmetic --target $(WASM_UNKNOWN_TARGET)'
 
 .PHONY: test
-test: fmt-check coverage-check docs-check fixtures-check check-mnemonics check-docs test-host test-doc test-wasip1 test-wasip1-wide-arithmetic
+test: fmt-check coverage-check docs-check fixtures-check check-mnemonics check-docs test-check-wasm-link test-host test-doc test-wasip1 test-wasip1-wide-arithmetic
 
 .PHONY: test-host
 test-host: test-x86_64 test-cross
@@ -133,15 +171,18 @@ test-host: test-x86_64 test-cross
 test-cross: test-i686 test-aarch64 test-armv7 test-riscv64 test-loongarch64 test-s390x test-powerpc64le test-mips64
 
 .PHONY: test-x86_64
+# x86_link and consistency only build and inspect files. Running their test
+# drivers under SDE makes the nested cargo and llvm-objdump calls extremely
+# slow, so only the tests that execute x86 instructions use SDE.
 test-x86_64:
 	$(PODMAN_RUN_SDE) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test x86 $(CARGO_ARGS) $(SDE_SKIP_ARGS)
 	$(PODMAN_RUN_SDE) cargo test --target $(X86_64_TARGET) --doc $(CARGO_ARGS)
-	$(PODMAN_RUN_SDE) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test x86_link $(CARGO_ARGS)
-	$(PODMAN_RUN_SDE) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test consistency $(CARGO_ARGS)
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test x86_link $(CARGO_ARGS)
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test consistency $(CARGO_ARGS)
 
 .PHONY: test-check-static
 test-check-static:
-	$(PODMAN_RUN_SDE) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test consistency $(CARGO_ARGS)
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test consistency $(CARGO_ARGS)
 
 .PHONY: test-check-wasm-link
 test-check-wasm-link:
@@ -180,24 +221,37 @@ test-mips64:
 	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test mips $(CARGO_ARGS)
 
 .PHONY: test-doc
+ifeq ($(DOC_TEST),run)
 test-doc:
 	$(PODMAN_RUN) bash -lc 'set -e; \
 		for t in $(DOC_TARGETS); do \
 			case "$$t" in \
-				aarch64-*) r=qemu-aarch64-static ;; \
-				armv7-*) r=qemu-arm-static ;; \
-				powerpc64le-*) r=qemu-ppc64le-static ;; \
-				riscv64gc-*) r=qemu-riscv64-static ;; \
-				s390x-*) r=qemu-s390x-static ;; \
-				loongarch64-*) r=qemu-loongarch64-static ;; \
-				mips64-*) r=qemu-mips64-static ;; \
+				i686-*) cc=i686-linux-gnu-gcc; r="qemu-i386-static -cpu max"; l=/usr/i686-linux-gnu ;; \
+				aarch64-*) cc=aarch64-linux-gnu-gcc; r="qemu-aarch64-static -cpu max"; l=/usr/aarch64-linux-gnu ;; \
+				armv7-*) cc=arm-linux-gnueabihf-gcc; r="qemu-arm-static -cpu max"; l=/usr/arm-linux-gnueabihf ;; \
+				powerpc64le-*) cc=powerpc64le-linux-gnu-gcc; r="qemu-ppc64le-static -cpu power9"; l=/usr/powerpc64le-linux-gnu ;; \
+				riscv64gc-*) cc=riscv64-linux-gnu-gcc; r="qemu-riscv64-static -cpu max"; l=/usr/riscv64-linux-gnu ;; \
+				s390x-*) cc=s390x-linux-gnu-gcc; r="qemu-s390x-static -cpu max"; l=/usr/s390x-linux-gnu ;; \
+				loongarch64-*) cc=loongarch64-linux-gnu-gcc; r="qemu-loongarch64-static -cpu max"; l=/usr/loongarch64-linux-gnu ;; \
+				mips64-*) cc=mips64-linux-gnuabi64-gcc; r="qemu-mips64-static -cpu Loongson-3A4000"; l=/usr/mips64-linux-gnuabi64 ;; \
 			esac; \
 			key=$$(echo "$$t" | tr "a-z-" "A-Z_"); \
+			flags="-C linker=$$cc -C panic=abort"; \
 			echo "===== doctest $$t"; \
-			RUSTC_BOOTSTRAP=1 CARGO_TARGET_DIR=$(DOC_TEST_TARGET_DIR) \
-				env "CARGO_TARGET_$${key}_RUNNER=$$r" \
+			RUSTC_BOOTSTRAP=1 CARGO_TARGET_DIR=$(DOC_TEST_TARGET_DIR) RUST_ISA_DOCTEST=1 \
+				env "CARGO_TARGET_$${key}_RUNNER=$$r -L $$l" \
+					RUSTFLAGS="$$flags" RUSTDOCFLAGS="$$flags" \
+				cargo test --doc --target "$$t" -Z build-std=std,panic_abort; \
+		done'
+else
+test-doc:
+	$(PODMAN_RUN) bash -lc 'set -e; \
+		for t in $(DOC_TARGETS); do \
+			echo "===== doctest compile $$t"; \
+			RUSTC_BOOTSTRAP=1 RUSTDOCFLAGS="--no-run" CARGO_TARGET_DIR=$(DOC_TEST_TARGET_DIR) \
 				cargo test --doc --target "$$t" -Z build-std=std; \
 		done'
+endif
 
 .PHONY: test-wasip1
 test-wasip1:

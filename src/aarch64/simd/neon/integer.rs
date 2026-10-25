@@ -291,6 +291,19 @@ unary!(
 /// `add`
 ///
 /// Add the four 32-bit integer lanes.
+///
+/// # Examples
+///
+/// ```
+/// use rust_isa::aarch64::simd::neon::{add, V128};
+///
+/// let a = V128::from_bytes([1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+/// let b = V128::from_bytes([2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0]);
+/// assert_eq!(
+///     add(a, b).to_bytes(),
+///     [3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0]
+/// );
+/// ```
 #[inline(always)]
 pub fn add(a: V128, b: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);

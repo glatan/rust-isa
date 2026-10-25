@@ -14,6 +14,25 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::sse::addps as _;
+//! use rust_isa::x86::simd::sse::cmpeqps as _;
+//! use rust_isa::x86::simd::sse::cmpleps as _;
+//! use rust_isa::x86::simd::sse::cmpltps as _;
+//! use rust_isa::x86::simd::sse::divps as _;
+//! use rust_isa::x86::simd::sse::maxps as _;
+//! use rust_isa::x86::simd::sse::minps as _;
+//! use rust_isa::x86::simd::sse::mulps as _;
+//! use rust_isa::x86::simd::sse::shufps as _;
+//! use rust_isa::x86::simd::sse::sqrtps as _;
+//! use rust_isa::x86::simd::sse::subps as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 pub use super::sse2::{
     addps, cmpeqps, cmpleps, cmpltps, divps, maxps, minps, mulps, shufps, sqrtps, subps,
 };

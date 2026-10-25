@@ -14,6 +14,18 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::avx512cd::vpconflictd as _;
+//! use rust_isa::x86::simd::avx512cd::vpconflictq as _;
+//! use rust_isa::x86::simd::avx512cd::vplzcntd as _;
+//! use rust_isa::x86::simd::avx512cd::vplzcntq as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::avx512f::V512;
 
 unsafe extern "C" {

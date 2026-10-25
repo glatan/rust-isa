@@ -10,6 +10,16 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::integer::popcnt::popcnt_u32 as _;
+//! use rust_isa::x86::integer::popcnt::popcnt_u64 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 unsafe extern "C" {
     fn rust_isa_popcnt_popcnt_u32(a: u32) -> u32;
     fn rust_isa_popcnt_popcnt_u64(a: u64) -> u64;

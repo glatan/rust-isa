@@ -10,6 +10,26 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::crypto::vaes::vaesdec as _;
+//! use rust_isa::x86::crypto::vaes::vaesdec_v128 as _;
+//! use rust_isa::x86::crypto::vaes::vaesdec_v512 as _;
+//! use rust_isa::x86::crypto::vaes::vaesdeclast as _;
+//! use rust_isa::x86::crypto::vaes::vaesdeclast_v128 as _;
+//! use rust_isa::x86::crypto::vaes::vaesdeclast_v512 as _;
+//! use rust_isa::x86::crypto::vaes::vaesenc as _;
+//! use rust_isa::x86::crypto::vaes::vaesenc_v128 as _;
+//! use rust_isa::x86::crypto::vaes::vaesenc_v512 as _;
+//! use rust_isa::x86::crypto::vaes::vaesenclast as _;
+//! use rust_isa::x86::crypto::vaes::vaesenclast_v128 as _;
+//! use rust_isa::x86::crypto::vaes::vaesenclast_v512 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;
 use crate::x86::simd::sse2::V128;

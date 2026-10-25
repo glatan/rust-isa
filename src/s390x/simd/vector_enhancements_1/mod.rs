@@ -14,6 +14,36 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::s390x::simd::vector_enhancements_1::fma as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::popcnt_i32 as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::popcnt_i8 as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vfa as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vfce as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vfch as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vfche as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vfd as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vfi_f32 as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vfll as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vflr as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vfm as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vfma as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vfms as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vfnma as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vfnms as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vfs as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vfsq as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vftci_f32 as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vnn as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vpopctb as _;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vpopctg as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::vector::V128;
 use core::arch::asm;
 

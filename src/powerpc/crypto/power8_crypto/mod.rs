@@ -12,6 +12,30 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::powerpc::crypto::power8_crypto::cipher as _;
+//! use rust_isa::powerpc::crypto::power8_crypto::cipherlast as _;
+//! use rust_isa::powerpc::crypto::power8_crypto::ncipher as _;
+//! use rust_isa::powerpc::crypto::power8_crypto::ncipherlast as _;
+//! use rust_isa::powerpc::crypto::power8_crypto::vcipher as _;
+//! use rust_isa::powerpc::crypto::power8_crypto::vcipherlast as _;
+//! use rust_isa::powerpc::crypto::power8_crypto::vncipher as _;
+//! use rust_isa::powerpc::crypto::power8_crypto::vncipherlast as _;
+//! use rust_isa::powerpc::crypto::power8_crypto::vpermxor as _;
+//! use rust_isa::powerpc::crypto::power8_crypto::vpmsumb as _;
+//! use rust_isa::powerpc::crypto::power8_crypto::vpmsumd as _;
+//! use rust_isa::powerpc::crypto::power8_crypto::vpmsumh as _;
+//! use rust_isa::powerpc::crypto::power8_crypto::vpmsumw as _;
+//! use rust_isa::powerpc::crypto::power8_crypto::vsbox as _;
+//! use rust_isa::powerpc::crypto::power8_crypto::vshasigmad as _;
+//! use rust_isa::powerpc::crypto::power8_crypto::vshasigmaw as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use crate::powerpc::simd::altivec::V128;
 
 unsafe extern "C" {

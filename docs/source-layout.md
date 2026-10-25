@@ -8,6 +8,8 @@ extension の実装ファイル（C や `asm!` を含む Rust）は、extension 
 
 ## テスト
 
+テストの役割は [テストの役割](testing.md) に従う。
+
 - 統合テストは `tests/<arch>.rs` または `tests/<arch>/main.rs` を起点にする。family と extension の名前は `src/<arch>/` に合わせる。
 - extension のテストが1ファイルで足りる場合は `tests/x86/simd/sse2.rs` に置く。
 - 複数ファイルに分かれる場合は `tests/x86/simd/avx2/` のように extension 名のディレクトリに置く。

@@ -11,6 +11,96 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::mips::simd::msa::add as _;
+//! use rust_isa::mips::simd::msa::add_a as _;
+//! use rust_isa::mips::simd::msa::add_i16 as _;
+//! use rust_isa::mips::simd::msa::add_i64 as _;
+//! use rust_isa::mips::simd::msa::add_i8 as _;
+//! use rust_isa::mips::simd::msa::adds_a as _;
+//! use rust_isa::mips::simd::msa::adds_s as _;
+//! use rust_isa::mips::simd::msa::adds_u as _;
+//! use rust_isa::mips::simd::msa::and as _;
+//! use rust_isa::mips::simd::msa::bclr as _;
+//! use rust_isa::mips::simd::msa::binsl as _;
+//! use rust_isa::mips::simd::msa::binsr as _;
+//! use rust_isa::mips::simd::msa::bneg as _;
+//! use rust_isa::mips::simd::msa::bset as _;
+//! use rust_isa::mips::simd::msa::cmpeq_i32 as _;
+//! use rust_isa::mips::simd::msa::cmpgt_i32 as _;
+//! use rust_isa::mips::simd::msa::div_s as _;
+//! use rust_isa::mips::simd::msa::div_u as _;
+//! use rust_isa::mips::simd::msa::fadd as _;
+//! use rust_isa::mips::simd::msa::fadd_f64 as _;
+//! use rust_isa::mips::simd::msa::fclass as _;
+//! use rust_isa::mips::simd::msa::fcmp as _;
+//! use rust_isa::mips::simd::msa::fdiv as _;
+//! use rust_isa::mips::simd::msa::fdiv_f64 as _;
+//! use rust_isa::mips::simd::msa::fexp2 as _;
+//! use rust_isa::mips::simd::msa::ffint as _;
+//! use rust_isa::mips::simd::msa::ffint_s as _;
+//! use rust_isa::mips::simd::msa::ffint_u as _;
+//! use rust_isa::mips::simd::msa::flog2 as _;
+//! use rust_isa::mips::simd::msa::fmax as _;
+//! use rust_isa::mips::simd::msa::fmin as _;
+//! use rust_isa::mips::simd::msa::fmul as _;
+//! use rust_isa::mips::simd::msa::fmul_f64 as _;
+//! use rust_isa::mips::simd::msa::frcp as _;
+//! use rust_isa::mips::simd::msa::frsqrt as _;
+//! use rust_isa::mips::simd::msa::fsqrt as _;
+//! use rust_isa::mips::simd::msa::fsub as _;
+//! use rust_isa::mips::simd::msa::fsub_f64 as _;
+//! use rust_isa::mips::simd::msa::ftint as _;
+//! use rust_isa::mips::simd::msa::ftint_s as _;
+//! use rust_isa::mips::simd::msa::ftint_u as _;
+//! use rust_isa::mips::simd::msa::max_s as _;
+//! use rust_isa::mips::simd::msa::max_u as _;
+//! use rust_isa::mips::simd::msa::min_s as _;
+//! use rust_isa::mips::simd::msa::min_u as _;
+//! use rust_isa::mips::simd::msa::mod_s as _;
+//! use rust_isa::mips::simd::msa::mod_u as _;
+//! use rust_isa::mips::simd::msa::mul as _;
+//! use rust_isa::mips::simd::msa::mul_i16 as _;
+//! use rust_isa::mips::simd::msa::mul_i32 as _;
+//! use rust_isa::mips::simd::msa::nloc as _;
+//! use rust_isa::mips::simd::msa::nlzc as _;
+//! use rust_isa::mips::simd::msa::nor as _;
+//! use rust_isa::mips::simd::msa::nor_v as _;
+//! use rust_isa::mips::simd::msa::or as _;
+//! use rust_isa::mips::simd::msa::pcnt as _;
+//! use rust_isa::mips::simd::msa::sat_s as _;
+//! use rust_isa::mips::simd::msa::sat_u as _;
+//! use rust_isa::mips::simd::msa::seq as _;
+//! use rust_isa::mips::simd::msa::shf as _;
+//! use rust_isa::mips::simd::msa::sld as _;
+//! use rust_isa::mips::simd::msa::sle_s as _;
+//! use rust_isa::mips::simd::msa::sle_u as _;
+//! use rust_isa::mips::simd::msa::sll as _;
+//! use rust_isa::mips::simd::msa::slli as _;
+//! use rust_isa::mips::simd::msa::slt_s as _;
+//! use rust_isa::mips::simd::msa::slt_u as _;
+//! use rust_isa::mips::simd::msa::splat_i32 as _;
+//! use rust_isa::mips::simd::msa::sra as _;
+//! use rust_isa::mips::simd::msa::srai as _;
+//! use rust_isa::mips::simd::msa::srl as _;
+//! use rust_isa::mips::simd::msa::srli as _;
+//! use rust_isa::mips::simd::msa::sub_i16 as _;
+//! use rust_isa::mips::simd::msa::sub_i32 as _;
+//! use rust_isa::mips::simd::msa::sub_i64 as _;
+//! use rust_isa::mips::simd::msa::sub_i8 as _;
+//! use rust_isa::mips::simd::msa::subs_s as _;
+//! use rust_isa::mips::simd::msa::subs_u as _;
+//! use rust_isa::mips::simd::msa::v128_load as _;
+//! use rust_isa::mips::simd::msa::v128_store as _;
+//! use rust_isa::mips::simd::msa::vshf as _;
+//! use rust_isa::mips::simd::msa::xor as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 mod v128;
 
 pub use v128::*;
@@ -23,6 +113,20 @@ unsafe extern "C" {
 /// `addv.w`
 ///
 /// Add the four 32-bit integer lanes.
+///
+/// # Examples
+///
+/// ```
+/// use rust_isa::mips::simd::msa::{add, V128};
+///
+/// let a = V128::from_bytes([1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+/// let b = V128::from_bytes([2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0]);
+/// let sum = unsafe { add(a, b) };
+/// assert_eq!(
+///     sum.to_bytes(),
+///     [3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0]
+/// );
+/// ```
 ///
 /// # Safety
 ///

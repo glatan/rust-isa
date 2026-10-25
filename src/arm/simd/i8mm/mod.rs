@@ -12,6 +12,17 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::arm::simd::i8mm::smmla as _;
+//! use rust_isa::arm::simd::i8mm::vummla as _;
+//! use rust_isa::arm::simd::i8mm::vusmmla as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::neon::V128;
 
 unsafe extern "C" {

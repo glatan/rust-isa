@@ -10,6 +10,21 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::crypto::sha::sha1msg1 as _;
+//! use rust_isa::x86::crypto::sha::sha1msg2 as _;
+//! use rust_isa::x86::crypto::sha::sha1nexte as _;
+//! use rust_isa::x86::crypto::sha::sha1rnds4 as _;
+//! use rust_isa::x86::crypto::sha::sha256msg1 as _;
+//! use rust_isa::x86::crypto::sha::sha256msg2 as _;
+//! use rust_isa::x86::crypto::sha::sha256rnds2 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use core::arch::asm;
 
 use crate::x86::simd::sse2::V128;

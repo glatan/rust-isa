@@ -11,6 +11,228 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::loongarch::simd::lsx::add as _;
+//! use rust_isa::loongarch::simd::lsx::add_i16 as _;
+//! use rust_isa::loongarch::simd::lsx::add_i64 as _;
+//! use rust_isa::loongarch::simd::lsx::add_i8 as _;
+//! use rust_isa::loongarch::simd::lsx::and as _;
+//! use rust_isa::loongarch::simd::lsx::cmpeq_i32 as _;
+//! use rust_isa::loongarch::simd::lsx::cmpgt_i32 as _;
+//! use rust_isa::loongarch::simd::lsx::fadd as _;
+//! use rust_isa::loongarch::simd::lsx::fdiv as _;
+//! use rust_isa::loongarch::simd::lsx::fmul as _;
+//! use rust_isa::loongarch::simd::lsx::fsub as _;
+//! use rust_isa::loongarch::simd::lsx::mul as _;
+//! use rust_isa::loongarch::simd::lsx::mul_i16 as _;
+//! use rust_isa::loongarch::simd::lsx::mul_i32 as _;
+//! use rust_isa::loongarch::simd::lsx::or as _;
+//! use rust_isa::loongarch::simd::lsx::splat_i32 as _;
+//! use rust_isa::loongarch::simd::lsx::sub_i16 as _;
+//! use rust_isa::loongarch::simd::lsx::sub_i32 as _;
+//! use rust_isa::loongarch::simd::lsx::sub_i64 as _;
+//! use rust_isa::loongarch::simd::lsx::sub_i8 as _;
+//! use rust_isa::loongarch::simd::lsx::v128_load as _;
+//! use rust_isa::loongarch::simd::lsx::v128_store as _;
+//! use rust_isa::loongarch::simd::lsx::vabs as _;
+//! use rust_isa::loongarch::simd::lsx::vabs_b as _;
+//! use rust_isa::loongarch::simd::lsx::vabs_d as _;
+//! use rust_isa::loongarch::simd::lsx::vabs_h as _;
+//! use rust_isa::loongarch::simd::lsx::vadd as _;
+//! use rust_isa::loongarch::simd::lsx::vadd_b as _;
+//! use rust_isa::loongarch::simd::lsx::vadd_d as _;
+//! use rust_isa::loongarch::simd::lsx::vadd_h as _;
+//! use rust_isa::loongarch::simd::lsx::vadd_w as _;
+//! use rust_isa::loongarch::simd::lsx::vand as _;
+//! use rust_isa::loongarch::simd::lsx::vavgr as _;
+//! use rust_isa::loongarch::simd::lsx::vavgr_b as _;
+//! use rust_isa::loongarch::simd::lsx::vavgr_bu as _;
+//! use rust_isa::loongarch::simd::lsx::vavgr_d as _;
+//! use rust_isa::loongarch::simd::lsx::vavgr_du as _;
+//! use rust_isa::loongarch::simd::lsx::vavgr_h as _;
+//! use rust_isa::loongarch::simd::lsx::vavgr_hu as _;
+//! use rust_isa::loongarch::simd::lsx::vavgr_w as _;
+//! use rust_isa::loongarch::simd::lsx::vavgr_wu as _;
+//! use rust_isa::loongarch::simd::lsx::vbitsel as _;
+//! use rust_isa::loongarch::simd::lsx::vext as _;
+//! use rust_isa::loongarch::simd::lsx::vexth as _;
+//! use rust_isa::loongarch::simd::lsx::vexth_d_w as _;
+//! use rust_isa::loongarch::simd::lsx::vexth_du_wu as _;
+//! use rust_isa::loongarch::simd::lsx::vexth_h_b as _;
+//! use rust_isa::loongarch::simd::lsx::vexth_hu_bu as _;
+//! use rust_isa::loongarch::simd::lsx::vexth_q_d as _;
+//! use rust_isa::loongarch::simd::lsx::vexth_qu_du as _;
+//! use rust_isa::loongarch::simd::lsx::vexth_w_h as _;
+//! use rust_isa::loongarch::simd::lsx::vexth_wu_hu as _;
+//! use rust_isa::loongarch::simd::lsx::vextl as _;
+//! use rust_isa::loongarch::simd::lsx::vextl_qu_du as _;
+//! use rust_isa::loongarch::simd::lsx::vfadd as _;
+//! use rust_isa::loongarch::simd::lsx::vfadd_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfadd_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_caf_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_caf_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_ceq_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_ceq_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_cle_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_cle_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_clt_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_clt_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_cne_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_cne_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_cor_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_cor_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_cueq_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_cueq_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_cule_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_cule_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_cult_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_cult_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_cun_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_cun_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_cune_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_cune_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_saf_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_saf_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_seq_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_seq_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_sle_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_sle_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_slt_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_slt_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_sne_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_sne_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_sor_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_sor_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_sueq_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_sueq_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_sule_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_sule_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_sult_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_sult_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_sun_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_sun_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_sune_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcmp_sune_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcvt as _;
+//! use rust_isa::loongarch::simd::lsx::vfcvt_s_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfcvth_d_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfcvtl_d_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfdiv as _;
+//! use rust_isa::loongarch::simd::lsx::vfdiv_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfdiv_s as _;
+//! use rust_isa::loongarch::simd::lsx::vffint as _;
+//! use rust_isa::loongarch::simd::lsx::vffint_d_l as _;
+//! use rust_isa::loongarch::simd::lsx::vffint_d_lu as _;
+//! use rust_isa::loongarch::simd::lsx::vffint_s_l as _;
+//! use rust_isa::loongarch::simd::lsx::vffint_s_w as _;
+//! use rust_isa::loongarch::simd::lsx::vffint_s_wu as _;
+//! use rust_isa::loongarch::simd::lsx::vffinth_d_w as _;
+//! use rust_isa::loongarch::simd::lsx::vffintl_d_w as _;
+//! use rust_isa::loongarch::simd::lsx::vfmax as _;
+//! use rust_isa::loongarch::simd::lsx::vfmax_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfmax_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfmin as _;
+//! use rust_isa::loongarch::simd::lsx::vfmin_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfmin_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfmul as _;
+//! use rust_isa::loongarch::simd::lsx::vfmul_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfmul_s as _;
+//! use rust_isa::loongarch::simd::lsx::vfsub as _;
+//! use rust_isa::loongarch::simd::lsx::vfsub_d as _;
+//! use rust_isa::loongarch::simd::lsx::vfsub_s as _;
+//! use rust_isa::loongarch::simd::lsx::vftint as _;
+//! use rust_isa::loongarch::simd::lsx::vftint_l_d as _;
+//! use rust_isa::loongarch::simd::lsx::vftint_lu_d as _;
+//! use rust_isa::loongarch::simd::lsx::vftint_w_d as _;
+//! use rust_isa::loongarch::simd::lsx::vftint_w_s as _;
+//! use rust_isa::loongarch::simd::lsx::vftint_wu_s as _;
+//! use rust_isa::loongarch::simd::lsx::vftintrm_l_d as _;
+//! use rust_isa::loongarch::simd::lsx::vftintrm_w_d as _;
+//! use rust_isa::loongarch::simd::lsx::vftintrm_w_s as _;
+//! use rust_isa::loongarch::simd::lsx::vftintrne_l_d as _;
+//! use rust_isa::loongarch::simd::lsx::vftintrne_w_d as _;
+//! use rust_isa::loongarch::simd::lsx::vftintrne_w_s as _;
+//! use rust_isa::loongarch::simd::lsx::vftintrp_l_d as _;
+//! use rust_isa::loongarch::simd::lsx::vftintrp_w_d as _;
+//! use rust_isa::loongarch::simd::lsx::vftintrp_w_s as _;
+//! use rust_isa::loongarch::simd::lsx::vftintrz_l_d as _;
+//! use rust_isa::loongarch::simd::lsx::vftintrz_lu_d as _;
+//! use rust_isa::loongarch::simd::lsx::vftintrz_w_d as _;
+//! use rust_isa::loongarch::simd::lsx::vftintrz_w_s as _;
+//! use rust_isa::loongarch::simd::lsx::vftintrz_wu_s as _;
+//! use rust_isa::loongarch::simd::lsx::vld as _;
+//! use rust_isa::loongarch::simd::lsx::vldi as _;
+//! use rust_isa::loongarch::simd::lsx::vmax as _;
+//! use rust_isa::loongarch::simd::lsx::vmin as _;
+//! use rust_isa::loongarch::simd::lsx::vmul as _;
+//! use rust_isa::loongarch::simd::lsx::vmul_h as _;
+//! use rust_isa::loongarch::simd::lsx::vmul_w as _;
+//! use rust_isa::loongarch::simd::lsx::vneg as _;
+//! use rust_isa::loongarch::simd::lsx::vneg_b as _;
+//! use rust_isa::loongarch::simd::lsx::vneg_d as _;
+//! use rust_isa::loongarch::simd::lsx::vneg_h as _;
+//! use rust_isa::loongarch::simd::lsx::vneg_w as _;
+//! use rust_isa::loongarch::simd::lsx::vnor as _;
+//! use rust_isa::loongarch::simd::lsx::vor as _;
+//! use rust_isa::loongarch::simd::lsx::vpackev as _;
+//! use rust_isa::loongarch::simd::lsx::vpackod as _;
+//! use rust_isa::loongarch::simd::lsx::vrepl as _;
+//! use rust_isa::loongarch::simd::lsx::vrepl_b as _;
+//! use rust_isa::loongarch::simd::lsx::vrepl_d as _;
+//! use rust_isa::loongarch::simd::lsx::vrepl_h as _;
+//! use rust_isa::loongarch::simd::lsx::vrepl_w as _;
+//! use rust_isa::loongarch::simd::lsx::vreplve as _;
+//! use rust_isa::loongarch::simd::lsx::vreplve_b as _;
+//! use rust_isa::loongarch::simd::lsx::vreplve_d as _;
+//! use rust_isa::loongarch::simd::lsx::vreplve_h as _;
+//! use rust_isa::loongarch::simd::lsx::vreplve_w as _;
+//! use rust_isa::loongarch::simd::lsx::vsat as _;
+//! use rust_isa::loongarch::simd::lsx::vsat_b as _;
+//! use rust_isa::loongarch::simd::lsx::vsat_bu as _;
+//! use rust_isa::loongarch::simd::lsx::vsat_d as _;
+//! use rust_isa::loongarch::simd::lsx::vsat_du as _;
+//! use rust_isa::loongarch::simd::lsx::vsat_h as _;
+//! use rust_isa::loongarch::simd::lsx::vsat_hu as _;
+//! use rust_isa::loongarch::simd::lsx::vsat_w as _;
+//! use rust_isa::loongarch::simd::lsx::vsat_wu as _;
+//! use rust_isa::loongarch::simd::lsx::vseq as _;
+//! use rust_isa::loongarch::simd::lsx::vseqi as _;
+//! use rust_isa::loongarch::simd::lsx::vshuf as _;
+//! use rust_isa::loongarch::simd::lsx::vshuf4i as _;
+//! use rust_isa::loongarch::simd::lsx::vsle as _;
+//! use rust_isa::loongarch::simd::lsx::vslei as _;
+//! use rust_isa::loongarch::simd::lsx::vsll as _;
+//! use rust_isa::loongarch::simd::lsx::vslli as _;
+//! use rust_isa::loongarch::simd::lsx::vslt as _;
+//! use rust_isa::loongarch::simd::lsx::vslti as _;
+//! use rust_isa::loongarch::simd::lsx::vsra as _;
+//! use rust_isa::loongarch::simd::lsx::vsrai as _;
+//! use rust_isa::loongarch::simd::lsx::vsrl as _;
+//! use rust_isa::loongarch::simd::lsx::vsrli as _;
+//! use rust_isa::loongarch::simd::lsx::vssr as _;
+//! use rust_isa::loongarch::simd::lsx::vssrarn_w_d as _;
+//! use rust_isa::loongarch::simd::lsx::vssrarn_wu_du as _;
+//! use rust_isa::loongarch::simd::lsx::vssrln_w_d as _;
+//! use rust_isa::loongarch::simd::lsx::vssrln_wu_du as _;
+//! use rust_isa::loongarch::simd::lsx::vssrlrn_w_d as _;
+//! use rust_isa::loongarch::simd::lsx::vssrlrn_wu_du as _;
+//! use rust_isa::loongarch::simd::lsx::vst as _;
+//! use rust_isa::loongarch::simd::lsx::vsub as _;
+//! use rust_isa::loongarch::simd::lsx::vsub_b as _;
+//! use rust_isa::loongarch::simd::lsx::vsub_d as _;
+//! use rust_isa::loongarch::simd::lsx::vsub_h as _;
+//! use rust_isa::loongarch::simd::lsx::vsub_w as _;
+//! use rust_isa::loongarch::simd::lsx::vxor as _;
+//! use rust_isa::loongarch::simd::lsx::xor as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 mod v128;
 
 pub use v128::*;
@@ -23,6 +245,19 @@ unsafe extern "C" {
 /// `vadd.w`
 ///
 /// Add the four 32-bit integer lanes.
+///
+/// # Examples
+///
+/// ```
+/// use rust_isa::loongarch::simd::lsx::{add, V128};
+///
+/// let a = V128::from_bytes([1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+/// let b = V128::from_bytes([2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0]);
+/// assert_eq!(
+///     add(a, b).to_bytes(),
+///     [3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0]
+/// );
+/// ```
 #[inline(always)]
 pub fn add(a: V128, b: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);

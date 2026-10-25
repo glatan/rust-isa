@@ -6,11 +6,134 @@
 //!
 //! The lane order is big-endian.
 //!
+//! # Examples
+//!
+//! ```
+//! use rust_isa::s390x::simd::vector::{add, V128};
+//!
+//! let a = V128::from_bytes([1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+//! let b = V128::from_bytes([2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0]);
+//! let sum = unsafe { add(a, b) };
+//! assert_eq!(
+//!     sum.to_bytes(),
+//!     [3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0]
+//! );
+//! ```
+//!
 //! Instruction behavior follows the [IBM z/Architecture Principles of Operation](https://www.ibm.com/docs/en/module_1678991624569/pdf/SA22-7832-14.pdf).
 //!
 //! The build compiles the bundled C with clang; some wrappers use `asm!`.
 //!
 //! Instructions not listed in this module are not exposed.
+
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::s390x::simd::vector::add as _;
+//! use rust_isa::s390x::simd::vector::add_i16 as _;
+//! use rust_isa::s390x::simd::vector::add_i64 as _;
+//! use rust_isa::s390x::simd::vector::add_i8 as _;
+//! use rust_isa::s390x::simd::vector::and as _;
+//! use rust_isa::s390x::simd::vector::cmpeq_i32 as _;
+//! use rust_isa::s390x::simd::vector::cmpgt_i32 as _;
+//! use rust_isa::s390x::simd::vector::cntlz_i32 as _;
+//! use rust_isa::s390x::simd::vector::fadd as _;
+//! use rust_isa::s390x::simd::vector::fdiv as _;
+//! use rust_isa::s390x::simd::vector::fmul as _;
+//! use rust_isa::s390x::simd::vector::fsub as _;
+//! use rust_isa::s390x::simd::vector::mul as _;
+//! use rust_isa::s390x::simd::vector::mul_i16 as _;
+//! use rust_isa::s390x::simd::vector::mul_i32 as _;
+//! use rust_isa::s390x::simd::vector::or as _;
+//! use rust_isa::s390x::simd::vector::permute as _;
+//! use rust_isa::s390x::simd::vector::splat_i32 as _;
+//! use rust_isa::s390x::simd::vector::sub_i16 as _;
+//! use rust_isa::s390x::simd::vector::sub_i32 as _;
+//! use rust_isa::s390x::simd::vector::sub_i64 as _;
+//! use rust_isa::s390x::simd::vector::sub_i8 as _;
+//! use rust_isa::s390x::simd::vector::v128_load as _;
+//! use rust_isa::s390x::simd::vector::v128_store as _;
+//! use rust_isa::s390x::simd::vector::vab as _;
+//! use rust_isa::s390x::simd::vector::vaf as _;
+//! use rust_isa::s390x::simd::vector::vag as _;
+//! use rust_isa::s390x::simd::vector::vah as _;
+//! use rust_isa::s390x::simd::vector::vavg as _;
+//! use rust_isa::s390x::simd::vector::vavgl as _;
+//! use rust_isa::s390x::simd::vector::vceq as _;
+//! use rust_isa::s390x::simd::vector::vch as _;
+//! use rust_isa::s390x::simd::vector::vchl as _;
+//! use rust_isa::s390x::simd::vector::vcksm as _;
+//! use rust_isa::s390x::simd::vector::vcl as _;
+//! use rust_isa::s390x::simd::vector::vclf as _;
+//! use rust_isa::s390x::simd::vector::vclg as _;
+//! use rust_isa::s390x::simd::vector::vclh as _;
+//! use rust_isa::s390x::simd::vector::vclzb as _;
+//! use rust_isa::s390x::simd::vector::vclzg as _;
+//! use rust_isa::s390x::simd::vector::vctzb as _;
+//! use rust_isa::s390x::simd::vector::vctzg as _;
+//! use rust_isa::s390x::simd::vector::vfa as _;
+//! use rust_isa::s390x::simd::vector::vfae as _;
+//! use rust_isa::s390x::simd::vector::vfce as _;
+//! use rust_isa::s390x::simd::vector::vfch as _;
+//! use rust_isa::s390x::simd::vector::vfche as _;
+//! use rust_isa::s390x::simd::vector::vfd as _;
+//! use rust_isa::s390x::simd::vector::vfee as _;
+//! use rust_isa::s390x::simd::vector::vfene as _;
+//! use rust_isa::s390x::simd::vector::vfi_f32 as _;
+//! use rust_isa::s390x::simd::vector::vfi_f64 as _;
+//! use rust_isa::s390x::simd::vector::vfll as _;
+//! use rust_isa::s390x::simd::vector::vflr as _;
+//! use rust_isa::s390x::simd::vector::vfm as _;
+//! use rust_isa::s390x::simd::vector::vfs as _;
+//! use rust_isa::s390x::simd::vector::vfsq as _;
+//! use rust_isa::s390x::simd::vector::vftci_f32 as _;
+//! use rust_isa::s390x::simd::vector::vftci_f64 as _;
+//! use rust_isa::s390x::simd::vector::vgbm as _;
+//! use rust_isa::s390x::simd::vector::vgef as _;
+//! use rust_isa::s390x::simd::vector::vgeg as _;
+//! use rust_isa::s390x::simd::vector::vistr as _;
+//! use rust_isa::s390x::simd::vector::vle as _;
+//! use rust_isa::s390x::simd::vector::vlef as _;
+//! use rust_isa::s390x::simd::vector::vlgv as _;
+//! use rust_isa::s390x::simd::vector::vmax as _;
+//! use rust_isa::s390x::simd::vector::vme as _;
+//! use rust_isa::s390x::simd::vector::vmh as _;
+//! use rust_isa::s390x::simd::vector::vmin as _;
+//! use rust_isa::s390x::simd::vector::vml as _;
+//! use rust_isa::s390x::simd::vector::vmle as _;
+//! use rust_isa::s390x::simd::vector::vmlh as _;
+//! use rust_isa::s390x::simd::vector::vmlo as _;
+//! use rust_isa::s390x::simd::vector::vmo as _;
+//! use rust_isa::s390x::simd::vector::vnn as _;
+//! use rust_isa::s390x::simd::vector::vperm as _;
+//! use rust_isa::s390x::simd::vector::vpkls as _;
+//! use rust_isa::s390x::simd::vector::vpks as _;
+//! use rust_isa::s390x::simd::vector::vrep as _;
+//! use rust_isa::s390x::simd::vector::vrepb as _;
+//! use rust_isa::s390x::simd::vector::vrepf as _;
+//! use rust_isa::s390x::simd::vector::vrepg as _;
+//! use rust_isa::s390x::simd::vector::vreph as _;
+//! use rust_isa::s390x::simd::vector::vsb as _;
+//! use rust_isa::s390x::simd::vector::vscbi as _;
+//! use rust_isa::s390x::simd::vector::vseg as _;
+//! use rust_isa::s390x::simd::vector::vsel as _;
+//! use rust_isa::s390x::simd::vector::vsf as _;
+//! use rust_isa::s390x::simd::vector::vsg as _;
+//! use rust_isa::s390x::simd::vector::vsh as _;
+//! use rust_isa::s390x::simd::vector::vsl as _;
+//! use rust_isa::s390x::simd::vector::vsr as _;
+//! use rust_isa::s390x::simd::vector::vst as _;
+//! use rust_isa::s390x::simd::vector::vstef as _;
+//! use rust_isa::s390x::simd::vector::vstrc as _;
+//! use rust_isa::s390x::simd::vector::vuph as _;
+//! use rust_isa::s390x::simd::vector::vupl as _;
+//! use rust_isa::s390x::simd::vector::vuplh as _;
+//! use rust_isa::s390x::simd::vector::vupll as _;
+//! use rust_isa::s390x::simd::vector::xor as _;
+//! ```
+//! <!-- doctest-inventory:end -->
 
 mod v128;
 

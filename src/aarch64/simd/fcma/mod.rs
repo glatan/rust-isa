@@ -13,6 +13,18 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::aarch64::simd::fcma::fcmla as _;
+//! use rust_isa::aarch64::simd::fcma::fcmla_rot180 as _;
+//! use rust_isa::aarch64::simd::fcma::fcmla_rot270 as _;
+//! use rust_isa::aarch64::simd::fcma::fcmla_rot90 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use crate::aarch64::simd::neon::V128;
 
 unsafe extern "C" {

@@ -14,6 +14,58 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::avx512fp16::vaddph as _;
+//! use rust_isa::x86::simd::avx512fp16::vcmpph as _;
+//! use rust_isa::x86::simd::avx512fp16::vcomish as _;
+//! use rust_isa::x86::simd::avx512fp16::vcvtpd2ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vcvtph2pd as _;
+//! use rust_isa::x86::simd::avx512fp16::vcvtph2psx as _;
+//! use rust_isa::x86::simd::avx512fp16::vcvtps2phx as _;
+//! use rust_isa::x86::simd::avx512fp16::vcvtsd2sh as _;
+//! use rust_isa::x86::simd::avx512fp16::vcvtsh2sd as _;
+//! use rust_isa::x86::simd::avx512fp16::vcvtsh2ss as _;
+//! use rust_isa::x86::simd::avx512fp16::vcvtss2sh as _;
+//! use rust_isa::x86::simd::avx512fp16::vdivph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfmadd132ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfmadd213ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfmadd231ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfmaddsub132ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfmaddsub213ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfmaddsub231ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfmsub132ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfmsub213ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfmsub231ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfmsubadd132ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfmsubadd213ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfmsubadd231ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfnmadd132ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfnmadd213ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfnmadd231ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfnmsub132ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfnmsub213ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfnmsub231ph as _;
+//! use rust_isa::x86::simd::avx512fp16::vfpclassph as _;
+//! use rust_isa::x86::simd::avx512fp16::vgetexpph as _;
+//! use rust_isa::x86::simd::avx512fp16::vgetmantph as _;
+//! use rust_isa::x86::simd::avx512fp16::vmaxph as _;
+//! use rust_isa::x86::simd::avx512fp16::vminph as _;
+//! use rust_isa::x86::simd::avx512fp16::vmulph as _;
+//! use rust_isa::x86::simd::avx512fp16::vrcpph as _;
+//! use rust_isa::x86::simd::avx512fp16::vreduceph as _;
+//! use rust_isa::x86::simd::avx512fp16::vrndscaleph as _;
+//! use rust_isa::x86::simd::avx512fp16::vrsqrtph as _;
+//! use rust_isa::x86::simd::avx512fp16::vscalefph as _;
+//! use rust_isa::x86::simd::avx512fp16::vsqrtph as _;
+//! use rust_isa::x86::simd::avx512fp16::vsubph as _;
+//! use rust_isa::x86::simd::avx512fp16::vucomish as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;
 use crate::x86::simd::sse2::V128;

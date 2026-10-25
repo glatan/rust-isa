@@ -10,6 +10,17 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::avx512vbmi::vpermb as _;
+//! use rust_isa::x86::simd::avx512vbmi::vpermi2b as _;
+//! use rust_isa::x86::simd::avx512vbmi::vpermt2b as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use crate::x86::simd::avx512f::V512;
 
 unsafe extern "C" {

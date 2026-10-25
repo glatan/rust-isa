@@ -14,6 +14,24 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::sse3::addsubpd as _;
+//! use rust_isa::x86::simd::sse3::addsubps as _;
+//! use rust_isa::x86::simd::sse3::haddpd as _;
+//! use rust_isa::x86::simd::sse3::haddps as _;
+//! use rust_isa::x86::simd::sse3::hsubpd as _;
+//! use rust_isa::x86::simd::sse3::hsubps as _;
+//! use rust_isa::x86::simd::sse3::lddqu as _;
+//! use rust_isa::x86::simd::sse3::movddup as _;
+//! use rust_isa::x86::simd::sse3::movshdup as _;
+//! use rust_isa::x86::simd::sse3::movsldup as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::sse2::V128;
 
 unsafe extern "C" {

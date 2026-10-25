@@ -16,6 +16,16 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::avx512bf16::vcvtneps2bf16 as _;
+//! use rust_isa::x86::simd::avx512bf16::vdpbf16ps as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::avx2::V256;
 use super::avx512f::V512;
 

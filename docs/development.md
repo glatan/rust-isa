@@ -1,23 +1,27 @@
 # 開発環境
 
-このリポジトリのコマンドは `Containerfile` のイメージの中で動かす。cargo、cargo-nextest、clang、llvm-ar、wasm-opt、wasm2wat、wasmtime、qemu-user-static はホストに置かない。
+このリポジトリのコマンドは `Containerfile` の Arch イメージの中で動かす。native doctest の実行を含む全テストは、cross GNU toolchain を入れた `Containerfile.debian` の Debian イメージで動かす。cargo、cargo-nextest、clang、llvm-ar、wasm-opt、wasm2wat、wasmtime、qemu-user-static はホストに置かない。
 
 ```sh
 make image
+make image-debian
 make fmt
 make fmt-check
 make test
+make test-debian
 make check-docs
 make test-host
 make test-x86_64
 make test-cross
 make test-doc
+make test-doc-debian
 make test-check-static
 make test-check-wasm-link
 make test-wasip1
 make test-wasip1-wide-arithmetic
 make coverage
 make coverage-check
+make doctest-inventory-check
 make zero-cost-check
 make docs-check
 make fixtures-check
@@ -25,25 +29,29 @@ make check-mnemonics
 make duplicates
 ```
 
-`make test` が既定で、`fmt-check`、`coverage-check`、`docs-check`、`fixtures-check`、`check-mnemonics`、`check-docs`、`test-host`、`test-doc`、`test-wasip1`、`test-wasip1-wide-arithmetic` を実行する。すべてのテストはイメージ内で、対象 triple を明示して実行する。
+`make test` が既定で、`fmt-check`、`coverage-check`、`docs-check`、`fixtures-check`、`check-mnemonics`、`check-docs`、`test-check-wasm-link`、`test-host`、`test-doc`、`test-wasip1`、`test-wasip1-wide-arithmetic` を実行する。すべてのテストはイメージ内で、対象 triple を明示して実行する。各テストの役割は [テストの役割](testing.md) にある。
+
+`make test-debian` は Debian イメージで `make test` を実行し、native doctest を `DOC_TEST=run` で実行する。既定の Arch イメージでは、native doctest は `--no-run` のコンパイル確認だけを行う。
 
 - `make docs-check`: Markdown の相対リンク、見出しアンカー、`docs/README.md` からの到達性を検査する
 - `make fixtures-check`: `fixtures/` と `target-nested` の実ディレクトリが `fixture-matrix.md` と対応するか検査する
 - `make check-docs`: 全ターゲットの rustdoc を `-D warnings` で検査する。クロスターゲットは `-Z build-std=core` で core をビルドし、wasm32 は `simd128` / `relaxed-simd` と `wide-arithmetic` を有効にして検査する
 - `make test-host`: x86_64 のテストを SDE で実行し、cross-arch の値テストも実行する。`test-x86_64` と `test-cross` の合成である
-- `make test-x86_64`: x86_64 の値テスト、doctest、x86 のゼロコスト検査、静的検査を SDE で実行する。SDE の既知不一致は skip する
+- `make test-x86_64`: x86_64 の値テストと doctest を SDE で実行し、x86 のゼロコスト検査と静的検査はホストで実行する。SDE の既知不一致は skip する
 - `make test-cross`: i686 を SDE、その他の native arch を QEMU で実行する
-- `make test-doc`: x86_64 以外の arch の doctest を QEMU、wasm32 を wasmtime で実行する。クロスターゲットは `-Z build-std=std` を使う
+- `make test-doc`: x86_64 以外の native target の doctest をコンパイルする。`-Z build-std=std` と `RUSTDOCFLAGS=--no-run` を使う。native target は i686 を含む 8 件である。Arch イメージではコンパイルのみを確認し、`DOC_TEST=run` を付けた Debian イメージで cross GCC と QEMU により実行する。x86_64 と wasm32 の doctest は `test-x86_64` と `test-wasip1` が実行する
+- `make test-doc-debian`: Debian イメージで `DOC_TEST=run` の doctest を実行する
 - `make test-i686`: i686 fixture を SDE で実行する。テストドライバは x86_64 で動かし、ターゲットコードは SDE に限定する
+- `make doctest-inventory-check`: extension ごとの instruction inventory doctest が最新かを検査する
 - `make test-check-static`: シンボル一致、rustdoc の言語、レーン即値の検査
-- `make test-check-wasm-link`: `wasm32-unknown-unknown` のリンクと simd128 無効時の検査
+- `make test-check-wasm-link`: `wasm32-unknown-unknown` のリンクと simd128 無効時の検査。`make test` に含まれる
 - `make test-wasip1`: `wasm32-wasip1` の nextest と doctest
 - `make test-wasip1-wide-arithmetic`: `wide-arithmetic` feature を有効にした wasm32-wasip1 の nextest、doctest、リンク検査
 - `make check-mnemonics`: rustdoc の命令名を `llvm-mc` で検証する。全 native arch が対象。単一の命令名ではない名前は `tools/mnemonics.toml` の `[allow.<arch>]` に、既知の未修正名は `[baseline.<arch>]` に理由付きで書く。baseline は負債で、新規の無効名は失敗する
 
-arch ごとの `test-i686`、`test-aarch64`、`test-armv7`、`test-riscv64`、`test-loongarch64`、`test-s390x`、`test-powerpc64le`、`test-mips64` は、対応する `tests/<arch>.rs` のテストだけを実行する。`make test` は `test-host` 経由でこれらも実行する。
+arch ごとの `test-i686`、`test-aarch64`、`test-armv7`、`test-riscv64`、`test-loongarch64`、`test-s390x`、`test-powerpc64le`、`test-mips64` は、対応する `tests/<arch>.rs` のテストだけを実行する。値テストに加え、ARMv7 を除く fixture を持つ arch は同じバイナリのゼロコストを disassembly で検査する。`make test` は `test-host` 経由でこれらも実行する。
 
-テストの実行には `cargo nextest run` を使い、`--no-tests=fail` を付ける。テストターゲットにテストが 0 件の場合は失敗する。doctest は nextest の対象外なので、`cargo test --doc` で別に実行する。
+テストの実行には `cargo nextest run` を使い、`--no-tests=fail` を付ける。テストターゲットにテストが 0 件の場合は失敗する。doctest は nextest の対象外なので、`cargo test --doc` で別に実行する。native arch の doctest は、ターゲット用の libc を用意せずに `RUSTDOCFLAGS=--no-run` でコンパイルだけを確認する。
 
 ## 整形
 
@@ -67,7 +75,11 @@ Rust は dprint ではなく rustfmt を使う。`make test` は最初に `fmt-c
 
 すべての値テストはイメージ内で実行する。x86_64 と i686 は SDE、wasm32 は wasmtime、その他の native arch は QEMU の runner を使う。runner と必要なツールは `docs/<arch>/README.md` に書く。
 
-SDE はイメージ内の `/opt/sde` に固定してある。ホストからマウントしない。32-bit SDE のため、Arch Linux の `lib32-glibc` と `lib32-gcc-libs` もイメージに入れてある。SDE のテスト runner は次のとおり。
+SDE はイメージ内の `/opt/sde` に固定してある。ホストからマウントしない。32-bit SDE のため、Arch イメージには `lib32-glibc` と `lib32-gcc-libs`、Debian イメージには `libc6:i386` も入れてある。
+
+SDE を使うのは、x86 命令を実際に実行するテストだけである。`tests/x86_link` と `tests/consistency` はビルドとファイル検査だけなので、SDE の外で実行する。SDE の下で nested `cargo build` を動かすと、cargo と rustc までエミュレーションされ、cold build が数分単位になるためである。
+
+SDE のテスト runner は次のとおり。
 
 - `x86_64-unknown-linux-gnu`: `/opt/sde/sde64 -future --`
 - `i686-unknown-linux-gnu`: `/opt/sde/sde -future --`
@@ -86,7 +98,7 @@ QEMU の runner は次のとおり。`tests/<arch>.rs` は、native arch の値�
 
 SDE の SM4 と AVX-VNNI は既知の不一致がある。`make test-x86_64` は `sm4_instruction_reference`、`sm4_key_schedule_and_rounds`、`avx_vnni` を skip する。SDE を更新したら skip を外して再確認する。
 
-QEMU の runner は、静的にリンクしたテストバイナリを前提にする。動的リンクのバイナリは、ターゲットの loader と libc が無いため動かない。
+QEMU の runner は、値テストでは静的にリンクしたテストバイナリを前提にする。Debian イメージの native doctest は、cross glibc を `-L` で参照する動的リンクのバイナリを実行する。
 
 - 値テスト: イメージ内で、対象 triple ごとの runner で実行する。
 - 命令の存在: `llvm-objdump` で確認する。
@@ -102,9 +114,37 @@ QEMU の runner は、静的にリンクしたテストバイナリを前提に�
 - `rust-isa-cargo-registry` を `/root/.cargo/registry` にマウントする
 - `rust-isa-cargo-git` を `/root/.cargo/git` にマウントする
 
+Debian イメージでは、Arch イメージの成果物と混ざらないように次のボリュームを使う。
+
+- `rust-isa-target-debian`
+- `rust-isa-cargo-registry-debian`
+- `rust-isa-cargo-git-debian`
+
+`target-nested` もイメージごとに分ける。Debian の実行では `RUST_ISA_NESTED=/src/target-nested-debian` を設定し、`tests/common` と `DOC_TEST_TARGET_DIR` などがこのディレクトリを使う。
+
+## Debian テストイメージ
+
+`Containerfile.debian` は、native arch の doctest を実行するための Debian 13（trixie）イメージである。ベースイメージの digest、SDE、直接ダウンロードするツールは SHA-256 で固定する。Debian の apt パッケージ、apt.llvm.org、rustup はバージョン指定のみで、完全な再現性は保証しない。Arch イメージと同じテストを実行できるように、次のツールを入れてある。
+
+- i686、AArch64、ARMv7、PowerPC64LE、s390x、MIPS64、RISC-V、LoongArch の cross GCC と glibc
+- LLVM 23 の clang、lld、`llvm-objdump`、`llvm-mc` など
+- Rust 1.99.1、`rust-src`、`wasm32-wasip1`、`wasm32-unknown-unknown`
+- cargo-nextest、wasmtime、wasm-opt 130、wabt 1.0.42
+- QEMU user-mode と Intel SDE
+
+```sh
+make image-debian
+make test-debian
+make test-doc-debian
+```
+
+`make test-debian` は Debian イメージで `make test` を実行する。このとき `DOC_TEST=run` が選ばれ、native doctest は cross GCC でリンクされ、QEMU で実行される。`make test-doc-debian` は native doctest だけを実行する。i686 は QEMU の i386 runner で実行する。
+
+native doctest のビルドでは `RUST_ISA_DOCTEST=1` を設定し、C を ThinLTO bitcode ではなく ELF オブジェクトとしてコンパイルする。cross GCC のリンカは clang の ThinLTO bitcode を読めないためである。ゼロコストの確認は、従来どおり GNU target の値テストと disassembly で行う。
+
 ## `target-nested`
 
-`cargo test` は、x86_64 向けのテストを `target/` に書きながら、別の `cargo` を起動する。起動される側の成果物は、リポジトリ直下の `target-nested` に置かれる。`CARGO_TARGET_DIR` の設定は `tests/common/mod.rs` にある。
+`cargo test` は、x86_64 向けのテストを `target/` に書きながら、別の `cargo` を起動する。起動される側の成果物は、既定ではリポジトリ直下の `target-nested` に置かれる。`CARGO_TARGET_DIR` と `RUST_ISA_NESTED` の設定は `tests/common/mod.rs` にある。Debian イメージでは `target-nested-debian` を使う。
 
 外側の `cargo test` は `target/.cargo-lock` を保持する。内側が同じ `target/` へ書くと、このロックが外れるまで待つ。成果物のディレクトリを分けるのは、この待ちを避けるためである。
 
@@ -112,7 +152,11 @@ QEMU の runner は、静的にリンクしたテストバイナリを前提に�
 
 `target-nested/no-simd` のビルドだけは、外したあとに空の `RUSTFLAGS` を付ける。空の `RUSTFLAGS` は config の rustflags を置き換えるので、`simd128` も `relaxed-simd` も付かない。
 
-`target-nested` に作られるビルドの一覧と確認内容は、[値テストの fixture](fixture-matrix.md) の「`target-nested` のビルド」に置く。
+`target-nested` に作られる値テストのビルドの一覧と確認内容は、[値テストの fixture](fixture-matrix.md) の「`target-nested` のビルド」に置く。
+
+`make test-doc` の成果物は `target-nested/doc-test` に置く。fixture ではないため `fixture-matrix.md` には載せない。
+
+命令を追加・削除したら `python3 tools/doctest_inventory.py --write` で extension の instruction inventory を更新する。`make coverage-check` は更新漏れと、arch の README に載る命令の欠落を失敗にする。
 
 `target-nested` は `.gitignore` と `.dockerignore` に入っている。消しても次の `cargo test` が作り直す。
 

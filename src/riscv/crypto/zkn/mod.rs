@@ -14,6 +14,29 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::riscv::crypto::zkn::aes64ds as _;
+//! use rust_isa::riscv::crypto::zkn::aes64dsm as _;
+//! use rust_isa::riscv::crypto::zkn::aes64es as _;
+//! use rust_isa::riscv::crypto::zkn::aes64esm as _;
+//! use rust_isa::riscv::crypto::zkn::aes64im as _;
+//! use rust_isa::riscv::crypto::zkn::aes64ks1i as _;
+//! use rust_isa::riscv::crypto::zkn::aes64ks2 as _;
+//! use rust_isa::riscv::crypto::zkn::sha256sig0 as _;
+//! use rust_isa::riscv::crypto::zkn::sha256sig1 as _;
+//! use rust_isa::riscv::crypto::zkn::sha256sum0 as _;
+//! use rust_isa::riscv::crypto::zkn::sha256sum1 as _;
+//! use rust_isa::riscv::crypto::zkn::sha512sig0 as _;
+//! use rust_isa::riscv::crypto::zkn::sha512sig1 as _;
+//! use rust_isa::riscv::crypto::zkn::sha512sum0 as _;
+//! use rust_isa::riscv::crypto::zkn::sha512sum1 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 unsafe extern "C" {
     fn rust_isa_riscv_zkn_sha256sig0(value: u32) -> u32;
     fn rust_isa_riscv_zkn_sha256sig1(value: u32) -> u32;

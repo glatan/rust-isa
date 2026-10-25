@@ -16,6 +16,108 @@
 //!
 //! The build compiles the bundled C with clang; some wrappers use `asm!`.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::avx10_2::vaddps_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vcmppd_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vcmppd_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vcmpph_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vcmpph_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vcmpps_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vcmpps_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vcomisbf16 as _;
+//! use rust_isa::x86::simd::avx10_2::vcomisd_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vcomiss_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vfixupimmpd_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vfixupimmpd_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vfixupimmps_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vfixupimmps_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vfixupimmsd_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vfixupimmss_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vfpclasspd_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vfpclasspd_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vfpclassph_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vfpclassph_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vfpclassps_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vfpclassps_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vgetexppd_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vgetexppd_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vgetexpph_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vgetexpph_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vgetexpps_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vgetexpps_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vgetmantpd_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vgetmantpd_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vgetmantph_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vgetmantph_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vgetmantps_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vgetmantps_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vgetmantsd_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vgetmantss_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vminmaxpd_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vminmaxpd_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vminmaxph_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vminmaxph_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vminmaxps_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vminmaxps_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vminmaxsd_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vminmaxsh_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vminmaxss_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vmulps_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vrangepd_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vrangepd_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vrangeps_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vrangeps_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vrangesd_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vrangess_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vrcp14pd_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vrcp14pd_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vrcp14ps_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vrcp14ps_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vrcp14sd_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vrcp14ss_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vreducepd_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vreducepd_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vreduceph_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vreduceph_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vreduceps_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vreduceps_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vreducesd_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vreducess_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vrndscalepd_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vrndscalepd_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vrndscaleph_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vrndscaleph_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vrndscaleps_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vrndscaleps_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vrsqrt14pd_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vrsqrt14pd_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vrsqrt14ps_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vrsqrt14ps_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vrsqrt14sd_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vrsqrt14ss_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vscalefpd_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vscalefpd_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vscalefph_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vscalefph_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vscalefps_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vscalefps_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vscalefsd_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vscalefss_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vsqrtpd_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vsqrtpd_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vsqrtps_v256 as _;
+//! use rust_isa::x86::simd::avx10_2::vsqrtps_v512 as _;
+//! use rust_isa::x86::simd::avx10_2::vsqrtsd_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vsqrtss_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vucomisd_v128 as _;
+//! use rust_isa::x86::simd::avx10_2::vucomiss_v128 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;
 use crate::x86::simd::sse2::V128;

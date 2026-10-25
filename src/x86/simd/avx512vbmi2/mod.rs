@@ -13,6 +13,24 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::avx512vbmi2::vpcompressb as _;
+//! use rust_isa::x86::simd::avx512vbmi2::vpcompressw as _;
+//! use rust_isa::x86::simd::avx512vbmi2::vpexpandb as _;
+//! use rust_isa::x86::simd::avx512vbmi2::vpexpandw as _;
+//! use rust_isa::x86::simd::avx512vbmi2::vpshldd as _;
+//! use rust_isa::x86::simd::avx512vbmi2::vpshldq as _;
+//! use rust_isa::x86::simd::avx512vbmi2::vpshldw as _;
+//! use rust_isa::x86::simd::avx512vbmi2::vpshrdd as _;
+//! use rust_isa::x86::simd::avx512vbmi2::vpshrdq as _;
+//! use rust_isa::x86::simd::avx512vbmi2::vpshrdw as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use crate::x86::simd::avx512f::V512;
 use core::arch::asm;
 

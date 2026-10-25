@@ -11,6 +11,99 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::powerpc::simd::altivec::add as _;
+//! use rust_isa::powerpc::simd::altivec::add_i16 as _;
+//! use rust_isa::powerpc::simd::altivec::add_i64 as _;
+//! use rust_isa::powerpc::simd::altivec::add_i8 as _;
+//! use rust_isa::powerpc::simd::altivec::and as _;
+//! use rust_isa::powerpc::simd::altivec::cmpeq_i32 as _;
+//! use rust_isa::powerpc::simd::altivec::cmpgt_i32 as _;
+//! use rust_isa::powerpc::simd::altivec::fadd as _;
+//! use rust_isa::powerpc::simd::altivec::fdiv as _;
+//! use rust_isa::powerpc::simd::altivec::fmul as _;
+//! use rust_isa::powerpc::simd::altivec::fsub as _;
+//! use rust_isa::powerpc::simd::altivec::lvebx as _;
+//! use rust_isa::powerpc::simd::altivec::lvehx as _;
+//! use rust_isa::powerpc::simd::altivec::lvewx as _;
+//! use rust_isa::powerpc::simd::altivec::lvx as _;
+//! use rust_isa::powerpc::simd::altivec::mul as _;
+//! use rust_isa::powerpc::simd::altivec::mul_i16 as _;
+//! use rust_isa::powerpc::simd::altivec::mul_i32 as _;
+//! use rust_isa::powerpc::simd::altivec::or as _;
+//! use rust_isa::powerpc::simd::altivec::permute as _;
+//! use rust_isa::powerpc::simd::altivec::splat_i32 as _;
+//! use rust_isa::powerpc::simd::altivec::stvebx as _;
+//! use rust_isa::powerpc::simd::altivec::stvehx as _;
+//! use rust_isa::powerpc::simd::altivec::stvewx as _;
+//! use rust_isa::powerpc::simd::altivec::stvx as _;
+//! use rust_isa::powerpc::simd::altivec::sub_i16 as _;
+//! use rust_isa::powerpc::simd::altivec::sub_i32 as _;
+//! use rust_isa::powerpc::simd::altivec::sub_i64 as _;
+//! use rust_isa::powerpc::simd::altivec::sub_i8 as _;
+//! use rust_isa::powerpc::simd::altivec::v128_load as _;
+//! use rust_isa::powerpc::simd::altivec::v128_store as _;
+//! use rust_isa::powerpc::simd::altivec::vaddubm as _;
+//! use rust_isa::powerpc::simd::altivec::vaddudm as _;
+//! use rust_isa::powerpc::simd::altivec::vadduhm as _;
+//! use rust_isa::powerpc::simd::altivec::vadduwm as _;
+//! use rust_isa::powerpc::simd::altivec::vand as _;
+//! use rust_isa::powerpc::simd::altivec::vandc as _;
+//! use rust_isa::powerpc::simd::altivec::vavg as _;
+//! use rust_isa::powerpc::simd::altivec::vavgl as _;
+//! use rust_isa::powerpc::simd::altivec::vcmp as _;
+//! use rust_isa::powerpc::simd::altivec::vcmpeq as _;
+//! use rust_isa::powerpc::simd::altivec::vcmpgt as _;
+//! use rust_isa::powerpc::simd::altivec::vmadd as _;
+//! use rust_isa::powerpc::simd::altivec::vmax as _;
+//! use rust_isa::powerpc::simd::altivec::vmin as _;
+//! use rust_isa::powerpc::simd::altivec::vmla as _;
+//! use rust_isa::powerpc::simd::altivec::vmls as _;
+//! use rust_isa::powerpc::simd::altivec::vmsummbm as _;
+//! use rust_isa::powerpc::simd::altivec::vmsumshm as _;
+//! use rust_isa::powerpc::simd::altivec::vmsumshs as _;
+//! use rust_isa::powerpc::simd::altivec::vmsumubm as _;
+//! use rust_isa::powerpc::simd::altivec::vmsumuhm as _;
+//! use rust_isa::powerpc::simd::altivec::vmsumuhs as _;
+//! use rust_isa::powerpc::simd::altivec::vmul as _;
+//! use rust_isa::powerpc::simd::altivec::vmuleub as _;
+//! use rust_isa::powerpc::simd::altivec::vmuleuh as _;
+//! use rust_isa::powerpc::simd::altivec::vmuleuw as _;
+//! use rust_isa::powerpc::simd::altivec::vmuloub as _;
+//! use rust_isa::powerpc::simd::altivec::vmulouh as _;
+//! use rust_isa::powerpc::simd::altivec::vmulouw as _;
+//! use rust_isa::powerpc::simd::altivec::vmuluwm as _;
+//! use rust_isa::powerpc::simd::altivec::vnmsub as _;
+//! use rust_isa::powerpc::simd::altivec::vnor as _;
+//! use rust_isa::powerpc::simd::altivec::vnot as _;
+//! use rust_isa::powerpc::simd::altivec::vor as _;
+//! use rust_isa::powerpc::simd::altivec::vperm as _;
+//! use rust_isa::powerpc::simd::altivec::vpk as _;
+//! use rust_isa::powerpc::simd::altivec::vsel as _;
+//! use rust_isa::powerpc::simd::altivec::vsl as _;
+//! use rust_isa::powerpc::simd::altivec::vsldoi as _;
+//! use rust_isa::powerpc::simd::altivec::vslo as _;
+//! use rust_isa::powerpc::simd::altivec::vsr as _;
+//! use rust_isa::powerpc::simd::altivec::vsro as _;
+//! use rust_isa::powerpc::simd::altivec::vsububm as _;
+//! use rust_isa::powerpc::simd::altivec::vsubudm as _;
+//! use rust_isa::powerpc::simd::altivec::vsubuhm as _;
+//! use rust_isa::powerpc::simd::altivec::vsubuwm as _;
+//! use rust_isa::powerpc::simd::altivec::vsum2sws as _;
+//! use rust_isa::powerpc::simd::altivec::vsum4sbs as _;
+//! use rust_isa::powerpc::simd::altivec::vsum4shs as _;
+//! use rust_isa::powerpc::simd::altivec::vsum4ubs as _;
+//! use rust_isa::powerpc::simd::altivec::vsumsws as _;
+//! use rust_isa::powerpc::simd::altivec::vupk as _;
+//! use rust_isa::powerpc::simd::altivec::vxor as _;
+//! use rust_isa::powerpc::simd::altivec::xor as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 mod v128;
 
 pub use v128::*;
@@ -23,6 +116,20 @@ unsafe extern "C" {
 /// `vadduwm`
 ///
 /// Add the four 32-bit integer lanes.
+///
+/// # Examples
+///
+/// ```
+/// use rust_isa::powerpc::simd::altivec::{add, V128};
+///
+/// let a = V128::from_bytes([1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+/// let b = V128::from_bytes([2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0]);
+/// let sum = unsafe { add(a, b) };
+/// assert_eq!(
+///     sum.to_bytes(),
+///     [3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0]
+/// );
+/// ```
 ///
 /// # Safety
 ///

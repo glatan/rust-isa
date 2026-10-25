@@ -16,6 +16,26 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::avxvnniint16::vpdpwsud as _;
+//! use rust_isa::x86::simd::avxvnniint16::vpdpwsud_v128 as _;
+//! use rust_isa::x86::simd::avxvnniint16::vpdpwsuds as _;
+//! use rust_isa::x86::simd::avxvnniint16::vpdpwsuds_v128 as _;
+//! use rust_isa::x86::simd::avxvnniint16::vpdpwusd as _;
+//! use rust_isa::x86::simd::avxvnniint16::vpdpwusd_v128 as _;
+//! use rust_isa::x86::simd::avxvnniint16::vpdpwusds as _;
+//! use rust_isa::x86::simd::avxvnniint16::vpdpwusds_v128 as _;
+//! use rust_isa::x86::simd::avxvnniint16::vpdpwuud as _;
+//! use rust_isa::x86::simd::avxvnniint16::vpdpwuud_v128 as _;
+//! use rust_isa::x86::simd::avxvnniint16::vpdpwuuds as _;
+//! use rust_isa::x86::simd::avxvnniint16::vpdpwuuds_v128 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::avx2::V256;
 use super::sse2::V128;
 

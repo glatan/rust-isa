@@ -14,6 +14,57 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::powerpc::simd::vsx::abs_f64 as _;
+//! use rust_isa::powerpc::simd::vsx::add_f32 as _;
+//! use rust_isa::powerpc::simd::vsx::add_f64 as _;
+//! use rust_isa::powerpc::simd::vsx::div_f64 as _;
+//! use rust_isa::powerpc::simd::vsx::mul_f64 as _;
+//! use rust_isa::powerpc::simd::vsx::sqrt_f64 as _;
+//! use rust_isa::powerpc::simd::vsx::sub_f64 as _;
+//! use rust_isa::powerpc::simd::vsx::vcmpgt as _;
+//! use rust_isa::powerpc::simd::vsx::vsldoi as _;
+//! use rust_isa::powerpc::simd::vsx::xscvdpsp as _;
+//! use rust_isa::powerpc::simd::vsx::xscvdpspn as _;
+//! use rust_isa::powerpc::simd::vsx::xscvspdp as _;
+//! use rust_isa::powerpc::simd::vsx::xscvspdpn as _;
+//! use rust_isa::powerpc::simd::vsx::xvabs as _;
+//! use rust_isa::powerpc::simd::vsx::xvadd as _;
+//! use rust_isa::powerpc::simd::vsx::xvand as _;
+//! use rust_isa::powerpc::simd::vsx::xvcmpeq as _;
+//! use rust_isa::powerpc::simd::vsx::xvcpsgn as _;
+//! use rust_isa::powerpc::simd::vsx::xvcvdpsxds as _;
+//! use rust_isa::powerpc::simd::vsx::xvcvdpsxws as _;
+//! use rust_isa::powerpc::simd::vsx::xvcvdpuxds as _;
+//! use rust_isa::powerpc::simd::vsx::xvcvdpuxws as _;
+//! use rust_isa::powerpc::simd::vsx::xvcvsxdsp as _;
+//! use rust_isa::powerpc::simd::vsx::xvcvsxwsp as _;
+//! use rust_isa::powerpc::simd::vsx::xvcvuxdsp as _;
+//! use rust_isa::powerpc::simd::vsx::xvcvuxwsp as _;
+//! use rust_isa::powerpc::simd::vsx::xvdiv as _;
+//! use rust_isa::powerpc::simd::vsx::xvmax as _;
+//! use rust_isa::powerpc::simd::vsx::xvmin as _;
+//! use rust_isa::powerpc::simd::vsx::xvmul as _;
+//! use rust_isa::powerpc::simd::vsx::xvneg as _;
+//! use rust_isa::powerpc::simd::vsx::xvor as _;
+//! use rust_isa::powerpc::simd::vsx::xvperm as _;
+//! use rust_isa::powerpc::simd::vsx::xvrdpi as _;
+//! use rust_isa::powerpc::simd::vsx::xvrdpic as _;
+//! use rust_isa::powerpc::simd::vsx::xvrdpim as _;
+//! use rust_isa::powerpc::simd::vsx::xvrdpip as _;
+//! use rust_isa::powerpc::simd::vsx::xvrdpiz as _;
+//! use rust_isa::powerpc::simd::vsx::xvsel as _;
+//! use rust_isa::powerpc::simd::vsx::xvsl as _;
+//! use rust_isa::powerpc::simd::vsx::xvsr as _;
+//! use rust_isa::powerpc::simd::vsx::xvsub as _;
+//! use rust_isa::powerpc::simd::vsx::xvxor as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::altivec::V128;
 
 unsafe extern "C" {

@@ -10,6 +10,16 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::riscv::integer::zbkx::xperm4 as _;
+//! use rust_isa::riscv::integer::zbkx::xperm8 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 unsafe extern "C" {
     fn rust_isa_riscv_zbkx_xperm4(a: u64, b: u64) -> u64;
     fn rust_isa_riscv_zbkx_xperm8(a: u64, b: u64) -> u64;

@@ -15,6 +15,21 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::avxneconvert::vbcstnebf162ps as _;
+//! use rust_isa::x86::simd::avxneconvert::vbcstnesh2ps as _;
+//! use rust_isa::x86::simd::avxneconvert::vcvtneebf162ps as _;
+//! use rust_isa::x86::simd::avxneconvert::vcvtneeph2ps as _;
+//! use rust_isa::x86::simd::avxneconvert::vcvtneobf162ps as _;
+//! use rust_isa::x86::simd::avxneconvert::vcvtneoph2ps as _;
+//! use rust_isa::x86::simd::avxneconvert::vcvtneps2bf16 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::avx2::V256;
 use super::sse2::V128;
 

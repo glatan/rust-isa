@@ -14,6 +14,28 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::powerpc::simd::power9_altivec::vabsd as _;
+//! use rust_isa::powerpc::simd::power9_altivec::vabsduw as _;
+//! use rust_isa::powerpc::simd::power9_altivec::vctzb as _;
+//! use rust_isa::powerpc::simd::power9_altivec::vctzd as _;
+//! use rust_isa::powerpc::simd::power9_altivec::vctzh as _;
+//! use rust_isa::powerpc::simd::power9_altivec::vctzlsbb as _;
+//! use rust_isa::powerpc::simd::power9_altivec::vctzw as _;
+//! use rust_isa::powerpc::simd::power9_altivec::vextsb2d as _;
+//! use rust_isa::powerpc::simd::power9_altivec::vextsb2w as _;
+//! use rust_isa::powerpc::simd::power9_altivec::vextsh2d as _;
+//! use rust_isa::powerpc::simd::power9_altivec::vextsh2w as _;
+//! use rust_isa::powerpc::simd::power9_altivec::vextsw2d as _;
+//! use rust_isa::powerpc::simd::power9_altivec::vnegd as _;
+//! use rust_isa::powerpc::simd::power9_altivec::vnegw as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 pub use super::power9_vector::{
     vabsd, vabsduw, vctzb, vctzd, vctzh, vctzlsbb, vctzw, vextsb2d, vextsb2w, vextsh2d, vextsh2w,
     vextsw2d, vnegd, vnegw,

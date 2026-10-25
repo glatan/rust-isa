@@ -11,6 +11,21 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::integer::bmi2::bzhi as _;
+//! use rust_isa::x86::integer::bmi2::pdep as _;
+//! use rust_isa::x86::integer::bmi2::pext as _;
+//! use rust_isa::x86::integer::bmi2::rorx as _;
+//! use rust_isa::x86::integer::bmi2::sarx as _;
+//! use rust_isa::x86::integer::bmi2::shlx as _;
+//! use rust_isa::x86::integer::bmi2::shrx as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use core::arch::asm;
 
 unsafe extern "C" {

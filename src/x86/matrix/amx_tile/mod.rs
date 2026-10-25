@@ -21,6 +21,32 @@
 //!
 //! The build compiles the bundled C with clang; some wrappers use `asm!`.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::matrix::amx_tile::ldtilecfg as _;
+//! use rust_isa::x86::matrix::amx_tile::sttilecfg as _;
+//! use rust_isa::x86::matrix::amx_tile::tcmmimfp16ps as _;
+//! use rust_isa::x86::matrix::amx_tile::tcmmrlfp16ps as _;
+//! use rust_isa::x86::matrix::amx_tile::tdpbf16ps as _;
+//! use rust_isa::x86::matrix::amx_tile::tdpbssd as _;
+//! use rust_isa::x86::matrix::amx_tile::tdpbsud as _;
+//! use rust_isa::x86::matrix::amx_tile::tdpbuud as _;
+//! use rust_isa::x86::matrix::amx_tile::tdpfp16ps as _;
+//! use rust_isa::x86::matrix::amx_tile::tileloadd as _;
+//! use rust_isa::x86::matrix::amx_tile::tileloaddt1 as _;
+//! use rust_isa::x86::matrix::amx_tile::tilestored as _;
+//! use rust_isa::x86::matrix::amx_tile::tilezero as _;
+//! use rust_isa::x86::matrix::amx_tile::AmxGuard;
+//! use rust_isa::x86::matrix::amx_tile::TileConfig;
+//! let _ = AmxGuard::enter;
+//! let _ = TileConfig::builder;
+//! let _ = TileConfig::from_bytes;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 mod config;
 mod mma;
 mod tile;

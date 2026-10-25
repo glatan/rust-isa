@@ -10,6 +10,18 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::avx512vnni::vpdpbusd as _;
+//! use rust_isa::x86::simd::avx512vnni::vpdpbusds as _;
+//! use rust_isa::x86::simd::avx512vnni::vpdpwssd as _;
+//! use rust_isa::x86::simd::avx512vnni::vpdpwssds as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use crate::x86::simd::avx512f::V512;
 
 unsafe extern "C" {

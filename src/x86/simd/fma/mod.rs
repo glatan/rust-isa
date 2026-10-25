@@ -11,6 +11,74 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::fma::vfmadd132pd as _;
+//! use rust_isa::x86::simd::fma::vfmadd132ps as _;
+//! use rust_isa::x86::simd::fma::vfmadd132sd as _;
+//! use rust_isa::x86::simd::fma::vfmadd132ss as _;
+//! use rust_isa::x86::simd::fma::vfmadd213pd as _;
+//! use rust_isa::x86::simd::fma::vfmadd213ps as _;
+//! use rust_isa::x86::simd::fma::vfmadd213sd as _;
+//! use rust_isa::x86::simd::fma::vfmadd213ss as _;
+//! use rust_isa::x86::simd::fma::vfmadd231pd as _;
+//! use rust_isa::x86::simd::fma::vfmadd231ps as _;
+//! use rust_isa::x86::simd::fma::vfmadd231sd as _;
+//! use rust_isa::x86::simd::fma::vfmadd231ss as _;
+//! use rust_isa::x86::simd::fma::vfmaddsub132pd as _;
+//! use rust_isa::x86::simd::fma::vfmaddsub132ps as _;
+//! use rust_isa::x86::simd::fma::vfmaddsub213pd as _;
+//! use rust_isa::x86::simd::fma::vfmaddsub213ps as _;
+//! use rust_isa::x86::simd::fma::vfmaddsub231pd as _;
+//! use rust_isa::x86::simd::fma::vfmaddsub231ps as _;
+//! use rust_isa::x86::simd::fma::vfmsub132pd as _;
+//! use rust_isa::x86::simd::fma::vfmsub132ps as _;
+//! use rust_isa::x86::simd::fma::vfmsub132sd as _;
+//! use rust_isa::x86::simd::fma::vfmsub132ss as _;
+//! use rust_isa::x86::simd::fma::vfmsub213pd as _;
+//! use rust_isa::x86::simd::fma::vfmsub213ps as _;
+//! use rust_isa::x86::simd::fma::vfmsub213sd as _;
+//! use rust_isa::x86::simd::fma::vfmsub213ss as _;
+//! use rust_isa::x86::simd::fma::vfmsub231pd as _;
+//! use rust_isa::x86::simd::fma::vfmsub231ps as _;
+//! use rust_isa::x86::simd::fma::vfmsub231sd as _;
+//! use rust_isa::x86::simd::fma::vfmsub231ss as _;
+//! use rust_isa::x86::simd::fma::vfmsubadd132pd as _;
+//! use rust_isa::x86::simd::fma::vfmsubadd132ps as _;
+//! use rust_isa::x86::simd::fma::vfmsubadd213pd as _;
+//! use rust_isa::x86::simd::fma::vfmsubadd213ps as _;
+//! use rust_isa::x86::simd::fma::vfmsubadd231pd as _;
+//! use rust_isa::x86::simd::fma::vfmsubadd231ps as _;
+//! use rust_isa::x86::simd::fma::vfnmadd132pd as _;
+//! use rust_isa::x86::simd::fma::vfnmadd132ps as _;
+//! use rust_isa::x86::simd::fma::vfnmadd132sd as _;
+//! use rust_isa::x86::simd::fma::vfnmadd132ss as _;
+//! use rust_isa::x86::simd::fma::vfnmadd213pd as _;
+//! use rust_isa::x86::simd::fma::vfnmadd213ps as _;
+//! use rust_isa::x86::simd::fma::vfnmadd213sd as _;
+//! use rust_isa::x86::simd::fma::vfnmadd213ss as _;
+//! use rust_isa::x86::simd::fma::vfnmadd231pd as _;
+//! use rust_isa::x86::simd::fma::vfnmadd231ps as _;
+//! use rust_isa::x86::simd::fma::vfnmadd231sd as _;
+//! use rust_isa::x86::simd::fma::vfnmadd231ss as _;
+//! use rust_isa::x86::simd::fma::vfnmsub132pd as _;
+//! use rust_isa::x86::simd::fma::vfnmsub132ps as _;
+//! use rust_isa::x86::simd::fma::vfnmsub132sd as _;
+//! use rust_isa::x86::simd::fma::vfnmsub132ss as _;
+//! use rust_isa::x86::simd::fma::vfnmsub213pd as _;
+//! use rust_isa::x86::simd::fma::vfnmsub213ps as _;
+//! use rust_isa::x86::simd::fma::vfnmsub213sd as _;
+//! use rust_isa::x86::simd::fma::vfnmsub213ss as _;
+//! use rust_isa::x86::simd::fma::vfnmsub231pd as _;
+//! use rust_isa::x86::simd::fma::vfnmsub231ps as _;
+//! use rust_isa::x86::simd::fma::vfnmsub231sd as _;
+//! use rust_isa::x86::simd::fma::vfnmsub231ss as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::sse2::V128;
 

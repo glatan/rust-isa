@@ -167,6 +167,7 @@ clang 23.1.1 で確認したこと:
 
 実装したら、値テスト、命令の存在、シンボル一致のテストを同じ変更に追加する。
 
+- テストの役割と実行単位: [テストの役割](testing.md)
 - 値テストの設計と arch 別の注意: [native の値テスト](native-testing.md)
 - fixture と runner: [値テストの fixture](fixture-matrix.md)
 - ゼロコストの確認方法: [ゼロコストの確認](zero-cost.md)

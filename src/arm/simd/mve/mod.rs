@@ -19,6 +19,75 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::arm::simd::mve::abav as _;
+//! use rust_isa::arm::simd::mve::abd as _;
+//! use rust_isa::arm::simd::mve::abs as _;
+//! use rust_isa::arm::simd::mve::add as _;
+//! use rust_isa::arm::simd::mve::addlv as _;
+//! use rust_isa::arm::simd::mve::addv as _;
+//! use rust_isa::arm::simd::mve::and as _;
+//! use rust_isa::arm::simd::mve::bic as _;
+//! use rust_isa::arm::simd::mve::brsr as _;
+//! use rust_isa::arm::simd::mve::clz as _;
+//! use rust_isa::arm::simd::mve::cmp as _;
+//! use rust_isa::arm::simd::mve::ctp as _;
+//! use rust_isa::arm::simd::mve::dup as _;
+//! use rust_isa::arm::simd::mve::eor as _;
+//! use rust_isa::arm::simd::mve::fma as _;
+//! use rust_isa::arm::simd::mve::fms as _;
+//! use rust_isa::arm::simd::mve::hadd as _;
+//! use rust_isa::arm::simd::mve::hsub as _;
+//! use rust_isa::arm::simd::mve::idup as _;
+//! use rust_isa::arm::simd::mve::iwdup as _;
+//! use rust_isa::arm::simd::mve::ldr as _;
+//! use rust_isa::arm::simd::mve::ldrb as _;
+//! use rust_isa::arm::simd::mve::max as _;
+//! use rust_isa::arm::simd::mve::maxv as _;
+//! use rust_isa::arm::simd::mve::min as _;
+//! use rust_isa::arm::simd::mve::minv as _;
+//! use rust_isa::arm::simd::mve::mla as _;
+//! use rust_isa::arm::simd::mve::mlal as _;
+//! use rust_isa::arm::simd::mve::mls as _;
+//! use rust_isa::arm::simd::mve::mlsl as _;
+//! use rust_isa::arm::simd::mve::mov as _;
+//! use rust_isa::arm::simd::mve::mul as _;
+//! use rust_isa::arm::simd::mve::mull as _;
+//! use rust_isa::arm::simd::mve::mvn as _;
+//! use rust_isa::arm::simd::mve::neg as _;
+//! use rust_isa::arm::simd::mve::orn as _;
+//! use rust_isa::arm::simd::mve::orr as _;
+//! use rust_isa::arm::simd::mve::qabs as _;
+//! use rust_isa::arm::simd::mve::qadd as _;
+//! use rust_isa::arm::simd::mve::qdmulh as _;
+//! use rust_isa::arm::simd::mve::qdmull as _;
+//! use rust_isa::arm::simd::mve::qmovn as _;
+//! use rust_isa::arm::simd::mve::qneg as _;
+//! use rust_isa::arm::simd::mve::qrdmulh as _;
+//! use rust_isa::arm::simd::mve::qshl as _;
+//! use rust_isa::arm::simd::mve::qsub as _;
+//! use rust_isa::arm::simd::mve::rev16 as _;
+//! use rust_isa::arm::simd::mve::rev32 as _;
+//! use rust_isa::arm::simd::mve::rev64 as _;
+//! use rust_isa::arm::simd::mve::rmulh as _;
+//! use rust_isa::arm::simd::mve::shl as _;
+//! use rust_isa::arm::simd::mve::shr as _;
+//! use rust_isa::arm::simd::mve::sli as _;
+//! use rust_isa::arm::simd::mve::sri as _;
+//! use rust_isa::arm::simd::mve::str as _;
+//! use rust_isa::arm::simd::mve::strb as _;
+//! use rust_isa::arm::simd::mve::sub as _;
+//! use rust_isa::arm::simd::mve::subn as _;
+//! use rust_isa::arm::simd::mve::subw as _;
+//! use rust_isa::arm::simd::mve::uzp as _;
+//! use rust_isa::arm::simd::mve::zip as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::neon::V128;
 
 unsafe extern "C" {

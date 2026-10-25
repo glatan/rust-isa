@@ -13,6 +13,27 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::riscv::integer::zbb::andn as _;
+//! use rust_isa::riscv::integer::zbb::clz as _;
+//! use rust_isa::riscv::integer::zbb::cpop as _;
+//! use rust_isa::riscv::integer::zbb::ctz as _;
+//! use rust_isa::riscv::integer::zbb::max as _;
+//! use rust_isa::riscv::integer::zbb::min as _;
+//! use rust_isa::riscv::integer::zbb::orn as _;
+//! use rust_isa::riscv::integer::zbb::rol as _;
+//! use rust_isa::riscv::integer::zbb::ror as _;
+//! use rust_isa::riscv::integer::zbb::sext_b as _;
+//! use rust_isa::riscv::integer::zbb::sext_h as _;
+//! use rust_isa::riscv::integer::zbb::xnor as _;
+//! use rust_isa::riscv::integer::zbb::zext_h as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 unsafe extern "C" {
     fn rust_isa_riscv_zbb_andn(a: u64, b: u64) -> u64;
     fn rust_isa_riscv_zbb_orn(a: u64, b: u64) -> u64;

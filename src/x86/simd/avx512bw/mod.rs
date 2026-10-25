@@ -13,6 +13,83 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::avx512bw::vpackssdw as _;
+//! use rust_isa::x86::simd::avx512bw::vpacksswb as _;
+//! use rust_isa::x86::simd::avx512bw::vpackusdw as _;
+//! use rust_isa::x86::simd::avx512bw::vpackuswb as _;
+//! use rust_isa::x86::simd::avx512bw::vpaddb as _;
+//! use rust_isa::x86::simd::avx512bw::vpaddsb as _;
+//! use rust_isa::x86::simd::avx512bw::vpaddsw as _;
+//! use rust_isa::x86::simd::avx512bw::vpaddusb as _;
+//! use rust_isa::x86::simd::avx512bw::vpaddusw as _;
+//! use rust_isa::x86::simd::avx512bw::vpaddw as _;
+//! use rust_isa::x86::simd::avx512bw::vpavgb as _;
+//! use rust_isa::x86::simd::avx512bw::vpavgw as _;
+//! use rust_isa::x86::simd::avx512bw::vpbroadcastb as _;
+//! use rust_isa::x86::simd::avx512bw::vpbroadcastw as _;
+//! #[cfg(target_arch = "x86_64")]
+//! use rust_isa::x86::simd::avx512bw::vpcmpb as _;
+//! #[cfg(target_arch = "x86_64")]
+//! use rust_isa::x86::simd::avx512bw::vpcmpub as _;
+//! use rust_isa::x86::simd::avx512bw::vpcmpuw as _;
+//! use rust_isa::x86::simd::avx512bw::vpcmpw as _;
+//! use rust_isa::x86::simd::avx512bw::vpmaddubsw as _;
+//! use rust_isa::x86::simd::avx512bw::vpmaddwd as _;
+//! use rust_isa::x86::simd::avx512bw::vpmaxsb as _;
+//! use rust_isa::x86::simd::avx512bw::vpmaxsw as _;
+//! use rust_isa::x86::simd::avx512bw::vpmaxub as _;
+//! use rust_isa::x86::simd::avx512bw::vpminsb as _;
+//! use rust_isa::x86::simd::avx512bw::vpminsw as _;
+//! use rust_isa::x86::simd::avx512bw::vpminub as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovb2m as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovdb as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovdw as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovm2b as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovm2w as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovqb as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovqw as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovsdb as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovsdw as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovsqb as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovsqw as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovswb as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovusdb as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovusdw as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovusqb as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovusqw as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovuswb as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovw2m as _;
+//! use rust_isa::x86::simd::avx512bw::vpmovwb as _;
+//! use rust_isa::x86::simd::avx512bw::vpmulhuw as _;
+//! use rust_isa::x86::simd::avx512bw::vpmulhw as _;
+//! use rust_isa::x86::simd::avx512bw::vpmullw as _;
+//! use rust_isa::x86::simd::avx512bw::vpslldq as _;
+//! use rust_isa::x86::simd::avx512bw::vpsllw as _;
+//! use rust_isa::x86::simd::avx512bw::vpsraw as _;
+//! use rust_isa::x86::simd::avx512bw::vpsrldq as _;
+//! use rust_isa::x86::simd::avx512bw::vpsrlw as _;
+//! use rust_isa::x86::simd::avx512bw::vpsubb as _;
+//! use rust_isa::x86::simd::avx512bw::vpsubsb as _;
+//! use rust_isa::x86::simd::avx512bw::vpsubsw as _;
+//! use rust_isa::x86::simd::avx512bw::vpsubusb as _;
+//! use rust_isa::x86::simd::avx512bw::vpsubusw as _;
+//! use rust_isa::x86::simd::avx512bw::vpsubw as _;
+//! use rust_isa::x86::simd::avx512bw::vptestmb as _;
+//! use rust_isa::x86::simd::avx512bw::vptestmw as _;
+//! use rust_isa::x86::simd::avx512bw::vptestnmb as _;
+//! use rust_isa::x86::simd::avx512bw::vptestnmw as _;
+//! use rust_isa::x86::simd::avx512bw::vpunpckhbw as _;
+//! use rust_isa::x86::simd::avx512bw::vpunpckhwd as _;
+//! use rust_isa::x86::simd::avx512bw::vpunpcklbw as _;
+//! use rust_isa::x86::simd::avx512bw::vpunpcklwd as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;
 use crate::x86::simd::sse2::V128;

@@ -15,6 +15,22 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::integer::movbe::movbe_load_u16 as _;
+//! use rust_isa::x86::integer::movbe::movbe_load_u32 as _;
+//! #[cfg(target_arch = "x86_64")]
+//! use rust_isa::x86::integer::movbe::movbe_load_u64 as _;
+//! use rust_isa::x86::integer::movbe::movbe_store_u16 as _;
+//! use rust_isa::x86::integer::movbe::movbe_store_u32 as _;
+//! #[cfg(target_arch = "x86_64")]
+//! use rust_isa::x86::integer::movbe::movbe_store_u64 as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 unsafe extern "C" {
     fn rust_isa_movbe_load_u16(p: *const u8) -> u16;
     fn rust_isa_movbe_store_u16(p: *mut u8, value: u16);

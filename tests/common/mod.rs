@@ -56,9 +56,10 @@ pub fn cargo(target_dir: &Path) -> Command {
 }
 
 pub fn nested_dir(name: &str) -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("target-nested")
-        .join(name)
+    let root = std::env::var_os("RUST_ISA_NESTED")
+        .map(PathBuf::from)
+        .unwrap_or_else(|| PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("target-nested"));
+    root.join(name)
 }
 
 pub fn output_text(output: &Output) -> String {

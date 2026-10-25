@@ -14,6 +14,30 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::ssse3::pabsb as _;
+//! use rust_isa::x86::simd::ssse3::pabsd as _;
+//! use rust_isa::x86::simd::ssse3::pabsw as _;
+//! use rust_isa::x86::simd::ssse3::palignr as _;
+//! use rust_isa::x86::simd::ssse3::phaddd as _;
+//! use rust_isa::x86::simd::ssse3::phaddsw as _;
+//! use rust_isa::x86::simd::ssse3::phaddw as _;
+//! use rust_isa::x86::simd::ssse3::phsubd as _;
+//! use rust_isa::x86::simd::ssse3::phsubsw as _;
+//! use rust_isa::x86::simd::ssse3::phsubw as _;
+//! use rust_isa::x86::simd::ssse3::pmaddubsw as _;
+//! use rust_isa::x86::simd::ssse3::pmulhrsw as _;
+//! use rust_isa::x86::simd::ssse3::pshufb as _;
+//! use rust_isa::x86::simd::ssse3::psignb as _;
+//! use rust_isa::x86::simd::ssse3::psignd as _;
+//! use rust_isa::x86::simd::ssse3::psignw as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::sse2::V128;
 
 unsafe extern "C" {

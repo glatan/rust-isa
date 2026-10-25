@@ -9,6 +9,20 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::loongarch::integer::lbt::bitrev as _;
+//! use rust_isa::loongarch::integer::lbt::bstrins as _;
+//! use rust_isa::loongarch::integer::lbt::bstrpick as _;
+//! use rust_isa::loongarch::integer::lbt::revb as _;
+//! use rust_isa::loongarch::integer::lbt::revh as _;
+//! use rust_isa::loongarch::integer::lbt::revw as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 /// `revb.d`: reverse the byte order of a 64-bit value.
 #[inline(always)]
 pub fn revb(value: u64) -> u64 {

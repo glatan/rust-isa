@@ -15,6 +15,71 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::x86::simd::xop::vfrczpd as _;
+//! use rust_isa::x86::simd::xop::vfrczps as _;
+//! use rust_isa::x86::simd::xop::vfrczsd as _;
+//! use rust_isa::x86::simd::xop::vfrczss as _;
+//! use rust_isa::x86::simd::xop::vpcmov as _;
+//! use rust_isa::x86::simd::xop::vpcomb as _;
+//! use rust_isa::x86::simd::xop::vpcomd as _;
+//! use rust_isa::x86::simd::xop::vpcomq as _;
+//! use rust_isa::x86::simd::xop::vpcomub as _;
+//! use rust_isa::x86::simd::xop::vpcomud as _;
+//! use rust_isa::x86::simd::xop::vpcomuq as _;
+//! use rust_isa::x86::simd::xop::vpcomuw as _;
+//! use rust_isa::x86::simd::xop::vpcomw as _;
+//! use rust_isa::x86::simd::xop::vpermil2pd as _;
+//! use rust_isa::x86::simd::xop::vpermil2ps as _;
+//! use rust_isa::x86::simd::xop::vphaddbd as _;
+//! use rust_isa::x86::simd::xop::vphaddbq as _;
+//! use rust_isa::x86::simd::xop::vphaddbw as _;
+//! use rust_isa::x86::simd::xop::vphadddq as _;
+//! use rust_isa::x86::simd::xop::vphaddubd as _;
+//! use rust_isa::x86::simd::xop::vphaddubq as _;
+//! use rust_isa::x86::simd::xop::vphaddubw as _;
+//! use rust_isa::x86::simd::xop::vphaddudq as _;
+//! use rust_isa::x86::simd::xop::vphadduwd as _;
+//! use rust_isa::x86::simd::xop::vphadduwq as _;
+//! use rust_isa::x86::simd::xop::vphaddwd as _;
+//! use rust_isa::x86::simd::xop::vphaddwq as _;
+//! use rust_isa::x86::simd::xop::vphsubbw as _;
+//! use rust_isa::x86::simd::xop::vphsubdq as _;
+//! use rust_isa::x86::simd::xop::vphsubwd as _;
+//! use rust_isa::x86::simd::xop::vpmacsdd as _;
+//! use rust_isa::x86::simd::xop::vpmacsdqh as _;
+//! use rust_isa::x86::simd::xop::vpmacsdql as _;
+//! use rust_isa::x86::simd::xop::vpmacsdu as _;
+//! use rust_isa::x86::simd::xop::vpmacssdd as _;
+//! use rust_isa::x86::simd::xop::vpmacssdqh as _;
+//! use rust_isa::x86::simd::xop::vpmacssdql as _;
+//! use rust_isa::x86::simd::xop::vpmacssdu as _;
+//! use rust_isa::x86::simd::xop::vpmacsswd as _;
+//! use rust_isa::x86::simd::xop::vpmacssww as _;
+//! use rust_isa::x86::simd::xop::vpmacswd as _;
+//! use rust_isa::x86::simd::xop::vpmacsww as _;
+//! use rust_isa::x86::simd::xop::vpmadcsswd as _;
+//! use rust_isa::x86::simd::xop::vpmadcswd as _;
+//! use rust_isa::x86::simd::xop::vpperm as _;
+//! use rust_isa::x86::simd::xop::vprotb as _;
+//! use rust_isa::x86::simd::xop::vprotd as _;
+//! use rust_isa::x86::simd::xop::vprotq as _;
+//! use rust_isa::x86::simd::xop::vprotw as _;
+//! use rust_isa::x86::simd::xop::vpshab as _;
+//! use rust_isa::x86::simd::xop::vpshad as _;
+//! use rust_isa::x86::simd::xop::vpshaq as _;
+//! use rust_isa::x86::simd::xop::vpshaw as _;
+//! use rust_isa::x86::simd::xop::vpshlb as _;
+//! use rust_isa::x86::simd::xop::vpshld as _;
+//! use rust_isa::x86::simd::xop::vpshlq as _;
+//! use rust_isa::x86::simd::xop::vpshlw as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 use super::sse2::V128;
 
 unsafe extern "C" {

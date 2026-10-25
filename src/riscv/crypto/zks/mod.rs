@@ -14,6 +14,18 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! <!-- doctest-inventory:start -->
+//!
+//! # Instruction inventory
+//!
+//! ```
+//! use rust_isa::riscv::crypto::zks::sm3p0 as _;
+//! use rust_isa::riscv::crypto::zks::sm3p1 as _;
+//! use rust_isa::riscv::crypto::zks::sm4ed as _;
+//! use rust_isa::riscv::crypto::zks::sm4ks as _;
+//! ```
+//! <!-- doctest-inventory:end -->
+
 unsafe extern "C" {
     fn rust_isa_riscv_zks_sm3p0(value: u32) -> u32;
     fn rust_isa_riscv_zks_sm3p1(value: u32) -> u32;
