@@ -12,6 +12,14 @@
 //!
 //! The build compiles the bundled C with clang.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::riscv::float::zfa::fli_h;
+//!
+//! assert_eq!(fli_h(0), 0xbc00);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

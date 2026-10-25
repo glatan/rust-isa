@@ -10,6 +10,17 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::riscv::simd::rvv::{add, splat_i32, V128};
+//!
+//! let left = unsafe { splat_i32(1) };
+//! let right = unsafe { splat_i32(2) };
+//! let sum = unsafe { add(left, right) };
+//! assert_eq!(sum.to_bytes(), unsafe { splat_i32(3) }.to_bytes());
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

@@ -12,6 +12,14 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Examples
+//!
+//! ```
+//! use rust_isa::riscv::integer::zbc::clmul;
+//!
+//! assert_eq!(unsafe { clmul(1, 1) }, 1);
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
