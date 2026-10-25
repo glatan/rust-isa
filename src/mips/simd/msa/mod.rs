@@ -25,6 +25,100 @@
 //! );
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::mips::simd::msa::*;
+//! use rust_isa::mips::simd::msa::V128;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { add(v128, v128) };
+//!     let _ = unsafe { add_a(v128, v128) };
+//!     let _ = unsafe { add_i16(v128, v128) };
+//!     let _ = unsafe { add_i64(v128, v128) };
+//!     let _ = unsafe { add_i8(v128, v128) };
+//!     let _ = unsafe { adds_a(v128, v128) };
+//!     let _ = unsafe { adds_s(v128, v128) };
+//!     let _ = unsafe { adds_u(v128, v128) };
+//!     let _ = unsafe { and(v128, v128) };
+//!     let _ = unsafe { bclr(v128, v128) };
+//!     let _ = unsafe { binsl(v128, v128, v128) };
+//!     let _ = unsafe { binsr(v128, v128, v128) };
+//!     let _ = unsafe { bneg(v128, v128) };
+//!     let _ = unsafe { bset(v128, v128) };
+//!     let _ = unsafe { cmpeq_i32(v128, v128) };
+//!     let _ = unsafe { cmpgt_i32(v128, v128) };
+//!     let _ = unsafe { div_s(v128, v128) };
+//!     let _ = unsafe { div_u(v128, v128) };
+//!     let _ = unsafe { fadd(v128, v128) };
+//!     let _ = unsafe { fadd_f64(v128, v128) };
+//!     let _ = unsafe { fclass(v128) };
+//!     let _ = unsafe { fcmp(v128, v128, Fcmp::Eq) };
+//!     let _ = unsafe { fdiv(v128, v128) };
+//!     let _ = unsafe { fdiv_f64(v128, v128) };
+//!     let _ = unsafe { fexp2(v128, v128) };
+//!     let _ = unsafe { ffint::<false>(v128) };
+//!     let _ = unsafe { ffint_s(v128) };
+//!     let _ = unsafe { ffint_u(v128) };
+//!     let _ = unsafe { flog2(v128) };
+//!     let _ = unsafe { fmax(v128, v128) };
+//!     let _ = unsafe { fmin(v128, v128) };
+//!     let _ = unsafe { fmul(v128, v128) };
+//!     let _ = unsafe { fmul_f64(v128, v128) };
+//!     let _ = unsafe { frcp(v128) };
+//!     let _ = unsafe { frsqrt(v128) };
+//!     let _ = unsafe { fsqrt(v128) };
+//!     let _ = unsafe { fsub(v128, v128) };
+//!     let _ = unsafe { fsub_f64(v128, v128) };
+//!     let _ = unsafe { ftint::<false>(v128) };
+//!     let _ = unsafe { ftint_s(v128) };
+//!     let _ = unsafe { ftint_u(v128) };
+//!     let _ = unsafe { max_s(v128, v128) };
+//!     let _ = unsafe { max_u(v128, v128) };
+//!     let _ = unsafe { min_s(v128, v128) };
+//!     let _ = unsafe { min_u(v128, v128) };
+//!     let _ = unsafe { mod_s(v128, v128) };
+//!     let _ = unsafe { mod_u(v128, v128) };
+//!     let _ = unsafe { mul(v128, v128) };
+//!     let _ = unsafe { mul_i16(v128, v128) };
+//!     let _ = unsafe { mul_i32(v128, v128) };
+//!     let _ = unsafe { nloc(v128) };
+//!     let _ = unsafe { nlzc(v128) };
+//!     let _ = unsafe { nor(v128, v128) };
+//!     let _ = unsafe { nor_v(v128, v128) };
+//!     let _ = unsafe { or(v128, v128) };
+//!     let _ = unsafe { pcnt(v128) };
+//!     let _ = unsafe { sat_s::<0>(v128) };
+//!     let _ = unsafe { sat_u::<0>(v128) };
+//!     let _ = unsafe { seq(v128, v128) };
+//!     let _ = unsafe { shf::<0>(v128) };
+//!     let _ = unsafe { sld(v128, v128, 0) };
+//!     let _ = unsafe { sle_s(v128, v128) };
+//!     let _ = unsafe { sle_u(v128, v128) };
+//!     let _ = unsafe { sll(v128, v128) };
+//!     let _ = unsafe { slli::<0>(v128) };
+//!     let _ = unsafe { slt_s(v128, v128) };
+//!     let _ = unsafe { slt_u(v128, v128) };
+//!     let _ = unsafe { splat_i32(0) };
+//!     let _ = unsafe { sra(v128, v128) };
+//!     let _ = unsafe { srai::<0>(v128) };
+//!     let _ = unsafe { srl(v128, v128) };
+//!     let _ = unsafe { srli::<0>(v128) };
+//!     let _ = unsafe { sub_i16(v128, v128) };
+//!     let _ = unsafe { sub_i32(v128, v128) };
+//!     let _ = unsafe { sub_i64(v128, v128) };
+//!     let _ = unsafe { sub_i8(v128, v128) };
+//!     let _ = unsafe { subs_s(v128, v128) };
+//!     let _ = unsafe { subs_u(v128, v128) };
+//!     let _ = unsafe { v128_load(core::ptr::null()) };
+//!     let _ = unsafe { v128_store(core::ptr::null_mut(), v128) };
+//!     let _ = unsafe { vshf(v128, v128, v128) };
+//!     let _ = unsafe { xor(v128, v128) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
