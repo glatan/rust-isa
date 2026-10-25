@@ -23,6 +23,23 @@
 //! assert_eq!(unsafe { fcmla(zero, zero, zero) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! # Instruction examples
+//!
+//! ```no_run
+//! use rust_isa::aarch64::simd::fcma::*;
+//! use rust_isa::aarch64::simd::neon::V128;
+//! use rust_isa::aarch64::simd::sme::SmeGuard;
+//!
+//! let v128 = V128::from_bytes([0; 16]);
+//!
+//! unsafe {
+//!     let _ = unsafe { fcmla(v128, v128, v128) };
+//!     let _ = unsafe { fcmla_rot180(v128, v128, v128) };
+//!     let _ = unsafe { fcmla_rot270(v128, v128, v128) };
+//!     let _ = unsafe { fcmla_rot90(v128, v128, v128) };
+//! }
+//! ```
+//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory
