@@ -6,15 +6,15 @@
 
 文書の役割は次の表にまとめる。「正とする情報」は、その文書だけが持つ情報である。
 
-| 単位種別 | 文書                                                                                                                                                | 正とする情報                          | 検査                                        |
-| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------- |
-| 決定     | [実装方針](policy.md)、[スケーラブルベクタと状態](scalable-state.md)                                                                                | 目的、非目標、可用性、決定、保留      | `docs-check`、レビュー                      |
-| 実装     | [実装方式](implementation.md)                                                                                                                       | 方式、代替案、ツールチェーン          | `docs-check`、レビュー                      |
-| 契約     | [API契約](api-contract.md)、[API対応](scalable-mapping.md)、[x86のマスク](x86/masking.md)                                                           | APIの形、安全境界、ISAとAPIの対応     | `doc_names.py`、`docs-check`                |
-| 実装状況 | 各archの`README.md`、[実装状況の集計](implementation-status.md)                                                                                     | 公開命令の在庫、未実装命令            | `inventory-check`、`doc_names.py`           |
-| 観測     | [実装可否](feasibility.md)、[ゼロコストの確認](zero-cost.md)                                                                                        | `cfg`の観測、ゼロコストの測定結果     | `zero-cost-check`、`docs-check`             |
-| テスト   | [テストの役割](testing.md)、[doctestの網羅状況](doctest-coverage.md)、[値テストのfixture](fixture-matrix.md)、[nativeの値テスト](native-testing.md) | テストの分類、網羅、fixture、実行条件 | `doctest-inventory-check`、`fixtures-check` |
-| 手順     | [開発環境](development.md)、[文書の位置](documentation.md)、[ソースとテストの置き方](source-layout.md)、[重複する命令名](duplicates.md)             | コマンド、配置、重複の判定            | `docs-check`、`fmt-check`                   |
+| 単位種別 | 文書                                                                                                                                                | 正とする情報                                             | 検査                                        |
+| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------- |
+| 決定     | [実装方針](policy.md)、[スケーラブルベクタと状態](scalable-state.md)                                                                                | 目的、非目標、可用性、セキュリティ、追加手順、決定、保留 | `docs-check`、レビュー                      |
+| 実装     | [実装方式](implementation.md)                                                                                                                       | 方式、代替案、ツールチェーン                             | `docs-check`、レビュー                      |
+| 契約     | [API契約](api-contract.md)、[API対応](scalable-mapping.md)、[x86のマスク](x86/masking.md)                                                           | APIの形、安全境界、ISAとAPIの対応                        | `doc_names.py`、`docs-check`                |
+| 実装状況 | 各archの`README.md`、[実装状況の集計](implementation-status.md)                                                                                     | 公開命令の在庫、未実装命令                               | `inventory-check`、`doc_names.py`           |
+| 観測     | [実装可否](feasibility.md)、[ゼロコストの確認](zero-cost.md)                                                                                        | `cfg`の観測、ゼロコストの測定結果                        | `zero-cost-check`、`docs-check`             |
+| テスト   | [テストの役割](testing.md)、[doctestの網羅状況](doctest-coverage.md)、[値テストのfixture](fixture-matrix.md)、[nativeの値テスト](native-testing.md) | テストの分類、網羅、fixture、実行条件                    | `doctest-inventory-check`、`fixtures-check` |
+| 手順     | [開発環境](development.md)、[文書の位置](documentation.md)、[ソースとテストの置き方](source-layout.md)、[重複する命令名](duplicates.md)             | コマンド、配置、重複の判定                               | `docs-check`、`fmt-check`                   |
 
 ## 共通
 

@@ -29,11 +29,7 @@ lto = "thin"
 rustflags = ["-C", "linker-plugin-lto", "-C", "linker=clang", "-C", "link-arg=-fuse-ld=lld"]
 ```
 
-C は `-flto=thin` でコンパイルする。`lto = "fat"` の場合は C も `-flto` にする。`lto = "off"` と C `-flto=thin` の組でもインラインされたが、明示的な thin または fat を推奨する。LTO モードが一致しない場合は、C への `call` が残る。`thin` と `fat` の両方を、x86_64、i686、AArch64、ARMv7、RISC-V、LoongArch、s390x、PowerPC、MIPS で確認した。
-
-確認した命令は、x86_64 の SSE2 `paddd`、AVX2 `vpaddd` と `vpmulld`、AVX-512F `vpaddd`、AES `aesenc`、FMA `vfmadd`、AArch64 の NEON `add v0.4s` と `mul v0.4s`、RISC-V の `vadd.vv` と `vmul.vv`、LoongArch の `xvadd.w` と `xvmul.w`、s390x の `vaf` と `vmlf`、32-bit ARM の `vadd.i32` と `vmul.i32` である。AVX2 の確認では、`vpaddd` の結果が `ymm1` のまま `vpmulld` に入り、間の store/load が無かった。入力のロードと出力のストアは関数境界にだけ残る。
-
-RISC-V と LoongArch では、intrinsics を使うと C がインラインされても一時値の store/load が残った。GCC の vector 拡張と通常のロード・ストアに置き換えると消えた。C は、可能なら vector 拡張で書く。
+C は `-flto=thin` でコンパイルする。`lto = "fat"` の場合は C も `-flto` にする。`lto = "off"` と C `-flto=thin` の組でもインラインされたが、明示的な thin または fat を推奨する。LTO モードが一致しない場合は、C への `call` が残る。
 
 条件を満たさないビルドでは、C 関数への `call` が残る。native の既定は呼び出しベースであり、ゼロコストは文書化した条件を満たすビルドだけに適用する。C の feature 集合を Rust の部分集合にできない extension は、ゼロコストを主張しない。
 
@@ -66,7 +62,7 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 
 ## arch別の測定結果
 
-`fixture` は測定に使ったビルド、`kernel` は disassembly した関数である。`manual` はこの文書の方法で作った一時バイナリで、リポジトリの fixture ではない。`(arch, fixture, kernel, extension, 確認した命令)` を測定のキーとする。どの行も Rust と C の LTO モードを一致させ、`lto = "thin"` で確認した。fat は「LTO」の節で arch ごとに確認する。
+`fixture` は測定に使ったビルド、`kernel` は disassembly した関数である。`manual` はこの文書の方法で作った一時バイナリで、リポジトリの fixture ではない。`(arch, fixture, kernel, extension, 確認した命令)` を測定のキーとする。どの行も Rust と C の LTO モードを一致させ、`lto = "thin"` で確認した。fat の確認は「確認した命令と観測」の節に含む。
 
 `manual` の行は、[ゼロコストの測定方法](#ゼロコストの測定方法) の `RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release` で作った `no_std` / `no_main` のバイナリを `llvm-objdump` で見る。再現手順は [再現の例](#再現の例) に従う。`make zero-cost-check` は `manual` の行を fixture / kernel の検査対象にしないが、各行に理由があることは検査する。
 
@@ -148,6 +144,14 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 | MIPS       | manual                          | —                                                          | thin | `msa`                      | `vshf.w`                          | —      | —                   | スカラー C フォールバック |
 | wasm32     | `fixtures/wasm-simd-link`       | `kernel_one`、`kernel_two`、`kernel_relaxed`               | thin | `simd128` + `relaxed-simd` | `f32x4.add`、`f32x4.relaxed_madd` | なし   | なし                | wat で確認                |
 | wasm32     | `fixtures/wide-arithmetic-link` | `kernel_add`、`kernel_sub`、`kernel_mul_u`、`kernel_mul_s` | thin | `wide-arithmetic`          | `i64.add128` など                 | なし   | なし                | wat で確認                |
+
+## 確認した命令と観測
+
+`thin` と `fat` の両方を、x86_64、i686、AArch64、ARMv7、RISC-V、LoongArch、s390x、PowerPC、MIPS で確認した。
+
+確認した命令は、x86_64 の SSE2 `paddd`、AVX2 `vpaddd` と `vpmulld`、AVX-512F `vpaddd`、AES `aesenc`、FMA `vfmadd`、AArch64 の NEON `add v0.4s` と `mul v0.4s`、RISC-V の `vadd.vv` と `vmul.vv`、LoongArch の `xvadd.w` と `xvmul.w`、s390x の `vaf` と `vmlf`、32-bit ARM の `vadd.i32` と `vmul.i32` である。AVX2 の確認では、`vpaddd` の結果が `ymm1` のまま `vpmulld` に入り、間の store/load が無かった。入力のロードと出力のストアは関数境界にだけ残る。
+
+RISC-V と LoongArch では、intrinsics を使うと C がインラインされても一時値の store/load が残った。GCC の vector 拡張と通常のロード・ストアに置き換えると消えた。C は、可能なら vector 拡張で書く。
 
 ## IR レベルの確認
 

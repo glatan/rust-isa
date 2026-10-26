@@ -2,7 +2,8 @@
 """Check that API names in the scalable mapping table exist in src.
 
 The mapping table is a representative list, not an inventory. This script
-checks only the API column of its tables and the type names in prose.
+checks only that the API names in its tables and prose exist somewhere in
+`src`; it does not verify that each name belongs to the mapped module.
 """
 
 from __future__ import annotations
