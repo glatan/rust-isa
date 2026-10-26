@@ -14,6 +14,7 @@ NEXTEST_FLAGS ?= --no-tests=fail
 COVERAGE_ARGS ?= --todo
 INVENTORY_ARGS ?= $(COVERAGE_ARGS)
 DUPLICATES_ARGS ?=
+TEST_GAPS_ARGS ?=
 DOC_TEST ?= compile
 TARGET_VOLUME ?= rust-isa-target
 CARGO_REGISTRY_VOLUME ?= rust-isa-cargo-registry
@@ -85,6 +86,7 @@ help:
 		'coverage-check               inventory-check の互換alias' \
 		'doctest-coverage             doctest 網羅を検査して arch 別件数を表示する' \
 		'doctest-inventory-check      全公開命令の doctest 在庫を検査する' \
+		'test-gaps                    値テストから参照されていない公開関数を表示する' \
 		'zero-cost-check              ゼロコスト結果表の fixture と kernel を検査する' \
 		'docs-check                   文書間リンク・アンカー・索引・API対応表・makeターゲット名を検査する' \
 		'fixtures-check               fixtures/・target-nested と fixture-matrix.md の対応を検査する' \
@@ -158,6 +160,10 @@ check-mnemonics:
 .PHONY: duplicates
 duplicates:
 	$(PODMAN_RUN) python3 tools/duplicates.py $(DUPLICATES_ARGS)
+
+.PHONY: test-gaps
+test-gaps:
+	$(PODMAN_RUN) python3 tools/test_gaps.py $(TEST_GAPS_ARGS)
 
 .PHONY: fmt
 fmt:

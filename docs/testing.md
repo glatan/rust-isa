@@ -87,6 +87,17 @@ doctest は命令の意味論を網羅しない。inventory は公開パスの�
 5. arch の README、`fixture-matrix.md`、`zero-cost.md` を同じ変更で更新する。
 6. 既定の `make test` で実行する必要があるテストは、`test` の依存に含める。
 
+## テスト在庫
+
+`make test-gaps` は、公開関数の名前が値テストまたは fixture から参照されているかを一覧する。名前ベースの保守的な検査であり、意味論の網羅は保証しない。現在の在庫は次のとおり。
+
+- ARM、RISC-V、MIPS、PowerPC、s390x、wasm32: 未参照 0。
+- LoongArch: `vfcmp_d`、`vfcvt`、`vssrarn_wu_du`、`xvfcmp`、`xvfcvt`。
+- AArch64: SVE の mnemonic 層（`widening`、`integer_arith`、`float_arith`、`structure`、`saturating`、`load`、`narrowing`、`reduce` など）と一部の NEON/FP16 alias。
+- x86: AVX10.1、AVX512VL、AVX10.2、AVX512FP16 の alias と variant。
+
+SVE と RVV は操作単位の API を正とし、固定長命令ごとの値テストを要求しない。`test-gaps` の出力は、次に値を足す候補の一覧として使う。
+
 ## 既知の欠落
 
 - native arch の即値の範囲外は、コンパイル拒否を自動で検査していない。wasm32 だけが `compile_fail` doctest を持つ。
