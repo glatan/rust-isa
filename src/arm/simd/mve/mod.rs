@@ -13,8 +13,6 @@
 //! register value; [`cmp`] returns a vector mask with all bits one or zero per
 //! lane.
 //!
-//! [`fma`] and [`fms`] are the MVE-FP forms and require MVE-FP.
-//!
 //! Instruction behavior follows the [Arm Architecture Reference Manual](https://developer.arm.com/documentation/ddi0487/latest/).
 //!
 //! Instructions not listed in this module are not exposed.
@@ -63,8 +61,6 @@
 //! let _ = unsafe { ctp(0) };
 //! let _ = unsafe { dup(0) };
 //! let _ = unsafe { eor(v128, v128) };
-//! let _ = unsafe { fma(v128, v128, v128) };
-//! let _ = unsafe { fms(v128, v128, v128) };
 //! let _ = unsafe { hadd(v128, v128) };
 //! let _ = unsafe { hsub(v128, v128) };
 //! let _ = unsafe { idup(0, 0) };
@@ -131,8 +127,6 @@
 //! use rust_isa::arm::simd::mve::ctp as _;
 //! use rust_isa::arm::simd::mve::dup as _;
 //! use rust_isa::arm::simd::mve::eor as _;
-//! use rust_isa::arm::simd::mve::fma as _;
-//! use rust_isa::arm::simd::mve::fms as _;
 //! use rust_isa::arm::simd::mve::hadd as _;
 //! use rust_isa::arm::simd::mve::hsub as _;
 //! use rust_isa::arm::simd::mve::idup as _;
@@ -871,5 +865,3 @@ binary!(
     zip,
     rust_isa_arm_mve_zip
 );
-
-pub use super::mve_fp::{fma, fms};

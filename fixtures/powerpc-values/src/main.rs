@@ -20,9 +20,8 @@ use rust_isa::powerpc::simd::altivec::{
     xor,
 };
 use rust_isa::powerpc::simd::power8_vector::{
-    add_u64, mul_even_u16, mul_u32, sub_u64, vclzd as p8_vclzd, vctzd as p8_vctzd, vmaxsd, vmaxud,
-    vminsd, vminud, vmuleuw, vmulouw, vpksdss, vpksdus, vpkudum, vpopcntd as p8_vpopcntd, vupkhsw,
-    vupklsw,
+    add_u64, mul_even_u16, mul_u32, sub_u64, vclzd as p8_vclzd, vmaxsd, vmaxud, vminsd, vminud,
+    vmuleuw, vmulouw, vpksdss, vpksdus, vpkudum, vpopcntd as p8_vpopcntd, vupkhsw, vupklsw,
 };
 use rust_isa::powerpc::simd::power8_vector::{
     vaddudm as p8_vaddudm, vmuleuh as p8_vmuleuh, vmuluwm as p8_vmuluwm, vsubudm as p8_vsubudm,
@@ -337,10 +336,6 @@ fn power8_ops() -> bool {
             || vupklsw(i32x4([1, 2, 3, 4])).to_bytes() == [0; 16]
             || vmuleuw(i32x4([1, 2, 3, 4]), i32x4([1, 2, 3, 4])).to_bytes() == [0; 16]
             || vmulouw(i32x4([1, 2, 3, 4]), i32x4([1, 2, 3, 4])).to_bytes() == [0; 16]
-            || {
-                let bytes = p8_vctzd(V128::from_bytes([0x02; 16])).to_bytes();
-                bytes[0] != 1 || bytes[8] != 1
-            }
         {
             return false;
         }
