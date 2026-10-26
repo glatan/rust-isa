@@ -10,7 +10,7 @@
 | `asm!`          | 補助                             | cfg に依存しない。C ツールチェーンが不要                                                                      | 256/512-bit の値型がない。wasm と MIPS では unstable。vector operand の型が限られる。AArch64 の `vreg` と ARMv7 の `qreg` は `u128` を受け付けない |
 | 純 Rust         | 値の構築、ビット操作、値の意味論 | ツールチェーンが不要                                                                                          | 単独では対象CPUが命令を持つことを保証しない。自動ベクトル化に依存しない                                                                            |
 
-semantic helperは、命令の存在を主張せず、値の意味だけを提供する関数である。semantic helperはsafeにでき、命令の在庫には数えない。
+semantic helperの定義と安全境界は [API契約](api-contract.md) の「安全境界」に置く。実装方式としては、値の意味だけを提供し、命令の在庫には数えない。
 
 - C は extension ごとにリポジトリへコミットする。生成物は同梱しない。
 - C は、可能なら GCC の vector 拡張と通常のロード・ストアで書く。intrinsics は SROA を妨げ、一時値の store/load を残すことがある。wasm32 は `<wasm_simd128.h>` の intrinsics を使う。
