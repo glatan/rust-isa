@@ -107,14 +107,7 @@
 //! let _ = unsafe { vpshld(v128, v128) };
 //! let _ = unsafe { vpshlq(v128, v128) };
 //! let _ = unsafe { vpshlw(v128, v128) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

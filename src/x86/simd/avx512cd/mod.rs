@@ -43,14 +43,7 @@
 //! let _ = unsafe { vpconflictq(v512) };
 //! let _ = unsafe { vplzcntd(v512) };
 //! let _ = unsafe { vplzcntq(v512) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

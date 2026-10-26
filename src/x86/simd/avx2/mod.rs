@@ -40,6 +40,8 @@
 //! struct Aligned([u8; 4096]);
 //! let mut storage = Aligned([0; 4096]);
 //!
+//! let _ = unsafe { v256_load(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { v256_store(storage.0.as_mut_ptr().cast(), v256) };
 //! let _ = unsafe { vextracti128::<0>(v256) };
 //! let _ = unsafe { vinserti128::<0>(v256, v128) };
 //! let _ = unsafe { vpackssdw(v256, v256) };
@@ -69,6 +71,10 @@
 //! let _ = unsafe { vpermd(v256, v256) };
 //! let _ = unsafe { vpermps(v256, v256) };
 //! let _ = unsafe { vpermq::<0>(v256) };
+//! let _ = unsafe { vpgatherdd(v256, storage.0.as_ptr().cast(), v256, v256) };
+//! let _ = unsafe { vpgatherdq(v256, storage.0.as_ptr().cast(), v128, v256) };
+//! let _ = unsafe { vpgatherqd(v128, storage.0.as_ptr().cast(), v256, v128) };
+//! let _ = unsafe { vpgatherqq(v256, storage.0.as_ptr().cast(), v256, v256) };
 //! let _ = unsafe { vphaddd(v256, v256) };
 //! let _ = unsafe { vphaddsw(v256, v256) };
 //! let _ = unsafe { vphaddw(v256, v256) };
@@ -77,6 +83,10 @@
 //! let _ = unsafe { vphsubw(v256, v256) };
 //! let _ = unsafe { vpmaddubsw(v256, v256) };
 //! let _ = unsafe { vpmaddwd(v256, v256) };
+//! let _ = unsafe { vpmaskmovd_load(storage.0.as_ptr().cast(), v256) };
+//! let _ = unsafe { vpmaskmovd_store(storage.0.as_mut_ptr().cast(), v256, v256) };
+//! let _ = unsafe { vpmaskmovq_load(storage.0.as_ptr().cast(), v256) };
+//! let _ = unsafe { vpmaskmovq_store(storage.0.as_mut_ptr().cast(), v256, v256) };
 //! let _ = unsafe { vpmaxsb(v256, v256) };
 //! let _ = unsafe { vpmaxsd(v256, v256) };
 //! let _ = unsafe { vpmaxsw(v256, v256) };
@@ -127,43 +137,6 @@
 //! let _ = unsafe { vpunpcklwd(v256, v256) };
 //! let _ = unsafe { vpxor(v256, v256) };
 //! ```
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Compile-only instruction examples</summary>
-//!
-//! # Compile-only instruction examples
-//!
-//! ```no_run
-//! use rust_isa::x86::simd::avx2::*;
-//! use rust_isa::x86::simd::sse2::V128;
-//! use rust_isa::x86::simd::avx::V256;
-//! use rust_isa::x86::simd::avx512f::V512;
-//!
-//! let v128 = V128::from_bytes([0; 16]);
-//! let v256 = V256::from_bytes([0; 32]);
-//! let v512 = V512::from_bytes([0; 64]);
-//! #[repr(align(64))]
-//! struct Aligned([u8; 4096]);
-//! let mut storage = Aligned([0; 4096]);
-//!
-//! let _ = unsafe { v256_load(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { v256_store(storage.0.as_mut_ptr().cast(), v256) };
-//! let _ = unsafe { vpgatherdd(v256, storage.0.as_ptr().cast(), v256, v256) };
-//! let _ = unsafe { vpgatherdq(v256, storage.0.as_ptr().cast(), v128, v256) };
-//! let _ = unsafe { vpgatherqd(v128, storage.0.as_ptr().cast(), v256, v128) };
-//! let _ = unsafe { vpgatherqq(v256, storage.0.as_ptr().cast(), v256, v256) };
-//! let _ = unsafe { vpmaskmovd_load(storage.0.as_ptr().cast(), v256) };
-//! let _ = unsafe { vpmaskmovd_store(storage.0.as_mut_ptr().cast(), v256, v256) };
-//! let _ = unsafe { vpmaskmovq_load(storage.0.as_ptr().cast(), v256) };
-//! let _ = unsafe { vpmaskmovq_store(storage.0.as_mut_ptr().cast(), v256, v256) };
-//! ```
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

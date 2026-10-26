@@ -52,14 +52,7 @@
 //! let _ = unsafe { vpdpbusds(v512, v512, v512) };
 //! let _ = unsafe { vpdpwssd(v512, v512, v512) };
 //! let _ = unsafe { vpdpwssds(v512, v512, v512) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

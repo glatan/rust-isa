@@ -61,11 +61,6 @@
 //! let _ = unsafe { vupklsw(v128) };
 //! ```
 //!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
-//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

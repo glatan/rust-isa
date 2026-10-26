@@ -41,9 +41,6 @@
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //!
-//! #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcmpb::<0>(v512, v512) };
-//! #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcmpub::<0>(v512, v512) };
-//!
 //! let _ = unsafe { vpackssdw(v512, v512) };
 //! let _ = unsafe { vpacksswb(v512, v512) };
 //! let _ = unsafe { vpackusdw(v512, v512) };
@@ -58,6 +55,8 @@
 //! let _ = unsafe { vpavgw(v512, v512) };
 //! let _ = unsafe { vpbroadcastb(0) };
 //! let _ = unsafe { vpbroadcastw(0) };
+//! #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcmpb::<0>(v512, v512) };
+//! #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcmpub::<0>(v512, v512) };
 //! let _ = unsafe { vpcmpuw::<0>(v512, v512) };
 //! let _ = unsafe { vpcmpw::<0>(v512, v512) };
 //! let _ = unsafe { vpmaddubsw(v512, v512) };
@@ -109,14 +108,7 @@
 //! let _ = unsafe { vpunpckhwd(v512, v512) };
 //! let _ = unsafe { vpunpcklbw(v512, v512) };
 //! let _ = unsafe { vpunpcklwd(v512, v512) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

@@ -46,11 +46,6 @@
 //! let _ = unsafe { vcvtps2ph_v256::<0>(v256) };
 //! ```
 //!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
-//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

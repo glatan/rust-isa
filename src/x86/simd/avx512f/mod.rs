@@ -122,14 +122,7 @@
 //! let _ = unsafe { vshufps::<0>(v512, v512) };
 //! let _ = unsafe { vsqrtpd(v512) };
 //! let _ = unsafe { vsqrtps(v512) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

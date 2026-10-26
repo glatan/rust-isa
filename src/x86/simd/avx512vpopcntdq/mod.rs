@@ -54,14 +54,7 @@
 //!
 //! let _ = unsafe { vpopcntd(v512) };
 //! let _ = unsafe { vpopcntq(v512) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

@@ -88,11 +88,6 @@
 //! let _ = unsafe { ucvtf_f16_u64(v128) };
 //! ```
 //!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
-//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

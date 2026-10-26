@@ -61,14 +61,7 @@
 //! let _ = unsafe { vsha512msg1(v256, v128) };
 //! let _ = unsafe { vsha512msg2(v256, v256) };
 //! let _ = unsafe { vsha512rnds2(v256, v256, v128) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

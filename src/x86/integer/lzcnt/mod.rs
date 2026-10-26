@@ -40,11 +40,6 @@
 //! #[cfg(target_arch = "x86_64")] let _ = unsafe { lzcnt_u64(0) };
 //! ```
 //!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
-//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

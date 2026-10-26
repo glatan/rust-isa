@@ -47,11 +47,6 @@
 //! let _ = unsafe { fmmla_f64(&[0.0f64; 4], &[0.0f64; 4], &mut[0.0f64; 4]) };
 //! ```
 //!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
-//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

@@ -62,14 +62,7 @@
 //! let _ = unsafe { neg(v128) };
 //! let _ = unsafe { sqrt(v128) };
 //! let _ = unsafe { sub(v128, v128) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

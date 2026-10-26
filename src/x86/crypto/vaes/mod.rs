@@ -60,14 +60,7 @@
 //! let _ = unsafe { vaesenclast(v256, v256) };
 //! let _ = unsafe { vaesenclast_v128(v128, v128) };
 //! let _ = unsafe { vaesenclast_v512(v512, v512) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

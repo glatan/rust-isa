@@ -40,17 +40,9 @@
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //!
-//! #[cfg(target_arch = "x86_64")] let _ = unsafe { rdrand_u64() };
-//!
 //! let _ = unsafe { rdrand_u32() };
-//!
+//! #[cfg(target_arch = "x86_64")] let _ = unsafe { rdrand_u64() };
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

@@ -61,14 +61,7 @@
 //! let _ = unsafe { vpshrdd::<0>(v512, v512) };
 //! let _ = unsafe { vpshrdq::<0>(v512, v512) };
 //! let _ = unsafe { vpshrdw::<0>(v512, v512) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

@@ -59,14 +59,7 @@
 //! let _ = unsafe { insertq_imm::<0, 0>(v128, v128) };
 //! let _ = unsafe { movntsd(storage.0.as_mut_ptr().cast(), v128) };
 //! let _ = unsafe { movntss(storage.0.as_mut_ptr().cast(), v128) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

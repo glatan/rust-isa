@@ -49,14 +49,7 @@
 //!
 //! let _ = unsafe { vpmadd52huq(v512, v512, v512) };
 //! let _ = unsafe { vpmadd52luq(v512, v512, v512) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

@@ -29,9 +29,9 @@
 //! <details>
 //! <summary>Compile-only instruction examples</summary>
 //!
-//! # Compile-only instruction examples
+//! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::x86::integer::movbe::*;
 //! use rust_isa::x86::simd::sse2::V128;
 //! use rust_isa::x86::simd::avx::V256;
@@ -44,21 +44,13 @@
 //! struct Aligned([u8; 4096]);
 //! let mut storage = Aligned([0; 4096]);
 //!
-//! #[cfg(target_arch = "x86_64")] let _ = unsafe { movbe_load_u64(storage.0.as_ptr().cast()) };
-//! #[cfg(target_arch = "x86_64")] let _ = unsafe { movbe_store_u64(storage.0.as_mut_ptr().cast(), 0) };
-//!
 //! let _ = unsafe { movbe_load_u16(storage.0.as_ptr().cast()) };
 //! let _ = unsafe { movbe_load_u32(storage.0.as_ptr().cast()) };
+//! #[cfg(target_arch = "x86_64")] let _ = unsafe { movbe_load_u64(storage.0.as_ptr().cast()) };
 //! let _ = unsafe { movbe_store_u16(storage.0.as_mut_ptr().cast(), 0) };
 //! let _ = unsafe { movbe_store_u32(storage.0.as_mut_ptr().cast(), 0) };
-//!
+//! #[cfg(target_arch = "x86_64")] let _ = unsafe { movbe_store_u64(storage.0.as_mut_ptr().cast(), 0) };
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!
