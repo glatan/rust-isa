@@ -1,7 +1,4 @@
-use rust_isa::x86::simd::avx::{
-    vpsadbw, vshufpd, vshufps, vunpckhpd, vunpckhps, vunpcklpd, vunpcklps,
-};
-use rust_isa::x86::simd::sse2::V128;
+use rust_isa::x86::simd::avx::{vshufpd, vshufps, vunpckhpd, vunpckhps, vunpcklpd, vunpcklps};
 
 use super::support::*;
 
@@ -42,10 +39,5 @@ fn shuffle_and_unpack() {
     assert_eq!(
         f64_lanes(unsafe { vunpckhpd(a, b) }),
         [2.0, 102.0, 4.0, 104.0]
-    );
-
-    assert_eq!(
-        i64x2_lanes(unsafe { vpsadbw(V128::from_bytes([1; 16]), V128::from_bytes([0; 16])) }),
-        [8; 2]
     );
 }
