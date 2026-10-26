@@ -96,9 +96,9 @@ use super::vector::V128;
 use core::arch::asm;
 
 unsafe extern "C" {
-    fn rust_isa_s390x_enh_popcnt_i8(a: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_popcnt_i32(a: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_fma(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve1_popcnt_i8(a: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve1_popcnt_i32(a: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve1_fma(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
 }
 
 /// `vpopctb` on byte lanes.
@@ -110,7 +110,7 @@ unsafe extern "C" {
 pub unsafe fn popcnt_i8(a: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_s390x_enh_popcnt_i8(a.as_ptr(), out.as_mut_ptr());
+        rust_isa_s390x_ve1_popcnt_i8(a.as_ptr(), out.as_mut_ptr());
     }
     out
 }
@@ -124,7 +124,7 @@ pub unsafe fn popcnt_i8(a: V128) -> V128 {
 pub unsafe fn popcnt_i32(a: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_s390x_enh_popcnt_i32(a.as_ptr(), out.as_mut_ptr());
+        rust_isa_s390x_ve1_popcnt_i32(a.as_ptr(), out.as_mut_ptr());
     }
     out
 }
@@ -138,25 +138,25 @@ pub unsafe fn popcnt_i32(a: V128) -> V128 {
 pub unsafe fn fma(acc: V128, a: V128, b: V128) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
-        rust_isa_s390x_enh_fma(acc.as_ptr(), a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+        rust_isa_s390x_ve1_fma(acc.as_ptr(), a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
 }
 
 unsafe extern "C" {
-    fn rust_isa_s390x_enh_vfa(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_vfs(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_vfm(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_vfd(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_vfma(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_vfms(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_vfnma(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_vfnms(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_vfsq(a: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_vfce(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_vfch(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_vfche(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_s390x_enh_vpopctb(a: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve1_vfa(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve1_vfs(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve1_vfm(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve1_vfd(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve1_vfma(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve1_vfms(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve1_vfnma(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve1_vfnms(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve1_vfsq(a: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve1_vfce(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve1_vfch(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve1_vfche(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_s390x_ve1_vpopctb(a: *const u8, out: *mut u8);
 }
 
 macro_rules! bin_enh {
@@ -208,67 +208,67 @@ macro_rules! tern_enh {
 bin_enh!(
     /// `vfa`.
     vfa,
-    rust_isa_s390x_enh_vfa
+    rust_isa_s390x_ve1_vfa
 );
 bin_enh!(
     /// `vfs`.
     vfs,
-    rust_isa_s390x_enh_vfs
+    rust_isa_s390x_ve1_vfs
 );
 bin_enh!(
     /// `vfm`.
     vfm,
-    rust_isa_s390x_enh_vfm
+    rust_isa_s390x_ve1_vfm
 );
 bin_enh!(
     /// `vfd`.
     vfd,
-    rust_isa_s390x_enh_vfd
+    rust_isa_s390x_ve1_vfd
 );
 tern_enh!(
     /// `vfma`.
     vfma,
-    rust_isa_s390x_enh_vfma
+    rust_isa_s390x_ve1_vfma
 );
 tern_enh!(
     /// `vfms`.
     vfms,
-    rust_isa_s390x_enh_vfms
+    rust_isa_s390x_ve1_vfms
 );
 tern_enh!(
     /// `vfnma`.
     vfnma,
-    rust_isa_s390x_enh_vfnma
+    rust_isa_s390x_ve1_vfnma
 );
 tern_enh!(
     /// `vfnms`.
     vfnms,
-    rust_isa_s390x_enh_vfnms
+    rust_isa_s390x_ve1_vfnms
 );
 un_enh!(
     /// `vfsq`.
     vfsq,
-    rust_isa_s390x_enh_vfsq
+    rust_isa_s390x_ve1_vfsq
 );
 bin_enh!(
     /// `vfce`.
     vfce,
-    rust_isa_s390x_enh_vfce
+    rust_isa_s390x_ve1_vfce
 );
 bin_enh!(
     /// `vfch`.
     vfch,
-    rust_isa_s390x_enh_vfch
+    rust_isa_s390x_ve1_vfch
 );
 bin_enh!(
     /// `vfche`.
     vfche,
-    rust_isa_s390x_enh_vfche
+    rust_isa_s390x_ve1_vfche
 );
 un_enh!(
     /// `vpopctb`.
     vpopctb,
-    rust_isa_s390x_enh_vpopctb
+    rust_isa_s390x_ve1_vpopctb
 );
 
 /// `vftci` on single-precision lanes.

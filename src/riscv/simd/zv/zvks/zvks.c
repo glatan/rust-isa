@@ -21,7 +21,7 @@
         break;
 
 __attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
-void rust_isa_rvv_vsm3c(const uint8_t *state, uint32_t round, uint8_t *out) {
+void rust_isa_zvks_vsm3c(const uint8_t *state, uint32_t round, uint8_t *out) {
     switch (round) {
         RV_SM3C_CASE(0)
         RV_SM3C_CASE(1)
@@ -61,7 +61,7 @@ void rust_isa_rvv_vsm3c(const uint8_t *state, uint32_t round, uint8_t *out) {
 }
 
 __attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
-void rust_isa_rvv_vsm3me(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+void rust_isa_zvks_vsm3me(const uint8_t *a, const uint8_t *b, uint8_t *out) {
     __asm__ volatile("vsetivli zero, 8, e32, m2, ta, ma\n\t"
                      "vle32.v v2, (%0)\n\t"
                      "vle32.v v4, (%1)\n\t"
@@ -72,7 +72,7 @@ void rust_isa_rvv_vsm3me(const uint8_t *a, const uint8_t *b, uint8_t *out) {
 }
 
 __attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
-void rust_isa_rvv_vsm4k(const uint8_t *key, uint32_t round, uint8_t *out) {
+void rust_isa_zvks_vsm4k(const uint8_t *key, uint32_t round, uint8_t *out) {
     switch (round) {
         RV_SM4K_CASE(0)
         RV_SM4K_CASE(1)
@@ -88,7 +88,7 @@ void rust_isa_rvv_vsm4k(const uint8_t *key, uint32_t round, uint8_t *out) {
 }
 
 __attribute__((noinline, target("arch=+zvkn,+zvks,+zvkg,+zvbc")))
-void rust_isa_rvv_vsm4r(const uint8_t *state, const uint8_t *key, uint8_t *out) {
+void rust_isa_zvks_vsm4r(const uint8_t *state, const uint8_t *key, uint8_t *out) {
     __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
                      "vle32.v v2, (%0)\n\t"
                      "vle32.v v3, (%1)\n\t"

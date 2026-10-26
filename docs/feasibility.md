@@ -1,6 +1,6 @@
 # 実装可否
 
-この文書は、`cfg(target_feature)` の観測用語と、arch ごとの表への索引である。観測表は `docs/<arch>/feasibility.md` に置く。実装方式と可用性の決定は [実装方針](policy.md) に置く。
+この文書は、`cfg(target_feature)` の観測用語と、arch ごとの表への索引である。観測表は `docs/<arch>/feasibility.md` に置く。実装方式は [実装方式](implementation.md) に、可用性の決定は [実装方針](policy.md) に置く。
 
 ここでいう feature は、rustc の `-C target-feature` に渡す名前である。このクレートの Cargo feature ではない。
 
@@ -23,7 +23,7 @@
 - cfg が立たない feature は、cfg ゲートを使えない。しかし、関数を無条件に置き、C の `__attribute__((target(...)))` や `asm!` で実装できる場合がある。
 - cfg の中に書いた関数が含まれないのは、その cfg が立たないときである。関数を cfg の外に置けば、そのコンパイルにも含まれる。
 - したがって、この文書は「実装できるか」を判定しない。判定するのは cfg が立つかだけである。
-- ゼロコストで実装できるかは、さらに別である。[実装方針](policy.md) の「ゼロコスト」を参照する。
+- ゼロコストで実装できるかは、さらに別である。[ゼロコストの確認](zero-cost.md) を参照する。
 
 wasm32 では、モジュールが含む命令の feature を全体として要求する。このため、cfg ゲートを外して関数を無条件に置くと、feature が無効なビルドにも feature を要求する。wasm32 の cfg ゲートは、この性質のためのものである。native には同じ制約はない。
 

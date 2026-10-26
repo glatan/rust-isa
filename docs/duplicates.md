@@ -26,18 +26,9 @@ make duplicates DUPLICATES_ARGS='--arch powerpc'
 
 ## 内部Cシンボル
 
-Cシンボルは公開ABIではない。次の接頭辞はモジュール名と一致しないが、既存のアーカイブと `tests/consistency.rs` の対応を保つため、そのまま使う。
+Cシンボルは公開ABIではない。接頭辞はモジュール名に合わせる。
 
-- RISC-V `simd/zv/*` のC関数は `rust_isa_rvv_` を使う。Zvkn、Zvks、Zvkg、Zvbc は同じrvvアーカイブに入る。
-- s390x の vector-enhancements-1 は `rust_isa_s390x_enh_`、vector-enhancements-3 は `rust_isa_s390x_ve3_` を使う。
+- RISC-V `simd/zv/zvbc`、`zvkg`、`zvkn`、`zvks` は、それぞれ `rust_isa_zvbc_`、`rust_isa_zvkg_`、`rust_isa_zvkn_`、`rust_isa_zvks_` を使う。
+- s390x の vector-enhancements-1 は `rust_isa_s390x_ve1_`、vector-enhancements-3 は `rust_isa_s390x_ve3_` を使う。
 
-接頭辞をモジュール名に合わせる場合は、`build.rs`、`tests/consistency.rs`、アーカイブ名を同じ変更で更新する。
-
-## レビュー
-
-重複する命令を実装する MR では、次を確認する。
-
-- 既存の C 関数を再利用する場合、その関数が要求する feature を新しい extension が満たすか。
-- 再利用する C 関数のレーン幅と、新しい API の値型が一致するか。
-- 新しい extension の方が弱い feature を要求する場合、既存関数をそのまま使わない。
-- 公開ラッパーの rustdoc は extension ごとに書く。共有関数の rustdoc を流用しない。
+C関数を共有する場合だけ、共有先の接頭辞を使い、その理由をこの節に書く。

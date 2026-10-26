@@ -86,7 +86,7 @@ help:
 		'doctest-coverage             doctest 網羅を検査して arch 別件数を表示する' \
 		'doctest-inventory-check      全公開命令の doctest 在庫を検査する' \
 		'zero-cost-check              ゼロコスト結果表の fixture と kernel を検査する' \
-		'docs-check                   文書間リンク・アンカー・索引・API対応表の名前を検査する' \
+		'docs-check                   文書間リンク・アンカー・索引・API対応表・makeターゲット名を検査する' \
 		'fixtures-check               fixtures/・target-nested と fixture-matrix.md の対応を検査する' \
 		'duplicates                   同じ arch で重複する命令名を表示する'
 
@@ -145,6 +145,7 @@ coverage-check: inventory-check
 docs-check:
 	$(PODMAN_RUN) python3 tools/doc_links.py --check
 	$(PODMAN_RUN) python3 tools/mapping.py --check
+	$(PODMAN_RUN) python3 tools/commands.py --check
 
 .PHONY: fixtures-check
 fixtures-check:
