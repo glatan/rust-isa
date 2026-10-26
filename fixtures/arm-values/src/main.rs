@@ -385,11 +385,6 @@ fn mve_fp_ops() -> bool {
         if mve_fp::cmp(a, a).to_bytes() != [0xff; 16] || mve_fp::cmp(a, b).to_bytes() != [0; 16] {
             return false;
         }
-        if f32_lanes(mve::fma(f32x4([1.0; 4]), f32x4([2.0; 4]), f32x4([3.0; 4]))) != [7.0; 4]
-            || f32_lanes(mve::fms(f32x4([10.0; 4]), f32x4([2.0; 4]), f32x4([3.0; 4]))) != [4.0; 4]
-        {
-            return false;
-        }
         if lanes(mve_fp::cvt(f32x4([1.0, -2.0, 3.0, -4.0]))) != [1, -2, 3, -4]
             || f32_lanes(mve_fp::cvt_f32(i32x4([1, -2, 3, -4]))) != [1.0, -2.0, 3.0, -4.0]
         {

@@ -20,13 +20,9 @@ family は命令の種類に合わせて決める（`simd`、`system` など）�
 `vsat`、`vssr`、`vavgr`、`vfcmp`、`vftint`、`vffint`、`vrepl` は、レーン幅・
 符号・丸めモードごとの関数も公開する。`vfcmp` は 22 条件を `vfcmp_<cond>_s` と `vfcmp_<cond>_d` で公開する。 `vfcvt` は `vfcvt_s_d`、`vrepl` は `vrepl_w`、`vreplve` は `vreplve_w` の alias である。
 
-`vabs` / `xvabs` は絶対値の semantic helper で、LSX/LASX の `vabsd`（絶対差）とは異なる。`revw` は 2 つの 32-bit word を入れ替える semantic helper で、LBT に `revw.d` はない。
+`vabs` / `xvabs` は絶対値の semantic helper で、LSX/LASX の `vabsd`（絶対差）とは異なる。`integer::bitmanip` の `bitrev`、`bstrins`、`bstrpick`、`revb`、`revh`、`revw` も semantic helper であり、LBT 命令の在庫には数えない。`revw` は 2 つの 32-bit word を入れ替える helper で、LBT に `revw.d` はない。
 
-### 整数
-
-| extension | 実装済み命令                                            | 未実装命令 | 値テスト |
-| --------- | ------------------------------------------------------- | ---------- | -------- |
-| `lbt`     | `bitrev`, `bstrins`, `bstrpick`, `revb`, `revh`, `revw` | なし       | 未実行   |
+`lbt` target feature は観測対象だが、このクレートは LBT 命令 wrapper を公開しない。`integer::bitmanip` は LBT feature を要求しない。
 
 ### システム
 
@@ -63,7 +59,7 @@ family は命令の種類に合わせて決める（`simd`、`system` など）�
 
 1. `lsx`（既定）
 2. `lasx`
-3. `lbt`、`lamcas`、`scq`
+3. `bitmanip`（semantic helper）、`lamcas`、`scq`
 
 ## 未対応
 

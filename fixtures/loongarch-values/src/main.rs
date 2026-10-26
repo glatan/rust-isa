@@ -3,7 +3,7 @@
 
 use core::arch::asm;
 use core::panic::PanicInfo;
-use rust_isa::loongarch::integer::lbt::{bitrev, bstrins, bstrpick, revb, revh, revw};
+use rust_isa::loongarch::integer::bitmanip::{bitrev, bstrins, bstrpick, revb, revh, revw};
 use rust_isa::loongarch::simd::lasx::xvabs_b;
 use rust_isa::loongarch::simd::lasx::xvabs_d;
 use rust_isa::loongarch::simd::lasx::xvabs_h;
@@ -133,7 +133,7 @@ fn run() -> u32 {
     if !unsafe { lasx_ops() } {
         return 4;
     }
-    if !lbt_ops() {
+    if !bitmanip_ops() {
         return 5;
     }
     if !lsx_width_ops() {
@@ -598,7 +598,7 @@ fn lsx_width_ops() -> bool {
         && vmul_h(a, b) == mul_i16(a, b)
 }
 
-fn lbt_ops() -> bool {
+fn bitmanip_ops() -> bool {
     revb(0x0102_0304_0506_0708) == 0x0807_0605_0403_0201
         && revh(0x0102_0304_0506_0708) == 0x0708_0506_0304_0102
         && revw(0x0102_0304_0506_0708) == 0x0506_0708_0102_0304

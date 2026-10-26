@@ -39,6 +39,11 @@ EXTRA = {
 }
 
 
+NON_INSTRUCTION_MODULES = {
+    ("loongarch", "loongarch/integer/bitmanip"),
+}
+
+
 def public_leaves(arch: str) -> list[Path]:
     """Return public leaf module directories for an architecture."""
     root = SOURCE / arch
@@ -55,7 +60,9 @@ def public_leaves(arch: str) -> list[Path]:
             if (directory / name / "mod.rs").is_file()
         ]
         if not children:
-            leaves.append(directory)
+            relative = directory.relative_to(SOURCE).as_posix()
+            if (arch, relative) not in NON_INSTRUCTION_MODULES:
+                leaves.append(directory)
             return
         for child in children:
             walk(child)

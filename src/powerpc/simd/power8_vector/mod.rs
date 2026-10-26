@@ -8,10 +8,6 @@
 //! subtract (`vaddudm`, `vsubudm`), 32-bit multiply (`vmuluwm`) and the even
 //! halfword widening multiply.
 //!
-//! `vctzd` was introduced by Power ISA 3.0. It is re-exported here because the
-//! Power8 extension table lists it, and calling it requires the Power9 vector
-//! feature set.
-//!
 //! Instruction behavior follows the [Power ISA](https://openpowerfoundation.org/specifications/isa/).
 //!
 //! Instructions not listed in this module are not exposed.
@@ -43,7 +39,6 @@
 //! let _ = unsafe { sub_u64(v128, v128) };
 //! let _ = unsafe { vaddudm(v128, v128) };
 //! let _ = unsafe { vclzd(v128) };
-//! let _ = unsafe { vctzd(v128) };
 //! let _ = unsafe { vmaxsd(v128, v128) };
 //! let _ = unsafe { vmaxud(v128, v128) };
 //! let _ = unsafe { vminsd(v128, v128) };
@@ -72,7 +67,6 @@
 //! use rust_isa::powerpc::simd::power8_vector::sub_u64 as _;
 //! use rust_isa::powerpc::simd::power8_vector::vaddudm as _;
 //! use rust_isa::powerpc::simd::power8_vector::vclzd as _;
-//! use rust_isa::powerpc::simd::power8_vector::vctzd as _;
 //! use rust_isa::powerpc::simd::power8_vector::vmaxsd as _;
 //! use rust_isa::powerpc::simd::power8_vector::vmaxud as _;
 //! use rust_isa::powerpc::simd::power8_vector::vminsd as _;
@@ -289,5 +283,3 @@ pub unsafe fn vmuluwm(a: V128, b: V128) -> V128 {
 pub unsafe fn vmuleuh(a: V128, b: V128) -> V128 {
     unsafe { mul_even_u16(a, b) }
 }
-
-pub use super::power9_vector::vctzd;

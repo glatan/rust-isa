@@ -1,9 +1,9 @@
-//! LoongArch Binary Translation (LBT) bit-manipulation instructions.
+//! LoongArch bit-manipulation semantic helpers.
 //!
-//! LBT is not part of the LoongArch baseline. The functions are implemented in
-//! Rust, are safe, and do not require a target feature. The operations are
-//! expressed on 64-bit scalar values. Immediate operands (bit ranges) are const
-//! generics; invalid ranges do not compile.
+//! These functions implement value semantics in Rust. They are safe and do not
+//! require the LBT target feature. They are semantic helpers, not LBT
+//! instruction wrappers. Immediate operands (bit ranges) are const generics;
+//! invalid ranges do not compile.
 //!
 //! Instruction behavior follows the [LoongArch Documentation](https://loongson.github.io/LoongArch-Documentation/).
 //!
@@ -12,7 +12,7 @@
 //! # Examples
 //!
 //! ```
-//! use rust_isa::loongarch::integer::lbt::revb;
+//! use rust_isa::loongarch::integer::bitmanip::revb;
 //!
 //! assert_eq!(revb(0x0102_0304_0506_0708), 0x0807_0605_0403_0201);
 //! ```
@@ -23,7 +23,7 @@
 //! # Instruction examples
 //!
 //! ```
-//! use rust_isa::loongarch::integer::lbt::*;
+//! use rust_isa::loongarch::integer::bitmanip::*;
 //! use rust_isa::loongarch::simd::lsx::V128;
 //! use rust_isa::loongarch::simd::lasx::V256;
 //!
@@ -38,20 +38,7 @@
 //! let _ = revw(0);
 //! ```
 //!
-//! <!-- doctest-inventory:start -->
-//!
-//! # Instruction inventory
-//!
-//! ```
-//! use rust_isa::loongarch::integer::lbt::bitrev as _;
-//! use rust_isa::loongarch::integer::lbt::bstrins as _;
-//! use rust_isa::loongarch::integer::lbt::bstrpick as _;
-//! use rust_isa::loongarch::integer::lbt::revb as _;
-//! use rust_isa::loongarch::integer::lbt::revh as _;
-//! use rust_isa::loongarch::integer::lbt::revw as _;
-//! ```
-//! <!-- doctest-inventory:end -->
-//!
+
 //! </details>
 
 /// `revb.d`: reverse the byte order of a 64-bit value.

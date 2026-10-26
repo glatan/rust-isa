@@ -1,3 +1,3 @@
 //! LoongArch scalar integer extensions.
 
-pub mod lbt;
+pub mod bitmanip;
