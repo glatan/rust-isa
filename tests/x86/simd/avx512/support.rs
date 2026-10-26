@@ -18,6 +18,10 @@ pub(crate) fn ifma_enabled() -> bool {
     f_enabled() && is_x86_feature_detected!("avx512ifma")
 }
 
+pub(crate) fn ifma_narrow_enabled() -> bool {
+    ifma_enabled() && is_x86_feature_detected!("avx512vl")
+}
+
 pub(crate) fn vbmi_enabled() -> bool {
     f_enabled() && is_x86_feature_detected!("avx512vbmi")
 }
@@ -27,7 +31,11 @@ pub(crate) fn vnni_enabled() -> bool {
 }
 
 pub(crate) fn vl_enabled() -> bool {
-    f_enabled() && is_x86_feature_detected!("avx512dq") && is_x86_feature_detected!("avx512vl")
+    f_enabled() && is_x86_feature_detected!("avx512vl")
+}
+
+pub(crate) fn vl_dq_enabled() -> bool {
+    vl_enabled() && is_x86_feature_detected!("avx512dq")
 }
 
 pub(crate) fn i32x16(values: [i32; 16]) -> V512 {

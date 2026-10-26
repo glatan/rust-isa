@@ -58,23 +58,24 @@ fn amx_api_is_gated() {
         AmxGuard, TileConfig, ldtilecfg, sttilecfg, tileloadd, tilestored, tilezero,
     };
     assert_eq!(core::mem::align_of::<TileConfig>(), 64);
-    let mut bytes = [0u8; 64];
-    bytes[0] = 1;
-    bytes[16] = 64;
-    bytes[17] = 0;
-    bytes[48] = 16;
-    let config = TileConfig::from_bytes(bytes);
+    let config_a = TileConfig::builder().start_row(0).tile::<0>(16, 64).build();
+    let config_b = TileConfig::builder().start_row(2).tile::<0>(16, 64).build();
     let mut readback = TileConfig::from_bytes([0; 64]);
+    let data = core::array::from_fn::<u8, 1024, _>(|index| (index as u8).wrapping_mul(7));
+    let mut out = [0u8; 1024];
     unsafe {
-        ldtilecfg(&config);
-        let guard = AmxGuard::enter(&config);
+        let guard = AmxGuard::enter(&config_a);
+        ldtilecfg(&config_b);
         sttilecfg(&guard, &mut readback);
-        let mut tile = [0u8; 1024];
+
         tilezero::<0>(&guard);
-        tileloadd::<0>(&guard, tile.as_ptr(), 64);
-        tilestored::<0>(&guard, tile.as_mut_ptr(), 64);
+        tilestored::<0>(&guard, out.as_mut_ptr(), 64);
+        assert_eq!(out, [0u8; 1024]);
+        tileloadd::<0>(&guard, data.as_ptr(), 64);
+        tilestored::<0>(&guard, out.as_mut_ptr(), 64);
     }
-    assert_eq!(readback.to_bytes(), config.to_bytes());
+    assert_eq!(readback.to_bytes(), config_b.to_bytes());
+    assert_eq!(out, data);
 }
 
 #[test]

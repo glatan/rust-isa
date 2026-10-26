@@ -19,4 +19,12 @@ fn avx512f_bitwise() {
         unsafe { vpternlogd::<0x96>(a, b, c) }.to_bytes(),
         [0x96; 64]
     );
+    assert_eq!(
+        unsafe { vpternlogd::<0x00>(a, b, c) }.to_bytes(),
+        [0x00; 64]
+    );
+    assert_eq!(
+        unsafe { vpternlogd::<0xff>(a, b, c) }.to_bytes(),
+        [0xff; 64]
+    );
 }

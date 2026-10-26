@@ -6,9 +6,6 @@ use common::*;
 
 #[test]
 fn wasm_pipeline() {
-    if std::env::var_os("RUST_ISA_NESTED").is_some() {
-        return;
-    }
     check_link();
     check_without_simd128();
 }
@@ -75,6 +72,7 @@ fn assert_undefined_symbols(archive: &Path) {
 
 fn check_without_simd128() {
     let dir = nested_dir("no-simd");
+    fs::remove_dir_all(&dir).ok();
     let output = cargo(&dir)
         .env("RUSTFLAGS", "")
         .args([
@@ -121,6 +119,28 @@ fn check_without_simd128() {
     assert!(
         !output.status.success(),
         "wasm-simd-link built without simd128:\n{text}"
+    );
+    assert!(
+        text.contains("wasm-simd-link requires target_feature simd128 and relaxed-simd"),
+        "{text}"
+    );
+
+    let flags = "-C target-feature=+simd128";
+    let output = cargo(&dir)
+        .env("RUSTFLAGS", flags)
+        .args([
+            "build",
+            "-p",
+            "wasm-simd-link",
+            "--target",
+            "wasm32-unknown-unknown",
+        ])
+        .output()
+        .expect("cargo");
+    let text = output_text(&output);
+    assert!(
+        !output.status.success(),
+        "wasm-simd-link built with only simd128:\n{text}"
     );
     assert!(
         text.contains("wasm-simd-link requires target_feature simd128 and relaxed-simd"),

@@ -89,14 +89,16 @@ fn avx10_1_compress_expand() {
         vpexpandb_v512, vpexpandw_v256, vpexpandw_v512,
     };
 
-    let bytes256 = V256::from_bytes(core::array::from_fn(|index| index as u8));
-    let compressed = unsafe { vpcompressb_v256(bytes256, 0b0101) }.to_bytes();
-    assert_eq!(compressed[..4], [0, 2, 0, 0]);
-    assert!(compressed[4..].iter().all(|value| *value == 0));
+    if is_x86_feature_detected!("avx512vl") {
+        let bytes256 = V256::from_bytes(core::array::from_fn(|index| index as u8));
+        let compressed = unsafe { vpcompressb_v256(bytes256, 0b0101) }.to_bytes();
+        assert_eq!(compressed[..4], [0, 2, 0, 0]);
+        assert!(compressed[4..].iter().all(|value| *value == 0));
 
-    let expanded = unsafe { vpexpandb_v256(bytes256, 0b0101) }.to_bytes();
-    assert_eq!(expanded[..4], [0, 0, 1, 0]);
-    assert!(expanded[4..].iter().all(|value| *value == 0));
+        let expanded = unsafe { vpexpandb_v256(bytes256, 0b0101) }.to_bytes();
+        assert_eq!(expanded[..4], [0, 0, 1, 0]);
+        assert!(expanded[4..].iter().all(|value| *value == 0));
+    }
 
     let bytes512 = V512::from_bytes(core::array::from_fn(|index| index as u8));
     let compressed = unsafe { vpcompressb_v512(bytes512, 0b0101) }.to_bytes();

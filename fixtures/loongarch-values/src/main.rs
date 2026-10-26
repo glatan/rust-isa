@@ -143,172 +143,172 @@ fn run() -> u32 {
         return 7;
     }
     if !lasx_alias_ops() {
-        return 6;
-    }
-    if !lsx_abs_ops() {
-        return 7;
-    }
-    if !lasx_abs_ops() {
         return 8;
     }
-    if !lsx_div_ops() {
+    if !lsx_abs_ops() {
         return 9;
     }
-    if !lasx_div_ops() {
+    if !lasx_abs_ops() {
         return 10;
     }
+    if !lsx_div_ops() {
+        return 11;
+    }
+    if !lasx_div_ops() {
+        return 12;
+    }
     if !lsx_alias_ops() {
-        return 6;
+        return 13;
     }
     if !alias_vadd_w() {
-        return 101;
+        return 14;
     }
     if !alias_vsub_w() {
-        return 102;
+        return 15;
     }
     if !alias_vmul_w() {
-        return 103;
+        return 16;
     }
     if !alias_vneg_w() {
-        return 104;
+        return 17;
     }
     if !alias_vabs_b() {
-        return 105;
+        return 18;
     }
     if !alias_vabs_h() {
-        return 201;
+        return 19;
     }
     if !alias_vabs_d() {
-        return 202;
+        return 20;
     }
     if !alias_vneg_b() {
-        return 203;
+        return 21;
     }
     if !alias_vneg_h() {
-        return 204;
+        return 22;
     }
     if !alias_vneg_d() {
-        return 205;
+        return 23;
     }
     if !alias_xvabs_b() {
-        return 301;
+        return 24;
     }
     if !alias_xvabs_h() {
-        return 302;
+        return 25;
     }
     if !alias_xvabs_d() {
-        return 303;
+        return 26;
     }
     if !alias_xvneg_b() {
-        return 304;
+        return 27;
     }
     if !alias_xvneg_h() {
-        return 305;
+        return 28;
     }
     if !alias_xvneg_d() {
-        return 401;
+        return 29;
     }
     if !alias_xvadd_w() {
-        return 402;
+        return 30;
     }
     if !alias_xvsub_w() {
-        return 421;
+        return 31;
     }
     if !alias_xvmul_w() {
-        return 422;
+        return 32;
     }
     if !alias_vmax() {
-        return 501;
+        return 33;
     }
     if !alias_vmin() {
-        return 511;
+        return 34;
     }
     if !alias_vseq() {
-        return 512;
+        return 35;
     }
     if !alias_vsle() {
-        return 513;
+        return 36;
     }
     if !alias_vslt() {
-        return 514;
+        return 37;
     }
     if !alias_vseqi() {
-        return 521;
+        return 38;
     }
     if !alias_vslei() {
-        return 522;
+        return 39;
     }
     if !alias_vslti() {
-        return 523;
+        return 40;
     }
     if !alias_vnor() {
-        return 524;
+        return 41;
     }
     if !alias_vbitsel() {
-        return 525;
+        return 42;
     }
     if !alias_vshuf() {
-        return 531;
+        return 43;
     }
     if !alias_vshuf4i() {
-        return 532;
+        return 44;
     }
     if !alias_vsll() {
-        return 533;
+        return 45;
     }
     if !alias_vsrl() {
-        return 534;
+        return 46;
     }
     if !alias_vsra() {
-        return 535;
+        return 47;
     }
     if !alias_vslli() {
-        return 541;
+        return 48;
     }
     if !alias_vsrli() {
-        return 542;
+        return 49;
     }
     if !alias_vsrai() {
-        return 543;
+        return 50;
     }
     if !alias_vpackev() {
-        return 544;
+        return 51;
     }
     if !alias_vpackod() {
-        return 545;
+        return 52;
     }
     if !lsx_extend_ops() {
-        return 601;
+        return 53;
     }
     if !lsx_vsat_ops() {
-        return 611;
+        return 54;
     }
     if !lsx_vssr_arith_ops() {
-        return 621;
+        return 55;
     }
     if !lsx_vssr_logical_ops() {
-        return 622;
+        return 56;
     }
     if !lsx_vssr_ops() {
-        return 623;
+        return 57;
     }
     if !lsx_float_ops() {
-        return 603;
+        return 58;
     }
     if !lsx_convert_ops() {
-        return 604;
+        return 59;
     }
     if !lsx_load_store_ops() {
-        return 631;
+        return 60;
     }
     if !lsx_vldi_ops() {
-        return 632;
+        return 61;
     }
     if !lsx_vrepl_ops() {
-        return 633;
+        return 62;
     }
     if !lsx_vreplve_ops() {
-        return 634;
+        return 63;
     }
     0
 }

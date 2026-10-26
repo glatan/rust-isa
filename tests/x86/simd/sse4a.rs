@@ -10,21 +10,32 @@ fn sse4a_immediate_forms_and_stores() {
     value_bytes[..8].copy_from_slice(&0x0123_4567_89ab_cdefu64.to_le_bytes());
     let value = V128::from_bytes(value_bytes);
     let mut control_bytes = [0u8; 16];
-    control_bytes[0] = 8;
-    control_bytes[1] = 8;
+    control_bytes[0] = 4;
+    control_bytes[1] = 4;
     let control = V128::from_bytes(control_bytes);
-    assert_eq!(unsafe { extrq_imm::<8, 8>(value) }, unsafe {
-        extrq(value, control)
-    });
+    let extracted = unsafe { extrq_imm::<4, 4>(value) }.to_bytes();
+    assert_eq!(u64::from_le_bytes(extracted[..8].try_into().unwrap()), 0x0e);
+    assert_eq!(
+        extracted,
+        unsafe { extrq(value, control) }.to_bytes(),
+        "immediate and register forms disagree"
+    );
 
     let mut inserted_bytes = [0u8; 16];
     inserted_bytes[0] = 0xab;
-    inserted_bytes[8] = 8;
-    inserted_bytes[9] = 8;
+    inserted_bytes[8] = 4;
+    inserted_bytes[9] = 4;
     let inserted = V128::from_bytes(inserted_bytes);
-    assert_eq!(unsafe { insertq_imm::<8, 8>(value, inserted) }, unsafe {
-        insertq(value, inserted)
-    });
+    let inserted_value = unsafe { insertq_imm::<4, 4>(value, inserted) }.to_bytes();
+    assert_eq!(
+        u64::from_le_bytes(inserted_value[..8].try_into().unwrap()),
+        0x0123_4567_89ab_cdbf
+    );
+    assert_eq!(
+        inserted_value,
+        unsafe { insertq(value, inserted) }.to_bytes(),
+        "immediate and register forms disagree"
+    );
 
     let mut sd = 0.0f64;
     let mut sd_bytes = [0u8; 16];

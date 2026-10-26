@@ -73,6 +73,7 @@ fn shifts() {
         pslld(a, 1).to_bytes(),
         [2, 0, 0, 0, 4, 0, 0, 0, 6, 0, 0, 0, 8, 0, 0, 0]
     );
+    assert_eq!(pslld(a, 32).to_bytes(), [0; 16]);
 
     let negative = V128::from_bytes([
         0xf8, 0xff, 0xff, 0xff, 0xf0, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0, 0, 0, 0,

@@ -21,6 +21,7 @@ fn bmi1_operations() {
     }
     assert_eq!(unsafe { andn(0b1010, 0b1100) }, 0b0100);
     assert_eq!(unsafe { bextr(0b1111_0000, 4, 4) }, 0b1111);
+    assert_eq!(unsafe { bextr(0xffff_ffff, 4, 4) }, 0xf);
     assert_eq!(unsafe { blsi(0b1010_1000) }, 0b1000);
     assert_eq!(unsafe { blsmsk(0b1010_1000) }, 0b1111);
     assert_eq!(unsafe { blsr(0b1010_1000) }, 0b1010_0000);
@@ -32,8 +33,11 @@ fn bmi2_operations() {
         return;
     }
     assert_eq!(unsafe { bzhi(u32::MAX, 8) }, 0xff);
+    assert_eq!(unsafe { bzhi(u32::MAX, 0) }, 0);
+    assert_eq!(unsafe { bzhi(u32::MAX, 32) }, u32::MAX);
     assert_eq!(unsafe { pdep(0b101, 0b1010_1010) }, 0b0010_0010);
     assert_eq!(unsafe { pext(0b1010_1010, 0b1010_1010) }, 0b1111);
+    assert_eq!(unsafe { pext(0b1000, 0b1010) }, 0b10);
     assert_eq!(unsafe { sarx(0x8000_0000, 4) }, 0xf800_0000);
     assert_eq!(unsafe { shlx(1, 4) }, 16);
     assert_eq!(unsafe { shrx(0x8000_0000, 4) }, 0x0800_0000);
@@ -98,7 +102,10 @@ fn adx_carry_chains() {
     assert_eq!(unsafe { adox_u32(u32::MAX, 1, false) }, (0, true));
     assert_eq!(unsafe { adox_u32(1, 1, true) }, (3, false));
     assert_eq!(unsafe { adcx_u64(u64::MAX, 1, false) }, (0, true));
+    assert_eq!(unsafe { adcx_u64(u64::MAX, 1, true) }, (1, true));
     assert_eq!(unsafe { adox_u64(u64::MAX, 1, false) }, (0, true));
+    assert_eq!(unsafe { adox_u64(u64::MAX, 0, true) }, (0, true));
+    assert_eq!(unsafe { adox_u64(0, 0, true) }, (1, false));
 }
 
 #[test]

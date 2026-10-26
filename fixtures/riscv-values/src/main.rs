@@ -1004,7 +1004,9 @@ fn slice_ops() -> bool {
 unsafe fn zkn_ops() -> bool {
     unsafe {
         sha256sum0(1) != 1
+            && sha256sum0(1) != sha256sum0(2)
             && aes64es(1, 2) != 1
+            && aes64es(1, 2) != aes64es(3, 4)
             && aes64ks1i(1, 0) != 1
             && aes64ks1i(1, 1) != aes64ks1i(1, 0)
     }

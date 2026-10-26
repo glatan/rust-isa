@@ -116,7 +116,7 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 | AArch64    | `fixtures/aarch64-values`       | `kernel_bf16`                                              | thin | `bf16`                     | `bfdot`                           | なし   | なし                | ゼロコスト                |
 | AArch64    | `fixtures/aarch64-values`       | `kernel_fhm`                                               | thin | `fp16` + `fhm`             | `fmla v0.8h`                      | なし   | なし                | ゼロコスト                |
 | AArch64    | `fixtures/aarch64-values`       | `kernel_jsconv`                                            | thin | `jsconv`                   | `fjcvtzs`                         | なし   | なし                | ゼロコスト                |
-| AArch64    | `fixtures/aarch64-values`       | `kernel_sve_add`                                           | thin | `sve`                      | `add z0.s`                        | なし   | なし                | ゼロコスト                |
+| AArch64    | `fixtures/aarch64-values`       | `kernel_sve_add`                                           | thin | `sve`                      | `fadd z0.s`                       | なし   | なし                | ゼロコスト                |
 | AArch64    | `fixtures/aarch64-values`       | `kernel_sve_mul`                                           | thin | `sve`                      | `fmul z0.s`                       | なし   | なし                | ゼロコスト                |
 | AArch64    | `fixtures/aarch64-values`       | `kernel_sve_sub`                                           | thin | `sve`                      | `fsub z0.s`                       | なし   | なし                | ゼロコスト                |
 | AArch64    | `fixtures/aarch64-values`       | `kernel_f32mm`                                             | thin | `sve` + `f32mm`            | `fmmla`                           | なし   | なし                | ゼロコスト                |
@@ -172,7 +172,7 @@ arch 単位では、ゼロコストを確認していない arch はない。ext
 
 ## スケーラブルベクタ
 
-SVE のスライス API を AArch64 で確認した。C のループを `#[target_feature(enable = "sve")]` の Rust カーネルへインラインすると、`cntw`、`whilelt`、`ld1w`、`add z0.s`、`st1w` がカーネルに並び、`call` が無かった。SVE / F32MM / F64MM の行はスライス API のロード・ストアを含むが、対象命令の間に追加の store/load はない。
+SVE のスライス API を AArch64 で確認した。C のループを `#[target_feature(enable = "sve")]` の Rust カーネルへインラインすると、`cntw`、`whilelt`、`ld1w`、`fadd z0.s`、`st1w` がカーネルに並び、`call` が無かった。SVE / F32MM / F64MM の行はスライス API のロード・ストアを含むが、対象命令の間に追加の store/load はない。
 
 RVV のスライス API も RISC-V で確認した。C のループを Rust のカーネルへインラインすると、`vsetvli`、`vle32.v`、`vadd.vv`、`vse32.v` がカーネルに並び、`call` が無かった。
 

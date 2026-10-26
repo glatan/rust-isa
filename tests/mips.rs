@@ -8,9 +8,6 @@ use std::process::Stdio;
 
 #[test]
 fn mips_values() {
-    if std::env::var_os("RUST_ISA_NESTED").is_some() {
-        return;
-    }
     let dir = nested_dir("mips-values");
     let rustflags = "-C target-feature=+msa,+fp64 -C linker-plugin-lto -C linker=clang -C link-arg=--target=mips64-unknown-linux-gnuabi64 -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C link-arg=-Wl,-e,_start -C relocation-model=static";
     let output = cargo(&dir)
@@ -53,18 +50,17 @@ fn mips_values() {
     let text = String::from_utf8_lossy(&output.stdout);
     for (symbol, mnemonic) in [("<kernel_add>:", "addv.w"), ("<kernel_mul>:", "mulv.w")] {
         let decoded = decode_msa(&text, symbol);
-        let lines: Vec<_> = decoded.lines().collect();
         assert!(
-            !lines.iter().any(|line| line.contains("jal")),
+            !body_has_call(&decoded, &["jal", "jalr"]),
             "{symbol} calls C:\n{decoded}"
         );
         assert_eq!(
-            lines.iter().filter(|line| line.contains(mnemonic)).count(),
+            opcode_positions(&decoded, mnemonic).len(),
             2,
             "{symbol} {mnemonic} body:\n{decoded}"
         );
         assert!(
-            !lines.iter().any(|line| {
+            !decoded.lines().any(|line| {
                 let op = line.split_whitespace().next().unwrap_or("");
                 matches!(op, "lw" | "sw" | "ld" | "sd" | "st")
             }),

@@ -305,10 +305,13 @@ fn run() -> u32 {
         return 24;
     }
     if !unsafe { sve_ops() } {
-        return 17;
+        return 11;
     }
     if !unsafe { sve_ext_ops() } {
         return 25;
+    }
+    if !unsafe { bf16_ops() } {
+        return 26;
     }
     0
 }
@@ -412,6 +415,10 @@ fn float() -> bool {
 fn table() -> bool {
     let source = V128::from_bytes(core::array::from_fn(|index| index as u8));
     let reverse = V128::from_bytes(core::array::from_fn(|index| 15 - index as u8));
+    let reversed = V128::from_bytes(core::array::from_fn(|index| 15 - index as u8));
+    if tbl(source, reverse).to_bytes() != reversed.to_bytes() {
+        return false;
+    }
     kernel_tbl(&source, &reverse).to_bytes() == source.to_bytes()
 }
 
@@ -754,7 +761,7 @@ fn integer_ops() -> bool {
     {
         return false;
     }
-    if i8_signed(
+    if i8_all(
         sar_i8(
             V128::from_bytes([
                 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80,
@@ -788,6 +795,10 @@ fn i64_ok(value: V128, expected: [i64; 2]) -> bool {
 
 fn i8_signed(value: V128, expected: u8) -> bool {
     value.to_bytes()[1] == expected
+}
+
+fn i8_all(value: V128, expected: u8) -> bool {
+    value.to_bytes().iter().all(|byte| *byte == expected)
 }
 
 fn float_ops() -> bool {
@@ -985,6 +996,15 @@ unsafe fn dotprod_ops() -> bool {
     let s = unsafe { sdot(a, b, zero) }.to_bytes();
     let u = unsafe { udot(a, b, zero) }.to_bytes();
     lanes(V128::from_bytes(s)) == [8; 4] && lanes(V128::from_bytes(u)) == [8; 4]
+}
+
+#[target_feature(enable = "bf16")]
+unsafe fn bf16_ops() -> bool {
+    let one = V128::from_bytes(core::array::from_fn(|index| {
+        if index % 2 == 0 { 0x80 } else { 0x3f }
+    }));
+    let zero = V128::from_bytes([0; 16]);
+    f32_lanes(unsafe { bfdot(zero, one, one) }) == [2.0; 4]
 }
 
 #[target_feature(enable = "i8mm")]

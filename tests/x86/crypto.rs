@@ -72,6 +72,9 @@ fn aes_rounds() {
     assert_eq!(unsafe { aesdec(zero, zero) }.to_bytes(), [0x52; 16]);
     assert_eq!(unsafe { aesdeclast(zero, zero) }.to_bytes(), [0x52; 16]);
     assert_eq!(unsafe { aesimc(zero) }.to_bytes(), [0; 16]);
+    let imc = unsafe { aesimc(sequential(0)) }.to_bytes();
+    assert_ne!(imc, [0; 16], "aesimc returned zero for nonzero input");
+    assert_ne!(imc, sequential(0).to_bytes(), "aesimc returned its input");
 
     let a = sequential(0);
     let b = sequential(16);
@@ -116,6 +119,25 @@ fn sha_zero_schedule() {
     assert_eq!(unsafe { sha1msg1(zero, zero) }.to_bytes(), [0; 16]);
     assert_eq!(unsafe { sha1msg2(zero, zero) }.to_bytes(), [0; 16]);
     assert_eq!(unsafe { sha1nexte(zero, zero) }.to_bytes(), [0; 16]);
+}
+
+#[test]
+fn sha_message_schedule_is_not_zero_for_nonzero_input() {
+    if !sha_enabled() {
+        return;
+    }
+    let a = sequential(0);
+    let b = sequential(16);
+    for (name, out) in [
+        ("sha256msg1", unsafe { sha256msg1(a, b) }.to_bytes()),
+        ("sha256msg2", unsafe { sha256msg2(a, b) }.to_bytes()),
+        ("sha1msg1", unsafe { sha1msg1(a, b) }.to_bytes()),
+        ("sha1msg2", unsafe { sha1msg2(a, b) }.to_bytes()),
+        ("sha1nexte", unsafe { sha1nexte(a, b) }.to_bytes()),
+    ] {
+        assert_ne!(out, [0; 16], "{name} returned zero for nonzero input");
+        assert_ne!(out, a.to_bytes(), "{name} returned its first input");
+    }
 }
 
 #[test]
@@ -295,6 +317,16 @@ fn gfni_affine_identity() {
         unsafe { gf2p8affineqb::<0>(V128::from_bytes([2; 16]), matrix) }.to_bytes(),
         [2; 16]
     );
+
+    let matrix = V128::from_bytes([0x01; 16]);
+    assert_eq!(
+        unsafe { gf2p8affineqb::<0>(V128::from_bytes([1; 16]), matrix) }.to_bytes(),
+        [0xff; 16]
+    );
+    assert_eq!(
+        unsafe { gf2p8affineqb::<0>(V128::from_bytes([2; 16]), matrix) }.to_bytes(),
+        [0; 16]
+    );
 }
 
 #[test]
@@ -308,6 +340,11 @@ fn aes_key_schedule() {
             0xf2, 0x6b, 0x6f, 0xc5, 0x6a, 0x6f, 0xc5, 0xf2, 0xfe, 0xd7, 0xab, 0x76, 0xd6, 0xab,
             0x76, 0xfe
         ]
+    );
+    assert_ne!(
+        unsafe { aeskeygenassist::<1>(sequential(0)) }.to_bytes(),
+        unsafe { aeskeygenassist::<2>(sequential(0)) }.to_bytes(),
+        "the immediate operand was ignored"
     );
 }
 
@@ -458,6 +495,18 @@ fn sm3_message_expansion_and_rounds() {
             vsm3rnds2::<2>(u32x4_to_v128(a), u32x4_to_v128(b), u32x4_to_v128(c))
         }),
         sm3_rnds2_ref(a, b, c, 2)
+    );
+    assert_eq!(
+        v128_to_u32x4(unsafe {
+            vsm3rnds2::<1>(u32x4_to_v128(a), u32x4_to_v128(b), u32x4_to_v128(c))
+        }),
+        sm3_rnds2_ref(a, b, c, 1)
+    );
+    assert_eq!(
+        v128_to_u32x4(unsafe {
+            vsm3rnds2::<3>(u32x4_to_v128(a), u32x4_to_v128(b), u32x4_to_v128(c))
+        }),
+        sm3_rnds2_ref(a, b, c, 3)
     );
 }
 

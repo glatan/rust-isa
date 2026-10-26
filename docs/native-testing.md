@@ -23,7 +23,7 @@ fixtures/i686-values/
 
 - `build.rs` が `TARGET` を見て C のフラグと clang の triple を選ぶ。
 - `src/main.rs` は `_start` で公開 API を呼び、結果を比較し、終了コードを返す。
-- 終了コードは、`0` が成功、`i + 1` が lane `i` の不一致とする。
+- 終了コードは、`0` が成功、`1..=254` が失敗したチェックの識別子、`255` が panic とする。同じ `run()` の中で失敗コードを重複させない。`tests/consistency.rs` の `check_fixture_exit_codes` が範囲と重複を検査する。
 - Rust と C の LTO モードを一致させる。zero-cost の確認は別途、disassembly で行う。
 
 arch 固有の注意は各archの `README.md` に置く。値テストの fixture と runner は [値テストの fixture](fixture-matrix.md) を見る。

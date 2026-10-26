@@ -6,9 +6,6 @@ use common::*;
 
 #[test]
 fn i686_values() {
-    if std::env::var_os("RUST_ISA_NESTED").is_some() {
-        return;
-    }
     let dir = nested_dir("i686-values");
     let rustflags = "-C linker-plugin-lto -C linker=clang -C link-arg=--target=i686-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
     let output = cargo(&dir)
@@ -57,36 +54,30 @@ fn i686_values() {
     let text = String::from_utf8_lossy(&output.stdout);
 
     let sse2 = function_at(&text, "<kernel_sse2>:");
-    assert!(!sse2.contains("call"), "kernel_sse2 calls C:\n{sse2}");
-    let lines: Vec<_> = sse2.lines().collect();
-    let paddd: Vec<_> = lines
-        .iter()
-        .enumerate()
-        .filter(|(_, line)| line.contains("paddd"))
-        .map(|(index, _)| index)
-        .collect();
+    assert!(
+        !body_has_call(sse2, &["call", "callq", "calll", "callw"]),
+        "kernel_sse2 calls C:\n{sse2}"
+    );
+    let paddd = x86_opcode_positions(sse2, "paddd");
     assert_eq!(paddd.len(), 2, "kernel_sse2 body:\n{sse2}");
     assert_eq!(paddd[1], paddd[0] + 1, "paddd is not adjacent:\n{sse2}");
-    let pmuludq = lines
-        .iter()
-        .position(|line| line.contains("pmuludq"))
-        .unwrap_or_else(|| panic!("missing pmuludq:\n{sse2}"));
-    assert_eq!(pmuludq, paddd[1] + 1, "pmuludq is not adjacent:\n{sse2}");
+    let pmuludq = x86_opcode_positions(sse2, "pmuludq");
+    assert_eq!(pmuludq.len(), 1, "kernel_sse2 body:\n{sse2}");
+    assert_eq!(pmuludq[0], paddd[1] + 1, "pmuludq is not adjacent:\n{sse2}");
 
     let avx2 = function_at(&text, "<kernel_avx2>:");
-    assert!(!avx2.contains("call"), "kernel_avx2 calls C:\n{avx2}");
-    let lines: Vec<_> = avx2.lines().collect();
-    let vpaddd: Vec<_> = lines
-        .iter()
-        .enumerate()
-        .filter(|(_, line)| line.contains("vpaddd"))
-        .map(|(index, _)| index)
-        .collect();
+    assert!(
+        !body_has_call(avx2, &["call", "callq", "calll", "callw"]),
+        "kernel_avx2 calls C:\n{avx2}"
+    );
+    let vpaddd = x86_opcode_positions(avx2, "vpaddd");
     assert_eq!(vpaddd.len(), 2, "kernel_avx2 body:\n{avx2}");
     assert_eq!(vpaddd[1], vpaddd[0] + 1, "vpaddd is not adjacent:\n{avx2}");
-    let vpmulld = lines
-        .iter()
-        .position(|line| line.contains("vpmulld"))
-        .unwrap_or_else(|| panic!("missing vpmulld:\n{avx2}"));
-    assert_eq!(vpmulld, vpaddd[1] + 1, "vpmulld is not adjacent:\n{avx2}");
+    let vpmulld = x86_opcode_positions(avx2, "vpmulld");
+    assert_eq!(vpmulld.len(), 1, "kernel_avx2 body:\n{avx2}");
+    assert_eq!(
+        vpmulld[0],
+        vpaddd[1] + 1,
+        "vpmulld is not adjacent:\n{avx2}"
+    );
 }

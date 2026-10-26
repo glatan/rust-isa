@@ -6,9 +6,6 @@ use common::*;
 
 #[test]
 fn powerpc_pipeline() {
-    if std::env::var_os("RUST_ISA_NESTED").is_some() {
-        return;
-    }
     let dir = nested_dir("powerpc-values");
     let rustflags = "-C target-feature=+altivec,+vsx -C linker-plugin-lto -C linker=clang -C link-arg=--target=powerpc64le-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
     let output = cargo(&dir)
@@ -58,18 +55,10 @@ fn powerpc_pipeline() {
     ] {
         let body = function_at(&text, symbol);
         assert!(
-            !body
-                .lines()
-                .any(|line| line.split_whitespace().any(|word| word == "bl")),
+            !body_has_call(body, &["bl", "bctrl"]),
             "{symbol} calls C:\n{body}"
         );
-        let lines: Vec<_> = body.lines().collect();
-        let found: Vec<_> = lines
-            .iter()
-            .enumerate()
-            .filter(|(_, line)| line.contains(mnemonic))
-            .map(|(index, _)| index)
-            .collect();
+        let found = opcode_positions(body, mnemonic);
         assert_eq!(found.len(), 2, "{symbol} body:\n{body}");
         assert_eq!(
             found[1],
@@ -94,6 +83,9 @@ fn powerpc_pipeline() {
         "xxmfacc",
         "xxsetaccz",
     ] {
-        assert!(text.contains(mnemonic), "missing {mnemonic} in the binary");
+        assert!(
+            body_has_opcode(&text, mnemonic),
+            "missing {mnemonic} in the binary"
+        );
     }
 }

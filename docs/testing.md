@@ -31,7 +31,7 @@ LTO で C の関数が Rust のカーネルへインラインされ、`call` と
 - `tests/x86_link.rs`: x86_64 の link fixture をビルドし、disassembly を検査する。
 - `tests/wasm_link.rs`: wasm32 の WAT を検査する。
 - `tests/wide_arithmetic_link.rs`: wasm32 の `wide-arithmetic` の opcode を検査する。
-- `tests/<arch>.rs`: 値テストの fixture をビルドしたあと、同じバイナリの `kernel_*` を disassembly する。
+- `tests/<arch>.rs`: 値テストの fixture をビルドしたあと、同じバイナリの `kernel_*` を disassembly する。命令名はトークン完全一致で照合し、`fadd` を `add`、`vpshufb` を `pshufb` として扱わない。
 - `docs/zero-cost.md` の結果表: 測定の記録である。`make zero-cost-check` は fixture と kernel の実在、表の値の整合を検査する。測定結果そのものを再実行しない。`manual` の行は再現手順だけを残す。
 
 値テストとコード生成は、同じ fixture とビルドを使う。`tests/<arch>.rs` では 1 つのテスト関数が両方を順に実行する。失敗が値テストかコード生成かは、テスト名ではなく出力で判断する。32-bit ARM は値テストだけを実行し、ゼロコストは `docs/zero-cost.md` の `manual` 行に記録する。
@@ -40,7 +40,7 @@ LTO で C の関数が Rust のカーネルへインラインされ、`call` と
 
 実装と文書の対応を検査する。命令の意味論とコード生成は保証しない。
 
-- `tests/consistency.rs`: Rust の extern 宣言と C の定義、rustdoc の言語、wasm32 のレーン即値の範囲。
+- `tests/consistency.rs`: Rust の extern 宣言と C の定義、rustdoc の言語、wasm32 のレーン即値の範囲、fixture の `run()` が返す失敗コードの範囲と一意性。
 - `make inventory-check`: arch の README の表の形式、表の名前と公開ラッパーの対応、ゼロコスト表の fixture と kernel。
 - `make check-mnemonics`: rustdoc の命令名が `llvm-mc` に受理されること。
 - `make docs-check`: Markdown のリンク、アンカー、索引からの到達性。

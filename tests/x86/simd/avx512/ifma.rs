@@ -23,7 +23,7 @@ fn ifma() {
 
 #[test]
 fn ifma_narrow_forms() {
-    if !ifma_enabled() {
+    if !ifma_enabled() || !ifma_narrow_enabled() {
         return;
     }
     let acc = i64x8([7; 8]);

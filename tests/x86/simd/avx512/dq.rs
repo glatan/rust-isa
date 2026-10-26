@@ -24,7 +24,7 @@ fn dq_float_and_convert() {
     }
     let a = f64x8([1.0; 8]);
     let b = f64x8([2.0; 8]);
-    assert_eq!(f64_lanes(unsafe { vandpd(a, b) })[0], 0.0);
+    assert_eq!(f64_lanes(unsafe { vandpd(a, b) }), [0.0; 8]);
     assert_eq!(
         unsafe { vcmpps::<0>(f32x16([1.0; 16]), f32x16([1.0; 16])) },
         0xffff
@@ -35,7 +35,7 @@ fn dq_float_and_convert() {
     assert_eq!(unsafe { vfpclasspd::<0x08>(classes) }, 0b1);
     assert_eq!(unsafe { vfpclassps::<0x08>(f32x16([0.0; 16])) }, 0);
 
-    assert_eq!(f64_lanes(unsafe { vsqrtpd(f64x8([4.0; 8])) })[0], 2.0);
+    assert_eq!(f64_lanes(unsafe { vsqrtpd(f64x8([4.0; 8])) }), [2.0; 8]);
     assert_eq!(f64_lanes(unsafe { vgetexppd(f64x8([3.0; 8])) })[0], 1.0);
     assert_eq!(
         f64_lanes(unsafe { vgetmantpd::<0>(f64x8([3.0; 8])) })[0],

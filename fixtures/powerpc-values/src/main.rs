@@ -103,7 +103,7 @@ fn run() -> u32 {
         return 2;
     }
     if !ops_arithmetic() {
-        return 31;
+        return 3;
     }
     if !(unsafe {
         and(
@@ -113,7 +113,7 @@ fn run() -> u32 {
         .to_bytes()
             == [0b1000_1000; 16]
     }) {
-        return 321;
+        return 4;
     }
     if !(unsafe {
         or(
@@ -123,7 +123,7 @@ fn run() -> u32 {
         .to_bytes()
             == [0b1110_1110; 16]
     }) {
-        return 322;
+        return 5;
     }
     if !(unsafe {
         xor(
@@ -133,44 +133,44 @@ fn run() -> u32 {
         .to_bytes()
             == [0b0110_0110; 16]
     }) {
-        return 323;
+        return 6;
     }
     let eq = unsafe { cmpeq_i32(i32x4([1; 4]), i32x4([1; 4])) }.to_bytes();
     if eq != [0xff; 16] {
-        return eq[0] as u32;
-    }
-    if !(unsafe { cmpgt_i32(i32x4([2; 4]), i32x4([1; 4])).to_bytes() == [0xff; 16] }) {
-        return 325;
-    }
-    if !ops_wide() {
-        return 33;
-    }
-    if !float_ops() {
-        return 4;
-    }
-    if !permute_ops() {
-        return 5;
-    }
-    if !vsx_ops() {
-        return 6;
-    }
-    if !power8_ops() {
         return 7;
     }
-    if !crypto_ops() {
+    if !(unsafe { cmpgt_i32(i32x4([2; 4]), i32x4([1; 4])).to_bytes() == [0xff; 16] }) {
         return 8;
     }
-    if !power9_ops() {
+    if !ops_wide() {
         return 9;
     }
-    if !power10_ops() {
+    if !float_ops() {
         return 10;
     }
-    if !mma_ops() {
+    if !permute_ops() {
+        return 11;
+    }
+    if !vsx_ops() {
         return 12;
     }
+    if !power8_ops() {
+        return 13;
+    }
+    if !crypto_ops() {
+        return 14;
+    }
+    if !power9_ops() {
+        return 15;
+    }
+    if !power10_ops() {
+        return 16;
+    }
+    if !mma_ops() {
+        return 17;
+    }
     if !altivec_ops() {
-        return 11;
+        return 18;
     }
     0
 }

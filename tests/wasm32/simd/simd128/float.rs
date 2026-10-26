@@ -24,6 +24,12 @@ fn f32x4_arithmetic_rounding_and_finite_minmax() {
         4.5
     );
     assert!(true_lane(f32x4_eq(left, left), 0, 4));
+    let lhs = f32x4([1.0, 2.0, 3.0, 4.0]);
+    let rhs = f32x4([1.0, 5.0, 3.0, 7.0]);
+    let mut expected = [0u8; 16];
+    expected[..4].fill(0xff);
+    expected[8..12].fill(0xff);
+    assert_eq!(f32x4_eq(lhs, rhs).to_bytes(), expected);
     assert!(true_lane(
         f32x4_lt(f32x4_splat(1.0), f32x4_splat(2.0)),
         1,

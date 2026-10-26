@@ -6,9 +6,6 @@ use common::*;
 
 #[test]
 fn riscv_pipeline() {
-    if std::env::var_os("RUST_ISA_NESTED").is_some() {
-        return;
-    }
     let dir = nested_dir("riscv-values");
     let rustflags = "-C target-feature=+v -C linker-plugin-lto -C linker=clang -C link-arg=--target=riscv64-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
     let output = cargo(&dir)
@@ -54,18 +51,10 @@ fn riscv_pipeline() {
     for (symbol, mnemonic) in [("<kernel_add>:", "vadd.vv"), ("<kernel_mul>:", "vmul.vv")] {
         let body = function_at(&text, symbol);
         assert!(
-            !body
-                .lines()
-                .any(|line| line.split_whitespace().any(|word| word == "jal")),
+            !body_has_call(body, &["jal", "jalr"]),
             "{symbol} calls C:\n{body}"
         );
-        let lines: Vec<_> = body.lines().collect();
-        let found: Vec<_> = lines
-            .iter()
-            .enumerate()
-            .filter(|(_, line)| line.contains(mnemonic))
-            .map(|(index, _)| index)
-            .collect();
+        let found = opcode_positions(body, mnemonic);
         assert_eq!(found.len(), 2, "{symbol} body:\n{body}");
         assert_eq!(
             found[1],
