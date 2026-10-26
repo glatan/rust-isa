@@ -4,16 +4,18 @@
 
 ## native
 
-| fixture                     | triple                          | runner                             | 主な対象                                                                                                              | 実行できないもの             |
-| --------------------------- | ------------------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
-| `fixtures/i686-values`      | `i686-unknown-linux-gnu`        | `sde -future`                      | SSE2、AVX2、AVX-512F、整数（BMI1 / BMI2 / POPCNT / LZCNT / MOVBE）。`kernel_sse2` / `kernel_avx2` の zero-cost を含む | CPU 非対応の命令             |
-| `fixtures/aarch64-values`   | `aarch64-unknown-linux-gnu`     | `qemu-aarch64-static -cpu max`     | NEON、dotprod、fp16、i8mm、fcma、fhm、AES、SHA-2、SHA-3、SM4、CRC、SVE、JSCONV                                        | RDM、BF16、SME の一部        |
-| `fixtures/arm-values`       | `armv7-unknown-linux-gnueabihf` | `qemu-arm-static -cpu max`         | NEON、dotprod、fp16、i8mm、AES、SHA-2、CRC                                                                            | MVE                          |
-| `fixtures/riscv-values`     | `riscv64gc-unknown-linux-gnu`   | `qemu-riscv64-static -cpu max`     | zba、zbb、zbc、zbs、zkn、zks、V、スライス API                                                                         | 将来の `zfh` / `zfa` / `zv*` |
-| `fixtures/loongarch-values` | `loongarch64-unknown-linux-gnu` | `qemu-loongarch64-static -cpu max` | LSX、LASX（`kernel_xvadd` / `kernel_xvmul` の zero-cost を含む）                                                      | LBT                          |
-| `fixtures/s390x-values`     | `s390x-unknown-linux-gnu`       | `qemu-s390x-static`                | vector（`kernel_add` / `kernel_mul` / `kernel_perm` の zero-cost を含む）                                             | enhancements の一部          |
-| `fixtures/powerpc-values`   | `powerpc64le-unknown-linux-gnu` | `qemu-ppc64le-static -cpu power9`  | Altivec、VSX、Power8 vector、Power8 crypto（`kernel_perm` の zero-cost を含む）                                       | Power10、MMA                 |
-| `fixtures/mips-values`      | `mips64-unknown-linux-gnuabi64` | `qemu-mips64-static`               | MSA（`kernel_add` / `kernel_mul` の zero-cost を含む）                                                                | virt                         |
+| fixture                     | triple                          | runner                    | 主な対象                                                                                                              | 実行できないもの             |
+| --------------------------- | ------------------------------- | ------------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| `fixtures/i686-values`      | `i686-unknown-linux-gnu`        | `sde`                     | SSE2、AVX2、AVX-512F、整数（BMI1 / BMI2 / POPCNT / LZCNT / MOVBE）。`kernel_sse2` / `kernel_avx2` の zero-cost を含む | CPU 非対応の命令             |
+| `fixtures/aarch64-values`   | `aarch64-unknown-linux-gnu`     | `qemu-aarch64-static`     | NEON、dotprod、fp16、i8mm、fcma、fhm、AES、SHA-2、SHA-3、SM4、CRC、SVE、JSCONV                                        | RDM、BF16、SME の一部        |
+| `fixtures/arm-values`       | `armv7-unknown-linux-gnueabihf` | `qemu-arm-static`         | NEON、dotprod、fp16、i8mm、AES、SHA-2、CRC                                                                            | MVE                          |
+| `fixtures/riscv-values`     | `riscv64gc-unknown-linux-gnu`   | `qemu-riscv64-static`     | zba、zbb、zbc、zbs、zkn、zks、V、スライス API                                                                         | 将来の `zfh` / `zfa` / `zv*` |
+| `fixtures/loongarch-values` | `loongarch64-unknown-linux-gnu` | `qemu-loongarch64-static` | LSX、LASX（`kernel_xvadd` / `kernel_xvmul` の zero-cost を含む）                                                      | LBT                          |
+| `fixtures/s390x-values`     | `s390x-unknown-linux-gnu`       | `qemu-s390x-static`       | vector（`kernel_add` / `kernel_mul` / `kernel_perm` の zero-cost を含む）                                             | enhancements の一部          |
+| `fixtures/powerpc-values`   | `powerpc64le-unknown-linux-gnu` | `qemu-ppc64le-static`     | Altivec、VSX、Power8 vector、Power8 crypto（`kernel_perm` の zero-cost を含む）                                       | Power10、MMA                 |
+| `fixtures/mips-values`      | `mips64-unknown-linux-gnuabi64` | `qemu-mips64-static`      | MSA（`kernel_add` / `kernel_mul` の zero-cost を含む）                                                                | virt                         |
+
+runner 列は実行ファイル名だけを示す。CPUと引数は `tests/<arch>.rs` を正とし、arch 固有の条件は各archの `README.md` に置く。
 
 QEMU が命令を実行しない場合は、ビルドと API の存在確認だけを行う。その場合は `docs/<arch>/README.md` の値テスト列に理由を書く。
 

@@ -3,13 +3,17 @@
 このリポジトリのコマンドは `Containerfile` の Arch イメージの中で動かす。native doctest の実行を含む全テストは、cross GNU toolchain を入れた `Containerfile.debian` の Debian イメージで動かす。cargo、cargo-nextest、clang、llvm-ar、wasm-opt、wasm2wat、wasmtime、qemu-user-static はホストに置かない。
 
 ```sh
+# イメージ
 make image
 make image-debian
+
+# 整形
 make fmt
 make fmt-check
+
+# テスト
 make test
 make test-debian
-make check-docs
 make test-host
 make test-x86_64
 make test-cross
@@ -19,12 +23,17 @@ make test-check-static
 make test-check-wasm-link
 make test-wasip1
 make test-wasip1-wide-arithmetic
+
+# 文書と在庫
+make check-docs
 make coverage
 make coverage-check
 make doctest-coverage
 make doctest-inventory-check
 make zero-cost-check
 make docs-check
+
+# fixtureと重複
 make fixtures-check
 make check-mnemonics
 make duplicates
@@ -55,7 +64,7 @@ arch ごとの `test-i686`、`test-aarch64`、`test-armv7`、`test-riscv64`、`t
 
 テストの実行には `cargo nextest run` を使い、`--no-tests=fail` を付ける。テストターゲットにテストが 0 件の場合は失敗する。doctest は nextest の対象外なので、`cargo test --doc` で別に実行する。native arch の doctest は、ターゲット用の libc を用意せずに `RUSTDOCFLAGS=--no-run` でコンパイルだけを確認する。
 
-## 整形
+## コードと文書の整形
 
 整形はイメージ内の dprint と cargo fmt で行う。dprint の設定はリポジトリ直下の `dprint.json` にあり、プラグインのバージョンも固定している。イメージをビルドすると
 プラグインをキャッシュするため、整形時にネットワークへ接続しない。
@@ -73,28 +82,15 @@ make fmt-check
 
 Rust は dprint ではなく rustfmt を使う。`make test` は最初に `fmt-check` を実行する。
 
-## arch ごとの確認
+## arch ごとの実行確認
 
-すべての値テストはイメージ内で実行する。x86_64 と i686 は SDE、wasm32 は wasmtime、その他の native arch は QEMU の runner を使う。runner と必要なツールは `docs/<arch>/README.md` に書く。
+すべての値テストはイメージ内で実行する。x86_64 と i686 は SDE、wasm32 は wasmtime、その他の native arch は QEMU の runner を使う。runner の実行ファイルと引数は `tests/<arch>.rs` を正とし、arch 固有の条件は `docs/<arch>/README.md` に書く。
 
 SDE はイメージ内の `/opt/sde` に固定してある。ホストからマウントしない。32-bit SDE のため、Arch イメージには `lib32-glibc` と `lib32-gcc-libs`、Debian イメージには `libc6:i386` も入れてある。
 
 SDE を使うのは、x86 命令を実際に実行するテストだけである。`tests/x86_link` と `tests/consistency` はビルドとファイル検査だけなので、SDE の外で実行する。SDE の下で nested `cargo build` を動かすと、cargo と rustc までエミュレーションされ、cold build が数分単位になるためである。
 
-SDE のテスト runner は次のとおり。
-
-- `x86_64-unknown-linux-gnu`: `/opt/sde/sde64 -future --`
-- `i686-unknown-linux-gnu`: `/opt/sde/sde -future --`
-
-QEMU の runner は次のとおり。`tests/<arch>.rs` は、native arch の値を QEMU で実行するときにこれらを使う。
-
-- `aarch64-unknown-linux-gnu`: `qemu-aarch64-static -cpu max`
-- `armv7-unknown-linux-gnueabihf`: NEON/FP16 は `qemu-arm-static -cpu max`、MVE/MVE-FP は `qemu-arm-static -cpu cortex-m55`
-- `riscv64gc-unknown-linux-gnu`: `qemu-riscv64-static -cpu max`
-- `loongarch64-unknown-linux-gnu`: `qemu-loongarch64-static -cpu max`
-- `s390x-unknown-linux-gnu`: `qemu-s390x-static -cpu max`（VE3 は実行しない）
-- `powerpc64le-unknown-linux-gnu`: `qemu-ppc64le-static -cpu max`
-- `mips64-unknown-linux-gnuabi64`: `qemu-mips64-static -cpu max`
+SDE と QEMU の実行ファイル、CPU、引数は `tests/<arch>.rs` に書く。値テストの fixture と triple の対応は [値テストの fixture](fixture-matrix.md) にある。
 
 ターゲットコードをホストで直接実行しない。テストドライバ（`tests/<arch>.rs` の x86_64 バイナリ）はホストで動かすが、値テストの対象バイナリは SDE / QEMU で実行する。
 

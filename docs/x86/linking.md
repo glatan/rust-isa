@@ -73,7 +73,7 @@ sym=$(llvm-nm target/release/app | grep -oE '_R[A-Za-z0-9_]*kernel' | head -1)
 llvm-objdump -d --no-show-raw-insn target/release/app | sed -n "/<$sym>:/,/^$/p"
 ```
 
-この範囲に `call` が無く、SIMD 命令が並ぶことを確認する。AVX2 の確認では、`vpaddd` の結果が `ymm1` のまま `vpmulld` に入り、間の store/load が無かった。入力のロードと出力のストアは関数境界にだけ残る。現在は `fixtures/sse2-link`、`fixtures/avx2-link`、`fixtures/avx512f-link`、`fixtures/avx512vl-link`、`fixtures/aes-link`、`fixtures/fma-link` を `tests/x86_link.rs` がビルドして確認する。
+この範囲に `call` が無く、SIMD 命令が並ぶことを確認する。AVX2 の確認では、`vpaddd` の結果が `ymm1` のまま `vpmulld` に入り、間の store/load が無かった。入力のロードと出力のストアは関数境界にだけ残る。対象の fixture は `tests/x86_link.rs` と [値テストの fixture](../fixture-matrix.md) を正とする。
 
 確認した feature と C のフラグは次のとおりである。すべて `-mno-mmx -mno-x87 -mno-popcnt -mno-xsave` を付けた。命令と結果は [ゼロコストの確認](../zero-cost.md) の結果表に置く。
 
