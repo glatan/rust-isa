@@ -2,7 +2,7 @@
 
 この文書は、リポジトリのテストを「何を保証するか」で分類し、現在のテスト資産との対応をまとめる。fixture と runner は [値テストの fixture](fixture-matrix.md)、ゼロコストの条件は [ゼロコストの確認](zero-cost.md)、実行コマンドは [開発環境](development.md) に置く。
 
-## 分類
+## テストの分類
 
 ### 値テスト
 
@@ -56,27 +56,27 @@ rustdoc の例が、公開パスと基本的な使い方に対してコンパイ
 - **instruction examples**: inventory の全 free function を実際に呼ぶ `# Instruction examples`。CPU 機能・状態・ポインタが必要な例は `no_run`。
 - **instruction inventory**: 公開パスの import だけを行う `# Instruction inventory`。全パスを rustdoc にコンパイルさせる。
 
-wasm32 は `wasm32-wasip1` で wasmtime が実行する。x86_64 は SDE、i686 とその他の native arch は Debian イメージの QEMU で実行する。`instruction inventory` と `no_run` の instruction examples はコンパイルだけを確認する。公開命令を持つ 115 extension の 4,521 延べ公開パス（reexport alias・重複・状態管理 API 5 件を含む）を覆っている。型 import 7 件は含めない。詳細は [doctest の網羅状況](doctest-coverage.md) にある。`make doctest-inventory-check` が在庫の更新漏れ、instruction examples の欠落、arch の README に載る命令の欠落を検査する。
+wasm32 は `wasm32-wasip1` で wasmtime が実行する。x86_64 は SDE、i686 とその他の native arch は Debian イメージの QEMU で実行する。`instruction inventory` と `no_run` の instruction examples はコンパイルだけを確認する。件数は `make doctest-coverage` の出力を見る。詳細は [doctest の網羅状況](doctest-coverage.md) にある。`make doctest-inventory-check` が在庫の更新漏れ、instruction examples の欠落、arch の README に載る命令の欠落を検査する。
 
 native arch の doctest は GNU target でビルドする。Debian イメージの `DOC_TEST=run` では、cross GCC と glibc をリンクして QEMU で実行する。Arch イメージではターゲット用の libc とリンカを用意しないため、コンパイルだけを確認する。
 
 doctest は命令の意味論を網羅しない。inventory は公開パスのコンパイルを、instruction examples は全命令の呼び出しのコンパイルを保証する。値の実行結果は値テストが担う。
 
-## 実行単位
+## テストの実行単位
 
-| make target                   | 役割                                                | 実行するもの                                                                                         |
-| ----------------------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `test-x86_64`                 | x86_64 の値テスト、利用例、コード生成、ソース整合性 | `tests/x86`、x86_64 の doctest、`tests/x86_link`、`tests/consistency`（値テストと doctest だけ SDE） |
-| `test-cross`                  | native の値テストとコード生成                       | `tests/<arch>` と `fixtures/<arch>-values`                                                           |
-| `test-doc`                    | native の利用例（コンパイルのみ）                   | 各 native target の doctest（8 ターゲット）                                                          |
-| `test-doc-debian`             | native の利用例（実行）                             | Debian イメージの各 native target の doctest（8 ターゲット）                                         |
-| `test-debian`                 | Debian イメージの全テスト                           | `test` 全体と native doctest の実行                                                                  |
-| `test-wasip1`                 | wasm32 の値テストと利用例                           | `tests/wasm32`、wasm32 の doctest                                                                    |
-| `test-wasip1-wide-arithmetic` | `wide-arithmetic` 有効時の値テスト、利用例、リンク  | feature 有効時の wasm32 のテストと `tests/wide_arithmetic_link`                                      |
-| `test-check-wasm-link`        | wasm32 のリンクと `simd128` 無効時のビルド拒否      | `tests/wasm_link`                                                                                    |
-| `test-check-static`           | ソース整合性だけを実行する                          | `tests/consistency`                                                                                  |
+| make target                   | 役割                                                |
+| ----------------------------- | --------------------------------------------------- |
+| `test-x86_64`                 | x86_64 の値テスト、利用例、コード生成、ソース整合性 |
+| `test-cross`                  | native の値テストとコード生成                       |
+| `test-doc`                    | native の利用例（コンパイルのみ）                   |
+| `test-doc-debian`             | native の利用例（実行）                             |
+| `test-debian`                 | Debian イメージの全テスト                           |
+| `test-wasip1`                 | wasm32 の値テストと利用例                           |
+| `test-wasip1-wide-arithmetic` | `wide-arithmetic` 有効時の値テスト、利用例、リンク  |
+| `test-check-wasm-link`        | wasm32 のリンクと `simd128` 無効時のビルド拒否      |
+| `test-check-static`           | ソース整合性だけを実行する                          |
 
-`test-doc` は、native arch に doctest を追加すると自動的に対象にする。Arch イメージでは `--no-run` でコンパイルだけを確認する。実行まで行う場合は `make test-doc-debian` または `make test-debian` を使う。x86_64 と wasm32 の doctest は、それぞれ `test-x86_64` と `test-wasip1` が実行する。
+各 target が実行するコマンドは `Makefile` を正とする。`test-doc` は、native arch に doctest を追加すると自動的に対象にする。Arch イメージでは `--no-run` でコンパイルだけを確認する。実行まで行う場合は `make test-doc-debian` または `make test-debian` を使う。x86_64 と wasm32 の doctest は、それぞれ `test-x86_64` と `test-wasip1` が実行する。
 
 ## テストを追加するとき
 
