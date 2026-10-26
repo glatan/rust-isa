@@ -53,6 +53,7 @@
 ## 安全境界
 
 - 既定の feature に含まれる演算は safe にできる。
+- semantic helper は命令 wrapper ではない。値の意味だけを提供し、対象CPUが命令を持つことを保証しない。semantic helper は safe にでき、命令の在庫に数えない。
 - 既定の feature を無効化したビルドはサポートしない。safe な API は、そのターゲットの既定の feature を前提にする。
 - 任意の feature を要求する命令は `unsafe fn` とする。
 - wasm32 の cfg ゲートされた演算は safe にできる。モジュールが feature を要求するため、feature 無効の環境では動かない。

@@ -2,42 +2,13 @@
 
 x86_64 で、C の関数を Rust の関数へインラインし、命令の間の store/load を消す条件を確認した。確認したのは rustc 1.99.1、clang/lld 23.1.1 である。
 
-## 条件
+## x86固有の条件
 
-LTO モード、`-C linker-plugin-lto`、`always_inline`、呼び出し側の feature、リンカという一般条件は [実装方針](../policy.md) の「native の条件」に従う。x86 固有の条件は次のとおりである。
+LTO モード、`-C linker-plugin-lto`、`always_inline`、呼び出し側の feature、リンカという一般条件は [ゼロコストの確認](../zero-cost.md#条件) に従う。x86固有の条件は次のとおりである。
 
 - C の target-features を Rust の target-features の部分集合にする。`avx512vl.c` は f/vl の baseline でコンパイルし、BW / DQ と IFMA / VBMI / VBMI2 / VNNI / BITALG / VPOPCNTDQ / VP2INTERSECT は関数単位の `target` 属性で有効にする。
 - `-mno-mmx -mno-x87 -mno-popcnt -mno-xsave` を付ける。
 - `cmov` と `cx8` は残ってもインラインされた。
-
-## Cargo の設定
-
-`-C lto` を `RUSTFLAGS` に入れない。build script の `embed-bitcode=no` と衝突する。最終バイナリの profile に設定する。
-
-```toml
-[profile.release]
-lto = "thin"
-
-[build]
-rustflags = ["-C", "linker-plugin-lto", "-C", "linker=clang", "-C", "link-arg=-fuse-ld=lld"]
-```
-
-C は `-flto=thin` でコンパイルする。`lto = "fat"` の場合は C も `-flto` にする。`-C linker-plugin-lto` が無いと、C への `call` が残る。`lto = "off"` と C `-flto=thin` の組でもインラインされたが、明示的な thin または fat を推奨する。
-
-ライブラリクレートとバイナリクレートに分けた Cargo workspace でも、同じ設定で C の関数がカーネルへインラインされることを確認した。
-
-`-C linker-plugin-lto` を付けたときの LTO モードの組み合わせは次のとおりである。
-
-| Rust の profile | C のフラグ   | カーネル内の `call` |
-| --------------- | ------------ | ------------------- |
-| `lto = "off"`   | なし         | 残る                |
-| `lto = "off"`   | `-flto=thin` | 消える              |
-| `lto = "thin"`  | `-flto=thin` | 消える              |
-| `lto = "thin"`  | `-flto`      | 残る                |
-| `lto = "fat"`   | `-flto`      | 消える              |
-| `lto = "fat"`   | `-flto=thin` | 残る                |
-
-`-C linker-plugin-lto` が無い場合は、C が `-flto=thin` でも `call` が残る。
 
 ## C のコンパイル
 
@@ -64,7 +35,7 @@ unsafe fn kernel(a: &V256, b: &V256) -> V256 {
 
 `#[inline(always)]` と `#[target_feature]` は同じ関数に付けられない（rustc 1.99.1、E0658）。SSE2 のラッパーは `#[inline(always)]` だけにする。AVX2 / AVX-512 のラッパーは機能を要求するため `#[target_feature]` を付け、`#[inline]` を使う。この形でも LTO で C がインラインされることを確認した。
 
-## 確認
+## disassemblyによる確認
 
 カーネルのシンボルを `llvm-nm` で探し、その範囲を `llvm-objdump` で見る。C への `call` は `callq *...` の間接呼び出しになることがあるため、シンボル名だけで探さない。
 
@@ -108,9 +79,9 @@ llvm-objdump -d --no-show-raw-insn target/release/app | sed -n "/<$sym>:/,/^$/p"
 
 128-bit は C を使わずに `asm!` と `u128` でもゼロコストにできる。`xmm_reg` に `u128` を渡し、`paddd` と `pmulld` を並べると、間の store/load が消えた。256/512-bit は stable な値型が無いため、C + LTO を使う。
 
-## 注意
+## 環境差と失敗時の挙動
 
 - ホストの x86_64 では、clang の既定 triple は `x86_64-pc-linux-gnu` である。`--target=x86_64-unknown-linux-gnu` を明示すると triple の不一致警告が出る。ホストでは `--target` を省く。
-- `lto` が無効なプロファイル、LTO モードの不一致、feature 集合の不一致では、C への `call` が残る。feature 集合を部分集合にできない extension は、ゼロコストを主張しない。
+- `lto` が無効なプロファイル、LTO モードの不一致、feature 集合の不一致では、C への `call` が残る。一般条件は [ゼロコストの確認](../zero-cost.md#条件) を見る。
 - unstable な feature は `#[target_feature]` を付けられない。クレート全体を `-C target-feature=+name` でコンパイルした場合だけ、LTO でインラインできる。
 - この結果は x86_64 のものである。他の arch の結果は [ゼロコストの確認](../zero-cost.md) にある。

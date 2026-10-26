@@ -26,8 +26,8 @@ make test-wasip1-wide-arithmetic
 
 # 文書と在庫
 make check-docs
-make coverage
-make coverage-check
+make inventory
+make inventory-check
 make doctest-coverage
 make doctest-inventory-check
 make zero-cost-check
@@ -39,11 +39,11 @@ make check-mnemonics
 make duplicates
 ```
 
-`make test` が既定で、`fmt-check`、`coverage-check`、`docs-check`、`fixtures-check`、`check-mnemonics`、`check-docs`、`test-check-wasm-link`、`test-host`、`test-doc`、`test-wasip1`、`test-wasip1-wide-arithmetic` を実行する。すべてのテストはイメージ内で、対象 triple を明示して実行する。各テストの役割は [テストの役割](testing.md) にある。
+`make test` が既定で、`fmt-check`、`inventory-check`、`docs-check`、`fixtures-check`、`check-mnemonics`、`check-docs`、`test-check-wasm-link`、`test-host`、`test-doc`、`test-wasip1`、`test-wasip1-wide-arithmetic` を実行する。すべてのテストはイメージ内で、対象 triple を明示して実行する。各テストの役割は [テストの役割](testing.md) にある。
 
 `make test-debian` は Debian イメージで `make test` を実行し、native doctest を `DOC_TEST=run` で実行する。既定の Arch イメージでは、native doctest は `--no-run` のコンパイル確認だけを行う。
 
-- `make docs-check`: Markdown の相対リンク、見出しアンカー、`docs/README.md` からの到達性を検査する
+- `make docs-check`: Markdown の相対リンク、見出しアンカー、`docs/README.md` からの到達性、`scalable-mapping.md` のAPI名を検査する
 - `make fixtures-check`: `fixtures/` と `target-nested` の実ディレクトリが `fixture-matrix.md` と対応するか検査する
 - `make check-docs`: 全ターゲットの rustdoc を `-D warnings` で検査する。クロスターゲットは `-Z build-std=core` で core をビルドし、wasm32 は `simd128` / `relaxed-simd` と `wide-arithmetic` を有効にして検査する
 - `make test-host`: x86_64 のテストを SDE で実行し、cross-arch の値テストも実行する。`test-x86_64` と `test-cross` の合成である
@@ -154,7 +154,7 @@ native doctest のビルドでは `RUST_ISA_DOCTEST=1` を設定し、C を Thin
 
 `make test-doc` の成果物は `target-nested/doc-test` に置く。fixture ではないため `fixture-matrix.md` には載せない。
 
-命令を追加・削除したら `python3 tools/doctest_inventory.py --write` で extension の instruction inventory を更新する。`# Instruction examples` にも新しい命令の呼び出しを追加する。件数が変わった場合は `docs/doctest-coverage.md` の表も `make doctest-coverage` の出力に合わせて更新する。`make coverage-check` は inventory の更新漏れ、instruction examples の欠落、arch の README に載る命令の欠落、網羅表の不一致を失敗にする。
+命令を追加・削除したら `python3 tools/doctest_inventory.py --write` で extension の instruction inventory を更新する。`# Instruction examples` にも新しい命令の呼び出しを追加する。件数が変わった場合は `docs/doctest-coverage.md` の表も `make doctest-coverage` の出力に合わせて更新する。`make inventory-check` は inventory の更新漏れ、instruction examples の欠落、arch の README に載る命令の欠落、網羅表の不一致を失敗にする。
 
 `target-nested` は `.gitignore` と `.dockerignore` に入っている。消しても次の `cargo test` が作り直す。
 

@@ -94,9 +94,10 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 ## 実装方式
 
 - native なので無条件に公開する。任意の feature を要求する命令は `unsafe fn` とする。
-- C + clang + LTO を主方式とする。LTO は wasm32 と native のゼロコストに使う。C は `<immintrin.h>` を使う。
+- C + clang + LTO を主方式とする。C は `<immintrin.h>` を使う。
 - 値は `V128`、`V256`、`V512` をポインタで渡す。C の関数はベクタ型を内部で使い、境界ではポインタを受け取る。
 - C は extension ごとに分ける。`-mavx2` のようなファイル全体のフラグを使うか、`__attribute__((target("avx2")))` を関数単位で付ける。
+- i686 の値テストでは、C に `-mstackrealign` を付ける。
 - stable な feature は、呼び出し側のカーネルに `#[target_feature(enable = "...")]` を付ける。ラッパーは `#[inline(always)]` だけにし、`#[target_feature]` を付けない。unstable な feature は付けない。
 - `asm!` は補助として使える。`xmm_reg` は `u128` を受け付ける。`ymm_reg` は `avx` を要求し、256-bit の値型を `core::arch` なしでは表せないため、256-bit 以上は C を主とする。
 - AMX のタイル番号は値型で表せないため `asm!` を使う。AMX-AVX512 の `zmm` 出力はメモリに退避して `V512` として返す。
@@ -111,7 +112,7 @@ extension の `mod.rs` が実装本体になることも許容する。AVX-512VL
 
 ## ゼロコスト
 
-x86_64 で条件付きのゼロコストを確認した。条件、Cargo の設定、確認した命令は [リンクとゼロコスト](linking.md) に置く。128-bit は `asm!` と `u128` でも確認した。条件を満たさないビルドでは C への `call` が残る。
+x86_64 で条件付きのゼロコストを確認した。一般条件は [ゼロコストの確認](../zero-cost.md) に、x86固有のフラグと確認した命令は [リンクとゼロコスト](linking-and-zero-cost.md) に置く。128-bit は `asm!` と `u128` でも確認した。
 
 ## ツールチェーン
 
@@ -142,12 +143,10 @@ x86_64 で条件付きのゼロコストを確認した。条件、Cargo の設�
 - AMX の `amx-avx512` と `amx-movrs` の実機値テスト。命令の実装は済みである。
 - AVX10.1 / AVX10.2 で `#[target_feature]` を使えない制約の再確認。
 - shuffle / compress のうち、intrinsics が往復を残す命令の個別確認。
-- 追加した SSE3 以降の命令のゼロコスト確認。現在の zero-cost は
-  [リンクとゼロコスト](linking.md) に書いた命令と、`fixtures/x86-zero-cost-link` の SSE3 / SSSE3 / SSE4.1 / SSE4.2 / SSE4a / AVX / AVX-512CD / VBMI / VPOPCNTDQ / BITALG / VBMI2 / BF16 / FP16 / VP2INTERSECT だけである。
 
 ## 文書
 
 - [実装可否](feasibility.md)
-- [リンクとゼロコスト](linking.md)
+- [リンクとゼロコスト](linking-and-zero-cost.md)
 - [マスク](masking.md)
 - [実装方針](../policy.md)

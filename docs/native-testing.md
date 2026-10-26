@@ -26,12 +26,8 @@ fixtures/i686-values/
 - 終了コードは、`0` が成功、`i + 1` が lane `i` の不一致とする。
 - Rust と C の LTO モードを一致させる。zero-cost の確認は別途、disassembly で行う。
 
-arch 固有の注意:
+arch 固有の注意は各archの `README.md` に置く。値テストの fixture と runner は [値テストの fixture](fixture-matrix.md) を見る。
 
-- **MIPS**: 共有の静的配列や lane を引数で選ぶ関数は codegen で一致しなかった。lane ごとに独立した関数を使う。
-- **PowerPC**: `_start` から C を呼ぶ場合、`.quad .TOC.` を持つ非 LTO オブジェクトをリンクに加える。
-- **i686**: C に `-mstackrealign` を付ける。値テストは SDE の 32-bit runner で実行する。
-- **s390x**: `llvm-objdump` がベクタ命令を表示しない。`llvm-mc` でバイト列をデコードする。
 - **静的リンク**: 動的リンクのバイナリは、ターゲットの loader と libc が無いため SDE / QEMU で動かない。
 
 ## 追加するテスト

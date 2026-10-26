@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Report instruction coverage from the tables in docs/<arch>/README.md.
+"""Report the implementation inventory from the tables in docs/<arch>/README.md.
 
 The arch README tables are the source of truth. This script only reads them;
 it does not generate the tables or the Rust API.
@@ -130,7 +130,7 @@ def main() -> None:
             for problem in problems:
                 print(problem)
             raise SystemExit(1)
-        print("coverage tables: ok")
+        print("inventory tables: ok")
         return
 
     rows = list(read_rows(args.root))

@@ -10,6 +10,8 @@
 //!
 //! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
 //!
+//! Instructions not listed in this module are not exposed.
+//!
 //! The build compiles the bundled C with clang.
 
 //! # Examples

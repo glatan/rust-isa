@@ -1,5 +1,7 @@
 //! RISC-V vector cryptography extensions.
 //!
+//! Instruction behavior follows the [RISC-V ISA Manual](https://github.com/riscv/riscv-isa-manual).
+//!
 //! The module is split into Zvkn, Zvks, Zvkg, and Zvbc.
 //!
 //! - `zvkn`: Zvkn (AES, SHA-2). `vaes*`, `vsha2*`.
@@ -10,6 +12,8 @@
 //! Enable the target feature named by the submodule: `zvkn`, `zvks`, `zvkg`,
 //! or `zvbc`. Key-schedule functions take a runtime round number; the valid
 //! range is documented on each function.
+//!
+//! Instructions not listed in this module are not exposed.
 
 //! # Examples
 //!

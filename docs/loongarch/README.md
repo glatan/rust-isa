@@ -39,7 +39,7 @@ family は命令の種類に合わせて決める（`simd`、`system` など）�
 
 - native なので無条件に公開する。任意の feature を要求する命令は `unsafe fn` とする。
 - `lsx` と `lasx` は cfg が立つので、呼び出し側のカーネルに `#[target_feature]` を付けられる。ラッパーは `#[inline(always)]` だけにする。
-- C + clang を主方式とする。LTO は wasm32 と native のゼロコストに使う。LASX は `<lasxintrin.h>`、LSX は `<lsxintrin.h>` を使う。
+- C + clang を主方式とする。LASX は `<lasxintrin.h>`、LSX は `<lsxintrin.h>` を使う。
 - LSX の比較、シフト、飽和、拡張などの整数命令の一部は、バイト列に対する Rust で実装する。浮動小数点の変換と max/min は intrinsics を使う。
 - 値は `V128`（LSX）と `V256`（LASX）をポインタで渡す。
 - C は extension ごとに分ける。`-mlsx` と `-mlasx` を使う。
@@ -51,7 +51,6 @@ family は命令の種類に合わせて決める（`simd`、`system` など）�
 - `xvshuf.b` は intrinsics（`__lasx_xvshuf_b`）が必要で、2 命令を合成すると `xvshuf.b` の間に store/load が残った。shuffle 系は命令ごとに zero-cost を確認する。
 - C は `-mlasx` を使う。`__lasx_xvld` / `__lasx_xvst` の intrinsics では、インライン後も一時値の store/load が残った。GCC の vector 拡張と通常のロード・ストアを使う。
 - `#[target_feature(enable = "lasx")]` をカーネルに付ける。
-- LTO モード、C の feature 集合、呼び出し側の feature を一致させる。条件を満たさない場合は `call` が残る。
 
 ## ツールチェーン
 
@@ -71,7 +70,6 @@ family は命令の種類に合わせて決める（`simd`、`system` など）�
 - `lamcas`、`scq`。同期命令のため、値 API にしない。
 - LASX の shuffle。`xvshuf.b` は intrinsics で往復が残るため、現在の API には
   含めていない。
-- 追加した LSX / LASX の命令のゼロコスト確認。現在の zero-cost は `xvadd.w` と `xvmul.w` だけである。
 - LASX のベクタ ABI は、C の境界ではポインタだけを使う現在の方式で回避して
   いる。値渡しの ABI は公開しない。
 

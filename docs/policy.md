@@ -2,7 +2,7 @@
 
 この文書は、arch に共通する実装方針である。arch ごとの対象、実装状況、ツールチェーンは `docs/<arch>/README.md` に置く。
 
-## 目的
+## クレートの目的
 
 - `core::arch` に相当する API を、stable の `no_std` で提供する。
 - `no_std` とし、`alloc` を使わない。
@@ -19,7 +19,9 @@ SVE、RVV、SME、AMX、PowerPC MMA は、固定長の値型と1命令1関数の
 - SME、AMX、PowerPC MMA は、guard 型または状態型と、その状態を要求する操作を単位とする。
 - ISA 命令と API の対応を [スケーラブル・状態付き extension の API 対応](scalable-mapping.md) に置く。
 - 実装状況は各 arch の `README.md` を正とする。対応表は状態を持たず、実装済み・未実装・対象外の理由は arch の表に書く。
-- 対応表は代表的な対応を示し、全 API は arch の `README.md` に置く。全 ISA 命令の列挙は外部仕様に依存するため行わず、対象範囲は [実装状況の集計](coverage.md) に定義する。
+- 対応表は代表的な対応を示し、全 API は arch の `README.md` に置く。全 ISA 命令の列挙は外部仕様に依存するため行わず、対象範囲は [実装状況の集計](implementation-status.md) に定義する。
+- 固定長 extension の命令を網羅する。即値や状態の都合で出せない命令は、その理由を arch の表と rustdoc に書く。
+- スケーラブル・状態付き extension は、操作単位で網羅する。ISA 命令と API の対応を arch の文書に書く。
 
 ## 非目標
 
@@ -28,8 +30,6 @@ SVE、RVV、SME、AMX、PowerPC MMA は、固定長の値型と1命令1関数の
 - 自動ベクトル化には依存しない。
 - C の ABI や C シンボルを公開 API にしない。
 - `core::arch` の型や intrinsic を再エクスポートしない。
-- 固定長 extension の命令を網羅する。即値や状態の都合で出せない命令は、その理由を arch の表と rustdoc に書く。
-- スケーラブル・状態付き extension は、操作単位で網羅する。ISA 命令と API の対応を arch の文書に書く。
 
 ## `core::arch` を使わない
 
@@ -53,11 +53,13 @@ SVE、RVV、SME、AMX、PowerPC MMA は、固定長の値型と1命令1関数の
 
 ## 実装方式
 
-| 方式            | 用途                 | 長所                                                                                                          | 制約                                                                                                                                               |
-| --------------- | -------------------- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| C + clang + LTO | ベクタ命令の主方式   | `core::arch` なしで、LLVM の feature と vector 型を使える。rustc が unstable とする feature も clang は扱える | clang が必要。値の受け渡しはポインタ。native のゼロコストは LTO の条件付き                                                                         |
-| `asm!`          | 補助                 | cfg に依存しない。C ツールチェーンが不要                                                                      | 256/512-bit の値型がない。wasm と MIPS では unstable。vector operand の型が限られる。AArch64 の `vreg` と ARMv7 の `qreg` は `u128` を受け付けない |
-| 純 Rust         | 値の構築、ビット操作 | ツールチェーンが不要                                                                                          | 命令の意味論には使わない。自動ベクトル化に依存しない                                                                                               |
+| 方式            | 用途                             | 長所                                                                                                          | 制約                                                                                                                                               |
+| --------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| C + clang + LTO | ベクタ命令の主方式               | `core::arch` なしで、LLVM の feature と vector 型を使える。rustc が unstable とする feature も clang は扱える | clang が必要。値の受け渡しはポインタ。native のゼロコストは LTO の条件付き                                                                         |
+| `asm!`          | 補助                             | cfg に依存しない。C ツールチェーンが不要                                                                      | 256/512-bit の値型がない。wasm と MIPS では unstable。vector operand の型が限られる。AArch64 の `vreg` と ARMv7 の `qreg` は `u128` を受け付けない |
+| 純 Rust         | 値の構築、ビット操作、値の意味論 | ツールチェーンが不要                                                                                          | 単独では対象CPUが命令を持つことを保証しない。自動ベクトル化に依存しない                                                                            |
+
+semantic helperは、命令の存在を主張せず、値の意味だけを提供する関数である。semantic helperはsafeにでき、命令の在庫には数えない。
 
 - C は extension ごとにリポジトリへコミットする。生成物は同梱しない。
 - C は、可能なら GCC の vector 拡張と通常のロード・ストアで書く。intrinsics は SROA を妨げ、一時値の store/load を残すことがある。wasm32 は `<wasm_simd128.h>` の intrinsics を使う。
@@ -74,50 +76,11 @@ SVE、RVV、SME、AMX、PowerPC MMA は、固定長の値型と1命令1関数の
 - 全 arch で cfg ゲート: native にはモジュール全体の feature 要件が無く、API が rustflags に依存する。不安定な feature は cfg が立たない。wasm32 だけに使う。
 - Cargo feature で opt-in: additive でない組み合わせと docs.rs の扱いが未解決である。wasm32 の `wide-arithmetic` のような例外を除いて保留する。
 - 実行時ディスパッチ: std の feature 検出マクロが必要で、`no_std` の既定にできない。保留する。
-- 純 Rust のスカラー実装: 命令の存在を保証できない。値の構築とビット操作だけに使う。
+- 純 Rust のスカラー実装: 命令の存在を保証できない。値の構築、ビット操作、値の意味論に使う。optional extensionのAPIはfeatureを要求し、呼び出し側が保証する。
 
 ## ゼロコスト
 
-確認の方法と arch ごとの結果は [ゼロコストの確認](zero-cost.md) に置く。この文書には状態表を置かない。
-
-### native の条件
-
-x86_64 で、次を満たすときに C の関数が Rust の関数へインラインされ、命令の間の store/load が消えることを確認した。
-
-1. Rust と C の LTO モードを一致させる。
-   - Rust `-C lto=thin` と C `-flto=thin`
-   - Rust `-C lto=fat` と C `-flto`
-2. `-C linker-plugin-lto` を付ける。これが無いと C への `call` が残る。
-3. C の target-features を Rust の target-features の部分集合にする。
-   - x86 では clang が `mmx`、`x87`、`popcnt`、`xsave` を暗黙に付けることがある。`-mno-mmx -mno-x87 -mno-popcnt -mno-xsave` で外す。
-   - `cmov` と `cx8` は残ってもインラインされた。
-4. C の関数を `always_inline` にする。
-5. 呼び出し側の関数に `#[target_feature]` を付けるか、`-C target-feature=+...` を付ける。
-6. LTO を扱えるリンカを使う。x86_64 では clang + lld で確認した。環境の既定リンカでも動いたが、再現性のため clang + lld を推奨する。
-
-Cargo では、`-C lto` を `RUSTFLAGS` に入れない。build script の `embed-bitcode=no` と衝突する。最終バイナリの profile に設定する。
-
-```toml
-[profile.release]
-lto = "thin"
-
-[build]
-rustflags = ["-C", "linker-plugin-lto", "-C", "linker=clang", "-C", "link-arg=-fuse-ld=lld"]
-```
-
-C は `-flto=thin` でコンパイルする。`lto = "fat"` の場合は C も `-flto` にする。`lto = "off"` と C `-flto=thin` の組でもインラインされたが、明示的な thin または fat を推奨する。LTO モードが一致しない場合は、C への `call` が残る。
-
-確認した命令は、x86_64 の SSE2 `paddd`、AVX2 `vpaddd` と `vpmulld`、AVX-512F `vpaddd`、AES `aesenc`、FMA `vfmadd`、AArch64 の NEON `add v0.4s` と `mul v0.4s`、RISC-V の `vadd.vv` と `vmul.vv`、LoongArch の `xvadd.w` と `xvmul.w`、s390x の `vaf` と `vmlf`、32-bit ARM の `vadd.i32` と `vmul.i32` である。AVX2 の確認では、`vpaddd` の結果が `ymm1` のまま `vpmulld` に入り、間の store/load が無かった。入力のロードと出力のストアは関数境界にだけ残る。
-
-RISC-V と LoongArch では、intrinsics を使うと C がインラインされても一時値の store/load が残った。GCC の vector 拡張と通常のロード・ストアに置き換えると消えた。C は、可能なら vector 拡張で書く。
-
-条件を満たさないビルドでは、C 関数への `call` が残る。native の既定は呼び出しベースであり、ゼロコストは文書化した条件を満たすビルドだけに適用する。C の feature 集合を Rust の部分集合にできない extension は、ゼロコストを主張しない。
-
-### unstable feature
-
-`#[target_feature]` を付けられない feature は、クレート側のラッパーをゼロコスト領域にできない。利用者がクレート全体を `-C target-feature=+name` でコンパイルし、C の feature 集合を合わせた場合だけ、LTO でインラインできる。cfg は立たないため、API の公開条件には使わない。
-
-x86 の `avx10.1` で確認した。`-C target-feature=+avx10.1` は警告を出すが、LLVM の属性には入る。C を `-mavx10.1 -mno-mmx -mno-x87 -mno-popcnt -mno-xsave` でコンパイルし、`#[target_feature]` を付けないカーネルから呼ぶと、`vpaddd` と `vpmulld` が `zmm` のまま並び、`call` と命令間の store/load が消えた。
+ゼロコストは、LTO と feature 集合の条件を満たすビルドだけに適用する。規範条件、測定方法、arch 別の結果は [ゼロコストの確認](zero-cost.md) に置く。この文書には状態表を置かない。
 
 ## スケーラブルベクタと状態を持つ拡張
 

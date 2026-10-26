@@ -44,7 +44,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`matrix`
 ## 実装方式
 
 - 今回測った feature はすべて不安定または LLVM のみであり、cfg ゲート方式を使えない。関数を無条件に置き、`unsafe fn` として公開する。
-- C + clang を主方式とする。LTO は wasm32 と native のゼロコストに使う。`<altivec.h>` を使う。
+- C + clang を主方式とする。`<altivec.h>` を使う。
 - 値は `V128` をポインタで渡す。C の `vector` 型は境界では使わない。
 - C は extension ごとに分ける。`-maltivec` と `-mvsx` を使う。関数単位の `__attribute__((target("altivec")))` も使える。
 - `asm!` は補助として使える。`vreg` と `vsreg` は feature を要求するため、オペランドの型を確認する必要がある。
@@ -79,7 +79,6 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`matrix`
 
 - `quadword-atomics`、`partword-atomics`、`htm`。同期・制御命令のため、
   値 API にしない。
-- 追加した VSX / Power8 / MMA の命令のゼロコスト確認。現在の zero-cost は `vadduwm`、`vmuluwm`、`vperm` だけである。
 - ELFv2 のベクタ引数と戻り値の ABI は、C の境界ではポインタだけを使う現在の
   方式で回避している。
 

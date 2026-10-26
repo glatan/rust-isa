@@ -24,6 +24,15 @@ make duplicates DUPLICATES_ARGS='--arch powerpc'
 
 現在の重複と扱いは、各 arch の `README.md` の実装方式と `make duplicates` の出力を見る。この文書は判定規則だけを置き、arch ごとのスナップショットは持たない。
 
+## 内部Cシンボル
+
+Cシンボルは公開ABIではない。次の接頭辞はモジュール名と一致しないが、既存のアーカイブと `tests/consistency.rs` の対応を保つため、そのまま使う。
+
+- RISC-V `simd/zv/*` のC関数は `rust_isa_rvv_` を使う。Zvkn、Zvks、Zvkg、Zvbc は同じrvvアーカイブに入る。
+- s390x の vector-enhancements-1 は `rust_isa_s390x_enh_`、vector-enhancements-3 は `rust_isa_s390x_ve3_` を使う。
+
+接頭辞をモジュール名に合わせる場合は、`build.rs`、`tests/consistency.rs`、アーカイブ名を同じ変更で更新する。
+
 ## レビュー
 
 重複する命令を実装する MR では、次を確認する。
