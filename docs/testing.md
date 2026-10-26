@@ -41,7 +41,7 @@ LTO で C の関数が Rust のカーネルへインラインされ、`call` と
 実装と文書の対応を検査する。命令の意味論とコード生成は保証しない。
 
 - `tests/consistency.rs`: Rust の extern 宣言と C の定義、rustdoc の言語、wasm32 のレーン即値の範囲。
-- `make coverage-check`: arch の README の表の形式、表の名前と公開ラッパーの対応、ゼロコスト表の fixture と kernel。
+- `make inventory-check`: arch の README の表の形式、表の名前と公開ラッパーの対応、ゼロコスト表の fixture と kernel。
 - `make check-mnemonics`: rustdoc の命令名が `llvm-mc` に受理されること。
 - `make docs-check`: Markdown のリンク、アンカー、索引からの到達性。
 - `make fixtures-check`: `fixtures/` と `fixture-matrix.md` の対応、`nested_dir` の名前。

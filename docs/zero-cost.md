@@ -1,10 +1,49 @@
 # ゼロコストの確認
 
-この文書は、native のゼロコストをどのように確認したかと、arch ごとの結果をまとめる。条件と方針は [実装方針](policy.md) に置く。`make zero-cost-check` は、結果表の fixture と kernel の実在、`fixtures/*-link` の網羅、LTO / call / store-load / 結果の値、ゼロコスト行の整合を検査する。
+この文書は、native のゼロコストの条件、確認方法、arch ごとの結果をまとめる。実装方針は [実装方針](policy.md) に置く。`make zero-cost-check` は、結果表の fixture と kernel の実在、`fixtures/*-link` の網羅、LTO / call / store-load / 結果の値、ゼロコスト行の整合を検査する。
 
 確認した環境は rustc 1.99.1、clang/lld 23.1.1 である。ARM、AArch64、s390x、PowerPC の一部は clang 23.1.3 で再確認した。
 
-## 方法
+## 条件
+
+次の条件を満たすビルドで、C の関数が Rust の関数へインラインされ、命令と命令の間の store/load が消える。
+
+1. Rust と C の LTO モードを一致させる。
+   - Rust `-C lto=thin` と C `-flto=thin`
+   - Rust `-C lto=fat` と C `-flto`
+2. `-C linker-plugin-lto` を付ける。これが無いと C への `call` が残る。
+3. C の target-features を Rust の target-features の部分集合にする。
+   - x86 では clang が `mmx`、`x87`、`popcnt`、`xsave` を暗黙に付けることがある。`-mno-mmx -mno-x87 -mno-popcnt -mno-xsave` で外す。
+   - `cmov` と `cx8` は残ってもインラインされた。
+4. C の関数を `always_inline` にする。
+5. 呼び出し側の関数に `#[target_feature]` を付けるか、`-C target-feature=+...` を付ける。
+6. LTO を扱えるリンカを使う。x86_64 では clang + lld で確認した。環境の既定リンカでも動いたが、再現性のため clang + lld を推奨する。
+
+Cargo では、`-C lto` を `RUSTFLAGS` に入れない。build script の `embed-bitcode=no` と衝突する。最終バイナリの profile に設定する。
+
+```toml
+[profile.release]
+lto = "thin"
+
+[build]
+rustflags = ["-C", "linker-plugin-lto", "-C", "linker=clang", "-C", "link-arg=-fuse-ld=lld"]
+```
+
+C は `-flto=thin` でコンパイルする。`lto = "fat"` の場合は C も `-flto` にする。`lto = "off"` と C `-flto=thin` の組でもインラインされたが、明示的な thin または fat を推奨する。LTO モードが一致しない場合は、C への `call` が残る。`thin` と `fat` の両方を、x86_64、i686、AArch64、ARMv7、RISC-V、LoongArch、s390x、PowerPC、MIPS で確認した。
+
+確認した命令は、x86_64 の SSE2 `paddd`、AVX2 `vpaddd` と `vpmulld`、AVX-512F `vpaddd`、AES `aesenc`、FMA `vfmadd`、AArch64 の NEON `add v0.4s` と `mul v0.4s`、RISC-V の `vadd.vv` と `vmul.vv`、LoongArch の `xvadd.w` と `xvmul.w`、s390x の `vaf` と `vmlf`、32-bit ARM の `vadd.i32` と `vmul.i32` である。AVX2 の確認では、`vpaddd` の結果が `ymm1` のまま `vpmulld` に入り、間の store/load が無かった。入力のロードと出力のストアは関数境界にだけ残る。
+
+RISC-V と LoongArch では、intrinsics を使うと C がインラインされても一時値の store/load が残った。GCC の vector 拡張と通常のロード・ストアに置き換えると消えた。C は、可能なら vector 拡張で書く。
+
+条件を満たさないビルドでは、C 関数への `call` が残る。native の既定は呼び出しベースであり、ゼロコストは文書化した条件を満たすビルドだけに適用する。C の feature 集合を Rust の部分集合にできない extension は、ゼロコストを主張しない。
+
+### unstable feature
+
+`#[target_feature]` を付けられない feature は、クレート側のラッパーをゼロコスト領域にできない。利用者がクレート全体を `-C target-feature=+name` でコンパイルし、C の feature 集合を合わせた場合だけ、LTO でインラインできる。cfg は立たないため、API の公開条件には使わない。
+
+x86 の `avx10.1` で確認した。`-C target-feature=+avx10.1` は警告を出すが、LLVM の属性には入る。C を `-mavx10.1 -mno-mmx -mno-x87 -mno-popcnt -mno-xsave` でコンパイルし、`#[target_feature]` を付けないカーネルから呼ぶと、`vpaddd` と `vpmulld` が `zmm` のまま並び、`call` と命令間の store/load が消えた。
+
+## ゼロコストの測定方法
 
 ホスト以外の arch でも disassembly だけを確認できるように、`no_std` と `no_main` のバイナリを `build-std` でクロスビルドする。
 
@@ -25,11 +64,11 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 
 アーキテクチャによっては、`llvm-objdump` がベクタ命令を表示できない。s390x では、`llvm-objdump` が出したバイト列を `llvm-mc --disassemble --triple=s390x-unknown-linux-gnu --mattr=+vector` でデコードした。
 
-## 結果
+## arch別の測定結果
 
 `fixture` は測定に使ったビルド、`kernel` は disassembly した関数である。`manual` はこの文書の方法で作った一時バイナリで、リポジトリの fixture ではない。`(arch, fixture, kernel, extension, 確認した命令)` を測定のキーとする。どの行も Rust と C の LTO モードを一致させ、`lto = "thin"` で確認した。fat は「LTO」の節で arch ごとに確認する。
 
-`manual` の行は、[方法](#方法) の `RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release` で作った `no_std` / `no_main` のバイナリを `llvm-objdump` で見る。再現手順は [再現の例](#再現の例) に従う。`make zero-cost-check` は `manual` の行を fixture / kernel の検査対象にしないが、各行に理由があることは検査する。
+`manual` の行は、[ゼロコストの測定方法](#ゼロコストの測定方法) の `RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release` で作った `no_std` / `no_main` のバイナリを `llvm-objdump` で見る。再現手順は [再現の例](#再現の例) に従う。`make zero-cost-check` は `manual` の行を fixture / kernel の検査対象にしないが、各行に理由があることは検査する。
 
 `manual` が残るのは、RISC-V の `vrgather` / `vcompress`、LoongArch の `xvshuf.b`、32-bit ARM、MIPS の `vshf.w` である。値テスト fixture にゼロコスト用カーネルがない、ビルド条件がゼロコスト条件と一致しない、または `llvm-mc` でバイト列をデコードする必要があるため、個別の link fixture にしていない。
 
@@ -176,22 +215,9 @@ RISC-V と LoongArch では、次の intrinsics を使うと、C がインライ
 
 GCC の vector 拡張に置き換えると、どちらも store/load が消えた。一方、`vrgather` は intrinsics が必要で、2 命令を合成すると `vrgather` の間に store/load が残った。LoongArch の `xvshuf.b` も同じだった。intrinsics が必要な命令は、命令ごとに disassembly を確認する。
 
-### target-cpu と feature 集合
+### arch別のフラグ
 
-- **RISC-V**: `-mno-relax` を付けないと、C の関数がインラインされなかった。C は `-march=rv64gcv -mabi=lp64d -mno-relax`。
-- **s390x**: Rust の target-cpu は `z10` である。C は `-march=z10 -fzvector -Xclang -target-feature -Xclang +vector` で一致した。`-march=z13 -mzvector` では `+vector-enhancements-1` と `+transactional-execution` が付き、インラインされなかった。
-- **AArch64**: NEON は `-march=armv8-a+simd`、dotprod は `+dotprod`、AES は `-Xclang -target-feature +aes`、SHA2 は `+sha2`、CRC は `+crc` で一致した。FP16 / FHM は C の `+fullfp16` / `+fp16fml` を Rust の `+fp16` / `+fhm` に、SHA3 / SM4 / I8MM / BF16 / JSConv / SVE は `+sha3` / `+sm4` / `+i8mm` / `+bf16` / `+jsconv` / `+sve` に合わせた。F32MM / F64MM は `+sve` に `+f32mm` / `+f64mm` を足す。FCMA は C の intrinsic が `+v8.3a` を要求するため、C を inline asm に置き換えて `+complxnum` で一致させた。
-- **LoongArch**: `-mlasx` で一致した。
-- **MIPS**: C は `-march=mips64r2 -mmsa -mabicalls -mxgot`、Rust は `-C target-feature=+msa,+fp64` を使う。`llvm-objdump` は MSA 命令を `<unknown>` と表示するため、バイト列を `llvm-mc --disassemble --triple=mips64-unknown-linux-gnuabi64 --mattr=+msa` でデコードする。
-- **PowerPC**: `.TOC.` は lld が `addReservedSymbols` で定義するが、LTO 後のオブジェクトにだけ参照があると定義されない。`.TOC.` を参照する非 LTO オブジェクトをリンクに加えると解決する。`.quad .TOC.` を持つ小さなアセンブリオブジェクトで確認した。
-- **32-bit ARM**: C に `+armv7-a`、`+dsp`、`+fp64`、`+vfp2sp` などが付き、そのままでは Rust の feature 集合と一致しなかった。`-mthumb -march=armv7-a -mfpu=neon -mfloat-abi=hard` に加え、`-Xclang -target-feature` で次を調整すると一致した。
-  - 外す: `armv7-a`、`dsp`、`fp64`、`vfp2sp`、`vfp3sp`、`vfp3d16sp`、`read-tp-tpidruro`、`thumb-mode`
-  - 足す: `v7`、`thumb2`
-  - この調整は clang の実装に依存する。build.rs に固定し、disassembly で確認する。
-
-### unstable feature
-
-x86 の `avx10.1` は `#[target_feature]` を付けられない。クレート全体を `-C target-feature=+avx10.1` でコンパイルし、C を `-mavx10.1` でコンパイルすると、`#[target_feature]` を付けないカーネルでも `vpaddd` と `vpmulld` が `zmm` のまま並び、`call` と store/load が消えた。`-C target-feature` は警告を出すが、LLVM の属性には入る。cfg は立たない。
+archごとのCフラグとfeature集合は、各archの `README.md` の「ゼロコスト」に置く。結果は上の表を見る。
 
 ### feature 集合の確認方法
 
@@ -221,16 +247,9 @@ C の集合が Rust の集合の部分集合になるまで、`-mno-*` や `-Xcl
 | AArch64 の既定                   | `neon,outline-atomics`                            |
 | AArch64 `-C target-feature=+sve` | `fp16,neon,outline-atomics,sve`                   |
 
-### LTO
-
-- Rust と C の LTO モードを一致させる。`thin` と `thin`、または `fat` と `fat`。
-- `thin` と `fat` の両方を、x86_64、i686、AArch64、ARMv7、RISC-V、LoongArch、s390x、PowerPC、MIPS で確認した。
-- `-C linker-plugin-lto` が無いと、C への `call` が残る。
-- Cargo では `-C lto` を `RUSTFLAGS` に入れない。build script の `embed-bitcode=no` と衝突する。`profile.release.lto` に設定する。
-
 ## 再現の例
 
-x86_64 の例は [x86 のリンク](x86/linking.md) にある。ほかの arch は、`no_std` と `no_main` のバイナリを作り、`build-std` と clang/lld でリンクする。
+x86_64 の例は [x86 のリンク](x86/linking-and-zero-cost.md) にある。ほかの arch は、`no_std` と `no_main` のバイナリを作り、`build-std` と clang/lld でリンクする。
 
 ```toml
 [profile.release]

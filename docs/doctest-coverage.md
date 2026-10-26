@@ -29,7 +29,7 @@
 
 「延べ公開パス」は extension ごとの free function と associated function を合計した数で、reexport alias や同一命令の重複を含む。distinct な命令関数の数ではない。`SmeGuard::enter`、`MmaAccumulator::new`、`AmxGuard::enter`、`TileConfig::builder`、`TileConfig::from_bytes` の 5 件は状態管理 API として含む。「型」は `V128`、`SmeGuard` などの import で、命令数には含めない。x86 には x86_64 専用命令の cfg 付き import を含む。wasm32 の 3 extension は `simd128`、`relaxed-simd`、`wide-arithmetic` である。
 
-## 検査
+## inventoryと表の検査
 
 ```sh
 make doctest-coverage
@@ -37,7 +37,7 @@ make doctest-inventory-check
 ```
 
 - `make doctest-coverage`: 在庫の鮮度、instruction examples の網羅、上の表を検査し、集計を表示する。
-- `make doctest-inventory-check`: inventory の更新漏れ、instruction examples の欠落、arch の README に載る命令名の欠落を検査する。`make coverage-check` にも含まれる。
+- `make doctest-inventory-check`: inventory の更新漏れ、instruction examples の欠落、arch の README に載る命令名の欠落を検査する。`make inventory-check` にも含まれる。
 
 inventory を実際に rustdoc でコンパイルするのは、次のテストである。`doctest-coverage` と `doctest-inventory-check` はコンパイルを行わない。
 

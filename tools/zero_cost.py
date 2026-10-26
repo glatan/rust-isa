@@ -47,7 +47,7 @@ def table_rows() -> list[list[str]]:
     rows: list[list[str]] = []
     in_table = False
     for line in lines:
-        if line.strip() == "## 結果":
+        if line.strip() == "## arch別の測定結果":
             in_table = True
             continue
         if in_table and line.startswith("## "):

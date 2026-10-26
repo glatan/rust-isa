@@ -28,7 +28,7 @@
 - Symbol check:
 - `make fmt-check`:
 - `make test`:
-- `make coverage`:
+- `make inventory`:
 
 ## Zero-cost
 

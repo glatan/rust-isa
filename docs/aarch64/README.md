@@ -43,7 +43,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`system`
 ## 実装方式
 
 - native なので無条件に公開する。任意の feature を要求する命令は `unsafe fn` とする。
-- C + clang を主方式とする。LTO は wasm32 と native のゼロコストに使う。NEON は `<arm_neon.h>`、SVE は `<arm_sve.h>` を使う。
+- C + clang を主方式とする。NEON は `<arm_neon.h>`、SVE は `<arm_sve.h>` を使う。
 - 値は `V128` をポインタで渡す。SVE はスケーラブルベクタなので、固定長の `V128` では表せない。SVE の型と API は別に設計する。
 - C は extension ごとに分ける。`-march=armv8-a+simd` や `-march=armv8-a+sve` を使う。
 - stable な feature は、呼び出し側のカーネルに `#[target_feature(enable = "...")]` を付ける。ラッパーは `#[inline(always)]` だけにし、`#[target_feature]` を付けない。unstable な feature は付けない。
@@ -53,7 +53,6 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`system`
 
 - 結果は [ゼロコストの確認](../zero-cost.md) を見る。
 - C は `-march=armv8-a+simd -flto=thin`、`__attribute__((always_inline))` を使う。Rust は `profile.release.lto = "thin"` と `-C linker-plugin-lto` を使う。
-- LTO モード、C の feature 集合、呼び出し側の feature を一致させる。条件を満たさない場合は `call` が残る。
 - AES / SHA2 / CRC の C は `-march=armv8-a` に `-Xclang -target-feature +aes`、`+sha2`、`+crc` を足す。`+crypto` は余分な feature を含み、Rust の `+aes` / `+sha2` と一致しない。FP16 / FHM は C の `+fullfp16` / `+fp16fml` を Rust の `+fp16` / `+fhm` に合わせる。SHA3 / SM4 / I8MM / BF16 / JSConv も各 feature だけを足す。SVE は `+sve`、F32MM / F64MM は `+sve +f32mm` / `+sve +f64mm` を使う。FCMA の C は intrinsic ではなく inline asm にして `+complxnum` でコンパイルする。
 - カーネルに `#[target_feature]` を付けると、命令間の値がレジスタに残る。ループの外側など、feature の無い関数から呼ぶと、境界の `call` は残る。
 
@@ -86,7 +85,6 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`system`
   値 API にしない。
 - `bti`、`paca`、`pacg`、`mte` は分岐保護・ポインタ認証・メモリタグのため、
   命令 API にしない。
-- 追加した NEON 以降の命令のゼロコスト確認。現在の zero-cost は NEON の `kernel_add`、`kernel_mul`、`kernel_tbl`、dotprod の `kernel_dot`、AES の `kernel_aes`、SHA2 の `kernel_sha2`、CRC の `kernel_crc`、FP16 の `kernel_fp16`、SHA3 の `kernel_sha3`、SM4 の `kernel_sm4`、I8MM の `kernel_i8mm`、BF16 の `kernel_bf16`、FHM の `kernel_fhm`、JSConv の `kernel_jsconv`、SVE の `kernel_sve_add`、`kernel_sve_mul`、`kernel_sve_sub`、F32MM の `kernel_f32mm`、F64MM の `kernel_f64mm`、FCMA の `kernel_fcma` だけである。
 
 ## 文書
 

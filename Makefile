@@ -12,6 +12,7 @@ PODMAN ?= podman
 NEXTEST ?= cargo nextest run
 NEXTEST_FLAGS ?= --no-tests=fail
 COVERAGE_ARGS ?= --todo
+INVENTORY_ARGS ?= $(COVERAGE_ARGS)
 DUPLICATES_ARGS ?=
 DOC_TEST ?= compile
 TARGET_VOLUME ?= rust-isa-target
@@ -78,12 +79,14 @@ help:
 		'test-cross                   i686 と cross-arch の値テストとゼロコスト検査' \
 		'test-wasip1                  wasm32-wasip1 の nextest と doctest' \
 		'test-wasip1-wide-arithmetic  wide-arithmetic 有効時の nextest と doctest' \
-		'coverage                     arch/extension ごとの実装状況を表示する' \
-		'coverage-check               README・ゼロコスト結果表・doctest 在庫を検査する' \
+		'inventory                    arch/extension ごとの実装状況を表示する' \
+		'inventory-check              README・ゼロコスト結果表・doctest 在庫を検査する' \
+		'coverage                     inventory の互換alias' \
+		'coverage-check               inventory-check の互換alias' \
 		'doctest-coverage             doctest 網羅を検査して arch 別件数を表示する' \
 		'doctest-inventory-check      全公開命令の doctest 在庫を検査する' \
 		'zero-cost-check              ゼロコスト結果表の fixture と kernel を検査する' \
-		'docs-check                   文書間リンク・アンカー・索引からの到達性を検査する' \
+		'docs-check                   文書間リンク・アンカー・索引・API対応表の名前を検査する' \
 		'fixtures-check               fixtures/・target-nested と fixture-matrix.md の対応を検査する' \
 		'duplicates                   同じ arch で重複する命令名を表示する'
 
@@ -111,9 +114,12 @@ test-doc-debian: image-debian
 		CARGO_GIT_VOLUME=$(CARGO_GIT_VOLUME)-debian \
 		test-doc
 
+.PHONY: inventory
+inventory:
+	$(PODMAN_RUN) python3 tools/inventory.py $(INVENTORY_ARGS)
+
 .PHONY: coverage
-coverage:
-	$(PODMAN_RUN) python3 tools/coverage.py $(COVERAGE_ARGS)
+coverage: inventory
 
 .PHONY: zero-cost-check
 zero-cost-check:
@@ -127,14 +133,18 @@ doctest-coverage:
 doctest-inventory-check:
 	$(PODMAN_RUN) python3 tools/doctest_inventory.py --check
 
-.PHONY: coverage-check
-coverage-check: zero-cost-check doctest-inventory-check
-	$(PODMAN_RUN) python3 tools/coverage.py --check
+.PHONY: inventory-check
+inventory-check: zero-cost-check doctest-inventory-check
+	$(PODMAN_RUN) python3 tools/inventory.py --check
 	$(PODMAN_RUN) python3 tools/doc_names.py --check
+
+.PHONY: coverage-check
+coverage-check: inventory-check
 
 .PHONY: docs-check
 docs-check:
 	$(PODMAN_RUN) python3 tools/doc_links.py --check
+	$(PODMAN_RUN) python3 tools/mapping.py --check
 
 .PHONY: fixtures-check
 fixtures-check:
@@ -167,7 +177,7 @@ check-docs:
 		CARGO_TARGET_DIR=$(WASM_DOC_TARGET_DIR) RUSTDOCFLAGS="-D warnings -C target-feature=+simd128,+relaxed-simd" cargo doc --no-deps --features wide-arithmetic --target $(WASM_UNKNOWN_TARGET)'
 
 .PHONY: test
-test: fmt-check coverage-check docs-check fixtures-check check-mnemonics check-docs test-check-wasm-link test-host test-doc test-wasip1 test-wasip1-wide-arithmetic
+test: fmt-check inventory-check docs-check fixtures-check check-mnemonics check-docs test-check-wasm-link test-host test-doc test-wasip1 test-wasip1-wide-arithmetic
 
 .PHONY: test-host
 test-host: test-x86_64 test-cross

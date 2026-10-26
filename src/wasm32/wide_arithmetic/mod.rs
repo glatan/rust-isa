@@ -2,6 +2,10 @@
 //!
 //! Enabling the `wide-arithmetic` Cargo feature makes the module require the
 //! WebAssembly `wide-arithmetic` proposal.
+//!
+//! Instruction behavior follows the [wide-arithmetic proposal](https://github.com/WebAssembly/wide-arithmetic).
+//!
+//! Instructions not listed in this module are not exposed.
 
 //! <details>
 //! <summary>Instruction examples</summary>

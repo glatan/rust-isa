@@ -34,7 +34,7 @@ family は命令の種類に合わせて決める（`simd`、`system` など）�
 ## 実装方式
 
 - `msa` は不安定であり、cfg ゲート方式を使えない。関数を無条件に置き、`unsafe fn` として公開する。
-- C + clang を主方式とする。LTO は wasm32 と native のゼロコストに使う。`<msa.h>` を使う。
+- C + clang を主方式とする。`<msa.h>` を使う。
 - 値は `V128` をポインタで渡す。
 - C は extension ごとに分ける。`-mmsa` と `-march=mips64r2` を使う。clang は MSA に r5 以上を要求する警告を出す。
 - `asm!` は wasm32 と同様に experimental であり、stable では使えない。
@@ -66,7 +66,6 @@ family は命令の種類に合わせて決める（`simd`、`system` など）�
 
 ## 未対応
 
-- 追加した MSA 命令のゼロコスト確認。現在の zero-cost は `addv.w`、`mulv.w` だけである。
 - rustc の標準ライブラリが無い状態でのテスト方法は、`-Z build-std=core` と QEMU の終了コードで運用している。
 
 ## 文書

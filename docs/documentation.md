@@ -1,5 +1,7 @@
 # 文書の位置
 
+文書の分類は [docs/README.md](README.md) の表に従う。この文書は、文書とrustdocの置き場所だけを扱う。
+
 README には、クレートの説明、公開パス、ライセンス、[CONTRIBUTING.md](../CONTRIBUTING.md) へのリンクを置く。
 
 rustdoc は英語で書く。`src` の `///` と `//!` にひらがな、カタカナ、漢字があると `cargo test` が失敗する。
@@ -24,11 +26,11 @@ extension の `mod.rs` には、次を書く。
 
 ## arch ごとの文書
 
-`docs/<arch>/README.md` は、その arch のプロファイルと実装状況を置く。表の形式は [実装状況の集計](coverage.md) に従う。
+`docs/<arch>/README.md` は、その arch のプロファイルと実装状況を置く。表の形式は [実装状況の集計](implementation-status.md) に従う。
 
 `docs/<arch>/feasibility.md` は、`cfg(target_feature)` の観測だけを置く。用語と共通の注意は [実装可否](feasibility.md) に置く。実装状況は `README.md` を参照し、この文書には置かない。
 
-リンクの条件が一般則と異なる arch だけ、`linking.md` に分ける。例は [x86](x86/linking.md) と [wasm32](wasm32/linking.md) にある。
+リンクの条件が一般則と異なる arch だけ、`linking.md` に分ける。例は [x86](x86/linking-and-zero-cost.md) と [wasm32](wasm32/linking.md) にある。
 
 ## 索引
 

@@ -15,4 +15,4 @@ arch を足すときは、`docs/<arch>/README.md` と `docs/<arch>/feasibility.m
 - `Depends on:` と `Blocks:` を書き、前提MRが未マージならDraftにする。
 - 対象arch / extension、テスト環境、zero-costの確認結果、docsの更新を書く。
 - 実装MRは、そのMR内で値テスト、シンボル検査、rustdoc、arch READMEの更新まで終える。
-- `make coverage` で未実装件数を確認できる。件数は作業の在庫であり、期間の見積もりには使わない。
+- `make inventory` で未実装件数を確認できる。件数は作業の在庫であり、期間の見積もりには使わない。

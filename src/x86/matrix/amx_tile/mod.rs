@@ -19,6 +19,8 @@
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 //!
+//! Instructions not listed in this module are not exposed.
+//!
 //! The build compiles the bundled C with clang; some wrappers use `asm!`.
 
 //! # Examples

@@ -59,7 +59,7 @@ Zv* 暗号拡張は `zv` にまとめる（rustc の feature 名は `zvkn`、`zv
 
 - native なので無条件に公開する。任意の feature を要求する命令は `unsafe fn` とする。
 - `zba` などの安定 feature は、呼び出し側のカーネルに `#[target_feature]` を付けられる。ラッパーは `#[inline(always)]` だけにする。V などの不安定 feature は付けず、rustdoc に条件を書く。
-- C + clang を主方式とする。LTO は wasm32 と native のゼロコストに使う。V は `<riscv_vector.h>` を使う。
+- C + clang を主方式とする。V は `<riscv_vector.h>` を使う。
 - 値は `V128` などをポインタで渡す。V はスケーラブルベクタなので、固定長の型では表せない。VL と VTYPE を含めた API を別に設計する。
 - C は extension ごとに分ける。`-march=rv64gc_zba` や `-march=rv64gcv` を使う。`scalar` の C は `-march=rv64gc_zfh`、`zfa` の C は `-march=rv64gc_zfh_zfa` を使う。両者はビット変換・NaN・min/max の共通処理を `fp_helpers.h` に置く。
 - `asm!` は補助として使える。`vreg` は上書きするレジスタとしてだけ指定でき、ベクトル値のオペランドにはできない。
@@ -75,7 +75,6 @@ Zv* 暗号拡張は `zv` にまとめる（rustc の feature 名は `zvkn`、`zv
 - `__riscv_vle32_v_i32m1` / `__riscv_vse32_v_i32m1` の intrinsics では、インライン後も一時値の store/load が残った。GCC の vector 拡張と通常のロード・ストアを使う。
 - `vrgather` は intrinsics（`__riscv_vrgather_vv_i32m1`）が必要で、2 命令を合成すると `vrgather` の間に store/load が残った。`vcompress` も同じだった。shuffle / compress 系は命令ごとに zero-cost を確認する。
 - `-C target-feature=+v` は不安定警告が出る。`#[target_feature]` は使えない。クレート全体を flag 付きでコンパイルする。
-- LTO モード、C の feature 集合、呼び出し側の feature を一致させる。条件を満たさない場合は `call` が残る。
 
 ## ツールチェーン
 
@@ -95,7 +94,6 @@ Zv* 暗号拡張は `zv` にまとめる（rustc の feature 名は `zvkn`、`zv
 ## 未対応
 
 - RVV の `vrgather` / `vcompress` のゼロコスト確認。API には含めるが、往復が残る。
-- 追加した V の命令のゼロコスト確認。現在の zero-cost は `vadd.vv` と `vmul.vv`、スライス API の `add` / `mul` のループだけである。
 
 ## 文書
 

@@ -38,7 +38,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 ## 実装方式
 
 - 今回測った feature はすべて不安定であり、cfg ゲート方式を使えない。関数を無条件に置き、`unsafe fn` として公開する。
-- C + clang を主方式とする。LTO は wasm32 と native のゼロコストに使う。NEON は `<arm_neon.h>`、MVE は `<arm_mve.h>` を使う。
+- C + clang を主方式とする。NEON は `<arm_neon.h>`、MVE は `<arm_mve.h>` を使う。
 - 値は `V128` をポインタで渡す。MVE も NEON と同じ `V128` を使う。
 - C は extension ごとに分ける。NEON は `-mfpu=neon-vfpv4` と `-mfloat-abi=hard` を使う。`vfma` / `vfms` には VFPv4 が必要である。
 - MVE は M プロファイル専用である。C は `-march=armv8.1-m.main+mve`（整数）と `-march=armv8.1-m.main+mve.fp+fp.dp`（浮動小数点）でコンパイルし、`-mfpu=fp-armv8` を付ける。Rust 側は Thumb でビルドし、QEMU は `-cpu cortex-m55` を使う。
@@ -82,7 +82,6 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 - `vfp2`、`vfp3`、`vfp4`、`fp-armv8`、`d32`、`fpregs`。スカラー VFP と ABI の
   指定であり、SIMD の値 API には含めない。
 - `dsp`。スカラー DSP 命令であり、SIMD の値 API には含めない。
-- 追加した NEON 以降の命令のゼロコスト確認。現在の zero-cost は `vadd.i32` と `vmul.i32` だけである。
 - MVE の zero-cost は未確認である。MVE の API は M プロファイルでだけ動き、`armv7-unknown-linux-gnueabihf` のビルドでは C と Rust の feature 集合を一致させられない。
 - MVE の命令は代表のデータ幅だけを公開する。整数は signed 32-bit、`mull` / `mlal` / `mlsl` / `qdmull` は signed 16-bit、`abav` は signed 8-bit、`addlv` は signed 32-bit の入力を使う。ほかのデータ幅は同じ命令の別形として未公開である。
 - NEON の hard-float ABI と値型の対応は、C の境界ではポインタだけを使う現在の

@@ -236,6 +236,39 @@ def covered_by_family(arch: str, extension: str, name: str) -> bool:
     return False
 
 
+MODULE_OMISSION = re.compile(
+    r"Instructions not listed|intentionally omitted|not exposed|omitted",
+    re.IGNORECASE,
+)
+
+
+def check_module_docs(problems: list[str]) -> None:
+    seen: set[tuple[str, str]] = set()
+    for arch, extension, _ in table_rows():
+        key = (arch, normalize_extension(extension))
+        if key in seen:
+            continue
+        seen.add(key)
+        if "/" in extension or key in SKIP_ROWS:
+            continue
+        directories = [
+            path
+            for path in (SOURCE / arch).rglob("*")
+            if path.is_dir() and path.name == normalize_extension(extension)
+        ]
+        for directory in directories:
+            mod = directory / "mod.rs"
+            if not mod.is_file():
+                continue
+            text = mod.read_text(encoding="utf-8")
+            if "http" not in text:
+                problems.append(f"{arch}/{extension}: module docs have no specification link")
+            if not MODULE_OMISSION.search(text):
+                problems.append(
+                    f"{arch}/{extension}: module docs do not describe omitted instructions"
+                )
+
+
 def check() -> list[str]:
     problems: list[str] = []
     global ALL_EXTENSIONS
@@ -275,6 +308,7 @@ def check() -> list[str]:
                 f"{arch}/{extension}: docs name has no source wrapper: "
                 + ", ".join(extra)
             )
+    check_module_docs(problems)
     return problems
 
 

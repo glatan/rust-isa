@@ -1,12 +1,12 @@
 # 実装状況の集計
 
-`make coverage` は、`docs/<arch>/README.md` の実装状況の表を読み、arch / extension ごとの実装済み件数と未実装件数を表示する。
+`make inventory` は、`docs/<arch>/README.md` の実装状況の表を読み、arch / extension ごとの実装済み件数と未実装件数を表示する。
 
 ```sh
-make coverage
-make coverage COVERAGE_ARGS='--arch aarch64 --todo'
-make coverage COVERAGE_ARGS='--json'
-make coverage-check
+make inventory
+make inventory INVENTORY_ARGS='--arch aarch64 --todo'
+make inventory INVENTORY_ARGS='--json'
+make inventory-check
 ```
 
 `--manifest PATH` を付けると、表から作った在庫を JSON で書き出せる。マニフェストは命令の実装対象を確定するための作業用であり、`build.rs` は読まない。C と Rust はリポジトリにコミットする。
@@ -24,7 +24,7 @@ make coverage-check
 
 セル内のバッククォート付きの名前を1件として数える。`なし` は0件とする。`236 命令（...）` のように先頭が件数の場合は、その数を使う。括弧の中は説明として扱い、件数に含めない。再エクスポートや別名の行は、名前を列挙せず参照先を書く。件数には含めない。
 
-`make coverage-check` は、各表が4列であること、extensionが1つの名前でバッククォートで囲まれていること、実装済みと未実装のセルが空でないこと、`なし` のセルに名前が混ざっていないこと、同じarchでextensionが重複しないことを検査する。続けて `doc_names.py` が表の名前と `src` の公開ラッパーの対応を、`zero_cost.py` がゼロコスト結果表の fixture と kernel を検査する。`make test` はこの検査を最初に実行する。
+`make inventory-check` は、各表が4列であること、extensionが1つの名前でバッククォートで囲まれていること、実装済みと未実装のセルが空でないこと、`なし` のセルに名前が混ざっていないこと、同じarchでextensionが重複しないことを検査する。続けて `doc_names.py` が表の名前と `src` の公開ラッパーの対応を、`zero_cost.py` がゼロコスト結果表の fixture と kernel を検査する。`make test` は `fmt-check` の後にこの検査を実行する。
 
 ## 対象範囲
 
@@ -34,7 +34,7 @@ SVE、RVV、SME、AMX、PowerPC MMA は、命令ごとの網羅ではなく、[A
 
 全 ISA 命令の一覧は外部仕様に依存するため、このリポジトリでは列挙しない。表にある名前の実在は `doc_names.py` と `mnemonics.py` で検査する。
 
-## 使い方
+## inventoryの実行方法
 
 - 実装を追加したら、その arch の README の「実装済み命令」と「未実装命令」を同じ変更で更新する。
 - 未実装件数は作業の在庫であり、期間や優先順位の見積もりには使わない。

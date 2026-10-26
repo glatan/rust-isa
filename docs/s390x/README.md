@@ -39,7 +39,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 - native なので無条件に公開する。任意の feature を要求する命令は `unsafe fn` とする。
 - 安定の feature は cfg が立つので、呼び出し側のカーネルに `#[target_feature]` を付けられる。C のラッパーは `#[inline(always)]` だけにする。`asm!` のラッパーは feature を要求するため `#[target_feature]` と `#[inline]` を付ける。
-- C + clang を主方式とする。LTO は wasm32 と native のゼロコストに使う。`<vecintrin.h>` を使う。
+- C + clang を主方式とする。`<vecintrin.h>` を使う。
 - 値は `V128` をポインタで渡す。
 - C は extension ごとに分ける。`-march=z14` と `-mzvector` を使う。vector-enhancements-3 は `-march=z17` と `-fzvector` を使う。
 - `asm!` は補助として使える。vector operand の型と ABI は、実装前に確認する。
@@ -53,7 +53,6 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 - C は `-march=z10 -mzvector` を使う。Rust の target-cpu は `z10` である。`-march=z13 -mzvector` では `+vector-enhancements-1` と `+transactional-execution` が付き、インラインされなかった。
 - C は GCC の vector 拡張と通常のロード・ストアで書く。
 - `llvm-objdump` は s390x のベクタ命令を表示しない。バイト列を `llvm-mc --disassemble --triple=s390x-unknown-linux-gnu --mattr=+vector` でデコードする。
-- LTO モード、C の feature 集合、呼び出し側の feature を一致させる。条件を満たさない場合は `call` が残る。
 
 ## ツールチェーン
 
@@ -79,7 +78,6 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 - `message-security-assist-extension*` は状態を持つため、値 API にしない。
 - `transactional-execution` と `guarded-storage` は制御・状態の命令のため、
   値 API にしない。
-- 追加した vector 命令のゼロコスト確認。現在の zero-cost は `vaf`、`vmlf`、 `vperm` だけである。
 - ビッグエンディアンのレーン順序は rustdoc に書いた。値型は `V128` の
   バイト列のままである。
 
