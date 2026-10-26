@@ -4,7 +4,7 @@
 use core::arch::asm;
 use core::panic::PanicInfo;
 use rust_isa::riscv::crypto::zkn::{aes64es, aes64ks1i, sha256sum0};
-use rust_isa::riscv::crypto::zks::{sm3p0, sm4ed};
+use rust_isa::riscv::crypto::zks::{sm3p0, sm3p1, sm4ed, sm4ks};
 use rust_isa::riscv::float::scalar::{
     fadd_d, fadd_h, fadd_s, fclass_h, fcvt_d_h, fcvt_d_l, fcvt_d_lu, fcvt_d_s, fcvt_d_w, fcvt_d_wu,
     fcvt_h_d, fcvt_h_l, fcvt_h_lu, fcvt_h_s, fcvt_h_w, fcvt_h_wu, fcvt_l_d, fcvt_l_h, fcvt_l_s,
@@ -21,7 +21,7 @@ use rust_isa::riscv::float::zfa::{
 };
 use rust_isa::riscv::integer::zba::{sh1add, sh2add, sh3add};
 use rust_isa::riscv::integer::zbb::{andn, clz, cpop, rol, sext_b, xnor};
-use rust_isa::riscv::integer::zbc::clmul;
+use rust_isa::riscv::integer::zbc::{clmul, clmulh, clmulr};
 use rust_isa::riscv::integer::zbkb::{brev8, pack, packh, unzip, zip};
 use rust_isa::riscv::integer::zbkx::{xperm4, xperm8};
 use rust_isa::riscv::integer::zbs::{bclr, bext, binv, bset};
@@ -842,7 +842,11 @@ fn scalar_integer_ops() -> bool {
         if clz(1) != 63 || cpop(0xf0) != 4 || rol(1, 4) != 16 {
             return false;
         }
-        if sext_b(0xff) != u64::MAX || clmul(1, 1) != 1 {
+        if sext_b(0xff) != u64::MAX
+            || clmul(1, 1) != 1
+            || clmulh(1 << 63, 2) != 1
+            || clmulr(1 << 63, 2) != 2
+        {
             return false;
         }
         if bset(0, 3) != 8 || bclr(0xff, 0) != 0xfe || binv(0, 0) != 1 || bext(8, 3) != 1 {
@@ -1014,7 +1018,15 @@ unsafe fn zkn_ops() -> bool {
 
 #[target_feature(enable = "zks")]
 unsafe fn zks_ops() -> bool {
-    unsafe { sm3p0(1) != 1 && sm4ed::<0>(1, 2) != 1 }
+    unsafe {
+        sm3p1(1) == 0x0080_8001
+            && sm3p1(0x1234_5678) == 0x0501_4549
+            && sm4ed::<0>(1, 2) != 1
+            && sm4ks::<0>(1, 2) == 0x209d_74e8
+            && sm4ks::<1>(1, 2) == 0x1a6b_d6c1
+            && sm4ks::<2>(1, 2) == 0x6bd6_c01b
+            && sm4ks::<3>(1, 2) == 0xd6c0_1a6a
+    }
 }
 
 fn crypto_ops() -> bool {

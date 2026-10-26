@@ -4,7 +4,7 @@
 use core::arch::asm;
 use core::panic::PanicInfo;
 use rust_isa::aarch64::crypto::aes::{aesd, aese, aesimc, aesmc};
-use rust_isa::aarch64::crypto::crc::crc32b;
+use rust_isa::aarch64::crypto::crc::{crc32b, crc32h, crc32w, crc32x};
 use rust_isa::aarch64::crypto::sha2::{sha256h, sha256h2, sha256su0, sha256su1};
 use rust_isa::aarch64::crypto::sha3::{bcax, eor3, rax1};
 use rust_isa::aarch64::crypto::sm4::{sm4e, sm4ekey};
@@ -34,12 +34,18 @@ use rust_isa::aarch64::simd::neon::{
     sar_i32, shl_i32, shr_i16, smax_s8, smax_s16, smax_s32, smaxp_s8, smaxp_s16, smaxp_s32,
     smaxv_s8, smaxv_s16, smaxv_s32, smin_s8, smin_s16, smin_s32, sminp_s8, sminp_s16, sminp_s32,
     sminv_s8, sminv_s16, sminv_s32, splat_i32, ssubl_s8, ssubl_s16, ssubl_s32, ssubw_s8, ssubw_s16,
-    ssubw_s32, sub_i8, sub_i16, sub_i32, sub_i64, tbl, trn1, uaddl_u8, uaddl_u16, uaddl_u32,
+    ssubw_s32, sub_i8, sub_i16, sub_i32, sub_i64, tbl, trn1, trn2, uaddl_u8, uaddl_u16, uaddl_u32,
     uaddw_u8, uaddw_u16, uaddw_u32, umax_u8, umax_u16, umax_u32, umaxp_u8, umaxp_u16, umaxp_u32,
     umaxv_u8, umaxv_u16, umaxv_u32, umin_u8, umin_u16, umin_u32, uminp_u8, uminp_u16, uminp_u32,
     uminv_u8, uminv_u16, uminv_u32, usubl_u8, usubl_u16, usubl_u32, usubw_u8, usubw_u16, usubw_u32,
-    uzp1, v128_load, v128_store, zip1,
+    uzp1, uzp2, v128_load, v128_store, zip1, zip2,
 };
+use rust_isa::aarch64::simd::neon::{
+    dup_i8 as dup_lane_i8, dup_i16 as dup_lane_i16, dup_i64 as dup_lane_i64, ins_i8 as ins_lane_i8,
+    ins_i16 as ins_lane_i16, ins_i32 as ins_lane_i32, ins_i64 as ins_lane_i64,
+};
+use rust_isa::aarch64::simd::neon::{ld1, ld2, ld3, ld4, st1, st2, st3, st4};
+use rust_isa::aarch64::simd::rdm::{sqrdmlah, sqrdmlsh};
 use rust_isa::aarch64::simd::sve;
 
 #[unsafe(no_mangle)]
@@ -313,6 +319,15 @@ fn run() -> u32 {
     if !unsafe { bf16_ops() } {
         return 26;
     }
+    if !structure_ops() {
+        return 27;
+    }
+    if !unsafe { rdm_ops() } {
+        return 28;
+    }
+    if !lane_ops() {
+        return 29;
+    }
     0
 }
 
@@ -410,6 +425,104 @@ fn float() -> bool {
         }
     }
     true
+}
+
+#[target_feature(enable = "rdm")]
+unsafe fn rdm_ops() -> bool {
+    let acc = i32x4([0; 4]);
+    let a = i32x4([1 << 16; 4]);
+    let b = i32x4([1 << 16; 4]);
+    let sum = unsafe { sqrdmlah(acc, a, b) };
+    let diff = unsafe { sqrdmlsh(i32x4([200_000; 4]), a, b) };
+    let max = unsafe { sqrdmlah(acc, i32x4([i32::MAX; 4]), i32x4([i32::MAX; 4])) };
+    let min = unsafe { sqrdmlsh(acc, i32x4([i32::MAX; 4]), i32x4([i32::MAX; 4])) };
+    lanes(sum) == [2; 4]
+        && lanes(diff) == [199_998; 4]
+        && lanes(max) == [i32::MAX as u32 - 1; 4]
+        && lanes(min) == [i32::MIN as u32 + 2; 4]
+}
+
+fn lane_ops() -> bool {
+    let a = V128::from_bytes(core::array::from_fn(|index| index as u8));
+    let dup8 = dup_lane_i8::<5>(a).to_bytes();
+    if dup8 != [5; 16] {
+        return false;
+    }
+    let dup16 = dup_lane_i16::<7>(i16x8([10, 20, 30, 40, 50, 60, 70, 80]));
+    if i16_lanes(dup16) != [80; 8] {
+        return false;
+    }
+    let lanes64 = V128::from_bytes([1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0]);
+    if !i64_ok(dup_lane_i64::<1>(lanes64), [2, 2]) {
+        return false;
+    }
+
+    let mut expected = a.to_bytes();
+    expected[3] = 0x7f;
+    if ins_lane_i8::<3>(a, 0x7f).to_bytes() != expected {
+        return false;
+    }
+    let inserted16 = ins_lane_i16::<3>(i16x8([10, 20, 30, 40, 50, 60, 70, 80]), 999);
+    if i16_lanes(inserted16) != [10, 20, 30, 999, 50, 60, 70, 80] {
+        return false;
+    }
+    let inserted32 = ins_lane_i32::<1>(i32x4([1, 2, 3, 4]), -7);
+    if lanes(inserted32) != [1, -7i32 as u32, 3, 4] {
+        return false;
+    }
+    let inserted64 = ins_lane_i64::<0>(lanes64, 123);
+    i64_ok(inserted64, [123, 2])
+}
+
+fn structure_ops() -> bool {
+    let bytes = core::array::from_fn::<u8, 16, _>(|index| index as u8);
+    let mut out = [0u8; 16];
+    unsafe {
+        st1(out.as_mut_ptr(), ld1(bytes.as_ptr()));
+    }
+    if out != bytes {
+        return false;
+    }
+
+    let data2 = core::array::from_fn::<u8, 32, _>(|index| index as u8);
+    let (a2, b2) = unsafe { ld2(data2.as_ptr()) };
+    if a2.to_bytes() != core::array::from_fn::<u8, 16, _>(|index| (index * 2) as u8)
+        || b2.to_bytes() != core::array::from_fn::<u8, 16, _>(|index| (index * 2 + 1) as u8)
+    {
+        return false;
+    }
+    let mut out2 = [0u8; 32];
+    unsafe { st2(out2.as_mut_ptr(), a2, b2) };
+    if out2 != data2 {
+        return false;
+    }
+
+    let data3 = core::array::from_fn::<u8, 48, _>(|index| index as u8);
+    let (a3, b3, c3) = unsafe { ld3(data3.as_ptr()) };
+    if a3.to_bytes() != core::array::from_fn::<u8, 16, _>(|index| (index * 3) as u8)
+        || b3.to_bytes() != core::array::from_fn::<u8, 16, _>(|index| (index * 3 + 1) as u8)
+        || c3.to_bytes() != core::array::from_fn::<u8, 16, _>(|index| (index * 3 + 2) as u8)
+    {
+        return false;
+    }
+    let mut out3 = [0u8; 48];
+    unsafe { st3(out3.as_mut_ptr(), a3, b3, c3) };
+    if out3 != data3 {
+        return false;
+    }
+
+    let data4 = core::array::from_fn::<u8, 64, _>(|index| index as u8);
+    let (a4, b4, c4, d4) = unsafe { ld4(data4.as_ptr()) };
+    if a4.to_bytes() != core::array::from_fn::<u8, 16, _>(|index| (index * 4) as u8)
+        || b4.to_bytes() != core::array::from_fn::<u8, 16, _>(|index| (index * 4 + 1) as u8)
+        || c4.to_bytes() != core::array::from_fn::<u8, 16, _>(|index| (index * 4 + 2) as u8)
+        || d4.to_bytes() != core::array::from_fn::<u8, 16, _>(|index| (index * 4 + 3) as u8)
+    {
+        return false;
+    }
+    let mut out4 = [0u8; 64];
+    unsafe { st4(out4.as_mut_ptr(), a4, b4, c4, d4) };
+    out4 == data4
 }
 
 fn table() -> bool {
@@ -941,6 +1054,15 @@ fn shuffle_ops() -> bool {
     if trn1(a, b).to_bytes() != [0, 16, 2, 18, 4, 20, 6, 22, 8, 24, 10, 26, 12, 28, 14, 30] {
         return false;
     }
+    if zip2(a, b).to_bytes() != [8, 24, 9, 25, 10, 26, 11, 27, 12, 28, 13, 29, 14, 30, 15, 31] {
+        return false;
+    }
+    if uzp2(a, b).to_bytes() != [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31] {
+        return false;
+    }
+    if trn2(a, b).to_bytes() != [1, 17, 3, 19, 5, 21, 7, 23, 9, 25, 11, 27, 13, 29, 15, 31] {
+        return false;
+    }
     let idx = V128::from_bytes(core::array::from_fn(|index| index as u8));
     if tbl(a, idx).to_bytes() != a.to_bytes() {
         return false;
@@ -1104,7 +1226,27 @@ unsafe fn crypto_crc_ops() -> bool {
     for byte in b"123456789" {
         crc = unsafe { crc32b(crc, *byte) };
     }
+    let value16 = 0x1234u16;
+    let value32 = 0x1234_5678u32;
+    let value64 = 0x0123_4567_89ab_cdefu64;
     crc == 0x340b_c6d9
+        && unsafe { crc32h(0xffff_ffff, value16) } == crc32_ref(0xffff_ffff, &value16.to_le_bytes())
+        && unsafe { crc32w(0xffff_ffff, value32) } == crc32_ref(0xffff_ffff, &value32.to_le_bytes())
+        && unsafe { crc32x(0xffff_ffff, value64) } == crc32_ref(0xffff_ffff, &value64.to_le_bytes())
+}
+
+fn crc32_ref(mut crc: u32, bytes: &[u8]) -> u32 {
+    for byte in bytes {
+        crc ^= u32::from(*byte);
+        for _ in 0..8 {
+            crc = if crc & 1 != 0 {
+                (crc >> 1) ^ 0xedb8_8320
+            } else {
+                crc >> 1
+            };
+        }
+    }
+    crc
 }
 
 fn neon_bitwise_ops() -> bool {

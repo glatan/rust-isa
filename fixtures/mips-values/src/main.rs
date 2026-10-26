@@ -181,6 +181,16 @@ fn arithmetic() -> u32 {
         {
             return 44;
         }
+        if nor_v(
+            u32x4([0x0000_000f, 0x0000_00f0, 0x0000_0f00, 0x0000_f000]),
+            u32x4([0x0000_00f0, 0x0000_000f, 0x0000_f000, 0x0000_0f00]),
+        ) != u32x4([0xffff_ff00, 0xffff_ff00, 0xffff_00ff, 0xffff_00ff])
+        {
+            return 90;
+        }
+        if splat_i32(-5) != i32x4([-5; 4]) {
+            return 91;
+        }
         if seq(u32x4([1, 2, 3, 4]), u32x4([1, 0, 4, 5])) != u32x4([u32::MAX, 0, 0, 0]) {
             return 45;
         }

@@ -69,6 +69,12 @@ use rust_isa::loongarch::simd::lsx::{
     vsat_wu, vssr, vssrarn_w_d, vssrln_w_d, vst,
 };
 
+use rust_isa::loongarch::simd::lasx::{
+    vext2xv_h_b, xvavgr, xvbitsel, xvexth, xvextl, xvfadd, xvfdiv, xvffint, xvfmax, xvfmin, xvfmul,
+    xvfsub, xvftint, xvld, xvldi, xvmax, xvmin, xvnor, xvpackev, xvpackod, xvrepl, xvsat, xvseq,
+    xvseqi, xvshuf, xvshuf4i, xvsle, xvslei, xvsll, xvslli, xvslt, xvslti, xvsra, xvsrai, xvsrl,
+    xvsrli, xvst,
+};
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {
     let code = run();
@@ -549,6 +555,108 @@ fn integer() -> bool {
         && lanes(mul(a, b)) == [10, 40, 90, 160]
         && lanes(kernel_add(&a, &b)) == [21, 42, 63, 84]
         && lanes(kernel_mul(&a, &b)) == [100, 800, 2700, 6400]
+}
+
+fn lasx_extra_ops() -> bool {
+    let a = i32x8([1, 2, 3, 4, 5, 6, 7, 8]);
+    let b = i32x8([8, 7, 6, 5, 4, 3, 2, 1]);
+    let ones = V256::from_bytes([0xff; 32]);
+    let zeros = V256::from_bytes([0; 32]);
+    unsafe {
+        if i32x8_lanes(xvmax(a, b)) != [8, 7, 6, 5, 5, 6, 7, 8]
+            || i32x8_lanes(xvmin(a, b)) != [1, 2, 3, 4, 4, 3, 2, 1]
+        {
+            return false;
+        }
+        if xvnor(V256::from_bytes([0xaa; 32]), V256::from_bytes([0xcc; 32])).to_bytes()
+            != [0x11; 32]
+            || xvavgr(V256::from_bytes([1; 32]), V256::from_bytes([3; 32])).to_bytes() != [2; 32]
+        {
+            return false;
+        }
+        if xvbitsel(a, b, ones) != a || xvbitsel(a, b, zeros) != b {
+            return false;
+        }
+        if xvrepl(7) != i32x8([7; 8]) {
+            return false;
+        }
+        if i32x8_lanes(xvsat::<4>(i32x8([-100, -16, 0, 15, 16, 100, -1, 1])))
+            != [-16, -16, 0, 15, 15, 15, -1, 1]
+        {
+            return false;
+        }
+        if i32x8_lanes(xvseq(a, a)) != [-1; 8]
+            || i32x8_lanes(xvseqi(a, 3)) != [0, 0, -1, 0, 0, 0, 0, 0]
+            || i32x8_lanes(xvsle(a, b)) != [-1, -1, -1, -1, 0, 0, 0, 0]
+            || i32x8_lanes(xvslt(a, b)) != [-1, -1, -1, 0, 0, 0, 0, 0]
+            || i32x8_lanes(xvslei(a, 4)) != [-1, -1, -1, -1, 0, 0, 0, 0]
+            || i32x8_lanes(xvslti(a, 4)) != [-1, -1, -1, 0, 0, 0, 0, 0]
+        {
+            return false;
+        }
+        if i32x8_lanes(xvslli::<1>(a)) != [2, 4, 6, 8, 10, 12, 14, 16]
+            || i32x8_lanes(xvsrli::<1>(i32x8([2, 4, 6, 8, 10, 12, 14, 16])))
+                != [1, 2, 3, 4, 5, 6, 7, 8]
+            || i32x8_lanes(xvsrai::<1>(i32x8([-2, -4, -6, -8, 2, 4, 6, 8])))
+                != [-1, -2, -3, -4, 1, 2, 3, 4]
+            || i32x8_lanes(xvsll(a, 1)) != [2, 4, 6, 8, 10, 12, 14, 16]
+            || i32x8_lanes(xvsrl(i32x8([2, 4, 6, 8, 10, 12, 14, 16]), 1))
+                != [1, 2, 3, 4, 5, 6, 7, 8]
+            || i32x8_lanes(xvsra(i32x8([-2, -4, -6, -8, 2, 4, 6, 8]), 1))
+                != [-1, -2, -3, -4, 1, 2, 3, 4]
+        {
+            return false;
+        }
+        let source = V256::from_bytes(core::array::from_fn(|index| index as u8));
+        let other = V256::from_bytes(core::array::from_fn(|index| index as u8 + 32));
+        let control = V256::from_bytes(core::array::from_fn(|index| index as u8 + 32));
+        if xvshuf(source, other, control).to_bytes() != other.to_bytes() {
+            return false;
+        }
+        let reversed = xvshuf4i::<0b0001_1011>(source).to_bytes();
+        if reversed
+            != core::array::from_fn::<u8, 32, _>(|index| {
+                let group = index / 4;
+                let lane = 3 - index % 4;
+                (group * 4 + lane) as u8
+            })
+        {
+            return false;
+        }
+        let mut output = [0u8; 32];
+        xvst(output.as_mut_ptr(), 0, xvld(source.as_ptr(), 0));
+        if output != source.to_bytes() || xvldi::<0>().to_bytes() != [0; 32] {
+            return false;
+        }
+        let fa = f32x8([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]);
+        let fb = f32x8([10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0]);
+        if f32x8_lanes(xvfadd(fa, fb)) != [11.0, 22.0, 33.0, 44.0, 55.0, 66.0, 77.0, 88.0]
+            || f32x8_lanes(xvfsub(fb, fa)) != [9.0, 18.0, 27.0, 36.0, 45.0, 54.0, 63.0, 72.0]
+            || f32x8_lanes(xvfmul(fa, fb)) != [10.0, 40.0, 90.0, 160.0, 250.0, 360.0, 490.0, 640.0]
+            || f32x8_lanes(xvfdiv(fb, fa)) != [10.0; 8]
+            || f32x8_lanes(xvfmax(fa, fb)) != [10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0]
+            || f32x8_lanes(xvfmin(fa, fb)) != [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]
+        {
+            return false;
+        }
+        if f32x8_lanes(xvffint(a)) != [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]
+            || i32x8_lanes(xvftint(f32x8([1.9, -1.9, 2.1, -2.1, 3.9, -3.9, 4.1, -4.1])))
+                != [1, -1, 2, -2, 3, -3, 4, -4]
+        {
+            return false;
+        }
+        let widened = vext2xv_h_b(V256::from_bytes(core::array::from_fn(|index| {
+            index as u8 + 1
+        })));
+        widened.to_bytes()
+            == core::array::from_fn::<u8, 32, _>(|index| {
+                if index % 2 == 0 {
+                    index as u8 / 2 + 1
+                } else {
+                    0
+                }
+            })
+    }
 }
 
 fn lasx_abs_ops() -> bool {
