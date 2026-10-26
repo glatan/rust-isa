@@ -43,7 +43,7 @@ make duplicates
 
 `make test-debian` は Debian イメージで `make test` を実行し、native doctest を `DOC_TEST=run` で実行する。既定の Arch イメージでは、native doctest は `--no-run` のコンパイル確認だけを行う。
 
-- `make docs-check`: Markdown の相対リンク、見出しアンカー、`docs/README.md` からの到達性、`scalable-mapping.md` のAPI名を検査する
+- `make docs-check`: Markdown の相対リンク、見出しアンカー、`docs/README.md` からの到達性、`scalable-mapping.md` のAPI名、文書中の`make`ターゲット名を検査する
 - `make fixtures-check`: `fixtures/` と `target-nested` の実ディレクトリが `fixture-matrix.md` と対応するか検査する
 - `make check-docs`: 全ターゲットの rustdoc を `-D warnings` で検査する。クロスターゲットは `-Z build-std=core` で core をビルドし、wasm32 は `simd128` / `relaxed-simd` と `wide-arithmetic` を有効にして検査する
 - `make test-host`: x86_64 のテストを SDE で実行し、cross-arch の値テストも実行する。`test-x86_64` と `test-cross` の合成である

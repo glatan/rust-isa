@@ -22,4 +22,4 @@ extension の実装ファイル（C や `asm!` を含む Rust）は、extension 
 
 C はリポジトリにコミットする。コンパイル済みのオブジェクトは同梱しない。`build.rs` は、arch ごとに対象 triple とフラグを選び、extension ごとの静的ライブラリとしてリンクする。命令の一覧は生成しない。
 
-実装方式は [実装方針](policy.md) に従う。
+実装方式は [実装方式](implementation.md) に従う。
