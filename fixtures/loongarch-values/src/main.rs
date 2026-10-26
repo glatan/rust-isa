@@ -68,12 +68,13 @@ use rust_isa::loongarch::simd::lsx::{
     vrepl_d, vrepl_h, vrepl_w, vreplve, vreplve_b, vreplve_d, vreplve_h, vreplve_w, vsat, vsat_w,
     vsat_wu, vssr, vssrarn_w_d, vssrln_w_d, vst,
 };
+use rust_isa::loongarch::simd::lsx::{vexth, vffint, vftint};
 
 use rust_isa::loongarch::simd::lasx::{
     vext2xv_h_b, xvavgr, xvbitsel, xvexth, xvextl, xvfadd, xvfdiv, xvffint, xvfmax, xvfmin, xvfmul,
     xvfsub, xvftint, xvld, xvldi, xvmax, xvmin, xvnor, xvpackev, xvpackod, xvrepl, xvsat, xvseq,
     xvseqi, xvshuf, xvshuf4i, xvsle, xvslei, xvsll, xvslli, xvslt, xvslti, xvsra, xvsrai, xvsrl,
-    xvsrli, xvst,
+    xvsrli, xvssr, xvst,
 };
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {
@@ -557,6 +558,25 @@ fn integer() -> bool {
         && lanes(kernel_mul(&a, &b)) == [100, 800, 2700, 6400]
 }
 
+fn lsx_more_ops() -> bool {
+    let source = V128::from_bytes(core::array::from_fn(|index| index as u8));
+    let expected_high = {
+        let mut bytes = [0u8; 16];
+        for lane in 0..8 {
+            let value = (source.to_bytes()[8 + lane] as i8 as i16).to_le_bytes();
+            bytes[lane * 2..lane * 2 + 2].copy_from_slice(&value);
+        }
+        bytes
+    };
+    if vexth(source).to_bytes() != expected_high {
+        return false;
+    }
+    if f32_lanes(vffint(i32x4([1, 2, 3, 4]))) != [1.0, 2.0, 3.0, 4.0] {
+        return false;
+    }
+    lanes(vftint(f32x4([1.9, -1.9, 2.1, -2.1]))) == [1, -1, 2, -2]
+}
+
 fn lasx_extra_ops() -> bool {
     let a = i32x8([1, 2, 3, 4, 5, 6, 7, 8]);
     let b = i32x8([8, 7, 6, 5, 4, 3, 2, 1]);
@@ -575,6 +595,27 @@ fn lasx_extra_ops() -> bool {
             return false;
         }
         if xvbitsel(a, b, ones) != a || xvbitsel(a, b, zeros) != b {
+            return false;
+        }
+        let bytes = V256::from_bytes(core::array::from_fn(|index| index as u8));
+        let other_bytes = V256::from_bytes(core::array::from_fn(|index| index as u8 + 32));
+        if xvpackev(bytes, other_bytes).to_bytes()
+            != core::array::from_fn::<u8, 32, _>(|index| {
+                if index % 2 == 0 {
+                    index as u8
+                } else {
+                    (index - 1 + 32) as u8
+                }
+            })
+            || xvpackod(bytes, other_bytes).to_bytes()
+                != core::array::from_fn::<u8, 32, _>(|index| {
+                    if index % 2 == 0 {
+                        (index + 1) as u8
+                    } else {
+                        (index + 32) as u8
+                    }
+                })
+        {
             return false;
         }
         if xvrepl(7) != i32x8([7; 8]) {
