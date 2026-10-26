@@ -241,6 +241,7 @@ mod masked_memory;
 mod moves;
 mod permute;
 mod round;
+mod sad;
 mod shuffle;
 mod v256;
 
@@ -250,6 +251,7 @@ pub use masked_memory::*;
 pub use moves::*;
 pub use permute::*;
 pub use round::*;
+pub use sad::*;
 pub use shuffle::*;
 pub use v256::*;
 

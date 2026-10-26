@@ -1,7 +1,6 @@
 //! Shuffle and unpack instructions.
 
 use super::V256;
-use crate::x86::simd::sse2::V128;
 use core::arch::asm;
 
 unsafe extern "C" {
@@ -9,7 +8,6 @@ unsafe extern "C" {
     fn rust_isa_avx_vunpckhps(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_avx_vunpcklpd(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_avx_vunpckhpd(a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_avx_vpsadbw(a: *const u8, b: *const u8, out: *mut u8);
 }
 
 macro_rules! binary {
@@ -51,23 +49,6 @@ binary!(
     rust_isa_avx_vunpckhpd,
     "Interleave the high 64-bit float lanes of `a` and `b`."
 );
-/// `vpsadbw`
-///
-/// Sum the absolute differences of each 8-byte block into a 64-bit lane.
-///
-/// # Safety
-///
-/// The caller must enable AVX.
-#[target_feature(enable = "avx")]
-#[inline]
-pub unsafe fn vpsadbw(a: V128, b: V128) -> V128 {
-    let mut out = V128::from_bytes([0; 16]);
-    unsafe {
-        rust_isa_avx_vpsadbw(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
-    }
-    out
-}
-
 macro_rules! shuffle {
     ($name:ident, $mnemonic:literal, $doc:literal) => {
         #[doc = $doc]
