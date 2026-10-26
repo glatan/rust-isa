@@ -61,11 +61,6 @@
 //! let _ = unsafe { MmaAccumulator::new() };
 //! ```
 //!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
-//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

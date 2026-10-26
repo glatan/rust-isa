@@ -67,14 +67,7 @@
 //! let _ = unsafe { AmxGuard::enter(&config) };
 //! let _ = TileConfig::builder();
 //! let _ = TileConfig::from_bytes([0; 64]);
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

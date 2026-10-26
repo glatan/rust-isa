@@ -98,11 +98,6 @@
 //! let _ = unsafe { vfnmsub231ss(v128, v128, v128) };
 //! ```
 //!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
-//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

@@ -38,11 +38,6 @@
 //! let _ = unsafe { fmls_f16(v128, v128, v128) };
 //! ```
 //!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
-//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

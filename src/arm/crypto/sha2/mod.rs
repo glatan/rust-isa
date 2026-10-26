@@ -43,11 +43,6 @@
 //! let _ = unsafe { sha256su1(v128, v128, v128) };
 //! ```
 //!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
-//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

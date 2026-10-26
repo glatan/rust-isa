@@ -35,14 +35,7 @@
 //! let v512 = V512::from_bytes([0; 64]);
 //!
 //! let _ = unsafe { pclmulqdq::<0>(v128, v128) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

@@ -51,14 +51,7 @@
 //! let _ = unsafe { vpermb(v512, v512) };
 //! let _ = unsafe { vpermi2b(v512, v512, v512) };
 //! let _ = unsafe { vpermt2b(v512, v512, v512) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

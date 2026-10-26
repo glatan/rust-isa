@@ -65,11 +65,6 @@
 //! let _ = unsafe { vupkzl::<0>(v128) };
 //! ```
 //!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
-//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

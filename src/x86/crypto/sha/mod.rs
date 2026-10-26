@@ -44,11 +44,6 @@
 //! let _ = unsafe { sha256rnds2(v128, v128, v128) };
 //! ```
 //!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
-//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

@@ -40,14 +40,7 @@
 //!
 //! let _ = unsafe { gf2p8affineqb::<0>(v128, v128) };
 //! let _ = unsafe { gf2p8mulb(v128, v128) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

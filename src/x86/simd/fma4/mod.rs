@@ -70,14 +70,7 @@
 //! let _ = unsafe { vfnmsubps(v128, v128, v128) };
 //! let _ = unsafe { vfnmsubsd(v128, v128, v128) };
 //! let _ = unsafe { vfnmsubss(v128, v128, v128) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

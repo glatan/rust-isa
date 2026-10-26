@@ -53,14 +53,7 @@
 //!
 //! let _ = unsafe { vsm4key4(v128, v128) };
 //! let _ = unsafe { vsm4rnds4(v128, v128) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

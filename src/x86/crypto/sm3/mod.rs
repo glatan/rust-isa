@@ -53,14 +53,7 @@
 //! let _ = unsafe { vsm3msg1(v128, v128, v128) };
 //! let _ = unsafe { vsm3msg2(v128, v128, v128) };
 //! let _ = unsafe { vsm3rnds2::<0>(v128, v128, v128) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

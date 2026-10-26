@@ -64,14 +64,7 @@
 //! let _ = unsafe { tcvtrowps2phl_imm::<0, 0>(&amx_guard) };
 //! let _ = unsafe { tilemovrow::<0>(&amx_guard, 0) };
 //! let _ = unsafe { tilemovrow_imm::<0, 0>(&amx_guard) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

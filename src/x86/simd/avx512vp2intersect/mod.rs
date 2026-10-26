@@ -53,14 +53,7 @@
 //!
 //! let _ = unsafe { vp2intersectd(v512, v512) };
 //! let _ = unsafe { vp2intersectq(v512, v512) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

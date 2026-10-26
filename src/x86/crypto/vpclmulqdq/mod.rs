@@ -51,14 +51,7 @@
 //!
 //! let _ = unsafe { vpclmulqdq_v256(v256, v256, 0) };
 //! let _ = unsafe { vpclmulqdq_v512(v512, v512, 0) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

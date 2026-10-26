@@ -45,11 +45,6 @@
 //! #[cfg(target_arch = "x86_64")] let _ = unsafe { adox_u64(0, 0, false) };
 //! ```
 //!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
-//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

@@ -106,14 +106,7 @@
 //! let _ = unsafe { vscalefss(v128, v128) };
 //! let _ = unsafe { vxorpd(v512, v512) };
 //! let _ = unsafe { vxorps(v512, v512) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

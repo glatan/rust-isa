@@ -110,14 +110,7 @@
 //! let _ = unsafe { subw(v128, v128) };
 //! let _ = unsafe { uzp(v128, v128) };
 //! let _ = unsafe { zip(v128, v128) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

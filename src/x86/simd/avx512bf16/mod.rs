@@ -56,14 +56,7 @@
 //!
 //! let _ = unsafe { vcvtneps2bf16(v512) };
 //! let _ = unsafe { vdpbf16ps(v512, v512, v512) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

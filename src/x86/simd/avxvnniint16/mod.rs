@@ -63,14 +63,7 @@
 //! let _ = unsafe { vpdpwuud_v128(v128, v128, v128) };
 //! let _ = unsafe { vpdpwuuds(v256, v256, v256) };
 //! let _ = unsafe { vpdpwuuds_v128(v128, v128, v128) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

@@ -145,14 +145,7 @@
 //! let _ = unsafe { vsqrtss_v128(v128) };
 //! let _ = unsafe { vucomisd_v128(v128, v128) };
 //! let _ = unsafe { vucomiss_v128(v128, v128) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

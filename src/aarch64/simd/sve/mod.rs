@@ -642,11 +642,6 @@
 //! let _ = unsafe { zip2_i32(&[0; 4], &[0; 4], &mut[0; 4]) };
 //! ```
 //!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
-//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

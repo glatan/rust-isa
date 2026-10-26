@@ -51,11 +51,6 @@
 //! let _ = unsafe { vshasigmaw::<0, 0>(v128) };
 //! ```
 //!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
-//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

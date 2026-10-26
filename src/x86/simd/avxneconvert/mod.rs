@@ -57,14 +57,7 @@
 //! let _ = unsafe { vcvtneobf162ps(v256) };
 //! let _ = unsafe { vcvtneoph2ps(v256) };
 //! let _ = unsafe { vcvtneps2bf16(v256) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

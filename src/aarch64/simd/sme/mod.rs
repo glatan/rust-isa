@@ -48,11 +48,6 @@
 //! let _ = unsafe { SmeGuard::enter() };
 //! ```
 //!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
-//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

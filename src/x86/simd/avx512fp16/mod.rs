@@ -96,14 +96,7 @@
 //! let _ = unsafe { vsqrtph(v512) };
 //! let _ = unsafe { vsubph(v512, v512) };
 //! let _ = unsafe { vucomish(v128, v128) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

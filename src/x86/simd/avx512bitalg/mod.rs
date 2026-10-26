@@ -56,14 +56,7 @@
 //! let _ = unsafe { vpopcntb(v512) };
 //! let _ = unsafe { vpopcntw(v512) };
 //! let _ = unsafe { vpshufbitqmb(v512, v512) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

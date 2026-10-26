@@ -39,11 +39,6 @@
 //! let _ = unsafe { sm4ks::<0>(0, 0) };
 //! ```
 //!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
-//!
 //! <!-- doctest-inventory:start -->
 //!
 //! # Instruction inventory

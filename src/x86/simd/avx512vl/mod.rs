@@ -267,14 +267,7 @@
 //! let _ = unsafe { vscatterqpd_v256(storage.0.as_mut_ptr().cast(), v256, v256, 0) };
 //! let _ = unsafe { vscatterqps_v128(storage.0.as_mut_ptr().cast(), v128, v128, 0) };
 //! let _ = unsafe { vscatterqps_v256(storage.0.as_mut_ptr().cast(), v256, v128, 0) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

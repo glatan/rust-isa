@@ -51,14 +51,7 @@
 //!
 //! let _ = unsafe { tileloaddrs::<0>(&amx_guard, storage.0.as_ptr().cast(), 0) };
 //! let _ = unsafe { tileloaddrst1::<0>(&amx_guard, storage.0.as_ptr().cast(), 0) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

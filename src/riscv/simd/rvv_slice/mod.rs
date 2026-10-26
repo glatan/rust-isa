@@ -34,9 +34,9 @@
 //! <details>
 //! <summary>Compile-only instruction examples</summary>
 //!
-//! # Compile-only instruction examples
+//! # Instruction examples
 //!
-//! ```no_run
+//! ```
 //! use rust_isa::riscv::simd::rvv_slice::*;
 //! use rust_isa::riscv::simd::rvv::V128;
 //!
@@ -74,11 +74,6 @@
 //! let _ = unsafe { sub_f32(&[0.0f32; 4], &[0.0f32; 4], &mut[0.0f32; 4]) };
 //! let _ = unsafe { sub_i32(&[0; 4], &[0; 4], &mut[0; 4]) };
 //! ```
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!

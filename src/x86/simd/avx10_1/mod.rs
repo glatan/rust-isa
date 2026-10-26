@@ -54,9 +54,6 @@
 //! struct Aligned([u8; 4096]);
 //! let mut storage = Aligned([0; 4096]);
 //!
-//! #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcmpb_v512::<0>(v512, v512) };
-//! #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcmpub_v512::<0>(v512, v512) };
-//!
 //! let _ = unsafe { vaddps_v256(v256, v256) };
 //! let _ = unsafe { vaddps_v512(v512, v512) };
 //! let _ = unsafe { vcmppd_v256::<0>(v256, v256) };
@@ -200,11 +197,13 @@
 //! let _ = unsafe { vpandq_v256(v256, v256) };
 //! let _ = unsafe { vpandq_v512(v512, v512) };
 //! let _ = unsafe { vpcmpb_v256::<0>(v256, v256) };
+//! #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcmpb_v512::<0>(v512, v512) };
 //! let _ = unsafe { vpcmpd_v256::<0>(v256, v256) };
 //! let _ = unsafe { vpcmpd_v512::<0>(v512, v512) };
 //! let _ = unsafe { vpcmpq_v256::<0>(v256, v256) };
 //! let _ = unsafe { vpcmpq_v512::<0>(v512, v512) };
 //! let _ = unsafe { vpcmpub_v256::<0>(v256, v256) };
+//! #[cfg(target_arch = "x86_64")] let _ = unsafe { vpcmpub_v512::<0>(v512, v512) };
 //! let _ = unsafe { vpcmpud_v256::<0>(v256, v256) };
 //! let _ = unsafe { vpcmpud_v512::<0>(v512, v512) };
 //! let _ = unsafe { vpcmpuq_v256::<0>(v256, v256) };
@@ -349,14 +348,7 @@
 //! let _ = unsafe { vsqrtpd_v512(v512) };
 //! let _ = unsafe { vsqrtps_v256(v256) };
 //! let _ = unsafe { vsqrtps_v512(v512) };
-//!
 //! ```
-//!
-//!
-//! </details>
-//!
-//! <details>
-//! <summary>Instruction inventory</summary>
 //!
 //! <!-- doctest-inventory:start -->
 //!
