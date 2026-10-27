@@ -30,6 +30,12 @@
 //! let _ = unsafe { sm4ed::<4>(1, 2) };
 //! ```
 //!
+//! ```compile_fail
+//! use rust_isa::riscv::crypto::zks::sm4ks;
+//!
+//! let _ = unsafe { sm4ks::<4>(1, 2) };
+//! ```
+//!
 //! <details>
 //! <summary>Instruction examples</summary>
 //!

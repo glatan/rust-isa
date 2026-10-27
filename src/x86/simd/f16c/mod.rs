@@ -25,6 +25,16 @@
 //! assert_eq!(unsafe { vcvtph2ps(v) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! # Compile-time rounding-mode check
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::f16c::vcvtps2ph;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vcvtps2ph::<5>(v) };
+//! ```
+//!
 //! <details>
 //! <summary>Instruction examples</summary>
 //!

@@ -17,6 +17,14 @@
 //! assert_eq!(revb(0x0102_0304_0506_0708), 0x0807_0605_0403_0201);
 //! ```
 //!
+//! # Compile-time bit-range check
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::integer::bitmanip::bstrpick;
+//!
+//! let _ = bstrpick::<64, 0>(0);
+//! ```
+//!
 //! <details>
 //! <summary>Instruction examples</summary>
 //!
