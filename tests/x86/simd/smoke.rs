@@ -606,7 +606,7 @@ fn avx10_1_smoke() {
 
 #[test]
 fn avx10_2_smoke() {
-    if !(avx10_2_available()) {
+    if !(avx10_2_available() && f_enabled()) {
         return;
     }
     let mut storage = Aligned([0u8; 4096]);
