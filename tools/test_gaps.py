@@ -105,6 +105,11 @@ def main() -> None:
         action="store_true",
         help="print missing function names, not only counts",
     )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="exit nonzero when any public function is unreferenced",
+    )
     args = parser.parse_args()
 
     arches = [args.arch] if args.arch else sorted(ARCHES)
@@ -113,13 +118,18 @@ def main() -> None:
         print(json.dumps(reports, indent=2))
         return
 
+    failed = False
     for entry in reports:
         missing = entry["missing"]
         assert isinstance(missing, list)
         print(f"{entry['arch']}: {len(missing)} missing / {entry['public']} public")
-        if args.names:
+        if missing:
+            failed = True
+        if args.names or args.check:
             for name in missing:
                 print(f"  {name}")
+    if args.check and failed:
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

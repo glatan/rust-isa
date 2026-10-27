@@ -89,7 +89,7 @@ doctest は命令の意味論を網羅しない。inventory は公開パスの�
 
 ## テスト在庫
 
-`make test-gaps` は、公開関数の名前が値テストまたは fixture から参照されているかを一覧する。名前ベースの保守的な検査であり、意味論の網羅は保証しない。現在は全 arch で未参照 0。
+`make test-gaps` は、公開関数の名前が値テストまたは fixture から参照されているかを一覧する。`make test-gaps-check` は未参照があれば失敗し、`make inventory-check` から実行される。名前ベースの保守的な検査であり、意味論の網羅は保証しない。現在は全 arch で未参照 0。
 
 - ARM、RISC-V、MIPS、PowerPC、s390x、wasm32、LoongArch: 値テストで参照する。
 - AArch64: SVE mnemonic 層は `fixtures/aarch64-values` の smoke test で全関数を実行する。NEON/FP16 の alias は値テストまたは smoke test で参照する。
