@@ -103,7 +103,7 @@ SVE と RVV は操作単位の API を正とする。smoke test は全関数の�
 
 - i686 の AES / SHA / GFNI: `asm!` が i686 でリンクできない。値テストは x86_64 で実行する。
 - SDE の SM4 / AVX-VNNI: SDE の既知の不一致がある。`make test-amd` は SDE を介さず、CPU がこれらの feature を持つ場合に実行する。
-- AMX: AMX-INT8 のゼロ累算までは実行する。非ゼロ行列積の KAT は AMX 実機が必要である。
+- AMX: AMX-INT8 の全 1 入力 KAT までは実行する。他の行列積の KAT は AMX 実機が必要である。
 - AMD の FMA4: CPU が FMA4 を持つ場合だけ `make test-amd` で実行される。
 
 ## 既知の欠落
