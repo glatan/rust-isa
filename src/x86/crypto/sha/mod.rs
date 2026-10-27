@@ -201,21 +201,40 @@ pub unsafe fn sha256rnds2(a: V128, b: V128, k: V128) -> V128 {
 #[target_feature(enable = "sha")]
 #[inline]
 pub unsafe fn sha1rnds4<const IMM: u8>(a: V128, b: V128) -> V128 {
-    let mut output = V128::from_bytes([0; 16]);
-    unsafe {
-        asm!(
-            "movdqu xmm0, [{a}]",
-            "movdqu xmm1, [{b}]",
-            "sha1rnds4 xmm0, xmm1, {imm}",
-            "movdqu [{output}], xmm0",
-            a = in(reg) a.as_ptr(),
-            b = in(reg) b.as_ptr(),
-            output = in(reg) output.as_mut_ptr(),
-            imm = const IMM,
-            out("xmm0") _,
-            out("xmm1") _,
-            options(nostack, preserves_flags)
-        );
+    #[cfg(target_arch = "x86_64")]
+    {
+        let a = u128::from_le_bytes(a.to_bytes());
+        let b = u128::from_le_bytes(b.to_bytes());
+        let output: u128;
+        unsafe {
+            asm!(
+                "sha1rnds4 {output}, {b}, {imm}",
+                output = inout(xmm_reg) a => output,
+                b = in(xmm_reg) b,
+                imm = const IMM,
+                options(nostack, nomem, pure)
+            );
+        }
+        V128::from_bytes(output.to_le_bytes())
     }
-    output
+    #[cfg(target_arch = "x86")]
+    {
+        let mut output = V128::from_bytes([0; 16]);
+        unsafe {
+            asm!(
+                "movdqu xmm0, [{a}]",
+                "movdqu xmm1, [{b}]",
+                "sha1rnds4 xmm0, xmm1, {imm}",
+                "movdqu [{output}], xmm0",
+                a = in(reg) a.as_ptr(),
+                b = in(reg) b.as_ptr(),
+                output = in(reg) output.as_mut_ptr(),
+                imm = const IMM,
+                out("xmm0") _,
+                out("xmm1") _,
+                options(nostack, preserves_flags)
+            );
+        }
+        output
+    }
 }
