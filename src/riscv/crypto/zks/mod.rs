@@ -22,6 +22,14 @@
 //! assert_ne!(unsafe { sm3p0(1) }, 1);
 //! ```
 //!
+//! # Compile-time byte-select check
+//!
+//! ```compile_fail
+//! use rust_isa::riscv::crypto::zks::sm4ed;
+//!
+//! let _ = unsafe { sm4ed::<4>(1, 2) };
+//! ```
+//!
 //! <details>
 //! <summary>Instruction examples</summary>
 //!
