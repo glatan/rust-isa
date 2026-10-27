@@ -85,11 +85,11 @@ AMD Ryzen 9 9900X3D（Zen 5）で `make test-amd` を実行し、181 tests が p
 
 ### 行列
 
-| extension    | 実装済み命令                                                                                                                                                                                                                     | 未実装命令 | 値テスト                       |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------------------------ |
-| `amx-tile`   | `ldtilecfg`, `tilezero`, `sttilecfg`, `tileloadd`, `tileloaddt1`, `tilestored`, `tdpbf16ps`, `tdpbssd`, `tdpbsud`, `tdpbuud`, `tdpfp16ps`, `tcmmimfp16ps`, `tcmmrlfp16ps`                                                        | なし       | AMX 実機では INT8 累算まで実行 |
-| `amx-avx512` | `tilemovrow`, `tilemovrow_imm`, `tcvtrowd2ps`, `tcvtrowd2ps_imm`, `tcvtrowps2bf16h`, `tcvtrowps2bf16h_imm`, `tcvtrowps2bf16l`, `tcvtrowps2bf16l_imm`, `tcvtrowps2phh`, `tcvtrowps2phh_imm`, `tcvtrowps2phl`, `tcvtrowps2phl_imm` | なし       | AMX 実機では未実行             |
-| `amx-movrs`  | `tileloaddrs`, `tileloaddrst1`                                                                                                                                                                                                   | なし       | AMX 実機では未実行             |
+| extension    | 実装済み命令                                                                                                                                                                                                                     | 未実装命令 | 値テスト                                 |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------------------------------- |
+| `amx-tile`   | `ldtilecfg`, `tilezero`, `sttilecfg`, `tileloadd`, `tileloaddt1`, `tilestored`, `tdpbf16ps`, `tdpbssd`, `tdpbsud`, `tdpbuud`, `tdpfp16ps`, `tcmmimfp16ps`, `tcmmrlfp16ps`                                                        | なし       | SDE で INT8 / BF16 / FP16 / COMPLEX 累算 |
+| `amx-avx512` | `tilemovrow`, `tilemovrow_imm`, `tcvtrowd2ps`, `tcvtrowd2ps_imm`, `tcvtrowps2bf16h`, `tcvtrowps2bf16h_imm`, `tcvtrowps2bf16l`, `tcvtrowps2bf16l_imm`, `tcvtrowps2phh`, `tcvtrowps2phh_imm`, `tcvtrowps2phl`, `tcvtrowps2phl_imm` | なし       | AMX 実機では未実行                       |
+| `amx-movrs`  | `tileloaddrs`, `tileloaddrst1`                                                                                                                                                                                                   | なし       | AMX 実機では未実行                       |
 
 `amx-int8`、`amx-bf16`、`amx-fp16`、`amx-complex` は、`amx-tile` の `tdp*` / `tcmm*` を再公開する。`amx-avx512` はタイル行の `zmm` への移動と変換、`amx-movrs` は read-shared ヒント付きのタイルロードを提供する。どちらも `AmxGuard` を要求する。
 

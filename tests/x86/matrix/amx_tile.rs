@@ -124,6 +124,27 @@ fn amx_int8_available() -> bool {
     leaf.edx & (1 << 25) != 0
 }
 
+fn amx_bf16_available() -> bool {
+    use core::arch::x86_64::__cpuid_count;
+
+    let leaf = __cpuid_count(7, 0);
+    leaf.edx & (1 << 22) != 0
+}
+
+fn amx_fp16_available() -> bool {
+    use core::arch::x86_64::__cpuid_count;
+
+    let leaf = __cpuid_count(7, 1);
+    leaf.eax & (1 << 21) != 0
+}
+
+fn amx_complex_available() -> bool {
+    use core::arch::x86_64::__cpuid_count;
+
+    let leaf = __cpuid_count(7, 1);
+    leaf.edx & (1 << 8) != 0
+}
+
 #[test]
 fn amx_int8_ones_accumulate() {
     if !amx_tile_available() || !amx_int8_available() {
@@ -152,5 +173,111 @@ fn amx_int8_ones_accumulate() {
     }
     for lane in out.chunks_exact(4) {
         assert_eq!(i32::from_le_bytes(lane.try_into().unwrap()), 64);
+    }
+}
+
+#[test]
+fn amx_bf16_ones_accumulate() {
+    if !amx_tile_available() || !amx_bf16_available() {
+        return;
+    }
+    use rust_isa::x86::matrix::amx_tile::{
+        AmxGuard, TileConfig, tdpbf16ps, tileloadd, tilestored, tilezero,
+    };
+
+    let config = TileConfig::builder()
+        .tile::<0>(16, 64)
+        .tile::<1>(16, 64)
+        .tile::<2>(16, 64)
+        .build();
+    // bfloat16 1.0 is 0x3f80.
+    let a: [u8; 1024] = core::array::from_fn(|index| if index % 2 == 0 { 0x80 } else { 0x3f });
+    let b = a;
+    let mut out = [0u8; 1024];
+    unsafe {
+        let guard = AmxGuard::enter(&config);
+        tileloadd::<0>(&guard, a.as_ptr(), 64);
+        tileloadd::<1>(&guard, b.as_ptr(), 64);
+        tilezero::<2>(&guard);
+        tdpbf16ps::<2, 0, 1>(&guard);
+        tdpbf16ps::<2, 0, 1>(&guard);
+        tilestored::<2>(&guard, out.as_mut_ptr(), 64);
+    }
+    for lane in out.chunks_exact(4) {
+        assert_eq!(f32::from_le_bytes(lane.try_into().unwrap()), 64.0);
+    }
+}
+
+#[test]
+fn amx_fp16_ones_accumulate() {
+    if !amx_tile_available() || !amx_fp16_available() {
+        return;
+    }
+    use rust_isa::x86::matrix::amx_tile::{
+        AmxGuard, TileConfig, tdpfp16ps, tileloadd, tilestored, tilezero,
+    };
+
+    let config = TileConfig::builder()
+        .tile::<0>(16, 64)
+        .tile::<1>(16, 64)
+        .tile::<2>(16, 64)
+        .build();
+    // binary16 1.0 is 0x3c00.
+    let a: [u8; 1024] = core::array::from_fn(|index| if index % 2 == 0 { 0x00 } else { 0x3c });
+    let b = a;
+    let mut out = [0u8; 1024];
+    unsafe {
+        let guard = AmxGuard::enter(&config);
+        tileloadd::<0>(&guard, a.as_ptr(), 64);
+        tileloadd::<1>(&guard, b.as_ptr(), 64);
+        tilezero::<2>(&guard);
+        tdpfp16ps::<2, 0, 1>(&guard);
+        tdpfp16ps::<2, 0, 1>(&guard);
+        tilestored::<2>(&guard, out.as_mut_ptr(), 64);
+    }
+    for lane in out.chunks_exact(4) {
+        assert_eq!(f32::from_le_bytes(lane.try_into().unwrap()), 64.0);
+    }
+}
+
+#[test]
+fn amx_complex_ones_accumulate() {
+    if !amx_tile_available() || !amx_complex_available() {
+        return;
+    }
+    use rust_isa::x86::matrix::amx_tile::{
+        AmxGuard, TileConfig, tcmmimfp16ps, tcmmrlfp16ps, tileloadd, tilestored, tilezero,
+    };
+
+    let config = TileConfig::builder()
+        .tile::<0>(16, 64)
+        .tile::<1>(16, 64)
+        .tile::<2>(16, 64)
+        .tile::<3>(16, 64)
+        .build();
+    // Each dword is complex binary16 1.0 + 0.0i.
+    let a: [u8; 1024] = core::array::from_fn(|index| match index % 4 {
+        1 => 0x3c,
+        _ => 0,
+    });
+    let b = a;
+    let mut real = [0u8; 1024];
+    let mut imaginary = [0u8; 1024];
+    unsafe {
+        let guard = AmxGuard::enter(&config);
+        tileloadd::<0>(&guard, a.as_ptr(), 64);
+        tileloadd::<1>(&guard, b.as_ptr(), 64);
+        tilezero::<2>(&guard);
+        tcmmrlfp16ps::<2, 0, 1>(&guard);
+        tilestored::<2>(&guard, real.as_mut_ptr(), 64);
+        tilezero::<3>(&guard);
+        tcmmimfp16ps::<3, 0, 1>(&guard);
+        tilestored::<3>(&guard, imaginary.as_mut_ptr(), 64);
+    }
+    for lane in real.chunks_exact(4) {
+        assert_eq!(f32::from_le_bytes(lane.try_into().unwrap()), 16.0);
+    }
+    for lane in imaginary.chunks_exact(4) {
+        assert_eq!(f32::from_le_bytes(lane.try_into().unwrap()), 0.0);
     }
 }

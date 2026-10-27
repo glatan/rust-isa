@@ -102,7 +102,7 @@ SVE と RVV は操作単位の API を正とする。smoke test は全関数の�
 次の項目は、コード側のテスト追加だけでは解消できない。
 
 - SDE の SM4 / AVX-VNNI: SDE の既知の不一致がある。`make test-amd` は SDE を介さず、CPU がこれらの feature を持つ場合に実行する。AMD Ryzen 9 9900X3D では AVX-VNNI を実行し、SM4 は CPU 非対応のためスキップした。
-- AMX: AMX-INT8 の全 1 入力 KAT までは実行する。他の行列積の KAT は AMX 実機が必要である。
+- AMX: AMX-INT8 / BF16 / FP16 / COMPLEX の全 1 入力 KAT を SDE で実行する。AMX-AVX512 / AMX-MOVRS の値テストは実機が必要である。
 - AMD の FMA4: CPU が FMA4 を持つ場合だけ `make test-amd` で実行される。
 
 ## 既知の欠落
