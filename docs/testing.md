@@ -89,14 +89,13 @@ doctest は命令の意味論を網羅しない。inventory は公開パスの�
 
 ## テスト在庫
 
-`make test-gaps` は、公開関数の名前が値テストまたは fixture から参照されているかを一覧する。名前ベースの保守的な検査であり、意味論の網羅は保証しない。現在の在庫は次のとおり。
+`make test-gaps` は、公開関数の名前が値テストまたは fixture から参照されているかを一覧する。名前ベースの保守的な検査であり、意味論の網羅は保証しない。現在は全 arch で未参照 0。
 
-- ARM、RISC-V、MIPS、PowerPC、s390x、wasm32: 未参照 0。
-- LoongArch: `vfcmp_d`、`vfcvt`、`vssrarn_wu_du`、`xvfcmp`、`xvfcvt`。
-- AArch64: SVE の mnemonic 層（`widening`、`integer_arith`、`float_arith`、`structure`、`saturating`、`load`、`narrowing`、`reduce` など）と一部の NEON/FP16 alias。
-- x86: AVX10.1、AVX512VL、AVX10.2、AVX512FP16 の alias と variant。
+- ARM、RISC-V、MIPS、PowerPC、s390x、wasm32、LoongArch: 値テストで参照する。
+- AArch64: SVE mnemonic 層は `fixtures/aarch64-values` の smoke test で全関数を実行する。NEON/FP16 の alias は値テストまたは smoke test で参照する。
+- x86: AVX10.1 / AVX512VL / AVX10.2 / AVX512FP16 の alias と variant は `tests/x86/simd/smoke.rs` で実行する。CPU が feature を持たない場合はその test をスキップする。
 
-SVE と RVV は操作単位の API を正とし、固定長命令ごとの値テストを要求しない。`test-gaps` の出力は、次に値を足す候補の一覧として使う。
+SVE と RVV は操作単位の API を正とする。smoke test は全関数の実行経路を確認するが、命令の意味論は各 arch の値テストが担う。
 
 ## 既知の欠落
 

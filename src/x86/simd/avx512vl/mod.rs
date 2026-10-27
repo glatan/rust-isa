@@ -133,7 +133,6 @@
 //! let _ = unsafe { vpdpwssds_v256(v256, v256, v256) };
 //! let _ = unsafe { vpermb_v128(v128, v128) };
 //! let _ = unsafe { vpermb_v256(v256, v256) };
-//! let _ = unsafe { vpermd_v128(v128, v128) };
 //! let _ = unsafe { vpermd_v256(v256, v256) };
 //! let _ = unsafe { vpermi2b_v128(v128, v128, v128) };
 //! let _ = unsafe { vpermi2b_v256(v256, v256, v256) };
@@ -141,7 +140,6 @@
 //! let _ = unsafe { vpermilpd_v256::<0>(v256) };
 //! let _ = unsafe { vpermilps_v128::<0>(v128) };
 //! let _ = unsafe { vpermilps_v256::<0>(v256) };
-//! let _ = unsafe { vpermq_v128(v128, v128) };
 //! let _ = unsafe { vpermq_v256(v256, v256) };
 //! let _ = unsafe { vpermt2b_v128(v128, v128, v128) };
 //! let _ = unsafe { vpermt2b_v256(v256, v256, v256) };
@@ -360,7 +358,6 @@
 //! use rust_isa::x86::simd::avx512vl::vpdpwssds_v256 as _;
 //! use rust_isa::x86::simd::avx512vl::vpermb_v128 as _;
 //! use rust_isa::x86::simd::avx512vl::vpermb_v256 as _;
-//! use rust_isa::x86::simd::avx512vl::vpermd_v128 as _;
 //! use rust_isa::x86::simd::avx512vl::vpermd_v256 as _;
 //! use rust_isa::x86::simd::avx512vl::vpermi2b_v128 as _;
 //! use rust_isa::x86::simd::avx512vl::vpermi2b_v256 as _;
@@ -368,7 +365,6 @@
 //! use rust_isa::x86::simd::avx512vl::vpermilpd_v256 as _;
 //! use rust_isa::x86::simd::avx512vl::vpermilps_v128 as _;
 //! use rust_isa::x86::simd::avx512vl::vpermilps_v256 as _;
-//! use rust_isa::x86::simd::avx512vl::vpermq_v128 as _;
 //! use rust_isa::x86::simd::avx512vl::vpermq_v256 as _;
 //! use rust_isa::x86::simd::avx512vl::vpermt2b_v128 as _;
 //! use rust_isa::x86::simd::avx512vl::vpermt2b_v256 as _;
@@ -2227,34 +2223,6 @@ pub unsafe fn vpmovq2m_v256(a: V256) -> u8 {
     unsafe { rust_isa_avx512vl_vpmovq2m_v256(a.as_ptr()) }
 }
 
-/// `vpermd_v128`
-/// Permute the integer lanes with the indices in `idx`.
-///
-/// # Safety
-///
-/// The caller must enable AVX-512F, AVX-512VL.
-#[target_feature(enable = "avx512f")]
-#[target_feature(enable = "avx512vl")]
-#[inline]
-pub unsafe fn vpermd_v128(a: V128, idx: V128) -> V128 {
-    let mut out = V128::from_bytes([0; 16]);
-    unsafe {
-        asm!(
-            "vmovdqu xmm0, [{a}]",
-            "vmovdqu xmm1, [{idx}]",
-            "vpermd xmm0, xmm1, xmm0",
-            "vmovdqu [{out}], xmm0",
-            a = in(reg) a.as_ptr(),
-            idx = in(reg) idx.as_ptr(),
-            out = in(reg) out.as_mut_ptr(),
-            out("xmm0") _,
-            out("xmm1") _,
-            options(nostack, preserves_flags),
-        );
-    }
-    out
-}
-
 /// `vpermd_v256`
 /// Permute the integer lanes with the indices in `idx`.
 ///
@@ -2277,34 +2245,6 @@ pub unsafe fn vpermd_v256(a: V256, idx: V256) -> V256 {
             out = in(reg) out.as_mut_ptr(),
             out("ymm0") _,
             out("ymm1") _,
-            options(nostack, preserves_flags),
-        );
-    }
-    out
-}
-
-/// `vpermq_v128`
-/// Permute the integer lanes with the indices in `idx`.
-///
-/// # Safety
-///
-/// The caller must enable AVX-512F, AVX-512VL.
-#[target_feature(enable = "avx512f")]
-#[target_feature(enable = "avx512vl")]
-#[inline]
-pub unsafe fn vpermq_v128(a: V128, idx: V128) -> V128 {
-    let mut out = V128::from_bytes([0; 16]);
-    unsafe {
-        asm!(
-            "vmovdqu xmm0, [{a}]",
-            "vmovdqu xmm1, [{idx}]",
-            "vpermq xmm0, xmm1, xmm0",
-            "vmovdqu [{out}], xmm0",
-            a = in(reg) a.as_ptr(),
-            idx = in(reg) idx.as_ptr(),
-            out = in(reg) out.as_mut_ptr(),
-            out("xmm0") _,
-            out("xmm1") _,
             options(nostack, preserves_flags),
         );
     }

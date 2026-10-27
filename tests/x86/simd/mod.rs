@@ -10,6 +10,7 @@ mod avxvnni;
 mod f16c;
 mod fma;
 mod fma4;
+mod smoke;
 mod sse2;
 mod sse3;
 mod sse4_1;
