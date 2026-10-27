@@ -3,6 +3,9 @@
 
 use core::arch::asm;
 use core::panic::PanicInfo;
+use rust_isa::x86::crypto::aes::{aesenc, aeskeygenassist};
+use rust_isa::x86::crypto::gfni::gf2p8affineqb;
+use rust_isa::x86::crypto::sha::sha1rnds4;
 use rust_isa::x86::integer::bmi1::{andn, bextr, blsi, blsmsk, blsr};
 use rust_isa::x86::integer::bmi2::{bzhi, pdep, pext, rorx, sarx, shlx, shrx};
 use rust_isa::x86::integer::lzcnt::lzcnt_u32;
@@ -109,6 +112,32 @@ unsafe fn lzcnt_ops() -> bool {
 }
 
 #[target_feature(enable = "movbe")]
+#[target_feature(enable = "aes,sha,gfni")]
+unsafe fn crypto_ops() -> bool {
+    let zero = V128::from_bytes([0; 16]);
+    if unsafe { aesenc(zero, zero) }.to_bytes() != [0x63; 16] {
+        return false;
+    }
+    let sequential = V128::from_bytes(core::array::from_fn(|index| index as u8));
+    if unsafe { aeskeygenassist::<1>(sequential) }.to_bytes()
+        != [
+            0xf2, 0x6b, 0x6f, 0xc5, 0x6a, 0x6f, 0xc5, 0xf2, 0xfe, 0xd7, 0xab, 0x76, 0xd6, 0xab,
+            0x76, 0xfe,
+        ]
+    {
+        return false;
+    }
+    let matrix = V128::from_bytes(core::array::from_fn(|index| 1u8 << (7 - (index % 8))));
+    if unsafe { gf2p8affineqb::<0>(V128::from_bytes([1; 16]), matrix) }.to_bytes() != [1; 16] {
+        return false;
+    }
+    let sha = unsafe { sha1rnds4::<0>(sequential, zero) };
+    if sha.to_bytes() == [0; 16] {
+        return false;
+    }
+    true
+}
+
 unsafe fn movbe_ops() -> bool {
     let mut bytes = [0u8; 8];
     unsafe {
@@ -163,6 +192,9 @@ fn run() -> u32 {
     }
     if !unsafe { movbe_ops() } {
         return 10;
+    }
+    if !unsafe { crypto_ops() } {
+        return 14;
     }
     0
 }

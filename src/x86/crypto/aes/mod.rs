@@ -178,16 +178,18 @@ pub unsafe fn aesimc(a: V128) -> V128 {
 #[target_feature(enable = "aes")]
 #[inline]
 pub unsafe fn aeskeygenassist<const IMM: u8>(a: V128) -> V128 {
-    let input = u128::from_le_bytes(a.to_bytes());
-    let output: u128;
+    let mut output = V128::from_bytes([0; 16]);
     unsafe {
         asm!(
-            "aeskeygenassist {output}, {input}, {imm}",
-            output = lateout(xmm_reg) output,
-            input = in(xmm_reg) input,
+            "movdqu xmm0, [{input}]",
+            "aeskeygenassist xmm0, xmm0, {imm}",
+            "movdqu [{output}], xmm0",
+            input = in(reg) a.as_ptr(),
+            output = in(reg) output.as_mut_ptr(),
             imm = const IMM,
-            options(nostack, nomem, pure)
+            out("xmm0") _,
+            options(nostack, preserves_flags)
         );
     }
-    V128::from_bytes(output.to_le_bytes())
+    output
 }

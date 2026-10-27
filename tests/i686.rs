@@ -7,7 +7,7 @@ use common::*;
 #[test]
 fn i686_values() {
     let dir = nested_dir("i686-values");
-    let rustflags = "-C linker-plugin-lto -C linker=clang -C link-arg=--target=i686-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
+    let rustflags = "-C target-feature=+aes,+sha,+gfni -C linker-plugin-lto -C linker=clang -C link-arg=--target=i686-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
     let output = cargo(&dir)
         .env("RUSTC_BOOTSTRAP", "1")
         .env("RUSTFLAGS", rustflags)
