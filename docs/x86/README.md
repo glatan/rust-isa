@@ -54,6 +54,8 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 `avx512ifma` の 128/256-bit 形式は `avx512vl` に含む。
 
+AMD Ryzen 9 9900X3D（Zen 5）で `make test-amd` を実行し、181 tests が pass した。`sse4a`、`xop`、`avx_vnni` は実行され、`fma4` と `sm4` は CPU 非対応のためスキップされた。
+
 ### 暗号・GF
 
 | extension    | 実装済み命令                                                                                                                                                                                       | 未実装命令 | 値テスト |
