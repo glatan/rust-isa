@@ -31,6 +31,17 @@
 //! assert_eq!(out, [11.0, 22.0]);
 //! ```
 //!
+//! # Panics
+//!
+//! A slice length mismatch panics:
+//!
+//! ```should_panic
+//! use rust_isa::riscv::simd::rvv_slice::add_f32;
+//!
+//! let mut out = [0.0f32; 1];
+//! unsafe { add_f32(&[1.0, 2.0], &[3.0], &mut out) };
+//! ```
+//!
 //! <details>
 //! <summary>Compile-only instruction examples</summary>
 //!

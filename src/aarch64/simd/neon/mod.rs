@@ -22,6 +22,15 @@
 //! assert_eq!(add(v, v).to_bytes(), [0; 16]);
 //! ```
 //!
+//! # Compile-time lane check
+//!
+//! ```compile_fail
+//! use rust_isa::aarch64::simd::neon::{extract_i32, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = extract_i32::<4>(v);
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```

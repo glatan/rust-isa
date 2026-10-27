@@ -23,6 +23,15 @@
 //! assert_eq!(add(v, v).to_bytes(), [0; 16]);
 //! ```
 //!
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsat, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsat::<32>(v);
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```
