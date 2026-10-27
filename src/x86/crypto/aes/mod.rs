@@ -178,18 +178,36 @@ pub unsafe fn aesimc(a: V128) -> V128 {
 #[target_feature(enable = "aes")]
 #[inline]
 pub unsafe fn aeskeygenassist<const IMM: u8>(a: V128) -> V128 {
-    let mut output = V128::from_bytes([0; 16]);
-    unsafe {
-        asm!(
-            "movdqu xmm0, [{input}]",
-            "aeskeygenassist xmm0, xmm0, {imm}",
-            "movdqu [{output}], xmm0",
-            input = in(reg) a.as_ptr(),
-            output = in(reg) output.as_mut_ptr(),
-            imm = const IMM,
-            out("xmm0") _,
-            options(nostack, preserves_flags)
-        );
+    #[cfg(target_arch = "x86_64")]
+    {
+        let input = u128::from_le_bytes(a.to_bytes());
+        let output: u128;
+        unsafe {
+            asm!(
+                "aeskeygenassist {output}, {input}, {imm}",
+                output = lateout(xmm_reg) output,
+                input = in(xmm_reg) input,
+                imm = const IMM,
+                options(nostack, nomem, pure)
+            );
+        }
+        V128::from_bytes(output.to_le_bytes())
     }
-    output
+    #[cfg(target_arch = "x86")]
+    {
+        let mut output = V128::from_bytes([0; 16]);
+        unsafe {
+            asm!(
+                "movdqu xmm0, [{input}]",
+                "aeskeygenassist xmm0, xmm0, {imm}",
+                "movdqu [{output}], xmm0",
+                input = in(reg) a.as_ptr(),
+                output = in(reg) output.as_mut_ptr(),
+                imm = const IMM,
+                out("xmm0") _,
+                options(nostack, preserves_flags)
+            );
+        }
+        output
+    }
 }
