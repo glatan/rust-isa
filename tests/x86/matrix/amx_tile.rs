@@ -116,3 +116,41 @@ fn amx_stateful_api_takes_guard() {
     let _: unsafe fn(&AmxGuard) = tdpbf16ps::<0, 0, 0>;
     let _: unsafe fn(&AmxGuard) = tcmmimfp16ps::<0, 0, 0>;
 }
+
+fn amx_int8_available() -> bool {
+    use core::arch::x86_64::__cpuid_count;
+
+    let leaf = __cpuid_count(7, 0);
+    leaf.edx & (1 << 25) != 0
+}
+
+#[test]
+fn amx_int8_ones_accumulate() {
+    if !amx_tile_available() || !amx_int8_available() {
+        return;
+    }
+    use rust_isa::x86::matrix::amx_tile::{
+        AmxGuard, TileConfig, tdpbssd, tileloadd, tilestored, tilezero,
+    };
+
+    // 16x64 int8 A and 64x16 int8 B, represented as 16x64 byte tiles.
+    let config = TileConfig::builder()
+        .tile::<0>(16, 64)
+        .tile::<1>(16, 64)
+        .tile::<2>(16, 64)
+        .build();
+    let a = [1u8; 1024];
+    let b = [1u8; 1024];
+    let mut out = [0u8; 1024];
+    unsafe {
+        let guard = AmxGuard::enter(&config);
+        tileloadd::<0>(&guard, a.as_ptr(), 64);
+        tileloadd::<1>(&guard, b.as_ptr(), 64);
+        tilezero::<2>(&guard);
+        tdpbssd::<2, 0, 1>(&guard);
+        tilestored::<2>(&guard, out.as_mut_ptr(), 64);
+    }
+    for lane in out.chunks_exact(4) {
+        assert_eq!(i32::from_le_bytes(lane.try_into().unwrap()), 64);
+    }
+}
