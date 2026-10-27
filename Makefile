@@ -69,6 +69,7 @@ help:
 		'test-check-static            シンボル・rustdoc・レーン即値の検査' \
 		'test-check-wasm-link         wasm32-unknown-unknown のリンク検査' \
 		'test-i686                    i686 の値テストとゼロコスト検査（SDE）' \
+		'test-amd                     AMD 実機で x86 の値テストを SDE なしで実行する' \
 		'test-aarch64                 AArch64 の値テストとゼロコスト検査' \
 		'test-armv7                   ARMv7 の値テスト' \
 		'test-riscv64                 RISC-V の値テストとゼロコスト検査' \
@@ -214,6 +215,10 @@ test-check-static:
 .PHONY: test-check-wasm-link
 test-check-wasm-link:
 	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test wasm_link $(CARGO_ARGS)
+
+.PHONY: test-amd
+test-amd:
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test x86 $(CARGO_ARGS)
 
 .PHONY: test-i686
 test-i686:

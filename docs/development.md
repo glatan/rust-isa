@@ -120,6 +120,10 @@ Debian イメージでは、Arch イメージの成果物と混ざらないよ�
 
 `target-nested` もイメージごとに分ける。Debian の実行では `RUST_ISA_NESTED=/src/target-nested-debian` を設定し、`tests/common` と `DOC_TEST_TARGET_DIR` などがこのディレクトリを使う。
 
+## AMD 実機
+
+x86 の任意 feature の値テストは、CPU が feature を持たない場合に早期 return する。既定の `make test-x86_64` は SDE で実行するため、AMD 専用の `sse4a`、`fma4`、`xop` はスキップされる。AMD 実機では `make test-amd` を使う。SDE を介さずホスト CPU の機能検出で実行するため、これらの extension も対象になる。Intel 実機では同じテストが feature 検出でスキップされる。
+
 ## Debian テストイメージ
 
 `Containerfile.debian` は、native arch の doctest を実行するための Debian 13（trixie）イメージである。ベースイメージの digest、SDE、直接ダウンロードするツールは SHA-256 で固定する。Debian の apt パッケージ、apt.llvm.org、rustup はバージョン指定のみで、完全な再現性は保証しない。Arch イメージと同じテストを実行できるように、次のツールを入れてある。
