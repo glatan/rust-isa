@@ -83,11 +83,11 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 ### 行列
 
-| extension    | 実装済み命令                                                                                                                                                                                                                     | 未実装命令 | 値テスト         |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------- |
-| `amx-tile`   | `ldtilecfg`, `tilezero`, `sttilecfg`, `tileloadd`, `tileloaddt1`, `tilestored`, `tdpbf16ps`, `tdpbssd`, `tdpbsud`, `tdpbuud`, `tdpfp16ps`, `tcmmimfp16ps`, `tcmmrlfp16ps`                                                        | なし       | AMX 実機では実行 |
-| `amx-avx512` | `tilemovrow`, `tilemovrow_imm`, `tcvtrowd2ps`, `tcvtrowd2ps_imm`, `tcvtrowps2bf16h`, `tcvtrowps2bf16h_imm`, `tcvtrowps2bf16l`, `tcvtrowps2bf16l_imm`, `tcvtrowps2phh`, `tcvtrowps2phh_imm`, `tcvtrowps2phl`, `tcvtrowps2phl_imm` | なし       | AMX 実機では実行 |
-| `amx-movrs`  | `tileloaddrs`, `tileloaddrst1`                                                                                                                                                                                                   | なし       | AMX 実機では実行 |
+| extension    | 実装済み命令                                                                                                                                                                                                                     | 未実装命令 | 値テスト                           |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------------------------- |
+| `amx-tile`   | `ldtilecfg`, `tilezero`, `sttilecfg`, `tileloadd`, `tileloaddt1`, `tilestored`, `tdpbf16ps`, `tdpbssd`, `tdpbsud`, `tdpbuud`, `tdpfp16ps`, `tcmmimfp16ps`, `tcmmrlfp16ps`                                                        | なし       | AMX 実機では INT8 ゼロ累算まで実行 |
+| `amx-avx512` | `tilemovrow`, `tilemovrow_imm`, `tcvtrowd2ps`, `tcvtrowd2ps_imm`, `tcvtrowps2bf16h`, `tcvtrowps2bf16h_imm`, `tcvtrowps2bf16l`, `tcvtrowps2bf16l_imm`, `tcvtrowps2phh`, `tcvtrowps2phh_imm`, `tcvtrowps2phl`, `tcvtrowps2phl_imm` | なし       | AMX 実機では未実行                 |
+| `amx-movrs`  | `tileloaddrs`, `tileloaddrst1`                                                                                                                                                                                                   | なし       | AMX 実機では未実行                 |
 
 `amx-int8`、`amx-bf16`、`amx-fp16`、`amx-complex` は、`amx-tile` の `tdp*` / `tcmm*` を再公開する。`amx-avx512` はタイル行の `zmm` への移動と変換、`amx-movrs` は read-shared ヒント付きのタイルロードを提供する。どちらも `AmxGuard` を要求する。
 
