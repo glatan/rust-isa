@@ -6,6 +6,19 @@ use rust_isa::x86::simd::sse2::V128;
 
 use super::avx512::support::*;
 
+#[repr(align(64))]
+struct Aligned([u8; 4096]);
+
+impl Aligned {
+    fn as_ptr(&self) -> *const u8 {
+        self.0.as_ptr()
+    }
+
+    fn as_mut_ptr(&mut self) -> *mut u8 {
+        self.0.as_mut_ptr()
+    }
+}
+
 fn avx10_2_available() -> bool {
     use core::arch::x86_64::__cpuid_count;
     let leaf7 = __cpuid_count(7, 0);
@@ -36,11 +49,10 @@ fn avx10_1_smoke() {
     {
         return;
     }
-    let mut storage = [0u8; 4096];
+    let mut storage = Aligned([0u8; 4096]);
     let v128 = V128::from_bytes([1; 16]);
     let v256 = V256::from_bytes([1; 32]);
     let v512 = V512::from_bytes([1; 64]);
-    let _ = &mut storage;
     unsafe {
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vaddps_v512(v512, v512) });
         core::hint::black_box(unsafe {
@@ -597,11 +609,10 @@ fn avx10_2_smoke() {
     if !(avx10_2_available()) {
         return;
     }
-    let mut storage = [0u8; 4096];
+    let mut storage = Aligned([0u8; 4096]);
     let v128 = V128::from_bytes([1; 16]);
     let v256 = V256::from_bytes([1; 32]);
     let v512 = V512::from_bytes([1; 64]);
-    let _ = &mut storage;
     unsafe {
         core::hint::black_box(unsafe {
             rust_isa::x86::simd::avx10_2::vcmppd_v256::<0>(v256, v256)
@@ -770,11 +781,10 @@ fn avx512vl_smoke() {
     {
         return;
     }
-    let mut storage = [0u8; 4096];
+    let mut storage = Aligned([0u8; 4096]);
     let v128 = V128::from_bytes([1; 16]);
     let v256 = V256::from_bytes([1; 32]);
     let v512 = V512::from_bytes([1; 64]);
-    let _ = &mut storage;
     unsafe {
         core::hint::black_box(unsafe {
             rust_isa::x86::simd::avx512vl::vblendmpd_v128(v128, v128, 0)
@@ -1113,11 +1123,10 @@ fn avx512dq_smoke() {
     {
         return;
     }
-    let mut storage = [0u8; 4096];
+    let mut storage = Aligned([0u8; 4096]);
     let v128 = V128::from_bytes([1; 16]);
     let v256 = V256::from_bytes([1; 32]);
     let v512 = V512::from_bytes([1; 64]);
-    let _ = &mut storage;
     unsafe {
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512dq::vcvtpd2uqq(v512) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512dq::vcvtps2qq(v256) });
@@ -1175,11 +1184,10 @@ fn avx512fp16_smoke() {
     if !(is_x86_feature_detected!("avx512fp16")) {
         return;
     }
-    let mut storage = [0u8; 4096];
+    let mut storage = Aligned([0u8; 4096]);
     let v128 = V128::from_bytes([1; 16]);
     let v256 = V256::from_bytes([1; 32]);
     let v512 = V512::from_bytes([1; 64]);
-    let _ = &mut storage;
     unsafe {
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512fp16::vcomish(v128, v128) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512fp16::vcvtpd2ph(v512) });
@@ -1261,11 +1269,10 @@ fn avx512bw_smoke() {
     if !(is_x86_feature_detected!("avx512bw")) {
         return;
     }
-    let mut storage = [0u8; 4096];
+    let mut storage = Aligned([0u8; 4096]);
     let v128 = V128::from_bytes([1; 16]);
     let v256 = V256::from_bytes([1; 32]);
     let v512 = V512::from_bytes([1; 64]);
-    let _ = &mut storage;
     unsafe {
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512bw::vpavgw(v512, v512) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512bw::vpcmpub::<0>(v512, v512) });
@@ -1299,11 +1306,10 @@ fn avx512f_smoke() {
     if !(f_enabled()) {
         return;
     }
-    let mut storage = [0u8; 4096];
+    let mut storage = Aligned([0u8; 4096]);
     let v128 = V128::from_bytes([1; 16]);
     let v256 = V256::from_bytes([1; 32]);
     let v512 = V512::from_bytes([1; 64]);
-    let _ = &mut storage;
     unsafe {
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512f::vblendmpd(v512, v512, 0) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512f::vcompresspd(v512, 0) });
@@ -1351,11 +1357,10 @@ fn avx512vbmi2_smoke() {
     if !(is_x86_feature_detected!("avx512vbmi2")) {
         return;
     }
-    let mut storage = [0u8; 4096];
+    let mut storage = Aligned([0u8; 4096]);
     let v128 = V128::from_bytes([1; 16]);
     let v256 = V256::from_bytes([1; 32]);
     let v512 = V512::from_bytes([1; 64]);
-    let _ = &mut storage;
     unsafe {
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vbmi2::vpcompressw(v512, 0) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vbmi2::vpexpandw(v512, 0) });
@@ -1385,11 +1390,10 @@ fn avx512bitalg_smoke() {
     if !(is_x86_feature_detected!("avx512bitalg")) {
         return;
     }
-    let mut storage = [0u8; 4096];
+    let mut storage = Aligned([0u8; 4096]);
     let v128 = V128::from_bytes([1; 16]);
     let v256 = V256::from_bytes([1; 32]);
     let v512 = V512::from_bytes([1; 64]);
-    let _ = &mut storage;
     unsafe {
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512bitalg::vpopcntw(v512) });
     }
@@ -1400,11 +1404,10 @@ fn avx512cd_smoke() {
     if !(is_x86_feature_detected!("avx512cd")) {
         return;
     }
-    let mut storage = [0u8; 4096];
+    let mut storage = Aligned([0u8; 4096]);
     let v128 = V128::from_bytes([1; 16]);
     let v256 = V256::from_bytes([1; 32]);
     let v512 = V512::from_bytes([1; 64]);
-    let _ = &mut storage;
     unsafe {
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512cd::vplzcntq(v512) });
     }
@@ -1415,11 +1418,10 @@ fn avx512vp2intersect_smoke() {
     if !(is_x86_feature_detected!("avx512vp2intersect")) {
         return;
     }
-    let mut storage = [0u8; 4096];
+    let mut storage = Aligned([0u8; 4096]);
     let v128 = V128::from_bytes([1; 16]);
     let v256 = V256::from_bytes([1; 32]);
     let v512 = V512::from_bytes([1; 64]);
-    let _ = &mut storage;
     unsafe {
         core::hint::black_box(unsafe {
             rust_isa::x86::simd::avx512vp2intersect::vp2intersectq(v512, v512)
@@ -1432,11 +1434,10 @@ fn avxvnniint8_smoke() {
     if !(is_x86_feature_detected!("avxvnniint8")) {
         return;
     }
-    let mut storage = [0u8; 4096];
+    let mut storage = Aligned([0u8; 4096]);
     let v128 = V128::from_bytes([1; 16]);
     let v256 = V256::from_bytes([1; 32]);
     let v512 = V512::from_bytes([1; 64]);
-    let _ = &mut storage;
     unsafe {
         core::hint::black_box(unsafe {
             rust_isa::x86::simd::avxvnniint8::vpdpbssds(v256, v256, v256)
@@ -1470,11 +1471,10 @@ fn avxvnniint16_smoke() {
     if !(is_x86_feature_detected!("avxvnniint16")) {
         return;
     }
-    let mut storage = [0u8; 4096];
+    let mut storage = Aligned([0u8; 4096]);
     let v128 = V128::from_bytes([1; 16]);
     let v256 = V256::from_bytes([1; 32]);
     let v512 = V512::from_bytes([1; 64]);
-    let _ = &mut storage;
     unsafe {
         core::hint::black_box(unsafe {
             rust_isa::x86::simd::avxvnniint16::vpdpwsud(v256, v256, v256)
@@ -1511,11 +1511,10 @@ fn avxneconvert_smoke() {
     if !(is_x86_feature_detected!("avxneconvert")) {
         return;
     }
-    let mut storage = [0u8; 4096];
+    let mut storage = Aligned([0u8; 4096]);
     let v128 = V128::from_bytes([1; 16]);
     let v256 = V256::from_bytes([1; 32]);
     let v512 = V512::from_bytes([1; 64]);
-    let _ = &mut storage;
     unsafe {
         core::hint::black_box(unsafe { rust_isa::x86::simd::avxneconvert::vbcstnesh2ps(0) });
     }
