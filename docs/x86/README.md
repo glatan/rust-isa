@@ -1,6 +1,6 @@
 # x86
 
-対象は `x86_64-unknown-linux-gnu` と `i686-unknown-linux-gnu` である。x86_64 を先に扱う。i686 は `sse2` と `avx2` のゼロコスト、`avx512f` と整数（BMI1 / BMI2 / POPCNT / LZCNT / MOVBE）の値テストを確認した。暗号はまだ測っていない。
+対象は `x86_64-unknown-linux-gnu` と `i686-unknown-linux-gnu` である。x86_64 を先に扱う。i686 は `sse2` と `avx2` のゼロコスト、`avx512f`、整数（BMI1 / BMI2 / POPCNT / LZCNT / MOVBE）、暗号（AES / SHA / GFNI）の値テストを確認した。
 
 family は命令の種類に合わせて決める（`simd`、`crypto`、`integer` など）。公開パスは `x86::{family}::{extension}::{instruction}` とする。extension の名前は rustc の feature 名の `.` と `-` を `_` に置き換える（`sse4.1` は `sse4_1`、`avx10.1` は `avx10_1`）。
 
@@ -139,7 +139,7 @@ x86_64 で条件付きのゼロコストを確認した。一般条件は [ゼ�
 
 ## 未対応
 
-- i686 の暗号の値テスト。AES / SHA / GFNI の `asm!` は i686 でリンクできない。SDE の SM4 / AVX-VNNI には既知の不一致がある。
+- SDE の SM4 / AVX-VNNI には既知の不一致がある。
 - AMX の `amx-avx512` と `amx-movrs` の実機値テスト。命令の実装は済みである。
 - AVX10.1 / AVX10.2 で `#[target_feature]` を使えない制約の再確認。
 - shuffle / compress のうち、intrinsics が往復を残す命令の個別確認。
