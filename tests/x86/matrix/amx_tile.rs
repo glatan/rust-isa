@@ -177,6 +177,49 @@ fn amx_int8_ones_accumulate() {
 }
 
 #[test]
+fn amx_int8_mixed_ones_accumulate() {
+    if !amx_tile_available() || !amx_int8_available() {
+        return;
+    }
+    use rust_isa::x86::matrix::amx_tile::{
+        AmxGuard, TileConfig, tdpbsud, tdpbuud, tileloadd, tileloaddt1, tilestored, tilezero,
+    };
+
+    let config = TileConfig::builder()
+        .tile::<0>(16, 64)
+        .tile::<1>(16, 64)
+        .tile::<2>(16, 64)
+        .build();
+    let a = [1u8; 1024];
+    let b = [1u8; 1024];
+    let mut out = [0u8; 1024];
+    unsafe {
+        let guard = AmxGuard::enter(&config);
+        tileloadd::<0>(&guard, a.as_ptr(), 64);
+        tileloaddt1::<1>(&guard, b.as_ptr(), 64);
+        tilezero::<2>(&guard);
+        tdpbsud::<2, 0, 1>(&guard);
+        tilestored::<2>(&guard, out.as_mut_ptr(), 64);
+    }
+    for lane in out.chunks_exact(4) {
+        assert_eq!(i32::from_le_bytes(lane.try_into().unwrap()), 64);
+    }
+
+    out = [0u8; 1024];
+    unsafe {
+        let guard = AmxGuard::enter(&config);
+        tileloadd::<0>(&guard, a.as_ptr(), 64);
+        tileloadd::<1>(&guard, b.as_ptr(), 64);
+        tilezero::<2>(&guard);
+        tdpbuud::<2, 0, 1>(&guard);
+        tilestored::<2>(&guard, out.as_mut_ptr(), 64);
+    }
+    for lane in out.chunks_exact(4) {
+        assert_eq!(i32::from_le_bytes(lane.try_into().unwrap()), 64);
+    }
+}
+
+#[test]
 fn amx_bf16_ones_accumulate() {
     if !amx_tile_available() || !amx_bf16_available() {
         return;
@@ -241,7 +284,7 @@ fn amx_fp16_ones_accumulate() {
 }
 
 #[test]
-fn amx_complex_ones_accumulate() {
+fn amx_complex_values_accumulate() {
     if !amx_tile_available() || !amx_complex_available() {
         return;
     }
@@ -255,12 +298,17 @@ fn amx_complex_ones_accumulate() {
         .tile::<2>(16, 64)
         .tile::<3>(16, 64)
         .build();
-    // Each dword is complex binary16 1.0 + 0.0i.
+    // Each dword of A is complex binary16 1.0 + 2.0i.
     let a: [u8; 1024] = core::array::from_fn(|index| match index % 4 {
+        1 => 0x3c,
+        3 => 0x40,
+        _ => 0,
+    });
+    // Each dword of B is complex binary16 1.0 + 0.0i.
+    let b: [u8; 1024] = core::array::from_fn(|index| match index % 4 {
         1 => 0x3c,
         _ => 0,
     });
-    let b = a;
     let mut real = [0u8; 1024];
     let mut imaginary = [0u8; 1024];
     unsafe {
@@ -278,6 +326,6 @@ fn amx_complex_ones_accumulate() {
         assert_eq!(f32::from_le_bytes(lane.try_into().unwrap()), 16.0);
     }
     for lane in imaginary.chunks_exact(4) {
-        assert_eq!(f32::from_le_bytes(lane.try_into().unwrap()), 0.0);
+        assert_eq!(f32::from_le_bytes(lane.try_into().unwrap()), 32.0);
     }
 }
