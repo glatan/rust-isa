@@ -31,6 +31,13 @@
 //! let _ = extract_i32::<4>(v);
 //! ```
 //!
+//! ```compile_fail
+//! use rust_isa::aarch64::simd::neon::{ext, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = ext::<16>(v, v);
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```

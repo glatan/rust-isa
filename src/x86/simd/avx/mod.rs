@@ -26,6 +26,16 @@
 //! assert_eq!(unsafe { vaddps(v, v) }.to_bytes(), [0; 32]);
 //! ```
 //!
+//! # Compile-time predicate check
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx::vcmpps;
+//! use rust_isa::x86::simd::avx2::V256;
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vcmpps::<32>(v, v) };
+//! ```
+//!
 //! <details>
 //! <summary>Instruction examples</summary>
 //!

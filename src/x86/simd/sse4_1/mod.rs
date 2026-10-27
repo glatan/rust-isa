@@ -33,6 +33,14 @@
 //! let _ = unsafe { blendps::<16>(v, v) };
 //! ```
 //!
+//! ```compile_fail
+//! use rust_isa::x86::simd::sse4_1::pinsrb;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { pinsrb::<16>(v, 0) };
+//! ```
+//!
 //! <details>
 //! <summary>Compile-only instruction examples</summary>
 //!
