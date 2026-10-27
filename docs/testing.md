@@ -97,6 +97,15 @@ doctest は命令の意味論を網羅しない。inventory は公開パスの�
 
 SVE と RVV は操作単位の API を正とする。smoke test は全関数の実行経路を確認するが、命令の意味論は各 arch の値テストが担う。
 
+## 外部環境の残件
+
+次の項目は、コード側のテスト追加だけでは解消できない。
+
+- i686 の AES / SHA / GFNI: `asm!` が i686 でリンクできない。値テストは x86_64 で実行する。
+- SDE の SM4 / AVX-VNNI: SDE の既知の不一致がある。`make test-amd` は SDE を介さず、CPU がこれらの feature を持つ場合に実行する。
+- AMX: AMX-INT8 の全 1 入力 KAT までは実行する。他の行列積の KAT は AMX 実機が必要である。
+- AMD の FMA4: CPU が FMA4 を持つ場合だけ `make test-amd` で実行される。
+
 ## 既知の欠落
 
 - native arch の即値の範囲外は、コンパイル拒否を自動で検査していない。wasm32 だけが `compile_fail` doctest を持つ。
