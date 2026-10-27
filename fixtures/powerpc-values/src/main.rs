@@ -12,12 +12,12 @@ use rust_isa::powerpc::matrix::mma::{
     xvi16ger2pp, xvi16ger2s, xvi16ger2spp, xxmfacc, xxmtacc, xxsetaccz,
 };
 use rust_isa::powerpc::simd::altivec::{
-    V128, add, add_i8, add_i16, add_i64, and, cmpeq_i32, cmpgt_i32, fadd, fdiv, fmul, fsub, mul,
-    mul_i16, mul_i32, or, permute, splat_i32, sub_i8, sub_i16, sub_i32, sub_i64, v128_load,
-    v128_store, vaddubm, vaddudm, vadduhm, vadduwm, vand, vandc, vavg, vavgl, vcmpeq, vcmpgt, vmax,
-    vmin, vmuleub, vmuleuh, vmuleuw as av_muleuw, vmuloub, vmulouh, vmulouw as av_mulouw, vnor,
-    vnot, vor, vperm, vsel, vsl, vsldoi, vslo, vsr, vsro, vsububm, vsubudm, vsubuhm, vsubuwm, vxor,
-    xor,
+    V128, add, add_i8, add_i16, add_i64, and, cmpeq_i32, cmpgt_i32, fadd, fdiv, fmul, fsub, lvx,
+    mul, mul_i16, mul_i32, or, permute, splat_i32, stvx, sub_i8, sub_i16, sub_i32, sub_i64,
+    v128_load, v128_store, vaddubm, vaddudm, vadduhm, vadduwm, vand, vandc, vavg, vavgl, vcmpeq,
+    vcmpgt, vmax, vmin, vmuleub, vmuleuh, vmuleuw as av_muleuw, vmuloub, vmulouh,
+    vmulouw as av_mulouw, vnor, vnot, vor, vperm, vsel, vsl, vsldoi, vslo, vsr, vsro, vsububm,
+    vsubudm, vsubuhm, vsubuwm, vxor, xor,
 };
 use rust_isa::powerpc::simd::power8_vector::{
     add_u64, mul_even_u16, mul_u32, sub_u64, vclzd as p8_vclzd, vmaxsd, vmaxud, vminsd, vminud,
@@ -28,8 +28,9 @@ use rust_isa::powerpc::simd::power8_vector::{
 };
 use rust_isa::powerpc::simd::power9_altivec::{vctzd as altivec_vctzd, vnegw as altivec_vnegw};
 use rust_isa::powerpc::simd::power9_vector::{
-    abs_i32 as p9_abs_i32, neg_i32 as p9_neg_i32, vabsd, vabsduw, vctzb, vctzd as p9_vctzd, vctzh,
-    vctzlsbb, vctzw, vextsb2d, vextsb2w, vextsh2d, vextsh2w, vextsw2d, vnegd, vnegw,
+    abs_i32 as p9_abs_i32, neg_i32 as p9_neg_i32, neg_i64, vabsd, vabsduw, vctzb,
+    vctzd as p9_vctzd, vctzh, vctzlsbb, vctzw, vextsb2d, vextsb2w, vextsh2d, vextsh2w, vextsw2d,
+    vnegd, vnegw,
 };
 use rust_isa::powerpc::simd::power10_vector::{
     cntlz_i32 as p10_cntlz_i32, popcnt_i32 as p10_popcnt_i32, vclzd, vctzd, vpopcntd, vpopcntw,
@@ -103,7 +104,7 @@ fn run() -> u32 {
         return 2;
     }
     if !ops_arithmetic() {
-        return 31;
+        return 3;
     }
     if !(unsafe {
         and(
@@ -113,7 +114,7 @@ fn run() -> u32 {
         .to_bytes()
             == [0b1000_1000; 16]
     }) {
-        return 321;
+        return 4;
     }
     if !(unsafe {
         or(
@@ -123,7 +124,7 @@ fn run() -> u32 {
         .to_bytes()
             == [0b1110_1110; 16]
     }) {
-        return 322;
+        return 5;
     }
     if !(unsafe {
         xor(
@@ -133,44 +134,44 @@ fn run() -> u32 {
         .to_bytes()
             == [0b0110_0110; 16]
     }) {
-        return 323;
+        return 6;
     }
     let eq = unsafe { cmpeq_i32(i32x4([1; 4]), i32x4([1; 4])) }.to_bytes();
     if eq != [0xff; 16] {
-        return eq[0] as u32;
-    }
-    if !(unsafe { cmpgt_i32(i32x4([2; 4]), i32x4([1; 4])).to_bytes() == [0xff; 16] }) {
-        return 325;
-    }
-    if !ops_wide() {
-        return 33;
-    }
-    if !float_ops() {
-        return 4;
-    }
-    if !permute_ops() {
-        return 5;
-    }
-    if !vsx_ops() {
-        return 6;
-    }
-    if !power8_ops() {
         return 7;
     }
-    if !crypto_ops() {
+    if !(unsafe { cmpgt_i32(i32x4([2; 4]), i32x4([1; 4])).to_bytes() == [0xff; 16] }) {
         return 8;
     }
-    if !power9_ops() {
+    if !ops_wide() {
         return 9;
     }
-    if !power10_ops() {
+    if !float_ops() {
         return 10;
     }
-    if !mma_ops() {
+    if !permute_ops() {
+        return 11;
+    }
+    if !vsx_ops() {
         return 12;
     }
+    if !power8_ops() {
+        return 13;
+    }
+    if !crypto_ops() {
+        return 14;
+    }
+    if !power9_ops() {
+        return 15;
+    }
+    if !power10_ops() {
+        return 16;
+    }
+    if !mma_ops() {
+        return 17;
+    }
     if !altivec_ops() {
-        return 11;
+        return 18;
     }
     0
 }
@@ -182,6 +183,13 @@ fn power9_ops() -> bool {
             && lanes(vnegw(i32x4([1, -2, 3, -4]))) == [-1, 2, -3, 4]
             && lanes(altivec_vnegw(i32x4([1, -2, 3, -4]))) == [-1, 2, -3, 4]
             && vnegd(V128::from_bytes([0; 16])).to_bytes() == [0; 16]
+            && neg_i64(V128::from_bytes([
+                1, 0, 0, 0, 0, 0, 0, 0, 0xfe, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+            ]))
+            .to_bytes()
+                == [
+                    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 2, 0, 0, 0, 0, 0, 0, 0,
+                ]
             && lanes(vabsduw(i32x4([1, 4, 10, 20]), i32x4([4, 1, 12, 30]))) == [3, 3, 2, 10]
             && lanes(vabsd(i32x4([1, 4, 10, 20]), i32x4([4, 1, 12, 30]))) == [3, 3, 2, 10]
             && lanes(vextsb2w(V128::from_bytes([0xff; 16]))) == [-1; 4]
@@ -1042,11 +1050,16 @@ fn load_store() -> bool {
 fn integer() -> bool {
     let a = i32x4([1, 2, 3, 4]);
     let b = i32x4([10, 20, 30, 40]);
+    let bytes = core::array::from_fn::<u8, 16, _>(|index| index as u8);
+    let mut stored = [0u8; 16];
     unsafe {
+        stvx(stored.as_mut_ptr(), lvx(bytes.as_ptr()));
         lanes(add(a, b)) == [11, 22, 33, 44]
             && lanes(mul(a, b)) == [10, 40, 90, 160]
             && lanes(kernel_add(&a, &b)) == [21, 42, 63, 84]
             && lanes(kernel_mul(&a, &b)) == [100, 800, 2700, 6400]
+            && lvx(bytes.as_ptr()).to_bytes() == bytes
+            && stored == bytes
     }
 }
 

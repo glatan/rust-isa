@@ -6,7 +6,7 @@ use super::support::*;
 
 #[test]
 fn vl_mullo() {
-    if !vl_enabled() {
+    if !vl_dq_enabled() {
         return;
     }
     let a = V128::from_bytes([3, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0]);
@@ -60,7 +60,10 @@ fn vl_narrow_forms() {
 
     if vbmi_enabled() {
         let indices = V256::from_bytes(core::array::from_fn(|index| 31 - index as u8));
-        assert_eq!(unsafe { vpermb_v256(source, indices) }.to_bytes()[0], 31);
+        assert_eq!(
+            unsafe { vpermb_v256(source, indices) }.to_bytes(),
+            core::array::from_fn::<u8, 32, _>(|index| 31 - index as u8)
+        );
     }
     if vbmi2_enabled() {
         assert_eq!(

@@ -48,6 +48,18 @@ fn bw_extended_operations() {
         -56
     );
     assert_eq!(
+        i8_lanes(unsafe { vpaddusb(i8x64([-6; 64]), i8x64([10; 64])) })[0],
+        -1
+    );
+    assert_eq!(
+        i8_lanes(unsafe { vpaddsb(i8x64([127; 64]), i8x64([1; 64])) })[0],
+        127
+    );
+    assert_eq!(
+        i8_lanes(unsafe { vpaddsb(i8x64([-128; 64]), i8x64([-1; 64])) })[0],
+        -128
+    );
+    assert_eq!(
         i8_lanes(unsafe { vpsubusb(i8x64([10; 64]), i8x64([20; 64])) })[0],
         0
     );
@@ -62,6 +74,10 @@ fn bw_extended_operations() {
     assert_eq!(
         i16_lanes(unsafe { vpmulhw(i16x32([300; 32]), i16x32([3; 32])) })[0],
         0
+    );
+    assert_eq!(
+        i16_lanes(unsafe { vpmulhw(i16x32([0x7fff; 32]), i16x32([0x7fff; 32])) })[0],
+        0x3fff
     );
     assert_eq!(
         i16_lanes(unsafe { vpmullw(i16x32([300; 32]), i16x32([3; 32])) })[0],

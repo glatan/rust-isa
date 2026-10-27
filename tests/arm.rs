@@ -6,9 +6,6 @@ use common::*;
 
 #[test]
 fn arm_values() {
-    if std::env::var_os("RUST_ISA_NESTED").is_some() {
-        return;
-    }
     let dir = nested_dir("arm-values");
     let rustflags = "-C target-feature=+neon -C linker-plugin-lto -C linker=clang -C link-arg=--target=armv7-unknown-linux-gnueabihf -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
     let output = cargo(&dir)
@@ -46,9 +43,6 @@ fn arm_values() {
 
 #[test]
 fn arm_mve_values() {
-    if std::env::var_os("RUST_ISA_NESTED").is_some() {
-        return;
-    }
     let dir = nested_dir("arm-mve-values");
     let rustflags = "-C target-feature=+thumb-mode -C linker-plugin-lto -C linker=clang -C link-arg=--target=armv7-unknown-linux-gnueabihf -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
     let output = cargo(&dir)

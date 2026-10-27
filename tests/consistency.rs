@@ -313,7 +313,53 @@ fn check_all_c_symbols_match() {
                 "rust_isa_",
             ));
         }
+        assert!(
+            !rust_symbols.is_empty() && !c_symbols.is_empty(),
+            "{} has no symbols",
+            dir.display()
+        );
         assert_eq!(rust_symbols, c_symbols, "{}", dir.display());
+    }
+}
+
+#[test]
+fn check_fixture_exit_codes() {
+    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("fixtures");
+    for path in files_under(&root) {
+        if path.file_name().and_then(|name| name.to_str()) != Some("main.rs") {
+            continue;
+        }
+        let text = fs::read_to_string(&path).unwrap();
+        let mut rest = text.as_str();
+        while let Some(start) = rest.find("fn run() -> u32 {") {
+            let after = &rest[start..];
+            let end = after.find("\n}\n").unwrap_or(after.len());
+            let body = &after[..end];
+            let mut codes = Vec::new();
+            let mut search = body;
+            while let Some(position) = search.find("return ") {
+                let tail = &search[position + "return ".len()..];
+                let value = tail.split(';').next().unwrap().trim();
+                if let Ok(code) = value.parse::<u32>() {
+                    codes.push(code);
+                }
+                search = tail;
+            }
+            let mut seen = BTreeSet::new();
+            for code in codes {
+                assert!(
+                    (1..=254).contains(&code),
+                    "{}: exit code {code} is outside 1..=254",
+                    path.display()
+                );
+                assert!(
+                    seen.insert(code),
+                    "{}: duplicate exit code {code}",
+                    path.display()
+                );
+            }
+            rest = &after[end..];
+        }
     }
 }
 

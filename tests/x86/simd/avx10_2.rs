@@ -5,9 +5,6 @@ use rust_isa::x86::simd::sse2::V128;
 fn avx10_2_available() -> bool {
     use core::arch::x86_64::__cpuid_count;
 
-    if !is_x86_feature_detected!("avx512f") {
-        return false;
-    }
     let leaf7 = __cpuid_count(7, 0);
     if leaf7.eax < 1 {
         return false;

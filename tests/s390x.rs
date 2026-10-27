@@ -8,9 +8,6 @@ use std::process::Stdio;
 
 #[test]
 fn s390x_values() {
-    if std::env::var_os("RUST_ISA_NESTED").is_some() {
-        return;
-    }
     let dir = nested_dir("s390x-values");
     let rustflags = "-C target-feature=+vector -C linker-plugin-lto -C linker=clang -C link-arg=--target=s390x-unknown-linux-gnu -C link-arg=-fuse-ld=lld -C link-arg=-static -C link-arg=-nostdlib -C relocation-model=static";
     let output = cargo(&dir)
@@ -60,15 +57,10 @@ fn s390x_values() {
         let decoded = decode_vector(&text, symbol);
         let lines: Vec<_> = decoded.lines().collect();
         assert!(
-            !lines.iter().any(|line| line.contains("brasl")),
+            !body_has_call(&decoded, &["brasl"]),
             "{symbol} calls C:\n{decoded}"
         );
-        let positions: Vec<_> = lines
-            .iter()
-            .enumerate()
-            .filter(|(_, line)| line.contains(mnemonic))
-            .map(|(index, _)| index)
-            .collect();
+        let positions = opcode_positions(&decoded, mnemonic);
         assert_eq!(positions.len(), 2, "{symbol} {mnemonic} body:\n{decoded}");
         assert!(
             !lines[positions[0] + 1..positions[1]].iter().any(|line| {

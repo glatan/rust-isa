@@ -1,6 +1,6 @@
 use rust_isa::wasm32::simd::simd128::*;
 
-use super::lanes::{f32_lanes, f32x4, i16_lanes, i16x8, i32_lanes, i32x4, i64_lanes, i64x2};
+use super::lanes::{f32_lanes, f32x4, i8x16, i16_lanes, i16x8, i32_lanes, i32x4, i64_lanes, i64x2};
 
 #[test]
 fn unaligned_load_store_and_zero_extend_loads() {
@@ -25,7 +25,10 @@ fn unaligned_load_store_and_zero_extend_loads() {
         buffer[12] = 0;
         buffer[13] = 0;
         buffer[14] = 0;
-        assert_eq!(i32_lanes(v128_load32_splat(buffer.as_ptr().add(11)))[0], 1);
+        assert_eq!(
+            i32_lanes(v128_load32_splat(buffer.as_ptr().add(11))),
+            [1; 4]
+        );
         assert_eq!(
             i32_lanes(v128_load32_zero(buffer.as_ptr().add(11))),
             [1, 0, 0, 0]
@@ -37,7 +40,7 @@ fn unaligned_load_store_and_zero_extend_loads() {
         assert_eq!(i16_lanes(v128_load8x8_s(eight.as_ptr()))[0], -1);
         assert_eq!(i16_lanes(v128_load8x8_u(eight.as_ptr()))[0], 255);
         assert_eq!(i16_lanes(v128_load8x8_s(eight.as_ptr()))[1], 2);
-        assert_eq!(i64_lanes(v128_load64_zero(eight.as_ptr()))[1], 0);
+        assert_eq!(i64_lanes(v128_load64_zero(eight.as_ptr())), [0x02ff, 0]);
 
         let wide = [0xff, 0xff, 0x02, 0x00, 0x00, 0x00, 0x00, 0x80];
         assert_eq!(
@@ -71,13 +74,24 @@ fn lane_load_and_store() {
         let loaded = v128_load8_lane::<2>(buffer.as_ptr(), i8x16_splat(0));
         assert_eq!(i8x16_extract_lane_u::<2>(loaded), 7);
         assert_eq!(i8x16_extract_lane_u::<0>(loaded), 0);
-        v128_store8_lane::<1>(buffer.as_mut_ptr().add(3), i8x16_splat(4));
-        assert_eq!(buffer[3], 4);
+        v128_store8_lane::<1>(
+            buffer.as_mut_ptr().add(3),
+            i8x16([
+                10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+            ]),
+        );
+        assert_eq!(buffer[3], 11);
+        assert_eq!(buffer[2], 0x12);
+        assert_eq!(buffer[4], 0);
 
         let i16s = v128_load16_lane::<1>(buffer.as_ptr().add(1), i16x8([0; 8]));
         assert_eq!(i16_lanes(i16s)[1], 0x1234);
-        v128_store16_lane::<0>(buffer.as_mut_ptr().add(4), i16x8_splat(0x0102));
-        assert_eq!(&buffer[4..6], &[0x02, 0x01]);
+        v128_store16_lane::<1>(
+            buffer.as_mut_ptr().add(4),
+            i16x8([0x0102, 0x0304, 0, 0, 0, 0, 0, 0]),
+        );
+        assert_eq!(&buffer[4..6], &[0x04, 0x03]);
+        assert_eq!(buffer[6], 0);
 
         let word = 0x0403_0201i32;
         let bytes = word.to_le_bytes();

@@ -94,6 +94,11 @@ fn subtract_bitwise_and_shift() {
         core::array::from_fn(|index| (index as i32 + 1) * 2)
     );
     assert_eq!(
+        i32_lanes(unsafe { vpslld(i32x16([1; 16]), 31) }),
+        [i32::MIN; 16]
+    );
+    assert_eq!(i32_lanes(unsafe { vpslld(i32x16([1; 16]), 32) }), [0; 16]);
+    assert_eq!(
         i32_lanes(unsafe { vpsrld(i32x16([-1; 16]), 1) }),
         [0x7fff_ffff; 16]
     );

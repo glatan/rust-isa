@@ -26,7 +26,7 @@ pub fn add_f32(a: &[f32], b: &[f32], out: &mut [f32])
 - C は `svcntw()` で VL を得て、`svld1` / `svadd` / `svst1` を使う。
 - Rust 側に VL やレジスタ型を出さない。VL は C が決める。
 - 引数の長さが揃っていない場合は panic する。短い方に合わせない。境界の扱いは各関数の rustdoc に書く。
-- AArch64 で確認済み。C のループは `#[target_feature(enable = "sve")]` の Rust カーネルへインラインされ、`cntw`、`whilelt`、`ld1w`、`add z0.s`、`st1w` が並び、`call` が無かった。
+- AArch64 で確認済み。C のループは `#[target_feature(enable = "sve")]` の Rust カーネルへインラインされ、`cntw`、`whilelt`、`ld1w`、`fadd z0.s`、`st1w` が並び、`call` が無かった。
 
 却下した案:
 

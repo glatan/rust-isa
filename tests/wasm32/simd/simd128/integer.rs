@@ -50,6 +50,14 @@ fn i8x16_compare_shift_sat_and_reductions() {
         i8_lanes(i8x16_shl(shifted, 9)),
         i8_lanes(i8x16_shl(shifted, 1))
     );
+    assert_eq!(
+        i8_lanes(i8x16_shl(shifted, 8)),
+        i8_lanes(i8x16_shl(shifted, 0))
+    );
+    assert_eq!(
+        i8_lanes(i8x16_shl(shifted, 16)),
+        i8_lanes(i8x16_shl(shifted, 0))
+    );
 
     assert_eq!(
         i8_lanes(i8x16_add_sat_s(i8x16_splat(127), i8x16_splat(1))),
@@ -103,6 +111,14 @@ fn i16x8_arith_shift_and_average() {
         i16_lanes(i16x8_shl(i16x8_splat(1), 17)),
         i16_lanes(i16x8_shl(i16x8_splat(1), 1))
     );
+    assert_eq!(
+        i16_lanes(i16x8_shl(i16x8_splat(1), 16)),
+        i16_lanes(i16x8_shl(i16x8_splat(1), 0))
+    );
+    assert_eq!(
+        i16_lanes(i16x8_shl(i16x8_splat(1), 32)),
+        i16_lanes(i16x8_shl(i16x8_splat(1), 0))
+    );
     assert_eq!(i16x8_extract_lane_s::<7>(i16x8_splat(-2)), -2);
     assert_eq!(i16x8_extract_lane_u::<7>(i16x8_splat(-2)), 0xfffe);
     assert_eq!(
@@ -132,6 +148,14 @@ fn i32x4_and_i64x2_wrap_shift_and_compare() {
     assert_eq!(
         i32_lanes(i32x4_shl(i32x4_splat(1), 33)),
         i32_lanes(i32x4_shl(i32x4_splat(1), 1))
+    );
+    assert_eq!(
+        i32_lanes(i32x4_shl(i32x4_splat(1), 32)),
+        i32_lanes(i32x4_shl(i32x4_splat(1), 0))
+    );
+    assert_eq!(
+        i32_lanes(i32x4_shl(i32x4_splat(1), 64)),
+        i32_lanes(i32x4_shl(i32x4_splat(1), 0))
     );
     assert!(true_lane(i32x4_eq(i32x4_splat(5), i32x4_splat(5)), 1, 4));
     assert!(true_lane(i32x4_lt_s(i32x4_splat(-1), i32x4_splat(1)), 0, 4));
@@ -170,6 +194,14 @@ fn i32x4_and_i64x2_wrap_shift_and_compare() {
         i64_lanes(i64x2_shl(i64x2_splat(1), 65)),
         i64_lanes(i64x2_shl(i64x2_splat(1), 1))
     );
+    assert_eq!(
+        i64_lanes(i64x2_shl(i64x2_splat(1), 64)),
+        i64_lanes(i64x2_shl(i64x2_splat(1), 0))
+    );
+    assert_eq!(
+        i64_lanes(i64x2_shl(i64x2_splat(1), 128)),
+        i64_lanes(i64x2_shl(i64x2_splat(1), 0))
+    );
     assert_eq!(i64x2_extract_lane::<1>(i64x2([1, -5])), -5);
     assert_eq!(i64x2_extract_lane::<1>(i64x2([1, -5])) as u64, u64::MAX - 4);
     assert!(true_lane(i64x2_eq(i64x2_splat(8), i64x2_splat(8)), 0, 8));
@@ -200,6 +232,10 @@ fn i16x8_lanes_compare_and_saturation() {
     assert_eq!(
         i16_lanes(i16x8_replace_lane::<2>(i16x8_splat(0), -9)),
         [0, 0, -9, 0, 0, 0, 0, 0]
+    );
+    assert_eq!(
+        i16_lanes(i16x8_replace_lane::<2>(i16x8([1, 2, 3, 4, 5, 6, 7, 8]), -9)),
+        [1, 2, -9, 4, 5, 6, 7, 8]
     );
     assert!(!true_lane(i16x8_ne(i16x8_splat(4), i16x8_splat(4)), 0, 2));
     assert!(true_lane(i16x8_ne(i16x8_splat(4), i16x8_splat(5)), 0, 2));

@@ -47,4 +47,9 @@ fn immediate_shifts() {
         i32_lanes(unsafe { vpsrld(i32x8([-1; 8]), 1) }),
         [0x7fff_ffff; 8]
     );
+    assert_eq!(
+        i32_lanes(unsafe { vpslld(i32x8([1; 8]), 31) }),
+        [i32::MIN; 8]
+    );
+    assert_eq!(i32_lanes(unsafe { vpslld(i32x8([1; 8]), 32) }), [0; 8]);
 }

@@ -33,15 +33,115 @@ pub fn rust_sources(dir: &Path) -> Vec<PathBuf> {
 }
 
 pub fn is_japanese(ch: char) -> bool {
-    matches!(ch, '\u{3040}'..='\u{30ff}' | '\u{3400}'..='\u{9fff}')
+    matches!(
+        ch,
+        '\u{3000}'..='\u{303f}' | '\u{3040}'..='\u{30ff}' | '\u{3400}'..='\u{9fff}' | '\u{ff00}'..='\u{ffef}'
+    )
 }
 
 pub fn function_at<'a>(text: &'a str, symbol: &str) -> &'a str {
-    let start = text
-        .find(symbol)
-        .unwrap_or_else(|| panic!("missing {symbol}"));
-    let body = &text[start..];
-    &body[..body.find("\n\n").unwrap_or(body.len())]
+    let name = symbol.trim_end_matches(':');
+    let header = if name.starts_with('<') && name.ends_with('>') {
+        format!("{name}:")
+    } else {
+        format!("<{name}>:")
+    };
+    let mut start = None;
+    let mut offset = 0;
+    for line in text.split_inclusive('\n') {
+        if line.trim_end().ends_with(&header) {
+            start = Some(offset);
+            break;
+        }
+        offset += line.len();
+    }
+    let start = start.unwrap_or_else(|| panic!("missing {symbol}"));
+
+    let body_start = start
+        + text[start..]
+            .find('\n')
+            .map_or(text.len() - start, |end| end + 1);
+    let mut end = text.len();
+    let mut offset = body_start;
+    for line in text[body_start..].split_inclusive('\n') {
+        if is_function_header(line) {
+            end = offset;
+            break;
+        }
+        offset += line.len();
+    }
+    &text[start..end]
+}
+
+fn is_function_header(line: &str) -> bool {
+    let mut parts = line.splitn(2, char::is_whitespace);
+    let Some(address) = parts.next() else {
+        return false;
+    };
+    let Some(rest) = parts.next() else {
+        return false;
+    };
+    !address.is_empty()
+        && address.chars().all(|ch| ch.is_ascii_hexdigit())
+        && rest.trim_start().starts_with('<')
+        && rest.trim_end().ends_with(">:")
+}
+
+/// Check whether a disassembly line contains `opcode` as a standalone token.
+///
+/// This avoids matching `fadd` when looking for `add`, or `xvadd.w` when
+/// looking for `vadd.w`.
+pub fn line_has_opcode(line: &str, opcode: &str) -> bool {
+    line.split_whitespace().any(|word| word == opcode)
+}
+
+/// Check whether any line of `body` contains `opcode` as a standalone token.
+pub fn body_has_opcode(body: &str, opcode: &str) -> bool {
+    body.lines().any(|line| line_has_opcode(line, opcode))
+}
+
+/// Return the line indices that contain `opcode` as a standalone token.
+pub fn opcode_positions(body: &str, opcode: &str) -> Vec<usize> {
+    body.lines()
+        .enumerate()
+        .filter(|(_, line)| line_has_opcode(line, opcode))
+        .map(|(index, _)| index)
+        .collect()
+}
+
+/// Check an x86 mnemonic, accepting the VEX/EVEX form as well as the legacy
+/// form. For example, `pshufb` also matches `vpshufb`.
+pub fn x86_line_has_opcode(line: &str, opcode: &str) -> bool {
+    line.split_whitespace()
+        .any(|word| x86_word_has_opcode(word.trim_end_matches([',', ';']), opcode))
+}
+
+fn x86_word_has_opcode(word: &str, opcode: &str) -> bool {
+    let legacy = word.strip_prefix('v').unwrap_or(word);
+    [word, legacy].into_iter().any(|candidate| {
+        candidate.strip_prefix(opcode).is_some_and(|rest| {
+            rest.is_empty()
+                || rest
+                    .chars()
+                    .next()
+                    .is_some_and(|ch| !ch.is_ascii_alphanumeric() && ch != '_')
+        })
+    })
+}
+
+pub fn x86_opcode_positions(body: &str, opcode: &str) -> Vec<usize> {
+    body.lines()
+        .enumerate()
+        .filter(|(_, line)| x86_line_has_opcode(line, opcode))
+        .map(|(index, _)| index)
+        .collect()
+}
+
+pub fn body_has_call(body: &str, mnemonics: &[&str]) -> bool {
+    body.lines().any(|line| {
+        line.split_whitespace()
+            .any(|word| mnemonics.iter().any(|mnemonic| word == *mnemonic))
+    })
 }
 
 pub fn cargo(target_dir: &Path) -> Command {
@@ -74,7 +174,15 @@ pub fn output_text(output: &Output) -> String {
 pub fn rust_symbols_in(text: &str, prefix: &str) -> BTreeSet<String> {
     let mut symbols = BTreeSet::new();
     let needle = format!("fn {prefix}");
-    let mut rest = text;
+    let filtered = text
+        .lines()
+        .filter(|line| {
+            let line = line.trim_start();
+            !line.starts_with("//") && !line.starts_with("/*") && !line.starts_with('*')
+        })
+        .collect::<Vec<_>>()
+        .join("\n");
+    let mut rest = filtered.as_str();
     while let Some(index) = rest.find(needle.as_str()) {
         let start = index + "fn ".len();
         let tail = &rest[start..];
@@ -89,6 +197,9 @@ pub fn c_symbols_in(text: &str, prefix: &str) -> BTreeSet<String> {
     let mut symbols = BTreeSet::new();
     for line in text.lines() {
         let line = line.trim();
+        if line.starts_with("//") || line.starts_with("/*") || line.starts_with('*') {
+            continue;
+        }
         let Some(start) = line.find(prefix) else {
             continue;
         };
@@ -96,7 +207,9 @@ pub fn c_symbols_in(text: &str, prefix: &str) -> BTreeSet<String> {
         if !matches!(
             prefix,
             "void"
+                | "bool"
                 | "int"
+                | "size_t"
                 | "int8_t"
                 | "int16_t"
                 | "int32_t"
@@ -194,29 +307,54 @@ pub fn arm_indices(body: &str) -> Vec<u32> {
 }
 
 pub fn check_wat(wat: &str) {
-    let one = function_body(wat, "kernel_one");
-    reject_call("kernel_one", one);
-    assert_eq!(one.matches("f32x4.add").count(), 1, "kernel_one");
+    check_wat_function(wat, "kernel_one", "f32x4.add", 1);
+    check_wat_function(wat, "kernel_two", "f32x4.add", 2);
+    check_wat_function(wat, "kernel_relaxed", "f32x4.relaxed_madd", 2);
+}
 
-    let two = function_body(wat, "kernel_two");
-    reject_call("kernel_two", two);
-    let parts: Vec<&str> = two.split("f32x4.add").collect();
-    assert_eq!(parts.len(), 3, "kernel_two add count");
-    assert!(
-        !contains_opcode(parts[1], "v128.store"),
-        "intermediate result store remains:\n{}",
-        parts[1]
+fn check_wat_function(wat: &str, name: &str, arithmetic: &str, expected: usize) {
+    let body = function_body(wat, name);
+    reject_call(name, body);
+    let lines: Vec<_> = body.lines().collect();
+    let operations: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| contains_opcode(line, arithmetic))
+        .map(|(index, _)| index)
+        .collect();
+    assert_eq!(
+        operations.len(),
+        expected,
+        "{name} {arithmetic} count:\n{body}"
     );
+    let last = *operations.last().unwrap();
 
-    let relaxed = function_body(wat, "kernel_relaxed");
-    reject_call("kernel_relaxed", relaxed);
-    let parts: Vec<&str> = relaxed.split("f32x4.relaxed_madd").collect();
-    assert_eq!(parts.len(), 3, "kernel_relaxed madd count");
+    let stores: Vec<_> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| contains_opcode(line, "v128.store"))
+        .map(|(index, _)| index)
+        .collect();
     assert!(
-        !contains_opcode(parts[1], "v128.store"),
-        "intermediate result store remains:\n{}",
-        parts[1]
+        stores.len() <= 1,
+        "{name} has more than one v128.store:\n{body}"
     );
+    if let Some(&store) = stores.first() {
+        assert!(store > last, "{name} stores an intermediate value:\n{body}");
+    }
+
+    for (index, line) in lines.iter().enumerate() {
+        if contains_opcode(line, "v128.load") {
+            let previous = lines[..index]
+                .iter()
+                .rev()
+                .find(|line| !line.trim().is_empty());
+            assert!(
+                previous.is_none_or(|line| !contains_opcode(line, "v128.store")),
+                "{name} reloads a stored intermediate value:\n{body}"
+            );
+        }
+    }
 }
 
 pub fn reject_call(name: &str, body: &str) {

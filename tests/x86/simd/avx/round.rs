@@ -12,6 +12,14 @@ fn round() {
         f32_lanes(unsafe { vroundps::<0>(a) }),
         [2.0, 2.0, 4.0, 4.0, -2.0, -2.0, -4.0, -4.0]
     );
+    assert_eq!(
+        f32_lanes(unsafe { vroundps::<1>(a) }),
+        [1.0, 2.0, 3.0, 4.0, -2.0, -3.0, -4.0, -5.0]
+    );
+    assert_eq!(
+        f32_lanes(unsafe { vroundps::<2>(a) }),
+        [2.0, 3.0, 4.0, 5.0, -1.0, -2.0, -3.0, -4.0]
+    );
     let a = f64x4([1.7, 2.2, 3.8, 4.1]);
     assert_eq!(f64_lanes(unsafe { vroundpd::<0>(a) }), [2.0, 2.0, 4.0, 4.0]);
     let a = f32x4([9.0; 4]);

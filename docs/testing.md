@@ -31,7 +31,7 @@ LTO で C の関数が Rust のカーネルへインラインされ、`call` と
 - `tests/x86_link.rs`: x86_64 の link fixture をビルドし、disassembly を検査する。
 - `tests/wasm_link.rs`: wasm32 の WAT を検査する。
 - `tests/wide_arithmetic_link.rs`: wasm32 の `wide-arithmetic` の opcode を検査する。
-- `tests/<arch>.rs`: 値テストの fixture をビルドしたあと、同じバイナリの `kernel_*` を disassembly する。
+- `tests/<arch>.rs`: 値テストの fixture をビルドしたあと、同じバイナリの `kernel_*` を disassembly する。命令名はトークン完全一致で照合し、`fadd` を `add`、`vpshufb` を `pshufb` として扱わない。
 - `docs/zero-cost.md` の結果表: 測定の記録である。`make zero-cost-check` は fixture と kernel の実在、表の値の整合を検査する。測定結果そのものを再実行しない。`manual` の行は再現手順だけを残す。
 
 値テストとコード生成は、同じ fixture とビルドを使う。`tests/<arch>.rs` では 1 つのテスト関数が両方を順に実行する。失敗が値テストかコード生成かは、テスト名ではなく出力で判断する。32-bit ARM は値テストだけを実行し、ゼロコストは `docs/zero-cost.md` の `manual` 行に記録する。
@@ -40,7 +40,7 @@ LTO で C の関数が Rust のカーネルへインラインされ、`call` と
 
 実装と文書の対応を検査する。命令の意味論とコード生成は保証しない。
 
-- `tests/consistency.rs`: Rust の extern 宣言と C の定義、rustdoc の言語、wasm32 のレーン即値の範囲。
+- `tests/consistency.rs`: Rust の extern 宣言と C の定義、rustdoc の言語、wasm32 のレーン即値の範囲、fixture の `run()` が返す失敗コードの範囲と一意性。
 - `make inventory-check`: arch の README の表の形式、表の名前と公開ラッパーの対応、ゼロコスト表の fixture と kernel。
 - `make check-mnemonics`: rustdoc の命令名が `llvm-mc` に受理されること。
 - `make docs-check`: Markdown のリンク、アンカー、索引からの到達性。
@@ -86,6 +86,25 @@ doctest は命令の意味論を網羅しない。inventory は公開パスの�
 4. 即値の範囲を追加する場合は、可能なら `compile_fail` doctest も追加する。
 5. arch の README、`fixture-matrix.md`、`zero-cost.md` を同じ変更で更新する。
 6. 既定の `make test` で実行する必要があるテストは、`test` の依存に含める。
+
+## テスト在庫
+
+`make test-gaps` は、公開関数の名前が値テストまたは fixture から参照されているかを一覧する。`make test-gaps-check` は未参照があれば失敗し、`make inventory-check` から実行される。名前ベースの保守的な検査であり、意味論の網羅は保証しない。現在は全 arch で未参照 0。
+
+- ARM、RISC-V、MIPS、PowerPC、s390x、wasm32、LoongArch: 値テストで参照する。
+- AArch64: SVE mnemonic 層は `fixtures/aarch64-values` の smoke test で全関数を実行する。NEON/FP16 の alias は値テストまたは smoke test で参照する。
+- x86: AVX10.1 / AVX512VL / AVX10.2 / AVX512FP16 の alias と variant は `tests/x86/simd/smoke.rs` で実行する。CPU が feature を持たない場合はその test をスキップする。
+
+SVE と RVV は操作単位の API を正とする。smoke test は全関数の実行経路を確認するが、命令の意味論は各 arch の値テストが担う。
+
+## 外部環境の残件
+
+次の項目は、コード側のテスト追加だけでは解消できない。
+
+- i686 の AES / SHA / GFNI: `asm!` が i686 でリンクできない。値テストは x86_64 で実行する。
+- SDE の SM4 / AVX-VNNI: SDE の既知の不一致がある。`make test-amd` は SDE を介さず、CPU がこれらの feature を持つ場合に実行する。
+- AMX: AMX-INT8 の全 1 入力 KAT までは実行する。他の行列積の KAT は AMX 実機が必要である。
+- AMD の FMA4: CPU が FMA4 を持つ場合だけ `make test-amd` で実行される。
 
 ## 既知の欠落
 

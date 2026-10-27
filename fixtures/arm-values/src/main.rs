@@ -4,7 +4,7 @@
 use core::arch::asm;
 use core::panic::PanicInfo;
 use rust_isa::arm::crypto::aes::{aesd, aese, aesimc, aesmc};
-use rust_isa::arm::crypto::crc::crc32b;
+use rust_isa::arm::crypto::crc::{crc32b, crc32h, crc32w};
 use rust_isa::arm::crypto::sha2::{sha256h, sha256h2, sha256su0, sha256su1};
 use rust_isa::arm::simd::dotprod::{sdot, udot};
 use rust_isa::arm::simd::fp16;
@@ -17,11 +17,11 @@ use rust_isa::arm::simd::neon::{
 };
 use rust_isa::arm::simd::neon::{
     V128, add, add_i8, add_i16, add_i64, and, cmpeq_i8, cmpeq_i16, cmpeq_i32, cmpgt_i8, cmpgt_i16,
-    cmpgt_i32, eor, fadd, fmul, fsub, mul, mul_i16, mul_i32, orr, splat_i32, sub_i8, sub_i16,
-    sub_i32, sub_i64, v128_load, v128_store, vaba, vabd, vabs, vbic, vbsl, vceq, vcge, vcgt, vcle,
-    vcls, vclt, vclz, vcnt, vcvt, vfma, vfms, vfnma, vfnms, vhadd, vhsub, vmax, vmin, vmla, vmls,
-    vmvn, vneg, vorn, vqabs, vqadd, vqdmulh, vqneg, vqrdmulh, vqshl, vqsub, vrecpe, vrecps, vrshl,
-    vrsqrte, vrsqrts, vshl, vtst,
+    cmpgt_i32, eor, fadd, fmul, fsub, mul, mul_i16, mul_i32, orr, splat_i8, splat_i16, splat_i32,
+    sub_i8, sub_i16, sub_i32, sub_i64, v128_load, v128_store, vaba, vabd, vabs, vbic, vbsl, vceq,
+    vcge, vcgt, vcle, vcls, vclt, vclz, vcnt, vcvt, vfma, vfms, vfnma, vfnms, vhadd, vhsub, vmax,
+    vmin, vmla, vmls, vmvn, vneg, vorn, vqabs, vqadd, vqdmulh, vqneg, vqrdmulh, vqshl, vqsub,
+    vrecpe, vrecps, vrshl, vrsqrte, vrsqrts, vshl, vtst,
 };
 use rust_isa::arm::simd::neon::{
     vabal, vabdl, vaddhn, vaddl, vaddw, vmlal, vmlsl, vmovn, vmull, vpadal, vqdmlal, vqdmlsl,
@@ -425,7 +425,25 @@ fn crc_ops() -> bool {
     for byte in b"123456789" {
         crc = unsafe { crc32b(crc, *byte) };
     }
+    let value16 = 0x1234u16;
+    let value32 = 0x1234_5678u32;
     crc == 0x340b_c6d9
+        && unsafe { crc32h(0xffff_ffff, value16) } == crc32_ref(0xffff_ffff, &value16.to_le_bytes())
+        && unsafe { crc32w(0xffff_ffff, value32) } == crc32_ref(0xffff_ffff, &value32.to_le_bytes())
+}
+
+fn crc32_ref(mut crc: u32, bytes: &[u8]) -> u32 {
+    for byte in bytes {
+        crc ^= u32::from(*byte);
+        for _ in 0..8 {
+            crc = if crc & 1 != 0 {
+                (crc >> 1) ^ 0xedb8_8320
+            } else {
+                crc >> 1
+            };
+        }
+    }
+    crc
 }
 
 fn i8mm_ops() -> bool {
@@ -923,6 +941,8 @@ fn ops() -> bool {
             return false;
         }
         lanes(splat_i32(7)) == [7; 4]
+            && splat_i8(0x5a).to_bytes() == [0x5a; 16]
+            && i16_lanes(splat_i16(0x1234)) == [0x1234; 8]
     }
 }
 

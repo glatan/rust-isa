@@ -1,6 +1,6 @@
 use rust_isa::x86::simd::avx::{
-    vaddpd, vaddps, vaddsubpd, vaddsubps, vandnpd, vandnps, vandpd, vdivps, vmaxpd, vmaxps, vminpd,
-    vminps, vmulpd, vmulps, vrcpps, vsqrtpd, vsqrtps, vsubps, vxorpd,
+    vaddpd, vaddps, vaddsubpd, vaddsubps, vandnpd, vandnps, vandpd, vdivpd, vdivps, vmaxpd, vmaxps,
+    vminpd, vminps, vmulpd, vmulps, vrcpps, vsqrtpd, vsqrtps, vsubpd, vsubps, vxorpd,
 };
 use rust_isa::x86::simd::avx2::V256;
 
@@ -39,6 +39,14 @@ fn float_arithmetic() {
     assert_eq!(
         f64x4_lanes(unsafe { vmulpd(a, b) }),
         [10.0, 40.0, 90.0, 160.0]
+    );
+    assert_eq!(
+        f64x4_lanes(unsafe { vsubpd(b, a) }),
+        [9.0, 18.0, 27.0, 36.0]
+    );
+    assert_eq!(
+        f64x4_lanes(unsafe { vdivpd(b, a) }),
+        [10.0, 10.0, 10.0, 10.0]
     );
 }
 

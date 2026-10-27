@@ -1,4 +1,4 @@
-use rust_isa::x86::simd::avx512cd::{vpconflictd, vplzcntd};
+use rust_isa::x86::simd::avx512cd::{vpconflictd, vpconflictq, vplzcntd};
 
 use super::support::*;
 
@@ -18,4 +18,8 @@ fn avx512cd_leading_zeros_and_conflicts() {
     assert_eq!(out[2], 0b001);
     assert_eq!(out[3], 0);
     assert_eq!(out[4], 0b0101);
+
+    let values = i64x8([1, 2, 1, 3, 1, 0, 0, 0]);
+    let out = i64_lanes(unsafe { vpconflictq(values) });
+    assert_eq!(&out[..5], &[0, 0, 0b001, 0, 0b0101]);
 }

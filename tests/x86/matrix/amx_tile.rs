@@ -58,23 +58,24 @@ fn amx_api_is_gated() {
         AmxGuard, TileConfig, ldtilecfg, sttilecfg, tileloadd, tilestored, tilezero,
     };
     assert_eq!(core::mem::align_of::<TileConfig>(), 64);
-    let mut bytes = [0u8; 64];
-    bytes[0] = 1;
-    bytes[16] = 64;
-    bytes[17] = 0;
-    bytes[48] = 16;
-    let config = TileConfig::from_bytes(bytes);
+    let config_a = TileConfig::builder().start_row(0).tile::<0>(16, 64).build();
+    let config_b = TileConfig::builder().start_row(2).tile::<0>(16, 64).build();
     let mut readback = TileConfig::from_bytes([0; 64]);
+    let data = core::array::from_fn::<u8, 1024, _>(|index| (index as u8).wrapping_mul(7));
+    let mut out = [0u8; 1024];
     unsafe {
-        ldtilecfg(&config);
-        let guard = AmxGuard::enter(&config);
+        let guard = AmxGuard::enter(&config_a);
+        ldtilecfg(&config_b);
         sttilecfg(&guard, &mut readback);
-        let mut tile = [0u8; 1024];
+
         tilezero::<0>(&guard);
-        tileloadd::<0>(&guard, tile.as_ptr(), 64);
-        tilestored::<0>(&guard, tile.as_mut_ptr(), 64);
+        tilestored::<0>(&guard, out.as_mut_ptr(), 64);
+        assert_eq!(out, [0u8; 1024]);
+        tileloadd::<0>(&guard, data.as_ptr(), 64);
+        tilestored::<0>(&guard, out.as_mut_ptr(), 64);
     }
-    assert_eq!(readback.to_bytes(), config.to_bytes());
+    assert_eq!(readback.to_bytes(), config_b.to_bytes());
+    assert_eq!(out, data);
 }
 
 #[test]
@@ -114,4 +115,42 @@ fn amx_stateful_api_takes_guard() {
     let _: unsafe fn(&AmxGuard, &mut TileConfig) = sttilecfg;
     let _: unsafe fn(&AmxGuard) = tdpbf16ps::<0, 0, 0>;
     let _: unsafe fn(&AmxGuard) = tcmmimfp16ps::<0, 0, 0>;
+}
+
+fn amx_int8_available() -> bool {
+    use core::arch::x86_64::__cpuid_count;
+
+    let leaf = __cpuid_count(7, 0);
+    leaf.edx & (1 << 25) != 0
+}
+
+#[test]
+fn amx_int8_ones_accumulate() {
+    if !amx_tile_available() || !amx_int8_available() {
+        return;
+    }
+    use rust_isa::x86::matrix::amx_tile::{
+        AmxGuard, TileConfig, tdpbssd, tileloadd, tilestored, tilezero,
+    };
+
+    // 16x64 int8 A and 64x16 int8 B, represented as 16x64 byte tiles.
+    let config = TileConfig::builder()
+        .tile::<0>(16, 64)
+        .tile::<1>(16, 64)
+        .tile::<2>(16, 64)
+        .build();
+    let a = [1u8; 1024];
+    let b = [1u8; 1024];
+    let mut out = [0u8; 1024];
+    unsafe {
+        let guard = AmxGuard::enter(&config);
+        tileloadd::<0>(&guard, a.as_ptr(), 64);
+        tileloadd::<1>(&guard, b.as_ptr(), 64);
+        tilezero::<2>(&guard);
+        tdpbssd::<2, 0, 1>(&guard);
+        tilestored::<2>(&guard, out.as_mut_ptr(), 64);
+    }
+    for lane in out.chunks_exact(4) {
+        assert_eq!(i32::from_le_bytes(lane.try_into().unwrap()), 64);
+    }
 }

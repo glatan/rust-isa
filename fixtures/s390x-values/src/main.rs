@@ -435,10 +435,10 @@ fn vector_more_ops() -> bool {
             && vsh(V128::from_bytes([3; 16]), V128::from_bytes([2; 16])).to_bytes() == [1; 16]
             && vsf(V128::from_bytes([3; 16]), V128::from_bytes([2; 16])).to_bytes() == [1; 16]
             && vsg(V128::from_bytes([3; 16]), V128::from_bytes([2; 16])).to_bytes() == [1; 16]
-            && vmin(i32x4([1; 4]), i32x4([2; 4])).to_bytes() != [0; 16]
-            && vmax(i32x4([1; 4]), i32x4([2; 4])).to_bytes() != [0; 16]
-            && vavg(V128::from_bytes([1; 16]), V128::from_bytes([3; 16])).to_bytes() != [0; 16]
-            && vavgl(V128::from_bytes([1; 16]), V128::from_bytes([3; 16])).to_bytes() != [0; 16]
+            && vmin(i32x4([1; 4]), i32x4([2; 4])).to_bytes() == i32x4([1; 4]).to_bytes()
+            && vmax(i32x4([1; 4]), i32x4([2; 4])).to_bytes() == i32x4([2; 4]).to_bytes()
+            && vavg(V128::from_bytes([1; 16]), V128::from_bytes([3; 16])).to_bytes() == [2; 16]
+            && vavgl(V128::from_bytes([1; 16]), V128::from_bytes([3; 16])).to_bytes() == [2; 16]
             && vceq(i32x4([1; 4]), i32x4([1; 4])).to_bytes() == [0xff; 16]
             && vch(i32x4([2; 4]), i32x4([1; 4])).to_bytes() == [0xff; 16]
             && vcl(i32x4([1; 4]), i32x4([2; 4])).to_bytes() == [0xff; 16]

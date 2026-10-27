@@ -14,6 +14,7 @@ NEXTEST_FLAGS ?= --no-tests=fail
 COVERAGE_ARGS ?= --todo
 INVENTORY_ARGS ?= $(COVERAGE_ARGS)
 DUPLICATES_ARGS ?=
+TEST_GAPS_ARGS ?=
 DOC_TEST ?= compile
 TARGET_VOLUME ?= rust-isa-target
 CARGO_REGISTRY_VOLUME ?= rust-isa-cargo-registry
@@ -68,6 +69,7 @@ help:
 		'test-check-static            シンボル・rustdoc・レーン即値の検査' \
 		'test-check-wasm-link         wasm32-unknown-unknown のリンク検査' \
 		'test-i686                    i686 の値テストとゼロコスト検査（SDE）' \
+		'test-amd                     AMD 実機で x86 の値テストを SDE なしで実行する' \
 		'test-aarch64                 AArch64 の値テストとゼロコスト検査' \
 		'test-armv7                   ARMv7 の値テスト' \
 		'test-riscv64                 RISC-V の値テストとゼロコスト検査' \
@@ -85,6 +87,8 @@ help:
 		'coverage-check               inventory-check の互換alias' \
 		'doctest-coverage             doctest 網羅を検査して arch 別件数を表示する' \
 		'doctest-inventory-check      全公開命令の doctest 在庫を検査する' \
+		'test-gaps                    値テストから参照されていない公開関数を表示する' \
+		'test-gaps-check              未参照の公開関数があれば失敗する' \
 		'zero-cost-check              ゼロコスト結果表の fixture と kernel を検査する' \
 		'docs-check                   文書間リンク・アンカー・索引・API対応表・makeターゲット名を検査する' \
 		'fixtures-check               fixtures/・target-nested と fixture-matrix.md の対応を検査する' \
@@ -134,7 +138,7 @@ doctest-inventory-check:
 	$(PODMAN_RUN) python3 tools/doctest_inventory.py --check
 
 .PHONY: inventory-check
-inventory-check: zero-cost-check doctest-inventory-check
+inventory-check: zero-cost-check doctest-inventory-check test-gaps-check
 	$(PODMAN_RUN) python3 tools/inventory.py --check
 	$(PODMAN_RUN) python3 tools/doc_names.py --check
 
@@ -158,6 +162,14 @@ check-mnemonics:
 .PHONY: duplicates
 duplicates:
 	$(PODMAN_RUN) python3 tools/duplicates.py $(DUPLICATES_ARGS)
+
+.PHONY: test-gaps
+test-gaps:
+	$(PODMAN_RUN) python3 tools/test_gaps.py $(TEST_GAPS_ARGS)
+
+.PHONY: test-gaps-check
+test-gaps-check:
+	$(PODMAN_RUN) python3 tools/test_gaps.py --check
 
 .PHONY: fmt
 fmt:
@@ -203,6 +215,10 @@ test-check-static:
 .PHONY: test-check-wasm-link
 test-check-wasm-link:
 	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test wasm_link $(CARGO_ARGS)
+
+.PHONY: test-amd
+test-amd:
+	$(PODMAN_RUN) $(NEXTEST) $(NEXTEST_FLAGS) --target $(X86_64_TARGET) --test x86 $(CARGO_ARGS)
 
 .PHONY: test-i686
 test-i686:

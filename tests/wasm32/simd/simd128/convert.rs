@@ -117,20 +117,12 @@ fn trunc_sat_convert_promote_and_swizzle() {
         f32_lanes(special).map(|lane| lane as u32)
     );
     assert_eq!(
-        i32_lanes(i32x4_trunc_sat_f64x2_s_zero(f64x2([1.9, -1.9])))[0],
-        1
+        i32_lanes(i32x4_trunc_sat_f64x2_s_zero(f64x2([1.9, -1.9]))),
+        [1, -1, 0, 0]
     );
     assert_eq!(
-        i32_lanes(i32x4_trunc_sat_f64x2_s_zero(f64x2([1.9, -1.9])))[1],
-        -1
-    );
-    assert_eq!(
-        i32_lanes(i32x4_trunc_sat_f64x2_u_zero(f64x2([-1.5, 4.2])))[0] as u32,
-        0
-    );
-    assert_eq!(
-        i32_lanes(i32x4_trunc_sat_f64x2_u_zero(f64x2([-1.5, 4.2])))[1] as u32,
-        4
+        i32_lanes(i32x4_trunc_sat_f64x2_u_zero(f64x2([-1.5, 4.2]))).map(|lane| lane as u32),
+        [0, 4, 0, 0]
     );
 
     let source = V128::from_bytes([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);

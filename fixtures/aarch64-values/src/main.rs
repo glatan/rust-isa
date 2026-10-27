@@ -4,19 +4,26 @@
 use core::arch::asm;
 use core::panic::PanicInfo;
 use rust_isa::aarch64::crypto::aes::{aesd, aese, aesimc, aesmc};
-use rust_isa::aarch64::crypto::crc::crc32b;
+use rust_isa::aarch64::crypto::crc::{crc32b, crc32h, crc32w, crc32x};
 use rust_isa::aarch64::crypto::sha2::{sha256h, sha256h2, sha256su0, sha256su1};
+use rust_isa::aarch64::crypto::sha3::xar;
 use rust_isa::aarch64::crypto::sha3::{bcax, eor3, rax1};
 use rust_isa::aarch64::crypto::sm4::{sm4e, sm4ekey};
 use rust_isa::aarch64::simd::bf16::bfdot;
+use rust_isa::aarch64::simd::bf16::bfmmla;
 use rust_isa::aarch64::simd::dotprod::{sdot, udot};
 use rust_isa::aarch64::simd::f32mm::fmmla_f32;
 use rust_isa::aarch64::simd::f64mm::fmmla_f64;
+use rust_isa::aarch64::simd::fcma::fcmla_rot90;
 use rust_isa::aarch64::simd::fcma::{fcmla, fcmla_rot180, fcmla_rot270};
 use rust_isa::aarch64::simd::fhm::{fmla_f16, fmls_f16};
 use rust_isa::aarch64::simd::fp16::{fadd_f16, fmul_f16};
+use rust_isa::aarch64::simd::fp16::{
+    fcvt_f16_f32, fcvt_f16_f64, fcvt_f32_f16, fcvt_f64_f16, fcvtl_f32_f16, fcvtl2_f32_f16,
+    fcvtn_f16_f32, fcvtn2_f16_f32, fcvtxn_f16_f64, fdiv_f16, frecpx_f16, fsub_f16,
+};
 use rust_isa::aarch64::simd::i8mm::{smmla, ummla, usmmla};
-use rust_isa::aarch64::simd::jsconv::fjcvtzs;
+use rust_isa::aarch64::simd::jsconv::{fjcvtzs, fjcvtzs_v128};
 use rust_isa::aarch64::simd::neon::{
     V128, abs_i32, add, add_f64, add_i8, add_i16, add_i32, add_i64, addp_s8, addp_s16, addp_s32,
     addv_s8, addv_s16, addv_s32, and, bic, bif, bit, bsl, cls_i8, cls_i16, cls_i32, clz_i8,
@@ -34,12 +41,22 @@ use rust_isa::aarch64::simd::neon::{
     sar_i32, shl_i32, shr_i16, smax_s8, smax_s16, smax_s32, smaxp_s8, smaxp_s16, smaxp_s32,
     smaxv_s8, smaxv_s16, smaxv_s32, smin_s8, smin_s16, smin_s32, sminp_s8, sminp_s16, sminp_s32,
     sminv_s8, sminv_s16, sminv_s32, splat_i32, ssubl_s8, ssubl_s16, ssubl_s32, ssubw_s8, ssubw_s16,
-    ssubw_s32, sub_i8, sub_i16, sub_i32, sub_i64, tbl, trn1, uaddl_u8, uaddl_u16, uaddl_u32,
+    ssubw_s32, sub_i8, sub_i16, sub_i32, sub_i64, tbl, trn1, trn2, uaddl_u8, uaddl_u16, uaddl_u32,
     uaddw_u8, uaddw_u16, uaddw_u32, umax_u8, umax_u16, umax_u32, umaxp_u8, umaxp_u16, umaxp_u32,
     umaxv_u8, umaxv_u16, umaxv_u32, umin_u8, umin_u16, umin_u32, uminp_u8, uminp_u16, uminp_u32,
     uminv_u8, uminv_u16, uminv_u32, usubl_u8, usubl_u16, usubl_u32, usubw_u8, usubw_u16, usubw_u32,
-    uzp1, v128_load, v128_store, zip1,
+    uzp1, uzp2, v128_load, v128_store, zip1, zip2,
 };
+use rust_isa::aarch64::simd::neon::{
+    cls_u64, clz_u64, cnt_u64, ext, ldnp, ldp, pmull_p64, splat_f32, splat_f64, splat_i8,
+    splat_i16, splat_i64, stnp, stp,
+};
+use rust_isa::aarch64::simd::neon::{
+    dup_i8 as dup_lane_i8, dup_i16 as dup_lane_i16, dup_i64 as dup_lane_i64, ins_i8 as ins_lane_i8,
+    ins_i16 as ins_lane_i16, ins_i32 as ins_lane_i32, ins_i64 as ins_lane_i64,
+};
+use rust_isa::aarch64::simd::neon::{ld1, ld2, ld3, ld4, st1, st2, st3, st4};
+use rust_isa::aarch64::simd::rdm::{sqrdmlah, sqrdmlsh};
 use rust_isa::aarch64::simd::sve;
 
 #[unsafe(no_mangle)]
@@ -305,10 +322,31 @@ fn run() -> u32 {
         return 24;
     }
     if !unsafe { sve_ops() } {
-        return 17;
+        return 11;
     }
     if !unsafe { sve_ext_ops() } {
         return 25;
+    }
+    if !unsafe { bf16_ops() } {
+        return 26;
+    }
+    if !structure_ops() {
+        return 27;
+    }
+    if !unsafe { rdm_ops() } {
+        return 28;
+    }
+    if !lane_ops() {
+        return 29;
+    }
+    if !unsafe { sve_mnemonics_smoke() } {
+        return 30;
+    }
+    if !remaining_ops() {
+        return 31;
+    }
+    if !unsafe { sve_mnemonic_values() } {
+        return 32;
     }
     0
 }
@@ -409,9 +447,1179 @@ fn float() -> bool {
     true
 }
 
+#[target_feature(enable = "rdm")]
+unsafe fn rdm_ops() -> bool {
+    let acc = i32x4([0; 4]);
+    let a = i32x4([1 << 16; 4]);
+    let b = i32x4([1 << 16; 4]);
+    let sum = unsafe { sqrdmlah(acc, a, b) };
+    let diff = unsafe { sqrdmlsh(i32x4([200_000; 4]), a, b) };
+    let max = unsafe { sqrdmlah(acc, i32x4([i32::MAX; 4]), i32x4([i32::MAX; 4])) };
+    let min = unsafe { sqrdmlsh(acc, i32x4([i32::MAX; 4]), i32x4([i32::MAX; 4])) };
+    lanes(sum) == [2; 4]
+        && lanes(diff) == [199_998; 4]
+        && lanes(max) == [i32::MAX as u32 - 1; 4]
+        && lanes(min) == [i32::MIN as u32 + 2; 4]
+}
+
+fn lane_ops() -> bool {
+    let a = V128::from_bytes(core::array::from_fn(|index| index as u8));
+    let dup8 = dup_lane_i8::<5>(a).to_bytes();
+    if dup8 != [5; 16] {
+        return false;
+    }
+    let dup16 = dup_lane_i16::<7>(i16x8([10, 20, 30, 40, 50, 60, 70, 80]));
+    if i16_lanes(dup16) != [80; 8] {
+        return false;
+    }
+    let lanes64 = V128::from_bytes([1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0]);
+    if !i64_ok(dup_lane_i64::<1>(lanes64), [2, 2]) {
+        return false;
+    }
+
+    let mut expected = a.to_bytes();
+    expected[3] = 0x7f;
+    if ins_lane_i8::<3>(a, 0x7f).to_bytes() != expected {
+        return false;
+    }
+    let inserted16 = ins_lane_i16::<3>(i16x8([10, 20, 30, 40, 50, 60, 70, 80]), 999);
+    if i16_lanes(inserted16) != [10, 20, 30, 999, 50, 60, 70, 80] {
+        return false;
+    }
+    let inserted32 = ins_lane_i32::<1>(i32x4([1, 2, 3, 4]), -7);
+    if lanes(inserted32) != [1, -7i32 as u32, 3, 4] {
+        return false;
+    }
+    let inserted64 = ins_lane_i64::<0>(lanes64, 123);
+    i64_ok(inserted64, [123, 2])
+}
+
+fn structure_ops() -> bool {
+    let bytes = core::array::from_fn::<u8, 16, _>(|index| index as u8);
+    let mut out = [0u8; 16];
+    unsafe {
+        st1(out.as_mut_ptr(), ld1(bytes.as_ptr()));
+    }
+    if out != bytes {
+        return false;
+    }
+
+    let data2 = core::array::from_fn::<u8, 32, _>(|index| index as u8);
+    let (a2, b2) = unsafe { ld2(data2.as_ptr()) };
+    if a2.to_bytes() != core::array::from_fn::<u8, 16, _>(|index| (index * 2) as u8)
+        || b2.to_bytes() != core::array::from_fn::<u8, 16, _>(|index| (index * 2 + 1) as u8)
+    {
+        return false;
+    }
+    let mut out2 = [0u8; 32];
+    unsafe { st2(out2.as_mut_ptr(), a2, b2) };
+    if out2 != data2 {
+        return false;
+    }
+
+    let data3 = core::array::from_fn::<u8, 48, _>(|index| index as u8);
+    let (a3, b3, c3) = unsafe { ld3(data3.as_ptr()) };
+    if a3.to_bytes() != core::array::from_fn::<u8, 16, _>(|index| (index * 3) as u8)
+        || b3.to_bytes() != core::array::from_fn::<u8, 16, _>(|index| (index * 3 + 1) as u8)
+        || c3.to_bytes() != core::array::from_fn::<u8, 16, _>(|index| (index * 3 + 2) as u8)
+    {
+        return false;
+    }
+    let mut out3 = [0u8; 48];
+    unsafe { st3(out3.as_mut_ptr(), a3, b3, c3) };
+    if out3 != data3 {
+        return false;
+    }
+
+    let data4 = core::array::from_fn::<u8, 64, _>(|index| index as u8);
+    let (a4, b4, c4, d4) = unsafe { ld4(data4.as_ptr()) };
+    if a4.to_bytes() != core::array::from_fn::<u8, 16, _>(|index| (index * 4) as u8)
+        || b4.to_bytes() != core::array::from_fn::<u8, 16, _>(|index| (index * 4 + 1) as u8)
+        || c4.to_bytes() != core::array::from_fn::<u8, 16, _>(|index| (index * 4 + 2) as u8)
+        || d4.to_bytes() != core::array::from_fn::<u8, 16, _>(|index| (index * 4 + 3) as u8)
+    {
+        return false;
+    }
+    let mut out4 = [0u8; 64];
+    unsafe { st4(out4.as_mut_ptr(), a4, b4, c4, d4) };
+    out4 == data4
+}
+
+#[target_feature(enable = "sve")]
+unsafe fn sve_mnemonics_smoke() -> bool {
+    let in_a_f32_4 = [1.0 as f32; 4];
+    let in_a_f64_4 = [1.0 as f64; 4];
+    let in_a_i16_4 = [1 as i16; 4];
+    let in_a_i16_8 = [1 as i16; 8];
+    let in_a_i32_4 = [1 as i32; 4];
+    let in_a_i64_4 = [1 as i64; 4];
+    let in_a_i8_4 = [1 as i8; 4];
+    let in_a_u16_1 = [1 as u16; 1];
+    let in_a_u16_4 = [1 as u16; 4];
+    let in_a_u16_8 = [1 as u16; 8];
+    let in_a_u16_12 = [1 as u16; 12];
+    let in_a_u16_16 = [1 as u16; 16];
+    let in_a_u32_1 = [1 as u32; 1];
+    let in_a_u32_4 = [1 as u32; 4];
+    let in_a_u32_8 = [1 as u32; 8];
+    let in_a_u32_12 = [1 as u32; 12];
+    let in_a_u32_16 = [1 as u32; 16];
+    let in_a_u64_1 = [1 as u64; 1];
+    let in_a_u64_2 = [1 as u64; 2];
+    let in_a_u64_4 = [1 as u64; 4];
+    let in_a_u64_8 = [1 as u64; 8];
+    let in_a_u64_12 = [1 as u64; 12];
+    let in_a_u64_16 = [1 as u64; 16];
+    let in_a_u8_4 = [1 as u8; 4];
+    let in_a_u8_16 = [1 as u8; 16];
+    let in_a0_u16_4 = [1 as u16; 4];
+    let in_a0_u32_4 = [1 as u32; 4];
+    let in_a0_u64_4 = [1 as u64; 4];
+    let in_a1_u16_4 = [1 as u16; 4];
+    let in_a1_u32_4 = [1 as u32; 4];
+    let in_a1_u64_4 = [1 as u64; 4];
+    let in_a2_u16_4 = [1 as u16; 4];
+    let in_a2_u32_4 = [1 as u32; 4];
+    let in_a2_u64_4 = [1 as u64; 4];
+    let in_a3_u16_4 = [1 as u16; 4];
+    let in_a3_u32_4 = [1 as u32; 4];
+    let in_a3_u64_4 = [1 as u64; 4];
+    let in_acc_f32_4 = [1.0 as f32; 4];
+    let in_acc_f64_4 = [1.0 as f64; 4];
+    let in_acc_i16_4 = [1 as i16; 4];
+    let in_acc_i32_4 = [1 as i32; 4];
+    let in_acc_i8_4 = [1 as i8; 4];
+    let in_acc_u16_4 = [1 as u16; 4];
+    let in_acc_u32_4 = [1 as u32; 4];
+    let in_acc_u8_4 = [1 as u8; 4];
+    let in_b_f32_4 = [1.0 as f32; 4];
+    let in_b_f64_4 = [1.0 as f64; 4];
+    let in_b_i16_4 = [1 as i16; 4];
+    let in_b_i32_4 = [1 as i32; 4];
+    let in_b_i64_4 = [1 as i64; 4];
+    let in_b_i8_4 = [1 as i8; 4];
+    let in_b_i8_16 = [1 as i8; 16];
+    let in_b_u16_4 = [1 as u16; 4];
+    let in_b_u32_4 = [1 as u32; 4];
+    let in_b_u64_4 = [1 as u64; 4];
+    let in_b_u8_4 = [1 as u8; 4];
+    let in_b_u8_16 = [1 as u8; 16];
+    let mut out_out_f32_4 = [123.0 as f32; 4];
+    let mut out_out_f64_4 = [123.0 as f64; 4];
+    let mut out_out_i16_4 = [0x55 as i16; 4];
+    let mut out_out_i32_4 = [0x55 as i32; 4];
+    let mut out_out_i64_4 = [0x55 as i64; 4];
+    let mut out_out_i8_4 = [0x55 as i8; 4];
+    let mut out_out_u16_4 = [0x55 as u16; 4];
+    let mut out_out_u16_8 = [0x55 as u16; 8];
+    let mut out_out_u16_12 = [0x55 as u16; 12];
+    let mut out_out_u16_16 = [0x55 as u16; 16];
+    let mut out_out_u32_4 = [0x55 as u32; 4];
+    let mut out_out_u32_8 = [0x55 as u32; 8];
+    let mut out_out_u32_12 = [0x55 as u32; 12];
+    let mut out_out_u32_16 = [0x55 as u32; 16];
+    let mut out_out_u64_2 = [0x55 as u64; 2];
+    let mut out_out_u64_4 = [0x55 as u64; 4];
+    let mut out_out_u64_8 = [0x55 as u64; 8];
+    let mut out_out_u64_12 = [0x55 as u64; 12];
+    let mut out_out_u64_16 = [0x55 as u64; 16];
+    let mut out_out_u8_4 = [0x55 as u8; 4];
+    let mut out_out0_u16_4 = [0x55 as u16; 4];
+    let mut out_out0_u32_4 = [0x55 as u32; 4];
+    let mut out_out0_u64_4 = [0x55 as u64; 4];
+    let mut out_out1_u16_4 = [0x55 as u16; 4];
+    let mut out_out1_u32_4 = [0x55 as u32; 4];
+    let mut out_out1_u64_4 = [0x55 as u64; 4];
+    let mut out_out2_u16_4 = [0x55 as u16; 4];
+    let mut out_out2_u32_4 = [0x55 as u32; 4];
+    let mut out_out2_u64_4 = [0x55 as u64; 4];
+    let mut out_out3_u16_4 = [0x55 as u16; 4];
+    let mut out_out3_u32_4 = [0x55 as u32; 4];
+    let mut out_out3_u64_4 = [0x55 as u64; 4];
+    unsafe { sve::abs_i16(&in_a_i16_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::add_u16(&in_a_u16_4, &in_b_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::add_u32(&in_a_u32_4, &in_b_u32_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::add_u64(&in_a_u64_4, &in_b_u64_4, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::and_i16(&in_a_i16_4, &in_b_i16_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::and_i64(&in_a_i64_4, &in_b_i64_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::asr_i16(&in_a_i16_4, 0 as i32, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::asr_i8(&in_a_i8_4, 0 as i32, &mut out_out_i8_4) };
+    core::hint::black_box(&out_out_i8_4);
+    unsafe { sve::clz_i64(&in_a_i64_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::cnt_i64(&in_a_i64_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::div_i64(&in_a_i64_4, &in_b_i64_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::div_u32(&in_a_u32_4, &in_b_u32_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::div_u64(&in_a_u64_4, &in_b_u64_4, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::eor_i16(&in_a_i16_4, &in_b_i16_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::eor_i8(&in_a_i8_4, &in_b_i8_4, &mut out_out_i8_4) };
+    core::hint::black_box(&out_out_i8_4);
+    unsafe { sve::fabs_f32(&in_a_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::fabs_f64(&in_a_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::fadd_f32(&in_a_f32_4, &in_b_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::fadd_f64(&in_a_f64_4, &in_b_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::fcadd_f64(&in_a_f64_4, &in_b_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::fcmla_f64(&in_a_f64_4, &in_b_f64_4, &in_acc_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::fcvtzs_i32_f64(&in_a_f64_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::fcvtzs_i64_f32(&in_a_f32_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::fcvtzs_i64_f64(&in_a_f64_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::fcvtzu_u32_f32(&in_a_f32_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::fcvtzu_u64_f32(&in_a_f32_4, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::fcvtzu_u64_f64(&in_a_f64_4, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::fdiv_f32(&in_a_f32_4, &in_b_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::fdiv_f64(&in_a_f64_4, &in_b_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::fmad_f32(&in_a_f32_4, &in_b_f32_4, &in_acc_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::fmad_f64(&in_a_f64_4, &in_b_f64_4, &in_acc_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::fmax_f32(&in_a_f32_4, &in_b_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::fmax_f64(&in_a_f64_4, &in_b_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::fmin_f32(&in_a_f32_4, &in_b_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::fmin_f64(&in_a_f64_4, &in_b_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::fmov_f64(&in_a_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::fmsb_f32(&in_a_f32_4, &in_b_f32_4, &in_acc_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::fmsb_f64(&in_a_f64_4, &in_b_f64_4, &in_acc_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::fmul_f32(&in_a_f32_4, &in_b_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::fmul_f64(&in_a_f64_4, &in_b_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::fneg_f32(&in_a_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::fneg_f64(&in_a_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::fnmad_f32(&in_a_f32_4, &in_b_f32_4, &in_acc_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::fnmad_f64(&in_a_f64_4, &in_b_f64_4, &in_acc_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::fnmla_f32(&in_a_f32_4, &in_b_f32_4, &in_acc_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::fnmla_f64(&in_a_f64_4, &in_b_f64_4, &in_acc_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::fnmls_f32(&in_a_f32_4, &in_b_f32_4, &in_acc_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::fnmls_f64(&in_a_f64_4, &in_b_f64_4, &in_acc_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::fnmsb_f32(&in_a_f32_4, &in_b_f32_4, &in_acc_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::fnmsb_f64(&in_a_f64_4, &in_b_f64_4, &in_acc_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::frecpe_f64(&in_a_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::frecps_f64(&in_a_f64_4, &in_b_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::frinta_f32(&in_a_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::frinta_f64(&in_a_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::frinti_f32(&in_a_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::frinti_f64(&in_a_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::frintm_f32(&in_a_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::frintm_f64(&in_a_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::frintn_f32(&in_a_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::frintn_f64(&in_a_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::frintp_f32(&in_a_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::frintp_f64(&in_a_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::frintx_f32(&in_a_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::frintx_f64(&in_a_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::frintz_f32(&in_a_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::frintz_f64(&in_a_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::frsqrte_f64(&in_a_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::frsqrts_f64(&in_a_f64_4, &in_b_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::fscale_f32(&in_a_f32_4, &in_b_i32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::fscale_f64(&in_a_f64_4, &in_b_i64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::fsqrt_f32(&in_a_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::fsqrt_f64(&in_a_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::fsub_f32(&in_a_f32_4, &in_b_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::fsub_f64(&in_a_f64_4, &in_b_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::ftmad_f32(&in_a_f32_4, &in_b_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::ftssel_f32(&in_a_f32_4, &in_b_u32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::insr_i32(0 as i32, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::ld1_f32(&in_a_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::ld1_f64(&in_a_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::ld1_u16(&in_a_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::ld1_u32(&in_a_u32_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::ld1_u64(&in_a_u64_4, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::ld1rd_u64(&in_a_u64_1, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::ld1rh_u16(&in_a_u16_1, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::ld1rqd_u64(&in_a_u64_2, &mut out_out_u64_2) };
+    core::hint::black_box(&out_out_u64_2);
+    unsafe { sve::ld1rqh_u16(&in_a_u16_8, &mut out_out_u16_8) };
+    core::hint::black_box(&out_out_u16_8);
+    unsafe { sve::ld1rqw_u32(&in_a_u32_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::ld1rsh_i16(&in_a_i16_8, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::ld1rsw_i32(&in_a_i32_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::ld1rw_u32(&in_a_u32_1, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::ld1sh_i16(&in_a_i16_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::ld1sw_i32(&in_a_i32_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::ld2_u32(&in_a_u32_8, &mut out_out0_u32_4, &mut out_out1_u32_4) };
+    core::hint::black_box(&out_out0_u32_4);
+    core::hint::black_box(&out_out1_u32_4);
+    unsafe { sve::ld2d_u64(&in_a_u64_8, &mut out_out0_u64_4, &mut out_out1_u64_4) };
+    core::hint::black_box(&out_out0_u64_4);
+    core::hint::black_box(&out_out1_u64_4);
+    unsafe { sve::ld2h_u16(&in_a_u16_8, &mut out_out0_u16_4, &mut out_out1_u16_4) };
+    core::hint::black_box(&out_out0_u16_4);
+    core::hint::black_box(&out_out1_u16_4);
+    unsafe { sve::ld2w_u32(&in_a_u32_8, &mut out_out0_u32_4, &mut out_out1_u32_4) };
+    core::hint::black_box(&out_out0_u32_4);
+    core::hint::black_box(&out_out1_u32_4);
+    unsafe {
+        sve::ld3_u32(
+            &in_a_u32_12,
+            &mut out_out0_u32_4,
+            &mut out_out1_u32_4,
+            &mut out_out2_u32_4,
+        )
+    };
+    core::hint::black_box(&out_out0_u32_4);
+    core::hint::black_box(&out_out1_u32_4);
+    core::hint::black_box(&out_out2_u32_4);
+    unsafe {
+        sve::ld3d_u64(
+            &in_a_u64_12,
+            &mut out_out0_u64_4,
+            &mut out_out1_u64_4,
+            &mut out_out2_u64_4,
+        )
+    };
+    core::hint::black_box(&out_out0_u64_4);
+    core::hint::black_box(&out_out1_u64_4);
+    core::hint::black_box(&out_out2_u64_4);
+    unsafe {
+        sve::ld3h_u16(
+            &in_a_u16_12,
+            &mut out_out0_u16_4,
+            &mut out_out1_u16_4,
+            &mut out_out2_u16_4,
+        )
+    };
+    core::hint::black_box(&out_out0_u16_4);
+    core::hint::black_box(&out_out1_u16_4);
+    core::hint::black_box(&out_out2_u16_4);
+    unsafe {
+        sve::ld3w_u32(
+            &in_a_u32_12,
+            &mut out_out0_u32_4,
+            &mut out_out1_u32_4,
+            &mut out_out2_u32_4,
+        )
+    };
+    core::hint::black_box(&out_out0_u32_4);
+    core::hint::black_box(&out_out1_u32_4);
+    core::hint::black_box(&out_out2_u32_4);
+    unsafe {
+        sve::ld4_u32(
+            &in_a_u32_16,
+            &mut out_out0_u32_4,
+            &mut out_out1_u32_4,
+            &mut out_out2_u32_4,
+            &mut out_out3_u32_4,
+        )
+    };
+    core::hint::black_box(&out_out0_u32_4);
+    core::hint::black_box(&out_out1_u32_4);
+    core::hint::black_box(&out_out2_u32_4);
+    core::hint::black_box(&out_out3_u32_4);
+    unsafe {
+        sve::ld4d_u64(
+            &in_a_u64_16,
+            &mut out_out0_u64_4,
+            &mut out_out1_u64_4,
+            &mut out_out2_u64_4,
+            &mut out_out3_u64_4,
+        )
+    };
+    core::hint::black_box(&out_out0_u64_4);
+    core::hint::black_box(&out_out1_u64_4);
+    core::hint::black_box(&out_out2_u64_4);
+    core::hint::black_box(&out_out3_u64_4);
+    unsafe {
+        sve::ld4h_u16(
+            &in_a_u16_16,
+            &mut out_out0_u16_4,
+            &mut out_out1_u16_4,
+            &mut out_out2_u16_4,
+            &mut out_out3_u16_4,
+        )
+    };
+    core::hint::black_box(&out_out0_u16_4);
+    core::hint::black_box(&out_out1_u16_4);
+    core::hint::black_box(&out_out2_u16_4);
+    core::hint::black_box(&out_out3_u16_4);
+    unsafe {
+        sve::ld4w_u32(
+            &in_a_u32_16,
+            &mut out_out0_u32_4,
+            &mut out_out1_u32_4,
+            &mut out_out2_u32_4,
+            &mut out_out3_u32_4,
+        )
+    };
+    core::hint::black_box(&out_out0_u32_4);
+    core::hint::black_box(&out_out1_u32_4);
+    core::hint::black_box(&out_out2_u32_4);
+    core::hint::black_box(&out_out3_u32_4);
+    unsafe { sve::ldff1d_u64(&in_a_u64_4, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::ldff1h_u16(&in_a_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::ldff1w_u32(&in_a_u32_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::ldnf1d_u64(&in_a_u64_4, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::ldnf1h_u16(&in_a_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::ldnf1w_u32(&in_a_u32_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::ldnt1d_u64(&in_a_u64_4, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::ldnt1h_u16(&in_a_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::ldnt1w_u32(&in_a_u32_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::lsl_i16(&in_a_i16_4, 0 as i32, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::lsl_i64(&in_a_i64_4, 0 as i32, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::lsr_i64(&in_a_i64_4, 0 as i32, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::lsr_i8(&in_a_i8_4, 0 as i32, &mut out_out_i8_4) };
+    core::hint::black_box(&out_out_i8_4);
+    unsafe { sve::mad_f64(&in_a_f64_4, &in_b_f64_4, &in_acc_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::msb_f64(&in_a_f64_4, &in_b_f64_4, &in_acc_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::mul_u16(&in_a_u16_4, &in_b_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::mul_u32(&in_a_u32_4, &in_b_u32_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::mul_u64(&in_a_u64_4, &in_b_u64_4, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::mul_u8(&in_a_u8_4, &in_b_u8_4, &mut out_out_u8_4) };
+    core::hint::black_box(&out_out_u8_4);
+    unsafe { sve::neg_i64(&in_a_i64_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::neg_i8(&in_a_i8_4, &mut out_out_i8_4) };
+    core::hint::black_box(&out_out_i8_4);
+    unsafe { sve::not_i16(&in_a_i16_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::not_i8(&in_a_i8_4, &mut out_out_i8_4) };
+    core::hint::black_box(&out_out_i8_4);
+    unsafe { sve::orr_i64(&in_a_i64_4, &in_b_i64_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::orr_i8(&in_a_i8_4, &in_b_i8_4, &mut out_out_i8_4) };
+    core::hint::black_box(&out_out_i8_4);
+    unsafe { sve::punpkhi_u8(&in_a_u8_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::punpklo_u8(&in_a_u8_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::raddhnb_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::raddhnt_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::reduce_add_i16(&in_a_i16_4) };
+    unsafe { sve::reduce_add_i64(&in_a_i64_4) };
+    unsafe { sve::reduce_add_u16(&in_a_u16_4) };
+    unsafe { sve::reduce_add_u64(&in_a_u64_4) };
+    unsafe { sve::reduce_add_u8(&in_a_u8_4) };
+    unsafe { sve::reduce_max_i64(&in_a_i64_4) };
+    unsafe { sve::reduce_max_i8(&in_a_i8_4) };
+    unsafe { sve::reduce_max_u16(&in_a_u16_4) };
+    unsafe { sve::reduce_max_u32(&in_a_u32_4) };
+    unsafe { sve::reduce_max_u64(&in_a_u64_4) };
+    unsafe { sve::reduce_max_u8(&in_a_u8_4) };
+    unsafe { sve::reduce_maxnm_f64(&in_a_f64_4) };
+    unsafe { sve::reduce_min_i16(&in_a_i16_4) };
+    unsafe { sve::reduce_min_i64(&in_a_i64_4) };
+    unsafe { sve::reduce_min_i8(&in_a_i8_4) };
+    unsafe { sve::reduce_min_u16(&in_a_u16_4) };
+    unsafe { sve::reduce_min_u64(&in_a_u64_4) };
+    unsafe { sve::reduce_min_u8(&in_a_u8_4) };
+    unsafe { sve::reduce_minnm_f32(&in_a_f32_4) };
+    unsafe { sve::rev_i32(&in_a_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::revw_i64(&in_a_i64_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::rsubhnb_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::rsubhnt_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::saba_i16(&in_a_i16_4, &in_b_i16_4, &in_acc_i16_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::saba_i32(&in_a_i32_4, &in_b_i32_4, &in_acc_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::saba_i8(&in_a_i8_4, &in_b_i8_4, &in_acc_i8_4, &mut out_out_i8_4) };
+    core::hint::black_box(&out_out_i8_4);
+    unsafe { sve::sabalb_i8(&in_a_i8_4, &in_b_i8_4, &in_acc_i16_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::sabalt_i8(&in_a_i8_4, &in_b_i8_4, &in_acc_i16_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::sabd_i16(&in_a_i16_4, &in_b_i16_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::sabd_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sabd_i64(&in_a_i64_4, &in_b_i64_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::sabdlb_i8(&in_a_i8_4, &in_b_i8_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::sabdlt_i8(&in_a_i8_4, &in_b_i8_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::sadalp_i16(&in_a_i16_8, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::saddlbt_i8(&in_a_i8_4, &in_b_i8_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::saddlt_i8(&in_a_i8_4, &in_b_i8_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::saddwb_i8(&in_a_i8_4, &in_b_i8_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::saddwt_i8(&in_a_i8_4, &in_b_i8_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::scale_f64(&in_a_f64_4, &in_b_i64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::scvtf_f32_i64(&in_a_i64_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::scvtf_f64_i32(&in_a_i32_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::scvtf_f64_i64(&in_a_i64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::smax_i16(&in_a_i16_4, &in_b_i16_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::smax_i64(&in_a_i64_4, &in_b_i64_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::smin_i16(&in_a_i16_4, &in_b_i16_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::smin_i64(&in_a_i64_4, &in_b_i64_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::smin_i8(&in_a_i8_4, &in_b_i8_4, &mut out_out_i8_4) };
+    core::hint::black_box(&out_out_i8_4);
+    unsafe { sve::smlalt_i8(&in_a_i8_4, &in_b_i8_4, &in_acc_i16_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::smlslb_i8(&in_a_i8_4, &in_b_i8_4, &in_acc_i16_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::smlslt_i8(&in_a_i8_4, &in_b_i8_4, &in_acc_i16_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::smulh_i64(&in_a_i64_4, &in_b_i64_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::smullt_i8(&in_a_i8_4, &in_b_i8_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::splice_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sqabs_i16(&in_a_i16_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::sqabs_i32(&in_a_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sqabs_i64(&in_a_i64_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::sqadd_i16(&in_a_i16_4, &in_b_i16_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::sqadd_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sqadd_i64(&in_a_i64_4, &in_b_i64_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::sqcadd_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sqdmlalb_i16(&in_a_i16_4, &in_b_i16_4, &in_acc_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sqdmlalbt_i16(&in_a_i16_4, &in_b_i16_4, &in_acc_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sqdmlalt_i16(&in_a_i16_4, &in_b_i16_4, &in_acc_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sqdmlslb_i16(&in_a_i16_4, &in_b_i16_4, &in_acc_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sqdmlslbt_i16(&in_a_i16_4, &in_b_i16_4, &in_acc_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sqdmlslt_i16(&in_a_i16_4, &in_b_i16_4, &in_acc_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sqdmulh_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sqdmullb_i16(&in_a_i16_4, &in_b_i16_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sqdmullt_i16(&in_a_i16_4, &in_b_i16_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sqneg_i32(&in_a_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sqneg_i64(&in_a_i64_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::sqneg_i8(&in_a_i8_4, &mut out_out_i8_4) };
+    core::hint::black_box(&out_out_i8_4);
+    unsafe { sve::sqrdmlah_i32(&in_a_i32_4, &in_b_i32_4, &in_acc_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sqrdmlsh_i32(&in_a_i32_4, &in_b_i32_4, &in_acc_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sqrdmulh_i16(&in_a_i16_4, &in_b_i16_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::sqrdmulh_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sqrshrnb_i32(&in_a_i32_4, 0 as i32, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::sqrshrnt_i32(&in_acc_i16_4, &in_a_i32_4, 0 as i32, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::sqrshrunb_i32(&in_a_i32_4, 0 as i32, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::sqrshrunt_i32(&in_acc_u16_4, &in_a_i32_4, 0 as i32, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::sqshrnb_i32(&in_a_i32_4, 0 as i32, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::sqshrnt_i32(&in_acc_i16_4, &in_a_i32_4, 0 as i32, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::sqshrunb_i32(&in_a_i32_4, 0 as i32, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::sqshrunt_i32(&in_acc_u16_4, &in_a_i32_4, 0 as i32, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::sqsub_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sqsub_i64(&in_a_i64_4, &in_b_i64_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::sqsub_i8(&in_a_i8_4, &in_b_i8_4, &mut out_out_i8_4) };
+    core::hint::black_box(&out_out_i8_4);
+    unsafe { sve::sqxtnt_i32(&in_acc_i16_4, &in_a_i32_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::sqxtunt_i32(&in_acc_u16_4, &in_a_i32_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::srhadd_i16(&in_a_i16_4, &in_b_i16_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::srhadd_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::srhadd_i8(&in_a_i8_4, &in_b_i8_4, &mut out_out_i8_4) };
+    core::hint::black_box(&out_out_i8_4);
+    unsafe { sve::ssublb_i8(&in_a_i8_4, &in_b_i8_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::ssublbt_i8(&in_a_i8_4, &in_b_i8_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::ssublt_i8(&in_a_i8_4, &in_b_i8_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::ssubltb_i8(&in_a_i8_4, &in_b_i8_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::ssubwb_i8(&in_a_i8_4, &in_b_i8_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::ssubwt_i8(&in_a_i8_4, &in_b_i8_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::st1_f32(&in_a_f32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::st1_f64(&in_a_f64_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::st1_u16(&in_a_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::st1_u32(&in_a_u32_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::st1_u64(&in_a_u64_4, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::st2_u32(&in_a0_u32_4, &in_a1_u32_4, &mut out_out_u32_8) };
+    core::hint::black_box(&out_out_u32_8);
+    unsafe { sve::st2d_u64(&in_a0_u64_4, &in_a1_u64_4, &mut out_out_u64_8) };
+    core::hint::black_box(&out_out_u64_8);
+    unsafe { sve::st2h_u16(&in_a0_u16_4, &in_a1_u16_4, &mut out_out_u16_8) };
+    core::hint::black_box(&out_out_u16_8);
+    unsafe { sve::st2w_u32(&in_a0_u32_4, &in_a1_u32_4, &mut out_out_u32_8) };
+    core::hint::black_box(&out_out_u32_8);
+    unsafe {
+        sve::st3_u32(
+            &in_a0_u32_4,
+            &in_a1_u32_4,
+            &in_a2_u32_4,
+            &mut out_out_u32_12,
+        )
+    };
+    core::hint::black_box(&out_out_u32_12);
+    unsafe {
+        sve::st3d_u64(
+            &in_a0_u64_4,
+            &in_a1_u64_4,
+            &in_a2_u64_4,
+            &mut out_out_u64_12,
+        )
+    };
+    core::hint::black_box(&out_out_u64_12);
+    unsafe {
+        sve::st3h_u16(
+            &in_a0_u16_4,
+            &in_a1_u16_4,
+            &in_a2_u16_4,
+            &mut out_out_u16_12,
+        )
+    };
+    core::hint::black_box(&out_out_u16_12);
+    unsafe {
+        sve::st3w_u32(
+            &in_a0_u32_4,
+            &in_a1_u32_4,
+            &in_a2_u32_4,
+            &mut out_out_u32_12,
+        )
+    };
+    core::hint::black_box(&out_out_u32_12);
+    unsafe {
+        sve::st4_u32(
+            &in_a0_u32_4,
+            &in_a1_u32_4,
+            &in_a2_u32_4,
+            &in_a3_u32_4,
+            &mut out_out_u32_16,
+        )
+    };
+    core::hint::black_box(&out_out_u32_16);
+    unsafe {
+        sve::st4d_u64(
+            &in_a0_u64_4,
+            &in_a1_u64_4,
+            &in_a2_u64_4,
+            &in_a3_u64_4,
+            &mut out_out_u64_16,
+        )
+    };
+    core::hint::black_box(&out_out_u64_16);
+    unsafe {
+        sve::st4h_u16(
+            &in_a0_u16_4,
+            &in_a1_u16_4,
+            &in_a2_u16_4,
+            &in_a3_u16_4,
+            &mut out_out_u16_16,
+        )
+    };
+    core::hint::black_box(&out_out_u16_16);
+    unsafe {
+        sve::st4w_u32(
+            &in_a0_u32_4,
+            &in_a1_u32_4,
+            &in_a2_u32_4,
+            &in_a3_u32_4,
+            &mut out_out_u32_16,
+        )
+    };
+    core::hint::black_box(&out_out_u32_16);
+    unsafe { sve::stnt1b_u8(&in_a_u8_4, &mut out_out_u8_4) };
+    core::hint::black_box(&out_out_u8_4);
+    unsafe { sve::stnt1d_u64(&in_a_u64_4, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::stnt1h_u16(&in_a_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::stnt1w_u32(&in_a_u32_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::sub_u16(&in_a_u16_4, &in_b_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::sub_u32(&in_a_u32_4, &in_b_u32_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::sub_u64(&in_a_u64_4, &in_b_u64_4, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::sub_u8(&in_a_u8_4, &in_b_u8_4, &mut out_out_u8_4) };
+    core::hint::black_box(&out_out_u8_4);
+    unsafe { sve::subr_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sunpklo_i8(&in_a_i8_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::sxth_i16(&in_a_i16_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::sxtw_i32(&in_a_i32_4, &mut out_out_i64_4) };
+    core::hint::black_box(&out_out_i64_4);
+    unsafe { sve::trn1_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::trn2_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::uaba_u16(&in_a_u16_4, &in_b_u16_4, &in_acc_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::uaba_u32(&in_a_u32_4, &in_b_u32_4, &in_acc_u32_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::uaba_u8(&in_a_u8_4, &in_b_u8_4, &in_acc_u8_4, &mut out_out_u8_4) };
+    core::hint::black_box(&out_out_u8_4);
+    unsafe { sve::uabalb_u8(&in_a_u8_4, &in_b_u8_4, &in_acc_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::uabalt_u8(&in_a_u8_4, &in_b_u8_4, &in_acc_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::uabd_u16(&in_a_u16_4, &in_b_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::uabd_u64(&in_a_u64_4, &in_b_u64_4, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::uabd_u8(&in_a_u8_4, &in_b_u8_4, &mut out_out_u8_4) };
+    core::hint::black_box(&out_out_u8_4);
+    unsafe { sve::uabdlb_u8(&in_a_u8_4, &in_b_u8_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::uabdlt_u8(&in_a_u8_4, &in_b_u8_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::uadalp_u16(&in_a_u16_8, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::uaddlb_u8(&in_a_u8_4, &in_b_u8_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::uaddlt_u8(&in_a_u8_4, &in_b_u8_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::uaddwb_u8(&in_a_u8_4, &in_b_u8_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::uaddwt_u8(&in_a_u8_4, &in_b_u8_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::ucvtf_f32_u32(&in_a_u32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::ucvtf_f32_u64(&in_a_u64_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::ucvtf_f64_u32(&in_a_u32_4, &mut out_out_f64_4) };
+    core::hint::black_box(&out_out_f64_4);
+    unsafe { sve::umax_u64(&in_a_u64_4, &in_b_u64_4, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::umin_u64(&in_a_u64_4, &in_b_u64_4, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::umlalb_u8(&in_a_u8_4, &in_b_u8_4, &in_acc_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::umlalt_u8(&in_a_u8_4, &in_b_u8_4, &in_acc_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::umlslb_u8(&in_a_u8_4, &in_b_u8_4, &in_acc_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::umlslt_u8(&in_a_u8_4, &in_b_u8_4, &in_acc_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::ummla_u32(&in_a_u8_16, &in_b_u8_16, &in_acc_u32_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::umulh_u64(&in_a_u64_4, &in_b_u64_4, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::umullb_u8(&in_a_u8_4, &in_b_u8_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::umullt_u8(&in_a_u8_4, &in_b_u8_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::uqadd_u16(&in_a_u16_4, &in_b_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::uqadd_u32(&in_a_u32_4, &in_b_u32_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::uqadd_u64(&in_a_u64_4, &in_b_u64_4, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::uqrshrnb_u32(&in_a_u32_4, 0 as i32, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::uqrshrnt_u32(&in_acc_u16_4, &in_a_u32_4, 0 as i32, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::uqshrnb_u32(&in_a_u32_4, 0 as i32, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::uqshrnt_u32(&in_acc_u16_4, &in_a_u32_4, 0 as i32, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::uqsub_u32(&in_a_u32_4, &in_b_u32_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::uqsub_u64(&in_a_u64_4, &in_b_u64_4, &mut out_out_u64_4) };
+    core::hint::black_box(&out_out_u64_4);
+    unsafe { sve::uqsub_u8(&in_a_u8_4, &in_b_u8_4, &mut out_out_u8_4) };
+    core::hint::black_box(&out_out_u8_4);
+    unsafe { sve::uqxtnt_u32(&in_acc_u16_4, &in_a_u32_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::urecpe_f32_u32(&in_a_u32_4, &mut out_out_f32_4) };
+    core::hint::black_box(&out_out_f32_4);
+    unsafe { sve::urhadd_u16(&in_a_u16_4, &in_b_u16_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::urhadd_u32(&in_a_u32_4, &in_b_u32_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::urhadd_u8(&in_a_u8_4, &in_b_u8_4, &mut out_out_u8_4) };
+    core::hint::black_box(&out_out_u8_4);
+    unsafe { sve::usdot_i32(&in_a_u8_16, &in_b_i8_16, &in_acc_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::usmmla_i32(&in_a_u8_16, &in_b_i8_16, &in_acc_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::usublb_u8(&in_a_u8_4, &in_b_u8_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::usublt_u8(&in_a_u8_4, &in_b_u8_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::usubwb_u8(&in_a_u8_4, &in_b_u8_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::usubwt_u8(&in_a_u8_4, &in_b_u8_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::uunpkhi_u8(&in_a_u8_4, &mut out_out_u16_4) };
+    core::hint::black_box(&out_out_u16_4);
+    unsafe { sve::uxtb_u8(&in_a_u8_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::uxth_u16(&in_a_u16_4, &mut out_out_u32_4) };
+    core::hint::black_box(&out_out_u32_4);
+    unsafe { sve::uzp1_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::uzp2_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::whilege_i32(0, 0) };
+    unsafe { sve::whilegt_u32(0, 0) };
+    unsafe { sve::whilehi_i32(0, 0) };
+    unsafe { sve::whilehi_u32(0, 0) };
+    unsafe { sve::whilehs_i32(0, 0) };
+    unsafe { sve::whilehs_u32(0, 0) };
+    unsafe { sve::whilele_i32(0, 0) };
+    unsafe { sve::whilelo_i32(0, 0) };
+    unsafe { sve::whilelo_u32(0, 0) };
+    unsafe { sve::whilels_i32(0, 0) };
+    unsafe { sve::whilels_u32(0, 0) };
+    unsafe { sve::whilelt_u32(0, 0) };
+    unsafe { sve::xtn_i32(&in_a_i32_4, &mut out_out_i16_4) };
+    core::hint::black_box(&out_out_i16_4);
+    unsafe { sve::zip1_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    unsafe { sve::zip2_i32(&in_a_i32_4, &in_b_i32_4, &mut out_out_i32_4) };
+    core::hint::black_box(&out_out_i32_4);
+    true
+}
+
+fn remaining_ops() -> bool {
+    if cnt_u64(0xff) != 8 || clz_u64(1) != 63 || cls_u64(1) != 62 {
+        return false;
+    }
+    let a = V128::from_bytes(core::array::from_fn(|index| index as u8));
+    let b = V128::from_bytes(core::array::from_fn(|index| index as u8 + 16));
+    if ext::<4>(a, b).to_bytes() != core::array::from_fn::<u8, 16, _>(|index| index as u8 + 4) {
+        return false;
+    }
+    if splat_i8(0x7f).to_bytes() != [0x7f; 16]
+        || i16_lanes(splat_i16(0x1234)) != [0x1234; 8]
+        || !i64_ok(splat_i64(5), [5, 5])
+        || f32_lanes(splat_f32(1.5)) != [1.5; 4]
+        || f64_lanes(splat_f64(2.5)) != [2.5; 2]
+    {
+        return false;
+    }
+    let low = |value: u64| {
+        let mut bytes = [0u8; 16];
+        bytes[..8].copy_from_slice(&value.to_le_bytes());
+        V128::from_bytes(bytes)
+    };
+    if u64::from_le_bytes(
+        unsafe { pmull_p64(low(1), low(1)) }.to_bytes()[..8]
+            .try_into()
+            .unwrap(),
+    ) != 1
+        || u64::from_le_bytes(
+            unsafe { pmull_p64(low(2), low(3)) }.to_bytes()[..8]
+                .try_into()
+                .unwrap(),
+        ) != 6
+    {
+        return false;
+    }
+
+    let pair_a = V128::from_bytes(core::array::from_fn(|index| index as u8));
+    let pair_b = V128::from_bytes(core::array::from_fn(|index| index as u8 + 16));
+    let pair = [pair_a, pair_b];
+    let mut pair_bytes = [0u8; 32];
+    unsafe { stp(pair_bytes.as_mut_ptr(), pair_a, pair_b) };
+    let (load_a, load_b) = unsafe { ldp(pair_bytes.as_ptr()) };
+    if load_a.to_bytes() != pair_a.to_bytes() || load_b.to_bytes() != pair_b.to_bytes() {
+        return false;
+    }
+    let mut np_bytes = [0u8; 32];
+    unsafe { stnp(np_bytes.as_mut_ptr(), pair_a, pair_b) };
+    let (np_a, np_b) = unsafe { ldnp(np_bytes.as_ptr()) };
+    if np_a.to_bytes() != pair_a.to_bytes() || np_b.to_bytes() != pair_b.to_bytes() {
+        return false;
+    }
+    let _ = pair;
+
+    let f16 = |values: [u16; 8]| {
+        let mut bytes = [0u8; 16];
+        for (lane, value) in values.iter().enumerate() {
+            bytes[lane * 2..lane * 2 + 2].copy_from_slice(&value.to_le_bytes());
+        }
+        V128::from_bytes(bytes)
+    };
+    let one = f16([0x3c00; 8]);
+    let two = f16([0x4000; 8]);
+    let three = f16([0x4200; 8]);
+    let four = f16([0x4400; 8]);
+    if unsafe { fsub_f16(four, one) } != three || unsafe { fdiv_f16(four, two) } != two {
+        return false;
+    }
+    let low_half = f16([0x3c00, 0x4000, 0x4200, 0x4400, 0, 0, 0, 0]);
+    if f32_lanes(unsafe { fcvtl_f32_f16(low_half) }) != [1.0, 2.0, 3.0, 4.0] {
+        return false;
+    }
+    let full = f16([
+        0x3c00, 0x4000, 0x4200, 0x4400, 0x4500, 0x4600, 0x4700, 0x4800,
+    ]);
+    if f32_lanes(unsafe { fcvtl2_f32_f16(full) }) != [5.0, 6.0, 7.0, 8.0] {
+        return false;
+    }
+    if unsafe { fcvtn_f16_f32(f32x4([1.0, 2.0, 3.0, 4.0])) } != low_half {
+        return false;
+    }
+    if unsafe { fcvtn2_f16_f32(f32x4([5.0, 6.0, 7.0, 8.0]), low_half) } != full {
+        return false;
+    }
+    if unsafe { fcvt_f16_f32(1.0) } != 0x3c00
+        || unsafe { fcvt_f32_f16(0x3c00) } != 1.0
+        || unsafe { fcvt_f16_f64(1.0) } != 0x3c00
+        || unsafe { fcvt_f64_f16(0x3c00) } != 1.0
+    {
+        return false;
+    }
+    let js = V128::from_bytes({
+        let mut bytes = [0u8; 16];
+        bytes[..8].copy_from_slice(&1.9f64.to_le_bytes());
+        bytes
+    });
+    if unsafe { fjcvtzs_v128(js) } != 1 {
+        return false;
+    }
+    let _: unsafe fn() -> rust_isa::aarch64::simd::sme::SmeGuard =
+        rust_isa::aarch64::simd::sme::SmeGuard::enter;
+    core::hint::black_box(unsafe { bfmmla(one, one, one) });
+    core::hint::black_box(unsafe { fcmla_rot90(one, one, one) });
+    core::hint::black_box(unsafe { fcvtxn_f16_f64(f64x2([1.0, 2.0])) });
+    core::hint::black_box(unsafe { frecpx_f16(0x3c00) });
+    core::hint::black_box(unsafe { xar::<4>(a, b) });
+    true
+}
+
+#[target_feature(enable = "sve")]
+unsafe fn sve_mnemonic_values() -> bool {
+    let mut bytes = [0u8; 8];
+    let mut out8 = [0u8; 8];
+    let mut out_i8 = [0i8; 8];
+    let mut out16 = [0i16; 4];
+    let mut out32 = [0i32; 4];
+    let mut out_f32 = [0.0f32; 4];
+    unsafe {
+        sve::add_i8(&[1, 2, 3], &[4, 5, 6], &mut out_i8[..3]);
+        if out_i8[..3] != [5, 7, 9] {
+            return false;
+        }
+        sve::mul_i32(&[2, 3], &[4, 5], &mut out32[..2]);
+        if out32[..2] != [8, 15] {
+            return false;
+        }
+        sve::saddlb_i8(&[1, 2], &[3, 4], &mut out16[..2]);
+        if out16[..2] != [4, 6] {
+            return false;
+        }
+        sve::sqadd_i8(&[100, -100], &[50, -50], &mut out_i8[..2]);
+        if out_i8[..2] != [127, -128] {
+            return false;
+        }
+        let mut narrow = [0i16; 4];
+        sve::sqxtnb_i32(&[1, -1, 40_000, 70_000], &mut narrow);
+        if narrow != [1, -1, i16::MAX, i16::MAX] {
+            return false;
+        }
+        sve::fadd_f32(&[1.0, 2.0], &[3.0, 4.0], &mut out_f32[..2]);
+        if out_f32[..2] != [4.0, 6.0] {
+            return false;
+        }
+        sve::fdiv_f32(&[4.0], &[2.0], &mut out_f32[..1]);
+        if out_f32[0] != 2.0 {
+            return false;
+        }
+        sve::fcvtzs_i32_f32(&[1.0, -2.0], &mut out32[..2]);
+        if out32[..2] != [1, -2] {
+            return false;
+        }
+        sve::scvtf_f32_i32(&[1, 2], &mut out_f32[..2]);
+        if out_f32[..2] != [1.0, 2.0] {
+            return false;
+        }
+        if sve::reduce_add_i8(&[1, 2, 3]) != 6 {
+            return false;
+        }
+        sve::ext_i32(&[1, 2, 3, 4], &[5, 6, 7, 8], 2, &mut out32);
+        if out32 != [3, 4, 5, 6] {
+            return false;
+        }
+        sve::trn1_i32(&[1, 2], &[3, 4], &mut out32[..2]);
+        if out32[..2] != [1, 3] {
+            return false;
+        }
+        sve::zip1_i32(&[1, 2], &[3, 4], &mut out32[..2]);
+        if out32[..2] != [1, 3] {
+            return false;
+        }
+        sve::uzp1_i32(&[1, 2], &[3, 4], &mut out32[..2]);
+        if out32[..2] != [1, 0] {
+            return false;
+        }
+        sve::ld1_u8(&[1, 2, 3, 4], &mut out8[..4]);
+        if out8[..4] != [1, 2, 3, 4] {
+            return false;
+        }
+        sve::st1_u8(&[1, 2, 3, 4], &mut bytes[..4]);
+        if bytes[..4] != [1, 2, 3, 4] {
+            return false;
+        }
+        let mut even = [0u8; 4];
+        let mut odd = [0u8; 4];
+        sve::ld2b_u8(&[1, 2, 3, 4, 5, 6, 7, 8], &mut even, &mut odd);
+        if even != [1, 3, 5, 7] || odd != [2, 4, 6, 8] {
+            return false;
+        }
+        let mut dot = [0i32; 1];
+        sve::sdot_i32(&[1, 2, 3, 4], &[1, 1, 1, 1], &[0], &mut dot);
+        if dot != [10] {
+            return false;
+        }
+        if sve::whilelt_i32(0, 4) == 0 || sve::whilelt_i32(4, 4) != 0 {
+            return false;
+        }
+    }
+    true
+}
+
 fn table() -> bool {
     let source = V128::from_bytes(core::array::from_fn(|index| index as u8));
     let reverse = V128::from_bytes(core::array::from_fn(|index| 15 - index as u8));
+    let reversed = V128::from_bytes(core::array::from_fn(|index| 15 - index as u8));
+    if tbl(source, reverse).to_bytes() != reversed.to_bytes() {
+        return false;
+    }
     kernel_tbl(&source, &reverse).to_bytes() == source.to_bytes()
 }
 
@@ -754,7 +1962,7 @@ fn integer_ops() -> bool {
     {
         return false;
     }
-    if i8_signed(
+    if i8_all(
         sar_i8(
             V128::from_bytes([
                 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80,
@@ -788,6 +1996,10 @@ fn i64_ok(value: V128, expected: [i64; 2]) -> bool {
 
 fn i8_signed(value: V128, expected: u8) -> bool {
     value.to_bytes()[1] == expected
+}
+
+fn i8_all(value: V128, expected: u8) -> bool {
+    value.to_bytes().iter().all(|byte| *byte == expected)
 }
 
 fn float_ops() -> bool {
@@ -930,6 +2142,15 @@ fn shuffle_ops() -> bool {
     if trn1(a, b).to_bytes() != [0, 16, 2, 18, 4, 20, 6, 22, 8, 24, 10, 26, 12, 28, 14, 30] {
         return false;
     }
+    if zip2(a, b).to_bytes() != [8, 24, 9, 25, 10, 26, 11, 27, 12, 28, 13, 29, 14, 30, 15, 31] {
+        return false;
+    }
+    if uzp2(a, b).to_bytes() != [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31] {
+        return false;
+    }
+    if trn2(a, b).to_bytes() != [1, 17, 3, 19, 5, 21, 7, 23, 9, 25, 11, 27, 13, 29, 15, 31] {
+        return false;
+    }
     let idx = V128::from_bytes(core::array::from_fn(|index| index as u8));
     if tbl(a, idx).to_bytes() != a.to_bytes() {
         return false;
@@ -985,6 +2206,15 @@ unsafe fn dotprod_ops() -> bool {
     let s = unsafe { sdot(a, b, zero) }.to_bytes();
     let u = unsafe { udot(a, b, zero) }.to_bytes();
     lanes(V128::from_bytes(s)) == [8; 4] && lanes(V128::from_bytes(u)) == [8; 4]
+}
+
+#[target_feature(enable = "bf16")]
+unsafe fn bf16_ops() -> bool {
+    let one = V128::from_bytes(core::array::from_fn(|index| {
+        if index % 2 == 0 { 0x80 } else { 0x3f }
+    }));
+    let zero = V128::from_bytes([0; 16]);
+    f32_lanes(unsafe { bfdot(zero, one, one) }) == [2.0; 4]
 }
 
 #[target_feature(enable = "i8mm")]
@@ -1084,7 +2314,27 @@ unsafe fn crypto_crc_ops() -> bool {
     for byte in b"123456789" {
         crc = unsafe { crc32b(crc, *byte) };
     }
+    let value16 = 0x1234u16;
+    let value32 = 0x1234_5678u32;
+    let value64 = 0x0123_4567_89ab_cdefu64;
     crc == 0x340b_c6d9
+        && unsafe { crc32h(0xffff_ffff, value16) } == crc32_ref(0xffff_ffff, &value16.to_le_bytes())
+        && unsafe { crc32w(0xffff_ffff, value32) } == crc32_ref(0xffff_ffff, &value32.to_le_bytes())
+        && unsafe { crc32x(0xffff_ffff, value64) } == crc32_ref(0xffff_ffff, &value64.to_le_bytes())
+}
+
+fn crc32_ref(mut crc: u32, bytes: &[u8]) -> u32 {
+    for byte in bytes {
+        crc ^= u32::from(*byte);
+        for _ in 0..8 {
+            crc = if crc & 1 != 0 {
+                (crc >> 1) ^ 0xedb8_8320
+            } else {
+                crc >> 1
+            };
+        }
+    }
+    crc
 }
 
 fn neon_bitwise_ops() -> bool {
