@@ -1,0 +1,105 @@
+schema = 1
+arch = "powerpc64le"
+extension = "mma"
+module = "crate::powerpc::matrix::mma"
+kind = "fixed"
+parent = ""
+source = "open-power-sdk/PowerISA"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "xvi4ger8"
+api = "xvi4ger8"
+widths = [128]
+required_features = ["power10-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "xvi4ger8pp"
+api = "xvi4ger8pp"
+widths = [128]
+required_features = ["power10-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "xvi8ger4"
+api = "xvi8ger4"
+widths = [128]
+required_features = ["power10-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "xvi8ger4pp"
+api = "xvi8ger4pp"
+widths = [128]
+required_features = ["power10-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "xvi8ger4spp"
+api = "xvi8ger4spp"
+widths = [128]
+required_features = ["power10-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "xvi16ger2"
+api = "xvi16ger2"
+widths = [128]
+required_features = ["power10-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "xvi16ger2pp"
+api = "xvi16ger2pp"
+widths = [128]
+required_features = ["power10-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "xvi16ger2s"
+api = "xvi16ger2s"
+widths = [128]
+required_features = ["power10-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "xvi16ger2spp"
+api = "xvi16ger2spp"
+widths = [128]
+required_features = ["power10-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "xxmfacc"
+api = "xxmfacc"
+widths = [128]
+required_features = ["power10-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "xxmtacc"
+api = "xxmtacc"
+widths = [128]
+required_features = ["power10-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "xxsetaccz"
+api = "xxsetaccz"
+widths = [128]
+required_features = ["power10-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]

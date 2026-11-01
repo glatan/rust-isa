@@ -1,0 +1,402 @@
+schema = 1
+arch = "arm"
+extension = "mve"
+module = "crate::arm::simd::mve"
+kind = "fixed"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "ABS"
+api = "abs"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "ABAV"
+api = "abav"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "ABD"
+api = "abd"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "ADD"
+api = "add"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "ADDLV"
+api = "addlv"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "ADDV"
+api = "addv"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "AND"
+api = "and"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "BIC"
+api = "bic"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "BRSR"
+api = "brsr"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "CLZ"
+api = "clz"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "CMP"
+api = "cmp"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "CTP"
+api = "ctp"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "DUP"
+api = "dup"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "EOR"
+api = "eor"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "HADD"
+api = "hadd"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "HSUB"
+api = "hsub"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "IDUP"
+api = "idup"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "IWDUP"
+api = "iwdup"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "LDR"
+api = "ldr"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "LDRB"
+api = "ldrb"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "MAX"
+api = "max"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "MAXV"
+api = "maxv"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "MIN"
+api = "min"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "MINV"
+api = "minv"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "MLA"
+api = "mla"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "MLAL"
+api = "mlal"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "MLS"
+api = "mls"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "MLSL"
+api = "mlsl"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "MOV"
+api = "mov"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "MUL"
+api = "mul"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "MULL"
+api = "mull"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "MVN"
+api = "mvn"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "NEG"
+api = "neg"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "ORN"
+api = "orn"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "ORR"
+api = "orr"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "QABS"
+api = "qabs"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "QADD"
+api = "qadd"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "QDMULH"
+api = "qdmulh"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "QDMULL"
+api = "qdmull"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "QMOVN"
+api = "qmovn"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "QNEG"
+api = "qneg"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "QRDMULH"
+api = "qrdmulh"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "QSHL"
+api = "qshl"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "QSUB"
+api = "qsub"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "REV16"
+api = "rev16"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "REV32"
+api = "rev32"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "REV64"
+api = "rev64"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "RMULH"
+api = "rmulh"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "SHL"
+api = "shl"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "SHR"
+api = "shr"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "SLI"
+api = "sli"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "SRI"
+api = "sri"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "STR"
+api = "str"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "STRB"
+api = "strb"
+required_features = ["mve"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "SUB"
+api = "sub"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "SUBN"
+api = "subn"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "SUBW"
+api = "subw"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "UZP"
+api = "uzp"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]
+[[instruction]]
+mnemonic = "ZIP"
+api = "zip"
+required_features = ["mve"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_mve_values"]

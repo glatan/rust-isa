@@ -1,0 +1,21 @@
+schema = 1
+arch = "x86_64"
+extension = "avx512bf16"
+module = "crate::x86::simd::avx512bf16"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VCVTNEPS2BF16"
+api = "vcvtneps2bf16"
+required_features = ["avx512bf16"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VDPBF16PS"
+api = "vdpbf16ps"
+required_features = ["avx512bf16"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

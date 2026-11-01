@@ -1,0 +1,441 @@
+schema = 1
+arch = "s390x"
+extension = "vector-enhancements-3"
+module = "crate::s390x::simd::vector_enhancements_3"
+kind = "fixed"
+parent = ""
+source = "llvm/llvm-project"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VAQ"
+api = "vaq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VACCCQ"
+api = "vacccq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VACQ"
+api = "vacq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VACCQ"
+api = "vaccq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VAVGQ"
+api = "vavgq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VAVGLQ"
+api = "vavglq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VBLENDB"
+api = "vblendb"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VBLENDF"
+api = "vblendf"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VBLENDG"
+api = "vblendg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VBLENDH"
+api = "vblendh"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VBLENDQ"
+api = "vblendq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VCLZQ"
+api = "vclzq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VCTZQ"
+api = "vctzq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VDF"
+api = "vdf"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VDG"
+api = "vdg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VDLF"
+api = "vdlf"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VDLG"
+api = "vdlg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VDLQ"
+api = "vdlq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VDQ"
+api = "vdq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VEVAL"
+api = "veval"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VGEMB"
+api = "vgemb"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VGEMF"
+api = "vgemf"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VGEMG"
+api = "vgemg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VGEMH"
+api = "vgemh"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VGEMQ"
+api = "vgemq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VLCQ"
+api = "vlcq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VLPQ"
+api = "vlpq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMAEG"
+api = "vmaeg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMAHG"
+api = "vmahg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMAHQ"
+api = "vmahq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMALEG"
+api = "vmaleg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMALG"
+api = "vmalg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMALHG"
+api = "vmalhg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMALHQ"
+api = "vmalhq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMALOG"
+api = "vmalog"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMALQ"
+api = "vmalq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMAOG"
+api = "vmaog"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMEG"
+api = "vmeg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMHG"
+api = "vmhg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMHQ"
+api = "vmhq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMLEG"
+api = "vmleg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMOG"
+api = "vmog"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMLG"
+api = "vmlg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMLHG"
+api = "vmlhg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMLHQ"
+api = "vmlhq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMLOG"
+api = "vmlog"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMLQ"
+api = "vmlq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMNLQ"
+api = "vmnlq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMNQ"
+api = "vmnq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMXLQ"
+api = "vmxlq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VMXQ"
+api = "vmxq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VRF"
+api = "vrf"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VRG"
+api = "vrg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VRLF"
+api = "vrlf"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VRLG"
+api = "vrlg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VRLQ"
+api = "vrlq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VRQ"
+api = "vrq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VSQ"
+api = "vsq"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VUPHG"
+api = "vuphg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VUPLG"
+api = "vuplg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VUPLHG"
+api = "vuplhg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VUPLLG"
+api = "vupllg"
+required_features = ["vector-enhancements-3"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]

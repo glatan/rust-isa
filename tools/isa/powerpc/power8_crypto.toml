@@ -1,0 +1,105 @@
+schema = 1
+arch = "powerpc64le"
+extension = "power8-crypto"
+module = "crate::powerpc::crypto::power8_crypto"
+kind = "fixed"
+parent = ""
+source = "open-power-sdk/PowerISA"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "CIPHER"
+api = "cipher"
+required_features = ["power8-crypto"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "CIPHERLAST"
+api = "cipherlast"
+required_features = ["power8-crypto"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "NCIPHER"
+api = "ncipher"
+required_features = ["power8-crypto"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "NCIPHERLAST"
+api = "ncipherlast"
+required_features = ["power8-crypto"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VCIPHER"
+api = "vcipher"
+required_features = ["power8-crypto"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VNCIPHER"
+api = "vncipher"
+required_features = ["power8-crypto"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VCIPHERLAST"
+api = "vcipherlast"
+required_features = ["power8-crypto"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VNCIPHERLAST"
+api = "vncipherlast"
+required_features = ["power8-crypto"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VPERMXOR"
+api = "vpermxor"
+required_features = ["power8-crypto"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VPMSUMB"
+api = "vpmsumb"
+required_features = ["power8-crypto"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VPMSUMH"
+api = "vpmsumh"
+required_features = ["power8-crypto"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VPMSUMW"
+api = "vpmsumw"
+required_features = ["power8-crypto"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VPMSUMD"
+api = "vpmsumd"
+required_features = ["power8-crypto"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSBOX"
+api = "vsbox"
+required_features = ["power8-crypto"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSHASIGMAW"
+api = "vshasigmaw"
+required_features = ["power8-crypto"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSHASIGMAD"
+api = "vshasigmad"
+required_features = ["power8-crypto"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]

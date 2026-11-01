@@ -1,0 +1,87 @@
+schema = 1
+arch = "s390x"
+extension = "vector-packed-decimal"
+module = "crate::s390x::simd::vector_packed_decimal"
+kind = "fixed"
+parent = ""
+source = "llvm/llvm-project"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VAP"
+api = "vap"
+required_features = ["vector-packed-decimal"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VSP"
+api = "vsp"
+required_features = ["vector-packed-decimal"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VSDP"
+api = "vsdp"
+required_features = ["vector-packed-decimal"]
+status = "implemented"
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VSRP"
+api = "vsrp"
+required_features = ["vector-packed-decimal"]
+status = "implemented"
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VPKZ"
+api = "vpkz"
+required_features = ["vector-packed-decimal"]
+status = "implemented"
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VUPKZ"
+api = "vupkz"
+required_features = ["vector-packed-decimal"]
+status = "implemented"
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VUPKZH"
+api = "vupkzh"
+required_features = ["vector-packed-decimal"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VUPKZL"
+api = "vupkzl"
+required_features = ["vector-packed-decimal"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VSTRL"
+api = "vstrl"
+required_features = ["vector-packed-decimal"]
+status = "implemented"
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VCVD"
+api = "vcvd"
+required_features = ["vector-packed-decimal"]
+status = "implemented"
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VCVB"
+api = "vcvb"
+required_features = ["vector-packed-decimal"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VCVBG"
+api = "vcvbg"
+required_features = ["vector-packed-decimal"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]

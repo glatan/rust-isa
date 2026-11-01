@@ -1,0 +1,145 @@
+schema = 1
+arch = "riscv64"
+extension = "zvkn"
+module = "crate::riscv"
+kind = "fixed"
+parent = ""
+source = "riscv/riscv-opcodes"
+coverage = "pilot"
+raw = true
+
+normalization = "mnemonic+api"
+
+[[instruction]]
+mnemonic = "VANDN.VV"
+api = "vandn_vv"
+forms = ["vandn.vv"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VANDN.VX"
+api = "vandn_vx"
+forms = ["vandn.vx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VBREV8.V"
+api = "vbrev8"
+forms = ["vbrev8.v"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VREV8.V"
+api = "vrev8"
+forms = ["vrev8.v"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VROL.VV"
+api = "vrol_vv"
+forms = ["vrol.vv"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VROL.VX"
+api = "vrol_vx"
+forms = ["vrol.vx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VROR.VV"
+api = "vror_vv"
+forms = ["vror.vv"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VROR.VX"
+api = "vror_vx"
+forms = ["vror.vx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VROR.VI"
+api = "vror_vi"
+forms = ["vror.vi"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VAESEF"
+api = "vaesef"
+forms = ["vaesef.vs", "vaesef.vv"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VAESEM"
+api = "vaesem"
+forms = ["vaesem.vs", "vaesem.vv"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VAESDF"
+api = "vaesdf"
+forms = ["vaesdf.vs", "vaesdf.vv"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VAESDM"
+api = "vaesdm"
+forms = ["vaesdm.vs", "vaesdm.vv"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VAESKF1"
+api = "vaeskf1"
+forms = ["vaeskf1.vi"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VAESKF2"
+api = "vaeskf2"
+forms = ["vaeskf2.vi"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VAESZ"
+api = "vaesz"
+forms = ["vaesz.vs"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VSHA2MS"
+api = "vsha2ms"
+forms = ["vsha2ms.vv"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VSHA2CH"
+api = "vsha2ch"
+forms = ["vsha2ch.vv"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VSHA2CL"
+api = "vsha2cl"
+forms = ["vsha2cl.vv"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]

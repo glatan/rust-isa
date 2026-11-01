@@ -1,0 +1,21 @@
+schema = 1
+arch = "x86_64"
+extension = "lzcnt"
+module = "crate::x86::integer::lzcnt"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "LZCNT"
+api = "lzcnt_u32"
+required_features = ["lzcnt"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "LZCNT"
+api = "lzcnt_u64"
+required_features = ["lzcnt"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

@@ -1,0 +1,27 @@
+schema = 1
+arch = "aarch64"
+extension = "i8mm"
+module = "crate::aarch64::simd::i8mm"
+kind = "fixed"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "SMMLA"
+api = "smmla"
+required_features = ["i8mm"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "USMMLA"
+api = "usmmla"
+required_features = ["i8mm"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMMLA"
+api = "ummla"
+required_features = ["i8mm"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]

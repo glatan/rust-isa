@@ -1,0 +1,537 @@
+schema = 1
+arch = "x86_64"
+extension = "avx"
+module = "crate::x86::simd::avx"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VADDPD"
+api = "vaddpd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VADDPS"
+api = "vaddps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VADDSD"
+api = "vaddsd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VADDSS"
+api = "vaddss"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VADDSUBPD"
+api = "vaddsubpd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VADDSUBPS"
+api = "vaddsubps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VANDNPD"
+api = "vandnpd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VANDNPS"
+api = "vandnps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VANDPD"
+api = "vandpd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VANDPS"
+api = "vandps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VBLENDPD"
+api = "vblendpd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VBLENDPS"
+api = "vblendps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VBLENDVPD"
+api = "vblendvpd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VBLENDVPS"
+api = "vblendvps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VBROADCASTF128"
+api = "vbroadcastf128"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VBROADCASTSD"
+api = "vbroadcastsd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VBROADCASTSS"
+api = "vbroadcastss"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCMPPD"
+api = "vcmppd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCMPPS"
+api = "vcmpps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCMPSD"
+api = "vcmpsd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCMPSS"
+api = "vcmpss"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCOMISD"
+api = "vcomisd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCOMISS"
+api = "vcomiss"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTDQ2PS"
+api = "vcvtdq2ps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTPD2PS"
+api = "vcvtpd2ps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTPS2DQ"
+api = "vcvtps2dq"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTPS2PD"
+api = "vcvtps2pd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTSD2SS"
+api = "vcvtsd2ss"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTSS2SD"
+api = "vcvtss2sd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTTPS2DQ"
+api = "vcvttps2dq"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VDIVPD"
+api = "vdivpd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VDIVPS"
+api = "vdivps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VDPPD"
+api = "vdppd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VDPPS"
+api = "vdpps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VEXTRACTF128"
+api = "vextractf128"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VINSERTF128"
+api = "vinsertf128"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VLDDQU"
+api = "vlddqu"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMASKMOVPD"
+api = "vmaskmovpd_load"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMASKMOVPD"
+api = "vmaskmovpd_store"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMASKMOVPS"
+api = "vmaskmovps_load"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMASKMOVPS"
+api = "vmaskmovps_store"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMAXPD"
+api = "vmaxpd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMAXPS"
+api = "vmaxps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMINPD"
+api = "vminpd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMINPS"
+api = "vminps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMOVD"
+api = "vmovd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMOVDDUP"
+api = "vmovddup"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMOVMSKPD"
+api = "vmovmskpd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMOVMSKPS"
+api = "vmovmskps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMOVNTPD"
+api = "vmovntpd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMOVNTPS"
+api = "vmovntps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMOVQ"
+api = "vmovq"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMOVSHDUP"
+api = "vmovshdup"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMOVSLDUP"
+api = "vmovsldup"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMPSADBW"
+api = "vmpsadbw"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMULPD"
+api = "vmulpd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMULPS"
+api = "vmulps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VORPS"
+api = "vorps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPERM2F128"
+api = "vperm2f128"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPERMILPD"
+api = "vpermilpd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPERMILPS"
+api = "vpermilps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSADBW"
+api = "vpsadbw"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPTEST"
+api = "vptest"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VRCPPS"
+api = "vrcpps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VROUNDPD"
+api = "vroundpd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VROUNDPS"
+api = "vroundps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VROUNDSD"
+api = "vroundsd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VROUNDSS"
+api = "vroundss"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VSHUFPD"
+api = "vshufpd"
+required_features = ["avx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VSHUFPS"
+api = "vshufps"
+required_features = ["avx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VSQRTPD"
+api = "vsqrtpd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VSQRTPS"
+api = "vsqrtps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VSUBPD"
+api = "vsubpd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VSUBPS"
+api = "vsubps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VTESTPD"
+api = "vtestpd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VTESTPS"
+api = "vtestps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VUCOMISD"
+api = "vucomisd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VUCOMISS"
+api = "vucomiss"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VUNPCKHPD"
+api = "vunpckhpd"
+required_features = ["avx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VUNPCKHPS"
+api = "vunpckhps"
+required_features = ["avx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VUNPCKLPD"
+api = "vunpcklpd"
+required_features = ["avx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VUNPCKLPS"
+api = "vunpcklps"
+required_features = ["avx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VXORPD"
+api = "vxorpd"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VXORPS"
+api = "vxorps"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VZEROUPPER"
+api = "vzeroupper"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMOVD_TO"
+api = "vmovd_to_u32"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VMOVQ_TO"
+api = "vmovq_to_u64"
+required_features = ["avx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

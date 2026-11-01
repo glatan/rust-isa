@@ -1,0 +1,69 @@
+schema = 1
+arch = "x86_64"
+extension = "sse3"
+module = "crate::x86::simd::sse3"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "ADDSUBPD"
+api = "addsubpd"
+required_features = ["sse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "ADDSUBPS"
+api = "addsubps"
+required_features = ["sse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "HADDPD"
+api = "haddpd"
+required_features = ["sse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "HADDPS"
+api = "haddps"
+required_features = ["sse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "HSUBPD"
+api = "hsubpd"
+required_features = ["sse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "HSUBPS"
+api = "hsubps"
+required_features = ["sse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "LDDQU"
+api = "lddqu"
+required_features = ["sse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVDDUP"
+api = "movddup"
+required_features = ["sse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVSHDUP"
+api = "movshdup"
+required_features = ["sse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVSLDUP"
+api = "movsldup"
+required_features = ["sse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

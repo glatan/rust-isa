@@ -1,0 +1,296 @@
+schema = 1
+arch = "aarch64"
+extension = "fp16"
+module = "crate::aarch64::simd::fp16"
+kind = "fixed"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "FABD"
+api = "fabd_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FABS"
+api = "fabs_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FACGE"
+api = "facge_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FACGT"
+api = "facgt_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FADD"
+api = "fadd_f16"
+required_features = ["fp16"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCMEQ"
+api = "fcmeq_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCMGE"
+api = "fcmge_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCMGT"
+api = "fcmgt_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCMLE"
+api = "fcmle_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCMLT"
+api = "fcmlt_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCVT"
+api = "fcvt_f16_f32"
+required_features = ["fp16"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCVT"
+api = "fcvt_f16_f64"
+required_features = ["fp16"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCVT"
+api = "fcvt_f32_f16"
+required_features = ["fp16"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCVT"
+api = "fcvt_f64_f16"
+required_features = ["fp16"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCVTL2"
+api = "fcvtl2_f32_f16"
+required_features = ["fp16"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCVTL"
+api = "fcvtl_f32_f16"
+required_features = ["fp16"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCVTN2"
+api = "fcvtn2_f16_f32"
+required_features = ["fp16"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCVTN"
+api = "fcvtn_f16_f32"
+required_features = ["fp16"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCVTXN"
+api = "fcvtxn_f16_f64"
+required_features = ["fp16"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCVTZS"
+api = "fcvtzs_f16_s32"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCVTZS"
+api = "fcvtzs_f16_s64"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCVTZU"
+api = "fcvtzu_f16_u32"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCVTZU"
+api = "fcvtzu_f16_u64"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FDIV"
+api = "fdiv_f16"
+required_features = ["fp16"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMAX"
+api = "fmax_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMAXNM"
+api = "fmaxnm_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMIN"
+api = "fmin_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMINNM"
+api = "fminnm_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMLA"
+api = "fmla_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMLS"
+api = "fmls_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMUL"
+api = "fmul_f16"
+required_features = ["fp16"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FNEG"
+api = "fneg_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FRECPE"
+api = "frecpe_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FRECPS"
+api = "frecps_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FRECPX"
+api = "frecpx_f16"
+required_features = ["fp16"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FRSQRTE"
+api = "frsqrte_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FRSQRTS"
+api = "frsqrts_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FSQRT"
+api = "fsqrt_f16"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FSUB"
+api = "fsub_f16"
+required_features = ["fp16"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SCVTF"
+api = "scvtf_f16_s32"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SCVTF"
+api = "scvtf_f16_s64"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UCVTF"
+api = "ucvtf_f16_u32"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UCVTF"
+api = "ucvtf_f16_u64"
+required_features = ["fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]

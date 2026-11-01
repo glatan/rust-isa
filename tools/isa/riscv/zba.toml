@@ -1,0 +1,30 @@
+schema = 1
+arch = "riscv64"
+extension = "zba"
+module = "crate::riscv"
+kind = "fixed"
+parent = ""
+source = "riscv/riscv-opcodes"
+coverage = "pilot"
+raw = true
+
+normalization = "mnemonic+api"
+
+[[instruction]]
+mnemonic = "SH1ADD"
+api = "sh1add"
+forms = ["sh1add"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "SH2ADD"
+api = "sh2add"
+forms = ["sh2add"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "SH3ADD"
+api = "sh3add"
+forms = ["sh3add"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]

@@ -3,6 +3,7 @@
 use rust_isa::x86::simd::avx2::V256;
 use rust_isa::x86::simd::avx512f::V512;
 use rust_isa::x86::simd::sse2::V128;
+use rust_isa::x86::simd::{Mask2, Mask4, Mask8, Mask16, Mask32, Mask64};
 
 use super::avx512::support::*;
 
@@ -31,6 +32,31 @@ fn avx10_2_available() -> bool {
     }
     let version = __cpuid_count(0x24, 0);
     (version.ebx & 0xff) >= 2
+}
+
+#[test]
+#[ignore = "requires an AVX512BMM CPU"]
+fn avx512bmm_smoke() {
+    let v128 = V128::from_bytes([1; 16]);
+    let v256 = V256::from_bytes([1; 32]);
+    let v512 = V512::from_bytes([1; 64]);
+    unsafe {
+        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512bmm::vbitrevb_v128(v128) });
+        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512bmm::vbitrevb_v256(v256) });
+        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512bmm::vbitrevb_v512(v512) });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512bmm::vbmacor16x16x16_v256(v256, v256, v256)
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512bmm::vbmacor16x16x16_v512(v512, v512, v512)
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512bmm::vbmacxor16x16x16_v256(v256, v256, v256)
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512bmm::vbmacxor16x16x16_v512(v512, v512, v512)
+        });
+    }
 }
 
 #[test]
@@ -67,9 +93,15 @@ fn avx10_1_smoke() {
         core::hint::black_box(unsafe {
             rust_isa::x86::simd::avx10_1::vcmpps_v512::<0>(v512, v512)
         });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vcompresspd_v256(v256, 0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vcompresspd_v512(v512, 0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vcompressps_v512(v512, 0) });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx10_1::vcompresspd_v256(v256, Mask4::from_bits(0))
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx10_1::vcompresspd_v512(v512, Mask8::from_bits(0))
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx10_1::vcompressps_v512(v512, Mask16::from_bits(0))
+        });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vcvtdq2ps_v256(v256) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vcvtdq2ps_v512(v512) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vcvtpd2dq_v512(v512) });
@@ -102,10 +134,18 @@ fn avx10_1_smoke() {
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vcvtuqq2pd_v512(v512) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vcvtuqq2ps_v256(v256) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vcvtuqq2ps_v512(v512) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vexpandpd_v256(v256, 0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vexpandpd_v512(v512, 0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vexpandps_v256(v256, 0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vexpandps_v512(v512, 0) });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx10_1::vexpandpd_v256(v256, Mask4::from_bits(0))
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx10_1::vexpandpd_v512(v512, Mask8::from_bits(0))
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx10_1::vexpandps_v256(v256, Mask8::from_bits(0))
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx10_1::vexpandps_v512(v512, Mask16::from_bits(0))
+        });
         core::hint::black_box(unsafe {
             rust_isa::x86::simd::avx10_1::vfmadd132pd_v256(v256, v256, v256)
         });
@@ -311,25 +351,60 @@ fn avx10_1_smoke() {
             rust_isa::x86::simd::avx10_1::vfnmsub231ps_v512(v512, v512, v512)
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx10_1::vgatherdpd_v256(v256, storage.as_ptr(), v128, 0)
+            rust_isa::x86::simd::avx10_1::vgatherdpd_v256(
+                v256,
+                storage.as_ptr(),
+                v128,
+                Mask4::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx10_1::vgatherdpd_v512(v512, storage.as_ptr(), v256, 0)
+            rust_isa::x86::simd::avx10_1::vgatherdpd_v512(
+                v512,
+                storage.as_ptr(),
+                v256,
+                Mask8::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx10_1::vgatherdps_v512(v512, storage.as_ptr(), v512, 0)
+            rust_isa::x86::simd::avx10_1::vgatherdps_v512(
+                v512,
+                storage.as_ptr(),
+                v512,
+                Mask16::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx10_1::vgatherqpd_v256(v256, storage.as_ptr(), v256, 0)
+            rust_isa::x86::simd::avx10_1::vgatherqpd_v256(
+                v256,
+                storage.as_ptr(),
+                v256,
+                Mask4::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx10_1::vgatherqpd_v512(v512, storage.as_ptr(), v512, 0)
+            rust_isa::x86::simd::avx10_1::vgatherqpd_v512(
+                v512,
+                storage.as_ptr(),
+                v512,
+                Mask8::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx10_1::vgatherqps_v256(v128, storage.as_ptr(), v256, 0)
+            rust_isa::x86::simd::avx10_1::vgatherqps_v256(
+                v128,
+                storage.as_ptr(),
+                v256,
+                Mask4::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx10_1::vgatherqps_v512(v256, storage.as_ptr(), v512, 0)
+            rust_isa::x86::simd::avx10_1::vgatherqps_v512(
+                v256,
+                storage.as_ptr(),
+                v512,
+                Mask8::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vmulps_v256(v256, v256) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vpaddb_v512(v512, v512) });
@@ -575,28 +650,68 @@ fn avx10_1_smoke() {
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vrsqrt14ps_v256(v256) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vrsqrt14ps_v512(v512) });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx10_1::vscatterdpd_v256(storage.as_mut_ptr(), v128, v256, 0)
+            rust_isa::x86::simd::avx10_1::vscatterdpd_v256(
+                storage.as_mut_ptr(),
+                v128,
+                v256,
+                Mask4::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx10_1::vscatterdpd_v512(storage.as_mut_ptr(), v256, v512, 0)
+            rust_isa::x86::simd::avx10_1::vscatterdpd_v512(
+                storage.as_mut_ptr(),
+                v256,
+                v512,
+                Mask8::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx10_1::vscatterdps_v256(storage.as_mut_ptr(), v256, v256, 0)
+            rust_isa::x86::simd::avx10_1::vscatterdps_v256(
+                storage.as_mut_ptr(),
+                v256,
+                v256,
+                Mask8::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx10_1::vscatterdps_v512(storage.as_mut_ptr(), v512, v512, 0)
+            rust_isa::x86::simd::avx10_1::vscatterdps_v512(
+                storage.as_mut_ptr(),
+                v512,
+                v512,
+                Mask16::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx10_1::vscatterqpd_v256(storage.as_mut_ptr(), v256, v256, 0)
+            rust_isa::x86::simd::avx10_1::vscatterqpd_v256(
+                storage.as_mut_ptr(),
+                v256,
+                v256,
+                Mask4::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx10_1::vscatterqpd_v512(storage.as_mut_ptr(), v512, v512, 0)
+            rust_isa::x86::simd::avx10_1::vscatterqpd_v512(
+                storage.as_mut_ptr(),
+                v512,
+                v512,
+                Mask8::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx10_1::vscatterqps_v256(storage.as_mut_ptr(), v256, v128, 0)
+            rust_isa::x86::simd::avx10_1::vscatterqps_v256(
+                storage.as_mut_ptr(),
+                v256,
+                v128,
+                Mask4::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx10_1::vscatterqps_v512(storage.as_mut_ptr(), v512, v256, 0)
+            rust_isa::x86::simd::avx10_1::vscatterqps_v512(
+                storage.as_mut_ptr(),
+                v512,
+                v256,
+                Mask8::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vsqrtpd_v256(v256) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx10_1::vsqrtpd_v512(v512) });
@@ -787,56 +902,105 @@ fn avx512vl_smoke() {
     let v512 = V512::from_bytes([1; 64]);
     unsafe {
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vblendmpd_v128(v128, v128, 0)
+            rust_isa::x86::simd::avx512vl::vblendmpd_v128(v128, v128, Mask2::from_bits(0))
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vblendmpd_v256(v256, v256, 0)
+            rust_isa::x86::simd::avx512vl::vblendmpd_v256(v256, v256, Mask4::from_bits(0))
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vblendmps_v128(v128, v128, 0)
+            rust_isa::x86::simd::avx512vl::vblendmps_v128(v128, v128, Mask4::from_bits(0))
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vblendmps_v256(v256, v256, 0)
-        });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vcompresspd_v128(v128, 0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vcompresspd_v256(v256, 0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vcompressps_v128(v128, 0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vexpandpd_v128(v128, 0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vexpandpd_v256(v256, 0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vexpandps_v128(v128, 0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vexpandps_v256(v256, 0) });
-        core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vgatherdpd_v128(v128, storage.as_ptr(), v128, 0)
+            rust_isa::x86::simd::avx512vl::vblendmps_v256(v256, v256, Mask8::from_bits(0))
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vgatherdpd_v256(v256, storage.as_ptr(), v128, 0)
+            rust_isa::x86::simd::avx512vl::vcompresspd_v128(v128, Mask2::from_bits(0))
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vgatherdps_v128(v128, storage.as_ptr(), v128, 0)
+            rust_isa::x86::simd::avx512vl::vcompresspd_v256(v256, Mask4::from_bits(0))
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vgatherqpd_v128(v128, storage.as_ptr(), v128, 0)
+            rust_isa::x86::simd::avx512vl::vcompressps_v128(v128, Mask4::from_bits(0))
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vgatherqpd_v256(v256, storage.as_ptr(), v256, 0)
+            rust_isa::x86::simd::avx512vl::vexpandpd_v128(v128, Mask2::from_bits(0))
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vgatherqps_v128(v128, storage.as_ptr(), v128, 0)
+            rust_isa::x86::simd::avx512vl::vexpandpd_v256(v256, Mask4::from_bits(0))
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vgatherqps_v256(v128, storage.as_ptr(), v256, 0)
+            rust_isa::x86::simd::avx512vl::vexpandps_v128(v128, Mask4::from_bits(0))
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vmovapd_v128(v128, v128, 0)
+            rust_isa::x86::simd::avx512vl::vexpandps_v256(v256, Mask8::from_bits(0))
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vmovapd_v256(v256, v256, 0)
+            rust_isa::x86::simd::avx512vl::vgatherdpd_v128(
+                v128,
+                storage.as_ptr(),
+                v128,
+                Mask2::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vmovaps_v128(v128, v128, 0)
+            rust_isa::x86::simd::avx512vl::vgatherdpd_v256(
+                v256,
+                storage.as_ptr(),
+                v128,
+                Mask4::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vmovaps_v256(v256, v256, 0)
+            rust_isa::x86::simd::avx512vl::vgatherdps_v128(
+                v128,
+                storage.as_ptr(),
+                v128,
+                Mask4::from_bits(0),
+            )
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vgatherqpd_v128(
+                v128,
+                storage.as_ptr(),
+                v128,
+                Mask2::from_bits(0),
+            )
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vgatherqpd_v256(
+                v256,
+                storage.as_ptr(),
+                v256,
+                Mask4::from_bits(0),
+            )
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vgatherqps_v128(
+                v128,
+                storage.as_ptr(),
+                v128,
+                Mask2::from_bits(0),
+            )
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vgatherqps_v256(
+                v128,
+                storage.as_ptr(),
+                v256,
+                Mask4::from_bits(0),
+            )
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vmovapd_v128(v128, v128, Mask2::from_bits(0))
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vmovapd_v256(v256, v256, Mask4::from_bits(0))
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vmovaps_v128(v128, v128, Mask4::from_bits(0))
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vmovaps_v256(v256, v256, Mask8::from_bits(0))
         });
         core::hint::black_box(unsafe {
             rust_isa::x86::simd::avx512vl::vp2intersectd_v256(v256, v256)
@@ -918,7 +1082,9 @@ fn avx512vl_smoke() {
         core::hint::black_box(unsafe {
             rust_isa::x86::simd::avx512vl::vpcmpw_v256::<0>(v256, v256)
         });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpcompressw_v128(v128, 0) });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vpcompressw_v128(v128, Mask8::from_bits(0))
+        });
         core::hint::black_box(unsafe {
             rust_isa::x86::simd::avx512vl::vpdpbusd_v256(v256, v256, v256)
         });
@@ -950,8 +1116,12 @@ fn avx512vl_smoke() {
         core::hint::black_box(unsafe {
             rust_isa::x86::simd::avx512vl::vpermt2b_v256(v256, v256, v256)
         });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpexpandb_v128(v128, 0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpexpandw_v128(v128, 0) });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vpexpandb_v128(v128, Mask16::from_bits(0))
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vpexpandw_v128(v128, Mask8::from_bits(0))
+        });
         core::hint::black_box(unsafe {
             rust_isa::x86::simd::avx512vl::vpmadd52huq_v256(v256, v256, v256)
         });
@@ -982,14 +1152,30 @@ fn avx512vl_smoke() {
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpmovb2m_v256(v256) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpmovd2m_v128(v128) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpmovd2m_v256(v256) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpmovm2b_v128(0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpmovm2b_v256(0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpmovm2d_v128(0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpmovm2d_v256(0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpmovm2q_v128(0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpmovm2q_v256(0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpmovm2w_v128(0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpmovm2w_v256(0) });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vpmovm2b_v128(Mask16::from_bits(0))
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vpmovm2b_v256(Mask32::from_bits(0))
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vpmovm2d_v128(Mask4::from_bits(0))
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vpmovm2d_v256(Mask8::from_bits(0))
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vpmovm2q_v128(Mask2::from_bits(0))
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vpmovm2q_v256(Mask4::from_bits(0))
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vpmovm2w_v128(Mask8::from_bits(0))
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vl::vpmovm2w_v256(Mask16::from_bits(0))
+        });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpmovq2m_v128(v128) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpmovq2m_v256(v256) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpmovw2m_v128(v128) });
@@ -1089,28 +1275,68 @@ fn avx512vl_smoke() {
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpxorq_v128(v128, v128) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vl::vpxorq_v256(v256, v256) });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vscatterdpd_v128(storage.as_mut_ptr(), v128, v128, 0)
+            rust_isa::x86::simd::avx512vl::vscatterdpd_v128(
+                storage.as_mut_ptr(),
+                v128,
+                v128,
+                Mask2::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vscatterdpd_v256(storage.as_mut_ptr(), v128, v256, 0)
+            rust_isa::x86::simd::avx512vl::vscatterdpd_v256(
+                storage.as_mut_ptr(),
+                v128,
+                v256,
+                Mask4::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vscatterdps_v128(storage.as_mut_ptr(), v128, v128, 0)
+            rust_isa::x86::simd::avx512vl::vscatterdps_v128(
+                storage.as_mut_ptr(),
+                v128,
+                v128,
+                Mask4::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vscatterdps_v256(storage.as_mut_ptr(), v256, v256, 0)
+            rust_isa::x86::simd::avx512vl::vscatterdps_v256(
+                storage.as_mut_ptr(),
+                v256,
+                v256,
+                Mask8::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vscatterqpd_v128(storage.as_mut_ptr(), v128, v128, 0)
+            rust_isa::x86::simd::avx512vl::vscatterqpd_v128(
+                storage.as_mut_ptr(),
+                v128,
+                v128,
+                Mask2::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vscatterqpd_v256(storage.as_mut_ptr(), v256, v256, 0)
+            rust_isa::x86::simd::avx512vl::vscatterqpd_v256(
+                storage.as_mut_ptr(),
+                v256,
+                v256,
+                Mask4::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vscatterqps_v128(storage.as_mut_ptr(), v128, v128, 0)
+            rust_isa::x86::simd::avx512vl::vscatterqps_v128(
+                storage.as_mut_ptr(),
+                v128,
+                v128,
+                Mask2::from_bits(0),
+            )
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512vl::vscatterqps_v256(storage.as_mut_ptr(), v256, v128, 0)
+            rust_isa::x86::simd::avx512vl::vscatterqps_v256(
+                storage.as_mut_ptr(),
+                v256,
+                v128,
+                Mask4::from_bits(0),
+            )
         });
     }
 }
@@ -1158,7 +1384,7 @@ fn avx512dq_smoke() {
             rust_isa::x86::simd::avx512dq::vgetmantss::<0>(v128, v128)
         });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512dq::vorpd(v512, v512) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512dq::vpmovm2q(0) });
+        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512dq::vpmovm2q(Mask8::NONE) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512dq::vpmovq2m(v512) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512dq::vrangepd::<0>(v512, v512) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512dq::vrangeps::<0>(v512, v512) });
@@ -1280,7 +1506,7 @@ fn avx512bw_smoke() {
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512bw::vpcmpw::<0>(v512, v512) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512bw::vpmovdb(v512) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512bw::vpmovdw(v512) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512bw::vpmovm2w(0) });
+        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512bw::vpmovm2w(Mask32::NONE) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512bw::vpmovqb(v512) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512bw::vpmovqw(v512) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512bw::vpmovsdb(v512) });
@@ -1311,26 +1537,34 @@ fn avx512f_smoke() {
     let v256 = V256::from_bytes([1; 32]);
     let v512 = V512::from_bytes([1; 64]);
     unsafe {
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512f::vblendmpd(v512, v512, 0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512f::vcompresspd(v512, 0) });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512f::vblendmpd(v512, v512, Mask8::NONE)
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512f::vcompresspd(v512, Mask8::NONE)
+        });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512f::vcvtpd2dq(v512) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512f::vcvttpd2dq(v512) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512f::vexpandpd(v512, 0) });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512f::vexpandpd(v512, Mask8::NONE)
+        });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512f::vextractf64x4::<0>(v512) });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512f::vgatherdpd(v512, storage.as_ptr(), v256, 0)
+            rust_isa::x86::simd::avx512f::vgatherdpd(v512, storage.as_ptr(), v256, Mask8::NONE)
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512f::vgatherqpd(v512, storage.as_ptr(), v512, 0)
+            rust_isa::x86::simd::avx512f::vgatherqpd(v512, storage.as_ptr(), v512, Mask8::NONE)
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512f::vgatherqps(v256, storage.as_ptr(), v512, 0)
+            rust_isa::x86::simd::avx512f::vgatherqps(v256, storage.as_ptr(), v512, Mask8::NONE)
         });
         core::hint::black_box(unsafe {
             rust_isa::x86::simd::avx512f::vinsertf64x4::<0>(v512, v256)
         });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512f::vinsertps::<0>(v128, v128) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512f::vmovapd(v512, v512, 0) });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512f::vmovapd(v512, v512, Mask8::NONE)
+        });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512f::vpandnq(v512, v512) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512f::vpcmpuq::<0>(v512, v512) });
         core::hint::black_box(unsafe {
@@ -1341,13 +1575,13 @@ fn avx512f_smoke() {
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512f::vrndscalepd::<0>(v512) });
         core::hint::black_box(unsafe { rust_isa::x86::simd::avx512f::vrsqrtps(v512) });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512f::vscatterdpd(storage.as_mut_ptr(), v256, v512, 0)
+            rust_isa::x86::simd::avx512f::vscatterdpd(storage.as_mut_ptr(), v256, v512, Mask8::NONE)
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512f::vscatterqpd(storage.as_mut_ptr(), v512, v512, 0)
+            rust_isa::x86::simd::avx512f::vscatterqpd(storage.as_mut_ptr(), v512, v512, Mask8::NONE)
         });
         core::hint::black_box(unsafe {
-            rust_isa::x86::simd::avx512f::vscatterqps(storage.as_mut_ptr(), v512, v256, 0)
+            rust_isa::x86::simd::avx512f::vscatterqps(storage.as_mut_ptr(), v512, v256, Mask8::NONE)
         });
     }
 }
@@ -1362,8 +1596,12 @@ fn avx512vbmi2_smoke() {
     let v256 = V256::from_bytes([1; 32]);
     let v512 = V512::from_bytes([1; 64]);
     unsafe {
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vbmi2::vpcompressw(v512, 0) });
-        core::hint::black_box(unsafe { rust_isa::x86::simd::avx512vbmi2::vpexpandw(v512, 0) });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vbmi2::vpcompressw(v512, Mask32::NONE)
+        });
+        core::hint::black_box(unsafe {
+            rust_isa::x86::simd::avx512vbmi2::vpexpandw(v512, Mask32::NONE)
+        });
         core::hint::black_box(unsafe {
             rust_isa::x86::simd::avx512vbmi2::vpshldd::<0>(v512, v512)
         });

@@ -4,12 +4,12 @@
 typedef int rust_isa_v4i32 __attribute__((vector_size(16), aligned(16)));
 
 __attribute__((always_inline))
-void rust_isa_sse2_v128_load(const uint8_t *p, uint8_t out[16]) {
+void rust_isa_sse2_movdqu_load(const uint8_t *p, uint8_t out[16]) {
     _mm_storeu_si128((__m128i *)(void *)out, _mm_loadu_si128((const __m128i *)(const void *)p));
 }
 
 __attribute__((always_inline))
-void rust_isa_sse2_v128_store(uint8_t *p, const uint8_t value[16]) {
+void rust_isa_sse2_movdqu_store(uint8_t *p, const uint8_t value[16]) {
     _mm_storeu_si128((__m128i *)(void *)p, _mm_loadu_si128((const __m128i *)(const void *)value));
 }
 
@@ -632,8 +632,8 @@ void rust_isa_sse2_movnti(int32_t *p, int32_t value) {
 
 #if defined(__x86_64__)
 __attribute__((always_inline))
-void rust_isa_sse2_movntq(uint8_t *p, const uint8_t *a) {
-    _mm_stream_si64((long long *)(void *)p, _mm_cvtsi128_si64(_mm_loadu_si128((const __m128i *)(const void *)a)));
+void rust_isa_sse2_movnti_u64(uint64_t *p, uint64_t value) {
+    _mm_stream_si64((long long *)(void *)p, (long long)value);
 }
 #endif
 

@@ -19,10 +19,11 @@
 //! #[cfg(target_arch = "x86_64")]
 //! if std::env::var_os("RUST_ISA_SDE_FLAGS").is_some() {
 //! use rust_isa::x86::simd::avx512vbmi2::vpcompressb;
+//! use rust_isa::x86::simd::Mask64;
 //! use rust_isa::x86::simd::avx512f::V512;
 //!
 //! let v = V512::from_bytes([0; 64]);
-//! let _ = unsafe { vpcompressb(v, 0) };
+//! let _ = unsafe { vpcompressb(v, Mask64::from_bits(0)) };
 //! }
 //! ```
 //!
@@ -30,10 +31,11 @@
 //!
 //! ```no_run
 //! use rust_isa::x86::simd::avx512vbmi2::*;
+//! use rust_isa::x86::simd::{Mask32, Mask64};
 //! use rust_isa::x86::simd::avx512f::V512;
 //!
 //! let v = V512::from_bytes([0; 64]);
-//! assert_eq!(unsafe { vpcompressb(v, 0) }.to_bytes(), [0; 64]);
+//! assert_eq!(unsafe { vpcompressb(v, Mask64::from_bits(0)) }.to_bytes(), [0; 64]);
 //! ```
 //!
 //! <details>
@@ -46,15 +48,16 @@
 //! use rust_isa::x86::simd::sse2::V128;
 //! use rust_isa::x86::simd::avx::V256;
 //! use rust_isa::x86::simd::avx512f::V512;
+//! use rust_isa::x86::simd::{Mask32, Mask64};
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //! let v256 = V256::from_bytes([0; 32]);
 //! let v512 = V512::from_bytes([0; 64]);
 //!
-//! let _ = unsafe { vpcompressb(v512, 0) };
-//! let _ = unsafe { vpcompressw(v512, 0) };
-//! let _ = unsafe { vpexpandb(v512, 0) };
-//! let _ = unsafe { vpexpandw(v512, 0) };
+//! let _ = unsafe { vpcompressb(v512, Mask64::from_bits(0)) };
+//! let _ = unsafe { vpcompressw(v512, Mask32::from_bits(0)) };
+//! let _ = unsafe { vpexpandb(v512, Mask64::from_bits(0)) };
+//! let _ = unsafe { vpexpandw(v512, Mask32::from_bits(0)) };
 //! let _ = unsafe { vpshldd::<0>(v512, v512) };
 //! let _ = unsafe { vpshldq::<0>(v512, v512) };
 //! let _ = unsafe { vpshldw::<0>(v512, v512) };
@@ -84,6 +87,7 @@
 //! </details>
 
 use crate::x86::simd::avx512f::V512;
+use crate::x86::simd::{Mask32, Mask64};
 use core::arch::asm;
 
 unsafe extern "C" {
@@ -98,10 +102,10 @@ unsafe extern "C" {
 /// The caller must enable AVX-512VBMI2.
 #[target_feature(enable = "avx512vbmi2")]
 #[inline]
-pub unsafe fn vpcompressb(a: V512, mask: u64) -> V512 {
+pub unsafe fn vpcompressb(a: V512, mask: Mask64) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512vbmi2_vpcompressb(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512vbmi2_vpcompressb(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -118,10 +122,10 @@ unsafe extern "C" {
 /// The caller must enable AVX-512VBMI2.
 #[target_feature(enable = "avx512vbmi2")]
 #[inline]
-pub unsafe fn vpexpandb(a: V512, mask: u64) -> V512 {
+pub unsafe fn vpexpandb(a: V512, mask: Mask64) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512vbmi2_vpexpandb(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512vbmi2_vpexpandb(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -138,10 +142,10 @@ unsafe extern "C" {
 /// The caller must enable AVX-512VBMI2.
 #[target_feature(enable = "avx512vbmi2")]
 #[inline]
-pub unsafe fn vpcompressw(a: V512, mask: u32) -> V512 {
+pub unsafe fn vpcompressw(a: V512, mask: Mask32) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512vbmi2_vpcompressw(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512vbmi2_vpcompressw(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -158,10 +162,10 @@ unsafe extern "C" {
 /// The caller must enable AVX-512VBMI2.
 #[target_feature(enable = "avx512vbmi2")]
 #[inline]
-pub unsafe fn vpexpandw(a: V512, mask: u32) -> V512 {
+pub unsafe fn vpexpandw(a: V512, mask: Mask32) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512vbmi2_vpexpandw(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512vbmi2_vpexpandw(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }

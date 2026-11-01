@@ -1,6 +1,7 @@
 use rust_isa::x86::simd::avx2::V256;
 use rust_isa::x86::simd::avx512vl::*;
 use rust_isa::x86::simd::sse2::V128;
+use rust_isa::x86::simd::{Mask4, Mask8, Mask16};
 
 use super::support::*;
 
@@ -45,17 +46,17 @@ fn vl_narrow_forms() {
         let sum = unsafe { vpaddb_v128(a, b) };
         assert_eq!(sum.to_bytes()[..4], [1, 2, 3, 4]);
         assert_eq!(
-            unsafe { vptestmb_v128(i8x16([-1; 16]), i8x16([-1; 16])) },
+            unsafe { vptestmb_v128(i8x16([-1; 16]), i8x16([-1; 16])).bits() },
             0xffff
         );
     }
     assert_eq!(
-        unsafe { vpcmpd_v256::<0>(i32x8([1; 8]), i32x8([1; 8])) },
+        unsafe { vpcmpd_v256::<0>(i32x8([1; 8]), i32x8([1; 8])).bits() },
         0xff
     );
 
     let source = V256::from_bytes(core::array::from_fn(|index| index as u8));
-    let compressed = unsafe { vcompressps_v256(source, 0b0101) };
+    let compressed = unsafe { vcompressps_v256(source, Mask8::from_bits(0b0101)) };
     assert_eq!(&compressed.to_bytes()[..8], &[0, 1, 2, 3, 8, 9, 10, 11]);
 
     if vbmi_enabled() {
@@ -70,7 +71,7 @@ fn vl_narrow_forms() {
             unsafe {
                 vpcompressb_v128(
                     V128::from_bytes(core::array::from_fn(|index| index as u8)),
-                    0b0101,
+                    Mask16::from_bits(0b0101),
                 )
             }
             .to_bytes()[..4],
@@ -100,7 +101,7 @@ fn vl_narrow_forms() {
             [8; 16]
         );
         assert_eq!(
-            unsafe { vpshufbitqmb_v128(i8x16([-1; 16]), i8x16([0; 16])) },
+            unsafe { vpshufbitqmb_v128(i8x16([-1; 16]), i8x16([0; 16])).bits() },
             0xffff
         );
     }
@@ -108,7 +109,7 @@ fn vl_narrow_forms() {
         let values = i32x4([1, 2, 3, 4]);
         assert_eq!(
             unsafe { vp2intersectd_v128(values, values) },
-            (0b1111, 0b1111)
+            (Mask4::from_bits(0b1111), Mask4::from_bits(0b1111))
         );
     }
     let gathered = unsafe {
@@ -116,7 +117,7 @@ fn vl_narrow_forms() {
             f32x8([0.0; 8]),
             [1.0f32, 2.0, 3.0, 4.0].as_ptr().cast(),
             i32x8([0, 1, 2, 3, 0, 0, 0, 0]),
-            0x0f,
+            Mask8::from_bits(0x0f),
         )
     };
     assert_eq!(f32x8_lanes(gathered)[..4], [1.0, 2.0, 3.0, 4.0]);

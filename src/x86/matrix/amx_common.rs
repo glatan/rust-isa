@@ -1,10 +1,4 @@
-//! AMX matrix-multiply instructions.
-//!
-//! These wrappers use inline assembly because rustc does not expose the AMX
-//! tile number as a value type. Matrix-multiply results are accumulated into
-//! the destination tile in the AMX tile state.
-
-use core::arch::asm;
+//! Shared inline-assembly macros for AMX matrix-multiply instructions.
 
 macro_rules! mma_one {
     ($instruction:literal, $dst:literal, $a:literal, $b:literal) => {
@@ -89,18 +83,18 @@ macro_rules! mma_ab {
     };
 }
 
-macro_rules! mma {
+macro_rules! define_mma {
     ($name:ident, $instruction:literal, $doc:literal) => {
         #[doc = $doc]
         ///
         /// # Safety
         ///
-        /// The caller must hold an [`super::AmxGuard`], enable the AMX extension
+        /// The caller must hold an [`AmxGuard`], enable the AMX extension
         /// that defines this instruction, and configure compatible tile shapes.
         /// `DST`, `A`, and `B` must be in `0..=7`; larger values are compile-time
         /// errors.
         #[inline]
-        pub unsafe fn $name<const DST: u8, const A: u8, const B: u8>(_guard: &super::AmxGuard) {
+        pub unsafe fn $name<const DST: u8, const A: u8, const B: u8>(_guard: &AmxGuard) {
             const {
                 assert!(DST <= 7, "AMX tile number must be in 0..=7");
                 assert!(A <= 7, "AMX tile number must be in 0..=7");
@@ -121,38 +115,6 @@ macro_rules! mma {
     };
 }
 
-mma!(
-    tdpbf16ps,
-    "tdpbf16ps",
-    "`tdpbf16ps::<DST, A, B>`\n\nMultiply bfloat16 tiles `A` and `B` and accumulate into `DST`. Requires AMX-BF16."
-);
-mma!(
-    tdpbssd,
-    "tdpbssd",
-    "`tdpbssd::<DST, A, B>`\n\nMultiply signed-byte tiles `A` and `B` and accumulate into `DST`. Requires AMX-INT8."
-);
-mma!(
-    tdpbsud,
-    "tdpbsud",
-    "`tdpbsud::<DST, A, B>`\n\nMultiply signed bytes by unsigned bytes and accumulate into `DST`. Requires AMX-INT8."
-);
-mma!(
-    tdpbuud,
-    "tdpbuud",
-    "`tdpbuud::<DST, A, B>`\n\nMultiply unsigned-byte tiles `A` and `B` and accumulate into `DST`. Requires AMX-INT8."
-);
-mma!(
-    tdpfp16ps,
-    "tdpfp16ps",
-    "`tdpfp16ps::<DST, A, B>`\n\nMultiply binary16 tiles `A` and `B` and accumulate into `DST`. Requires AMX-FP16."
-);
-mma!(
-    tcmmimfp16ps,
-    "tcmmimfp16ps",
-    "`tcmmimfp16ps::<DST, A, B>`\n\nComplex binary16 matrix multiply with imaginary parts. Requires AMX-COMPLEX."
-);
-mma!(
-    tcmmrlfp16ps,
-    "tcmmrlfp16ps",
-    "`tcmmrlfp16ps::<DST, A, B>`\n\nComplex binary16 matrix multiply with real parts. Requires AMX-COMPLEX."
-);
+pub(crate) use define_mma;
+pub(crate) use mma_ab;
+pub(crate) use mma_one;

@@ -1,0 +1,126 @@
+{
+  "source": "open-power-sdk/PowerISA",
+  "version": "ea48c49e9fe0",
+  "forms": [
+    {
+      "mnemonic": "xvi4ger8",
+      "release": "v3.1",
+      "operands": [
+        "AT",
+        "XA",
+        "XB"
+      ]
+    },
+    {
+      "mnemonic": "xvi4ger8pp",
+      "release": "v3.1",
+      "operands": [
+        "AT",
+        "XA",
+        "XB"
+      ]
+    },
+    {
+      "mnemonic": "xvi8ger4",
+      "release": "v3.1",
+      "operands": [
+        "AT",
+        "XA",
+        "XB"
+      ]
+    },
+    {
+      "mnemonic": "xvi8ger4pp",
+      "release": "v3.1",
+      "operands": [
+        "AT",
+        "XA",
+        "XB"
+      ]
+    },
+    {
+      "mnemonic": "xvi8ger4spp",
+      "release": "v3.1",
+      "operands": [
+        "AT",
+        "XA",
+        "XB"
+      ]
+    },
+    {
+      "mnemonic": "xvi16ger2",
+      "release": "v3.1",
+      "operands": [
+        "AT",
+        "XA",
+        "XB"
+      ]
+    },
+    {
+      "mnemonic": "xvi16ger2pp",
+      "release": "v3.1",
+      "operands": [
+        "AT",
+        "XA",
+        "XB"
+      ]
+    },
+    {
+      "mnemonic": "xvi16ger2s",
+      "release": "v3.1",
+      "operands": [
+        "AT",
+        "XA",
+        "XB"
+      ]
+    },
+    {
+      "mnemonic": "xvi16ger2spp",
+      "release": "v3.1",
+      "operands": [
+        "AT",
+        "XA",
+        "XB"
+      ]
+    },
+    {
+      "mnemonic": "xviexpdp",
+      "release": "v3.0",
+      "operands": [
+        "XT",
+        "XA",
+        "XB"
+      ]
+    },
+    {
+      "mnemonic": "xviexpsp",
+      "release": "v3.0",
+      "operands": [
+        "XT",
+        "XA",
+        "XB"
+      ]
+    },
+    {
+      "mnemonic": "xxmfacc",
+      "release": "v3.1",
+      "operands": [
+        "AS"
+      ]
+    },
+    {
+      "mnemonic": "xxmtacc",
+      "release": "v3.1",
+      "operands": [
+        "AT"
+      ]
+    },
+    {
+      "mnemonic": "xxsetaccz",
+      "release": "v3.1",
+      "operands": [
+        "AT"
+      ]
+    }
+  ]
+}

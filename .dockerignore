@@ -1,4 +1,5 @@
 target
+docs-build
 target-nested
 target-nested-debian
 fixtures/i686-values/target

@@ -1,0 +1,104 @@
+schema = 1
+arch = "arm"
+extension = "mve.fp"
+module = "crate::arm::simd::mve_fp"
+kind = "fixed"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "ABS"
+api = "abs"
+required_features = ["mve.fp"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "ADD"
+api = "add"
+required_features = ["mve.fp"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "CMP"
+api = "cmp"
+required_features = ["mve.fp"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "CVT"
+api = "cvt"
+required_features = ["mve.fp"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VCVT.F32.S32"
+api = "cvt_f32"
+required_features = ["mve.fp"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "DIV"
+api = "div"
+required_features = ["mve.fp"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "FMA"
+api = "fma"
+required_features = ["mve.fp"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "FMS"
+api = "fms"
+required_features = ["mve.fp"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "MAX"
+api = "max"
+required_features = ["mve.fp"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "MIN"
+api = "min"
+required_features = ["mve.fp"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "MUL"
+api = "mul"
+required_features = ["mve.fp"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "NEG"
+api = "neg"
+required_features = ["mve.fp"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "SQRT"
+api = "sqrt"
+required_features = ["mve.fp"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "SUB"
+api = "sub"
+required_features = ["mve.fp"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]

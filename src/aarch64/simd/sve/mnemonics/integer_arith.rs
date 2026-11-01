@@ -1473,3 +1473,179 @@ pub unsafe fn subr_i32(a: &[i32], b: &[i32], out: &mut [i32]) {
         rust_isa_sve_subr_i32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
     }
 }
+
+unsafe extern "C" {
+    fn rust_isa_sve_udiv_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
+}
+/// `udiv` on `i32` slices.
+///
+/// # Panics
+///
+/// Panics when the slice lengths differ.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn udiv_i32(a: &[i32], b: &[i32], out: &mut [i32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_udiv_i32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_udiv_i64(a: *const i64, b: *const i64, out: *mut i64, len: usize);
+}
+/// `udiv` on `i64` slices.
+///
+/// # Panics
+///
+/// Panics when the slice lengths differ.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn udiv_i64(a: &[i64], b: &[i64], out: &mut [i64]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_udiv_i64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_udiv_u32(a: *const u32, b: *const u32, out: *mut u32, len: usize);
+}
+/// `udiv` on `u32` slices.
+///
+/// # Panics
+///
+/// Panics when the slice lengths differ.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn udiv_u32(a: &[u32], b: &[u32], out: &mut [u32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_udiv_u32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_udiv_u64(a: *const u64, b: *const u64, out: *mut u64, len: usize);
+}
+/// `udiv` on `u64` slices.
+///
+/// # Panics
+///
+/// Panics when the slice lengths differ.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn udiv_u64(a: &[u64], b: &[u64], out: &mut [u64]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_udiv_u64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_sdivr_i32(a: *const i32, b: *const i32, out: *mut i32, len: usize);
+}
+/// `sdivr` on `i32` slices.
+///
+/// # Panics
+///
+/// Panics when the slice lengths differ.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn sdivr_i32(a: &[i32], b: &[i32], out: &mut [i32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_sdivr_i32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_sdivr_i64(a: *const i64, b: *const i64, out: *mut i64, len: usize);
+}
+/// `sdivr` on `i64` slices.
+///
+/// # Panics
+///
+/// Panics when the slice lengths differ.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn sdivr_i64(a: &[i64], b: &[i64], out: &mut [i64]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_sdivr_i64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_udivr_u32(a: *const u32, b: *const u32, out: *mut u32, len: usize);
+}
+/// `udivr` on `u32` slices.
+///
+/// # Panics
+///
+/// Panics when the slice lengths differ.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn udivr_u32(a: &[u32], b: &[u32], out: &mut [u32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_udivr_u32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_udivr_u64(a: *const u64, b: *const u64, out: *mut u64, len: usize);
+}
+/// `udivr` on `u64` slices.
+///
+/// # Panics
+///
+/// Panics when the slice lengths differ.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn udivr_u64(a: &[u64], b: &[u64], out: &mut [u64]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_udivr_u64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}

@@ -1,0 +1,91 @@
+# ローカル docs の対象。
+# docs.rs / GitLab Pages は使わない。
+# build_std = true の target は RUSTC_BOOTSTRAP=1 + rust-src を使う。
+
+[[target]]
+triple = "x86_64-unknown-linux-gnu"
+arch = "x86_64"
+features = []
+rustdocflags = ""
+build_std = false
+enabled = true
+
+[[target]]
+triple = "i686-unknown-linux-gnu"
+arch = "x86"
+features = []
+rustdocflags = ""
+build_std = true
+enabled = true
+
+[[target]]
+triple = "aarch64-unknown-linux-gnu"
+arch = "aarch64"
+features = []
+rustdocflags = ""
+build_std = true
+enabled = true
+
+[[target]]
+triple = "armv7-unknown-linux-gnueabihf"
+arch = "arm"
+features = []
+rustdocflags = ""
+build_std = true
+enabled = true
+
+[[target]]
+triple = "powerpc64le-unknown-linux-gnu"
+arch = "powerpc64le"
+features = []
+rustdocflags = ""
+build_std = true
+enabled = true
+
+[[target]]
+triple = "riscv64gc-unknown-linux-gnu"
+arch = "riscv64"
+features = []
+rustdocflags = ""
+build_std = true
+enabled = true
+
+[[target]]
+triple = "s390x-unknown-linux-gnu"
+arch = "s390x"
+features = []
+rustdocflags = ""
+build_std = true
+enabled = true
+
+[[target]]
+triple = "loongarch64-unknown-linux-gnu"
+arch = "loongarch64"
+features = []
+rustdocflags = ""
+build_std = true
+enabled = true
+
+[[target]]
+triple = "mips64-unknown-linux-gnuabi64"
+arch = "mips64"
+features = []
+rustdocflags = ""
+build_std = true
+enabled = true
+
+[[target]]
+triple = "wasm32-unknown-unknown"
+arch = "wasm32"
+features = ["wide-arithmetic"]
+rustdocflags = "-C target-feature=+simd128,+relaxed-simd"
+build_std = false
+enabled = true
+
+[[target]]
+triple = "wasm32-wasip1"
+arch = "wasm32"
+features = ["wide-arithmetic"]
+rustdocflags = "-C target-feature=+simd128,+relaxed-simd"
+build_std = false
+enabled = true

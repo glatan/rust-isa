@@ -1,0 +1,797 @@
+schema = 1
+arch = "x86_64"
+extension = "sse2"
+module = "crate::x86::simd::sse2"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "ADDPD"
+api = "addpd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "ADDPS"
+api = "addps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "ANDNPS"
+api = "andnps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "ANDPS"
+api = "andps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CMPEQPD"
+api = "cmpeqpd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CMPEQPS"
+api = "cmpeqps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CMPLEPD"
+api = "cmplepd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CMPLEPS"
+api = "cmpleps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CMPLTPD"
+api = "cmpltpd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CMPLTPS"
+api = "cmpltps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "COMISD"
+api = "comisd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "COMISS"
+api = "comiss"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CVTDQ2PD"
+api = "cvtdq2pd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CVTDQ2PS"
+api = "cvtdq2ps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CVTPD2DQ"
+api = "cvtpd2dq"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CVTPD2PS"
+api = "cvtpd2ps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CVTPS2DQ"
+api = "cvtps2dq"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CVTPS2PD"
+api = "cvtps2pd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CVTSD2SI"
+api = "cvtsd2si"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CVTSI2SD"
+api = "cvtsi2sd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CVTSI2SS"
+api = "cvtsi2ss"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CVTSS2SI"
+api = "cvtss2si"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CVTTPD2DQ"
+api = "cvttpd2dq"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CVTTPS2DQ"
+api = "cvttps2dq"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CVTTSD2SI"
+api = "cvttsd2si"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CVTTSS2SI"
+api = "cvttss2si"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "DIVPD"
+api = "divpd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "DIVPS"
+api = "divps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MASKMOVDQU"
+api = "maskmovdqu"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MAXPD"
+api = "maxpd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MAXPS"
+api = "maxps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MINPD"
+api = "minpd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MINPS"
+api = "minps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVD"
+api = "movd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVHLPS"
+api = "movhlps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVHPS"
+api = "movhps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVLHPS"
+api = "movlhps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVLPS"
+api = "movlps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVMSKPD"
+api = "movmskpd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVMSKPS"
+api = "movmskps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVNTDQ"
+api = "movntdq"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVNTI"
+api = "movnti"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVNTI"
+api = "movnti_u64"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVNTPD"
+api = "movntpd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVNTPS"
+api = "movntps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVQ"
+api = "movq"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVSD"
+api = "movsd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVSS"
+api = "movss"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MULPD"
+api = "mulpd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MULPS"
+api = "mulps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "ORPS"
+api = "orps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PACKSSDW"
+api = "packssdw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PACKSSWB"
+api = "packsswb"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PACKUSWB"
+api = "packuswb"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PADDB"
+api = "paddb"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PADDD"
+api = "paddd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PADDQ"
+api = "paddq"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PADDSB"
+api = "paddsb"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PADDSW"
+api = "paddsw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PADDUSB"
+api = "paddusb"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PADDUSW"
+api = "paddusw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PADDW"
+api = "paddw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PAND"
+api = "pand"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PANDN"
+api = "pandn"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PAVGB"
+api = "pavgb"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PAVGW"
+api = "pavgw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PCMPEQB"
+api = "pcmpeqb"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PCMPEQD"
+api = "pcmpeqd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PCMPEQW"
+api = "pcmpeqw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PCMPGTB"
+api = "pcmpgtb"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PCMPGTD"
+api = "pcmpgtd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PCMPGTW"
+api = "pcmpgtw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PEXTRW"
+api = "pextrw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PINSRW"
+api = "pinsrw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMADDWD"
+api = "pmaddwd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMAXSW"
+api = "pmaxsw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMAXUB"
+api = "pmaxub"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMINSW"
+api = "pminsw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMINUB"
+api = "pminub"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMOVMSKB"
+api = "pmovmskb"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMULHUW"
+api = "pmulhuw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMULHW"
+api = "pmulhw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMULLW"
+api = "pmullw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMULUDQ"
+api = "pmuludq"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "POR"
+api = "por"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSADBW"
+api = "psadbw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSHUFD"
+api = "pshufd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSHUFHW"
+api = "pshufhw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSHUFLW"
+api = "pshuflw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSLLD"
+api = "pslld"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSLLDQ"
+api = "pslldq"
+required_features = ["sse2"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSLLQ"
+api = "psllq"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSLLW"
+api = "psllw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSRAD"
+api = "psrad"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSRAW"
+api = "psraw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSRLD"
+api = "psrld"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSRLDQ"
+api = "psrldq"
+required_features = ["sse2"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSRLQ"
+api = "psrlq"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSRLW"
+api = "psrlw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSUBB"
+api = "psubb"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSUBD"
+api = "psubd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSUBQ"
+api = "psubq"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSUBSB"
+api = "psubsb"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSUBSW"
+api = "psubsw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSUBUSB"
+api = "psubusb"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSUBUSW"
+api = "psubusw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSUBW"
+api = "psubw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PUNPCKHBW"
+api = "punpckhbw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PUNPCKHDQ"
+api = "punpckhdq"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PUNPCKHQDQ"
+api = "punpckhqdq"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PUNPCKHWD"
+api = "punpckhwd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PUNPCKLBW"
+api = "punpcklbw"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PUNPCKLDQ"
+api = "punpckldq"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PUNPCKLQDQ"
+api = "punpcklqdq"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PUNPCKLWD"
+api = "punpcklwd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PXOR"
+api = "pxor"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "SHUFPD"
+api = "shufpd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "SHUFPS"
+api = "shufps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "SQRTPD"
+api = "sqrtpd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "SQRTPS"
+api = "sqrtps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "SUBPD"
+api = "subpd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "SUBPS"
+api = "subps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "UCOMISD"
+api = "ucomisd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "UCOMISS"
+api = "ucomiss"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "UNPCKHPD"
+api = "unpckhpd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "UNPCKHPS"
+api = "unpckhps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "UNPCKLPD"
+api = "unpcklpd"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "UNPCKLPS"
+api = "unpcklps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVDQU"
+api = "movdqu_load"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVDQU"
+api = "movdqu_store"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "XORPS"
+api = "xorps"
+required_features = ["sse2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

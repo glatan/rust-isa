@@ -1,0 +1,15 @@
+schema = 1
+arch = "aarch64"
+extension = "f32mm"
+module = "crate::aarch64::simd::f32mm"
+kind = "fixed"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "FMMLA"
+api = "fmmla_f32"
+required_features = ["f32mm"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]

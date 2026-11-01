@@ -5,9 +5,8 @@ use rust_isa::x86::simd::sse4_1::{
     ptest, roundpd, roundps, roundsd, roundss,
 };
 use rust_isa::x86::simd::sse4_1::{
-    movntdqa, pextrb, pextrd, pextrw, pinsrb, pinsrd, pinsrw, pmaxsb, pmaxsd, pminsb, pminsd,
-    pmovsxbq, pmovsxdq, pmovsxwd, pmovsxwq, pmovzxbd, pmovzxbq, pmovzxdq, pmovzxwd, pmovzxwq,
-    pmuldq,
+    movntdqa, pextrb, pextrd, pinsrb, pinsrd, pmaxsb, pmaxsd, pminsb, pminsd, pmovsxbq, pmovsxdq,
+    pmovsxwd, pmovsxwq, pmovzxbd, pmovzxbq, pmovzxdq, pmovzxwd, pmovzxwq, pmuldq,
 };
 
 use super::support::*;
@@ -263,10 +262,6 @@ fn sse41_insert_and_extract() {
     let value = unsafe { pinsrb::<3>(zero, 0xab) }.to_bytes();
     assert_eq!(value[3], 0xab);
     assert_eq!(unsafe { pextrb::<3>(V128::from_bytes(value)) }, 0xab);
-
-    let value = unsafe { pinsrw::<2>(zero, 0x1234) }.to_bytes();
-    assert_eq!(&value[4..6], &[0x34, 0x12]);
-    assert_eq!(unsafe { pextrw::<2>(V128::from_bytes(value)) }, 0x1234);
 
     let value = unsafe { pinsrd::<2>(zero, 0x1234_5678) }.to_bytes();
     assert_eq!(&value[8..12], &[0x78, 0x56, 0x34, 0x12]);

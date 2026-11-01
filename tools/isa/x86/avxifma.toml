@@ -1,0 +1,35 @@
+schema = 1
+arch = "x86_64"
+extension = "avxifma"
+module = "crate::x86::simd::avxifma"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VPMADD52HUQ"
+api = "vpmadd52huq"
+required_features = ["avxifma"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMADD52HUQ"
+api = "vpmadd52huq_v128"
+widths = [128]
+required_features = ["avxifma"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMADD52LUQ"
+api = "vpmadd52luq"
+required_features = ["avxifma"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMADD52LUQ"
+api = "vpmadd52luq_v128"
+widths = [128]
+required_features = ["avxifma"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

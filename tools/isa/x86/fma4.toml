@@ -1,0 +1,149 @@
+schema = 1
+arch = "x86_64"
+extension = "fma4"
+module = "crate::x86::simd::fma4"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VFMADDPS"
+api = "vfmaddps"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADDPD"
+api = "vfmaddpd"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADDSS"
+api = "vfmaddss"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADDSD"
+api = "vfmaddsd"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUBPS"
+api = "vfmsubps"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUBPD"
+api = "vfmsubpd"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUBSS"
+api = "vfmsubss"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUBSD"
+api = "vfmsubsd"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMADDPS"
+api = "vfnmaddps"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMADDPD"
+api = "vfnmaddpd"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMADDSS"
+api = "vfnmaddss"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMADDSD"
+api = "vfnmaddsd"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMSUBPS"
+api = "vfnmsubps"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMSUBPD"
+api = "vfnmsubpd"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMSUBSS"
+api = "vfnmsubss"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMSUBSD"
+api = "vfnmsubsd"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADDSUBPS"
+api = "vfmaddsubps"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADDSUBPD"
+api = "vfmaddsubpd"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUBADDPS"
+api = "vfmsubaddps"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUBADDPD"
+api = "vfmsubaddpd"
+required_features = ["fma4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]

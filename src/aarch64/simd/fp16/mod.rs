@@ -68,11 +68,7 @@
 //! let _ = unsafe { fmin_f16(v128, v128) };
 //! let _ = unsafe { fminnm_f16(v128, v128) };
 //! let _ = unsafe { fmla_f16(v128, v128, v128) };
-//! let _ = unsafe { fmlal2_f16(v128, v128, v128) };
-//! let _ = unsafe { fmlal_f16(v128, v128, v128) };
 //! let _ = unsafe { fmls_f16(v128, v128, v128) };
-//! let _ = unsafe { fmlsl2_f16(v128, v128, v128) };
-//! let _ = unsafe { fmlsl_f16(v128, v128, v128) };
 //! let _ = unsafe { fmul_f16(v128, v128) };
 //! let _ = unsafe { fneg_f16(v128) };
 //! let _ = unsafe { frecpe_f16(v128) };
@@ -122,11 +118,7 @@
 //! use rust_isa::aarch64::simd::fp16::fmin_f16 as _;
 //! use rust_isa::aarch64::simd::fp16::fminnm_f16 as _;
 //! use rust_isa::aarch64::simd::fp16::fmla_f16 as _;
-//! use rust_isa::aarch64::simd::fp16::fmlal2_f16 as _;
-//! use rust_isa::aarch64::simd::fp16::fmlal_f16 as _;
 //! use rust_isa::aarch64::simd::fp16::fmls_f16 as _;
-//! use rust_isa::aarch64::simd::fp16::fmlsl2_f16 as _;
-//! use rust_isa::aarch64::simd::fp16::fmlsl_f16 as _;
 //! use rust_isa::aarch64::simd::fp16::fmul_f16 as _;
 //! use rust_isa::aarch64::simd::fp16::fneg_f16 as _;
 //! use rust_isa::aarch64::simd::fp16::frecpe_f16 as _;
@@ -213,8 +205,6 @@ pub unsafe fn fdiv_f16(a: V128, b: V128) -> V128 {
     }
     out
 }
-pub use crate::aarch64::simd::fhm::{fmla_f16, fmls_f16};
-
 unsafe extern "C" {
     fn rust_isa_fp16_fabd_f16(a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_fp16_facge_f16(a: *const u8, b: *const u8, out: *mut u8);
@@ -235,10 +225,8 @@ unsafe extern "C" {
     fn rust_isa_fp16_fsqrt_f16(a: *const u8, out: *mut u8);
     fn rust_isa_fp16_frecpe_f16(a: *const u8, out: *mut u8);
     fn rust_isa_fp16_frsqrte_f16(a: *const u8, out: *mut u8);
-    fn rust_isa_fp16_fmlal_f16(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_fp16_fmlal2_f16(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_fp16_fmlsl_f16(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
-    fn rust_isa_fp16_fmlsl2_f16(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_fp16_fmla_f16(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_fp16_fmls_f16(acc: *const u8, a: *const u8, b: *const u8, out: *mut u8);
     fn rust_isa_fp16_fcvtl_f32_f16(a: *const u8, out: *mut u8);
     fn rust_isa_fp16_fcvtl2_f32_f16(a: *const u8, out: *mut u8);
     fn rust_isa_fp16_fcvtn_f16_f32(a: *const u8, out: *mut u8);
@@ -409,24 +397,14 @@ unary!(
     rust_isa_fp16_frsqrte_f16
 );
 ternary!(
-    /// `fmlal` multiplies the low four binary16 lanes and accumulates into f32 lanes.
-    fmlal_f16,
-    rust_isa_fp16_fmlal_f16
+    /// `fmla` multiplies binary16 lanes and accumulates into binary16 lanes.
+    fmla_f16,
+    rust_isa_fp16_fmla_f16
 );
 ternary!(
-    /// `fmlal2` multiplies the high four binary16 lanes and accumulates into f32 lanes.
-    fmlal2_f16,
-    rust_isa_fp16_fmlal2_f16
-);
-ternary!(
-    /// `fmlsl` multiplies the low four binary16 lanes and subtracts from f32 lanes.
-    fmlsl_f16,
-    rust_isa_fp16_fmlsl_f16
-);
-ternary!(
-    /// `fmlsl2` multiplies the high four binary16 lanes and subtracts from f32 lanes.
-    fmlsl2_f16,
-    rust_isa_fp16_fmlsl2_f16
+    /// `fmls` multiplies binary16 lanes and subtracts from binary16 lanes.
+    fmls_f16,
+    rust_isa_fp16_fmls_f16
 );
 
 /// `fcvtl` converts the low four binary16 lanes to f32 lanes.

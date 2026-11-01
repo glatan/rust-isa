@@ -1,0 +1,33 @@
+schema = 1
+arch = "aarch64"
+extension = "aes"
+module = "crate::aarch64::crypto::aes"
+kind = "fixed"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "AESD"
+api = "aesd"
+required_features = ["aes"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "AESE"
+api = "aese"
+required_features = ["aes"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "AESIMC"
+api = "aesimc"
+required_features = ["aes"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "AESMC"
+api = "aesmc"
+required_features = ["aes"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]

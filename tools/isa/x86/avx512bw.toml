@@ -1,0 +1,411 @@
+schema = 1
+arch = "x86_64"
+extension = "avx512bw"
+module = "crate::x86::simd::avx512bw"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VPACKSSDW"
+api = "vpackssdw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPACKSSWB"
+api = "vpacksswb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPACKUSDW"
+api = "vpackusdw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPACKUSWB"
+api = "vpackuswb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPADDB"
+api = "vpaddb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPADDSB"
+api = "vpaddsb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPADDSW"
+api = "vpaddsw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPADDUSB"
+api = "vpaddusb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPADDUSW"
+api = "vpaddusw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPADDW"
+api = "vpaddw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPAVGB"
+api = "vpavgb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPAVGW"
+api = "vpavgw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPBROADCASTB"
+api = "vpbroadcastb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPBROADCASTW"
+api = "vpbroadcastw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPCMPB"
+api = "vpcmpb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPCMPUB"
+api = "vpcmpub"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPCMPUW"
+api = "vpcmpuw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPCMPW"
+api = "vpcmpw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMADDUBSW"
+api = "vpmaddubsw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMADDWD"
+api = "vpmaddwd"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMAXSB"
+api = "vpmaxsb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMAXSW"
+api = "vpmaxsw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMAXUB"
+api = "vpmaxub"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMINSB"
+api = "vpminsb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMINSW"
+api = "vpminsw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMINUB"
+api = "vpminub"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVB2M"
+api = "vpmovb2m"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVDB"
+api = "vpmovdb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVDW"
+api = "vpmovdw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVM2B"
+api = "vpmovm2b"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVM2W"
+api = "vpmovm2w"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVQB"
+api = "vpmovqb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVQW"
+api = "vpmovqw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVSDB"
+api = "vpmovsdb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVSDW"
+api = "vpmovsdw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVSQB"
+api = "vpmovsqb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVSQW"
+api = "vpmovsqw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVSWB"
+api = "vpmovswb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVUSDB"
+api = "vpmovusdb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVUSDW"
+api = "vpmovusdw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVUSQB"
+api = "vpmovusqb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVUSQW"
+api = "vpmovusqw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVUSWB"
+api = "vpmovuswb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVW2M"
+api = "vpmovw2m"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVWB"
+api = "vpmovwb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMULHUW"
+api = "vpmulhuw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMULHW"
+api = "vpmulhw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMULLW"
+api = "vpmullw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSLLDQ"
+api = "vpslldq"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSLLW"
+api = "vpsllw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSRAW"
+api = "vpsraw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSRLDQ"
+api = "vpsrldq"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSRLW"
+api = "vpsrlw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSUBB"
+api = "vpsubb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSUBSB"
+api = "vpsubsb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSUBSW"
+api = "vpsubsw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSUBUSB"
+api = "vpsubusb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSUBUSW"
+api = "vpsubusw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSUBW"
+api = "vpsubw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPTESTMB"
+api = "vptestmb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPTESTMW"
+api = "vptestmw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPTESTNMB"
+api = "vptestnmb"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPTESTNMW"
+api = "vptestnmw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPUNPCKHBW"
+api = "vpunpckhbw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPUNPCKHWD"
+api = "vpunpckhwd"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPUNPCKLBW"
+api = "vpunpcklbw"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPUNPCKLWD"
+api = "vpunpcklwd"
+required_features = ["avx512bw"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

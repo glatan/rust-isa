@@ -1,0 +1,39 @@
+schema = 1
+arch = "x86_64"
+extension = "bmi1"
+module = "crate::x86::integer::bmi1"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "ANDN"
+api = "andn"
+required_features = ["bmi1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "BEXTR"
+api = "bextr"
+required_features = ["bmi1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "BLSI"
+api = "blsi"
+required_features = ["bmi1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "BLSMSK"
+api = "blsmsk"
+required_features = ["bmi1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "BLSR"
+api = "blsr"
+required_features = ["bmi1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

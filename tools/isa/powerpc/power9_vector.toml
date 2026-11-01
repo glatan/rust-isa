@@ -1,0 +1,124 @@
+schema = 1
+arch = "powerpc64le"
+extension = "power9-vector"
+module = "crate::powerpc::simd::power9_vector"
+kind = "fixed"
+parent = ""
+source = "open-power-sdk/PowerISA"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VMAXSW"
+api = "abs_i32"
+required_features = ["power9-vector"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VNEGW"
+api = "neg_i32"
+required_features = ["power9-vector"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VNEGD"
+api = "neg_i64"
+required_features = ["power9-vector"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VABSD"
+api = "vabsd"
+required_features = ["power9-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VABSDUW"
+api = "vabsduw"
+required_features = ["power9-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VCTZB"
+api = "vctzb"
+required_features = ["power9-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VCTZD"
+api = "vctzd"
+required_features = ["power9-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VCTZH"
+api = "vctzh"
+required_features = ["power9-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VCTZLSBB"
+api = "vctzlsbb"
+required_features = ["power9-vector"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VCTZW"
+api = "vctzw"
+required_features = ["power9-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VEXTSB2D"
+api = "vextsb2d"
+required_features = ["power9-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VEXTSB2W"
+api = "vextsb2w"
+required_features = ["power9-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VEXTSH2D"
+api = "vextsh2d"
+required_features = ["power9-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VEXTSH2W"
+api = "vextsh2w"
+required_features = ["power9-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VEXTSW2D"
+api = "vextsw2d"
+required_features = ["power9-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VNEGD"
+api = "vnegd"
+required_features = ["power9-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VNEGW"
+api = "vnegw"
+required_features = ["power9-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]

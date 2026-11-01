@@ -1,0 +1,154 @@
+schema = 1
+arch = "s390x"
+extension = "vector-enhancements-1"
+module = "crate::s390x::simd::vector_enhancements_1"
+kind = "fixed"
+parent = ""
+source = "llvm/llvm-project"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "FMA"
+api = "fma"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VPOPCTF"
+api = "popcnt_i32"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VPOPCT"
+api = "popcnt_i8"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VFA"
+api = "vfa"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VFCE"
+api = "vfce"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VFCH"
+api = "vfch"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VFCHE"
+api = "vfche"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VFD"
+api = "vfd"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VFI"
+api = "vfi_f32"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VFLL"
+api = "vfll"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VFLR"
+api = "vflr"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VFM"
+api = "vfm"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VFMA"
+api = "vfma"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VFMS"
+api = "vfms"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VFNMA"
+api = "vfnma"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VFNMS"
+api = "vfnms"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VFS"
+api = "vfs"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VFSQ"
+api = "vfsq"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VFTCI"
+api = "vftci_f32"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VNN"
+api = "vnn"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VPOPCTB"
+api = "vpopctb"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VPOPCTG"
+api = "vpopctg"
+required_features = ["vector-enhancements-1"]
+status = "implemented"
+test_ids = ["tests/s390x.rs::s390x_values"]

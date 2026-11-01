@@ -1,0 +1,21 @@
+schema = 1
+arch = "x86_64"
+extension = "popcnt"
+module = "crate::x86::integer::popcnt"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "POPCNT"
+api = "popcnt_u32"
+required_features = ["popcnt"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "POPCNT"
+api = "popcnt_u64"
+required_features = ["popcnt"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

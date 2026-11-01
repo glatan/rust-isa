@@ -1,0 +1,69 @@
+schema = 1
+arch = "x86_64"
+extension = "avx512vbmi2"
+module = "crate::x86::simd::avx512vbmi2"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VPCOMPRESSB"
+api = "vpcompressb"
+required_features = ["avx512vbmi2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPCOMPRESSW"
+api = "vpcompressw"
+required_features = ["avx512vbmi2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPEXPANDB"
+api = "vpexpandb"
+required_features = ["avx512vbmi2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPEXPANDW"
+api = "vpexpandw"
+required_features = ["avx512vbmi2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSHLDD"
+api = "vpshldd"
+required_features = ["avx512vbmi2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSHLDQ"
+api = "vpshldq"
+required_features = ["avx512vbmi2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSHLDW"
+api = "vpshldw"
+required_features = ["avx512vbmi2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSHRDD"
+api = "vpshrdd"
+required_features = ["avx512vbmi2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSHRDQ"
+api = "vpshrdq"
+required_features = ["avx512vbmi2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSHRDW"
+api = "vpshrdw"
+required_features = ["avx512vbmi2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

@@ -1,0 +1,429 @@
+schema = 1
+arch = "x86_64"
+extension = "fma"
+module = "crate::x86::simd::fma"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VFMADD132PD"
+api = "vfmadd132pd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADD132PS"
+api = "vfmadd132ps"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADD132SD"
+api = "vfmadd132sd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADD132SS"
+api = "vfmadd132ss"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADD213PD"
+api = "vfmadd213pd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADD213PS"
+api = "vfmadd213ps"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADD213SD"
+api = "vfmadd213sd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADD213SS"
+api = "vfmadd213ss"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADD231PD"
+api = "vfmadd231pd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADD231PS"
+api = "vfmadd231ps"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADD231SD"
+api = "vfmadd231sd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADD231SS"
+api = "vfmadd231ss"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADDSUB132PD"
+api = "vfmaddsub132pd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADDSUB132PS"
+api = "vfmaddsub132ps"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADDSUB213PD"
+api = "vfmaddsub213pd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADDSUB213PS"
+api = "vfmaddsub213ps"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADDSUB231PD"
+api = "vfmaddsub231pd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMADDSUB231PS"
+api = "vfmaddsub231ps"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUB132PD"
+api = "vfmsub132pd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUB132PS"
+api = "vfmsub132ps"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUB132SD"
+api = "vfmsub132sd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUB132SS"
+api = "vfmsub132ss"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUB213PD"
+api = "vfmsub213pd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUB213PS"
+api = "vfmsub213ps"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUB213SD"
+api = "vfmsub213sd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUB213SS"
+api = "vfmsub213ss"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUB231PD"
+api = "vfmsub231pd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUB231PS"
+api = "vfmsub231ps"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUB231SD"
+api = "vfmsub231sd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUB231SS"
+api = "vfmsub231ss"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUBADD132PD"
+api = "vfmsubadd132pd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUBADD132PS"
+api = "vfmsubadd132ps"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUBADD213PD"
+api = "vfmsubadd213pd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUBADD213PS"
+api = "vfmsubadd213ps"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUBADD231PD"
+api = "vfmsubadd231pd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFMSUBADD231PS"
+api = "vfmsubadd231ps"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMADD132PD"
+api = "vfnmadd132pd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMADD132PS"
+api = "vfnmadd132ps"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMADD132SD"
+api = "vfnmadd132sd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMADD132SS"
+api = "vfnmadd132ss"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMADD213PD"
+api = "vfnmadd213pd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMADD213PS"
+api = "vfnmadd213ps"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMADD213SD"
+api = "vfnmadd213sd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMADD213SS"
+api = "vfnmadd213ss"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMADD231PD"
+api = "vfnmadd231pd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMADD231PS"
+api = "vfnmadd231ps"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMADD231SD"
+api = "vfnmadd231sd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMADD231SS"
+api = "vfnmadd231ss"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMSUB132PD"
+api = "vfnmsub132pd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMSUB132PS"
+api = "vfnmsub132ps"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMSUB132SD"
+api = "vfnmsub132sd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMSUB132SS"
+api = "vfnmsub132ss"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMSUB213PD"
+api = "vfnmsub213pd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMSUB213PS"
+api = "vfnmsub213ps"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMSUB213SD"
+api = "vfnmsub213sd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMSUB213SS"
+api = "vfnmsub213ss"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMSUB231PD"
+api = "vfnmsub231pd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMSUB231PS"
+api = "vfnmsub231ps"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMSUB231SD"
+api = "vfnmsub231sd"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFNMSUB231SS"
+api = "vfnmsub231ss"
+required_features = ["fma"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]

@@ -1,0 +1,27 @@
+schema = 1
+arch = "x86_64"
+extension = "avx512bitalg"
+module = "crate::x86::simd::avx512bitalg"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VPOPCNTB"
+api = "vpopcntb"
+required_features = ["avx512bitalg"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPOPCNTW"
+api = "vpopcntw"
+required_features = ["avx512bitalg"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSHUFBITQMB"
+api = "vpshufbitqmb"
+required_features = ["avx512bitalg"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

@@ -1,0 +1,87 @@
+schema = 1
+arch = "x86_64"
+extension = "avxvnniint16"
+module = "crate::x86::simd::avxvnniint16"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VPDPWSUD"
+api = "vpdpwsud"
+required_features = ["avxvnniint16"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPWSUD"
+api = "vpdpwsud_v128"
+widths = [128]
+required_features = ["avxvnniint16"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPWSUDS"
+api = "vpdpwsuds"
+required_features = ["avxvnniint16"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPWSUDS"
+api = "vpdpwsuds_v128"
+widths = [128]
+required_features = ["avxvnniint16"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPWUSD"
+api = "vpdpwusd"
+required_features = ["avxvnniint16"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPWUSD"
+api = "vpdpwusd_v128"
+widths = [128]
+required_features = ["avxvnniint16"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPWUSDS"
+api = "vpdpwusds"
+required_features = ["avxvnniint16"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPWUSDS"
+api = "vpdpwusds_v128"
+widths = [128]
+required_features = ["avxvnniint16"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPWUUD"
+api = "vpdpwuud"
+required_features = ["avxvnniint16"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPWUUD"
+api = "vpdpwuud_v128"
+widths = [128]
+required_features = ["avxvnniint16"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPWUUDS"
+api = "vpdpwuuds"
+required_features = ["avxvnniint16"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPWUUDS"
+api = "vpdpwuuds_v128"
+widths = [128]
+required_features = ["avxvnniint16"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

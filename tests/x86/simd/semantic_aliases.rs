@@ -119,12 +119,14 @@ fn avx10_1_alias_values() {
     );
 
     assert_eq!(
-        unsafe { vcmppd_v256::<0>(f64x4([1.0; 4]), f64x4([1.0; 4])) },
+        unsafe { vcmppd_v256::<0>(f64x4([1.0; 4]), f64x4([1.0; 4])).bits() },
         0x0f
     );
 
     let bytes = V256::from_bytes(core::array::from_fn(|index| index as u8));
-    let compressed = unsafe { vpcompressb_v256(bytes, 0b0101) }.to_bytes();
+    let compressed =
+        unsafe { vpcompressb_v256(bytes, rust_isa::x86::simd::Mask32::from_bits(0b0101)) }
+            .to_bytes();
     assert_eq!(&compressed[..4], &[0, 2, 0, 0]);
     assert!(compressed[4..].iter().all(|value| *value == 0));
 
@@ -174,8 +176,8 @@ fn avx512vl_alias_values() {
                 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0, 0xff, 0xff, 0xff, 0xff, 0, 0, 0, 0,
             ]))
         };
-        assert_eq!(mask, 0b0101);
-        let values = unsafe { vpmovm2d_v128(0b0101) };
+        assert_eq!(mask.bits(), 0b0101);
+        let values = unsafe { vpmovm2d_v128(rust_isa::x86::simd::Mask4::from_bits(0b0101)) };
         assert_eq!(i32x4_values(values), [-1, 0, -1, 0]);
     }
 }
@@ -215,11 +217,11 @@ fn avx512vl_mask_and_ternlog_values() {
         [0; 16]
     );
     assert_eq!(
-        unsafe { vpcmpd_v128::<0>(i32x4([1, 2, 3, 4]), i32x4([1, 9, 3, 9])) },
+        unsafe { vpcmpd_v128::<0>(i32x4([1, 2, 3, 4]), i32x4([1, 9, 3, 9])).bits() },
         0b0101
     );
     assert_eq!(
-        unsafe { vptestmd_v128(i32x4([1, 2, 4, 8]), i32x4([1, 0, 4, 0])) },
+        unsafe { vptestmd_v128(i32x4([1, 2, 4, 8]), i32x4([1, 0, 4, 0])).bits() },
         0b0101
     );
     assert_eq!(
@@ -237,7 +239,7 @@ fn avx512vl_mask_and_ternlog_values() {
                 0x80, 0x7f, 0xff, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             ]))
         };
-        assert_eq!(mask, 0b0101);
+        assert_eq!(mask.bits(), 0b0101);
     }
     if is_x86_feature_detected!("avx512bitalg") {
         let counts = unsafe {
@@ -255,7 +257,9 @@ fn avx512vl_mask_and_ternlog_values() {
         indices[1] = 62;
         indices[8] = 0;
         assert_eq!(
-            unsafe { vpshufbitqmb_v128(V128::from_bytes(source), V128::from_bytes(indices),) },
+            unsafe {
+                vpshufbitqmb_v128(V128::from_bytes(source), V128::from_bytes(indices)).bits()
+            },
             0x0101
         );
     }
@@ -279,6 +283,7 @@ fn avx10_2_math_values() {
     assert_eq!(
         unsafe {
             vfpclassps_v256::<0x08>(f32x8([f32::INFINITY, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0]))
+                .bits()
         },
         0b0000_0001
     );

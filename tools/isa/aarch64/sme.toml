@@ -1,0 +1,21 @@
+schema = 1
+arch = "aarch64"
+extension = "sme"
+module = "crate::aarch64::simd::sme"
+kind = "stateful"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "ADD"
+api = "add_f32"
+required_features = ["sme"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "MUL"
+api = "mul_f32"
+required_features = ["sme"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]

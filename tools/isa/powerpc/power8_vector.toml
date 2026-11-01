@@ -1,0 +1,152 @@
+schema = 1
+arch = "powerpc64le"
+extension = "power8-vector"
+module = "crate::powerpc::simd::power8_vector"
+kind = "fixed"
+parent = ""
+source = "open-power-sdk/PowerISA"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VADDUDM"
+api = "add_u64"
+required_features = ["power8-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMULOUH"
+api = "mul_even_u16"
+required_features = ["power8-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMULUWM"
+api = "mul_u32"
+required_features = ["power8-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSUBUDM"
+api = "sub_u64"
+required_features = ["power8-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VADDUDM"
+api = "vaddudm"
+required_features = ["power8-vector"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VCLZD"
+api = "vclzd"
+required_features = ["power8-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMAXSD"
+api = "vmaxsd"
+required_features = ["power8-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMAXUD"
+api = "vmaxud"
+required_features = ["power8-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMINSD"
+api = "vminsd"
+required_features = ["power8-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMINUD"
+api = "vminud"
+required_features = ["power8-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMULEUH"
+api = "vmuleuh"
+required_features = ["power8-vector"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMULEUW"
+api = "vmuleuw"
+required_features = ["power8-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMULOUW"
+api = "vmulouw"
+required_features = ["power8-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMULUWM"
+api = "vmuluwm"
+required_features = ["power8-vector"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VPKUDUM"
+api = "vpkudum"
+required_features = ["power8-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VPKSDSS"
+api = "vpksdss"
+required_features = ["power8-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VPKSDUS"
+api = "vpksdus"
+required_features = ["power8-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VPOPCNTD"
+api = "vpopcntd"
+required_features = ["power8-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSUBUDM"
+api = "vsubudm"
+required_features = ["power8-vector"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VUPKHSW"
+api = "vupkhsw"
+required_features = ["power8-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VUPKLSW"
+api = "vupklsw"
+required_features = ["power8-vector"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]

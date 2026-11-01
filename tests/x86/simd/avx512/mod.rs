@@ -4,6 +4,7 @@ mod avx512f;
 mod bf16;
 mod bitalg;
 mod bitwise;
+mod bmm;
 mod bw;
 mod cd;
 mod compare;

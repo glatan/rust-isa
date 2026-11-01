@@ -92,7 +92,6 @@
 //! let _ = unsafe { nloc(v128) };
 //! let _ = unsafe { nlzc(v128) };
 //! let _ = unsafe { nor(v128, v128) };
-//! let _ = unsafe { nor_v(v128, v128) };
 //! let _ = unsafe { or(v128, v128) };
 //! let _ = unsafe { pcnt(v128) };
 //! let _ = unsafe { sat_s::<0>(v128) };
@@ -181,7 +180,6 @@
 //! use rust_isa::mips::simd::msa::nloc as _;
 //! use rust_isa::mips::simd::msa::nlzc as _;
 //! use rust_isa::mips::simd::msa::nor as _;
-//! use rust_isa::mips::simd::msa::nor_v as _;
 //! use rust_isa::mips::simd::msa::or as _;
 //! use rust_isa::mips::simd::msa::pcnt as _;
 //! use rust_isa::mips::simd::msa::sat_s as _;
@@ -671,16 +669,6 @@ binary!(
     fmin,
     rust_isa_msa_fmin
 );
-
-/// `nor.v`, an alias for [`nor`].
-///
-/// # Safety
-///
-/// The caller must compile with MSA enabled.
-#[inline(always)]
-pub unsafe fn nor_v(a: V128, b: V128) -> V128 {
-    unsafe { nor(a, b) }
-}
 
 /// `slli.w`. Shift each 32-bit lane left by `SHIFT`.
 ///

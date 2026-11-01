@@ -1,0 +1,33 @@
+schema = 1
+arch = "aarch64"
+extension = "sha3"
+module = "crate::aarch64::crypto::sha3"
+kind = "fixed"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "BCAX"
+api = "bcax"
+required_features = ["sha3"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "EOR3"
+api = "eor3"
+required_features = ["sha3"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "RAX1"
+api = "rax1"
+required_features = ["sha3"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "XAR"
+api = "xar"
+required_features = ["sha3"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]

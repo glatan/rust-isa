@@ -1,0 +1,60 @@
+schema = 1
+arch = "riscv64"
+extension = "d_zfa"
+module = "crate::riscv"
+kind = "fixed"
+parent = ""
+source = "riscv/riscv-opcodes"
+coverage = "pilot"
+raw = true
+
+normalization = "mnemonic+api"
+
+[[instruction]]
+mnemonic = "FLI_D"
+api = "fli_d"
+forms = ["fli.d"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "FMINM_D"
+api = "fminm_d"
+forms = ["fminm.d"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "FMAXM_D"
+api = "fmaxm_d"
+forms = ["fmaxm.d"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "FROUND_D"
+api = "fround_d"
+forms = ["fround.d"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "FROUNDNX_D"
+api = "froundnx_d"
+forms = ["froundnx.d"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "FCVTMOD_W_D"
+api = "fcvtmod_w_d"
+forms = ["fcvtmod.w.d"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "FLEQ_D"
+api = "fleq_d"
+forms = ["fleq.d"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "FLTQ_D"
+api = "fltq_d"
+forms = ["fltq.d"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]

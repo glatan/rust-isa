@@ -36,3 +36,16 @@ fn optional_extension_api_surface() {
         64
     );
 }
+
+// These extensions are not executed by the test host. Keep concrete calls in
+// a compiled function so the reference inventory sees the entry points; the
+// type assertions above cover the signatures and the build covers the linkage.
+#[allow(dead_code)]
+unsafe fn optional_extension_calls() {
+    let v = V128::from_bytes([0; 16]);
+    let _ = rust_isa::x86::simd::xop::vpermil2ps(v, v, v, 0);
+    let _ = rust_isa::x86::simd::xop::vpermil2pd(v, v, v, 0);
+    let _ = rust_isa::x86::simd::xop::vpperm(v, v, v);
+    let w = rust_isa::x86::simd::avx512f::V512::from_bytes([0; 64]);
+    let _ = rust_isa::x86::simd::avx10_2::vmulps_v512(w, w);
+}

@@ -1,0 +1,51 @@
+schema = 1
+arch = "x86_64"
+extension = "avxneconvert"
+module = "crate::x86::simd::avxneconvert"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VBCSTNEBF162PS"
+api = "vbcstnebf162ps"
+required_features = ["avxneconvert"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VBCSTNESH2PS"
+api = "vbcstnesh2ps"
+required_features = ["avxneconvert"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTNEEBF162PS"
+api = "vcvtneebf162ps"
+required_features = ["avxneconvert"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTNEOBF162PS"
+api = "vcvtneobf162ps"
+required_features = ["avxneconvert"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTNEEPH2PS"
+api = "vcvtneeph2ps"
+required_features = ["avxneconvert"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTNEOPH2PS"
+api = "vcvtneoph2ps"
+required_features = ["avxneconvert"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTNEPS2BF16"
+api = "vcvtneps2bf16"
+required_features = ["avxneconvert"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

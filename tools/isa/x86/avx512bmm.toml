@@ -1,0 +1,58 @@
+schema = 1
+arch = "x86_64"
+extension = "avx512bmm"
+module = "crate::x86::simd::avx512bmm"
+kind = "fixed"
+parent = ""
+source = "llvm/llvm-project"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "vbitrevb"
+api = "vbitrevb_v128"
+widths = [128]
+required_features = ["avx512bmm", "avx512vl"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "vbitrevb"
+api = "vbitrevb_v256"
+widths = [256]
+required_features = ["avx512bmm", "avx512vl"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "vbitrevb"
+api = "vbitrevb_v512"
+widths = [512]
+required_features = ["avx512bmm"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "vbmacor16x16x16"
+api = "vbmacor16x16x16_v256"
+widths = [256]
+required_features = ["avx512bmm", "avx512vl"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "vbmacor16x16x16"
+api = "vbmacor16x16x16_v512"
+widths = [512]
+required_features = ["avx512bmm"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "vbmacxor16x16x16"
+api = "vbmacxor16x16x16_v256"
+widths = [256]
+required_features = ["avx512bmm", "avx512vl"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "vbmacxor16x16x16"
+api = "vbmacxor16x16x16_v512"
+widths = [512]
+required_features = ["avx512bmm"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

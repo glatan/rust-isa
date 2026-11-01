@@ -13,3 +13,4 @@ pub mod neon;
 pub mod rdm;
 pub mod sme;
 pub mod sve;
+pub mod sve2;

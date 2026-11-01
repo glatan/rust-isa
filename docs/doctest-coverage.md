@@ -16,18 +16,18 @@
 
 | arch      | extension | 延べ公開パス | 型 |
 | --------- | --------: | -----------: | -: |
-| x86       |        54 |        1,587 |  4 |
-| aarch64   |        18 |        1,214 |  1 |
+| x86       |        60 |        1,598 |  7 |
+| aarch64   |        19 |        1,613 |  1 |
 | arm       |         9 |          227 |  0 |
-| riscv     |        13 |          418 |  0 |
-| loongarch |         2 |          294 |  0 |
-| s390x     |         6 |          204 |  0 |
-| powerpc   |         8 |          226 |  1 |
-| mips      |         1 |           82 |  0 |
+| riscv     |        14 |          563 |  0 |
+| loongarch |         2 |        1,585 |  0 |
+| s390x     |         6 |          191 |  0 |
+| powerpc   |         7 |          199 |  1 |
+| mips      |         1 |           81 |  0 |
 | wasm32    |         3 |          258 |  1 |
-| 合計      |       114 |        4,510 |  7 |
+| 合計      |       121 |        6,315 | 10 |
 
-「延べ公開パス」は extension ごとの free function と associated function を合計した数で、reexport alias や同一命令の重複を含む。distinct な命令関数の数ではない。`SmeGuard::enter`、`MmaAccumulator::new`、`AmxGuard::enter`、`TileConfig::builder`、`TileConfig::from_bytes` の 5 件は状態管理 API として含む。「型」は `V128`、`SmeGuard` などの import で、命令数には含めない。x86 には x86_64 専用命令の cfg 付き import を含む。wasm32 の 3 extension は `simd128`、`relaxed-simd`、`wide-arithmetic` である。
+「延べ公開パス」は extension ごとの free function と associated function を合計した数で、同一命令の異なるレーン幅を含む。distinct な命令関数の数ではない。`SmeGuard::enter`、`MmaAccumulator::new`、`AmxGuard::enter`、`TileConfig::builder`、`TileConfig::from_bytes` の 5 件は状態管理 API として含む。「型」は `V128`、`SmeGuard` などの import で、命令数には含めない。x86 には x86_64 専用命令の cfg 付き import を含む。wasm32 の 3 extension は `simd128`、`relaxed-simd`、`wide-arithmetic` である。
 
 ## inventoryと表の検査
 

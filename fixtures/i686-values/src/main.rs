@@ -15,7 +15,9 @@ use rust_isa::x86::integer::movbe::{
 use rust_isa::x86::integer::popcnt::{popcnt_u32, popcnt_u64};
 use rust_isa::x86::simd::avx2::{V256, vpaddd, vpmulld};
 use rust_isa::x86::simd::avx512f::{V512, vpaddd as vpaddd_512, vpmulld as vpmulld_512};
-use rust_isa::x86::simd::sse2::{V128, paddd, pmuludq, pslld, punpcklbw, v128_load, v128_store};
+use rust_isa::x86::simd::sse2::{
+    V128, movdqu_load, movdqu_store, paddd, pmuludq, pslld, punpcklbw,
+};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {
@@ -219,13 +221,13 @@ unsafe fn avx2() -> bool {
 
 fn load_store() -> u32 {
     let source = [1u8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-    let value = unsafe { v128_load(source.as_ptr()) };
+    let value = unsafe { movdqu_load(source.as_ptr()) };
     if value.to_bytes() != source {
         return 12;
     }
     let mut output = [0u8; 16];
     unsafe {
-        v128_store(output.as_mut_ptr(), value);
+        movdqu_store(output.as_mut_ptr(), value);
     }
     if output != source {
         return 13;

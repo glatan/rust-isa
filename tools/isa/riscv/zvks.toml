@@ -1,0 +1,101 @@
+schema = 1
+arch = "riscv64"
+extension = "zvks"
+module = "crate::riscv"
+kind = "fixed"
+parent = ""
+source = "riscv/riscv-opcodes"
+coverage = "pilot"
+raw = true
+
+normalization = "mnemonic+api"
+
+[[instruction]]
+mnemonic = "VANDN.VV"
+api = "vandn_vv"
+forms = ["vandn.vv"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VANDN.VX"
+api = "vandn_vx"
+forms = ["vandn.vx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VBREV8.V"
+api = "vbrev8"
+forms = ["vbrev8.v"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VREV8.V"
+api = "vrev8"
+forms = ["vrev8.v"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VROL.VV"
+api = "vrol_vv"
+forms = ["vrol.vv"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VROL.VX"
+api = "vrol_vx"
+forms = ["vrol.vx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VROR.VV"
+api = "vror_vv"
+forms = ["vror.vv"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VROR.VX"
+api = "vror_vx"
+forms = ["vror.vx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VROR.VI"
+api = "vror_vi"
+forms = ["vror.vi"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VSM4K"
+api = "vsm4k"
+forms = ["vsm4k.vi"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VSM4R"
+api = "vsm4r"
+forms = ["vsm4r.vv", "vsm4r.vs"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VSM3C"
+api = "vsm3c"
+forms = ["vsm3c.vi"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VSM3ME"
+api = "vsm3me"
+forms = ["vsm3me.vv"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]

@@ -88,8 +88,10 @@
 //! let _ = unsafe { movnti(storage.0.as_mut_ptr().cast(), 0) };
 //! let _ = unsafe { movntpd(storage.0.as_mut_ptr().cast(), v128) };
 //! let _ = unsafe { movntps(storage.0.as_mut_ptr().cast(), v128) };
-//! #[cfg(target_arch = "x86_64")] let _ = unsafe { movntq(storage.0.as_mut_ptr().cast(), v128) };
+//! #[cfg(target_arch = "x86_64")] let _ = unsafe { movnti_u64(storage.0.as_mut_ptr().cast(), 0) };
 //! let _ = movq(v128);
+//! let _ = pextrw::<0>(v128);
+//! let _ = pinsrw::<0>(v128, 0);
 //! let _ = movsd(v128, v128);
 //! let _ = movss(v128, v128);
 //! let _ = mulpd(v128, v128);
@@ -170,8 +172,8 @@
 //! let _ = unpckhps(v128, v128);
 //! let _ = unpcklpd(v128, v128);
 //! let _ = unpcklps(v128, v128);
-//! let _ = unsafe { v128_load(storage.0.as_ptr().cast()) };
-//! let _ = unsafe { v128_store(storage.0.as_mut_ptr().cast(), v128) };
+//! let _ = unsafe { movdqu_load(storage.0.as_ptr().cast()) };
+//! let _ = unsafe { movdqu_store(storage.0.as_mut_ptr().cast(), v128) };
 //! let _ = xorps(v128, v128);
 //! ```
 //!
@@ -214,6 +216,8 @@
 //! use rust_isa::x86::simd::sse2::minpd as _;
 //! use rust_isa::x86::simd::sse2::minps as _;
 //! use rust_isa::x86::simd::sse2::movd as _;
+//! use rust_isa::x86::simd::sse2::movdqu_load as _;
+//! use rust_isa::x86::simd::sse2::movdqu_store as _;
 //! use rust_isa::x86::simd::sse2::movhlps as _;
 //! use rust_isa::x86::simd::sse2::movhps as _;
 //! use rust_isa::x86::simd::sse2::movlhps as _;
@@ -222,10 +226,10 @@
 //! use rust_isa::x86::simd::sse2::movmskps as _;
 //! use rust_isa::x86::simd::sse2::movntdq as _;
 //! use rust_isa::x86::simd::sse2::movnti as _;
+//! #[cfg(target_arch = "x86_64")]
+//! use rust_isa::x86::simd::sse2::movnti_u64 as _;
 //! use rust_isa::x86::simd::sse2::movntpd as _;
 //! use rust_isa::x86::simd::sse2::movntps as _;
-//! #[cfg(target_arch = "x86_64")]
-//! use rust_isa::x86::simd::sse2::movntq as _;
 //! use rust_isa::x86::simd::sse2::movq as _;
 //! use rust_isa::x86::simd::sse2::movsd as _;
 //! use rust_isa::x86::simd::sse2::movss as _;
@@ -253,6 +257,8 @@
 //! use rust_isa::x86::simd::sse2::pcmpgtb as _;
 //! use rust_isa::x86::simd::sse2::pcmpgtd as _;
 //! use rust_isa::x86::simd::sse2::pcmpgtw as _;
+//! use rust_isa::x86::simd::sse2::pextrw as _;
+//! use rust_isa::x86::simd::sse2::pinsrw as _;
 //! use rust_isa::x86::simd::sse2::pmaddwd as _;
 //! use rust_isa::x86::simd::sse2::pmaxsw as _;
 //! use rust_isa::x86::simd::sse2::pmaxub as _;
@@ -307,8 +313,6 @@
 //! use rust_isa::x86::simd::sse2::unpckhps as _;
 //! use rust_isa::x86::simd::sse2::unpcklpd as _;
 //! use rust_isa::x86::simd::sse2::unpcklps as _;
-//! use rust_isa::x86::simd::sse2::v128_load as _;
-//! use rust_isa::x86::simd::sse2::v128_store as _;
 //! use rust_isa::x86::simd::sse2::xorps as _;
 //! ```
 //! <!-- doctest-inventory:end -->

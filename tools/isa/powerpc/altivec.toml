@@ -1,0 +1,594 @@
+schema = 1
+arch = "powerpc64le"
+extension = "altivec"
+module = "crate::powerpc::simd::altivec"
+kind = "fixed"
+parent = ""
+source = "open-power-sdk/PowerISA"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "ADD"
+api = "add"
+required_features = ["altivec"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VADDUHM"
+api = "add_i16"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VADDUDM"
+api = "add_i64"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VADDUBM"
+api = "add_i8"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "AND"
+api = "and"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VCMPEQUW"
+api = "cmpeq_i32"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VCMPGTSW"
+api = "cmpgt_i32"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "FADD"
+api = "fadd"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "FDIV"
+api = "fdiv"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "FMUL"
+api = "fmul"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "FSUB"
+api = "fsub"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "LVEBX"
+api = "lvebx"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "LVEHX"
+api = "lvehx"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "LVEWX"
+api = "lvewx"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "LVX"
+api = "lvx"
+required_features = ["altivec"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "MUL"
+api = "mul"
+required_features = ["altivec"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMLADDUHM"
+api = "mul_i16"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMULUWM"
+api = "mul_i32"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "OR"
+api = "or"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "PERMUTE"
+api = "permute"
+required_features = ["altivec"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XXSPLTW"
+api = "splat_i32"
+required_features = ["altivec"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "STVEBX"
+api = "stvebx"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "STVEHX"
+api = "stvehx"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "STVEWX"
+api = "stvewx"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "STVX"
+api = "stvx"
+required_features = ["altivec"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSUBUHM"
+api = "sub_i16"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSUBUWM"
+api = "sub_i32"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSUBUDM"
+api = "sub_i64"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSUBUBM"
+api = "sub_i8"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "V128_LOAD"
+api = "v128_load"
+required_features = ["altivec"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "V128_STORE"
+api = "v128_store"
+required_features = ["altivec"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VADDUBM"
+api = "vaddubm"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VADDUDM"
+api = "vaddudm"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VADDUHM"
+api = "vadduhm"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VADDUWM"
+api = "vadduwm"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VAND"
+api = "vand"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VANDC"
+api = "vandc"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VAVG"
+api = "vavg"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VAVGL"
+api = "vavgl"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VCMP"
+api = "vcmp"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VCMPEQ"
+api = "vcmpeq"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VCMPGT"
+api = "vcmpgt"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMADD"
+api = "vmadd"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMAX"
+api = "vmax"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMIN"
+api = "vmin"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMLA"
+api = "vmla"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMLS"
+api = "vmls"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMSUMMBM"
+api = "vmsummbm"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMSUMSHM"
+api = "vmsumshm"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMSUMSHS"
+api = "vmsumshs"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMSUMUBM"
+api = "vmsumubm"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMSUMUHM"
+api = "vmsumuhm"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMSUMUHS"
+api = "vmsumuhs"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMUL"
+api = "vmul"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMULEUB"
+api = "vmuleub"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMULEUH"
+api = "vmuleuh"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMULEUW"
+api = "vmuleuw"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMULOUB"
+api = "vmuloub"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMULOUH"
+api = "vmulouh"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMULOUW"
+api = "vmulouw"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VMULUWM"
+api = "vmuluwm"
+required_features = ["altivec"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VNMSUB"
+api = "vnmsub"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VNOR"
+api = "vnor"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VNOT"
+api = "vnot"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VOR"
+api = "vor"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VPERM"
+api = "vperm"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VPK"
+api = "vpk"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSEL"
+api = "vsel"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSL"
+api = "vsl"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSLDOI"
+api = "vsldoi"
+required_features = ["altivec"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSLO"
+api = "vslo"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSR"
+api = "vsr"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSRO"
+api = "vsro"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSUBUBM"
+api = "vsububm"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSUBUDM"
+api = "vsubudm"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSUBUHM"
+api = "vsubuhm"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSUBUWM"
+api = "vsubuwm"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSUM2SWS"
+api = "vsum2sws"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSUM4SBS"
+api = "vsum4sbs"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSUM4SHS"
+api = "vsum4shs"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSUM4UBS"
+api = "vsum4ubs"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSUMSWS"
+api = "vsumsws"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VUPK"
+api = "vupk"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VXOR"
+api = "vxor"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XOR"
+api = "xor"
+required_features = ["altivec"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]

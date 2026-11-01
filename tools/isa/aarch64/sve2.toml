@@ -1,0 +1,417 @@
+schema = 1
+arch = "aarch64"
+extension = "sve2"
+module = "crate::aarch64::simd::sve2"
+kind = "fixed"
+parent = "sve"
+source = "ARM-software/acle"
+coverage = "complete"
+
+[[instruction]]
+mnemonic = "ADDP"
+api = "addp_i8"
+forms = ["ADDP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDP"
+api = "addp_i16"
+forms = ["ADDP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDP"
+api = "addp_i32"
+forms = ["ADDP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDP"
+api = "addp_i64"
+forms = ["ADDP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDP"
+api = "addp_u8"
+forms = ["ADDP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDP"
+api = "addp_u16"
+forms = ["ADDP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDP"
+api = "addp_u32"
+forms = ["ADDP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDP"
+api = "addp_u64"
+forms = ["ADDP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDP"
+api = "addp_f32"
+forms = ["ADDP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDP"
+api = "addp_f64"
+forms = ["ADDP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHADD"
+api = "shadd_i8"
+forms = ["SHADD"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHADD"
+api = "shadd_i16"
+forms = ["SHADD"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHADD"
+api = "shadd_i32"
+forms = ["SHADD"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHADD"
+api = "shadd_i64"
+forms = ["SHADD"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHADD"
+api = "shadd_u8"
+forms = ["SHADD"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHADD"
+api = "shadd_u16"
+forms = ["SHADD"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHADD"
+api = "shadd_u32"
+forms = ["SHADD"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHADD"
+api = "shadd_u64"
+forms = ["SHADD"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHSUB"
+api = "shsub_i8"
+forms = ["SHSUB"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHSUB"
+api = "shsub_i16"
+forms = ["SHSUB"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHSUB"
+api = "shsub_i32"
+forms = ["SHSUB"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHSUB"
+api = "shsub_i64"
+forms = ["SHSUB"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHSUB"
+api = "shsub_u8"
+forms = ["SHSUB"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHSUB"
+api = "shsub_u16"
+forms = ["SHSUB"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHSUB"
+api = "shsub_u32"
+forms = ["SHSUB"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHSUB"
+api = "shsub_u64"
+forms = ["SHSUB"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHADD"
+api = "uhadd_i8"
+forms = ["UHADD"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHADD"
+api = "uhadd_i16"
+forms = ["UHADD"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHADD"
+api = "uhadd_i32"
+forms = ["UHADD"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHADD"
+api = "uhadd_i64"
+forms = ["UHADD"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHADD"
+api = "uhadd_u8"
+forms = ["UHADD"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHADD"
+api = "uhadd_u16"
+forms = ["UHADD"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHADD"
+api = "uhadd_u32"
+forms = ["UHADD"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHADD"
+api = "uhadd_u64"
+forms = ["UHADD"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHSUB"
+api = "uhsub_i8"
+forms = ["UHSUB"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHSUB"
+api = "uhsub_i16"
+forms = ["UHSUB"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHSUB"
+api = "uhsub_i32"
+forms = ["UHSUB"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHSUB"
+api = "uhsub_i64"
+forms = ["UHSUB"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHSUB"
+api = "uhsub_u8"
+forms = ["UHSUB"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHSUB"
+api = "uhsub_u16"
+forms = ["UHSUB"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHSUB"
+api = "uhsub_u32"
+forms = ["UHSUB"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHSUB"
+api = "uhsub_u64"
+forms = ["UHSUB"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMAXP"
+api = "smaxp_i8"
+forms = ["SMAXP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMAXP"
+api = "smaxp_i16"
+forms = ["SMAXP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMAXP"
+api = "smaxp_i32"
+forms = ["SMAXP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMAXP"
+api = "smaxp_i64"
+forms = ["SMAXP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMINP"
+api = "sminp_i8"
+forms = ["SMINP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMINP"
+api = "sminp_i16"
+forms = ["SMINP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMINP"
+api = "sminp_i32"
+forms = ["SMINP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMINP"
+api = "sminp_i64"
+forms = ["SMINP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMAXP"
+api = "umaxp_u8"
+forms = ["UMAXP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMAXP"
+api = "umaxp_u16"
+forms = ["UMAXP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMAXP"
+api = "umaxp_u32"
+forms = ["UMAXP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMAXP"
+api = "umaxp_u64"
+forms = ["UMAXP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMINP"
+api = "uminp_u8"
+forms = ["UMINP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMINP"
+api = "uminp_u16"
+forms = ["UMINP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMINP"
+api = "uminp_u32"
+forms = ["UMINP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMINP"
+api = "uminp_u64"
+forms = ["UMINP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FADDP"
+api = "faddp_f32"
+forms = ["FADDP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FADDP"
+api = "faddp_f64"
+forms = ["FADDP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMAXP"
+api = "fmaxp_f32"
+forms = ["FMAXP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMAXP"
+api = "fmaxp_f64"
+forms = ["FMAXP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMINP"
+api = "fminp_f32"
+forms = ["FMINP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMINP"
+api = "fminp_f64"
+forms = ["FMINP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMAXNMP"
+api = "fmaxnmp_f32"
+forms = ["FMAXNMP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMAXNMP"
+api = "fmaxnmp_f64"
+forms = ["FMAXNMP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMINNMP"
+api = "fminnmp_f32"
+forms = ["FMINNMP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMINNMP"
+api = "fminnmp_f64"
+forms = ["FMINNMP"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]

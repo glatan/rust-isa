@@ -1,5 +1,7 @@
 //! Integer, mask, broadcast, and lane-shift instructions.
 
+use crate::x86::simd::Mask8;
+use crate::x86::simd::Mask16;
 use crate::x86::simd::avx512f::V512;
 use core::arch::asm;
 
@@ -333,7 +335,7 @@ pub unsafe fn vpternlogq<const IMM: u8>(a: V512, b: V512, c: V512) -> V512 {
 /// The caller must enable AVX-512F.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vpcmpd<const IMM: u8>(a: V512, b: V512) -> u16 {
+pub unsafe fn vpcmpd<const IMM: u8>(a: V512, b: V512) -> Mask16 {
     let out: u32;
     unsafe {
         asm!(
@@ -351,7 +353,7 @@ pub unsafe fn vpcmpd<const IMM: u8>(a: V512, b: V512) -> u16 {
             options(nostack, preserves_flags),
         );
     }
-    out as u16
+    Mask16::from_bits(out as u16)
 }
 
 /// `vpcmpq`
@@ -362,7 +364,7 @@ pub unsafe fn vpcmpd<const IMM: u8>(a: V512, b: V512) -> u16 {
 /// The caller must enable AVX-512F.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vpcmpq<const IMM: u8>(a: V512, b: V512) -> u8 {
+pub unsafe fn vpcmpq<const IMM: u8>(a: V512, b: V512) -> Mask8 {
     let out: u32;
     unsafe {
         asm!(
@@ -380,7 +382,7 @@ pub unsafe fn vpcmpq<const IMM: u8>(a: V512, b: V512) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask8::from_bits(out as u8)
 }
 
 /// `vpcmpud`
@@ -391,7 +393,7 @@ pub unsafe fn vpcmpq<const IMM: u8>(a: V512, b: V512) -> u8 {
 /// The caller must enable AVX-512F.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vpcmpud<const IMM: u8>(a: V512, b: V512) -> u16 {
+pub unsafe fn vpcmpud<const IMM: u8>(a: V512, b: V512) -> Mask16 {
     let out: u32;
     unsafe {
         asm!(
@@ -409,7 +411,7 @@ pub unsafe fn vpcmpud<const IMM: u8>(a: V512, b: V512) -> u16 {
             options(nostack, preserves_flags),
         );
     }
-    out as u16
+    Mask16::from_bits(out as u16)
 }
 
 /// `vpcmpuq`
@@ -420,7 +422,7 @@ pub unsafe fn vpcmpud<const IMM: u8>(a: V512, b: V512) -> u16 {
 /// The caller must enable AVX-512F.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vpcmpuq<const IMM: u8>(a: V512, b: V512) -> u8 {
+pub unsafe fn vpcmpuq<const IMM: u8>(a: V512, b: V512) -> Mask8 {
     let out: u32;
     unsafe {
         asm!(
@@ -438,7 +440,7 @@ pub unsafe fn vpcmpuq<const IMM: u8>(a: V512, b: V512) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask8::from_bits(out as u8)
 }
 
 unsafe extern "C" {
@@ -453,8 +455,8 @@ unsafe extern "C" {
 /// The caller must enable AVX-512F.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vptestmd(a: V512, b: V512) -> u16 {
-    unsafe { rust_isa_avx512f_vptestmd(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestmd(a: V512, b: V512) -> Mask16 {
+    unsafe { Mask16::from_bits(rust_isa_avx512f_vptestmd(a.as_ptr(), b.as_ptr())) }
 }
 
 unsafe extern "C" {
@@ -469,8 +471,8 @@ unsafe extern "C" {
 /// The caller must enable AVX-512F.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vptestmq(a: V512, b: V512) -> u8 {
-    unsafe { rust_isa_avx512f_vptestmq(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestmq(a: V512, b: V512) -> Mask8 {
+    unsafe { Mask8::from_bits(rust_isa_avx512f_vptestmq(a.as_ptr(), b.as_ptr())) }
 }
 
 unsafe extern "C" {
@@ -485,8 +487,8 @@ unsafe extern "C" {
 /// The caller must enable AVX-512F.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vptestnmd(a: V512, b: V512) -> u16 {
-    unsafe { rust_isa_avx512f_vptestnmd(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestnmd(a: V512, b: V512) -> Mask16 {
+    unsafe { Mask16::from_bits(rust_isa_avx512f_vptestnmd(a.as_ptr(), b.as_ptr())) }
 }
 
 unsafe extern "C" {
@@ -501,8 +503,8 @@ unsafe extern "C" {
 /// The caller must enable AVX-512F.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vptestnmq(a: V512, b: V512) -> u8 {
-    unsafe { rust_isa_avx512f_vptestnmq(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestnmq(a: V512, b: V512) -> Mask8 {
+    unsafe { Mask8::from_bits(rust_isa_avx512f_vptestnmq(a.as_ptr(), b.as_ptr())) }
 }
 
 unsafe extern "C" {

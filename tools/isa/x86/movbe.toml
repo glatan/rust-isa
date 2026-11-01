@@ -1,0 +1,45 @@
+schema = 1
+arch = "x86_64"
+extension = "movbe"
+module = "crate::x86::integer::movbe"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "MOVBE"
+api = "movbe_load_u16"
+required_features = ["movbe"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVBE"
+api = "movbe_load_u32"
+required_features = ["movbe"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVBE"
+api = "movbe_load_u64"
+required_features = ["movbe"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVBE"
+api = "movbe_store_u16"
+required_features = ["movbe"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVBE"
+api = "movbe_store_u32"
+required_features = ["movbe"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVBE"
+api = "movbe_store_u64"
+required_features = ["movbe"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

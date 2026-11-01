@@ -1,0 +1,51 @@
+schema = 1
+arch = "x86_64"
+extension = "sha"
+module = "crate::x86::crypto::sha"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "SHA1MSG1"
+api = "sha1msg1"
+required_features = ["sha"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "SHA1MSG2"
+api = "sha1msg2"
+required_features = ["sha"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "SHA1NEXTE"
+api = "sha1nexte"
+required_features = ["sha"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "SHA1RNDS4"
+api = "sha1rnds4"
+required_features = ["sha"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "SHA256MSG1"
+api = "sha256msg1"
+required_features = ["sha"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "SHA256MSG2"
+api = "sha256msg2"
+required_features = ["sha"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "SHA256RNDS2"
+api = "sha256rnds2"
+required_features = ["sha"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

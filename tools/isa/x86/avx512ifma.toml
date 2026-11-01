@@ -1,0 +1,21 @@
+schema = 1
+arch = "x86_64"
+extension = "avx512ifma"
+module = "crate::x86::simd::avx512ifma"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VPMADD52HUQ"
+api = "vpmadd52huq"
+required_features = ["avx512ifma"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMADD52LUQ"
+api = "vpmadd52luq"
+required_features = ["avx512ifma"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

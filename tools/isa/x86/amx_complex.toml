@@ -1,0 +1,25 @@
+schema = 1
+arch = "x86_64"
+extension = "amx-complex"
+module = "crate::x86::matrix::amx_complex"
+kind = "subextension"
+parent = "amx-tile"
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "TCMMIMFP16PS"
+api = "tcmmimfp16ps"
+widths = [128]
+required_features = ["amx-tile", "amx-complex"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TCMMRLFP16PS"
+api = "tcmmrlfp16ps"
+widths = [128]
+required_features = ["amx-tile", "amx-complex"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]

@@ -1,19 +1,19 @@
 use rust_isa::x86::simd::sse2::{
     V128, addpd, addps, andnps, andps, cmpeqpd, cmpeqps, cmplepd, cmpleps, cmpltpd, cmpltps,
     cvtdq2ps, cvtpd2ps, cvtps2dq, cvtps2pd, cvtsd2si, cvtsi2sd, cvtsi2ss, cvtss2si, cvttps2dq,
-    cvttsd2si, cvttss2si, divpd, divps, maskmovdqu, maxpd, maxps, minpd, minps, movd, movmskpd,
-    movmskps, movq, mulpd, mulps, orps, packssdw, packsswb, packuswb, paddb, paddd, paddq, paddsb,
-    paddsw, paddusb, paddusw, paddw, pand, pavgb, pavgw, pcmpeqb, pcmpeqd, pcmpeqw, pcmpgtb,
-    pcmpgtd, pcmpgtw, pmaddwd, pmaxsw, pmaxub, pminsw, pminub, pmovmskb, pmulhuw, pmulhw, pmullw,
-    pmuludq, por, psadbw, pshufd, pshufhw, pshuflw, pslld, pslldq, psllq, psllw, psrad, psraw,
-    psrld, psrldq, psrlq, psrlw, psubb, psubd, psubq, psubsb, psubsw, psubusb, psubusw, psubw,
-    punpckhbw, punpckhdq, punpckhqdq, punpckhwd, punpcklbw, punpckldq, punpcklqdq, punpcklwd, pxor,
-    shufpd, shufps, sqrtpd, sqrtps, subpd, subps, unpckhpd, unpckhps, unpcklpd, unpcklps,
-    v128_load, v128_store, xorps,
+    cvttsd2si, cvttss2si, divpd, divps, maskmovdqu, maxpd, maxps, minpd, minps, movd, movdqu_load,
+    movdqu_store, movmskpd, movmskps, movq, mulpd, mulps, orps, packssdw, packsswb, packuswb,
+    paddb, paddd, paddq, paddsb, paddsw, paddusb, paddusw, paddw, pand, pavgb, pavgw, pcmpeqb,
+    pcmpeqd, pcmpeqw, pcmpgtb, pcmpgtd, pcmpgtw, pmaddwd, pmaxsw, pmaxub, pminsw, pminub, pmovmskb,
+    pmulhuw, pmulhw, pmullw, pmuludq, por, psadbw, pshufd, pshufhw, pshuflw, pslld, pslldq, psllq,
+    psllw, psrad, psraw, psrld, psrldq, psrlq, psrlw, psubb, psubd, psubq, psubsb, psubsw, psubusb,
+    psubusw, psubw, punpckhbw, punpckhdq, punpckhqdq, punpckhwd, punpcklbw, punpckldq, punpcklqdq,
+    punpcklwd, pxor, shufpd, shufps, sqrtpd, sqrtps, subpd, subps, unpckhpd, unpckhps, unpcklpd,
+    unpcklps, xorps,
 };
 use rust_isa::x86::simd::sse2::{
     comisd, comiss, cvtdq2pd, cvtpd2dq, cvttpd2dq, movhlps, movhps, movlhps, movlps, movntdq,
-    movnti, movntpd, movntps, movntq, movsd, movss, pandn, ucomisd, ucomiss,
+    movnti, movnti_u64, movntpd, movntps, movsd, movss, pandn, pextrw, pinsrw, ucomisd, ucomiss,
 };
 
 #[test]
@@ -30,12 +30,12 @@ fn paddd_adds_each_i32_lane() {
 #[test]
 fn load_store_roundtrip() {
     let source = [1u8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-    let value = unsafe { v128_load(source.as_ptr()) };
+    let value = unsafe { movdqu_load(source.as_ptr()) };
     assert_eq!(value.to_bytes(), source);
 
     let mut output = [0u8; 16];
     unsafe {
-        v128_store(output.as_mut_ptr(), value);
+        movdqu_store(output.as_mut_ptr(), value);
     }
     assert_eq!(output, source);
 }
@@ -665,6 +665,15 @@ fn byte_shifts_and_mask_store() {
 }
 
 #[test]
+fn insert_and_extract_16_bit_lane() {
+    let zero = V128::from_bytes([0; 16]);
+    let value = pinsrw::<2>(zero, 0x1234).to_bytes();
+    assert_eq!(&value[4..6], &[0x34, 0x12]);
+    assert_eq!(pextrw::<2>(V128::from_bytes(value)), 0x1234);
+    assert_eq!(pextrw::<7>(V128::from_bytes([0xaa; 16])), 0xaaaa);
+}
+
+#[test]
 fn movd_and_movq_extract_low_bits() {
     let value = V128::from_bytes([
         0x78, 0x56, 0x34, 0x12, 0xef, 0xcd, 0xab, 0x89, 1, 2, 3, 4, 5, 6, 7, 8,
@@ -711,7 +720,7 @@ fn scalar_moves_comparisons_and_non_temporal_stores() {
     assert_eq!(output.0, a.to_bytes());
     unsafe { movntpd(output.0.as_mut_ptr().cast::<f64>(), f64x2([1.5, 2.5])) };
     assert_eq!(
-        f64_lanes(unsafe { v128_load(output.0.as_ptr()) }),
+        f64_lanes(unsafe { movdqu_load(output.0.as_ptr()) }),
         [1.5, 2.5]
     );
     unsafe { movntdq(output.0.as_mut_ptr(), V128::from_bytes([7; 16])) };
@@ -721,7 +730,8 @@ fn scalar_moves_comparisons_and_non_temporal_stores() {
     assert_eq!(integer, 1234);
     #[cfg(target_arch = "x86_64")]
     {
-        unsafe { movntq(output.0.as_mut_ptr(), V128::from_bytes([9; 16])) };
-        assert_eq!(&output.0[..8], &[9; 8]);
+        let mut value = 0u64;
+        unsafe { movnti_u64(&mut value, 0x0102_0304_0506_0708) };
+        assert_eq!(value, 0x0102_0304_0506_0708);
     }
 }

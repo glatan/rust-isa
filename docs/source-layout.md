@@ -18,6 +18,14 @@ extension の実装ファイル（C や `asm!` を含む Rust）は、extension 
 - QEMU で実行する native の値テストは `fixtures/<arch>-values` に置き、`tests/<arch>.rs` からビルドして実行する。
 - 共通処理は `tests/common/mod.rs` に置く。
 
+## 上流ソースと manifest
+
+- 上流ソースの版・commit・license は `tools/upstream/SOURCE.toml` に置く。
+- extension ごとの命令 form は `tools/isa/<arch>/<extension>.toml` に置く。
+- manifest の形式は `tools/isa/README.md` に従う。
+- 上流の抽出データは `tools/upstream/` に置き、build 時にネットワークへ取りに行かない。
+- 第三者ソースの license と同梱可否は [第三者ソースとライセンス](third-party.md) に置く。
+
 ## ビルド
 
 C はリポジトリにコミットする。コンパイル済みのオブジェクトは同梱しない。`build.rs` は、arch ごとに対象 triple とフラグを選び、extension ごとの静的ライブラリとしてリンクする。命令の一覧は生成しない。

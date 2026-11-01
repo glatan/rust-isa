@@ -2,15 +2,14 @@
 //!
 //! SSE is part of the x86-64 baseline. The operations are safe.
 //!
-//! The values are [`V128`]. SSE covers the 32-bit float operations that SSE2
-//! keeps unchanged. This module re-exports the SSE operations implemented by
-//! the SSE2 backend so that the public path `x86::simd::sse::*` exists.
+//! The values are [`V128`]. This module owns the SSE 32-bit float operations
+//! and compiles its C backend with `-msse`.
 //!
 //! [`V128`]: super::sse2::V128
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 //!
-//! This module re-exports existing wrappers and adds no build steps.
+//! The module has its own C backend; it does not re-export the SSE2 wrappers.
 //!
 //! Instructions not listed in this module are not exposed.
 
@@ -73,6 +72,109 @@
 //!
 //! </details>
 
-pub use super::sse2::{
-    addps, cmpeqps, cmpleps, cmpltps, divps, maxps, minps, mulps, shufps, sqrtps, subps,
-};
+use super::sse2::V128;
+use core::arch::asm;
+
+unsafe extern "C" {
+    fn rust_isa_sse_addps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse_subps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse_mulps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse_divps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse_minps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse_maxps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse_sqrtps(a: *const u8, out: *mut u8);
+    fn rust_isa_sse_cmpeqps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse_cmpltps(a: *const u8, b: *const u8, out: *mut u8);
+    fn rust_isa_sse_cmpleps(a: *const u8, b: *const u8, out: *mut u8);
+}
+
+macro_rules! binary {
+    ($name:ident, $symbol:ident, $doc:literal) => {
+        #[doc = $doc]
+        #[inline(always)]
+        pub fn $name(a: V128, b: V128) -> V128 {
+            let mut out = V128::from_bytes([0; 16]);
+            unsafe {
+                $symbol(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
+            }
+            out
+        }
+    };
+}
+
+binary!(
+    addps,
+    rust_isa_sse_addps,
+    "`addps`\n\nAdd four 32-bit float lanes."
+);
+binary!(
+    subps,
+    rust_isa_sse_subps,
+    "`subps`\n\nSubtract four 32-bit float lanes."
+);
+binary!(
+    mulps,
+    rust_isa_sse_mulps,
+    "`mulps`\n\nMultiply four 32-bit float lanes."
+);
+binary!(
+    divps,
+    rust_isa_sse_divps,
+    "`divps`\n\nDivide four 32-bit float lanes."
+);
+binary!(
+    minps,
+    rust_isa_sse_minps,
+    "`minps`\n\nTake the minimum of each 32-bit float lane."
+);
+binary!(
+    maxps,
+    rust_isa_sse_maxps,
+    "`maxps`\n\nTake the maximum of each 32-bit float lane."
+);
+binary!(
+    cmpeqps,
+    rust_isa_sse_cmpeqps,
+    "`cmpeqps`\n\nCompare four float lanes for equality."
+);
+binary!(
+    cmpltps,
+    rust_isa_sse_cmpltps,
+    "`cmpltps`\n\nCompare four float lanes for less-than."
+);
+binary!(
+    cmpleps,
+    rust_isa_sse_cmpleps,
+    "`cmpleps`\n\nCompare four float lanes for less-than-or-equal."
+);
+
+/// `sqrtps`
+#[inline(always)]
+pub fn sqrtps(a: V128) -> V128 {
+    let mut out = V128::from_bytes([0; 16]);
+    unsafe {
+        rust_isa_sse_sqrtps(a.as_ptr(), out.as_mut_ptr());
+    }
+    out
+}
+
+/// `shufps`
+///
+/// Shuffle four 32-bit float lanes with `IMM`. The low two lanes come from `a`
+/// and the high two lanes come from `b`.
+#[inline(always)]
+pub fn shufps<const IMM: u8>(a: V128, b: V128) -> V128 {
+    let a = u128::from_le_bytes(a.to_bytes());
+    let b = u128::from_le_bytes(b.to_bytes());
+    let output: u128;
+    unsafe {
+        asm!(
+            "shufps {output}, {b}, {imm}",
+            output = inout(xmm_reg) a => output,
+            b = in(xmm_reg) b,
+            imm = const IMM,
+            options(nostack, nomem, pure)
+        );
+    }
+    V128::from_bytes(output.to_le_bytes())
+}

@@ -1596,3 +1596,2436 @@ void rust_isa_rvv_vfcvt_f_x(const uint8_t *a, uint8_t *out) {
     vint32m1_t va = rv_load_i32(a);
     rv_store_f32(out, __riscv_vfcvt_f_x_v_f32m1(va, 4));
 }
+
+__attribute__((always_inline))
+void rust_isa_rvv_vle8ff(const uint8_t *p, uint8_t *out, size_t *vl_out) {
+    size_t vl;
+    __asm__ volatile("vsetivli zero, 16, e8, m1, ta, ma\n\t"
+                     "vle8ff.v v2, (%1)\n\t"
+                     "vse8.v v2, (%2)\n\t"
+                     "csrr %0, vl"
+                     : "=r"(vl) : "r"(p), "r"(out) : "v2", "memory");
+    *vl_out = vl;
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vle16ff(const uint8_t *p, uint8_t *out, size_t *vl_out) {
+    size_t vl;
+    __asm__ volatile("vsetivli zero, 8, e16, m1, ta, ma\n\t"
+                     "vle16ff.v v2, (%1)\n\t"
+                     "vse16.v v2, (%2)\n\t"
+                     "csrr %0, vl"
+                     : "=r"(vl) : "r"(p), "r"(out) : "v2", "memory");
+    *vl_out = vl;
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vle32ff(const uint8_t *p, uint8_t *out, size_t *vl_out) {
+    size_t vl;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32ff.v v2, (%1)\n\t"
+                     "vse32.v v2, (%2)\n\t"
+                     "csrr %0, vl"
+                     : "=r"(vl) : "r"(p), "r"(out) : "v2", "memory");
+    *vl_out = vl;
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vle64ff(const uint8_t *p, uint8_t *out, size_t *vl_out) {
+    size_t vl;
+    __asm__ volatile("vsetivli zero, 2, e64, m1, ta, ma\n\t"
+                     "vle64ff.v v2, (%1)\n\t"
+                     "vse64.v v2, (%2)\n\t"
+                     "csrr %0, vl"
+                     : "=r"(vl) : "r"(p), "r"(out) : "v2", "memory");
+    *vl_out = vl;
+}
+
+__attribute__((always_inline))
+__attribute__((always_inline))
+__attribute__((always_inline))
+void rust_isa_rvv_vl1re8(const uint8_t *p, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 16, e8, m1, ta, ma\n\t"
+                     "vl1re8.v v2, (%0)\n\t"
+                     "vse8.v v2, (%1)"
+                     ::"r"(p), "r"(out + 0) : "v2", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vl2re8(const uint8_t *p, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 16, e8, m1, ta, ma\n\t"
+                     "vl2re8.v v2, (%0)\n\t"
+                     "vse8.v v2, (%1)\n\tvse8.v v3, (%2)"
+                     ::"r"(p), "r"(out + 0), "r"(out + 16) : "v2", "v3", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vl4re8(const uint8_t *p, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 16, e8, m1, ta, ma\n\t"
+                     "vl4re8.v v4, (%0)\n\t"
+                     "vse8.v v4, (%1)\n\tvse8.v v5, (%2)\n\tvse8.v v6, (%3)\n\tvse8.v v7, (%4)"
+                     ::"r"(p), "r"(out + 0), "r"(out + 16), "r"(out + 32), "r"(out + 48) : "v4", "v5", "v6", "v7", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vl8re8(const uint8_t *p, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 16, e8, m1, ta, ma\n\t"
+                     "vl8re8.v v8, (%0)\n\t"
+                     "vse8.v v8, (%1)\n\tvse8.v v9, (%2)\n\tvse8.v v10, (%3)\n\tvse8.v v11, (%4)\n\tvse8.v v12, (%5)\n\tvse8.v v13, (%6)\n\tvse8.v v14, (%7)\n\tvse8.v v15, (%8)"
+                     ::"r"(p), "r"(out + 0), "r"(out + 16), "r"(out + 32), "r"(out + 48), "r"(out + 64), "r"(out + 80), "r"(out + 96), "r"(out + 112) : "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vl1re16(const uint8_t *p, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 8, e16, m1, ta, ma\n\t"
+                     "vl1re16.v v2, (%0)\n\t"
+                     "vse16.v v2, (%1)"
+                     ::"r"(p), "r"(out + 0) : "v2", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vl2re16(const uint8_t *p, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 8, e16, m1, ta, ma\n\t"
+                     "vl2re16.v v2, (%0)\n\t"
+                     "vse16.v v2, (%1)\n\tvse16.v v3, (%2)"
+                     ::"r"(p), "r"(out + 0), "r"(out + 16) : "v2", "v3", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vl4re16(const uint8_t *p, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 8, e16, m1, ta, ma\n\t"
+                     "vl4re16.v v4, (%0)\n\t"
+                     "vse16.v v4, (%1)\n\tvse16.v v5, (%2)\n\tvse16.v v6, (%3)\n\tvse16.v v7, (%4)"
+                     ::"r"(p), "r"(out + 0), "r"(out + 16), "r"(out + 32), "r"(out + 48) : "v4", "v5", "v6", "v7", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vl8re16(const uint8_t *p, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 8, e16, m1, ta, ma\n\t"
+                     "vl8re16.v v8, (%0)\n\t"
+                     "vse16.v v8, (%1)\n\tvse16.v v9, (%2)\n\tvse16.v v10, (%3)\n\tvse16.v v11, (%4)\n\tvse16.v v12, (%5)\n\tvse16.v v13, (%6)\n\tvse16.v v14, (%7)\n\tvse16.v v15, (%8)"
+                     ::"r"(p), "r"(out + 0), "r"(out + 16), "r"(out + 32), "r"(out + 48), "r"(out + 64), "r"(out + 80), "r"(out + 96), "r"(out + 112) : "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vl1re32(const uint8_t *p, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vl1re32.v v2, (%0)\n\t"
+                     "vse32.v v2, (%1)"
+                     ::"r"(p), "r"(out + 0) : "v2", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vl2re32(const uint8_t *p, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vl2re32.v v2, (%0)\n\t"
+                     "vse32.v v2, (%1)\n\tvse32.v v3, (%2)"
+                     ::"r"(p), "r"(out + 0), "r"(out + 16) : "v2", "v3", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vl4re32(const uint8_t *p, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vl4re32.v v4, (%0)\n\t"
+                     "vse32.v v4, (%1)\n\tvse32.v v5, (%2)\n\tvse32.v v6, (%3)\n\tvse32.v v7, (%4)"
+                     ::"r"(p), "r"(out + 0), "r"(out + 16), "r"(out + 32), "r"(out + 48) : "v4", "v5", "v6", "v7", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vl8re32(const uint8_t *p, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vl8re32.v v8, (%0)\n\t"
+                     "vse32.v v8, (%1)\n\tvse32.v v9, (%2)\n\tvse32.v v10, (%3)\n\tvse32.v v11, (%4)\n\tvse32.v v12, (%5)\n\tvse32.v v13, (%6)\n\tvse32.v v14, (%7)\n\tvse32.v v15, (%8)"
+                     ::"r"(p), "r"(out + 0), "r"(out + 16), "r"(out + 32), "r"(out + 48), "r"(out + 64), "r"(out + 80), "r"(out + 96), "r"(out + 112) : "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vl1re64(const uint8_t *p, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 2, e64, m1, ta, ma\n\t"
+                     "vl1re64.v v2, (%0)\n\t"
+                     "vse64.v v2, (%1)"
+                     ::"r"(p), "r"(out + 0) : "v2", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vl2re64(const uint8_t *p, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 2, e64, m1, ta, ma\n\t"
+                     "vl2re64.v v2, (%0)\n\t"
+                     "vse64.v v2, (%1)\n\tvse64.v v3, (%2)"
+                     ::"r"(p), "r"(out + 0), "r"(out + 16) : "v2", "v3", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vl4re64(const uint8_t *p, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 2, e64, m1, ta, ma\n\t"
+                     "vl4re64.v v4, (%0)\n\t"
+                     "vse64.v v4, (%1)\n\tvse64.v v5, (%2)\n\tvse64.v v6, (%3)\n\tvse64.v v7, (%4)"
+                     ::"r"(p), "r"(out + 0), "r"(out + 16), "r"(out + 32), "r"(out + 48) : "v4", "v5", "v6", "v7", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vl8re64(const uint8_t *p, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 2, e64, m1, ta, ma\n\t"
+                     "vl8re64.v v8, (%0)\n\t"
+                     "vse64.v v8, (%1)\n\tvse64.v v9, (%2)\n\tvse64.v v10, (%3)\n\tvse64.v v11, (%4)\n\tvse64.v v12, (%5)\n\tvse64.v v13, (%6)\n\tvse64.v v14, (%7)\n\tvse64.v v15, (%8)"
+                     ::"r"(p), "r"(out + 0), "r"(out + 16), "r"(out + 32), "r"(out + 48), "r"(out + 64), "r"(out + 80), "r"(out + 96), "r"(out + 112) : "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vs1r(uint8_t *p, const uint8_t *values) {
+    __asm__ volatile("vsetivli zero, 16, e8, m1, ta, ma\n\t"
+                     "vle8.v v2, (%1)\n\t"
+                     "vs1r.v v2, (%0)"
+                     ::"r"(p), "r"(values + 0) : "v2", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vs2r(uint8_t *p, const uint8_t *values) {
+    __asm__ volatile("vsetivli zero, 16, e8, m1, ta, ma\n\t"
+                     "vle8.v v2, (%1)\n\tvle8.v v3, (%2)\n\t"
+                     "vs2r.v v2, (%0)"
+                     ::"r"(p), "r"(values + 0), "r"(values + 16) : "v2", "v3", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vs4r(uint8_t *p, const uint8_t *values) {
+    __asm__ volatile("vsetivli zero, 16, e8, m1, ta, ma\n\t"
+                     "vle8.v v4, (%1)\n\tvle8.v v5, (%2)\n\tvle8.v v6, (%3)\n\tvle8.v v7, (%4)\n\t"
+                     "vs4r.v v4, (%0)"
+                     ::"r"(p), "r"(values + 0), "r"(values + 16), "r"(values + 32), "r"(values + 48) : "v4", "v5", "v6", "v7", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vs8r(uint8_t *p, const uint8_t *values) {
+    __asm__ volatile("vsetivli zero, 16, e8, m1, ta, ma\n\t"
+                     "vle8.v v8, (%1)\n\tvle8.v v9, (%2)\n\tvle8.v v10, (%3)\n\tvle8.v v11, (%4)\n\tvle8.v v12, (%5)\n\tvle8.v v13, (%6)\n\tvle8.v v14, (%7)\n\tvle8.v v15, (%8)\n\t"
+                     "vs8r.v v8, (%0)"
+                     ::"r"(p), "r"(values + 0), "r"(values + 16), "r"(values + 32), "r"(values + 48), "r"(values + 64), "r"(values + 80), "r"(values + 96), "r"(values + 112) : "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vfslide1up(const uint8_t *a, float value, uint8_t *out) {
+    rv_store_f32(out, __riscv_vfslide1up_vf_f32m1(rv_load_f32(a), value, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vfslide1down(const uint8_t *a, float value, uint8_t *out) {
+    rv_store_f32(out, __riscv_vfslide1down_vf_f32m1(rv_load_f32(a), value, 4));
+}
+
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmfeq_vv(const uint8_t *a, const uint8_t *b) {
+    vbool32_t mask = __riscv_vmfeq_vv_f32m1_b32(rv_load_f32(a), rv_load_f32(b), 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmfeq_vf(const uint8_t *a, float b) {
+    vbool32_t mask = __riscv_vmfeq_vf_f32m1_b32(rv_load_f32(a), b, 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmfle_vv(const uint8_t *a, const uint8_t *b) {
+    vbool32_t mask = __riscv_vmfle_vv_f32m1_b32(rv_load_f32(a), rv_load_f32(b), 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmfle_vf(const uint8_t *a, float b) {
+    vbool32_t mask = __riscv_vmfle_vf_f32m1_b32(rv_load_f32(a), b, 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmflt_vv(const uint8_t *a, const uint8_t *b) {
+    vbool32_t mask = __riscv_vmflt_vv_f32m1_b32(rv_load_f32(a), rv_load_f32(b), 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmflt_vf(const uint8_t *a, float b) {
+    vbool32_t mask = __riscv_vmflt_vf_f32m1_b32(rv_load_f32(a), b, 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmfne_vv(const uint8_t *a, const uint8_t *b) {
+    vbool32_t mask = __riscv_vmfne_vv_f32m1_b32(rv_load_f32(a), rv_load_f32(b), 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmfne_vf(const uint8_t *a, float b) {
+    vbool32_t mask = __riscv_vmfne_vf_f32m1_b32(rv_load_f32(a), b, 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmfgt_vv(const uint8_t *a, const uint8_t *b) {
+    vbool32_t mask = __riscv_vmfgt_vv_f32m1_b32(rv_load_f32(a), rv_load_f32(b), 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmfgt_vf(const uint8_t *a, float b) {
+    vbool32_t mask = __riscv_vmfgt_vf_f32m1_b32(rv_load_f32(a), b, 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmfge_vv(const uint8_t *a, const uint8_t *b) {
+    vbool32_t mask = __riscv_vmfge_vv_f32m1_b32(rv_load_f32(a), rv_load_f32(b), 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmfge_vf(const uint8_t *a, float b) {
+    vbool32_t mask = __riscv_vmfge_vf_f32m1_b32(rv_load_f32(a), b, 4);
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vfmadd_vf(const uint8_t *acc, const uint8_t *a, float b, uint8_t *out) {
+    rv_store_f32(out, __riscv_vfmadd_vf_f32m1(rv_load_f32(acc), b, rv_load_f32(a), 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vfmsub_vf(const uint8_t *acc, const uint8_t *a, float b, uint8_t *out) {
+    rv_store_f32(out, __riscv_vfmsub_vf_f32m1(rv_load_f32(acc), b, rv_load_f32(a), 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vfnmadd_vf(const uint8_t *acc, const uint8_t *a, float b, uint8_t *out) {
+    rv_store_f32(out, __riscv_vfnmadd_vf_f32m1(rv_load_f32(acc), b, rv_load_f32(a), 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vfnmsub_vf(const uint8_t *acc, const uint8_t *a, float b, uint8_t *out) {
+    rv_store_f32(out, __riscv_vfnmsub_vf_f32m1(rv_load_f32(acc), b, rv_load_f32(a), 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vfrsub_vf(const uint8_t *a, float b, uint8_t *out) {
+    rv_store_f32(out, __riscv_vfrsub_vf_f32m1(rv_load_f32(a), b, 4));
+}
+
+static inline vfloat32mf2_t rv_load_f32mf2(const uint8_t *p) {
+    return __riscv_vle32_v_f32mf2((const float *)(const void *)p, 2);
+}
+static inline void rv_store_f32mf2(uint8_t *p, vfloat32mf2_t value) {
+    __riscv_vse32_v_f32mf2((float *)(void *)p, value, 2);
+}
+static inline vuint32mf2_t rv_load_u32mf2(const uint8_t *p) {
+    return __riscv_vle32_v_u32mf2((const uint32_t *)(const void *)p, 2);
+}
+static inline vint32mf2_t rv_load_i32mf2(const uint8_t *p) {
+    return __riscv_vle32_v_i32mf2((const int32_t *)(const void *)p, 2);
+}
+static inline void rv_store_u32mf2(uint8_t *p, vuint32mf2_t value) {
+    __riscv_vse32_v_u32mf2((uint32_t *)(void *)p, value, 2);
+}
+static inline void rv_store_i32mf2(uint8_t *p, vint32mf2_t value) {
+    __riscv_vse32_v_i32mf2((int32_t *)(void *)p, value, 2);
+}
+static inline vuint64m1_t rv_load_u64m1(const uint8_t *p) {
+    return __riscv_vle64_v_u64m1((const uint64_t *)(const void *)p, 2);
+}
+static inline vint64m1_t rv_load_i64m1(const uint8_t *p) {
+    return __riscv_vle64_v_i64m1((const int64_t *)(const void *)p, 2);
+}
+static inline void rv_store_u64m1(uint8_t *p, vuint64m1_t value) {
+    __riscv_vse64_v_u64m1((uint64_t *)(void *)p, value, 2);
+}
+static inline void rv_store_i64m1(uint8_t *p, vint64m1_t value) {
+    __riscv_vse64_v_i64m1((int64_t *)(void *)p, value, 2);
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vfwcvt_xu_f_v(const uint8_t *a, uint8_t *out) {
+    vfloat32mf2_t va = rv_load_f32mf2(a);
+    rv_store_u64m1(out, __riscv_vfwcvt_xu_f_v_u64m1(va, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfwcvt_x_f_v(const uint8_t *a, uint8_t *out) {
+    vfloat32mf2_t va = rv_load_f32mf2(a);
+    rv_store_i64m1(out, __riscv_vfwcvt_x_f_v_i64m1(va, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfwcvt_f_xu_v(const uint8_t *a, uint8_t *out) {
+    vuint32mf2_t va = rv_load_u32mf2(a);
+    rv_store_f64(out, __riscv_vfwcvt_f_xu_v_f64m1(va, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfwcvt_f_x_v(const uint8_t *a, uint8_t *out) {
+    vint32mf2_t va = rv_load_i32mf2(a);
+    rv_store_f64(out, __riscv_vfwcvt_f_x_v_f64m1(va, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfwcvt_f_f_v(const uint8_t *a, uint8_t *out) {
+    vfloat32mf2_t va = rv_load_f32mf2(a);
+    rv_store_f64(out, __riscv_vfwcvt_f_f_v_f64m1(va, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfwcvt_rtz_xu_f_v(const uint8_t *a, uint8_t *out) {
+    vfloat32mf2_t va = rv_load_f32mf2(a);
+    rv_store_u64m1(out, __riscv_vfwcvt_rtz_xu_f_v_u64m1(va, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfwcvt_rtz_x_f_v(const uint8_t *a, uint8_t *out) {
+    vfloat32mf2_t va = rv_load_f32mf2(a);
+    rv_store_i64m1(out, __riscv_vfwcvt_rtz_x_f_v_i64m1(va, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfncvt_xu_f_w(const uint8_t *a, uint8_t *out) {
+    vfloat64m1_t va = rv_load_f64(a);
+    rv_store_u32mf2(out, __riscv_vfncvt_xu_f_w_u32mf2(va, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfncvt_x_f_w(const uint8_t *a, uint8_t *out) {
+    vfloat64m1_t va = rv_load_f64(a);
+    rv_store_i32mf2(out, __riscv_vfncvt_x_f_w_i32mf2(va, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfncvt_f_xu_w(const uint8_t *a, uint8_t *out) {
+    vuint64m1_t va = rv_load_u64m1(a);
+    rv_store_f32mf2(out, __riscv_vfncvt_f_xu_w_f32mf2(va, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfncvt_f_x_w(const uint8_t *a, uint8_t *out) {
+    vint64m1_t va = rv_load_i64m1(a);
+    rv_store_f32mf2(out, __riscv_vfncvt_f_x_w_f32mf2(va, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfncvt_f_f_w(const uint8_t *a, uint8_t *out) {
+    vfloat64m1_t va = rv_load_f64(a);
+    rv_store_f32mf2(out, __riscv_vfncvt_f_f_w_f32mf2(va, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfncvt_rod_f_f_w(const uint8_t *a, uint8_t *out) {
+    vfloat64m1_t va = rv_load_f64(a);
+    rv_store_f32mf2(out, __riscv_vfncvt_rod_f_f_w_f32mf2(va, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfncvt_rtz_xu_f_w(const uint8_t *a, uint8_t *out) {
+    vfloat64m1_t va = rv_load_f64(a);
+    rv_store_u32mf2(out, __riscv_vfncvt_rtz_xu_f_w_u32mf2(va, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfncvt_rtz_x_f_w(const uint8_t *a, uint8_t *out) {
+    vfloat64m1_t va = rv_load_f64(a);
+    rv_store_i32mf2(out, __riscv_vfncvt_rtz_x_f_w_i32mf2(va, 2));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfmacc_vv(const uint8_t *acc, const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    rv_store_f32(out, __riscv_vfmacc_vv_f32m1(rv_load_f32(acc), rv_load_f32(a), rv_load_f32(b), 4));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfmacc_vf(const uint8_t *acc, const uint8_t *a, float b, uint8_t *out) {
+    rv_store_f32(out, __riscv_vfmacc_vf_f32m1(rv_load_f32(acc), b, rv_load_f32(a), 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vfnmacc_vv(const uint8_t *acc, const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    rv_store_f32(out, __riscv_vfnmacc_vv_f32m1(rv_load_f32(acc), rv_load_f32(a), rv_load_f32(b), 4));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfnmacc_vf(const uint8_t *acc, const uint8_t *a, float b, uint8_t *out) {
+    rv_store_f32(out, __riscv_vfnmacc_vf_f32m1(rv_load_f32(acc), b, rv_load_f32(a), 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vfmsac_vv(const uint8_t *acc, const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    rv_store_f32(out, __riscv_vfmsac_vv_f32m1(rv_load_f32(acc), rv_load_f32(a), rv_load_f32(b), 4));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfmsac_vf(const uint8_t *acc, const uint8_t *a, float b, uint8_t *out) {
+    rv_store_f32(out, __riscv_vfmsac_vf_f32m1(rv_load_f32(acc), b, rv_load_f32(a), 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vfnmsac_vv(const uint8_t *acc, const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    rv_store_f32(out, __riscv_vfnmsac_vv_f32m1(rv_load_f32(acc), rv_load_f32(a), rv_load_f32(b), 4));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfnmsac_vf(const uint8_t *acc, const uint8_t *a, float b, uint8_t *out) {
+    rv_store_f32(out, __riscv_vfnmsac_vf_f32m1(rv_load_f32(acc), b, rv_load_f32(a), 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vmulhu_vv(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    rv_store_u32(out, __riscv_vmulhu_vv_u32m1(rv_load_u32(a), rv_load_u32(b), 4));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vmulhu_vx(const uint8_t *a, uint32_t b, uint8_t *out) {
+    rv_store_u32(out, __riscv_vmulhu_vx_u32m1(rv_load_u32(a), b, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vmulhsu_vv(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    rv_store_i32(out, __riscv_vmulhsu_vv_i32m1(rv_load_i32(a), rv_load_u32(b), 4));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vmulhsu_vx(const uint8_t *a, uint32_t b, uint8_t *out) {
+    rv_store_i32(out, __riscv_vmulhsu_vx_i32m1(rv_load_i32(a), b, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vmulh_vv(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    rv_store_i32(out, __riscv_vmulh_vv_i32m1(rv_load_i32(a), rv_load_i32(b), 4));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vmulh_vx(const uint8_t *a, int32_t b, uint8_t *out) {
+    rv_store_i32(out, __riscv_vmulh_vx_i32m1(rv_load_i32(a), b, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vmv1r(const uint8_t *values, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 16, e8, m1, ta, ma\n\t"
+                     "vle8.v v2, (%1)\n\t"
+                     "vmv1r.v v3, v2\n\t"
+                     "vse8.v v3, (%2)"
+                     ::"r"(values), "r"(values + 0), "r"(out + 0) : "v2", "v3", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vmv2r(const uint8_t *values, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 16, e8, m1, ta, ma\n\t"
+                     "vle8.v v2, (%1)\n\tvle8.v v3, (%2)\n\t"
+                     "vmv2r.v v4, v2\n\t"
+                     "vse8.v v4, (%3)\n\tvse8.v v5, (%4)"
+                     ::"r"(values), "r"(values + 0), "r"(values + 16), "r"(out + 0), "r"(out + 16) : "v2", "v3", "v4", "v5", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vmv4r(const uint8_t *values, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 16, e8, m1, ta, ma\n\t"
+                     "vle8.v v4, (%1)\n\tvle8.v v5, (%2)\n\tvle8.v v6, (%3)\n\tvle8.v v7, (%4)\n\t"
+                     "vmv4r.v v8, v4\n\t"
+                     "vse8.v v8, (%5)\n\tvse8.v v9, (%6)\n\tvse8.v v10, (%7)\n\tvse8.v v11, (%8)"
+                     ::"r"(values), "r"(values + 0), "r"(values + 16), "r"(values + 32), "r"(values + 48), "r"(out + 0), "r"(out + 16), "r"(out + 32), "r"(out + 48) : "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "memory");
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vmv8r(const uint8_t *values, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 16, e8, m1, ta, ma\n\t"
+                     "vle8.v v8, (%1)\n\tvle8.v v9, (%2)\n\tvle8.v v10, (%3)\n\tvle8.v v11, (%4)\n\tvle8.v v12, (%5)\n\tvle8.v v13, (%6)\n\tvle8.v v14, (%7)\n\tvle8.v v15, (%8)\n\t"
+                     "vmv8r.v v16, v8\n\t"
+                     "vse8.v v16, (%9)\n\tvse8.v v17, (%10)\n\tvse8.v v18, (%11)\n\tvse8.v v19, (%12)\n\tvse8.v v20, (%13)\n\tvse8.v v21, (%14)\n\tvse8.v v22, (%15)\n\tvse8.v v23, (%16)"
+                     ::"r"(values), "r"(values + 0), "r"(values + 16), "r"(values + 32), "r"(values + 48), "r"(values + 64), "r"(values + 80), "r"(values + 96), "r"(values + 112), "r"(out + 0), "r"(out + 16), "r"(out + 32), "r"(out + 48), "r"(out + 64), "r"(out + 80), "r"(out + 96), "r"(out + 112) : "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15", "v16", "v17", "v18", "v19", "v20", "v21", "v22", "v23", "memory");
+}
+
+static inline vbool32_t rv_load_mask32(uint16_t mask) {
+    return __riscv_vlm_v_b32((const uint8_t *)&mask, 4);
+}
+static inline uint16_t rv_store_mask32(vbool32_t mask) {
+    uint16_t out = 0;
+    __riscv_vsm_v_b32((uint8_t *)&out, mask, 4);
+    return out & 0x0f;
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vfwredusum_vs(const uint8_t *a, const uint8_t *acc, uint8_t *out) {
+    rv_store_f64(out, __riscv_vfwredusum_vs_f32m1_f64m1(rv_load_f32(a), rv_load_f64(acc), 2));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vfwredosum_vs(const uint8_t *a, const uint8_t *acc, uint8_t *out) {
+    rv_store_f64(out, __riscv_vfwredosum_vs_f32m1_f64m1(rv_load_f32(a), rv_load_f64(acc), 2));
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vx(const uint8_t *a, int32_t b, uint8_t *out) {
+    rv_store_i32(out, __riscv_vrsub_vx_i32m1(rv_load_i32(a), b, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vvm(const uint8_t *a, const uint8_t *b, uint16_t carry, uint8_t *out) {
+    rv_store_i32(out, __riscv_vadc_vvm_i32m1(rv_load_i32(a), rv_load_i32(b), rv_load_mask32(carry), 4));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vxm(const uint8_t *a, int32_t b, uint16_t carry, uint8_t *out) {
+    rv_store_i32(out, __riscv_vadc_vxm_i32m1(rv_load_i32(a), b, rv_load_mask32(carry), 4));
+}
+
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vvm(const uint8_t *a, const uint8_t *b, uint16_t carry) {
+    return rv_store_mask32(__riscv_vmadc_vvm_i32m1_b32(rv_load_i32(a), rv_load_i32(b), rv_load_mask32(carry), 4));
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vxm(const uint8_t *a, int32_t b, uint16_t carry) {
+    return rv_store_mask32(__riscv_vmadc_vxm_i32m1_b32(rv_load_i32(a), b, rv_load_mask32(carry), 4));
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vv(const uint8_t *a, const uint8_t *b) {
+    return rv_store_mask32(__riscv_vmadc_vv_i32m1_b32(rv_load_i32(a), rv_load_i32(b), 4));
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vx(const uint8_t *a, int32_t b) {
+    return rv_store_mask32(__riscv_vmadc_vx_i32m1_b32(rv_load_i32(a), b, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vsbc_vvm(const uint8_t *a, const uint8_t *b, uint16_t borrow, uint8_t *out) {
+    rv_store_i32(out, __riscv_vsbc_vvm_i32m1(rv_load_i32(a), rv_load_i32(b), rv_load_mask32(borrow), 4));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vsbc_vxm(const uint8_t *a, int32_t b, uint16_t borrow, uint8_t *out) {
+    rv_store_i32(out, __riscv_vsbc_vxm_i32m1(rv_load_i32(a), b, rv_load_mask32(borrow), 4));
+}
+
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmsbc_vvm(const uint8_t *a, const uint8_t *b, uint16_t borrow) {
+    return rv_store_mask32(__riscv_vmsbc_vvm_i32m1_b32(rv_load_i32(a), rv_load_i32(b), rv_load_mask32(borrow), 4));
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmsbc_vxm(const uint8_t *a, int32_t b, uint16_t borrow) {
+    return rv_store_mask32(__riscv_vmsbc_vxm_i32m1_b32(rv_load_i32(a), b, rv_load_mask32(borrow), 4));
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmsbc_vv(const uint8_t *a, const uint8_t *b) {
+    return rv_store_mask32(__riscv_vmsbc_vv_i32m1_b32(rv_load_i32(a), rv_load_i32(b), 4));
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmsbc_vx(const uint8_t *a, int32_t b) {
+    return rv_store_mask32(__riscv_vmsbc_vx_i32m1_b32(rv_load_i32(a), b, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vsmul_vv(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    rv_store_i32(out, __riscv_vsmul_vv_i32m1(rv_load_i32(a), rv_load_i32(b), 0, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vsmul_vx(const uint8_t *a, int32_t b, uint8_t *out) {
+    rv_store_i32(out, __riscv_vsmul_vx_i32m1(rv_load_i32(a), b, 0, 4));
+}
+
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vv(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    rv_store_u32(out, __riscv_vssrl_vv_u32m1(rv_load_u32(a), rv_load_u32(b), 0, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vx(const uint8_t *a, uint32_t b, uint8_t *out) {
+    rv_store_u32(out, __riscv_vssrl_vx_u32m1(rv_load_u32(a), b, 0, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vv(const uint8_t *a, const uint8_t *b, uint8_t *out) {
+    rv_store_i32(out, __riscv_vssra_vv_i32m1(rv_load_i32(a), rv_load_u32(b), 0, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vx(const uint8_t *a, uint32_t b, uint8_t *out) {
+    rv_store_i32(out, __riscv_vssra_vx_i32m1(rv_load_i32(a), b, 0, 4));
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_0(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, -16\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_1(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, -15\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_2(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, -14\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_3(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, -13\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_4(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, -12\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_5(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, -11\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_6(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, -10\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_7(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, -9\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_8(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, -8\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_9(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, -7\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_10(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, -6\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_11(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, -5\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_12(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, -4\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_13(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, -3\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_14(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, -2\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_15(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, -1\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_16(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, 0\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_17(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, 1\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_18(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, 2\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_19(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, 3\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_20(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, 4\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_21(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, 5\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_22(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, 6\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_23(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, 7\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_24(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, 8\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_25(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, 9\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_26(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, 10\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_27(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, 11\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_28(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, 12\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_29(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, 13\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_30(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, 14\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vrsub_vi_31(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vrsub.vi v3, v2, 15\n\t"
+                     "vse32.v v3, (%1)" ::"r"(a), "r"(out) : "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_0(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, -16, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_1(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, -15, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_2(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, -14, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_3(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, -13, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_4(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, -12, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_5(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, -11, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_6(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, -10, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_7(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, -9, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_8(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, -8, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_9(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, -7, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_10(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, -6, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_11(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, -5, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_12(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, -4, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_13(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, -3, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_14(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, -2, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_15(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, -1, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_16(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, 0, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_17(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, 1, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_18(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, 2, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_19(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, 3, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_20(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, 4, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_21(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, 5, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_22(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, 6, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_23(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, 7, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_24(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, 8, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_25(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, 9, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_26(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, 10, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_27(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, 11, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_28(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, 12, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_29(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, 13, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_30(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, 14, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vadc_vim_31(const uint8_t *a, uint16_t carry, uint8_t *out) {
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vadc.vim v3, v2, 15, v0\n\t"
+                     "vse32.v v3, (%2)" ::"r"(a), "r"(&carry), "r"(out) : "v0", "v2", "v3", "memory");
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_0(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, -16, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_1(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, -15, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_2(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, -14, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_3(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, -13, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_4(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, -12, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_5(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, -11, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_6(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, -10, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_7(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, -9, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_8(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, -8, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_9(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, -7, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_10(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, -6, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_11(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, -5, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_12(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, -4, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_13(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, -3, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_14(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, -2, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_15(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, -1, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_16(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, 0, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_17(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, 1, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_18(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, 2, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_19(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, 3, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_20(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, 4, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_21(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, 5, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_22(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, 6, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_23(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, 7, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_24(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, 8, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_25(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, 9, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_26(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, 10, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_27(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, 11, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_28(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, 12, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_29(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, 13, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_30(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, 14, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vim_31(const uint8_t *a, uint16_t carry) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vlm.v v0, (%1)\n\t"
+                     "vmadc.vim v1, v2, 15, v0\n\t"
+                     "vsm.v v1, (%2)" ::"r"(a), "r"(&carry), "r"(&out) : "v0", "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_0(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, -16\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_1(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, -15\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_2(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, -14\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_3(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, -13\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_4(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, -12\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_5(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, -11\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_6(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, -10\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_7(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, -9\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_8(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, -8\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_9(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, -7\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_10(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, -6\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_11(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, -5\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_12(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, -4\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_13(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, -3\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_14(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, -2\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_15(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, -1\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_16(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, 0\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_17(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, 1\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_18(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, 2\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_19(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, 3\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_20(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, 4\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_21(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, 5\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_22(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, 6\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_23(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, 7\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_24(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, 8\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_25(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, 9\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_26(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, 10\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_27(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, 11\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_28(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, 12\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_29(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, 13\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_30(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, 14\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+uint16_t rust_isa_rvv_vmadc_vi_31(const uint8_t *a) {
+    uint16_t out = 0;
+    __asm__ volatile("vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vmadc.vi v1, v2, 15\n\t"
+                     "vsm.v v1, (%1)" ::"r"(a), "r"(&out) : "v1", "v2", "memory");
+    return out & 0x0f;
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_0(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 0\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_1(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 1\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_2(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 2\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_3(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 3\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_4(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 4\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_5(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 5\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_6(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 6\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_7(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 7\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_8(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 8\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_9(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 9\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_10(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 10\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_11(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 11\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_12(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 12\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_13(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 13\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_14(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 14\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_15(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 15\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_16(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 16\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_17(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 17\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_18(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 18\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_19(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 19\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_20(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 20\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_21(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 21\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_22(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 22\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_23(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 23\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_24(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 24\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_25(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 25\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_26(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 26\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_27(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 27\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_28(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 28\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_29(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 29\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_30(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 30\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssrl_vi_31(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssrl.vi v3, v2, 31\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_0(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 0\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_1(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 1\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_2(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 2\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_3(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 3\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_4(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 4\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_5(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 5\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_6(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 6\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_7(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 7\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_8(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 8\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_9(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 9\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_10(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 10\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_11(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 11\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_12(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 12\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_13(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 13\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_14(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 14\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_15(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 15\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_16(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 16\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_17(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 17\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_18(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 18\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_19(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 19\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_20(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 20\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_21(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 21\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_22(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 22\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_23(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 23\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_24(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 24\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_25(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 25\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_26(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 26\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_27(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 27\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_28(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 28\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_29(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 29\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_30(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 30\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}
+__attribute__((always_inline))
+void rust_isa_rvv_vssra_vi_31(const uint8_t *a, uint8_t *out) {
+    __asm__ volatile("csrr t0, vxrm\n\t"
+                     "csrwi vxrm, 0\n\t"
+                     "vsetivli zero, 4, e32, m1, ta, ma\n\t"
+                     "vle32.v v2, (%0)\n\t"
+                     "vssra.vi v3, v2, 31\n\t"
+                     "vse32.v v3, (%1)\n\t"
+                     "csrw vxrm, t0" ::"r"(a), "r"(out)
+                     : "v2", "v3", "t0", "memory");
+}

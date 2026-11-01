@@ -1,0 +1,21 @@
+schema = 1
+arch = "x86_64"
+extension = "sm4"
+module = "crate::x86::crypto::sm4"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VSM4KEY4"
+api = "vsm4key4"
+required_features = ["sm4"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VSM4RNDS4"
+api = "vsm4rnds4"
+required_features = ["sm4"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

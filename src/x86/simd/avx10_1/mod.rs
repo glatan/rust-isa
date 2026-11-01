@@ -30,6 +30,7 @@
 //!
 //! ```no_run
 //! use rust_isa::x86::simd::avx10_1::*;
+//! use rust_isa::x86::simd::{Mask4, Mask8, Mask16, Mask32, Mask64};
 //! use rust_isa::x86::simd::avx::V256;
 //!
 //! let v = V256::from_bytes([0; 32]);
@@ -46,6 +47,7 @@
 //! use rust_isa::x86::simd::sse2::V128;
 //! use rust_isa::x86::simd::avx::V256;
 //! use rust_isa::x86::simd::avx512f::V512;
+//! use rust_isa::x86::simd::{Mask4, Mask8, Mask16, Mask32, Mask64};
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //! let v256 = V256::from_bytes([0; 32]);
@@ -60,10 +62,10 @@
 //! let _ = unsafe { vcmppd_v512::<0>(v512, v512) };
 //! let _ = unsafe { vcmpps_v256::<0>(v256, v256) };
 //! let _ = unsafe { vcmpps_v512::<0>(v512, v512) };
-//! let _ = unsafe { vcompresspd_v256(v256, 0) };
-//! let _ = unsafe { vcompresspd_v512(v512, 0) };
-//! let _ = unsafe { vcompressps_v256(v256, 0) };
-//! let _ = unsafe { vcompressps_v512(v512, 0) };
+//! let _ = unsafe { vcompresspd_v256(v256, Mask4::from_bits(0)) };
+//! let _ = unsafe { vcompresspd_v512(v512, Mask8::from_bits(0)) };
+//! let _ = unsafe { vcompressps_v256(v256, Mask8::from_bits(0)) };
+//! let _ = unsafe { vcompressps_v512(v512, Mask16::from_bits(0)) };
 //! let _ = unsafe { vcvtdq2ps_v256(v256) };
 //! let _ = unsafe { vcvtdq2ps_v512(v512) };
 //! let _ = unsafe { vcvtpd2dq_v512(v512) };
@@ -98,10 +100,10 @@
 //! let _ = unsafe { vcvtuqq2pd_v512(v512) };
 //! let _ = unsafe { vcvtuqq2ps_v256(v256) };
 //! let _ = unsafe { vcvtuqq2ps_v512(v512) };
-//! let _ = unsafe { vexpandpd_v256(v256, 0) };
-//! let _ = unsafe { vexpandpd_v512(v512, 0) };
-//! let _ = unsafe { vexpandps_v256(v256, 0) };
-//! let _ = unsafe { vexpandps_v512(v512, 0) };
+//! let _ = unsafe { vexpandpd_v256(v256, Mask4::from_bits(0)) };
+//! let _ = unsafe { vexpandpd_v512(v512, Mask8::from_bits(0)) };
+//! let _ = unsafe { vexpandps_v256(v256, Mask8::from_bits(0)) };
+//! let _ = unsafe { vexpandps_v512(v512, Mask16::from_bits(0)) };
 //! let _ = unsafe { vfmadd132pd_v256(v256, v256, v256) };
 //! let _ = unsafe { vfmadd132pd_v512(v512, v512, v512) };
 //! let _ = unsafe { vfmadd132ps_v256(v256, v256, v256) };
@@ -170,14 +172,14 @@
 //! let _ = unsafe { vfnmsub231pd_v512(v512, v512, v512) };
 //! let _ = unsafe { vfnmsub231ps_v256(v256, v256, v256) };
 //! let _ = unsafe { vfnmsub231ps_v512(v512, v512, v512) };
-//! let _ = unsafe { vgatherdpd_v256(v256, storage.0.as_ptr().cast(), v128, 0) };
-//! let _ = unsafe { vgatherdpd_v512(v512, storage.0.as_ptr().cast(), v256, 0) };
-//! let _ = unsafe { vgatherdps_v256(v256, storage.0.as_ptr().cast(), v256, 0) };
-//! let _ = unsafe { vgatherdps_v512(v512, storage.0.as_ptr().cast(), v512, 0) };
-//! let _ = unsafe { vgatherqpd_v256(v256, storage.0.as_ptr().cast(), v256, 0) };
-//! let _ = unsafe { vgatherqpd_v512(v512, storage.0.as_ptr().cast(), v512, 0) };
-//! let _ = unsafe { vgatherqps_v256(v128, storage.0.as_ptr().cast(), v256, 0) };
-//! let _ = unsafe { vgatherqps_v512(v256, storage.0.as_ptr().cast(), v512, 0) };
+//! let _ = unsafe { vgatherdpd_v256(v256, storage.0.as_ptr().cast(), v128, Mask4::from_bits(0)) };
+//! let _ = unsafe { vgatherdpd_v512(v512, storage.0.as_ptr().cast(), v256, Mask8::from_bits(0)) };
+//! let _ = unsafe { vgatherdps_v256(v256, storage.0.as_ptr().cast(), v256, Mask8::from_bits(0)) };
+//! let _ = unsafe { vgatherdps_v512(v512, storage.0.as_ptr().cast(), v512, Mask16::from_bits(0)) };
+//! let _ = unsafe { vgatherqpd_v256(v256, storage.0.as_ptr().cast(), v256, Mask4::from_bits(0)) };
+//! let _ = unsafe { vgatherqpd_v512(v512, storage.0.as_ptr().cast(), v512, Mask8::from_bits(0)) };
+//! let _ = unsafe { vgatherqps_v256(v128, storage.0.as_ptr().cast(), v256, Mask4::from_bits(0)) };
+//! let _ = unsafe { vgatherqps_v512(v256, storage.0.as_ptr().cast(), v512, Mask8::from_bits(0)) };
 //! let _ = unsafe { vmulps_v256(v256, v256) };
 //! let _ = unsafe { vmulps_v512(v512, v512) };
 //! let _ = unsafe { vpaddb_v256(v256, v256) };
@@ -212,10 +214,10 @@
 //! let _ = unsafe { vpcmpuw_v512::<0>(v512, v512) };
 //! let _ = unsafe { vpcmpw_v256::<0>(v256, v256) };
 //! let _ = unsafe { vpcmpw_v512::<0>(v512, v512) };
-//! let _ = unsafe { vpcompressb_v256(v256, 0) };
-//! let _ = unsafe { vpcompressb_v512(v512, 0) };
-//! let _ = unsafe { vpcompressw_v256(v256, 0) };
-//! let _ = unsafe { vpcompressw_v512(v512, 0) };
+//! let _ = unsafe { vpcompressb_v256(v256, Mask32::from_bits(0)) };
+//! let _ = unsafe { vpcompressb_v512(v512, Mask64::from_bits(0)) };
+//! let _ = unsafe { vpcompressw_v256(v256, Mask16::from_bits(0)) };
+//! let _ = unsafe { vpcompressw_v512(v512, Mask32::from_bits(0)) };
 //! let _ = unsafe { vpconflictd_v256(v256) };
 //! let _ = unsafe { vpconflictd_v512(v512) };
 //! let _ = unsafe { vpconflictq_v256(v256) };
@@ -250,10 +252,10 @@
 //! let _ = unsafe { vpermt2q_v512(v512, v512, v512) };
 //! let _ = unsafe { vpermt2w_v256(v256, v256, v256) };
 //! let _ = unsafe { vpermt2w_v512(v512, v512, v512) };
-//! let _ = unsafe { vpexpandb_v256(v256, 0) };
-//! let _ = unsafe { vpexpandb_v512(v512, 0) };
-//! let _ = unsafe { vpexpandw_v256(v256, 0) };
-//! let _ = unsafe { vpexpandw_v512(v512, 0) };
+//! let _ = unsafe { vpexpandb_v256(v256, Mask32::from_bits(0)) };
+//! let _ = unsafe { vpexpandb_v512(v512, Mask64::from_bits(0)) };
+//! let _ = unsafe { vpexpandw_v256(v256, Mask16::from_bits(0)) };
+//! let _ = unsafe { vpexpandw_v512(v512, Mask32::from_bits(0)) };
 //! let _ = unsafe { vplzcntd_v256(v256) };
 //! let _ = unsafe { vplzcntd_v512(v512) };
 //! let _ = unsafe { vplzcntq_v256(v256) };
@@ -336,14 +338,14 @@
 //! let _ = unsafe { vrsqrt14pd_v512(v512) };
 //! let _ = unsafe { vrsqrt14ps_v256(v256) };
 //! let _ = unsafe { vrsqrt14ps_v512(v512) };
-//! let _ = unsafe { vscatterdpd_v256(storage.0.as_mut_ptr().cast(), v128, v256, 0) };
-//! let _ = unsafe { vscatterdpd_v512(storage.0.as_mut_ptr().cast(), v256, v512, 0) };
-//! let _ = unsafe { vscatterdps_v256(storage.0.as_mut_ptr().cast(), v256, v256, 0) };
-//! let _ = unsafe { vscatterdps_v512(storage.0.as_mut_ptr().cast(), v512, v512, 0) };
-//! let _ = unsafe { vscatterqpd_v256(storage.0.as_mut_ptr().cast(), v256, v256, 0) };
-//! let _ = unsafe { vscatterqpd_v512(storage.0.as_mut_ptr().cast(), v512, v512, 0) };
-//! let _ = unsafe { vscatterqps_v256(storage.0.as_mut_ptr().cast(), v256, v128, 0) };
-//! let _ = unsafe { vscatterqps_v512(storage.0.as_mut_ptr().cast(), v512, v256, 0) };
+//! let _ = unsafe { vscatterdpd_v256(storage.0.as_mut_ptr().cast(), v128, v256, Mask4::from_bits(0)) };
+//! let _ = unsafe { vscatterdpd_v512(storage.0.as_mut_ptr().cast(), v256, v512, Mask8::from_bits(0)) };
+//! let _ = unsafe { vscatterdps_v256(storage.0.as_mut_ptr().cast(), v256, v256, Mask8::from_bits(0)) };
+//! let _ = unsafe { vscatterdps_v512(storage.0.as_mut_ptr().cast(), v512, v512, Mask16::from_bits(0)) };
+//! let _ = unsafe { vscatterqpd_v256(storage.0.as_mut_ptr().cast(), v256, v256, Mask4::from_bits(0)) };
+//! let _ = unsafe { vscatterqpd_v512(storage.0.as_mut_ptr().cast(), v512, v512, Mask8::from_bits(0)) };
+//! let _ = unsafe { vscatterqps_v256(storage.0.as_mut_ptr().cast(), v256, v128, Mask4::from_bits(0)) };
+//! let _ = unsafe { vscatterqps_v512(storage.0.as_mut_ptr().cast(), v512, v256, Mask8::from_bits(0)) };
 //! let _ = unsafe { vsqrtpd_v256(v256) };
 //! let _ = unsafe { vsqrtpd_v512(v512) };
 //! let _ = unsafe { vsqrtps_v256(v256) };
@@ -659,6 +661,7 @@
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;
 use crate::x86::simd::sse2::V128;
+use crate::x86::simd::{Mask4, Mask8, Mask16, Mask32, Mask64};
 use core::arch::asm;
 
 unsafe extern "C" {
@@ -1618,7 +1621,7 @@ pub unsafe fn vpxorq_v512(a: V512, b: V512) -> V512 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpcmpb_v256<const IMM: u8>(a: V256, b: V256) -> u32 {
+pub unsafe fn vpcmpb_v256<const IMM: u8>(a: V256, b: V256) -> Mask32 {
     let out: u32;
     unsafe {
         asm!(
@@ -1636,7 +1639,7 @@ pub unsafe fn vpcmpb_v256<const IMM: u8>(a: V256, b: V256) -> u32 {
             options(nostack, preserves_flags),
         );
     }
-    out as u32
+    Mask32::from_bits(out as u32)
 }
 
 /// `vpcmpb_v512`
@@ -1647,7 +1650,7 @@ pub unsafe fn vpcmpb_v256<const IMM: u8>(a: V256, b: V256) -> u32 {
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
 #[cfg(target_arch = "x86_64")]
-pub unsafe fn vpcmpb_v512<const IMM: u8>(a: V512, b: V512) -> u64 {
+pub unsafe fn vpcmpb_v512<const IMM: u8>(a: V512, b: V512) -> Mask64 {
     let out: u64;
     unsafe {
         asm!(
@@ -1665,7 +1668,7 @@ pub unsafe fn vpcmpb_v512<const IMM: u8>(a: V512, b: V512) -> u64 {
             options(nostack, preserves_flags),
         );
     }
-    out
+    Mask64::from_bits(out)
 }
 
 /// `vpcmpub_v256`
@@ -1675,7 +1678,7 @@ pub unsafe fn vpcmpb_v512<const IMM: u8>(a: V512, b: V512) -> u64 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpcmpub_v256<const IMM: u8>(a: V256, b: V256) -> u32 {
+pub unsafe fn vpcmpub_v256<const IMM: u8>(a: V256, b: V256) -> Mask32 {
     let out: u32;
     unsafe {
         asm!(
@@ -1693,7 +1696,7 @@ pub unsafe fn vpcmpub_v256<const IMM: u8>(a: V256, b: V256) -> u32 {
             options(nostack, preserves_flags),
         );
     }
-    out as u32
+    Mask32::from_bits(out as u32)
 }
 
 /// `vpcmpub_v512`
@@ -1704,7 +1707,7 @@ pub unsafe fn vpcmpub_v256<const IMM: u8>(a: V256, b: V256) -> u32 {
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
 #[cfg(target_arch = "x86_64")]
-pub unsafe fn vpcmpub_v512<const IMM: u8>(a: V512, b: V512) -> u64 {
+pub unsafe fn vpcmpub_v512<const IMM: u8>(a: V512, b: V512) -> Mask64 {
     let out: u64;
     unsafe {
         asm!(
@@ -1722,7 +1725,7 @@ pub unsafe fn vpcmpub_v512<const IMM: u8>(a: V512, b: V512) -> u64 {
             options(nostack, preserves_flags),
         );
     }
-    out
+    Mask64::from_bits(out)
 }
 
 /// `vpcmpw_v256`
@@ -1732,7 +1735,7 @@ pub unsafe fn vpcmpub_v512<const IMM: u8>(a: V512, b: V512) -> u64 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpcmpw_v256<const IMM: u8>(a: V256, b: V256) -> u16 {
+pub unsafe fn vpcmpw_v256<const IMM: u8>(a: V256, b: V256) -> Mask16 {
     let out: u32;
     unsafe {
         asm!(
@@ -1750,7 +1753,7 @@ pub unsafe fn vpcmpw_v256<const IMM: u8>(a: V256, b: V256) -> u16 {
             options(nostack, preserves_flags),
         );
     }
-    out as u16
+    Mask16::from_bits(out as u16)
 }
 
 /// `vpcmpw_v512`
@@ -1760,7 +1763,7 @@ pub unsafe fn vpcmpw_v256<const IMM: u8>(a: V256, b: V256) -> u16 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpcmpw_v512<const IMM: u8>(a: V512, b: V512) -> u32 {
+pub unsafe fn vpcmpw_v512<const IMM: u8>(a: V512, b: V512) -> Mask32 {
     let out: u32;
     unsafe {
         asm!(
@@ -1778,7 +1781,7 @@ pub unsafe fn vpcmpw_v512<const IMM: u8>(a: V512, b: V512) -> u32 {
             options(nostack, preserves_flags),
         );
     }
-    out as u32
+    Mask32::from_bits(out as u32)
 }
 
 /// `vpcmpuw_v256`
@@ -1788,7 +1791,7 @@ pub unsafe fn vpcmpw_v512<const IMM: u8>(a: V512, b: V512) -> u32 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpcmpuw_v256<const IMM: u8>(a: V256, b: V256) -> u16 {
+pub unsafe fn vpcmpuw_v256<const IMM: u8>(a: V256, b: V256) -> Mask16 {
     let out: u32;
     unsafe {
         asm!(
@@ -1806,7 +1809,7 @@ pub unsafe fn vpcmpuw_v256<const IMM: u8>(a: V256, b: V256) -> u16 {
             options(nostack, preserves_flags),
         );
     }
-    out as u16
+    Mask16::from_bits(out as u16)
 }
 
 /// `vpcmpuw_v512`
@@ -1816,7 +1819,7 @@ pub unsafe fn vpcmpuw_v256<const IMM: u8>(a: V256, b: V256) -> u16 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpcmpuw_v512<const IMM: u8>(a: V512, b: V512) -> u32 {
+pub unsafe fn vpcmpuw_v512<const IMM: u8>(a: V512, b: V512) -> Mask32 {
     let out: u32;
     unsafe {
         asm!(
@@ -1834,7 +1837,7 @@ pub unsafe fn vpcmpuw_v512<const IMM: u8>(a: V512, b: V512) -> u32 {
             options(nostack, preserves_flags),
         );
     }
-    out as u32
+    Mask32::from_bits(out as u32)
 }
 
 /// `vpcmpd_v256`
@@ -1844,7 +1847,7 @@ pub unsafe fn vpcmpuw_v512<const IMM: u8>(a: V512, b: V512) -> u32 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpcmpd_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
+pub unsafe fn vpcmpd_v256<const IMM: u8>(a: V256, b: V256) -> Mask8 {
     let out: u32;
     unsafe {
         asm!(
@@ -1862,7 +1865,7 @@ pub unsafe fn vpcmpd_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask8::from_bits(out as u8)
 }
 
 /// `vpcmpd_v512`
@@ -1872,7 +1875,7 @@ pub unsafe fn vpcmpd_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpcmpd_v512<const IMM: u8>(a: V512, b: V512) -> u16 {
+pub unsafe fn vpcmpd_v512<const IMM: u8>(a: V512, b: V512) -> Mask16 {
     let out: u32;
     unsafe {
         asm!(
@@ -1890,7 +1893,7 @@ pub unsafe fn vpcmpd_v512<const IMM: u8>(a: V512, b: V512) -> u16 {
             options(nostack, preserves_flags),
         );
     }
-    out as u16
+    Mask16::from_bits(out as u16)
 }
 
 /// `vpcmpud_v256`
@@ -1900,7 +1903,7 @@ pub unsafe fn vpcmpd_v512<const IMM: u8>(a: V512, b: V512) -> u16 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpcmpud_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
+pub unsafe fn vpcmpud_v256<const IMM: u8>(a: V256, b: V256) -> Mask8 {
     let out: u32;
     unsafe {
         asm!(
@@ -1918,7 +1921,7 @@ pub unsafe fn vpcmpud_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask8::from_bits(out as u8)
 }
 
 /// `vpcmpud_v512`
@@ -1928,7 +1931,7 @@ pub unsafe fn vpcmpud_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpcmpud_v512<const IMM: u8>(a: V512, b: V512) -> u16 {
+pub unsafe fn vpcmpud_v512<const IMM: u8>(a: V512, b: V512) -> Mask16 {
     let out: u32;
     unsafe {
         asm!(
@@ -1946,7 +1949,7 @@ pub unsafe fn vpcmpud_v512<const IMM: u8>(a: V512, b: V512) -> u16 {
             options(nostack, preserves_flags),
         );
     }
-    out as u16
+    Mask16::from_bits(out as u16)
 }
 
 /// `vpcmpq_v256`
@@ -1956,7 +1959,7 @@ pub unsafe fn vpcmpud_v512<const IMM: u8>(a: V512, b: V512) -> u16 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpcmpq_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
+pub unsafe fn vpcmpq_v256<const IMM: u8>(a: V256, b: V256) -> Mask4 {
     let out: u32;
     unsafe {
         asm!(
@@ -1974,7 +1977,7 @@ pub unsafe fn vpcmpq_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask4::from_bits(out as u8)
 }
 
 /// `vpcmpq_v512`
@@ -1984,7 +1987,7 @@ pub unsafe fn vpcmpq_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpcmpq_v512<const IMM: u8>(a: V512, b: V512) -> u8 {
+pub unsafe fn vpcmpq_v512<const IMM: u8>(a: V512, b: V512) -> Mask8 {
     let out: u32;
     unsafe {
         asm!(
@@ -2002,7 +2005,7 @@ pub unsafe fn vpcmpq_v512<const IMM: u8>(a: V512, b: V512) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask8::from_bits(out as u8)
 }
 
 /// `vpcmpuq_v256`
@@ -2012,7 +2015,7 @@ pub unsafe fn vpcmpq_v512<const IMM: u8>(a: V512, b: V512) -> u8 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpcmpuq_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
+pub unsafe fn vpcmpuq_v256<const IMM: u8>(a: V256, b: V256) -> Mask4 {
     let out: u32;
     unsafe {
         asm!(
@@ -2030,7 +2033,7 @@ pub unsafe fn vpcmpuq_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask4::from_bits(out as u8)
 }
 
 /// `vpcmpuq_v512`
@@ -2040,7 +2043,7 @@ pub unsafe fn vpcmpuq_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpcmpuq_v512<const IMM: u8>(a: V512, b: V512) -> u8 {
+pub unsafe fn vpcmpuq_v512<const IMM: u8>(a: V512, b: V512) -> Mask8 {
     let out: u32;
     unsafe {
         asm!(
@@ -2058,7 +2061,7 @@ pub unsafe fn vpcmpuq_v512<const IMM: u8>(a: V512, b: V512) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask8::from_bits(out as u8)
 }
 
 /// `vcmpps_v256`
@@ -2068,7 +2071,7 @@ pub unsafe fn vpcmpuq_v512<const IMM: u8>(a: V512, b: V512) -> u8 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vcmpps_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
+pub unsafe fn vcmpps_v256<const IMM: u8>(a: V256, b: V256) -> Mask8 {
     let out: u32;
     unsafe {
         asm!(
@@ -2086,7 +2089,7 @@ pub unsafe fn vcmpps_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask8::from_bits(out as u8)
 }
 
 /// `vcmpps_v512`
@@ -2096,7 +2099,7 @@ pub unsafe fn vcmpps_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vcmpps_v512<const IMM: u8>(a: V512, b: V512) -> u16 {
+pub unsafe fn vcmpps_v512<const IMM: u8>(a: V512, b: V512) -> Mask16 {
     let out: u32;
     unsafe {
         asm!(
@@ -2114,7 +2117,7 @@ pub unsafe fn vcmpps_v512<const IMM: u8>(a: V512, b: V512) -> u16 {
             options(nostack, preserves_flags),
         );
     }
-    out as u16
+    Mask16::from_bits(out as u16)
 }
 
 /// `vcmppd_v256`
@@ -2124,7 +2127,7 @@ pub unsafe fn vcmpps_v512<const IMM: u8>(a: V512, b: V512) -> u16 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vcmppd_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
+pub unsafe fn vcmppd_v256<const IMM: u8>(a: V256, b: V256) -> Mask4 {
     let out: u32;
     unsafe {
         asm!(
@@ -2142,7 +2145,7 @@ pub unsafe fn vcmppd_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask4::from_bits(out as u8)
 }
 
 /// `vcmppd_v512`
@@ -2152,7 +2155,7 @@ pub unsafe fn vcmppd_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vcmppd_v512<const IMM: u8>(a: V512, b: V512) -> u8 {
+pub unsafe fn vcmppd_v512<const IMM: u8>(a: V512, b: V512) -> Mask8 {
     let out: u32;
     unsafe {
         asm!(
@@ -2170,7 +2173,7 @@ pub unsafe fn vcmppd_v512<const IMM: u8>(a: V512, b: V512) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask8::from_bits(out as u8)
 }
 
 unsafe extern "C" {
@@ -2184,8 +2187,8 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vptestmb_v256(a: V256, b: V256) -> u32 {
-    unsafe { rust_isa_avx10_1_vptestmb_v256(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestmb_v256(a: V256, b: V256) -> Mask32 {
+    Mask32::from_bits(unsafe { rust_isa_avx10_1_vptestmb_v256(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -2199,8 +2202,8 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vptestmb_v512(a: V512, b: V512) -> u64 {
-    unsafe { rust_isa_avx10_1_vptestmb_v512(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestmb_v512(a: V512, b: V512) -> Mask64 {
+    Mask64::from_bits(unsafe { rust_isa_avx10_1_vptestmb_v512(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -2214,8 +2217,8 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vptestmw_v256(a: V256, b: V256) -> u16 {
-    unsafe { rust_isa_avx10_1_vptestmw_v256(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestmw_v256(a: V256, b: V256) -> Mask16 {
+    Mask16::from_bits(unsafe { rust_isa_avx10_1_vptestmw_v256(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -2229,8 +2232,8 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vptestmw_v512(a: V512, b: V512) -> u32 {
-    unsafe { rust_isa_avx10_1_vptestmw_v512(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestmw_v512(a: V512, b: V512) -> Mask32 {
+    Mask32::from_bits(unsafe { rust_isa_avx10_1_vptestmw_v512(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -2244,8 +2247,8 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vptestmd_v256(a: V256, b: V256) -> u8 {
-    unsafe { rust_isa_avx10_1_vptestmd_v256(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestmd_v256(a: V256, b: V256) -> Mask8 {
+    Mask8::from_bits(unsafe { rust_isa_avx10_1_vptestmd_v256(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -2259,8 +2262,8 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vptestmd_v512(a: V512, b: V512) -> u16 {
-    unsafe { rust_isa_avx10_1_vptestmd_v512(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestmd_v512(a: V512, b: V512) -> Mask16 {
+    Mask16::from_bits(unsafe { rust_isa_avx10_1_vptestmd_v512(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -2274,8 +2277,8 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vptestmq_v256(a: V256, b: V256) -> u8 {
-    unsafe { rust_isa_avx10_1_vptestmq_v256(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestmq_v256(a: V256, b: V256) -> Mask4 {
+    Mask4::from_bits(unsafe { rust_isa_avx10_1_vptestmq_v256(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -2289,8 +2292,8 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vptestmq_v512(a: V512, b: V512) -> u8 {
-    unsafe { rust_isa_avx10_1_vptestmq_v512(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestmq_v512(a: V512, b: V512) -> Mask8 {
+    Mask8::from_bits(unsafe { rust_isa_avx10_1_vptestmq_v512(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -2494,10 +2497,10 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vcompressps_v256(a: V256, mask: u8) -> V256 {
+pub unsafe fn vcompressps_v256(a: V256, mask: Mask8) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
-        rust_isa_avx10_1_vcompressps_v256(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vcompressps_v256(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -2513,10 +2516,10 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vcompressps_v512(a: V512, mask: u16) -> V512 {
+pub unsafe fn vcompressps_v512(a: V512, mask: Mask16) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx10_1_vcompressps_v512(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vcompressps_v512(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -2532,10 +2535,10 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vcompresspd_v256(a: V256, mask: u8) -> V256 {
+pub unsafe fn vcompresspd_v256(a: V256, mask: Mask4) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
-        rust_isa_avx10_1_vcompresspd_v256(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vcompresspd_v256(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -2551,10 +2554,10 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vcompresspd_v512(a: V512, mask: u8) -> V512 {
+pub unsafe fn vcompresspd_v512(a: V512, mask: Mask8) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx10_1_vcompresspd_v512(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vcompresspd_v512(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -2570,10 +2573,10 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vexpandps_v256(a: V256, mask: u8) -> V256 {
+pub unsafe fn vexpandps_v256(a: V256, mask: Mask8) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
-        rust_isa_avx10_1_vexpandps_v256(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vexpandps_v256(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -2589,10 +2592,10 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vexpandps_v512(a: V512, mask: u16) -> V512 {
+pub unsafe fn vexpandps_v512(a: V512, mask: Mask16) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx10_1_vexpandps_v512(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vexpandps_v512(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -2608,10 +2611,10 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vexpandpd_v256(a: V256, mask: u8) -> V256 {
+pub unsafe fn vexpandpd_v256(a: V256, mask: Mask4) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
-        rust_isa_avx10_1_vexpandpd_v256(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vexpandpd_v256(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -2627,10 +2630,10 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vexpandpd_v512(a: V512, mask: u8) -> V512 {
+pub unsafe fn vexpandpd_v512(a: V512, mask: Mask8) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx10_1_vexpandpd_v512(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vexpandpd_v512(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -3680,14 +3683,14 @@ unsafe extern "C" {
 ///
 /// Every selected address must be valid for reading 4 bytes.
 #[inline]
-pub unsafe fn vgatherdps_v256(src: V256, base: *const u8, indices: V256, mask: u8) -> V256 {
+pub unsafe fn vgatherdps_v256(src: V256, base: *const u8, indices: V256, mask: Mask8) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
         rust_isa_avx10_1_vgatherdps_v256(
             src.as_ptr(),
             base,
             indices.as_ptr(),
-            mask,
+            mask.bits(),
             out.as_mut_ptr(),
         );
     }
@@ -3713,14 +3716,14 @@ unsafe extern "C" {
 ///
 /// Every selected address must be valid for reading 4 bytes.
 #[inline]
-pub unsafe fn vgatherdps_v512(src: V512, base: *const u8, indices: V512, mask: u16) -> V512 {
+pub unsafe fn vgatherdps_v512(src: V512, base: *const u8, indices: V512, mask: Mask16) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
         rust_isa_avx10_1_vgatherdps_v512(
             src.as_ptr(),
             base,
             indices.as_ptr(),
-            mask,
+            mask.bits(),
             out.as_mut_ptr(),
         );
     }
@@ -3746,14 +3749,14 @@ unsafe extern "C" {
 ///
 /// Every selected address must be valid for reading 8 bytes.
 #[inline]
-pub unsafe fn vgatherdpd_v256(src: V256, base: *const u8, indices: V128, mask: u8) -> V256 {
+pub unsafe fn vgatherdpd_v256(src: V256, base: *const u8, indices: V128, mask: Mask4) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
         rust_isa_avx10_1_vgatherdpd_v256(
             src.as_ptr(),
             base,
             indices.as_ptr(),
-            mask,
+            mask.bits(),
             out.as_mut_ptr(),
         );
     }
@@ -3779,14 +3782,14 @@ unsafe extern "C" {
 ///
 /// Every selected address must be valid for reading 8 bytes.
 #[inline]
-pub unsafe fn vgatherdpd_v512(src: V512, base: *const u8, indices: V256, mask: u8) -> V512 {
+pub unsafe fn vgatherdpd_v512(src: V512, base: *const u8, indices: V256, mask: Mask8) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
         rust_isa_avx10_1_vgatherdpd_v512(
             src.as_ptr(),
             base,
             indices.as_ptr(),
-            mask,
+            mask.bits(),
             out.as_mut_ptr(),
         );
     }
@@ -3812,14 +3815,14 @@ unsafe extern "C" {
 ///
 /// Every selected address must be valid for reading 8 bytes.
 #[inline]
-pub unsafe fn vgatherqpd_v256(src: V256, base: *const u8, indices: V256, mask: u8) -> V256 {
+pub unsafe fn vgatherqpd_v256(src: V256, base: *const u8, indices: V256, mask: Mask4) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
         rust_isa_avx10_1_vgatherqpd_v256(
             src.as_ptr(),
             base,
             indices.as_ptr(),
-            mask,
+            mask.bits(),
             out.as_mut_ptr(),
         );
     }
@@ -3845,14 +3848,14 @@ unsafe extern "C" {
 ///
 /// Every selected address must be valid for reading 8 bytes.
 #[inline]
-pub unsafe fn vgatherqpd_v512(src: V512, base: *const u8, indices: V512, mask: u8) -> V512 {
+pub unsafe fn vgatherqpd_v512(src: V512, base: *const u8, indices: V512, mask: Mask8) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
         rust_isa_avx10_1_vgatherqpd_v512(
             src.as_ptr(),
             base,
             indices.as_ptr(),
-            mask,
+            mask.bits(),
             out.as_mut_ptr(),
         );
     }
@@ -3878,14 +3881,14 @@ unsafe extern "C" {
 ///
 /// Every selected address must be valid for reading 4 bytes.
 #[inline]
-pub unsafe fn vgatherqps_v256(src: V128, base: *const u8, indices: V256, mask: u8) -> V128 {
+pub unsafe fn vgatherqps_v256(src: V128, base: *const u8, indices: V256, mask: Mask4) -> V128 {
     let mut out = V128::from_bytes([0; 16]);
     unsafe {
         rust_isa_avx10_1_vgatherqps_v256(
             src.as_ptr(),
             base,
             indices.as_ptr(),
-            mask,
+            mask.bits(),
             out.as_mut_ptr(),
         );
     }
@@ -3911,14 +3914,14 @@ unsafe extern "C" {
 ///
 /// Every selected address must be valid for reading 4 bytes.
 #[inline]
-pub unsafe fn vgatherqps_v512(src: V256, base: *const u8, indices: V512, mask: u8) -> V256 {
+pub unsafe fn vgatherqps_v512(src: V256, base: *const u8, indices: V512, mask: Mask8) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
         rust_isa_avx10_1_vgatherqps_v512(
             src.as_ptr(),
             base,
             indices.as_ptr(),
-            mask,
+            mask.bits(),
             out.as_mut_ptr(),
         );
     }
@@ -3938,8 +3941,8 @@ unsafe extern "C" {
 ///
 /// Every selected address must be valid for writing 4 bytes.
 #[inline]
-pub unsafe fn vscatterdps_v256(base: *mut u8, indices: V256, a: V256, mask: u8) {
-    unsafe { rust_isa_avx10_1_vscatterdps_v256(base, indices.as_ptr(), a.as_ptr(), mask) }
+pub unsafe fn vscatterdps_v256(base: *mut u8, indices: V256, a: V256, mask: Mask8) {
+    unsafe { rust_isa_avx10_1_vscatterdps_v256(base, indices.as_ptr(), a.as_ptr(), mask.bits()) }
 }
 
 unsafe extern "C" {
@@ -3960,8 +3963,8 @@ unsafe extern "C" {
 ///
 /// Every selected address must be valid for writing 4 bytes.
 #[inline]
-pub unsafe fn vscatterdps_v512(base: *mut u8, indices: V512, a: V512, mask: u16) {
-    unsafe { rust_isa_avx10_1_vscatterdps_v512(base, indices.as_ptr(), a.as_ptr(), mask) }
+pub unsafe fn vscatterdps_v512(base: *mut u8, indices: V512, a: V512, mask: Mask16) {
+    unsafe { rust_isa_avx10_1_vscatterdps_v512(base, indices.as_ptr(), a.as_ptr(), mask.bits()) }
 }
 
 unsafe extern "C" {
@@ -3977,8 +3980,8 @@ unsafe extern "C" {
 ///
 /// Every selected address must be valid for writing 8 bytes.
 #[inline]
-pub unsafe fn vscatterdpd_v256(base: *mut u8, indices: V128, a: V256, mask: u8) {
-    unsafe { rust_isa_avx10_1_vscatterdpd_v256(base, indices.as_ptr(), a.as_ptr(), mask) }
+pub unsafe fn vscatterdpd_v256(base: *mut u8, indices: V128, a: V256, mask: Mask4) {
+    unsafe { rust_isa_avx10_1_vscatterdpd_v256(base, indices.as_ptr(), a.as_ptr(), mask.bits()) }
 }
 
 unsafe extern "C" {
@@ -3994,8 +3997,8 @@ unsafe extern "C" {
 ///
 /// Every selected address must be valid for writing 8 bytes.
 #[inline]
-pub unsafe fn vscatterdpd_v512(base: *mut u8, indices: V256, a: V512, mask: u8) {
-    unsafe { rust_isa_avx10_1_vscatterdpd_v512(base, indices.as_ptr(), a.as_ptr(), mask) }
+pub unsafe fn vscatterdpd_v512(base: *mut u8, indices: V256, a: V512, mask: Mask8) {
+    unsafe { rust_isa_avx10_1_vscatterdpd_v512(base, indices.as_ptr(), a.as_ptr(), mask.bits()) }
 }
 
 unsafe extern "C" {
@@ -4011,8 +4014,8 @@ unsafe extern "C" {
 ///
 /// Every selected address must be valid for writing 8 bytes.
 #[inline]
-pub unsafe fn vscatterqpd_v256(base: *mut u8, indices: V256, a: V256, mask: u8) {
-    unsafe { rust_isa_avx10_1_vscatterqpd_v256(base, indices.as_ptr(), a.as_ptr(), mask) }
+pub unsafe fn vscatterqpd_v256(base: *mut u8, indices: V256, a: V256, mask: Mask4) {
+    unsafe { rust_isa_avx10_1_vscatterqpd_v256(base, indices.as_ptr(), a.as_ptr(), mask.bits()) }
 }
 
 unsafe extern "C" {
@@ -4028,8 +4031,8 @@ unsafe extern "C" {
 ///
 /// Every selected address must be valid for writing 8 bytes.
 #[inline]
-pub unsafe fn vscatterqpd_v512(base: *mut u8, indices: V512, a: V512, mask: u8) {
-    unsafe { rust_isa_avx10_1_vscatterqpd_v512(base, indices.as_ptr(), a.as_ptr(), mask) }
+pub unsafe fn vscatterqpd_v512(base: *mut u8, indices: V512, a: V512, mask: Mask8) {
+    unsafe { rust_isa_avx10_1_vscatterqpd_v512(base, indices.as_ptr(), a.as_ptr(), mask.bits()) }
 }
 
 unsafe extern "C" {
@@ -4045,8 +4048,8 @@ unsafe extern "C" {
 ///
 /// Every selected address must be valid for writing 4 bytes.
 #[inline]
-pub unsafe fn vscatterqps_v256(base: *mut u8, indices: V256, a: V128, mask: u8) {
-    unsafe { rust_isa_avx10_1_vscatterqps_v256(base, indices.as_ptr(), a.as_ptr(), mask) }
+pub unsafe fn vscatterqps_v256(base: *mut u8, indices: V256, a: V128, mask: Mask4) {
+    unsafe { rust_isa_avx10_1_vscatterqps_v256(base, indices.as_ptr(), a.as_ptr(), mask.bits()) }
 }
 
 unsafe extern "C" {
@@ -4062,8 +4065,8 @@ unsafe extern "C" {
 ///
 /// Every selected address must be valid for writing 4 bytes.
 #[inline]
-pub unsafe fn vscatterqps_v512(base: *mut u8, indices: V512, a: V256, mask: u8) {
-    unsafe { rust_isa_avx10_1_vscatterqps_v512(base, indices.as_ptr(), a.as_ptr(), mask) }
+pub unsafe fn vscatterqps_v512(base: *mut u8, indices: V512, a: V256, mask: Mask8) {
+    unsafe { rust_isa_avx10_1_vscatterqps_v512(base, indices.as_ptr(), a.as_ptr(), mask.bits()) }
 }
 
 unsafe extern "C" {
@@ -4077,10 +4080,10 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpcompressb_v256(a: V256, mask: u32) -> V256 {
+pub unsafe fn vpcompressb_v256(a: V256, mask: Mask32) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
-        rust_isa_avx10_1_vpcompressb_v256(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vpcompressb_v256(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -4096,10 +4099,10 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpcompressb_v512(a: V512, mask: u64) -> V512 {
+pub unsafe fn vpcompressb_v512(a: V512, mask: Mask64) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx10_1_vpcompressb_v512(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vpcompressb_v512(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -4115,10 +4118,10 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpcompressw_v256(a: V256, mask: u16) -> V256 {
+pub unsafe fn vpcompressw_v256(a: V256, mask: Mask16) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
-        rust_isa_avx10_1_vpcompressw_v256(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vpcompressw_v256(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -4134,10 +4137,10 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpcompressw_v512(a: V512, mask: u32) -> V512 {
+pub unsafe fn vpcompressw_v512(a: V512, mask: Mask32) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx10_1_vpcompressw_v512(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vpcompressw_v512(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -4153,10 +4156,10 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpexpandb_v256(a: V256, mask: u32) -> V256 {
+pub unsafe fn vpexpandb_v256(a: V256, mask: Mask32) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
-        rust_isa_avx10_1_vpexpandb_v256(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vpexpandb_v256(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -4172,10 +4175,10 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpexpandb_v512(a: V512, mask: u64) -> V512 {
+pub unsafe fn vpexpandb_v512(a: V512, mask: Mask64) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx10_1_vpexpandb_v512(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vpexpandb_v512(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -4191,10 +4194,10 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpexpandw_v256(a: V256, mask: u16) -> V256 {
+pub unsafe fn vpexpandw_v256(a: V256, mask: Mask16) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
-        rust_isa_avx10_1_vpexpandw_v256(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vpexpandw_v256(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -4210,10 +4213,10 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vpexpandw_v512(a: V512, mask: u32) -> V512 {
+pub unsafe fn vpexpandw_v512(a: V512, mask: Mask32) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx10_1_vpexpandw_v512(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx10_1_vpexpandw_v512(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -4781,8 +4784,8 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vptestnmb_v256(a: V256, b: V256) -> u32 {
-    unsafe { rust_isa_avx10_1_vptestnmb_v256(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestnmb_v256(a: V256, b: V256) -> Mask32 {
+    Mask32::from_bits(unsafe { rust_isa_avx10_1_vptestnmb_v256(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -4796,8 +4799,8 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vptestnmb_v512(a: V512, b: V512) -> u64 {
-    unsafe { rust_isa_avx10_1_vptestnmb_v512(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestnmb_v512(a: V512, b: V512) -> Mask64 {
+    Mask64::from_bits(unsafe { rust_isa_avx10_1_vptestnmb_v512(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -4811,8 +4814,8 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vptestnmw_v256(a: V256, b: V256) -> u16 {
-    unsafe { rust_isa_avx10_1_vptestnmw_v256(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestnmw_v256(a: V256, b: V256) -> Mask16 {
+    Mask16::from_bits(unsafe { rust_isa_avx10_1_vptestnmw_v256(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -4826,8 +4829,8 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vptestnmw_v512(a: V512, b: V512) -> u32 {
-    unsafe { rust_isa_avx10_1_vptestnmw_v512(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestnmw_v512(a: V512, b: V512) -> Mask32 {
+    Mask32::from_bits(unsafe { rust_isa_avx10_1_vptestnmw_v512(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -4841,8 +4844,8 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vptestnmd_v256(a: V256, b: V256) -> u8 {
-    unsafe { rust_isa_avx10_1_vptestnmd_v256(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestnmd_v256(a: V256, b: V256) -> Mask8 {
+    Mask8::from_bits(unsafe { rust_isa_avx10_1_vptestnmd_v256(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -4856,8 +4859,8 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vptestnmd_v512(a: V512, b: V512) -> u16 {
-    unsafe { rust_isa_avx10_1_vptestnmd_v512(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestnmd_v512(a: V512, b: V512) -> Mask16 {
+    Mask16::from_bits(unsafe { rust_isa_avx10_1_vptestnmd_v512(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -4871,8 +4874,8 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vptestnmq_v256(a: V256, b: V256) -> u8 {
-    unsafe { rust_isa_avx10_1_vptestnmq_v256(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestnmq_v256(a: V256, b: V256) -> Mask4 {
+    Mask4::from_bits(unsafe { rust_isa_avx10_1_vptestnmq_v256(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -4886,8 +4889,8 @@ unsafe extern "C" {
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vptestnmq_v512(a: V512, b: V512) -> u8 {
-    unsafe { rust_isa_avx10_1_vptestnmq_v512(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestnmq_v512(a: V512, b: V512) -> Mask8 {
+    Mask8::from_bits(unsafe { rust_isa_avx10_1_vptestnmq_v512(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {

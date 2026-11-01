@@ -54,7 +54,7 @@
 //! let _ = abs_i64(v128);
 //! let _ = abs_i8(v128);
 //! let _ = add(v128, v128);
-//! let _ = add_f64(v128, v128);
+//! let _ = fadd_f64(v128, v128);
 //! let _ = add_i16(v128, v128);
 //! let _ = add_i32(v128, v128);
 //! let _ = add_i64(v128, v128);
@@ -106,7 +106,7 @@
 //! let _ = cmtst_i8(v128, v128);
 //! let _ = cnt_i8(v128);
 //! let _ = cnt_u64(0);
-//! let _ = div_f64(v128, v128);
+//! let _ = fdiv_f64(v128, v128);
 //! let _ = dup_i16::<0>(v128);
 //! let _ = dup_i32::<0>(v128);
 //! let _ = dup_i64::<0>(v128);
@@ -201,12 +201,6 @@
 //! let _ = unsafe { ld4r_i8(storage.0.as_ptr().cast()) };
 //! let _ = unsafe { ldnp(storage.0.as_ptr().cast()) };
 //! let _ = unsafe { ldp(storage.0.as_ptr().cast()) };
-//! let _ = max_i16(v128, v128);
-//! let _ = max_i32(v128, v128);
-//! let _ = max_i8(v128, v128);
-//! let _ = min_i16(v128, v128);
-//! let _ = min_i32(v128, v128);
-//! let _ = min_i8(v128, v128);
 //! let _ = mla_s16(v128, v128, v128);
 //! let _ = mla_s32(v128, v128, v128);
 //! let _ = mla_s8(v128, v128, v128);
@@ -214,7 +208,7 @@
 //! let _ = mls_s32(v128, v128, v128);
 //! let _ = mls_s8(v128, v128, v128);
 //! let _ = mul(v128, v128);
-//! let _ = mul_f64(v128, v128);
+//! let _ = fmul_f64(v128, v128);
 //! let _ = mul_i16(v128, v128);
 //! let _ = mul_i32(v128, v128);
 //! let _ = mul_i8(v128, v128);
@@ -443,7 +437,7 @@
 //! let _ = unsafe { st4(storage.0.as_mut_ptr().cast(), v128, v128, v128, v128) };
 //! let _ = unsafe { stnp(storage.0.as_mut_ptr().cast(), v128, v128) };
 //! let _ = unsafe { stp(storage.0.as_mut_ptr().cast(), v128, v128) };
-//! let _ = sub_f64(v128, v128);
+//! let _ = fsub_f64(v128, v128);
 //! let _ = sub_i16(v128, v128);
 //! let _ = sub_i32(v128, v128);
 //! let _ = sub_i64(v128, v128);
@@ -591,7 +585,6 @@
 //! use rust_isa::aarch64::simd::neon::abs_i64 as _;
 //! use rust_isa::aarch64::simd::neon::abs_i8 as _;
 //! use rust_isa::aarch64::simd::neon::add as _;
-//! use rust_isa::aarch64::simd::neon::add_f64 as _;
 //! use rust_isa::aarch64::simd::neon::add_i16 as _;
 //! use rust_isa::aarch64::simd::neon::add_i32 as _;
 //! use rust_isa::aarch64::simd::neon::add_i64 as _;
@@ -643,7 +636,6 @@
 //! use rust_isa::aarch64::simd::neon::cmtst_i8 as _;
 //! use rust_isa::aarch64::simd::neon::cnt_i8 as _;
 //! use rust_isa::aarch64::simd::neon::cnt_u64 as _;
-//! use rust_isa::aarch64::simd::neon::div_f64 as _;
 //! use rust_isa::aarch64::simd::neon::dup_i16 as _;
 //! use rust_isa::aarch64::simd::neon::dup_i32 as _;
 //! use rust_isa::aarch64::simd::neon::dup_i64 as _;
@@ -659,6 +651,7 @@
 //! use rust_isa::aarch64::simd::neon::facgt_f32 as _;
 //! use rust_isa::aarch64::simd::neon::facgt_f64 as _;
 //! use rust_isa::aarch64::simd::neon::fadd as _;
+//! use rust_isa::aarch64::simd::neon::fadd_f64 as _;
 //! use rust_isa::aarch64::simd::neon::faddp_f32 as _;
 //! use rust_isa::aarch64::simd::neon::faddp_f64 as _;
 //! use rust_isa::aarch64::simd::neon::faddv_f32 as _;
@@ -678,6 +671,7 @@
 //! use rust_isa::aarch64::simd::neon::fcvtzu_u32_f32 as _;
 //! use rust_isa::aarch64::simd::neon::fcvtzu_u64_f64 as _;
 //! use rust_isa::aarch64::simd::neon::fdiv as _;
+//! use rust_isa::aarch64::simd::neon::fdiv_f64 as _;
 //! use rust_isa::aarch64::simd::neon::fmax as _;
 //! use rust_isa::aarch64::simd::neon::fmaxnm_f32 as _;
 //! use rust_isa::aarch64::simd::neon::fmaxnm_f64 as _;
@@ -697,6 +691,7 @@
 //! use rust_isa::aarch64::simd::neon::fmls_f32 as _;
 //! use rust_isa::aarch64::simd::neon::fmls_f64 as _;
 //! use rust_isa::aarch64::simd::neon::fmul as _;
+//! use rust_isa::aarch64::simd::neon::fmul_f64 as _;
 //! use rust_isa::aarch64::simd::neon::fmulx_f32 as _;
 //! use rust_isa::aarch64::simd::neon::fmulx_f64 as _;
 //! use rust_isa::aarch64::simd::neon::fneg as _;
@@ -712,6 +707,7 @@
 //! use rust_isa::aarch64::simd::neon::frsqrts_f64 as _;
 //! use rust_isa::aarch64::simd::neon::fsqrt as _;
 //! use rust_isa::aarch64::simd::neon::fsub as _;
+//! use rust_isa::aarch64::simd::neon::fsub_f64 as _;
 //! use rust_isa::aarch64::simd::neon::ins_i16 as _;
 //! use rust_isa::aarch64::simd::neon::ins_i32 as _;
 //! use rust_isa::aarch64::simd::neon::ins_i64 as _;
@@ -738,12 +734,6 @@
 //! use rust_isa::aarch64::simd::neon::ld4r_i8 as _;
 //! use rust_isa::aarch64::simd::neon::ldnp as _;
 //! use rust_isa::aarch64::simd::neon::ldp as _;
-//! use rust_isa::aarch64::simd::neon::max_i16 as _;
-//! use rust_isa::aarch64::simd::neon::max_i32 as _;
-//! use rust_isa::aarch64::simd::neon::max_i8 as _;
-//! use rust_isa::aarch64::simd::neon::min_i16 as _;
-//! use rust_isa::aarch64::simd::neon::min_i32 as _;
-//! use rust_isa::aarch64::simd::neon::min_i8 as _;
 //! use rust_isa::aarch64::simd::neon::mla_s16 as _;
 //! use rust_isa::aarch64::simd::neon::mla_s32 as _;
 //! use rust_isa::aarch64::simd::neon::mla_s8 as _;
@@ -751,7 +741,6 @@
 //! use rust_isa::aarch64::simd::neon::mls_s32 as _;
 //! use rust_isa::aarch64::simd::neon::mls_s8 as _;
 //! use rust_isa::aarch64::simd::neon::mul as _;
-//! use rust_isa::aarch64::simd::neon::mul_f64 as _;
 //! use rust_isa::aarch64::simd::neon::mul_i16 as _;
 //! use rust_isa::aarch64::simd::neon::mul_i32 as _;
 //! use rust_isa::aarch64::simd::neon::mul_i8 as _;
@@ -980,7 +969,6 @@
 //! use rust_isa::aarch64::simd::neon::st4 as _;
 //! use rust_isa::aarch64::simd::neon::stnp as _;
 //! use rust_isa::aarch64::simd::neon::stp as _;
-//! use rust_isa::aarch64::simd::neon::sub_f64 as _;
 //! use rust_isa::aarch64::simd::neon::sub_i16 as _;
 //! use rust_isa::aarch64::simd::neon::sub_i32 as _;
 //! use rust_isa::aarch64::simd::neon::sub_i64 as _;

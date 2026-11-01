@@ -8,7 +8,7 @@ unsafe extern "C" {
     fn rust_isa_sse2_movntdq(p: *mut u8, a: *const u8);
     fn rust_isa_sse2_movnti(p: *mut i32, value: i32);
     #[cfg(target_arch = "x86_64")]
-    fn rust_isa_sse2_movntq(p: *mut u8, a: *const u8);
+    fn rust_isa_sse2_movnti_u64(p: *mut u64, value: u64);
 }
 
 /// `movntps`
@@ -67,17 +67,19 @@ pub unsafe fn movnti(p: *mut i32, value: i32) {
     }
 }
 
-/// `movntq`
+/// `movnti` with a 64-bit destination.
 ///
-/// Store the low 64 bits with a non-temporal hint.
+/// Store 64 bits with a non-temporal hint.
 ///
 /// # Safety
 ///
-/// `p` must be valid for writing 8 bytes.
+/// The caller must enable SSE2. `p` must be valid for writing 8 bytes and
+/// aligned to 8 bytes. Non-temporal stores require an `sfence` before another
+/// agent reads the stored data.
 #[cfg(target_arch = "x86_64")]
 #[inline(always)]
-pub unsafe fn movntq(p: *mut u8, a: V128) {
+pub unsafe fn movnti_u64(p: *mut u64, value: u64) {
     unsafe {
-        rust_isa_sse2_movntq(p, a.as_ptr());
+        rust_isa_sse2_movnti_u64(p, value);
     }
 }

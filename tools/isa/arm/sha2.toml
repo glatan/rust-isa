@@ -1,0 +1,33 @@
+schema = 1
+arch = "arm"
+extension = "sha2"
+module = "crate::arm::crypto::sha2"
+kind = "fixed"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "SHA256H"
+api = "sha256h"
+required_features = ["sha2"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "SHA256H2"
+api = "sha256h2"
+required_features = ["sha2"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "SHA256SU0"
+api = "sha256su0"
+required_features = ["sha2"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "SHA256SU1"
+api = "sha256su1"
+required_features = ["sha2"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]

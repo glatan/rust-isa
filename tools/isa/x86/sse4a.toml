@@ -1,0 +1,45 @@
+schema = 1
+arch = "x86_64"
+extension = "sse4a"
+module = "crate::x86::simd::sse4a"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "EXTRQ"
+api = "extrq"
+required_features = ["sse4a"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "EXTRQ"
+api = "extrq_imm"
+required_features = ["sse4a"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "INSERTQ"
+api = "insertq"
+required_features = ["sse4a"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "INSERTQ"
+api = "insertq_imm"
+required_features = ["sse4a"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVNTSD"
+api = "movntsd"
+required_features = ["sse4a"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVNTSS"
+api = "movntss"
+required_features = ["sse4a"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

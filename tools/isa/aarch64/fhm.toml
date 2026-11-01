@@ -1,0 +1,33 @@
+schema = 1
+arch = "aarch64"
+extension = "fhm"
+module = "crate::aarch64::simd::fhm"
+kind = "fixed"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "FMLAL"
+api = "fmlal_f16"
+required_features = ["fhm"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMLAL2"
+api = "fmlal2_f16"
+required_features = ["fhm"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMLSL"
+api = "fmlsl_f16"
+required_features = ["fhm"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMLSL2"
+api = "fmlsl2_f16"
+required_features = ["fhm"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]

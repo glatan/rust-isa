@@ -7,6 +7,7 @@ fn main() {
     let simd128_c = manifest.join("src/wasm32/simd/simd128/simd128.c");
     let relaxed_c = manifest.join("src/wasm32/simd/relaxed_simd/relaxed_simd.c");
     let wide_arithmetic_c = manifest.join("src/wasm32/wide_arithmetic/wide_arithmetic.c");
+    let sse_c = manifest.join("src/x86/simd/sse/sse.c");
     let sse2_c = manifest.join("src/x86/simd/sse2/sse2.c");
     let sse3_c = manifest.join("src/x86/simd/sse3/sse3.c");
     let sse4_1_c = manifest.join("src/x86/simd/sse4_1/sse4_1.c");
@@ -28,6 +29,7 @@ fn main() {
     let avx512f_c = manifest.join("src/x86/simd/avx512f/avx512f.c");
     let avx512bw_c = manifest.join("src/x86/simd/avx512bw/avx512bw.c");
     let avx512bitalg_c = manifest.join("src/x86/simd/avx512bitalg/avx512bitalg.c");
+    let avx512bmm_c = manifest.join("src/x86/simd/avx512bmm/avx512bmm.c");
     let avx512bf16_c = manifest.join("src/x86/simd/avx512bf16/avx512bf16.c");
     let avx512cd_c = manifest.join("src/x86/simd/avx512cd/avx512cd.c");
     let avx512fp16_c = manifest.join("src/x86/simd/avx512fp16/avx512fp16.c");
@@ -68,6 +70,8 @@ fn main() {
     let a64_f32mm_c = manifest.join("src/aarch64/simd/f32mm/f32mm.c");
     let a64_f64mm_c = manifest.join("src/aarch64/simd/f64mm/f64mm.c");
     let a64_sve_c = manifest.join("src/aarch64/simd/sve/sve.c");
+    let a64_sve_mlal_c = manifest.join("src/aarch64/simd/sve/sve_mlal.c");
+    let a64_sve2_c = manifest.join("src/aarch64/simd/sve2/sve2.c");
     let a64_sme_c = manifest.join("src/aarch64/simd/sme/sme.c");
     let a64_aes_c = manifest.join("src/aarch64/crypto/aes/aes.c");
     let a64_sha2_c = manifest.join("src/aarch64/crypto/sha2/sha2.c");
@@ -79,6 +83,7 @@ fn main() {
     let zvkn_c = manifest.join("src/riscv/simd/zv/zvkn/zvkn.c");
     let zvks_c = manifest.join("src/riscv/simd/zv/zvks/zvks.c");
     let zvkg_c = manifest.join("src/riscv/simd/zv/zvkg/zvkg.c");
+    let zvbb_c = manifest.join("src/riscv/simd/zv/zvbb/zvbb.c");
     let zvbc_c = manifest.join("src/riscv/simd/zv/zvbc/zvbc.c");
     let rv_zba_c = manifest.join("src/riscv/integer/zba/zba.c");
     let rv_zbb_c = manifest.join("src/riscv/integer/zbb/zbb.c");
@@ -92,7 +97,9 @@ fn main() {
     let rv_fp_helpers_h = manifest.join("src/riscv/float/fp_helpers.h");
     let rv_zks_c = manifest.join("src/riscv/crypto/zks/zks.c");
     let lsx_c = manifest.join("src/loongarch/simd/lsx/lsx.c");
+    let lsx_recipe_c = manifest.join("src/loongarch/simd/lsx/lsx_recipe.c");
     let lasx_c = manifest.join("src/loongarch/simd/lasx/lasx.c");
+    let lasx_recipe_c = manifest.join("src/loongarch/simd/lasx/lasx_recipe.c");
     let s390x_vector_c = manifest.join("src/s390x/simd/vector/vector.c");
     let s390x_enh_c = manifest.join("src/s390x/simd/vector_enhancements_1/vector_enhancements_1.c");
     let s390x_ve3_c = manifest.join("src/s390x/simd/vector_enhancements_3/vector_enhancements_3.c");
@@ -118,6 +125,7 @@ fn main() {
         &simd128_c,
         &relaxed_c,
         &wide_arithmetic_c,
+        &sse_c,
         &sse2_c,
         &sse3_c,
         &sse4_1_c,
@@ -139,6 +147,7 @@ fn main() {
         &avx512f_c,
         &avx512bw_c,
         &avx512bitalg_c,
+        &avx512bmm_c,
         &avx512bf16_c,
         &avx512cd_c,
         &avx512fp16_c,
@@ -178,6 +187,8 @@ fn main() {
         &a64_f32mm_c,
         &a64_f64mm_c,
         &a64_sve_c,
+        &a64_sve_mlal_c,
+        &a64_sve2_c,
         &a64_sme_c,
         &a64_aes_c,
         &a64_sha2_c,
@@ -189,6 +200,7 @@ fn main() {
         &zvkn_c,
         &zvks_c,
         &zvkg_c,
+        &zvbb_c,
         &zvbc_c,
         &rv_zba_c,
         &rv_zbb_c,
@@ -229,6 +241,13 @@ fn main() {
     }
     println!("cargo:rerun-if-env-changed=CARGO_CFG_TARGET_FEATURE");
     println!("cargo:rerun-if-env-changed=RUST_ISA_DOCTEST");
+    println!("cargo:rerun-if-env-changed=RUST_ISA_DOCS");
+    println!("cargo:rerun-if-env-changed=RUST_ISA_CC");
+    println!("cargo:rerun-if-env-changed=RUST_ISA_AR");
+
+    if env::var_os("RUST_ISA_DOCS").is_some() {
+        return;
+    }
 
     let target = env::var("TARGET").unwrap_or_default();
     let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
@@ -444,6 +463,20 @@ fn main() {
             &["-mlasx"],
             Some("loongarch64-unknown-linux-gnu"),
         );
+        compile_archive(
+            &out_dir,
+            &lsx_recipe_c,
+            "rust_isa_lsx_recipe",
+            &["-mlsx", "-mfrecipe"],
+            Some("loongarch64-unknown-linux-gnu"),
+        );
+        compile_archive(
+            &out_dir,
+            &lasx_recipe_c,
+            "rust_isa_lasx_recipe",
+            &["-mlasx", "-mfrecipe"],
+            Some("loongarch64-unknown-linux-gnu"),
+        );
         return;
     }
 
@@ -486,6 +519,13 @@ fn main() {
             &zvkg_c,
             "rust_isa_rvv_zvkg",
             &["-march=rv64gcv", "-mabi=lp64d", "-mno-relax"],
+            Some("riscv64-unknown-linux-gnu"),
+        );
+        compile_archive(
+            &out_dir,
+            &zvbb_c,
+            "rust_isa_rvv_zvbb",
+            &["-march=rv64gcv_zvbb", "-mabi=lp64d", "-mno-relax"],
             Some("riscv64-unknown-linux-gnu"),
         );
         compile_archive(
@@ -651,10 +691,63 @@ fn main() {
                 "rust_isa_a64_sve",
                 &[
                     "-march=armv8-a",
+                    "-fno-stack-protector",
                     "-Xclang",
                     "-target-feature",
                     "-Xclang",
                     "+sve",
+                ][..],
+            ),
+            (
+                &a64_sve_mlal_c,
+                "rust_isa_a64_sve_mlal",
+                &[
+                    "-march=armv8-a",
+                    "-fno-stack-protector",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+sve",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+sve2",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+sve-aes",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+sve-sm4",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+sve-sha3",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+bf16",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+sve-bitperm",
+                ][..],
+            ),
+            (
+                &a64_sve2_c,
+                "rust_isa_a64_sve2",
+                &[
+                    "-march=armv8-a",
+                    "-fno-stack-protector",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+sve",
+                    "-Xclang",
+                    "-target-feature",
+                    "-Xclang",
+                    "+sve2",
                 ][..],
             ),
             (&a64_sme_c, "rust_isa_a64_sme", &["-march=armv9-a+sme"][..]),
@@ -716,6 +809,7 @@ fn main() {
     }
 
     if target == "x86_64-unknown-linux-gnu" || target == "i686-unknown-linux-gnu" {
+        compile_native(&out_dir, &sse_c, "rust_isa_sse", &["-msse"]);
         compile_native(&out_dir, &sse2_c, "rust_isa_sse2", &["-msse2"]);
         compile_native(&out_dir, &sse3_c, "rust_isa_sse3", &["-msse3"]);
         compile_native(&out_dir, &sse4_1_c, "rust_isa_sse41", &["-msse4.1"]);
@@ -776,6 +870,12 @@ fn main() {
             &avx512bitalg_c,
             "rust_isa_avx512bitalg",
             &["-mavx512f", "-mavx512bw", "-mavx512bitalg"],
+        );
+        compile_native(
+            &out_dir,
+            &avx512bmm_c,
+            "rust_isa_avx512bmm",
+            &["-mavx512f", "-mavx512bmm", "-mavx512vl"],
         );
         compile_native(
             &out_dir,
@@ -941,7 +1041,9 @@ fn compile_archive(
     clang_target: Option<&str>,
 ) {
     let obj_path = out_dir.join(format!("{name}.o"));
-    let mut command = Command::new("clang");
+    let cc = env::var("RUST_ISA_CC").unwrap_or_else(|_| "clang".to_owned());
+    let ar = env::var("RUST_ISA_AR").unwrap_or_else(|_| "llvm-ar".to_owned());
+    let mut command = Command::new(&cc);
     if let Some(target) = clang_target {
         command.arg(format!("--target={target}"));
     }
@@ -953,7 +1055,6 @@ fn compile_archive(
         "-fno-vectorize",
         "-fno-slp-vectorize",
         "-Wall",
-        "-Werror",
     ]);
     // Cross GCC linkers cannot read clang's ThinLTO bitcode. Doctest builds
     // use ELF objects so the GNU target linker can link the test harness.
@@ -964,18 +1065,18 @@ fn compile_archive(
     command.arg("-o").arg(&obj_path).arg(c_path);
     let status = command
         .status()
-        .unwrap_or_else(|_| panic!("clang was not found on PATH"));
+        .unwrap_or_else(|_| panic!("{cc} was not found on PATH (set RUST_ISA_CC)"));
     if !status.success() {
         panic!("clang failed to compile {}", c_path.display());
     }
 
     let archive = out_dir.join(format!("lib{name}.a"));
-    let status = Command::new("llvm-ar")
+    let status = Command::new(&ar)
         .arg("rcs")
         .arg(&archive)
         .arg(&obj_path)
         .status()
-        .unwrap_or_else(|_| panic!("llvm-ar was not found on PATH"));
+        .unwrap_or_else(|_| panic!("{ar} was not found on PATH (set RUST_ISA_AR)"));
     if !status.success() {
         panic!("llvm-ar failed to archive {}", obj_path.display());
     }

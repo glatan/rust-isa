@@ -1,0 +1,17 @@
+schema = 1
+arch = "x86_64"
+extension = "amx-fp16"
+module = "crate::x86::matrix::amx_fp16"
+kind = "subextension"
+parent = "amx-tile"
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "TDPFP16PS"
+api = "tdpfp16ps"
+widths = [128]
+required_features = ["amx-tile", "amx-fp16"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]

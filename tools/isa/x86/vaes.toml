@@ -1,0 +1,89 @@
+schema = 1
+arch = "x86_64"
+extension = "vaes"
+module = "crate::x86::crypto::vaes"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VAESDEC"
+api = "vaesdec"
+required_features = ["vaes"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VAESDEC"
+api = "vaesdec_v128"
+widths = [128]
+required_features = ["vaes"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VAESDEC"
+api = "vaesdec_v512"
+widths = [512]
+required_features = ["vaes"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VAESDECLAST"
+api = "vaesdeclast"
+required_features = ["vaes"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VAESDECLAST"
+api = "vaesdeclast_v128"
+widths = [128]
+required_features = ["vaes"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VAESDECLAST"
+api = "vaesdeclast_v512"
+widths = [512]
+required_features = ["vaes"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VAESENC"
+api = "vaesenc"
+required_features = ["vaes"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VAESENC"
+api = "vaesenc_v128"
+widths = [128]
+required_features = ["vaes"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VAESENC"
+api = "vaesenc_v512"
+widths = [512]
+required_features = ["vaes"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VAESENCLAST"
+api = "vaesenclast"
+required_features = ["vaes"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VAESENCLAST"
+api = "vaesenclast_v128"
+widths = [128]
+required_features = ["vaes"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VAESENCLAST"
+api = "vaesenclast_v512"
+widths = [512]
+required_features = ["vaes"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

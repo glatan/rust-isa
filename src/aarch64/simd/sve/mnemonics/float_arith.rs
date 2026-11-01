@@ -110,7 +110,7 @@ pub unsafe fn urecpe_f32_u32(a: &[u32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_fabs_f32(a: *const f32, out: *mut f32, len: usize);
 }
-/// `fabs` on `f32` slices (alias of `abs`).
+/// `fabs` on `f32` slices (same semantics as `abs`).
 ///
 /// # Panics
 ///
@@ -131,7 +131,7 @@ pub unsafe fn fabs_f32(a: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_fneg_f32(a: *const f32, out: *mut f32, len: usize);
 }
-/// `fneg` on `f32` slices (alias of `neg`).
+/// `fneg` on `f32` slices (same semantics as `neg`).
 ///
 /// # Panics
 ///
@@ -152,7 +152,7 @@ pub unsafe fn fneg_f32(a: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_fsqrt_f32(a: *const f32, out: *mut f32, len: usize);
 }
-/// `fsqrt` on `f32` slices (alias of `sqrt`).
+/// `fsqrt` on `f32` slices (same semantics as `sqrt`).
 ///
 /// # Panics
 ///
@@ -173,7 +173,7 @@ pub unsafe fn fsqrt_f32(a: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_frecpe_f32(a: *const f32, out: *mut f32, len: usize);
 }
-/// `frecpe` on `f32` slices (alias of `recpe`).
+/// `frecpe` on `f32` slices (same semantics as `recpe`).
 ///
 /// # Panics
 ///
@@ -194,7 +194,7 @@ pub unsafe fn frecpe_f32(a: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_frinta_f32(a: *const f32, out: *mut f32, len: usize);
 }
-/// `frinta` on `f32` slices (alias of `rinta`).
+/// `frinta` on `f32` slices (same semantics as `rinta`).
 ///
 /// # Panics
 ///
@@ -215,7 +215,7 @@ pub unsafe fn frinta_f32(a: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_frinti_f32(a: *const f32, out: *mut f32, len: usize);
 }
-/// `frinti` on `f32` slices (alias of `rinti`).
+/// `frinti` on `f32` slices (same semantics as `rinti`).
 ///
 /// # Panics
 ///
@@ -236,7 +236,7 @@ pub unsafe fn frinti_f32(a: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_frintx_f32(a: *const f32, out: *mut f32, len: usize);
 }
-/// `frintx` on `f32` slices (alias of `rintx`).
+/// `frintx` on `f32` slices (same semantics as `rintx`).
 ///
 /// # Panics
 ///
@@ -257,7 +257,7 @@ pub unsafe fn frintx_f32(a: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_frintm_f32(a: *const f32, out: *mut f32, len: usize);
 }
-/// `frintm` on `f32` slices (alias of `floor`).
+/// `frintm` on `f32` slices (same semantics as `floor`).
 ///
 /// # Panics
 ///
@@ -278,7 +278,7 @@ pub unsafe fn frintm_f32(a: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_frintn_f32(a: *const f32, out: *mut f32, len: usize);
 }
-/// `frintn` on `f32` slices (alias of `rint`).
+/// `frintn` on `f32` slices (same semantics as `rint`).
 ///
 /// # Panics
 ///
@@ -299,7 +299,7 @@ pub unsafe fn frintn_f32(a: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_frintp_f32(a: *const f32, out: *mut f32, len: usize);
 }
-/// `frintp` on `f32` slices (alias of `ceil`).
+/// `frintp` on `f32` slices (same semantics as `ceil`).
 ///
 /// # Panics
 ///
@@ -320,7 +320,7 @@ pub unsafe fn frintp_f32(a: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_frintz_f32(a: *const f32, out: *mut f32, len: usize);
 }
-/// `frintz` on `f32` slices (alias of `trunc`).
+/// `frintz` on `f32` slices (same semantics as `trunc`).
 ///
 /// # Panics
 ///
@@ -341,7 +341,7 @@ pub unsafe fn frintz_f32(a: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_fadd_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
-/// `fadd` on `f32` slices (alias of `add`).
+/// `fadd` on `f32` slices (same semantics as `add`).
 ///
 /// # Panics
 ///
@@ -363,7 +363,7 @@ pub unsafe fn fadd_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_fsub_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
-/// `fsub` on `f32` slices (alias of `sub`).
+/// `fsub` on `f32` slices (same semantics as `sub`).
 ///
 /// # Panics
 ///
@@ -385,7 +385,7 @@ pub unsafe fn fsub_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_fmul_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
-/// `fmul` on `f32` slices (alias of `mul`).
+/// `fmul` on `f32` slices (same semantics as `mul`).
 ///
 /// # Panics
 ///
@@ -407,7 +407,7 @@ pub unsafe fn fmul_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_fdiv_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
-/// `fdiv` on `f32` slices (alias of `div`).
+/// `fdiv` on `f32` slices (same semantics as `div`).
 ///
 /// # Panics
 ///
@@ -429,7 +429,7 @@ pub unsafe fn fdiv_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_fmax_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
-/// `fmax` on `f32` slices (alias of `max`).
+/// `fmax` on `f32` slices (same semantics as `max`).
 ///
 /// # Panics
 ///
@@ -451,7 +451,7 @@ pub unsafe fn fmax_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_fmin_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
-/// `fmin` on `f32` slices (alias of `min`).
+/// `fmin` on `f32` slices (same semantics as `min`).
 ///
 /// # Panics
 ///
@@ -473,7 +473,7 @@ pub unsafe fn fmin_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_fmaxnm_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
-/// `fmaxnm` on `f32` slices (alias of `maxnm`).
+/// `fmaxnm` on `f32` slices (same semantics as `maxnm`).
 ///
 /// # Panics
 ///
@@ -495,7 +495,7 @@ pub unsafe fn fmaxnm_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_fminnm_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
-/// `fminnm` on `f32` slices (alias of `minnm`).
+/// `fminnm` on `f32` slices (same semantics as `minnm`).
 ///
 /// # Panics
 ///
@@ -517,7 +517,7 @@ pub unsafe fn fminnm_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_fabd_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
-/// `fabd` on `f32` slices (alias of `abd`).
+/// `fabd` on `f32` slices (same semantics as `abd`).
 ///
 /// # Panics
 ///
@@ -539,7 +539,7 @@ pub unsafe fn fabd_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_fmulx_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
-/// `fmulx` on `f32` slices (alias of `mulx`).
+/// `fmulx` on `f32` slices (same semantics as `mulx`).
 ///
 /// # Panics
 ///
@@ -561,7 +561,7 @@ pub unsafe fn fmulx_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_frecps_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
 }
-/// `frecps` on `f32` slices (alias of `recps`).
+/// `frecps` on `f32` slices (same semantics as `recps`).
 ///
 /// # Panics
 ///
@@ -605,7 +605,7 @@ pub unsafe fn frsqrts_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_fscale_f32(a: *const f32, b: *const i32, out: *mut f32, len: usize);
 }
-/// `fscale` on `f32` slices with `i32` exponents (alias of `scale`).
+/// `fscale` on `f32` slices with `i32` exponents (same semantics as `scale`).
 ///
 /// # Panics
 ///
@@ -627,7 +627,7 @@ pub unsafe fn fscale_f32(a: &[f32], b: &[i32], out: &mut [f32]) {
 unsafe extern "C" {
     fn rust_isa_sve_fabs_f64(a: *const f64, out: *mut f64, len: usize);
 }
-/// `fabs` on `f64` slices (alias of `abs`).
+/// `fabs` on `f64` slices (same semantics as `abs`).
 ///
 /// # Panics
 ///
@@ -648,7 +648,7 @@ pub unsafe fn fabs_f64(a: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_fneg_f64(a: *const f64, out: *mut f64, len: usize);
 }
-/// `fneg` on `f64` slices (alias of `neg`).
+/// `fneg` on `f64` slices (same semantics as `neg`).
 ///
 /// # Panics
 ///
@@ -669,7 +669,7 @@ pub unsafe fn fneg_f64(a: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_fsqrt_f64(a: *const f64, out: *mut f64, len: usize);
 }
-/// `fsqrt` on `f64` slices (alias of `sqrt`).
+/// `fsqrt` on `f64` slices (same semantics as `sqrt`).
 ///
 /// # Panics
 ///
@@ -690,7 +690,7 @@ pub unsafe fn fsqrt_f64(a: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_frecpe_f64(a: *const f64, out: *mut f64, len: usize);
 }
-/// `frecpe` on `f64` slices (alias of `recpe`).
+/// `frecpe` on `f64` slices (same semantics as `recpe`).
 ///
 /// # Panics
 ///
@@ -711,7 +711,7 @@ pub unsafe fn frecpe_f64(a: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_frinta_f64(a: *const f64, out: *mut f64, len: usize);
 }
-/// `frinta` on `f64` slices (alias of `rinta`).
+/// `frinta` on `f64` slices (same semantics as `rinta`).
 ///
 /// # Panics
 ///
@@ -732,7 +732,7 @@ pub unsafe fn frinta_f64(a: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_frinti_f64(a: *const f64, out: *mut f64, len: usize);
 }
-/// `frinti` on `f64` slices (alias of `rinti`).
+/// `frinti` on `f64` slices (same semantics as `rinti`).
 ///
 /// # Panics
 ///
@@ -753,7 +753,7 @@ pub unsafe fn frinti_f64(a: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_frintx_f64(a: *const f64, out: *mut f64, len: usize);
 }
-/// `frintx` on `f64` slices (alias of `rintx`).
+/// `frintx` on `f64` slices (same semantics as `rintx`).
 ///
 /// # Panics
 ///
@@ -774,7 +774,7 @@ pub unsafe fn frintx_f64(a: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_frintm_f64(a: *const f64, out: *mut f64, len: usize);
 }
-/// `frintm` on `f64` slices (alias of `floor`).
+/// `frintm` on `f64` slices (same semantics as `floor`).
 ///
 /// # Panics
 ///
@@ -795,7 +795,7 @@ pub unsafe fn frintm_f64(a: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_frintn_f64(a: *const f64, out: *mut f64, len: usize);
 }
-/// `frintn` on `f64` slices (alias of `rint`).
+/// `frintn` on `f64` slices (same semantics as `rint`).
 ///
 /// # Panics
 ///
@@ -816,7 +816,7 @@ pub unsafe fn frintn_f64(a: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_frintp_f64(a: *const f64, out: *mut f64, len: usize);
 }
-/// `frintp` on `f64` slices (alias of `ceil`).
+/// `frintp` on `f64` slices (same semantics as `ceil`).
 ///
 /// # Panics
 ///
@@ -837,7 +837,7 @@ pub unsafe fn frintp_f64(a: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_frintz_f64(a: *const f64, out: *mut f64, len: usize);
 }
-/// `frintz` on `f64` slices (alias of `trunc`).
+/// `frintz` on `f64` slices (same semantics as `trunc`).
 ///
 /// # Panics
 ///
@@ -858,7 +858,7 @@ pub unsafe fn frintz_f64(a: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_fadd_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
-/// `fadd` on `f64` slices (alias of `add`).
+/// `fadd` on `f64` slices (same semantics as `add`).
 ///
 /// # Panics
 ///
@@ -880,7 +880,7 @@ pub unsafe fn fadd_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_fsub_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
-/// `fsub` on `f64` slices (alias of `sub`).
+/// `fsub` on `f64` slices (same semantics as `sub`).
 ///
 /// # Panics
 ///
@@ -902,7 +902,7 @@ pub unsafe fn fsub_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_fmul_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
-/// `fmul` on `f64` slices (alias of `mul`).
+/// `fmul` on `f64` slices (same semantics as `mul`).
 ///
 /// # Panics
 ///
@@ -924,7 +924,7 @@ pub unsafe fn fmul_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_fdiv_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
-/// `fdiv` on `f64` slices (alias of `div`).
+/// `fdiv` on `f64` slices (same semantics as `div`).
 ///
 /// # Panics
 ///
@@ -946,7 +946,7 @@ pub unsafe fn fdiv_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_fmax_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
-/// `fmax` on `f64` slices (alias of `max`).
+/// `fmax` on `f64` slices (same semantics as `max`).
 ///
 /// # Panics
 ///
@@ -968,7 +968,7 @@ pub unsafe fn fmax_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_fmin_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
-/// `fmin` on `f64` slices (alias of `min`).
+/// `fmin` on `f64` slices (same semantics as `min`).
 ///
 /// # Panics
 ///
@@ -990,7 +990,7 @@ pub unsafe fn fmin_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_fmaxnm_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
-/// `fmaxnm` on `f64` slices (alias of `maxnm`).
+/// `fmaxnm` on `f64` slices (same semantics as `maxnm`).
 ///
 /// # Panics
 ///
@@ -1012,7 +1012,7 @@ pub unsafe fn fmaxnm_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_fminnm_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
-/// `fminnm` on `f64` slices (alias of `minnm`).
+/// `fminnm` on `f64` slices (same semantics as `minnm`).
 ///
 /// # Panics
 ///
@@ -1034,7 +1034,7 @@ pub unsafe fn fminnm_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_fabd_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
-/// `fabd` on `f64` slices (alias of `abd`).
+/// `fabd` on `f64` slices (same semantics as `abd`).
 ///
 /// # Panics
 ///
@@ -1056,7 +1056,7 @@ pub unsafe fn fabd_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_fmulx_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
-/// `fmulx` on `f64` slices (alias of `mulx`).
+/// `fmulx` on `f64` slices (same semantics as `mulx`).
 ///
 /// # Panics
 ///
@@ -1078,7 +1078,7 @@ pub unsafe fn fmulx_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_frecps_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
 }
-/// `frecps` on `f64` slices (alias of `recps`).
+/// `frecps` on `f64` slices (same semantics as `recps`).
 ///
 /// # Panics
 ///
@@ -1122,7 +1122,7 @@ pub unsafe fn frsqrts_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
 unsafe extern "C" {
     fn rust_isa_sve_fscale_f64(a: *const f64, b: *const i64, out: *mut f64, len: usize);
 }
-/// `fscale` on `f64` slices with `i64` exponents (alias of `scale`).
+/// `fscale` on `f64` slices with `i64` exponents (same semantics as `scale`).
 ///
 /// # Panics
 ///
@@ -1138,5 +1138,135 @@ pub unsafe fn fscale_f64(a: &[f64], b: &[i64], out: &mut [f64]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     unsafe {
         rust_isa_sve_fscale_f64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_fdivr_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
+}
+/// `fdivr` on `f32` slices.
+///
+/// # Panics
+///
+/// Panics when the slice lengths differ.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fdivr_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_fdivr_f32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_fdivr_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
+}
+/// `fdivr` on `f64` slices.
+///
+/// # Panics
+///
+/// Panics when the slice lengths differ.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fdivr_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_fdivr_f64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_fsubr_f32(a: *const f32, b: *const f32, out: *mut f32, len: usize);
+}
+/// `fsubr` on `f32` slices.
+///
+/// # Panics
+///
+/// Panics when the slice lengths differ.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fsubr_f32(a: &[f32], b: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_fsubr_f32(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_fsubr_f64(a: *const f64, b: *const f64, out: *mut f64, len: usize);
+}
+/// `fsubr` on `f64` slices.
+///
+/// # Panics
+///
+/// Panics when the slice lengths differ.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fsubr_f64(a: &[f64], b: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_fsubr_f64(a.as_ptr(), b.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_fexpa_f32(a: *const f32, out: *mut f32, len: usize);
+}
+/// `fexpa` on `f32` slices.
+///
+/// # Panics
+///
+/// Panics when the slice lengths differ.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fexpa_f32(a: &[f32], out: &mut [f32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_fexpa_f32(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_fexpa_f64(a: *const f64, out: *mut f64, len: usize);
+}
+/// `fexpa` on `f64` slices.
+///
+/// # Panics
+///
+/// Panics when the slice lengths differ.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn fexpa_f64(a: &[f64], out: &mut [f64]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_fexpa_f64(a.as_ptr(), out.as_mut_ptr(), a.len());
     }
 }

@@ -1,0 +1,21 @@
+schema = 1
+arch = "aarch64"
+extension = "sm4"
+module = "crate::aarch64::crypto::sm4"
+kind = "fixed"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "SM4E"
+api = "sm4e"
+required_features = ["sm4"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SM4EKEY"
+api = "sm4ekey"
+required_features = ["sm4"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]

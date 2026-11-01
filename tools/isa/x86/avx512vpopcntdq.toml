@@ -1,0 +1,21 @@
+schema = 1
+arch = "x86_64"
+extension = "avx512vpopcntdq"
+module = "crate::x86::simd::avx512vpopcntdq"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VPOPCNTD"
+api = "vpopcntd"
+required_features = ["avx512vpopcntdq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPOPCNTQ"
+api = "vpopcntq"
+required_features = ["avx512vpopcntdq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

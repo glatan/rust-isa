@@ -10,6 +10,7 @@ mod avxvnni;
 mod f16c;
 mod fma;
 mod fma4;
+mod mask;
 mod semantic_aliases;
 mod smoke;
 mod sse2;
