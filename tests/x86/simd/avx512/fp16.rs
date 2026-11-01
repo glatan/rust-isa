@@ -58,7 +58,7 @@ fn fp16_extended_operations() {
         0x4000
     );
     assert_eq!(
-        unsafe { vcmpph::<0>(f16x32(0x3c00), f16x32(0x3c00)) },
+        unsafe { vcmpph::<0>(f16x32(0x3c00), f16x32(0x3c00)).bits() },
         u32::MAX
     );
     let doubles = unsafe { vcvtph2pd(V128::from_bytes(f16x8(0x3c00))) };

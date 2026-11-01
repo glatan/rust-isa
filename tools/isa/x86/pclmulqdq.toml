@@ -1,0 +1,15 @@
+schema = 1
+arch = "x86_64"
+extension = "pclmulqdq"
+module = "crate::x86::crypto::pclmulqdq"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "PCLMULQDQ"
+api = "pclmulqdq"
+required_features = ["pclmulqdq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

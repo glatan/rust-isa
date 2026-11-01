@@ -1,0 +1,45 @@
+schema = 1
+arch = "x86_64"
+extension = "aes"
+module = "crate::x86::crypto::aes"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "AESDEC"
+api = "aesdec"
+required_features = ["aes"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "AESDECLAST"
+api = "aesdeclast"
+required_features = ["aes"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "AESENC"
+api = "aesenc"
+required_features = ["aes"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "AESENCLAST"
+api = "aesenclast"
+required_features = ["aes"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "AESIMC"
+api = "aesimc"
+required_features = ["aes"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "AESKEYGENASSIST"
+api = "aeskeygenassist"
+required_features = ["aes"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

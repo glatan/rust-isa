@@ -1,0 +1,105 @@
+schema = 1
+arch = "x86_64"
+extension = "ssse3"
+module = "crate::x86::simd::ssse3"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "PABSB"
+api = "pabsb"
+required_features = ["ssse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PABSD"
+api = "pabsd"
+required_features = ["ssse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PABSW"
+api = "pabsw"
+required_features = ["ssse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PALIGNR"
+api = "palignr"
+required_features = ["ssse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PHADDD"
+api = "phaddd"
+required_features = ["ssse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PHADDSW"
+api = "phaddsw"
+required_features = ["ssse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PHADDW"
+api = "phaddw"
+required_features = ["ssse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PHSUBD"
+api = "phsubd"
+required_features = ["ssse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PHSUBSW"
+api = "phsubsw"
+required_features = ["ssse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PHSUBW"
+api = "phsubw"
+required_features = ["ssse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMADDUBSW"
+api = "pmaddubsw"
+required_features = ["ssse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMULHRSW"
+api = "pmulhrsw"
+required_features = ["ssse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSHUFB"
+api = "pshufb"
+required_features = ["ssse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSIGNB"
+api = "psignb"
+required_features = ["ssse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSIGND"
+api = "psignd"
+required_features = ["ssse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PSIGNW"
+api = "psignw"
+required_features = ["ssse3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

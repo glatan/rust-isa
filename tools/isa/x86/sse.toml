@@ -1,0 +1,86 @@
+schema = 1
+arch = "x86_64"
+extension = "sse"
+module = "crate::x86::simd::sse"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "ADDPS"
+api = "addps"
+required_features = ["sse"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CMPEQPS"
+api = "cmpeqps"
+required_features = ["sse"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CMPLEPS"
+api = "cmpleps"
+required_features = ["sse"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CMPLTPS"
+api = "cmpltps"
+required_features = ["sse"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "DIVPS"
+api = "divps"
+required_features = ["sse"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MAXPS"
+api = "maxps"
+required_features = ["sse"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MINPS"
+api = "minps"
+required_features = ["sse"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MULPS"
+api = "mulps"
+required_features = ["sse"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "SHUFPS"
+api = "shufps"
+required_features = ["sse"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "SQRTPS"
+api = "sqrtps"
+required_features = ["sse"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "SUBPS"
+api = "subps"
+required_features = ["sse"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]

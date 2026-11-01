@@ -4,6 +4,7 @@ use rust_isa::x86::crypto::gfni::gf2p8affineqb;
 use rust_isa::x86::crypto::sha::sha256rnds2;
 use rust_isa::x86::crypto::vaes::vaesenc;
 use rust_isa::x86::crypto::vpclmulqdq::vpclmulqdq_v256;
+use rust_isa::x86::simd::Mask64;
 use rust_isa::x86::simd::avx::{V256, vaddps, vmulps};
 use rust_isa::x86::simd::avx2::vpshufb;
 use rust_isa::x86::simd::avx10_1::{vpaddd_v512, vpmulld_v512};
@@ -95,6 +96,7 @@ pub unsafe extern "C" fn kernel_bitalg(a: &V512) -> V512 {
 #[target_feature(enable = "avx512f,avx512vbmi2")]
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn kernel_vbmi2(a: &V512, mask: u64) -> V512 {
+    let mask = Mask64::from_bits(mask);
     unsafe { vpcompressb(vpcompressb(*a, mask), mask) }
 }
 

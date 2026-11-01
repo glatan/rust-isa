@@ -103,9 +103,10 @@ fn tile_config_builder_layout() {
 
 #[test]
 fn amx_stateful_api_takes_guard() {
+    use rust_isa::x86::matrix::amx_bf16::tdpbf16ps;
+    use rust_isa::x86::matrix::amx_complex::tcmmimfp16ps;
     use rust_isa::x86::matrix::amx_tile::{
-        AmxGuard, TileConfig, sttilecfg, tcmmimfp16ps, tdpbf16ps, tileloadd, tileloaddt1,
-        tilestored, tilezero,
+        AmxGuard, TileConfig, sttilecfg, tileloadd, tileloaddt1, tilestored, tilezero,
     };
 
     let _: unsafe fn(&AmxGuard) = tilezero::<0>;
@@ -138,6 +139,17 @@ fn amx_fp16_available() -> bool {
     leaf.eax & (1 << 21) != 0
 }
 
+fn amx_fp8_available() -> bool {
+    use core::arch::x86_64::{__cpuid, __cpuid_count};
+
+    let max = __cpuid(0).eax;
+    if max < 0x1e {
+        return false;
+    }
+    let leaf = __cpuid_count(0x1e, 1);
+    leaf.eax & (1 << 4) != 0
+}
+
 fn amx_complex_available() -> bool {
     use core::arch::x86_64::__cpuid_count;
 
@@ -150,9 +162,8 @@ fn amx_int8_ones_accumulate() {
     if !amx_tile_available() || !amx_int8_available() {
         return;
     }
-    use rust_isa::x86::matrix::amx_tile::{
-        AmxGuard, TileConfig, tdpbssd, tileloadd, tilestored, tilezero,
-    };
+    use rust_isa::x86::matrix::amx_int8::tdpbssd;
+    use rust_isa::x86::matrix::amx_tile::{AmxGuard, TileConfig, tileloadd, tilestored, tilezero};
 
     // 16x64 int8 A and 64x16 int8 B, represented as 16x64 byte tiles.
     let config = TileConfig::builder()
@@ -181,8 +192,9 @@ fn amx_int8_mixed_ones_accumulate() {
     if !amx_tile_available() || !amx_int8_available() {
         return;
     }
+    use rust_isa::x86::matrix::amx_int8::{tdpbsud, tdpbuud};
     use rust_isa::x86::matrix::amx_tile::{
-        AmxGuard, TileConfig, tdpbsud, tdpbuud, tileloadd, tileloaddt1, tilestored, tilezero,
+        AmxGuard, TileConfig, tileloadd, tileloaddt1, tilestored, tilezero,
     };
 
     let config = TileConfig::builder()
@@ -224,9 +236,8 @@ fn amx_bf16_ones_accumulate() {
     if !amx_tile_available() || !amx_bf16_available() {
         return;
     }
-    use rust_isa::x86::matrix::amx_tile::{
-        AmxGuard, TileConfig, tdpbf16ps, tileloadd, tilestored, tilezero,
-    };
+    use rust_isa::x86::matrix::amx_bf16::tdpbf16ps;
+    use rust_isa::x86::matrix::amx_tile::{AmxGuard, TileConfig, tileloadd, tilestored, tilezero};
 
     let config = TileConfig::builder()
         .tile::<0>(16, 64)
@@ -256,9 +267,8 @@ fn amx_fp16_ones_accumulate() {
     if !amx_tile_available() || !amx_fp16_available() {
         return;
     }
-    use rust_isa::x86::matrix::amx_tile::{
-        AmxGuard, TileConfig, tdpfp16ps, tileloadd, tilestored, tilezero,
-    };
+    use rust_isa::x86::matrix::amx_fp16::tdpfp16ps;
+    use rust_isa::x86::matrix::amx_tile::{AmxGuard, TileConfig, tileloadd, tilestored, tilezero};
 
     let config = TileConfig::builder()
         .tile::<0>(16, 64)
@@ -284,13 +294,59 @@ fn amx_fp16_ones_accumulate() {
 }
 
 #[test]
+fn amx_fp8_ones_accumulate() {
+    if !amx_tile_available() || !amx_fp8_available() {
+        return;
+    }
+    use rust_isa::x86::matrix::amx_fp8::{tdpbf8ps, tdpbhf8ps, tdphbf8ps, tdphf8ps};
+    use rust_isa::x86::matrix::amx_tile::{AmxGuard, TileConfig, tileloadd, tilestored, tilezero};
+
+    const BF8_ONE: u8 = 0x3c;
+    const BF8_TWO: u8 = 0x40;
+    const HF8_ONE: u8 = 0x38;
+    const HF8_TWO: u8 = 0x40;
+
+    let config = TileConfig::builder()
+        .tile::<0>(16, 64)
+        .tile::<1>(16, 64)
+        .tile::<2>(16, 64)
+        .build();
+    let mut out = [0u8; 1024];
+    for (a_value, b_value, run) in [
+        (
+            BF8_ONE,
+            BF8_TWO,
+            tdpbf8ps::<2, 0, 1> as unsafe fn(&AmxGuard),
+        ),
+        (BF8_ONE, HF8_TWO, tdpbhf8ps::<2, 0, 1>),
+        (HF8_ONE, BF8_TWO, tdphbf8ps::<2, 0, 1>),
+        (HF8_ONE, HF8_TWO, tdphf8ps::<2, 0, 1>),
+    ] {
+        let a = [a_value; 1024];
+        let b = [b_value; 1024];
+        unsafe {
+            let guard = AmxGuard::enter(&config);
+            tileloadd::<0>(&guard, a.as_ptr(), 64);
+            tileloadd::<1>(&guard, b.as_ptr(), 64);
+            tilezero::<2>(&guard);
+            run(&guard);
+            run(&guard);
+            tilestored::<2>(&guard, out.as_mut_ptr(), 64);
+        }
+        for lane in out.chunks_exact(4) {
+            assert_eq!(f32::from_le_bytes(lane.try_into().unwrap()), 256.0);
+        }
+        out = [0u8; 1024];
+    }
+}
+
+#[test]
 fn amx_complex_values_accumulate() {
     if !amx_tile_available() || !amx_complex_available() {
         return;
     }
-    use rust_isa::x86::matrix::amx_tile::{
-        AmxGuard, TileConfig, tcmmimfp16ps, tcmmrlfp16ps, tileloadd, tilestored, tilezero,
-    };
+    use rust_isa::x86::matrix::amx_complex::{tcmmimfp16ps, tcmmrlfp16ps};
+    use rust_isa::x86::matrix::amx_tile::{AmxGuard, TileConfig, tileloadd, tilestored, tilezero};
 
     let config = TileConfig::builder()
         .tile::<0>(16, 64)
@@ -327,5 +383,21 @@ fn amx_complex_values_accumulate() {
     }
     for lane in imaginary.chunks_exact(4) {
         assert_eq!(f32::from_le_bytes(lane.try_into().unwrap()), 32.0);
+    }
+}
+
+#[test]
+#[ignore = "requires an AMX-FP8 CPU and OS tile-state support"]
+fn amx_fp8_smoke() {
+    use rust_isa::x86::matrix::amx_fp8::{tdpbf8ps, tdpbhf8ps, tdphbf8ps, tdphf8ps};
+    use rust_isa::x86::matrix::amx_tile::{AmxGuard, TileConfig};
+
+    let config = TileConfig::builder().tile::<0>(1, 64).build();
+    unsafe {
+        let guard = AmxGuard::enter(&config);
+        core::hint::black_box(tdpbf8ps::<0, 0, 0>(&guard));
+        core::hint::black_box(tdpbhf8ps::<0, 0, 0>(&guard));
+        core::hint::black_box(tdphbf8ps::<0, 0, 0>(&guard));
+        core::hint::black_box(tdphf8ps::<0, 0, 0>(&guard));
     }
 }

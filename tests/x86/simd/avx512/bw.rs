@@ -1,3 +1,4 @@
+use rust_isa::x86::simd::Mask64;
 use rust_isa::x86::simd::avx512bw::*;
 use rust_isa::x86::simd::avx512f::*;
 
@@ -118,10 +119,13 @@ fn bw_extended_operations() {
     let cmp_b = i8x64(core::array::from_fn(
         |lane| if lane < 3 { lane as i8 } else { 99 },
     ));
-    assert_eq!(unsafe { vpcmpb::<0>(cmp_a, cmp_b) }, 0b111);
-    assert_eq!(unsafe { vptestmb(cmp_a, cmp_a) }, u64::MAX ^ 1);
-    assert_eq!(unsafe { vpmovb2m(i8x64([-1; 64])) }, u64::MAX);
-    assert_eq!(i8_lanes(unsafe { vpmovm2b(0xff) })[0], -1);
+    assert_eq!(unsafe { vpcmpb::<0>(cmp_a, cmp_b).bits() }, 0b111);
+    assert_eq!(unsafe { vptestmb(cmp_a, cmp_a).bits() }, u64::MAX ^ 1);
+    assert_eq!(unsafe { vpmovb2m(i8x64([-1; 64])).bits() }, u64::MAX);
+    assert_eq!(
+        i8_lanes(unsafe { vpmovm2b(Mask64::from_bits(0xff)) })[0],
+        -1
+    );
     assert_eq!(i8_lanes(unsafe { vpbroadcastb(7) })[..4], [7; 4]);
     assert_eq!(i16_lanes(unsafe { vpbroadcastw(300) })[..4], [300; 4]);
 }

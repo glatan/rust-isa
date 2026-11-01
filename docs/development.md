@@ -25,9 +25,13 @@ make test-wasip1
 make test-wasip1-wide-arithmetic
 
 # 文書と在庫
+make docs
+make docs-rustdoc-check
+make docs-serve
 make check-docs
 make inventory
 make inventory-check
+make manifest-pilot-check
 make doctest-coverage
 make doctest-inventory-check
 make zero-cost-check
@@ -39,7 +43,7 @@ make check-mnemonics
 make duplicates
 ```
 
-`make test` が既定で、`fmt-check`、`inventory-check`、`docs-check`、`fixtures-check`、`check-mnemonics`、`check-docs`、`test-check-wasm-link`、`test-host`、`test-doc`、`test-wasip1`、`test-wasip1-wide-arithmetic` を実行する。すべてのテストはイメージ内で、対象 triple を明示して実行する。各テストの役割は [テストの役割](testing.md) にある。
+`make test` が既定で、`fmt-check`、`inventory-check`、`manifest-pilot-check`、`docs-check`、`docs-rustdoc-check`、`fixtures-check`、`check-mnemonics`、`check-docs`、`test-check-wasm-link`、`test-host`、`test-doc`、`test-wasip1`、`test-wasip1-wide-arithmetic` を実行する。すべてのテストはイメージ内で、対象 triple を明示して実行する。各テストの役割は [テストの役割](testing.md) にある。
 
 `make test-debian` は Debian イメージで `make test` を実行し、native doctest を `DOC_TEST=run` で実行する。既定の Arch イメージでは、native doctest は `--no-run` のコンパイル確認だけを行う。
 
@@ -53,6 +57,7 @@ make duplicates
 - `make test-doc-debian`: Debian イメージで `DOC_TEST=run` の doctest を実行する
 - `make test-i686`: i686 fixture を SDE で実行する。テストドライバは x86_64 で動かし、ターゲットコードは SDE に限定する
 - `make doctest-coverage`: instruction inventory と網羅表を検査し、arch ごとの件数を表示する
+- `make manifest-pilot-check` は ACLE の SVE/SVE2 instruction inventory（824 命令）が `sve.toml` / `sve2.toml` にすべて収録されていることも検査する
 - `make doctest-inventory-check`: extension ごとの instruction inventory doctest が最新かを検査する
 - `make test-check-static`: シンボル一致、rustdoc の言語、レーン即値の検査
 - `make test-check-wasm-link`: `wasm32-unknown-unknown` のリンクと simd128 無効時の検査。`make test` に含まれる

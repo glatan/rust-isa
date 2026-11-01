@@ -72,6 +72,7 @@
 //! </details>
 
 use super::avx512f::V512;
+use crate::x86::simd::Mask64;
 
 unsafe extern "C" {
     fn rust_isa_avx512bitalg_vpopcntb(a: *const u8, out: *mut u8);
@@ -123,6 +124,6 @@ pub unsafe fn vpopcntw(a: V512) -> V512 {
 /// The caller must enable AVX-512 BITALG.
 #[target_feature(enable = "avx512bitalg")]
 #[inline]
-pub unsafe fn vpshufbitqmb(a: V512, idx: V512) -> u64 {
-    unsafe { rust_isa_avx512bitalg_vpshufbitqmb(a.as_ptr(), idx.as_ptr()) }
+pub unsafe fn vpshufbitqmb(a: V512, idx: V512) -> Mask64 {
+    Mask64::from_bits(unsafe { rust_isa_avx512bitalg_vpshufbitqmb(a.as_ptr(), idx.as_ptr()) })
 }

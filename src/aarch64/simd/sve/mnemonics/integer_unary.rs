@@ -650,3 +650,87 @@ pub unsafe fn uxtw_u32(a: &[u32], out: &mut [u64]) {
         rust_isa_sve_uxtw_u32(a.as_ptr(), out.as_mut_ptr(), a.len());
     }
 }
+
+unsafe extern "C" {
+    fn rust_isa_sve_cls_i8(a: *const i8, out: *mut i8, len: usize);
+}
+/// `cls` on `i8` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn cls_i8(a: &[i8], out: &mut [i8]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_cls_i8(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_cls_i16(a: *const i16, out: *mut i16, len: usize);
+}
+/// `cls` on `i16` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn cls_i16(a: &[i16], out: &mut [i16]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_cls_i16(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_cls_i32(a: *const i32, out: *mut i32, len: usize);
+}
+/// `cls` on `i32` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn cls_i32(a: &[i32], out: &mut [i32]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_cls_i32(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}
+
+unsafe extern "C" {
+    fn rust_isa_sve_cls_i64(a: *const i64, out: *mut i64, len: usize);
+}
+/// `cls` on `i64` slices.
+///
+/// # Panics
+///
+/// Panics when the input slices do not satisfy the operation's length requirement.
+///
+/// # Safety
+///
+/// The caller must enable SVE and the CPU must support it.
+#[target_feature(enable = "sve")]
+#[inline]
+pub unsafe fn cls_i64(a: &[i64], out: &mut [i64]) {
+    assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
+    unsafe {
+        rust_isa_sve_cls_i64(a.as_ptr(), out.as_mut_ptr(), a.len());
+    }
+}

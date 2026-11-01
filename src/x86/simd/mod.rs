@@ -1,11 +1,14 @@
 //! x86 SIMD extensions.
 
 pub mod avx;
+pub mod mask;
+pub use mask::{Mask1, Mask2, Mask4, Mask8, Mask16, Mask32, Mask64};
 pub mod avx10_1;
 pub mod avx10_2;
 pub mod avx2;
 pub mod avx512bf16;
 pub mod avx512bitalg;
+pub mod avx512bmm;
 pub mod avx512bw;
 pub mod avx512cd;
 pub mod avx512dq;

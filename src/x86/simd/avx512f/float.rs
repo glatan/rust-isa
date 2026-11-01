@@ -1,5 +1,7 @@
 //! Floating-point, conversion, shuffle, and scalar conversion instructions.
 
+use crate::x86::simd::Mask8;
+use crate::x86::simd::Mask16;
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;
 use crate::x86::simd::sse2::V128;
@@ -259,10 +261,10 @@ unsafe extern "C" {
 /// The caller must enable AVX-512F.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vcompressps(a: V512, mask: u16) -> V512 {
+pub unsafe fn vcompressps(a: V512, mask: Mask16) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512f_vcompressps(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512f_vcompressps(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -279,10 +281,10 @@ unsafe extern "C" {
 /// The caller must enable AVX-512F.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vcompresspd(a: V512, mask: u8) -> V512 {
+pub unsafe fn vcompresspd(a: V512, mask: Mask8) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512f_vcompresspd(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512f_vcompresspd(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -299,10 +301,10 @@ unsafe extern "C" {
 /// The caller must enable AVX-512F.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vexpandps(a: V512, mask: u16) -> V512 {
+pub unsafe fn vexpandps(a: V512, mask: Mask16) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512f_vexpandps(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512f_vexpandps(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -319,10 +321,10 @@ unsafe extern "C" {
 /// The caller must enable AVX-512F.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vexpandpd(a: V512, mask: u8) -> V512 {
+pub unsafe fn vexpandpd(a: V512, mask: Mask8) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512f_vexpandpd(a.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512f_vexpandpd(a.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -339,10 +341,10 @@ unsafe extern "C" {
 /// The caller must enable AVX-512F.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vblendmps(a: V512, b: V512, mask: u16) -> V512 {
+pub unsafe fn vblendmps(a: V512, b: V512, mask: Mask16) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512f_vblendmps(a.as_ptr(), b.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512f_vblendmps(a.as_ptr(), b.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -359,10 +361,10 @@ unsafe extern "C" {
 /// The caller must enable AVX-512F.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vblendmpd(a: V512, b: V512, mask: u8) -> V512 {
+pub unsafe fn vblendmpd(a: V512, b: V512, mask: Mask8) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512f_vblendmpd(a.as_ptr(), b.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512f_vblendmpd(a.as_ptr(), b.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -379,10 +381,10 @@ unsafe extern "C" {
 /// The caller must enable AVX-512F.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vmovaps(a: V512, src: V512, mask: u16) -> V512 {
+pub unsafe fn vmovaps(a: V512, src: V512, mask: Mask16) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512f_vmovaps(a.as_ptr(), src.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512f_vmovaps(a.as_ptr(), src.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -399,10 +401,10 @@ unsafe extern "C" {
 /// The caller must enable AVX-512F.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vmovapd(a: V512, src: V512, mask: u8) -> V512 {
+pub unsafe fn vmovapd(a: V512, src: V512, mask: Mask8) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512f_vmovapd(a.as_ptr(), src.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512f_vmovapd(a.as_ptr(), src.as_ptr(), mask.bits(), out.as_mut_ptr());
     }
     out
 }

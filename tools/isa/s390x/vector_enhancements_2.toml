@@ -1,0 +1,23 @@
+schema = 1
+arch = "s390x"
+extension = "vector-enhancements-2"
+module = "crate::s390x::simd::vector_enhancements_2"
+kind = "fixed"
+parent = ""
+source = "llvm/llvm-project"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VSLD"
+api = "vsld"
+required_features = ["vector-enhancements-2"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VSRD"
+api = "vsrd"
+required_features = ["vector-enhancements-2"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]

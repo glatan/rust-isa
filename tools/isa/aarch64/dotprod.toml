@@ -1,0 +1,21 @@
+schema = 1
+arch = "aarch64"
+extension = "dotprod"
+module = "crate::aarch64::simd::dotprod"
+kind = "fixed"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "SDOT"
+api = "sdot"
+required_features = ["dotprod"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UDOT"
+api = "udot"
+required_features = ["dotprod"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]

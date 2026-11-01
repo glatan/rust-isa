@@ -569,7 +569,7 @@ unsafe extern "C" {
         len: usize,
     );
 }
-/// `fmla` on `f32` slices (alias of `fma`).
+/// `fmla` on `f32` slices (same semantics as `fma`).
 ///
 /// # Panics
 ///
@@ -604,7 +604,7 @@ unsafe extern "C" {
         len: usize,
     );
 }
-/// `fmls` on `f32` slices (alias of `mls`).
+/// `fmls` on `f32` slices (same semantics as `mls`).
 ///
 /// # Panics
 ///
@@ -639,7 +639,7 @@ unsafe extern "C" {
         len: usize,
     );
 }
-/// `fmla` on `f64` slices (alias of `fma`).
+/// `fmla` on `f64` slices (same semantics as `fma`).
 ///
 /// # Panics
 ///
@@ -674,7 +674,7 @@ unsafe extern "C" {
         len: usize,
     );
 }
-/// `fmls` on `f64` slices (alias of `mls`).
+/// `fmls` on `f64` slices (same semantics as `mls`).
 ///
 /// # Panics
 ///

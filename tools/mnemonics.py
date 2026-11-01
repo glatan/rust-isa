@@ -90,10 +90,24 @@ def macro_line_ranges(text):
     for match in MACRO_INVOCATION.finditer(text):
         if match.group(1) == "macro_rules":
             continue
+        line_start = text.rfind("\n", 0, match.start()) + 1
+        if line_start != match.start():
+            # Nested macros such as asm! and assert_eq! are implementation
+            # details, not wrapper generators. Generated wrappers are invoked
+            # at the start of a line.
+            continue
         stack = [OPEN_DELIMITERS[match.group(2)]]
         index = match.start(2) + 1
         while index < len(text) and stack:
-            if text.startswith("//", index) or text.startswith("/*", index) or text[index] in ('"', "'"):
+            if text.startswith("//", index):
+                newline = text.find("\n", index)
+                index = len(text) if newline < 0 else newline + 1
+                continue
+            if text.startswith("/*", index):
+                close = text.find("*/", index + 2)
+                index = len(text) if close < 0 else close + 2
+                continue
+            if text[index] in ('"', "'"):
                 index = skip_literal(text, index)
                 continue
             char = text[index]

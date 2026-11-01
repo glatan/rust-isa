@@ -65,3 +65,24 @@ __attribute__((always_inline))
 uint64_t rust_isa_riscv_zbb_ror(uint64_t value, uint64_t shift) {
     return __riscv_ror_64(value, (uint32_t)shift);
 }
+
+__attribute__((always_inline))
+uint64_t rust_isa_riscv_zbb_max_signed(uint64_t a, uint64_t b) {
+    return (int64_t)a > (int64_t)b ? a : b;
+}
+
+__attribute__((always_inline))
+uint64_t rust_isa_riscv_zbb_min_signed(uint64_t a, uint64_t b) {
+    return (int64_t)a < (int64_t)b ? a : b;
+}
+
+__attribute__((always_inline))
+uint64_t rust_isa_riscv_zbb_orc_b(uint64_t value) {
+    uint64_t out = 0;
+    for (unsigned shift = 0; shift < 64; shift += 8) {
+        if ((value >> shift) & 0xff) {
+            out |= 0xffULL << shift;
+        }
+    }
+    return out;
+}

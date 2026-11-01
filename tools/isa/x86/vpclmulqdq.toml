@@ -1,0 +1,23 @@
+schema = 1
+arch = "x86_64"
+extension = "vpclmulqdq"
+module = "crate::x86::crypto::vpclmulqdq"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VPCLMULQDQ"
+api = "vpclmulqdq_v256"
+widths = [256]
+required_features = ["vpclmulqdq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPCLMULQDQ"
+api = "vpclmulqdq_v512"
+widths = [512]
+required_features = ["vpclmulqdq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

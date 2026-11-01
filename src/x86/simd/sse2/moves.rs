@@ -86,3 +86,26 @@ pub fn movd(a: V128) -> u32 {
 pub fn movq(a: V128) -> u64 {
     unsafe { rust_isa_sse2_movq(a.as_ptr()) }
 }
+
+/// `pinsrw`
+///
+/// Insert `value` into 16-bit lane `IMM`. `IMM` must be in `0..=7`.
+#[inline(always)]
+pub fn pinsrw<const IMM: u8>(a: V128, value: u16) -> V128 {
+    const { assert!(IMM <= 7, "pinsrw lane must be in 0..=7") };
+    let mut bytes = a.to_bytes();
+    let offset = usize::from(IMM) * 2;
+    bytes[offset..offset + 2].copy_from_slice(&value.to_le_bytes());
+    V128::from_bytes(bytes)
+}
+
+/// `pextrw`
+///
+/// Extract 16-bit lane `IMM` and zero-extend it. `IMM` must be in `0..=7`.
+#[inline(always)]
+pub fn pextrw<const IMM: u8>(a: V128) -> u16 {
+    const { assert!(IMM <= 7, "pextrw lane must be in 0..=7") };
+    let bytes = a.to_bytes();
+    let offset = usize::from(IMM) * 2;
+    u16::from_le_bytes([bytes[offset], bytes[offset + 1]])
+}

@@ -1,0 +1,21 @@
+schema = 1
+arch = "x86_64"
+extension = "avx512vp2intersect"
+module = "crate::x86::simd::avx512vp2intersect"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VP2INTERSECTD"
+api = "vp2intersectd"
+required_features = ["avx512vp2intersect"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VP2INTERSECTQ"
+api = "vp2intersectq"
+required_features = ["avx512vp2intersect"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

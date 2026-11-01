@@ -1,0 +1,33 @@
+schema = 1
+arch = "x86_64"
+extension = "amx-int8"
+module = "crate::x86::matrix::amx_int8"
+kind = "subextension"
+parent = "amx-tile"
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "TDPBSSD"
+api = "tdpbssd"
+widths = [128]
+required_features = ["amx-tile", "amx-int8"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TDPBSUD"
+api = "tdpbsud"
+widths = [128]
+required_features = ["amx-tile", "amx-int8"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TDPBUUD"
+api = "tdpbuud"
+widths = [128]
+required_features = ["amx-tile", "amx-int8"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]

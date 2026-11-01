@@ -83,6 +83,10 @@ help:
 		'test-wasip1-wide-arithmetic  wide-arithmetic 有効時の nextest と doctest' \
 		'inventory                    arch/extension ごとの実装状況を表示する' \
 		'inventory-check              README・ゼロコスト結果表・doctest 在庫を検査する' \
+		'manifest-pilot-check         上流 manifest の pilot schema と source 参照を検査する' \
+		'docs                         全 target のローカル rustdoc を docs-build に生成する' \
+		'docs-rustdoc-check           docs-build の index と各 target の有無を検査する' \
+		'docs-serve                   docs-build をローカル HTTP で表示する' \
 		'coverage                     inventory の互換alias' \
 		'coverage-check               inventory-check の互換alias' \
 		'doctest-coverage             doctest 網羅を検査して arch 別件数を表示する' \
@@ -142,6 +146,22 @@ inventory-check: zero-cost-check doctest-inventory-check test-gaps-check
 	$(PODMAN_RUN) python3 tools/inventory.py --check
 	$(PODMAN_RUN) python3 tools/doc_names.py --check
 
+.PHONY: manifest-pilot-check
+manifest-pilot-check:
+	$(PODMAN_RUN) python3 tools/coverage.py --pilot --require-complete
+
+.PHONY: docs
+docs:
+	$(PODMAN_RUN) python3 tools/docs.py
+
+.PHONY: docs-rustdoc-check
+docs-rustdoc-check: docs
+	$(PODMAN_RUN) python3 tools/docs.py --check
+
+.PHONY: docs-serve
+docs-serve:
+	python3 -m http.server -d docs-build
+
 .PHONY: coverage-check
 coverage-check: inventory-check
 
@@ -190,7 +210,7 @@ check-docs:
 		CARGO_TARGET_DIR=$(WASM_DOC_TARGET_DIR) RUSTDOCFLAGS="-D warnings -C target-feature=+simd128,+relaxed-simd" cargo doc --no-deps --features wide-arithmetic --target $(WASM_UNKNOWN_TARGET)'
 
 .PHONY: test
-test: fmt-check inventory-check docs-check fixtures-check check-mnemonics check-docs test-check-wasm-link test-host test-doc test-wasip1 test-wasip1-wide-arithmetic
+test: fmt-check inventory-check manifest-pilot-check docs-check docs-rustdoc-check fixtures-check check-mnemonics check-docs test-check-wasm-link test-host test-doc test-wasip1 test-wasip1-wide-arithmetic
 
 .PHONY: test-host
 test-host: test-x86_64 test-cross

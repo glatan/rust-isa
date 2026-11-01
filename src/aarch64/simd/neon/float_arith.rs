@@ -241,22 +241,22 @@ unary!(
 );
 binary!(
     /// Add 64-bit float lanes.
-    add_f64,
+    fadd_f64,
     rust_isa_neon_fadd_f64
 );
 binary!(
     /// Multiply 64-bit float lanes.
-    mul_f64,
+    fmul_f64,
     rust_isa_neon_fmul_f64
 );
 binary!(
     /// Subtract 64-bit float lanes.
-    sub_f64,
+    fsub_f64,
     rust_isa_neon_fsub_f64
 );
 binary!(
     /// Divide 64-bit float lanes.
-    div_f64,
+    fdiv_f64,
     rust_isa_neon_fdiv_f64
 );
 

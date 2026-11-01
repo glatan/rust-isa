@@ -1,0 +1,33 @@
+schema = 1
+arch = "powerpc64le"
+extension = "power10-vector"
+module = "crate::powerpc::simd::power10_vector"
+kind = "fixed"
+parent = ""
+source = "open-power-sdk/PowerISA"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VCLZW"
+api = "cntlz_i32"
+required_features = ["power10-vector"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VCLZD"
+api = "vclzd"
+required_features = ["power10-vector"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VPOPCNTD"
+api = "vpopcntd"
+required_features = ["power10-vector"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VPOPCNTW"
+api = "vpopcntw"
+required_features = ["power10-vector"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]

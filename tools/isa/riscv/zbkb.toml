@@ -1,0 +1,67 @@
+schema = 1
+arch = "riscv64"
+extension = "zbkb"
+module = "crate::riscv"
+kind = "fixed"
+parent = ""
+source = "riscv/riscv-opcodes"
+coverage = "pilot"
+raw = true
+
+normalization = "mnemonic+api"
+
+[[instruction]]
+mnemonic = "ROL"
+api = "rol"
+forms = ["rol"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "ROR"
+api = "ror"
+forms = ["ror"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "ANDN"
+api = "andn"
+forms = ["andn"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "ORN"
+api = "orn"
+forms = ["orn"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "XNOR"
+api = "xnor"
+forms = ["xnor"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "PACK"
+api = "pack"
+forms = ["pack"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "PACKH"
+api = "packh"
+forms = ["packh"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "BREV8"
+api = "brev8"
+forms = ["brev8"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]

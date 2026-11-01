@@ -1,0 +1,297 @@
+schema = 1
+arch = "x86_64"
+extension = "sse4.1"
+module = "crate::x86::simd::sse4_1"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "BLENDPD"
+api = "blendpd"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "BLENDPS"
+api = "blendps"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "BLENDVPD"
+api = "blendvpd"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "BLENDVPS"
+api = "blendvps"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "DPPD"
+api = "dppd"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "DPPS"
+api = "dpps"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "INSERTPS"
+api = "insertps"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MOVNTDQA"
+api = "movntdqa"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "MPSADBW"
+api = "mpsadbw"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PACKUSDW"
+api = "packusdw"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PBLENDVB"
+api = "pblendvb"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PBLENDW"
+api = "pblendw"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PEXTRB"
+api = "pextrb"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PEXTRD"
+api = "pextrd"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PEXTRQ"
+api = "pextrq"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PHMINPOSUW"
+api = "phminposuw"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PINSRB"
+api = "pinsrb"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PINSRD"
+api = "pinsrd"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PINSRQ"
+api = "pinsrq"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMAXSB"
+api = "pmaxsb"
+required_features = ["sse4.1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMAXSD"
+api = "pmaxsd"
+required_features = ["sse4.1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMAXUD"
+api = "pmaxud"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMAXUW"
+api = "pmaxuw"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMINSB"
+api = "pminsb"
+required_features = ["sse4.1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMINSD"
+api = "pminsd"
+required_features = ["sse4.1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMINUD"
+api = "pminud"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMINUW"
+api = "pminuw"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMOVSXBD"
+api = "pmovsxbd"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMOVSXBQ"
+api = "pmovsxbq"
+required_features = ["sse4.1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMOVSXBW"
+api = "pmovsxbw"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMOVSXDQ"
+api = "pmovsxdq"
+required_features = ["sse4.1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMOVSXWD"
+api = "pmovsxwd"
+required_features = ["sse4.1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMOVSXWQ"
+api = "pmovsxwq"
+required_features = ["sse4.1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMOVZXBD"
+api = "pmovzxbd"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMOVZXBQ"
+api = "pmovzxbq"
+required_features = ["sse4.1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMOVZXBW"
+api = "pmovzxbw"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMOVZXDQ"
+api = "pmovzxdq"
+required_features = ["sse4.1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMOVZXWD"
+api = "pmovzxwd"
+required_features = ["sse4.1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMOVZXWQ"
+api = "pmovzxwq"
+required_features = ["sse4.1"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMULDQ"
+api = "pmuldq"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PMULLD"
+api = "pmulld"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PTEST"
+api = "ptest"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "ROUNDPD"
+api = "roundpd"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "ROUNDPS"
+api = "roundps"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "ROUNDSD"
+api = "roundsd"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "ROUNDSS"
+api = "roundss"
+required_features = ["sse4.1"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

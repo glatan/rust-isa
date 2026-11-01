@@ -20,6 +20,7 @@
 //! if std::env::var_os("RUST_ISA_SDE_FLAGS").is_some() {
 //! use rust_isa::x86::simd::avx512dq::vpmullq;
 //! use rust_isa::x86::simd::avx512f::V512;
+//! use rust_isa::x86::simd::{Mask1, Mask8, Mask16};
 //!
 //! let v = V512::from_bytes([0; 64]);
 //! assert_eq!(unsafe { vpmullq(v, v) }.to_bytes(), [0; 64]);
@@ -36,6 +37,7 @@
 //! use rust_isa::x86::simd::sse2::V128;
 //! use rust_isa::x86::simd::avx::V256;
 //! use rust_isa::x86::simd::avx512f::V512;
+//! use rust_isa::x86::simd::{Mask1, Mask8, Mask16};
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //! let v256 = V256::from_bytes([0; 32]);
@@ -80,8 +82,8 @@
 //! let _ = unsafe { vorpd(v512, v512) };
 //! let _ = unsafe { vorps(v512, v512) };
 //! let _ = unsafe { vpmovd2m(v512) };
-//! let _ = unsafe { vpmovm2d(0) };
-//! let _ = unsafe { vpmovm2q(0) };
+//! let _ = unsafe { vpmovm2d( Mask16::from_bits(0)) };
+//! let _ = unsafe { vpmovm2q( Mask8::from_bits(0)) };
 //! let _ = unsafe { vpmovq2m(v512) };
 //! let _ = unsafe { vpmullq(v512, v512) };
 //! let _ = unsafe { vrangepd::<0>(v512, v512) };
@@ -186,6 +188,7 @@
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;
 use crate::x86::simd::sse2::V128;
+use crate::x86::simd::{Mask1, Mask8, Mask16};
 use core::arch::asm;
 
 unsafe extern "C" {
@@ -222,10 +225,10 @@ unsafe extern "C" {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512dq")]
 #[inline]
-pub unsafe fn vpmovm2d(mask: u16) -> V512 {
+pub unsafe fn vpmovm2d(mask: Mask16) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512dq_vpmovm2d(mask, out.as_mut_ptr());
+        rust_isa_avx512dq_vpmovm2d(mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -243,10 +246,10 @@ unsafe extern "C" {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512dq")]
 #[inline]
-pub unsafe fn vpmovm2q(mask: u8) -> V512 {
+pub unsafe fn vpmovm2q(mask: Mask8) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512dq_vpmovm2q(mask, out.as_mut_ptr());
+        rust_isa_avx512dq_vpmovm2q(mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -264,8 +267,8 @@ unsafe extern "C" {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512dq")]
 #[inline]
-pub unsafe fn vpmovd2m(a: V512) -> u16 {
-    unsafe { rust_isa_avx512dq_vpmovd2m(a.as_ptr()) }
+pub unsafe fn vpmovd2m(a: V512) -> Mask16 {
+    Mask16::from_bits(unsafe { rust_isa_avx512dq_vpmovd2m(a.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -281,8 +284,8 @@ unsafe extern "C" {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512dq")]
 #[inline]
-pub unsafe fn vpmovq2m(a: V512) -> u8 {
-    unsafe { rust_isa_avx512dq_vpmovq2m(a.as_ptr()) }
+pub unsafe fn vpmovq2m(a: V512) -> Mask8 {
+    Mask8::from_bits(unsafe { rust_isa_avx512dq_vpmovq2m(a.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -462,7 +465,7 @@ pub unsafe fn vxorps(a: V512, b: V512) -> V512 {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512dq")]
 #[inline]
-pub unsafe fn vcmpps<const IMM: u8>(a: V512, b: V512) -> u16 {
+pub unsafe fn vcmpps<const IMM: u8>(a: V512, b: V512) -> Mask16 {
     let out: u32;
     unsafe {
         asm!(
@@ -480,7 +483,7 @@ pub unsafe fn vcmpps<const IMM: u8>(a: V512, b: V512) -> u16 {
             options(nostack, preserves_flags),
         );
     }
-    out as u16
+    Mask16::from_bits(out as u16)
 }
 
 /// `vcmppd`
@@ -492,7 +495,7 @@ pub unsafe fn vcmpps<const IMM: u8>(a: V512, b: V512) -> u16 {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512dq")]
 #[inline]
-pub unsafe fn vcmppd<const IMM: u8>(a: V512, b: V512) -> u8 {
+pub unsafe fn vcmppd<const IMM: u8>(a: V512, b: V512) -> Mask8 {
     let out: u32;
     unsafe {
         asm!(
@@ -510,7 +513,7 @@ pub unsafe fn vcmppd<const IMM: u8>(a: V512, b: V512) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask8::from_bits(out as u8)
 }
 
 /// `vcmpss`
@@ -522,7 +525,7 @@ pub unsafe fn vcmppd<const IMM: u8>(a: V512, b: V512) -> u8 {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512dq")]
 #[inline]
-pub unsafe fn vcmpss<const IMM: u8>(a: V128, b: V128) -> u8 {
+pub unsafe fn vcmpss<const IMM: u8>(a: V128, b: V128) -> Mask1 {
     let out: u32;
     unsafe {
         asm!(
@@ -540,7 +543,7 @@ pub unsafe fn vcmpss<const IMM: u8>(a: V128, b: V128) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask1::from_bits(out as u8)
 }
 
 /// `vcmpsd`
@@ -552,7 +555,7 @@ pub unsafe fn vcmpss<const IMM: u8>(a: V128, b: V128) -> u8 {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512dq")]
 #[inline]
-pub unsafe fn vcmpsd<const IMM: u8>(a: V128, b: V128) -> u8 {
+pub unsafe fn vcmpsd<const IMM: u8>(a: V128, b: V128) -> Mask1 {
     let out: u32;
     unsafe {
         asm!(
@@ -570,7 +573,7 @@ pub unsafe fn vcmpsd<const IMM: u8>(a: V128, b: V128) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask1::from_bits(out as u8)
 }
 
 /// `vfpclassps`
@@ -582,7 +585,7 @@ pub unsafe fn vcmpsd<const IMM: u8>(a: V128, b: V128) -> u8 {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512dq")]
 #[inline]
-pub unsafe fn vfpclassps<const IMM: u8>(a: V512) -> u16 {
+pub unsafe fn vfpclassps<const IMM: u8>(a: V512) -> Mask16 {
     let out: u32;
     unsafe {
         asm!(
@@ -597,7 +600,7 @@ pub unsafe fn vfpclassps<const IMM: u8>(a: V512) -> u16 {
             options(nostack, preserves_flags),
         );
     }
-    out as u16
+    Mask16::from_bits(out as u16)
 }
 
 /// `vfpclasspd`
@@ -609,7 +612,7 @@ pub unsafe fn vfpclassps<const IMM: u8>(a: V512) -> u16 {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512dq")]
 #[inline]
-pub unsafe fn vfpclasspd<const IMM: u8>(a: V512) -> u8 {
+pub unsafe fn vfpclasspd<const IMM: u8>(a: V512) -> Mask8 {
     let out: u32;
     unsafe {
         asm!(
@@ -624,7 +627,7 @@ pub unsafe fn vfpclasspd<const IMM: u8>(a: V512) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask8::from_bits(out as u8)
 }
 
 /// `vfpclassss`
@@ -636,7 +639,7 @@ pub unsafe fn vfpclasspd<const IMM: u8>(a: V512) -> u8 {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512dq")]
 #[inline]
-pub unsafe fn vfpclassss<const IMM: u8>(a: V128) -> u8 {
+pub unsafe fn vfpclassss<const IMM: u8>(a: V128) -> Mask1 {
     let out: u32;
     unsafe {
         asm!(
@@ -651,7 +654,7 @@ pub unsafe fn vfpclassss<const IMM: u8>(a: V128) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask1::from_bits(out as u8)
 }
 
 /// `vfpclasssd`
@@ -663,7 +666,7 @@ pub unsafe fn vfpclassss<const IMM: u8>(a: V128) -> u8 {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512dq")]
 #[inline]
-pub unsafe fn vfpclasssd<const IMM: u8>(a: V128) -> u8 {
+pub unsafe fn vfpclasssd<const IMM: u8>(a: V128) -> Mask1 {
     let out: u32;
     unsafe {
         asm!(
@@ -678,7 +681,7 @@ pub unsafe fn vfpclasssd<const IMM: u8>(a: V128) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask1::from_bits(out as u8)
 }
 
 /// `vrangeps`

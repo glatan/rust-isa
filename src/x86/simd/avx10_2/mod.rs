@@ -254,6 +254,7 @@
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;
 use crate::x86::simd::sse2::V128;
+use crate::x86::simd::{Mask4, Mask8, Mask16, Mask32};
 use core::arch::asm;
 
 unsafe extern "C" {
@@ -544,7 +545,7 @@ pub unsafe fn vminmaxsh_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vcmpps_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
+pub unsafe fn vcmpps_v256<const IMM: u8>(a: V256, b: V256) -> Mask8 {
     let out: u32;
     unsafe {
         asm!(
@@ -562,7 +563,7 @@ pub unsafe fn vcmpps_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask8::from_bits(out as u8)
 }
 
 /// `vcmpps_v512`
@@ -572,7 +573,7 @@ pub unsafe fn vcmpps_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vcmpps_v512<const IMM: u8>(a: V512, b: V512) -> u16 {
+pub unsafe fn vcmpps_v512<const IMM: u8>(a: V512, b: V512) -> Mask16 {
     let out: u32;
     unsafe {
         asm!(
@@ -590,7 +591,7 @@ pub unsafe fn vcmpps_v512<const IMM: u8>(a: V512, b: V512) -> u16 {
             options(nostack, preserves_flags),
         );
     }
-    out as u16
+    Mask16::from_bits(out as u16)
 }
 
 /// `vcmppd_v256`
@@ -600,7 +601,7 @@ pub unsafe fn vcmpps_v512<const IMM: u8>(a: V512, b: V512) -> u16 {
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vcmppd_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
+pub unsafe fn vcmppd_v256<const IMM: u8>(a: V256, b: V256) -> Mask4 {
     let out: u32;
     unsafe {
         asm!(
@@ -618,7 +619,7 @@ pub unsafe fn vcmppd_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask4::from_bits(out as u8)
 }
 
 /// `vcmppd_v512`
@@ -628,7 +629,7 @@ pub unsafe fn vcmppd_v256<const IMM: u8>(a: V256, b: V256) -> u8 {
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vcmppd_v512<const IMM: u8>(a: V512, b: V512) -> u8 {
+pub unsafe fn vcmppd_v512<const IMM: u8>(a: V512, b: V512) -> Mask8 {
     let out: u32;
     unsafe {
         asm!(
@@ -646,7 +647,7 @@ pub unsafe fn vcmppd_v512<const IMM: u8>(a: V512, b: V512) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask8::from_bits(out as u8)
 }
 
 /// `vcmpph_v256`
@@ -656,7 +657,7 @@ pub unsafe fn vcmppd_v512<const IMM: u8>(a: V512, b: V512) -> u8 {
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vcmpph_v256<const IMM: u8>(a: V256, b: V256) -> u16 {
+pub unsafe fn vcmpph_v256<const IMM: u8>(a: V256, b: V256) -> Mask16 {
     let out: u32;
     unsafe {
         asm!(
@@ -674,7 +675,7 @@ pub unsafe fn vcmpph_v256<const IMM: u8>(a: V256, b: V256) -> u16 {
             options(nostack, preserves_flags),
         );
     }
-    out as u16
+    Mask16::from_bits(out as u16)
 }
 
 /// `vcmpph_v512`
@@ -684,7 +685,7 @@ pub unsafe fn vcmpph_v256<const IMM: u8>(a: V256, b: V256) -> u16 {
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vcmpph_v512<const IMM: u8>(a: V512, b: V512) -> u32 {
+pub unsafe fn vcmpph_v512<const IMM: u8>(a: V512, b: V512) -> Mask32 {
     let out: u32;
     unsafe {
         asm!(
@@ -702,7 +703,7 @@ pub unsafe fn vcmpph_v512<const IMM: u8>(a: V512, b: V512) -> u32 {
             options(nostack, preserves_flags),
         );
     }
-    out as u32
+    Mask32::from_bits(out as u32)
 }
 
 /// `vfpclassps_v256`
@@ -712,7 +713,7 @@ pub unsafe fn vcmpph_v512<const IMM: u8>(a: V512, b: V512) -> u32 {
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vfpclassps_v256<const IMM: u8>(a: V256) -> u8 {
+pub unsafe fn vfpclassps_v256<const IMM: u8>(a: V256) -> Mask8 {
     let out: u32;
     unsafe {
         asm!(
@@ -727,7 +728,7 @@ pub unsafe fn vfpclassps_v256<const IMM: u8>(a: V256) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask8::from_bits(out as u8)
 }
 
 /// `vfpclassps_v512`
@@ -737,7 +738,7 @@ pub unsafe fn vfpclassps_v256<const IMM: u8>(a: V256) -> u8 {
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vfpclassps_v512<const IMM: u8>(a: V512) -> u16 {
+pub unsafe fn vfpclassps_v512<const IMM: u8>(a: V512) -> Mask16 {
     let out: u32;
     unsafe {
         asm!(
@@ -752,7 +753,7 @@ pub unsafe fn vfpclassps_v512<const IMM: u8>(a: V512) -> u16 {
             options(nostack, preserves_flags),
         );
     }
-    out as u16
+    Mask16::from_bits(out as u16)
 }
 
 /// `vfpclasspd_v256`
@@ -762,7 +763,7 @@ pub unsafe fn vfpclassps_v512<const IMM: u8>(a: V512) -> u16 {
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vfpclasspd_v256<const IMM: u8>(a: V256) -> u8 {
+pub unsafe fn vfpclasspd_v256<const IMM: u8>(a: V256) -> Mask4 {
     let out: u32;
     unsafe {
         asm!(
@@ -777,7 +778,7 @@ pub unsafe fn vfpclasspd_v256<const IMM: u8>(a: V256) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask4::from_bits(out as u8)
 }
 
 /// `vfpclasspd_v512`
@@ -787,7 +788,7 @@ pub unsafe fn vfpclasspd_v256<const IMM: u8>(a: V256) -> u8 {
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vfpclasspd_v512<const IMM: u8>(a: V512) -> u8 {
+pub unsafe fn vfpclasspd_v512<const IMM: u8>(a: V512) -> Mask8 {
     let out: u32;
     unsafe {
         asm!(
@@ -802,7 +803,7 @@ pub unsafe fn vfpclasspd_v512<const IMM: u8>(a: V512) -> u8 {
             options(nostack, preserves_flags),
         );
     }
-    out as u8
+    Mask8::from_bits(out as u8)
 }
 
 /// `vfpclassph_v256`
@@ -812,7 +813,7 @@ pub unsafe fn vfpclasspd_v512<const IMM: u8>(a: V512) -> u8 {
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vfpclassph_v256<const IMM: u8>(a: V256) -> u16 {
+pub unsafe fn vfpclassph_v256<const IMM: u8>(a: V256) -> Mask16 {
     let out: u32;
     unsafe {
         asm!(
@@ -827,7 +828,7 @@ pub unsafe fn vfpclassph_v256<const IMM: u8>(a: V256) -> u16 {
             options(nostack, preserves_flags),
         );
     }
-    out as u16
+    Mask16::from_bits(out as u16)
 }
 
 /// `vfpclassph_v512`
@@ -837,7 +838,7 @@ pub unsafe fn vfpclassph_v256<const IMM: u8>(a: V256) -> u16 {
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
-pub unsafe fn vfpclassph_v512<const IMM: u8>(a: V512) -> u32 {
+pub unsafe fn vfpclassph_v512<const IMM: u8>(a: V512) -> Mask32 {
     let out: u32;
     unsafe {
         asm!(
@@ -852,7 +853,7 @@ pub unsafe fn vfpclassph_v512<const IMM: u8>(a: V512) -> u32 {
             options(nostack, preserves_flags),
         );
     }
-    out as u32
+    Mask32::from_bits(out as u32)
 }
 
 unsafe extern "C" {

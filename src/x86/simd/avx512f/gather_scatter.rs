@@ -1,5 +1,7 @@
 //! Gather and scatter instructions.
 
+use crate::x86::simd::Mask8;
+use crate::x86::simd::Mask16;
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;
 
@@ -23,10 +25,16 @@ unsafe extern "C" {
 /// Every selected address must be valid for reading 4 bytes.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vgatherdps(src: V512, base: *const u8, indices: V512, mask: u16) -> V512 {
+pub unsafe fn vgatherdps(src: V512, base: *const u8, indices: V512, mask: Mask16) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512f_vgatherdps(src.as_ptr(), base, indices.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512f_vgatherdps(
+            src.as_ptr(),
+            base,
+            indices.as_ptr(),
+            mask.bits(),
+            out.as_mut_ptr(),
+        );
     }
     out
 }
@@ -51,10 +59,16 @@ unsafe extern "C" {
 /// Every selected address must be valid for reading 8 bytes.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vgatherdpd(src: V512, base: *const u8, indices: V256, mask: u8) -> V512 {
+pub unsafe fn vgatherdpd(src: V512, base: *const u8, indices: V256, mask: Mask8) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512f_vgatherdpd(src.as_ptr(), base, indices.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512f_vgatherdpd(
+            src.as_ptr(),
+            base,
+            indices.as_ptr(),
+            mask.bits(),
+            out.as_mut_ptr(),
+        );
     }
     out
 }
@@ -79,10 +93,16 @@ unsafe extern "C" {
 /// Every selected address must be valid for reading 4 bytes.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vgatherqps(src: V256, base: *const u8, indices: V512, mask: u8) -> V256 {
+pub unsafe fn vgatherqps(src: V256, base: *const u8, indices: V512, mask: Mask8) -> V256 {
     let mut out = V256::from_bytes([0; 32]);
     unsafe {
-        rust_isa_avx512f_vgatherqps(src.as_ptr(), base, indices.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512f_vgatherqps(
+            src.as_ptr(),
+            base,
+            indices.as_ptr(),
+            mask.bits(),
+            out.as_mut_ptr(),
+        );
     }
     out
 }
@@ -107,10 +127,16 @@ unsafe extern "C" {
 /// Every selected address must be valid for reading 8 bytes.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vgatherqpd(src: V512, base: *const u8, indices: V512, mask: u8) -> V512 {
+pub unsafe fn vgatherqpd(src: V512, base: *const u8, indices: V512, mask: Mask8) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512f_vgatherqpd(src.as_ptr(), base, indices.as_ptr(), mask, out.as_mut_ptr());
+        rust_isa_avx512f_vgatherqpd(
+            src.as_ptr(),
+            base,
+            indices.as_ptr(),
+            mask.bits(),
+            out.as_mut_ptr(),
+        );
     }
     out
 }
@@ -129,8 +155,8 @@ unsafe extern "C" {
 /// Every selected address must be valid for writing 4 bytes.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vscatterdps(base: *mut u8, indices: V512, a: V512, mask: u16) {
-    unsafe { rust_isa_avx512f_vscatterdps(base, indices.as_ptr(), a.as_ptr(), mask) }
+pub unsafe fn vscatterdps(base: *mut u8, indices: V512, a: V512, mask: Mask16) {
+    unsafe { rust_isa_avx512f_vscatterdps(base, indices.as_ptr(), a.as_ptr(), mask.bits()) }
 }
 
 unsafe extern "C" {
@@ -147,8 +173,8 @@ unsafe extern "C" {
 /// Every selected address must be valid for writing 8 bytes.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vscatterdpd(base: *mut u8, indices: V256, a: V512, mask: u8) {
-    unsafe { rust_isa_avx512f_vscatterdpd(base, indices.as_ptr(), a.as_ptr(), mask) }
+pub unsafe fn vscatterdpd(base: *mut u8, indices: V256, a: V512, mask: Mask8) {
+    unsafe { rust_isa_avx512f_vscatterdpd(base, indices.as_ptr(), a.as_ptr(), mask.bits()) }
 }
 
 unsafe extern "C" {
@@ -165,8 +191,8 @@ unsafe extern "C" {
 /// Every selected address must be valid for writing 4 bytes.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vscatterqps(base: *mut u8, indices: V512, a: V256, mask: u8) {
-    unsafe { rust_isa_avx512f_vscatterqps(base, indices.as_ptr(), a.as_ptr(), mask) }
+pub unsafe fn vscatterqps(base: *mut u8, indices: V512, a: V256, mask: Mask8) {
+    unsafe { rust_isa_avx512f_vscatterqps(base, indices.as_ptr(), a.as_ptr(), mask.bits()) }
 }
 
 unsafe extern "C" {
@@ -183,6 +209,6 @@ unsafe extern "C" {
 /// Every selected address must be valid for writing 8 bytes.
 #[target_feature(enable = "avx512f")]
 #[inline]
-pub unsafe fn vscatterqpd(base: *mut u8, indices: V512, a: V512, mask: u8) {
-    unsafe { rust_isa_avx512f_vscatterqpd(base, indices.as_ptr(), a.as_ptr(), mask) }
+pub unsafe fn vscatterqpd(base: *mut u8, indices: V512, a: V512, mask: Mask8) {
+    unsafe { rust_isa_avx512f_vscatterqpd(base, indices.as_ptr(), a.as_ptr(), mask.bits()) }
 }

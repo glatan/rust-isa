@@ -1,0 +1,405 @@
+schema = 1
+arch = "x86_64"
+extension = "xop"
+module = "crate::x86::simd::xop"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VFRCZPD"
+api = "vfrczpd"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFRCZPS"
+api = "vfrczps"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFRCZSD"
+api = "vfrczsd"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFRCZSS"
+api = "vfrczss"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPCMOV"
+api = "vpcmov"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPCOMB"
+api = "vpcomb"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPCOMD"
+api = "vpcomd"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPCOMQ"
+api = "vpcomq"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPCOMUB"
+api = "vpcomub"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPCOMUD"
+api = "vpcomud"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPCOMUQ"
+api = "vpcomuq"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPCOMUW"
+api = "vpcomuw"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPCOMW"
+api = "vpcomw"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPERMIL2PD"
+api = "vpermil2pd"
+required_features = ["xop"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPERMIL2PS"
+api = "vpermil2ps"
+required_features = ["xop"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPHADDBD"
+api = "vphaddbd"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPHADDBQ"
+api = "vphaddbq"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPHADDBW"
+api = "vphaddbw"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPHADDDQ"
+api = "vphadddq"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPHADDUBD"
+api = "vphaddubd"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPHADDUBQ"
+api = "vphaddubq"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPHADDUBW"
+api = "vphaddubw"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPHADDUDQ"
+api = "vphaddudq"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPHADDUWD"
+api = "vphadduwd"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPHADDUWQ"
+api = "vphadduwq"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPHADDWD"
+api = "vphaddwd"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPHADDWQ"
+api = "vphaddwq"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPHSUBBW"
+api = "vphsubbw"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPHSUBDQ"
+api = "vphsubdq"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPHSUBWD"
+api = "vphsubwd"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMACSDD"
+api = "vpmacsdd"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMACSDQH"
+api = "vpmacsdqh"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMACSDQL"
+api = "vpmacsdql"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMACSDU"
+api = "vpmacsdu"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMACSSDD"
+api = "vpmacssdd"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMACSSDQH"
+api = "vpmacssdqh"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMACSSDQL"
+api = "vpmacssdql"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMACSSDU"
+api = "vpmacssdu"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMACSSWD"
+api = "vpmacsswd"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMACSSWW"
+api = "vpmacssww"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMACSWD"
+api = "vpmacswd"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMACSWW"
+api = "vpmacsww"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMADCSSWD"
+api = "vpmadcsswd"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMADCSWD"
+api = "vpmadcswd"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPPERM"
+api = "vpperm"
+required_features = ["xop"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPROTB"
+api = "vprotb"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPROTD"
+api = "vprotd"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPROTQ"
+api = "vprotq"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPROTW"
+api = "vprotw"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSHAB"
+api = "vpshab"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSHAD"
+api = "vpshad"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSHAQ"
+api = "vpshaq"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSHAW"
+api = "vpshaw"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSHLB"
+api = "vpshlb"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSHLD"
+api = "vpshld"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSHLQ"
+api = "vpshlq"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPSHLW"
+api = "vpshlw"
+required_features = ["xop"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]

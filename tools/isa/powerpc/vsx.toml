@@ -1,0 +1,307 @@
+schema = 1
+arch = "powerpc64le"
+extension = "vsx"
+module = "crate::powerpc::simd::vsx"
+kind = "fixed"
+parent = ""
+source = "open-power-sdk/PowerISA"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "XVABSDP"
+api = "abs_f64"
+required_features = ["vsx"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVADDSP"
+api = "add_f32"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVADDDP"
+api = "add_f64"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVDIVDP"
+api = "div_f64"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVMULDP"
+api = "mul_f64"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVSQRTDP"
+api = "sqrt_f64"
+required_features = ["vsx"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBDP"
+api = "sub_f64"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VCMPGT"
+api = "vcmpgt"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XSCVDPSP"
+api = "xscvdpsp"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XSCVDPSPN"
+api = "xscvdpspn"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XSCVSPDP"
+api = "xscvspdp"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XSCVSPDPN"
+api = "xscvspdpn"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVABS"
+api = "xvabs"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVADD"
+api = "xvadd"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVAND"
+api = "xvand"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVCMPEQ"
+api = "xvcmpeq"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVCPSGN"
+api = "xvcpsgn"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVCVDPSXDS"
+api = "xvcvdpsxds"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVCVDPSXWS"
+api = "xvcvdpsxws"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVCVDPUXDS"
+api = "xvcvdpuxds"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVCVDPUXWS"
+api = "xvcvdpuxws"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVCVSXDSP"
+api = "xvcvsxdsp"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVCVSXWSP"
+api = "xvcvsxwsp"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVCVUXDSP"
+api = "xvcvuxdsp"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVCVUXWSP"
+api = "xvcvuxwsp"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVDIV"
+api = "xvdiv"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVMAX"
+api = "xvmax"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVMIN"
+api = "xvmin"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVMUL"
+api = "xvmul"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVNEG"
+api = "xvneg"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVOR"
+api = "xvor"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVPERM"
+api = "xvperm"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVRDPI"
+api = "xvrdpi"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVRDPIC"
+api = "xvrdpic"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVRDPIM"
+api = "xvrdpim"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVRDPIP"
+api = "xvrdpip"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVRDPIZ"
+api = "xvrdpiz"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVSEL"
+api = "xvsel"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVSL"
+api = "xvsl"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "VSLDOI"
+api = "vsldoi"
+required_features = ["vsx"]
+status = "implemented"
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVSR"
+api = "xvsr"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVSUB"
+api = "xvsub"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]
+[[instruction]]
+mnemonic = "XVXOR"
+api = "xvxor"
+required_features = ["vsx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/powerpc.rs::powerpc_pipeline"]

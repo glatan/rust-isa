@@ -82,22 +82,10 @@
 //! let _ = unsafe { vclzg(v128) };
 //! let _ = unsafe { vctzb(v128) };
 //! let _ = unsafe { vctzg(v128) };
-//! let _ = unsafe { vfa(v128, v128) };
 //! let _ = unsafe { vfae::<0, 0>(v128, v128) };
-//! let _ = unsafe { vfce(v128, v128) };
-//! let _ = unsafe { vfch(v128, v128) };
-//! let _ = unsafe { vfche(v128, v128) };
-//! let _ = unsafe { vfd(v128, v128) };
 //! let _ = unsafe { vfee::<0, 0>(v128, v128) };
 //! let _ = unsafe { vfene::<0, 0>(v128, v128) };
-//! let _ = unsafe { vfi_f32::<0, 0>(v128) };
 //! let _ = unsafe { vfi_f64::<0, 0>(v128) };
-//! let _ = unsafe { vfll(v128) };
-//! let _ = unsafe { vflr::<0, 0>(v128) };
-//! let _ = unsafe { vfm(v128, v128) };
-//! let _ = unsafe { vfs(v128, v128) };
-//! let _ = unsafe { vfsq(v128) };
-//! let _ = unsafe { vftci_f32::<0>(v128) };
 //! let _ = unsafe { vftci_f64::<0>(v128) };
 //! let _ = unsafe { vgbm::<0>() };
 //! let _ = unsafe { vgef::<0>(v128, v128, storage.0.as_ptr().cast()) };
@@ -115,7 +103,6 @@
 //! let _ = unsafe { vmlh::<0>(v128, v128) };
 //! let _ = unsafe { vmlo::<0>(v128, v128) };
 //! let _ = unsafe { vmo(v128, v128, v128) };
-//! let _ = unsafe { vnn(v128, v128) };
 //! let _ = unsafe { vperm(v128, v128, v128) };
 //! let _ = unsafe { vpkls(v128, v128) };
 //! let _ = unsafe { vpks(v128, v128) };
@@ -190,22 +177,10 @@
 //! use rust_isa::s390x::simd::vector::vclzg as _;
 //! use rust_isa::s390x::simd::vector::vctzb as _;
 //! use rust_isa::s390x::simd::vector::vctzg as _;
-//! use rust_isa::s390x::simd::vector::vfa as _;
 //! use rust_isa::s390x::simd::vector::vfae as _;
-//! use rust_isa::s390x::simd::vector::vfce as _;
-//! use rust_isa::s390x::simd::vector::vfch as _;
-//! use rust_isa::s390x::simd::vector::vfche as _;
-//! use rust_isa::s390x::simd::vector::vfd as _;
 //! use rust_isa::s390x::simd::vector::vfee as _;
 //! use rust_isa::s390x::simd::vector::vfene as _;
-//! use rust_isa::s390x::simd::vector::vfi_f32 as _;
 //! use rust_isa::s390x::simd::vector::vfi_f64 as _;
-//! use rust_isa::s390x::simd::vector::vfll as _;
-//! use rust_isa::s390x::simd::vector::vflr as _;
-//! use rust_isa::s390x::simd::vector::vfm as _;
-//! use rust_isa::s390x::simd::vector::vfs as _;
-//! use rust_isa::s390x::simd::vector::vfsq as _;
-//! use rust_isa::s390x::simd::vector::vftci_f32 as _;
 //! use rust_isa::s390x::simd::vector::vftci_f64 as _;
 //! use rust_isa::s390x::simd::vector::vgbm as _;
 //! use rust_isa::s390x::simd::vector::vgef as _;
@@ -223,7 +198,6 @@
 //! use rust_isa::s390x::simd::vector::vmlh as _;
 //! use rust_isa::s390x::simd::vector::vmlo as _;
 //! use rust_isa::s390x::simd::vector::vmo as _;
-//! use rust_isa::s390x::simd::vector::vnn as _;
 //! use rust_isa::s390x::simd::vector::vperm as _;
 //! use rust_isa::s390x::simd::vector::vpkls as _;
 //! use rust_isa::s390x::simd::vector::vpks as _;
@@ -806,10 +780,6 @@ pub unsafe fn vstef(p: *mut f32, a: V128) {
         rust_isa_s390x_vector_vstef(p.cast(), a.as_ptr());
     }
 }
-
-pub use super::vector_enhancements_1::{
-    vfa, vfce, vfch, vfche, vfd, vfi_f32, vfll, vflr, vfm, vfs, vfsq, vftci_f32, vnn,
-};
 
 use core::arch::asm;
 

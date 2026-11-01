@@ -74,12 +74,10 @@
 //! let _ = unsafe { pextrb::<0>(v128) };
 //! let _ = unsafe { pextrd::<0>(v128) };
 //! #[cfg(target_arch = "x86_64")] let _ = unsafe { pextrq::<0>(v128) };
-//! let _ = unsafe { pextrw::<0>(v128) };
 //! let _ = unsafe { phminposuw(v128) };
 //! let _ = unsafe { pinsrb::<0>(v128, 0) };
 //! let _ = unsafe { pinsrd::<0>(v128, 0) };
 //! #[cfg(target_arch = "x86_64")] let _ = unsafe { pinsrq::<0>(v128, 0) };
-//! let _ = unsafe { pinsrw::<0>(v128, 0) };
 //! let _ = unsafe { pmaxsb(v128, v128) };
 //! let _ = unsafe { pmaxsd(v128, v128) };
 //! let _ = unsafe { pmaxud(v128, v128) };
@@ -130,13 +128,11 @@
 //! use rust_isa::x86::simd::sse4_1::pextrd as _;
 //! #[cfg(target_arch = "x86_64")]
 //! use rust_isa::x86::simd::sse4_1::pextrq as _;
-//! use rust_isa::x86::simd::sse4_1::pextrw as _;
 //! use rust_isa::x86::simd::sse4_1::phminposuw as _;
 //! use rust_isa::x86::simd::sse4_1::pinsrb as _;
 //! use rust_isa::x86::simd::sse4_1::pinsrd as _;
 //! #[cfg(target_arch = "x86_64")]
 //! use rust_isa::x86::simd::sse4_1::pinsrq as _;
-//! use rust_isa::x86::simd::sse4_1::pinsrw as _;
 //! use rust_isa::x86::simd::sse4_1::pmaxsb as _;
 //! use rust_isa::x86::simd::sse4_1::pmaxsd as _;
 //! use rust_isa::x86::simd::sse4_1::pmaxud as _;
@@ -1095,53 +1091,4 @@ pub unsafe fn pmuldq(a: V128, b: V128) -> V128 {
         rust_isa_sse41_pmuldq(a.as_ptr(), b.as_ptr(), out.as_mut_ptr());
     }
     out
-}
-
-/// `pinsrw`
-///
-/// Insert `value` into 16-bit lane `IMM`. `IMM` must be in `0..=7`.
-///
-/// # Safety
-///
-/// The caller must enable SSE4.1.
-#[target_feature(enable = "sse4.1")]
-#[inline]
-pub unsafe fn pinsrw<const IMM: u8>(a: V128, value: u16) -> V128 {
-    const { assert!(IMM <= 7, "pinsrw lane must be in 0..=7") };
-    let mut out = u128::from_le_bytes(a.to_bytes());
-    unsafe {
-        asm!(
-            "pinsrw {out}, {value:e}, {imm}",
-            out = inout(xmm_reg) out,
-            value = in(reg) u32::from(value),
-            imm = const IMM,
-            options(pure, nomem, nostack),
-        );
-    }
-    V128::from_bytes(out.to_le_bytes())
-}
-
-/// `pextrw`
-///
-/// Extract 16-bit lane `IMM`. `IMM` must be in `0..=7`.
-///
-/// # Safety
-///
-/// The caller must enable SSE4.1.
-#[target_feature(enable = "sse4.1")]
-#[inline]
-pub unsafe fn pextrw<const IMM: u8>(a: V128) -> u16 {
-    const { assert!(IMM <= 7, "pextrw lane must be in 0..=7") };
-    let a = u128::from_le_bytes(a.to_bytes());
-    let out: u32;
-    unsafe {
-        asm!(
-            "pextrw {out:e}, {a}, {imm}",
-            out = lateout(reg) out,
-            a = in(xmm_reg) a,
-            imm = const IMM,
-            options(pure, nomem, nostack),
-        );
-    }
-    out as u16
 }

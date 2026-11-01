@@ -1,0 +1,25 @@
+schema = 1
+arch = "x86_64"
+extension = "amx-movrs"
+module = "crate::x86::matrix::amx_movrs"
+kind = "subextension"
+parent = "amx-tile"
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "TILELOADDRS"
+api = "tileloaddrs"
+widths = [128]
+required_features = ["amx-tile", "amx-movrs"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TILELOADDRST1"
+api = "tileloaddrst1"
+widths = [128]
+required_features = ["amx-tile", "amx-movrs"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]

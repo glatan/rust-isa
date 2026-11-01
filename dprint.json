@@ -12,7 +12,8 @@
     "**/target-nested/**",
     "**/.git/**",
     ".local/**",
-    "**/node_modules/**"
+    "**/node_modules/**",
+    "tools/upstream/**/LICENSE*"
   ],
   "plugins": [
     "https://plugins.dprint.dev/markdown-0.27.0.wasm",

@@ -26,14 +26,13 @@ use rust_isa::powerpc::simd::power8_vector::{
 use rust_isa::powerpc::simd::power8_vector::{
     vaddudm as p8_vaddudm, vmuleuh as p8_vmuleuh, vmuluwm as p8_vmuluwm, vsubudm as p8_vsubudm,
 };
-use rust_isa::powerpc::simd::power9_altivec::{vctzd as altivec_vctzd, vnegw as altivec_vnegw};
 use rust_isa::powerpc::simd::power9_vector::{
     abs_i32 as p9_abs_i32, neg_i32 as p9_neg_i32, neg_i64, vabsd, vabsduw, vctzb,
     vctzd as p9_vctzd, vctzh, vctzlsbb, vctzw, vextsb2d, vextsb2w, vextsh2d, vextsh2w, vextsw2d,
     vnegd, vnegw,
 };
 use rust_isa::powerpc::simd::power10_vector::{
-    cntlz_i32 as p10_cntlz_i32, popcnt_i32 as p10_popcnt_i32, vclzd, vctzd, vpopcntd, vpopcntw,
+    cntlz_i32 as p10_cntlz_i32, vclzd, vpopcntd, vpopcntw,
 };
 use rust_isa::powerpc::simd::vsx::{
     abs_f64, add_f32 as vsx_add_f32, add_f64, div_f64, mul_f64, sqrt_f64, sub_f64,
@@ -181,7 +180,6 @@ fn power9_ops() -> bool {
         lanes(p9_neg_i32(i32x4([1, -2, 3, -4]))) == [-1, 2, -3, 4]
             && lanes(p9_abs_i32(i32x4([-1, 2, -3, 4]))) == [1, 2, 3, 4]
             && lanes(vnegw(i32x4([1, -2, 3, -4]))) == [-1, 2, -3, 4]
-            && lanes(altivec_vnegw(i32x4([1, -2, 3, -4]))) == [-1, 2, -3, 4]
             && vnegd(V128::from_bytes([0; 16])).to_bytes() == [0; 16]
             && neg_i64(V128::from_bytes([
                 1, 0, 0, 0, 0, 0, 0, 0, 0xfe, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
@@ -201,10 +199,6 @@ fn power9_ops() -> bool {
                 let bytes = p9_vctzd(V128::from_bytes([0x02; 16])).to_bytes();
                 bytes[0] == 1 && bytes[8] == 1
             }
-            && {
-                let bytes = altivec_vctzd(V128::from_bytes([0x02; 16])).to_bytes();
-                bytes[0] == 1 && bytes[8] == 1
-            }
             && vctzlsbb(V128::from_bytes([0xff; 16])) == 0
             && vextsb2d(V128::from_bytes([0xff; 16])).to_bytes()
                 == V128::from_bytes([0xff; 16]).to_bytes()
@@ -217,7 +211,7 @@ fn power9_ops() -> bool {
 
 fn power10_ops() -> bool {
     unsafe {
-        lanes(p10_popcnt_i32(i32x4([-1; 4]))) == [32; 4]
+        lanes(vpopcntw(i32x4([-1; 4]))) == [32; 4]
             && lanes(p10_cntlz_i32(i32x4([1, 2, 4, 8]))) == [31, 30, 29, 28]
             && lanes(vpopcntw(i32x4([-1; 4]))) == [32; 4]
             && {
@@ -226,10 +220,6 @@ fn power10_ops() -> bool {
             }
             && {
                 let bytes = vclzd(V128::from_bytes([0; 16])).to_bytes();
-                bytes[0] == 64 && bytes[8] == 64
-            }
-            && {
-                let bytes = vctzd(V128::from_bytes([0; 16])).to_bytes();
                 bytes[0] == 64 && bytes[8] == 64
             }
     }

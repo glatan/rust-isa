@@ -1,0 +1,21 @@
+schema = 1
+arch = "x86_64"
+extension = "gfni"
+module = "crate::x86::crypto::gfni"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "GF2P8AFFINEQB"
+api = "gf2p8affineqb"
+required_features = ["gfni"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "GF2P8MULB"
+api = "gf2p8mulb"
+required_features = ["gfni"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

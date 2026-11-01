@@ -19,6 +19,7 @@
 //! if std::env::var_os("RUST_ISA_SDE_FLAGS").is_some() {
 //! use rust_isa::x86::simd::avx512f::vpaddd;
 //! use rust_isa::x86::simd::avx512f::V512;
+//! use rust_isa::x86::simd::{Mask8, Mask16};
 //!
 //! let v = V512::from_bytes([0; 64]);
 //! assert_eq!(unsafe { vpaddd(v, v) }.to_bytes(), [0; 64]);
@@ -35,6 +36,7 @@
 //! use rust_isa::x86::simd::sse2::V128;
 //! use rust_isa::x86::simd::avx::V256;
 //! use rust_isa::x86::simd::avx512f::V512;
+//! use rust_isa::x86::simd::{Mask8, Mask16};
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //! let v256 = V256::from_bytes([0; 32]);
@@ -45,10 +47,10 @@
 //!
 //! let _ = unsafe { v512_load(storage.0.as_ptr().cast()) };
 //! let _ = unsafe { v512_store(storage.0.as_mut_ptr().cast(), v512) };
-//! let _ = unsafe { vblendmpd(v512, v512, 0) };
-//! let _ = unsafe { vblendmps(v512, v512, 0) };
-//! let _ = unsafe { vcompresspd(v512, 0) };
-//! let _ = unsafe { vcompressps(v512, 0) };
+//! let _ = unsafe { vblendmpd(v512, v512, Mask8::NONE) };
+//! let _ = unsafe { vblendmps(v512, v512, Mask16::NONE) };
+//! let _ = unsafe { vcompresspd(v512, Mask8::NONE) };
+//! let _ = unsafe { vcompressps(v512, Mask16::NONE) };
 //! let _ = unsafe { vcvtdq2ps(v512) };
 //! let _ = unsafe { vcvtpd2dq(v512) };
 //! let _ = unsafe { vcvtpd2ps(v512) };
@@ -60,14 +62,14 @@
 //! let _ = unsafe { vcvtss2sd(v128, v128) };
 //! let _ = unsafe { vcvttpd2dq(v512) };
 //! let _ = unsafe { vcvttps2dq(v512) };
-//! let _ = unsafe { vexpandpd(v512, 0) };
-//! let _ = unsafe { vexpandps(v512, 0) };
+//! let _ = unsafe { vexpandpd(v512, Mask8::NONE) };
+//! let _ = unsafe { vexpandps(v512, Mask16::NONE) };
 //! let _ = unsafe { vextractf32x4::<0>(v512) };
 //! let _ = unsafe { vextractf64x4::<0>(v512) };
-//! let _ = unsafe { vgatherdpd(v512, storage.0.as_ptr().cast(), v256, 0) };
-//! let _ = unsafe { vgatherdps(v512, storage.0.as_ptr().cast(), v512, 0) };
-//! let _ = unsafe { vgatherqpd(v512, storage.0.as_ptr().cast(), v512, 0) };
-//! let _ = unsafe { vgatherqps(v256, storage.0.as_ptr().cast(), v512, 0) };
+//! let _ = unsafe { vgatherdpd(v512, storage.0.as_ptr().cast(), v256, Mask8::NONE) };
+//! let _ = unsafe { vgatherdps(v512, storage.0.as_ptr().cast(), v512, Mask16::NONE) };
+//! let _ = unsafe { vgatherqpd(v512, storage.0.as_ptr().cast(), v512, Mask8::NONE) };
+//! let _ = unsafe { vgatherqps(v256, storage.0.as_ptr().cast(), v512, Mask8::NONE) };
 //! let _ = unsafe { vgetexppd(v512) };
 //! let _ = unsafe { vgetexpps(v512) };
 //! let _ = unsafe { vgetmantpd::<0>(v512) };
@@ -75,8 +77,8 @@
 //! let _ = unsafe { vinsertf32x4::<0>(v512, v128) };
 //! let _ = unsafe { vinsertf64x4::<0>(v512, v256) };
 //! let _ = unsafe { vinsertps::<0>(v128, v128) };
-//! let _ = unsafe { vmovapd(v512, v512, 0) };
-//! let _ = unsafe { vmovaps(v512, v512, 0) };
+//! let _ = unsafe { vmovapd(v512, v512, Mask8::NONE) };
+//! let _ = unsafe { vmovaps(v512, v512, Mask16::NONE) };
 //! let _ = unsafe { vpaddd(v512, v512) };
 //! let _ = unsafe { vpaddq(v512, v512) };
 //! let _ = unsafe { vpandd(v512, v512) };
@@ -114,10 +116,10 @@
 //! let _ = unsafe { vrsqrtps(v512) };
 //! let _ = unsafe { vscalefpd(v512, v512) };
 //! let _ = unsafe { vscalefps(v512, v512) };
-//! let _ = unsafe { vscatterdpd(storage.0.as_mut_ptr().cast(), v256, v512, 0) };
-//! let _ = unsafe { vscatterdps(storage.0.as_mut_ptr().cast(), v512, v512, 0) };
-//! let _ = unsafe { vscatterqpd(storage.0.as_mut_ptr().cast(), v512, v512, 0) };
-//! let _ = unsafe { vscatterqps(storage.0.as_mut_ptr().cast(), v512, v256, 0) };
+//! let _ = unsafe { vscatterdpd(storage.0.as_mut_ptr().cast(), v256, v512, Mask8::NONE) };
+//! let _ = unsafe { vscatterdps(storage.0.as_mut_ptr().cast(), v512, v512, Mask16::NONE) };
+//! let _ = unsafe { vscatterqpd(storage.0.as_mut_ptr().cast(), v512, v512, Mask8::NONE) };
+//! let _ = unsafe { vscatterqps(storage.0.as_mut_ptr().cast(), v512, v256, Mask8::NONE) };
 //! let _ = unsafe { vshufpd::<0>(v512, v512) };
 //! let _ = unsafe { vshufps::<0>(v512, v512) };
 //! let _ = unsafe { vsqrtpd(v512) };

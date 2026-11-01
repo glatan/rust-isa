@@ -32,6 +32,7 @@
 - [native の値テスト](native-testing.md)
 - [値テストの fixture](fixture-matrix.md)
 - [重複する命令名](duplicates.md)
+- [第三者ソースとライセンス](third-party.md)
 - [ソースとテストの置き方](source-layout.md)
 - [文書の位置](documentation.md)
 

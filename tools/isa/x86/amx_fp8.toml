@@ -1,0 +1,41 @@
+schema = 1
+arch = "x86_64"
+extension = "amx-fp8"
+module = "crate::x86::matrix::amx_fp8"
+kind = "subextension"
+parent = "amx-tile"
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "TDPBF8PS"
+api = "tdpbf8ps"
+widths = [128]
+required_features = ["amx-tile", "amx-fp8"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TDPBHF8PS"
+api = "tdpbhf8ps"
+widths = [128]
+required_features = ["amx-tile", "amx-fp8"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TDPHBF8PS"
+api = "tdphbf8ps"
+widths = [128]
+required_features = ["amx-tile", "amx-fp8"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TDPHF8PS"
+api = "tdphf8ps"
+widths = [128]
+required_features = ["amx-tile", "amx-fp8"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]

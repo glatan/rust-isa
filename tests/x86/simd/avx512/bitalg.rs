@@ -1,3 +1,4 @@
+use rust_isa::x86::simd::Mask64;
 use rust_isa::x86::simd::avx512bitalg::{vpopcntb, vpshufbitqmb};
 use rust_isa::x86::simd::avx512f::V512;
 
@@ -11,5 +12,5 @@ fn avx512bitalg() {
     assert_eq!(&out[..4], &[8, 8, 8, 8]);
 
     let all = V512::from_bytes([0xff; 64]);
-    assert_eq!(unsafe { vpshufbitqmb(all, all) }, u64::MAX);
+    assert_eq!(unsafe { vpshufbitqmb(all, all).bits() }, u64::MAX);
 }

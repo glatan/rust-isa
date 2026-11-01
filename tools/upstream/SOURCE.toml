@@ -1,0 +1,105 @@
+# 上流ソースの固定情報。
+# data は抽出物を追加した時点で sha256 を記録する。
+
+schema = 1
+retrieved_at = "2026-11-01"
+
+[[source]]
+name = "intelxed/xed"
+url = "https://github.com/intelxed/xed"
+version = "v2026.08.23"
+commit = "0bcb6237345c"
+license = "Apache-2.0"
+redistributable = "yes"
+data = [
+  { path = "tools/upstream/xed/amx-fp8.json", sha256 = "4253f92262783dd57ef588c56562cf490743f24eb625b836a97f85ba07fbf189" },
+  { path = "tools/upstream/xed/LICENSE", sha256 = "7330526e510d83ee5da23f9653b67024fefab6d0a56bfa76dfdf2497aef647c6" },
+]
+
+[[source]]
+name = "llvm/llvm-project"
+url = "https://github.com/llvm/llvm-project"
+version = "llvmorg-23.1.4"
+commit = "llvmorg-23.1.4"
+license = "Apache-2.0 WITH LLVM-exception"
+redistributable = "yes"
+data = [
+  { path = "tools/upstream/llvm/avx512bmm.json", sha256 = "b353608a12f68f67054c17ef0e95071effd7f66ec8e80b3282a66070f5551355" },
+  { path = "tools/upstream/llvm/LICENSE.TXT", sha256 = "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee" },
+]
+
+[[source]]
+name = "ARM-software/acle"
+url = "https://github.com/ARM-software/acle"
+version = "main-aef52c2"
+commit = "aef52c2b0944"
+license = "CC-BY-SA-4.0"
+redistributable = "conditional"
+data = [
+  { path = "tools/upstream/acle/sve-instructions.json", sha256 = "fd1ace0f2980b2e5e7a86f06ad243ab7914d5e6447b56ba485c290b83d9e474c" },
+  { path = "tools/upstream/acle/LICENSE.md", sha256 = "2ed1c316123364759b68aaac4074d33a92d5872d1e80783c9edea4dcc53b69f2" },
+]
+
+[[source]]
+name = "riscv/riscv-opcodes"
+url = "https://github.com/riscv/riscv-opcodes"
+version = "f24ac23ec9fa"
+commit = "f24ac23ec9fa"
+license = "BSD-3-Clause"
+redistributable = "yes"
+data = [
+  { path = "tools/upstream/riscv/opcodes.json", sha256 = "8fc2a5217b233f000012a49f0a11085b21c280a9b4b9d818948e90c57bc0f04d" },
+  { path = "tools/upstream/riscv/LICENSE", sha256 = "1b24700313c5720c31e52f914d80c3e652f4b0abd4410d37755165d73d79acc4" },
+]
+
+[[source]]
+name = "riscv/riscv-isa-manual"
+url = "https://github.com/riscv/riscv-isa-manual"
+version = "8fb3965fe4b5"
+commit = "8fb3965fe4b5"
+license = "CC-BY-4.0"
+redistributable = "conditional"
+data = []
+
+[[source]]
+name = "riscv/riscv-unified-db"
+url = "https://github.com/riscv/riscv-unified-db"
+version = "8b6b77720ad4"
+commit = "8b6b77720ad4"
+license = "BSD-3-Clause-Clear OR CC-BY-4.0 OR CC0-1.0 OR MIT"
+redistributable = "audit"
+data = []
+
+[[source]]
+name = "open-power-sdk/PowerISA"
+url = "https://github.com/open-power-sdk/PowerISA"
+version = "ea48c49e9fe0"
+commit = "ea48c49e9fe0"
+license = "Apache-2.0"
+redistributable = "yes"
+data = [
+  { path = "tools/upstream/powerisa/mma.json", sha256 = "84c422b131d2ed85a5363613a99285c143cb9e13126b4ccfdfd1bd3d8943f279" },
+  { path = "tools/upstream/powerisa/LICENSE", sha256 = "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4" },
+]
+
+[[source]]
+name = "loongson-community/loongarch-opcodes"
+url = "https://github.com/loongson-community/loongarch-opcodes"
+version = "e269905901fe"
+commit = "e269905901fe"
+license = "CC-BY-4.0 OR MulanOWL-BY-1.0"
+redistributable = "conditional"
+data = [
+  { path = "tools/upstream/loongarch/lsx.txt", sha256 = "2e98f2bddb922db1af8d635e382c820123ed55ef3eb822b5ea401c934b87a75d" },
+  { path = "tools/upstream/loongarch/lasx.txt", sha256 = "8b6268825de75837c849a7a381a7ccf4b04ba621d40b6429b058b4bf447090c6" },
+  { path = "tools/upstream/loongarch/LICENSE.CC-BY-4.0", sha256 = "3f3608d39151c587abfe92c2b8eda50eaa5958997d1f3dd8ad812c8af379cd83" },
+]
+
+[[source]]
+name = "WebAssembly/spec"
+url = "https://github.com/WebAssembly/spec"
+version = "6057acdb1a21"
+commit = "6057acdb1a21"
+license = "W3C-20150513 OR Apache-2.0 OR CC0-1.0 OR CC-BY-4.0"
+redistributable = "conditional"
+data = []

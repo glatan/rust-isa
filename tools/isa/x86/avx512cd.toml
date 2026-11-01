@@ -1,0 +1,33 @@
+schema = 1
+arch = "x86_64"
+extension = "avx512cd"
+module = "crate::x86::simd::avx512cd"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VPCONFLICTD"
+api = "vpconflictd"
+required_features = ["avx512cd"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPCONFLICTQ"
+api = "vpconflictq"
+required_features = ["avx512cd"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPLZCNTD"
+api = "vplzcntd"
+required_features = ["avx512cd"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPLZCNTQ"
+api = "vplzcntq"
+required_features = ["avx512cd"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

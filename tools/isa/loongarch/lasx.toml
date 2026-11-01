@@ -1,0 +1,4423 @@
+schema = 1
+arch = "loongarch64"
+extension = "lasx"
+module = "crate::loongarch::simd::lasx"
+kind = "fixed"
+parent = ""
+source = "loongson-community/loongarch-opcodes"
+coverage = "pilot"
+raw = true
+
+normalization = "mnemonic+api"
+
+[[instruction]]
+mnemonic = "XVFMADD.S"
+api = "xvfmadd_s"
+forms = ["xvfmadd.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFMADD.D"
+api = "xvfmadd_d"
+forms = ["xvfmadd.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFMSUB.S"
+api = "xvfmsub_s"
+forms = ["xvfmsub.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFMSUB.D"
+api = "xvfmsub_d"
+forms = ["xvfmsub.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFNMADD.S"
+api = "xvfnmadd_s"
+forms = ["xvfnmadd.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFNMADD.D"
+api = "xvfnmadd_d"
+forms = ["xvfnmadd.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFNMSUB.S"
+api = "xvfnmsub_s"
+forms = ["xvfnmsub.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFNMSUB.D"
+api = "xvfnmsub_d"
+forms = ["xvfnmsub.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CAF.S"
+api = "xvfcmp_caf_s"
+forms = ["xvfcmp.caf.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SAF.S"
+api = "xvfcmp_saf_s"
+forms = ["xvfcmp.saf.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CLT.S"
+api = "xvfcmp_clt_s"
+forms = ["xvfcmp.clt.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SLT.S"
+api = "xvfcmp_slt_s"
+forms = ["xvfcmp.slt.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CEQ.S"
+api = "xvfcmp_ceq_s"
+forms = ["xvfcmp.ceq.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SEQ.S"
+api = "xvfcmp_seq_s"
+forms = ["xvfcmp.seq.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CLE.S"
+api = "xvfcmp_cle_s"
+forms = ["xvfcmp.cle.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SLE.S"
+api = "xvfcmp_sle_s"
+forms = ["xvfcmp.sle.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CUN.S"
+api = "xvfcmp_cun_s"
+forms = ["xvfcmp.cun.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SUN.S"
+api = "xvfcmp_sun_s"
+forms = ["xvfcmp.sun.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CULT.S"
+api = "xvfcmp_cult_s"
+forms = ["xvfcmp.cult.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SULT.S"
+api = "xvfcmp_sult_s"
+forms = ["xvfcmp.sult.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CUEQ.S"
+api = "xvfcmp_cueq_s"
+forms = ["xvfcmp.cueq.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SUEQ.S"
+api = "xvfcmp_sueq_s"
+forms = ["xvfcmp.sueq.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CULE.S"
+api = "xvfcmp_cule_s"
+forms = ["xvfcmp.cule.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SULE.S"
+api = "xvfcmp_sule_s"
+forms = ["xvfcmp.sule.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CNE.S"
+api = "xvfcmp_cne_s"
+forms = ["xvfcmp.cne.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SNE.S"
+api = "xvfcmp_sne_s"
+forms = ["xvfcmp.sne.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.COR.S"
+api = "xvfcmp_cor_s"
+forms = ["xvfcmp.cor.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SOR.S"
+api = "xvfcmp_sor_s"
+forms = ["xvfcmp.sor.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CUNE.S"
+api = "xvfcmp_cune_s"
+forms = ["xvfcmp.cune.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SUNE.S"
+api = "xvfcmp_sune_s"
+forms = ["xvfcmp.sune.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CAF.D"
+api = "xvfcmp_caf_d"
+forms = ["xvfcmp.caf.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SAF.D"
+api = "xvfcmp_saf_d"
+forms = ["xvfcmp.saf.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CLT.D"
+api = "xvfcmp_clt_d"
+forms = ["xvfcmp.clt.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SLT.D"
+api = "xvfcmp_slt_d"
+forms = ["xvfcmp.slt.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CEQ.D"
+api = "xvfcmp_ceq_d"
+forms = ["xvfcmp.ceq.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SEQ.D"
+api = "xvfcmp_seq_d"
+forms = ["xvfcmp.seq.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CLE.D"
+api = "xvfcmp_cle_d"
+forms = ["xvfcmp.cle.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SLE.D"
+api = "xvfcmp_sle_d"
+forms = ["xvfcmp.sle.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CUN.D"
+api = "xvfcmp_cun_d"
+forms = ["xvfcmp.cun.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SUN.D"
+api = "xvfcmp_sun_d"
+forms = ["xvfcmp.sun.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CULT.D"
+api = "xvfcmp_cult_d"
+forms = ["xvfcmp.cult.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SULT.D"
+api = "xvfcmp_sult_d"
+forms = ["xvfcmp.sult.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CUEQ.D"
+api = "xvfcmp_cueq_d"
+forms = ["xvfcmp.cueq.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SUEQ.D"
+api = "xvfcmp_sueq_d"
+forms = ["xvfcmp.sueq.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CULE.D"
+api = "xvfcmp_cule_d"
+forms = ["xvfcmp.cule.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SULE.D"
+api = "xvfcmp_sule_d"
+forms = ["xvfcmp.sule.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CNE.D"
+api = "xvfcmp_cne_d"
+forms = ["xvfcmp.cne.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SNE.D"
+api = "xvfcmp_sne_d"
+forms = ["xvfcmp.sne.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.COR.D"
+api = "xvfcmp_cor_d"
+forms = ["xvfcmp.cor.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SOR.D"
+api = "xvfcmp_sor_d"
+forms = ["xvfcmp.sor.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.CUNE.D"
+api = "xvfcmp_cune_d"
+forms = ["xvfcmp.cune.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCMP.SUNE.D"
+api = "xvfcmp_sune_d"
+forms = ["xvfcmp.sune.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITSEL.V"
+api = "xvbitsel_v"
+forms = ["xvbitsel.v"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSHUF.B"
+api = "xvshuf_b"
+forms = ["xvshuf.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVLD"
+api = "xvld"
+forms = ["xvld"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVST"
+api = "xvst"
+forms = ["xvst"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVLDREPL.D"
+api = "xvldrepl_d"
+forms = ["xvldrepl.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVLDREPL.W"
+api = "xvldrepl_w"
+forms = ["xvldrepl.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVLDREPL.H"
+api = "xvldrepl_h"
+forms = ["xvldrepl.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVLDREPL.B"
+api = "xvldrepl_b"
+forms = ["xvldrepl.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSTELM.D"
+api = "xvstelm_d"
+forms = ["xvstelm.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSTELM.W"
+api = "xvstelm_w"
+forms = ["xvstelm.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSTELM.H"
+api = "xvstelm_h"
+forms = ["xvstelm.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSTELM.B"
+api = "xvstelm_b"
+forms = ["xvstelm.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVLDX"
+api = "xvldx"
+forms = ["xvldx"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSTX"
+api = "xvstx"
+forms = ["xvstx"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSEQ.B"
+api = "xvseq_b"
+forms = ["xvseq.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSEQ.H"
+api = "xvseq_h"
+forms = ["xvseq.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSEQ.W"
+api = "xvseq_w"
+forms = ["xvseq.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSEQ.D"
+api = "xvseq_d"
+forms = ["xvseq.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLE.B"
+api = "xvsle_b"
+forms = ["xvsle.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLE.H"
+api = "xvsle_h"
+forms = ["xvsle.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLE.W"
+api = "xvsle_w"
+forms = ["xvsle.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLE.D"
+api = "xvsle_d"
+forms = ["xvsle.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLE.BU"
+api = "xvsle_bu"
+forms = ["xvsle.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLE.HU"
+api = "xvsle_hu"
+forms = ["xvsle.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLE.WU"
+api = "xvsle_wu"
+forms = ["xvsle.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLE.DU"
+api = "xvsle_du"
+forms = ["xvsle.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLT.B"
+api = "xvslt_b"
+forms = ["xvslt.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLT.H"
+api = "xvslt_h"
+forms = ["xvslt.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLT.W"
+api = "xvslt_w"
+forms = ["xvslt.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLT.D"
+api = "xvslt_d"
+forms = ["xvslt.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLT.BU"
+api = "xvslt_bu"
+forms = ["xvslt.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLT.HU"
+api = "xvslt_hu"
+forms = ["xvslt.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLT.WU"
+api = "xvslt_wu"
+forms = ["xvslt.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLT.DU"
+api = "xvslt_du"
+forms = ["xvslt.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADD_B"
+api = "xvadd_b"
+forms = ["xvadd.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADD_H"
+api = "xvadd_h"
+forms = ["xvadd.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADD_W"
+api = "xvadd_w"
+forms = ["xvadd.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADD_D"
+api = "xvadd_d"
+forms = ["xvadd.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUB_B"
+api = "xvsub_b"
+forms = ["xvsub.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUB_H"
+api = "xvsub_h"
+forms = ["xvsub.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUB_W"
+api = "xvsub_w"
+forms = ["xvsub.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUB_D"
+api = "xvsub_d"
+forms = ["xvsub.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWEV.H.B"
+api = "xvaddwev_h_b"
+forms = ["xvaddwev.h.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWEV.W.H"
+api = "xvaddwev_w_h"
+forms = ["xvaddwev.w.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWEV.D.W"
+api = "xvaddwev_d_w"
+forms = ["xvaddwev.d.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWEV.Q.D"
+api = "xvaddwev_q_d"
+forms = ["xvaddwev.q.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBWEV.H.B"
+api = "xvsubwev_h_b"
+forms = ["xvsubwev.h.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBWEV.W.H"
+api = "xvsubwev_w_h"
+forms = ["xvsubwev.w.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBWEV.D.W"
+api = "xvsubwev_d_w"
+forms = ["xvsubwev.d.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBWEV.Q.D"
+api = "xvsubwev_q_d"
+forms = ["xvsubwev.q.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWOD.H.B"
+api = "xvaddwod_h_b"
+forms = ["xvaddwod.h.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWOD.W.H"
+api = "xvaddwod_w_h"
+forms = ["xvaddwod.w.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWOD.D.W"
+api = "xvaddwod_d_w"
+forms = ["xvaddwod.d.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWOD.Q.D"
+api = "xvaddwod_q_d"
+forms = ["xvaddwod.q.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBWOD.H.B"
+api = "xvsubwod_h_b"
+forms = ["xvsubwod.h.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBWOD.W.H"
+api = "xvsubwod_w_h"
+forms = ["xvsubwod.w.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBWOD.D.W"
+api = "xvsubwod_d_w"
+forms = ["xvsubwod.d.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBWOD.Q.D"
+api = "xvsubwod_q_d"
+forms = ["xvsubwod.q.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWEV.H.BU"
+api = "xvaddwev_h_bu"
+forms = ["xvaddwev.h.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWEV.W.HU"
+api = "xvaddwev_w_hu"
+forms = ["xvaddwev.w.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWEV.D.WU"
+api = "xvaddwev_d_wu"
+forms = ["xvaddwev.d.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWEV.Q.DU"
+api = "xvaddwev_q_du"
+forms = ["xvaddwev.q.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBWEV.H.BU"
+api = "xvsubwev_h_bu"
+forms = ["xvsubwev.h.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBWEV.W.HU"
+api = "xvsubwev_w_hu"
+forms = ["xvsubwev.w.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBWEV.D.WU"
+api = "xvsubwev_d_wu"
+forms = ["xvsubwev.d.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBWEV.Q.DU"
+api = "xvsubwev_q_du"
+forms = ["xvsubwev.q.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWOD.H.BU"
+api = "xvaddwod_h_bu"
+forms = ["xvaddwod.h.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWOD.W.HU"
+api = "xvaddwod_w_hu"
+forms = ["xvaddwod.w.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWOD.D.WU"
+api = "xvaddwod_d_wu"
+forms = ["xvaddwod.d.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWOD.Q.DU"
+api = "xvaddwod_q_du"
+forms = ["xvaddwod.q.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBWOD.H.BU"
+api = "xvsubwod_h_bu"
+forms = ["xvsubwod.h.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBWOD.W.HU"
+api = "xvsubwod_w_hu"
+forms = ["xvsubwod.w.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBWOD.D.WU"
+api = "xvsubwod_d_wu"
+forms = ["xvsubwod.d.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBWOD.Q.DU"
+api = "xvsubwod_q_du"
+forms = ["xvsubwod.q.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWEV.H.BU.B"
+api = "xvaddwev_h_bu_b"
+forms = ["xvaddwev.h.bu.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWEV.W.HU.H"
+api = "xvaddwev_w_hu_h"
+forms = ["xvaddwev.w.hu.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWEV.D.WU.W"
+api = "xvaddwev_d_wu_w"
+forms = ["xvaddwev.d.wu.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWEV.Q.DU.D"
+api = "xvaddwev_q_du_d"
+forms = ["xvaddwev.q.du.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWOD.H.BU.B"
+api = "xvaddwod_h_bu_b"
+forms = ["xvaddwod.h.bu.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWOD.W.HU.H"
+api = "xvaddwod_w_hu_h"
+forms = ["xvaddwod.w.hu.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWOD.D.WU.W"
+api = "xvaddwod_d_wu_w"
+forms = ["xvaddwod.d.wu.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDWOD.Q.DU.D"
+api = "xvaddwod_q_du_d"
+forms = ["xvaddwod.q.du.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSADD.B"
+api = "xvsadd_b"
+forms = ["xvsadd.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSADD.H"
+api = "xvsadd_h"
+forms = ["xvsadd.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSADD.W"
+api = "xvsadd_w"
+forms = ["xvsadd.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSADD.D"
+api = "xvsadd_d"
+forms = ["xvsadd.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSUB.B"
+api = "xvssub_b"
+forms = ["xvssub.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSUB.H"
+api = "xvssub_h"
+forms = ["xvssub.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSUB.W"
+api = "xvssub_w"
+forms = ["xvssub.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSUB.D"
+api = "xvssub_d"
+forms = ["xvssub.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSADD.BU"
+api = "xvsadd_bu"
+forms = ["xvsadd.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSADD.HU"
+api = "xvsadd_hu"
+forms = ["xvsadd.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSADD.WU"
+api = "xvsadd_wu"
+forms = ["xvsadd.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSADD.DU"
+api = "xvsadd_du"
+forms = ["xvsadd.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSUB.BU"
+api = "xvssub_bu"
+forms = ["xvssub.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSUB.HU"
+api = "xvssub_hu"
+forms = ["xvssub.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSUB.WU"
+api = "xvssub_wu"
+forms = ["xvssub.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSUB.DU"
+api = "xvssub_du"
+forms = ["xvssub.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVHADDW.H.B"
+api = "xvhaddw_h_b"
+forms = ["xvhaddw.h.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVHADDW.W.H"
+api = "xvhaddw_w_h"
+forms = ["xvhaddw.w.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVHADDW.D.W"
+api = "xvhaddw_d_w"
+forms = ["xvhaddw.d.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVHADDW.Q.D"
+api = "xvhaddw_q_d"
+forms = ["xvhaddw.q.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVHSUBW.H.B"
+api = "xvhsubw_h_b"
+forms = ["xvhsubw.h.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVHSUBW.W.H"
+api = "xvhsubw_w_h"
+forms = ["xvhsubw.w.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVHSUBW.D.W"
+api = "xvhsubw_d_w"
+forms = ["xvhsubw.d.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVHSUBW.Q.D"
+api = "xvhsubw_q_d"
+forms = ["xvhsubw.q.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVHADDW.HU.BU"
+api = "xvhaddw_hu_bu"
+forms = ["xvhaddw.hu.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVHADDW.WU.HU"
+api = "xvhaddw_wu_hu"
+forms = ["xvhaddw.wu.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVHADDW.DU.WU"
+api = "xvhaddw_du_wu"
+forms = ["xvhaddw.du.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVHADDW.QU.DU"
+api = "xvhaddw_qu_du"
+forms = ["xvhaddw.qu.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVHSUBW.HU.BU"
+api = "xvhsubw_hu_bu"
+forms = ["xvhsubw.hu.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVHSUBW.WU.HU"
+api = "xvhsubw_wu_hu"
+forms = ["xvhsubw.wu.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVHSUBW.DU.WU"
+api = "xvhsubw_du_wu"
+forms = ["xvhsubw.du.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVHSUBW.QU.DU"
+api = "xvhsubw_qu_du"
+forms = ["xvhsubw.qu.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDA.B"
+api = "xvadda_b"
+forms = ["xvadda.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDA.H"
+api = "xvadda_h"
+forms = ["xvadda.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDA.W"
+api = "xvadda_w"
+forms = ["xvadda.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDA.D"
+api = "xvadda_d"
+forms = ["xvadda.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVABSD.B"
+api = "xvabsd_b"
+forms = ["xvabsd.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVABSD.H"
+api = "xvabsd_h"
+forms = ["xvabsd.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVABSD.W"
+api = "xvabsd_w"
+forms = ["xvabsd.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVABSD.D"
+api = "xvabsd_d"
+forms = ["xvabsd.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVABSD.BU"
+api = "xvabsd_bu"
+forms = ["xvabsd.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVABSD.HU"
+api = "xvabsd_hu"
+forms = ["xvabsd.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVABSD.WU"
+api = "xvabsd_wu"
+forms = ["xvabsd.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVABSD.DU"
+api = "xvabsd_du"
+forms = ["xvabsd.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVAVG.B"
+api = "xvavg_b"
+forms = ["xvavg.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVAVG.H"
+api = "xvavg_h"
+forms = ["xvavg.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVAVG.W"
+api = "xvavg_w"
+forms = ["xvavg.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVAVG.D"
+api = "xvavg_d"
+forms = ["xvavg.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVAVG.BU"
+api = "xvavg_bu"
+forms = ["xvavg.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVAVG.HU"
+api = "xvavg_hu"
+forms = ["xvavg.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVAVG.WU"
+api = "xvavg_wu"
+forms = ["xvavg.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVAVG.DU"
+api = "xvavg_du"
+forms = ["xvavg.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVAVGR.B"
+api = "xvavgr_b"
+forms = ["xvavgr.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVAVGR.H"
+api = "xvavgr_h"
+forms = ["xvavgr.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVAVGR.W"
+api = "xvavgr_w"
+forms = ["xvavgr.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVAVGR.D"
+api = "xvavgr_d"
+forms = ["xvavgr.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVAVGR.BU"
+api = "xvavgr_bu"
+forms = ["xvavgr.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVAVGR.HU"
+api = "xvavgr_hu"
+forms = ["xvavgr.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVAVGR.WU"
+api = "xvavgr_wu"
+forms = ["xvavgr.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVAVGR.DU"
+api = "xvavgr_du"
+forms = ["xvavgr.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMAX.B"
+api = "xvmax_b"
+forms = ["xvmax.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMAX.H"
+api = "xvmax_h"
+forms = ["xvmax.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMAX.W"
+api = "xvmax_w"
+forms = ["xvmax.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMAX.D"
+api = "xvmax_d"
+forms = ["xvmax.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMIN.B"
+api = "xvmin_b"
+forms = ["xvmin.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMIN.H"
+api = "xvmin_h"
+forms = ["xvmin.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMIN.W"
+api = "xvmin_w"
+forms = ["xvmin.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMIN.D"
+api = "xvmin_d"
+forms = ["xvmin.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMAX.BU"
+api = "xvmax_bu"
+forms = ["xvmax.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMAX.HU"
+api = "xvmax_hu"
+forms = ["xvmax.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMAX.WU"
+api = "xvmax_wu"
+forms = ["xvmax.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMAX.DU"
+api = "xvmax_du"
+forms = ["xvmax.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMIN.BU"
+api = "xvmin_bu"
+forms = ["xvmin.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMIN.HU"
+api = "xvmin_hu"
+forms = ["xvmin.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMIN.WU"
+api = "xvmin_wu"
+forms = ["xvmin.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMIN.DU"
+api = "xvmin_du"
+forms = ["xvmin.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMUL.B"
+api = "xvmul_b"
+forms = ["xvmul.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMUL_H"
+api = "xvmul_h"
+forms = ["xvmul.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMUL_W"
+api = "xvmul_w"
+forms = ["xvmul.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMUL.D"
+api = "xvmul_d"
+forms = ["xvmul.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMUH.B"
+api = "xvmuh_b"
+forms = ["xvmuh.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMUH.H"
+api = "xvmuh_h"
+forms = ["xvmuh.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMUH.W"
+api = "xvmuh_w"
+forms = ["xvmuh.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMUH.D"
+api = "xvmuh_d"
+forms = ["xvmuh.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMUH.BU"
+api = "xvmuh_bu"
+forms = ["xvmuh.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMUH.HU"
+api = "xvmuh_hu"
+forms = ["xvmuh.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMUH.WU"
+api = "xvmuh_wu"
+forms = ["xvmuh.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMUH.DU"
+api = "xvmuh_du"
+forms = ["xvmuh.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWEV.H.B"
+api = "xvmulwev_h_b"
+forms = ["xvmulwev.h.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWEV.W.H"
+api = "xvmulwev_w_h"
+forms = ["xvmulwev.w.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWEV.D.W"
+api = "xvmulwev_d_w"
+forms = ["xvmulwev.d.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWEV.Q.D"
+api = "xvmulwev_q_d"
+forms = ["xvmulwev.q.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWOD.H.B"
+api = "xvmulwod_h_b"
+forms = ["xvmulwod.h.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWOD.W.H"
+api = "xvmulwod_w_h"
+forms = ["xvmulwod.w.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWOD.D.W"
+api = "xvmulwod_d_w"
+forms = ["xvmulwod.d.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWOD.Q.D"
+api = "xvmulwod_q_d"
+forms = ["xvmulwod.q.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWEV.H.BU"
+api = "xvmulwev_h_bu"
+forms = ["xvmulwev.h.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWEV.W.HU"
+api = "xvmulwev_w_hu"
+forms = ["xvmulwev.w.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWEV.D.WU"
+api = "xvmulwev_d_wu"
+forms = ["xvmulwev.d.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWEV.Q.DU"
+api = "xvmulwev_q_du"
+forms = ["xvmulwev.q.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWOD.H.BU"
+api = "xvmulwod_h_bu"
+forms = ["xvmulwod.h.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWOD.W.HU"
+api = "xvmulwod_w_hu"
+forms = ["xvmulwod.w.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWOD.D.WU"
+api = "xvmulwod_d_wu"
+forms = ["xvmulwod.d.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWOD.Q.DU"
+api = "xvmulwod_q_du"
+forms = ["xvmulwod.q.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWEV.H.BU.B"
+api = "xvmulwev_h_bu_b"
+forms = ["xvmulwev.h.bu.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWEV.W.HU.H"
+api = "xvmulwev_w_hu_h"
+forms = ["xvmulwev.w.hu.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWEV.D.WU.W"
+api = "xvmulwev_d_wu_w"
+forms = ["xvmulwev.d.wu.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWEV.Q.DU.D"
+api = "xvmulwev_q_du_d"
+forms = ["xvmulwev.q.du.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWOD.H.BU.B"
+api = "xvmulwod_h_bu_b"
+forms = ["xvmulwod.h.bu.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWOD.W.HU.H"
+api = "xvmulwod_w_hu_h"
+forms = ["xvmulwod.w.hu.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWOD.D.WU.W"
+api = "xvmulwod_d_wu_w"
+forms = ["xvmulwod.d.wu.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMULWOD.Q.DU.D"
+api = "xvmulwod_q_du_d"
+forms = ["xvmulwod.q.du.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADD.B"
+api = "xvmadd_b"
+forms = ["xvmadd.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADD.H"
+api = "xvmadd_h"
+forms = ["xvmadd.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADD.W"
+api = "xvmadd_w"
+forms = ["xvmadd.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADD.D"
+api = "xvmadd_d"
+forms = ["xvmadd.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMSUB.B"
+api = "xvmsub_b"
+forms = ["xvmsub.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMSUB.H"
+api = "xvmsub_h"
+forms = ["xvmsub.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMSUB.W"
+api = "xvmsub_w"
+forms = ["xvmsub.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMSUB.D"
+api = "xvmsub_d"
+forms = ["xvmsub.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWEV.H.B"
+api = "xvmaddwev_h_b"
+forms = ["xvmaddwev.h.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWEV.W.H"
+api = "xvmaddwev_w_h"
+forms = ["xvmaddwev.w.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWEV.D.W"
+api = "xvmaddwev_d_w"
+forms = ["xvmaddwev.d.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWEV.Q.D"
+api = "xvmaddwev_q_d"
+forms = ["xvmaddwev.q.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWOD.H.B"
+api = "xvmaddwod_h_b"
+forms = ["xvmaddwod.h.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWOD.W.H"
+api = "xvmaddwod_w_h"
+forms = ["xvmaddwod.w.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWOD.D.W"
+api = "xvmaddwod_d_w"
+forms = ["xvmaddwod.d.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWOD.Q.D"
+api = "xvmaddwod_q_d"
+forms = ["xvmaddwod.q.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWEV.H.BU"
+api = "xvmaddwev_h_bu"
+forms = ["xvmaddwev.h.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWEV.W.HU"
+api = "xvmaddwev_w_hu"
+forms = ["xvmaddwev.w.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWEV.D.WU"
+api = "xvmaddwev_d_wu"
+forms = ["xvmaddwev.d.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWEV.Q.DU"
+api = "xvmaddwev_q_du"
+forms = ["xvmaddwev.q.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWOD.H.BU"
+api = "xvmaddwod_h_bu"
+forms = ["xvmaddwod.h.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWOD.W.HU"
+api = "xvmaddwod_w_hu"
+forms = ["xvmaddwod.w.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWOD.D.WU"
+api = "xvmaddwod_d_wu"
+forms = ["xvmaddwod.d.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWOD.Q.DU"
+api = "xvmaddwod_q_du"
+forms = ["xvmaddwod.q.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWEV.H.BU.B"
+api = "xvmaddwev_h_bu_b"
+forms = ["xvmaddwev.h.bu.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWEV.W.HU.H"
+api = "xvmaddwev_w_hu_h"
+forms = ["xvmaddwev.w.hu.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWEV.D.WU.W"
+api = "xvmaddwev_d_wu_w"
+forms = ["xvmaddwev.d.wu.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWEV.Q.DU.D"
+api = "xvmaddwev_q_du_d"
+forms = ["xvmaddwev.q.du.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWOD.H.BU.B"
+api = "xvmaddwod_h_bu_b"
+forms = ["xvmaddwod.h.bu.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWOD.W.HU.H"
+api = "xvmaddwod_w_hu_h"
+forms = ["xvmaddwod.w.hu.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWOD.D.WU.W"
+api = "xvmaddwod_d_wu_w"
+forms = ["xvmaddwod.d.wu.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMADDWOD.Q.DU.D"
+api = "xvmaddwod_q_du_d"
+forms = ["xvmaddwod.q.du.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVDIV.B"
+api = "xvdiv_b"
+forms = ["xvdiv.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVDIV.H"
+api = "xvdiv_h"
+forms = ["xvdiv.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVDIV.W"
+api = "xvdiv_w"
+forms = ["xvdiv.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVDIV.D"
+api = "xvdiv_d"
+forms = ["xvdiv.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMOD.B"
+api = "xvmod_b"
+forms = ["xvmod.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMOD.H"
+api = "xvmod_h"
+forms = ["xvmod.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMOD.W"
+api = "xvmod_w"
+forms = ["xvmod.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMOD.D"
+api = "xvmod_d"
+forms = ["xvmod.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVDIV.BU"
+api = "xvdiv_bu"
+forms = ["xvdiv.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVDIV.HU"
+api = "xvdiv_hu"
+forms = ["xvdiv.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVDIV.WU"
+api = "xvdiv_wu"
+forms = ["xvdiv.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVDIV.DU"
+api = "xvdiv_du"
+forms = ["xvdiv.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMOD.BU"
+api = "xvmod_bu"
+forms = ["xvmod.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMOD.HU"
+api = "xvmod_hu"
+forms = ["xvmod.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMOD.WU"
+api = "xvmod_wu"
+forms = ["xvmod.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMOD.DU"
+api = "xvmod_du"
+forms = ["xvmod.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLL.B"
+api = "xvsll_b"
+forms = ["xvsll.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLL.H"
+api = "xvsll_h"
+forms = ["xvsll.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLL.W"
+api = "xvsll_w"
+forms = ["xvsll.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLL.D"
+api = "xvsll_d"
+forms = ["xvsll.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRL.B"
+api = "xvsrl_b"
+forms = ["xvsrl.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRL.H"
+api = "xvsrl_h"
+forms = ["xvsrl.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRL.W"
+api = "xvsrl_w"
+forms = ["xvsrl.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRL.D"
+api = "xvsrl_d"
+forms = ["xvsrl.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRA.B"
+api = "xvsra_b"
+forms = ["xvsra.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRA.H"
+api = "xvsra_h"
+forms = ["xvsra.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRA.W"
+api = "xvsra_w"
+forms = ["xvsra.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRA.D"
+api = "xvsra_d"
+forms = ["xvsra.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVROTR.B"
+api = "xvrotr_b"
+forms = ["xvrotr.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVROTR.H"
+api = "xvrotr_h"
+forms = ["xvrotr.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVROTR.W"
+api = "xvrotr_w"
+forms = ["xvrotr.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVROTR.D"
+api = "xvrotr_d"
+forms = ["xvrotr.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLR.B"
+api = "xvsrlr_b"
+forms = ["xvsrlr.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLR.H"
+api = "xvsrlr_h"
+forms = ["xvsrlr.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLR.W"
+api = "xvsrlr_w"
+forms = ["xvsrlr.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLR.D"
+api = "xvsrlr_d"
+forms = ["xvsrlr.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRAR.B"
+api = "xvsrar_b"
+forms = ["xvsrar.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRAR.H"
+api = "xvsrar_h"
+forms = ["xvsrar.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRAR.W"
+api = "xvsrar_w"
+forms = ["xvsrar.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRAR.D"
+api = "xvsrar_d"
+forms = ["xvsrar.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLN.B.H"
+api = "xvsrln_b_h"
+forms = ["xvsrln.b.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLN.H.W"
+api = "xvsrln_h_w"
+forms = ["xvsrln.h.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLN.W.D"
+api = "xvsrln_w_d"
+forms = ["xvsrln.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRAN.B.H"
+api = "xvsran_b_h"
+forms = ["xvsran.b.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRAN.H.W"
+api = "xvsran_h_w"
+forms = ["xvsran.h.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRAN.W.D"
+api = "xvsran_w_d"
+forms = ["xvsran.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLRN.B.H"
+api = "xvsrlrn_b_h"
+forms = ["xvsrlrn.b.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLRN.H.W"
+api = "xvsrlrn_h_w"
+forms = ["xvsrlrn.h.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLRN.W.D"
+api = "xvsrlrn_w_d"
+forms = ["xvsrlrn.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRARN.B.H"
+api = "xvsrarn_b_h"
+forms = ["xvsrarn.b.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRARN.H.W"
+api = "xvsrarn_h_w"
+forms = ["xvsrarn.h.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRARN.W.D"
+api = "xvsrarn_w_d"
+forms = ["xvsrarn.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLN.B.H"
+api = "xvssrln_b_h"
+forms = ["xvssrln.b.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLN.H.W"
+api = "xvssrln_h_w"
+forms = ["xvssrln.h.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLN.W.D"
+api = "xvssrln_w_d"
+forms = ["xvssrln.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRAN.B.H"
+api = "xvssran_b_h"
+forms = ["xvssran.b.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRAN.H.W"
+api = "xvssran_h_w"
+forms = ["xvssran.h.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRAN.W.D"
+api = "xvssran_w_d"
+forms = ["xvssran.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLRN.B.H"
+api = "xvssrlrn_b_h"
+forms = ["xvssrlrn.b.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLRN.H.W"
+api = "xvssrlrn_h_w"
+forms = ["xvssrlrn.h.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLRN.W.D"
+api = "xvssrlrn_w_d"
+forms = ["xvssrlrn.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRARN.B.H"
+api = "xvssrarn_b_h"
+forms = ["xvssrarn.b.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRARN.H.W"
+api = "xvssrarn_h_w"
+forms = ["xvssrarn.h.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRARN.W.D"
+api = "xvssrarn_w_d"
+forms = ["xvssrarn.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLN.BU.H"
+api = "xvssrln_bu_h"
+forms = ["xvssrln.bu.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLN.HU.W"
+api = "xvssrln_hu_w"
+forms = ["xvssrln.hu.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLN.WU.D"
+api = "xvssrln_wu_d"
+forms = ["xvssrln.wu.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRAN.BU.H"
+api = "xvssran_bu_h"
+forms = ["xvssran.bu.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRAN.HU.W"
+api = "xvssran_hu_w"
+forms = ["xvssran.hu.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRAN.WU.D"
+api = "xvssran_wu_d"
+forms = ["xvssran.wu.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLRN.BU.H"
+api = "xvssrlrn_bu_h"
+forms = ["xvssrlrn.bu.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLRN.HU.W"
+api = "xvssrlrn_hu_w"
+forms = ["xvssrlrn.hu.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLRN.WU.D"
+api = "xvssrlrn_wu_d"
+forms = ["xvssrlrn.wu.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRARN.BU.H"
+api = "xvssrarn_bu_h"
+forms = ["xvssrarn.bu.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRARN.HU.W"
+api = "xvssrarn_hu_w"
+forms = ["xvssrarn.hu.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRARN.WU.D"
+api = "xvssrarn_wu_d"
+forms = ["xvssrarn.wu.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITCLR.B"
+api = "xvbitclr_b"
+forms = ["xvbitclr.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITCLR.H"
+api = "xvbitclr_h"
+forms = ["xvbitclr.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITCLR.W"
+api = "xvbitclr_w"
+forms = ["xvbitclr.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITCLR.D"
+api = "xvbitclr_d"
+forms = ["xvbitclr.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITSET.B"
+api = "xvbitset_b"
+forms = ["xvbitset.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITSET.H"
+api = "xvbitset_h"
+forms = ["xvbitset.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITSET.W"
+api = "xvbitset_w"
+forms = ["xvbitset.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITSET.D"
+api = "xvbitset_d"
+forms = ["xvbitset.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITREV.B"
+api = "xvbitrev_b"
+forms = ["xvbitrev.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITREV.H"
+api = "xvbitrev_h"
+forms = ["xvbitrev.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITREV.W"
+api = "xvbitrev_w"
+forms = ["xvbitrev.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITREV.D"
+api = "xvbitrev_d"
+forms = ["xvbitrev.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPACKEV.B"
+api = "xvpackev_b"
+forms = ["xvpackev.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPACKEV.H"
+api = "xvpackev_h"
+forms = ["xvpackev.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPACKEV.W"
+api = "xvpackev_w"
+forms = ["xvpackev.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPACKEV.D"
+api = "xvpackev_d"
+forms = ["xvpackev.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPACKOD.B"
+api = "xvpackod_b"
+forms = ["xvpackod.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPACKOD.H"
+api = "xvpackod_h"
+forms = ["xvpackod.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPACKOD.W"
+api = "xvpackod_w"
+forms = ["xvpackod.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPACKOD.D"
+api = "xvpackod_d"
+forms = ["xvpackod.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVILVL.B"
+api = "xvilvl_b"
+forms = ["xvilvl.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVILVL.H"
+api = "xvilvl_h"
+forms = ["xvilvl.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVILVL.W"
+api = "xvilvl_w"
+forms = ["xvilvl.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVILVL.D"
+api = "xvilvl_d"
+forms = ["xvilvl.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVILVH.B"
+api = "xvilvh_b"
+forms = ["xvilvh.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVILVH.H"
+api = "xvilvh_h"
+forms = ["xvilvh.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVILVH.W"
+api = "xvilvh_w"
+forms = ["xvilvh.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVILVH.D"
+api = "xvilvh_d"
+forms = ["xvilvh.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPICKEV.B"
+api = "xvpickev_b"
+forms = ["xvpickev.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPICKEV.H"
+api = "xvpickev_h"
+forms = ["xvpickev.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPICKEV.W"
+api = "xvpickev_w"
+forms = ["xvpickev.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPICKEV.D"
+api = "xvpickev_d"
+forms = ["xvpickev.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPICKOD.B"
+api = "xvpickod_b"
+forms = ["xvpickod.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPICKOD.H"
+api = "xvpickod_h"
+forms = ["xvpickod.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPICKOD.W"
+api = "xvpickod_w"
+forms = ["xvpickod.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPICKOD.D"
+api = "xvpickod_d"
+forms = ["xvpickod.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVREPLVE.B"
+api = "xvreplve_b"
+forms = ["xvreplve.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVREPLVE.H"
+api = "xvreplve_h"
+forms = ["xvreplve.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVREPLVE.W"
+api = "xvreplve_w"
+forms = ["xvreplve.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVREPLVE.D"
+api = "xvreplve_d"
+forms = ["xvreplve.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVAND.V"
+api = "xvand_v"
+forms = ["xvand.v"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVOR.V"
+api = "xvor_v"
+forms = ["xvor.v"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVXOR.V"
+api = "xvxor_v"
+forms = ["xvxor.v"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVNOR.V"
+api = "xvnor_v"
+forms = ["xvnor.v"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVANDN.V"
+api = "xvandn_v"
+forms = ["xvandn.v"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVORN.V"
+api = "xvorn_v"
+forms = ["xvorn.v"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRSTP.B"
+api = "xvfrstp_b"
+forms = ["xvfrstp.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRSTP.H"
+api = "xvfrstp_h"
+forms = ["xvfrstp.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADD.Q"
+api = "xvadd_q"
+forms = ["xvadd.q"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUB.Q"
+api = "xvsub_q"
+forms = ["xvsub.q"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSIGNCOV.B"
+api = "xvsigncov_b"
+forms = ["xvsigncov.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSIGNCOV.H"
+api = "xvsigncov_h"
+forms = ["xvsigncov.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSIGNCOV.W"
+api = "xvsigncov_w"
+forms = ["xvsigncov.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSIGNCOV.D"
+api = "xvsigncov_d"
+forms = ["xvsigncov.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFADD.S"
+api = "xvfadd_s"
+forms = ["xvfadd.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFADD.D"
+api = "xvfadd_d"
+forms = ["xvfadd.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFSUB.S"
+api = "xvfsub_s"
+forms = ["xvfsub.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFSUB.D"
+api = "xvfsub_d"
+forms = ["xvfsub.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFMUL.S"
+api = "xvfmul_s"
+forms = ["xvfmul.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFMUL.D"
+api = "xvfmul_d"
+forms = ["xvfmul.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFDIV.S"
+api = "xvfdiv_s"
+forms = ["xvfdiv.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFDIV.D"
+api = "xvfdiv_d"
+forms = ["xvfdiv.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFMAX.S"
+api = "xvfmax_s"
+forms = ["xvfmax.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFMAX.D"
+api = "xvfmax_d"
+forms = ["xvfmax.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFMIN.S"
+api = "xvfmin_s"
+forms = ["xvfmin.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFMIN.D"
+api = "xvfmin_d"
+forms = ["xvfmin.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFMAXA.S"
+api = "xvfmaxa_s"
+forms = ["xvfmaxa.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFMAXA.D"
+api = "xvfmaxa_d"
+forms = ["xvfmaxa.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFMINA.S"
+api = "xvfmina_s"
+forms = ["xvfmina.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFMINA.D"
+api = "xvfmina_d"
+forms = ["xvfmina.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCVT.H.S"
+api = "xvfcvt_h_s"
+forms = ["xvfcvt.h.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCVT.S.D"
+api = "xvfcvt_s_d"
+forms = ["xvfcvt.s.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFFINT.S.L"
+api = "xvffint_s_l"
+forms = ["xvffint.s.l"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINT.W.D"
+api = "xvftint_w_d"
+forms = ["xvftint.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRM.W.D"
+api = "xvftintrm_w_d"
+forms = ["xvftintrm.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRP.W.D"
+api = "xvftintrp_w_d"
+forms = ["xvftintrp.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRZ.W.D"
+api = "xvftintrz_w_d"
+forms = ["xvftintrz.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRNE.W.D"
+api = "xvftintrne_w_d"
+forms = ["xvftintrne.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSHUF.H"
+api = "xvshuf_h"
+forms = ["xvshuf.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSHUF.W"
+api = "xvshuf_w"
+forms = ["xvshuf.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSHUF.D"
+api = "xvshuf_d"
+forms = ["xvshuf.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPERM.W"
+api = "xvperm_w"
+forms = ["xvperm.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSEQI.B"
+api = "xvseqi_b"
+forms = ["xvseqi.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSEQI.H"
+api = "xvseqi_h"
+forms = ["xvseqi.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSEQI.W"
+api = "xvseqi_w"
+forms = ["xvseqi.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSEQI.D"
+api = "xvseqi_d"
+forms = ["xvseqi.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLEI.B"
+api = "xvslei_b"
+forms = ["xvslei.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLEI.H"
+api = "xvslei_h"
+forms = ["xvslei.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLEI.W"
+api = "xvslei_w"
+forms = ["xvslei.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLEI.D"
+api = "xvslei_d"
+forms = ["xvslei.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLEI.BU"
+api = "xvslei_bu"
+forms = ["xvslei.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLEI.HU"
+api = "xvslei_hu"
+forms = ["xvslei.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLEI.WU"
+api = "xvslei_wu"
+forms = ["xvslei.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLEI.DU"
+api = "xvslei_du"
+forms = ["xvslei.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLTI.B"
+api = "xvslti_b"
+forms = ["xvslti.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLTI.H"
+api = "xvslti_h"
+forms = ["xvslti.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLTI.W"
+api = "xvslti_w"
+forms = ["xvslti.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLTI.D"
+api = "xvslti_d"
+forms = ["xvslti.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLTI.BU"
+api = "xvslti_bu"
+forms = ["xvslti.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLTI.HU"
+api = "xvslti_hu"
+forms = ["xvslti.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLTI.WU"
+api = "xvslti_wu"
+forms = ["xvslti.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLTI.DU"
+api = "xvslti_du"
+forms = ["xvslti.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDI.BU"
+api = "xvaddi_bu"
+forms = ["xvaddi.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDI.HU"
+api = "xvaddi_hu"
+forms = ["xvaddi.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDI.WU"
+api = "xvaddi_wu"
+forms = ["xvaddi.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVADDI.DU"
+api = "xvaddi_du"
+forms = ["xvaddi.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBI.BU"
+api = "xvsubi_bu"
+forms = ["xvsubi.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBI.HU"
+api = "xvsubi_hu"
+forms = ["xvsubi.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBI.WU"
+api = "xvsubi_wu"
+forms = ["xvsubi.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSUBI.DU"
+api = "xvsubi_du"
+forms = ["xvsubi.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBSLL.V"
+api = "xvbsll"
+forms = ["xvbsll.v"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBSRL.V"
+api = "xvbsrl"
+forms = ["xvbsrl.v"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMAXI.B"
+api = "xvmaxi_b"
+forms = ["xvmaxi.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMAXI.H"
+api = "xvmaxi_h"
+forms = ["xvmaxi.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMAXI.W"
+api = "xvmaxi_w"
+forms = ["xvmaxi.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMAXI.D"
+api = "xvmaxi_d"
+forms = ["xvmaxi.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMINI.B"
+api = "xvmini_b"
+forms = ["xvmini.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMINI.H"
+api = "xvmini_h"
+forms = ["xvmini.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMINI.W"
+api = "xvmini_w"
+forms = ["xvmini.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMINI.D"
+api = "xvmini_d"
+forms = ["xvmini.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMAXI.BU"
+api = "xvmaxi_bu"
+forms = ["xvmaxi.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMAXI.HU"
+api = "xvmaxi_hu"
+forms = ["xvmaxi.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMAXI.WU"
+api = "xvmaxi_wu"
+forms = ["xvmaxi.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMAXI.DU"
+api = "xvmaxi_du"
+forms = ["xvmaxi.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMINI.BU"
+api = "xvmini_bu"
+forms = ["xvmini.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMINI.HU"
+api = "xvmini_hu"
+forms = ["xvmini.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMINI.WU"
+api = "xvmini_wu"
+forms = ["xvmini.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMINI.DU"
+api = "xvmini_du"
+forms = ["xvmini.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRSTPI.B"
+api = "xvfrstpi_b"
+forms = ["xvfrstpi.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRSTPI.H"
+api = "xvfrstpi_h"
+forms = ["xvfrstpi.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMEPATMSK.V"
+api = ""
+status = "excluded"
+exclusion_class = "toolchain"
+reason = "LLVM does not recognize or assemble the vmepatmsk.v instruction."
+test_ids = []
+[[instruction]]
+mnemonic = "XVCLO.B"
+api = "xvclo_b"
+forms = ["xvclo.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVCLO.H"
+api = "xvclo_h"
+forms = ["xvclo.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVCLO.W"
+api = "xvclo_w"
+forms = ["xvclo.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVCLO.D"
+api = "xvclo_d"
+forms = ["xvclo.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVCLZ.B"
+api = "xvclz_b"
+forms = ["xvclz.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVCLZ.H"
+api = "xvclz_h"
+forms = ["xvclz.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVCLZ.W"
+api = "xvclz_w"
+forms = ["xvclz.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVCLZ.D"
+api = "xvclz_d"
+forms = ["xvclz.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPCNT.B"
+api = "xvpcnt_b"
+forms = ["xvpcnt.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPCNT.H"
+api = "xvpcnt_h"
+forms = ["xvpcnt.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPCNT.W"
+api = "xvpcnt_w"
+forms = ["xvpcnt.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPCNT.D"
+api = "xvpcnt_d"
+forms = ["xvpcnt.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVNEG_B"
+api = "xvneg_b"
+forms = ["xvneg.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVNEG_H"
+api = "xvneg_h"
+forms = ["xvneg.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVNEG.W"
+api = "xvneg_w"
+forms = ["xvneg.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVNEG_D"
+api = "xvneg_d"
+forms = ["xvneg.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMSKLTZ.B"
+api = "xvmskltz_b"
+forms = ["xvmskltz.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMSKLTZ.H"
+api = "xvmskltz_h"
+forms = ["xvmskltz.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMSKLTZ.W"
+api = "xvmskltz_w"
+forms = ["xvmskltz.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMSKLTZ.D"
+api = "xvmskltz_d"
+forms = ["xvmskltz.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMSKGEZ.B"
+api = "xvmskgez_b"
+forms = ["xvmskgez.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVMSKNZ.B"
+api = "xvmsknz_b"
+forms = ["xvmsknz.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSETEQZ.V"
+api = "xvseteqz"
+forms = ["xvseteqz.v"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSETNEZ.V"
+api = "xvsetnez"
+forms = ["xvsetnez.v"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSETANYEQZ.B"
+api = "xvsetanyeqz_b"
+forms = ["xvsetanyeqz.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSETANYEQZ.H"
+api = "xvsetanyeqz_h"
+forms = ["xvsetanyeqz.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSETANYEQZ.W"
+api = "xvsetanyeqz_w"
+forms = ["xvsetanyeqz.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSETANYEQZ.D"
+api = "xvsetanyeqz_d"
+forms = ["xvsetanyeqz.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSETALLNEZ.B"
+api = "xvsetallnez_b"
+forms = ["xvsetallnez.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSETALLNEZ.H"
+api = "xvsetallnez_h"
+forms = ["xvsetallnez.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSETALLNEZ.W"
+api = "xvsetallnez_w"
+forms = ["xvsetallnez.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSETALLNEZ.D"
+api = "xvsetallnez_d"
+forms = ["xvsetallnez.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFLOGB.S"
+api = "xvflogb_s"
+forms = ["xvflogb.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFLOGB.D"
+api = "xvflogb_d"
+forms = ["xvflogb.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCLASS.S"
+api = "xvfclass_s"
+forms = ["xvfclass.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCLASS.D"
+api = "xvfclass_d"
+forms = ["xvfclass.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFSQRT.S"
+api = "xvfsqrt_s"
+forms = ["xvfsqrt.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFSQRT.D"
+api = "xvfsqrt_d"
+forms = ["xvfsqrt.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRECIP.S"
+api = "xvfrecip_s"
+forms = ["xvfrecip.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRECIP.D"
+api = "xvfrecip_d"
+forms = ["xvfrecip.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRSQRT.S"
+api = "xvfrsqrt_s"
+forms = ["xvfrsqrt.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRSQRT.D"
+api = "xvfrsqrt_d"
+forms = ["xvfrsqrt.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRECIPE.S"
+api = "xvfrecipe_s"
+forms = ["xvfrecipe.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRECIPE.D"
+api = "xvfrecipe_d"
+forms = ["xvfrecipe.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRSQRTE.S"
+api = "xvfrsqrte_s"
+forms = ["xvfrsqrte.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRSQRTE.D"
+api = "xvfrsqrte_d"
+forms = ["xvfrsqrte.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRINT.S"
+api = "xvfrint_s"
+forms = ["xvfrint.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRINT.D"
+api = "xvfrint_d"
+forms = ["xvfrint.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRINTRM.S"
+api = "xvfrintrm_s"
+forms = ["xvfrintrm.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRINTRM.D"
+api = "xvfrintrm_d"
+forms = ["xvfrintrm.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRINTRP.S"
+api = "xvfrintrp_s"
+forms = ["xvfrintrp.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRINTRP.D"
+api = "xvfrintrp_d"
+forms = ["xvfrintrp.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRINTRZ.S"
+api = "xvfrintrz_s"
+forms = ["xvfrintrz.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRINTRZ.D"
+api = "xvfrintrz_d"
+forms = ["xvfrintrz.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRINTRNE.S"
+api = "xvfrintrne_s"
+forms = ["xvfrintrne.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFRINTRNE.D"
+api = "xvfrintrne_d"
+forms = ["xvfrintrne.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCVTL.S.H"
+api = "xvfcvtl_s_h"
+forms = ["xvfcvtl.s.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCVTH.S.H"
+api = "xvfcvth_s_h"
+forms = ["xvfcvth.s.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCVTL.D.S"
+api = "xvfcvtl_d_s"
+forms = ["xvfcvtl.d.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFCVTH.D.S"
+api = "xvfcvth_d_s"
+forms = ["xvfcvth.d.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFFINT.S.W"
+api = "xvffint_s_w"
+forms = ["xvffint.s.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFFINT.S.WU"
+api = "xvffint_s_wu"
+forms = ["xvffint.s.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFFINT.D.L"
+api = "xvffint_d_l"
+forms = ["xvffint.d.l"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFFINT.D.LU"
+api = "xvffint_d_lu"
+forms = ["xvffint.d.lu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFFINTL.D.W"
+api = "xvffintl_d_w"
+forms = ["xvffintl.d.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFFINTH.D.W"
+api = "xvffinth_d_w"
+forms = ["xvffinth.d.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINT.W.S"
+api = "xvftint_w_s"
+forms = ["xvftint.w.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINT.L.D"
+api = "xvftint_l_d"
+forms = ["xvftint.l.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRM.W.S"
+api = "xvftintrm_w_s"
+forms = ["xvftintrm.w.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRM.L.D"
+api = "xvftintrm_l_d"
+forms = ["xvftintrm.l.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRP.W.S"
+api = "xvftintrp_w_s"
+forms = ["xvftintrp.w.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRP.L.D"
+api = "xvftintrp_l_d"
+forms = ["xvftintrp.l.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRZ.W.S"
+api = "xvftintrz_w_s"
+forms = ["xvftintrz.w.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRZ.L.D"
+api = "xvftintrz_l_d"
+forms = ["xvftintrz.l.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRNE.W.S"
+api = "xvftintrne_w_s"
+forms = ["xvftintrne.w.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRNE.L.D"
+api = "xvftintrne_l_d"
+forms = ["xvftintrne.l.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINT.WU.S"
+api = "xvftint_wu_s"
+forms = ["xvftint.wu.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINT.LU.D"
+api = "xvftint_lu_d"
+forms = ["xvftint.lu.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRZ.WU.S"
+api = "xvftintrz_wu_s"
+forms = ["xvftintrz.wu.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRZ.LU.D"
+api = "xvftintrz_lu_d"
+forms = ["xvftintrz.lu.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTL.L.S"
+api = "xvftintl_l_s"
+forms = ["xvftintl.l.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTH.L.S"
+api = "xvftinth_l_s"
+forms = ["xvftinth.l.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRML.L.S"
+api = "xvftintrml_l_s"
+forms = ["xvftintrml.l.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRMH.L.S"
+api = "xvftintrmh_l_s"
+forms = ["xvftintrmh.l.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRPL.L.S"
+api = "xvftintrpl_l_s"
+forms = ["xvftintrpl.l.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRPH.L.S"
+api = "xvftintrph_l_s"
+forms = ["xvftintrph.l.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRZL.L.S"
+api = "xvftintrzl_l_s"
+forms = ["xvftintrzl.l.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRZH.L.S"
+api = "xvftintrzh_l_s"
+forms = ["xvftintrzh.l.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRNEL.L.S"
+api = "xvftintrnel_l_s"
+forms = ["xvftintrnel.l.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVFTINTRNEH.L.S"
+api = "xvftintrneh_l_s"
+forms = ["xvftintrneh.l.s"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVEXTH.H.B"
+api = "xvexth_h_b"
+forms = ["xvexth.h.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVEXTH.W.H"
+api = "xvexth_w_h"
+forms = ["xvexth.w.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVEXTH.D.W"
+api = "xvexth_d_w"
+forms = ["xvexth.d.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVEXTH.Q.D"
+api = "xvexth_q_d"
+forms = ["xvexth.q.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVEXTH.HU.BU"
+api = "xvexth_hu_bu"
+forms = ["xvexth.hu.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVEXTH.WU.HU"
+api = "xvexth_wu_hu"
+forms = ["xvexth.wu.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVEXTH.DU.WU"
+api = "xvexth_du_wu"
+forms = ["xvexth.du.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVEXTH.QU.DU"
+api = "xvexth_qu_du"
+forms = ["xvexth.qu.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVREPLGR2VR.B"
+api = "xvreplgr2vr_b"
+forms = ["xvreplgr2vr.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVREPLGR2VR.H"
+api = "xvreplgr2vr_h"
+forms = ["xvreplgr2vr.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVREPLGR2VR.W"
+api = "xvreplgr2vr_w"
+forms = ["xvreplgr2vr.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVREPLGR2VR.D"
+api = "xvreplgr2vr_d"
+forms = ["xvreplgr2vr.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "VEXT2XV_H_B"
+api = "vext2xv_h_b"
+forms = ["vext2xv.h.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "VEXT2XV.W.B"
+api = "vext2xv_w_b"
+forms = ["vext2xv.w.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "VEXT2XV.D.B"
+api = "vext2xv_d_b"
+forms = ["vext2xv.d.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "VEXT2XV.W.H"
+api = "vext2xv_w_h"
+forms = ["vext2xv.w.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "VEXT2XV.D.H"
+api = "vext2xv_d_h"
+forms = ["vext2xv.d.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "VEXT2XV.D.W"
+api = "vext2xv_d_w"
+forms = ["vext2xv.d.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "VEXT2XV.HU.BU"
+api = "vext2xv_hu_bu"
+forms = ["vext2xv.hu.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "VEXT2XV.WU.BU"
+api = "vext2xv_wu_bu"
+forms = ["vext2xv.wu.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "VEXT2XV.DU.BU"
+api = "vext2xv_du_bu"
+forms = ["vext2xv.du.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "VEXT2XV.WU.HU"
+api = "vext2xv_wu_hu"
+forms = ["vext2xv.wu.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "VEXT2XV.DU.HU"
+api = "vext2xv_du_hu"
+forms = ["vext2xv.du.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "VEXT2XV.DU.WU"
+api = "vext2xv_du_wu"
+forms = ["vext2xv.du.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVROTRI.B"
+api = "xvrotri_b"
+forms = ["xvrotri.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVROTRI.H"
+api = "xvrotri_h"
+forms = ["xvrotri.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVROTRI.W"
+api = "xvrotri_w"
+forms = ["xvrotri.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVROTRI.D"
+api = "xvrotri_d"
+forms = ["xvrotri.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLRI.B"
+api = "xvsrlri_b"
+forms = ["xvsrlri.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLRI.H"
+api = "xvsrlri_h"
+forms = ["xvsrlri.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLRI.W"
+api = "xvsrlri_w"
+forms = ["xvsrlri.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLRI.D"
+api = "xvsrlri_d"
+forms = ["xvsrlri.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRARI.B"
+api = "xvsrari_b"
+forms = ["xvsrari.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRARI.H"
+api = "xvsrari_h"
+forms = ["xvsrari.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRARI.W"
+api = "xvsrari_w"
+forms = ["xvsrari.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRARI.D"
+api = "xvsrari_d"
+forms = ["xvsrari.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVINSGR2VR.W"
+api = "xvinsgr2vr_w"
+forms = ["xvinsgr2vr.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVINSGR2VR.D"
+api = "xvinsgr2vr_d"
+forms = ["xvinsgr2vr.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPICKVE2GR.W"
+api = "xvpickve2gr_w"
+forms = ["xvpickve2gr.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPICKVE2GR.D"
+api = "xvpickve2gr_d"
+forms = ["xvpickve2gr.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPICKVE2GR.WU"
+api = "xvpickve2gr_wu"
+forms = ["xvpickve2gr.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPICKVE2GR.DU"
+api = "xvpickve2gr_du"
+forms = ["xvpickve2gr.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVREPL128VEI.B"
+api = "xvrepl128vei_b"
+forms = ["xvrepl128vei.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVREPL128VEI.H"
+api = "xvrepl128vei_h"
+forms = ["xvrepl128vei.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVREPL128VEI.W"
+api = "xvrepl128vei_w"
+forms = ["xvrepl128vei.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVREPL128VEI.D"
+api = "xvrepl128vei_d"
+forms = ["xvrepl128vei.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVINSVE0.W"
+api = "xvinsve0_w"
+forms = ["xvinsve0.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVINSVE0.D"
+api = "xvinsve0_d"
+forms = ["xvinsve0.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPICKVE.W"
+api = "xvpickve_w"
+forms = ["xvpickve.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPICKVE.D"
+api = "xvpickve_d"
+forms = ["xvpickve.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVREPLVE0.B"
+api = "xvreplve0_b"
+forms = ["xvreplve0.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVREPLVE0.H"
+api = "xvreplve0_h"
+forms = ["xvreplve0.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVREPLVE0.W"
+api = "xvreplve0_w"
+forms = ["xvreplve0.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVREPLVE0.D"
+api = "xvreplve0_d"
+forms = ["xvreplve0.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVREPLVE0.Q"
+api = "xvreplve0_q"
+forms = ["xvreplve0.q"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLLWIL.H.B"
+api = "xvsllwil_h_b"
+forms = ["xvsllwil.h.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLLWIL.W.H"
+api = "xvsllwil_w_h"
+forms = ["xvsllwil.w.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLLWIL.D.W"
+api = "xvsllwil_d_w"
+forms = ["xvsllwil.d.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVEXTL.Q.D"
+api = "xvextl_q_d"
+forms = ["xvextl.q.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLLWIL.HU.BU"
+api = "xvsllwil_hu_bu"
+forms = ["xvsllwil.hu.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLLWIL.WU.HU"
+api = "xvsllwil_wu_hu"
+forms = ["xvsllwil.wu.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLLWIL.DU.WU"
+api = "xvsllwil_du_wu"
+forms = ["xvsllwil.du.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVEXTL.QU.DU"
+api = "xvextl_qu_du"
+forms = ["xvextl.qu.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITCLRI.B"
+api = "xvbitclri_b"
+forms = ["xvbitclri.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITCLRI.H"
+api = "xvbitclri_h"
+forms = ["xvbitclri.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITCLRI.W"
+api = "xvbitclri_w"
+forms = ["xvbitclri.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITCLRI.D"
+api = "xvbitclri_d"
+forms = ["xvbitclri.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITSETI.B"
+api = "xvbitseti_b"
+forms = ["xvbitseti.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITSETI.H"
+api = "xvbitseti_h"
+forms = ["xvbitseti.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITSETI.W"
+api = "xvbitseti_w"
+forms = ["xvbitseti.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITSETI.D"
+api = "xvbitseti_d"
+forms = ["xvbitseti.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITREVI.B"
+api = "xvbitrevi_b"
+forms = ["xvbitrevi.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITREVI.H"
+api = "xvbitrevi_h"
+forms = ["xvbitrevi.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITREVI.W"
+api = "xvbitrevi_w"
+forms = ["xvbitrevi.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITREVI.D"
+api = "xvbitrevi_d"
+forms = ["xvbitrevi.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSAT.B"
+api = "xvsat_b"
+forms = ["xvsat.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSAT.H"
+api = "xvsat_h"
+forms = ["xvsat.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSAT.W"
+api = "xvsat_w"
+forms = ["xvsat.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSAT.D"
+api = "xvsat_d"
+forms = ["xvsat.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSAT.BU"
+api = "xvsat_bu"
+forms = ["xvsat.bu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSAT.HU"
+api = "xvsat_hu"
+forms = ["xvsat.hu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSAT.WU"
+api = "xvsat_wu"
+forms = ["xvsat.wu"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSAT.DU"
+api = "xvsat_du"
+forms = ["xvsat.du"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLLI.B"
+api = "xvslli_b"
+forms = ["xvslli.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLLI.H"
+api = "xvslli_h"
+forms = ["xvslli.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLLI.W"
+api = "xvslli_w"
+forms = ["xvslli.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSLLI.D"
+api = "xvslli_d"
+forms = ["xvslli.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLI.B"
+api = "xvsrli_b"
+forms = ["xvsrli.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLI.H"
+api = "xvsrli_h"
+forms = ["xvsrli.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLI.W"
+api = "xvsrli_w"
+forms = ["xvsrli.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLI.D"
+api = "xvsrli_d"
+forms = ["xvsrli.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRAI.B"
+api = "xvsrai_b"
+forms = ["xvsrai.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRAI.H"
+api = "xvsrai_h"
+forms = ["xvsrai.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRAI.W"
+api = "xvsrai_w"
+forms = ["xvsrai.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRAI.D"
+api = "xvsrai_d"
+forms = ["xvsrai.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLNI.B.H"
+api = "xvsrlni_b_h"
+forms = ["xvsrlni.b.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLNI.H.W"
+api = "xvsrlni_h_w"
+forms = ["xvsrlni.h.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLNI.W.D"
+api = "xvsrlni_w_d"
+forms = ["xvsrlni.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLNI.D.Q"
+api = "xvsrlni_d_q"
+forms = ["xvsrlni.d.q"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLRNI.B.H"
+api = "xvsrlrni_b_h"
+forms = ["xvsrlrni.b.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLRNI.H.W"
+api = "xvsrlrni_h_w"
+forms = ["xvsrlrni.h.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLRNI.W.D"
+api = "xvsrlrni_w_d"
+forms = ["xvsrlrni.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRLRNI.D.Q"
+api = "xvsrlrni_d_q"
+forms = ["xvsrlrni.d.q"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLNI.B.H"
+api = "xvssrlni_b_h"
+forms = ["xvssrlni.b.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLNI.H.W"
+api = "xvssrlni_h_w"
+forms = ["xvssrlni.h.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLNI.W.D"
+api = "xvssrlni_w_d"
+forms = ["xvssrlni.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLNI.D.Q"
+api = "xvssrlni_d_q"
+forms = ["xvssrlni.d.q"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLNI.BU.H"
+api = "xvssrlni_bu_h"
+forms = ["xvssrlni.bu.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLNI.HU.W"
+api = "xvssrlni_hu_w"
+forms = ["xvssrlni.hu.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLNI.WU.D"
+api = "xvssrlni_wu_d"
+forms = ["xvssrlni.wu.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLNI.DU.Q"
+api = "xvssrlni_du_q"
+forms = ["xvssrlni.du.q"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLRNI.B.H"
+api = "xvssrlrni_b_h"
+forms = ["xvssrlrni.b.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLRNI.H.W"
+api = "xvssrlrni_h_w"
+forms = ["xvssrlrni.h.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLRNI.W.D"
+api = "xvssrlrni_w_d"
+forms = ["xvssrlrni.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLRNI.D.Q"
+api = "xvssrlrni_d_q"
+forms = ["xvssrlrni.d.q"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLRNI.BU.H"
+api = "xvssrlrni_bu_h"
+forms = ["xvssrlrni.bu.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLRNI.HU.W"
+api = "xvssrlrni_hu_w"
+forms = ["xvssrlrni.hu.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLRNI.WU.D"
+api = "xvssrlrni_wu_d"
+forms = ["xvssrlrni.wu.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRLRNI.DU.Q"
+api = "xvssrlrni_du_q"
+forms = ["xvssrlrni.du.q"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRANI.B.H"
+api = "xvsrani_b_h"
+forms = ["xvsrani.b.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRANI.H.W"
+api = "xvsrani_h_w"
+forms = ["xvsrani.h.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRANI.W.D"
+api = "xvsrani_w_d"
+forms = ["xvsrani.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRANI.D.Q"
+api = "xvsrani_d_q"
+forms = ["xvsrani.d.q"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRARNI.B.H"
+api = "xvsrarni_b_h"
+forms = ["xvsrarni.b.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRARNI.H.W"
+api = "xvsrarni_h_w"
+forms = ["xvsrarni.h.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRARNI.W.D"
+api = "xvsrarni_w_d"
+forms = ["xvsrarni.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSRARNI.D.Q"
+api = "xvsrarni_d_q"
+forms = ["xvsrarni.d.q"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRANI.B.H"
+api = "xvssrani_b_h"
+forms = ["xvssrani.b.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRANI.H.W"
+api = "xvssrani_h_w"
+forms = ["xvssrani.h.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRANI.W.D"
+api = "xvssrani_w_d"
+forms = ["xvssrani.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRANI.D.Q"
+api = "xvssrani_d_q"
+forms = ["xvssrani.d.q"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRANI.BU.H"
+api = "xvssrani_bu_h"
+forms = ["xvssrani.bu.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRANI.HU.W"
+api = "xvssrani_hu_w"
+forms = ["xvssrani.hu.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRANI.WU.D"
+api = "xvssrani_wu_d"
+forms = ["xvssrani.wu.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRANI.DU.Q"
+api = "xvssrani_du_q"
+forms = ["xvssrani.du.q"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRARNI.B.H"
+api = "xvssrarni_b_h"
+forms = ["xvssrarni.b.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRARNI.H.W"
+api = "xvssrarni_h_w"
+forms = ["xvssrarni.h.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRARNI.W.D"
+api = "xvssrarni_w_d"
+forms = ["xvssrarni.w.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRARNI.D.Q"
+api = "xvssrarni_d_q"
+forms = ["xvssrarni.d.q"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRARNI.BU.H"
+api = "xvssrarni_bu_h"
+forms = ["xvssrarni.bu.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRARNI.HU.W"
+api = "xvssrarni_hu_w"
+forms = ["xvssrarni.hu.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRARNI.WU.D"
+api = "xvssrarni_wu_d"
+forms = ["xvssrarni.wu.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSSRARNI.DU.Q"
+api = "xvssrarni_du_q"
+forms = ["xvssrarni.du.q"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVEXTRINS.D"
+api = "xvextrins_d"
+forms = ["xvextrins.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVEXTRINS.W"
+api = "xvextrins_w"
+forms = ["xvextrins.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVEXTRINS.H"
+api = "xvextrins_h"
+forms = ["xvextrins.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVEXTRINS.B"
+api = "xvextrins_b"
+forms = ["xvextrins.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSHUF4I.B"
+api = "xvshuf4i_b"
+forms = ["xvshuf4i.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSHUF4I.H"
+api = "xvshuf4i_h"
+forms = ["xvshuf4i.h"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSHUF4I.W"
+api = "xvshuf4i_w"
+forms = ["xvshuf4i.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVSHUF4I.D"
+api = "xvshuf4i_d"
+forms = ["xvshuf4i.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVBITSELI.B"
+api = "xvbitseli_b"
+forms = ["xvbitseli.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVANDI.B"
+api = "xvandi_b"
+forms = ["xvandi.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVORI.B"
+api = "xvori_b"
+forms = ["xvori.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVXORI.B"
+api = "xvxori_b"
+forms = ["xvxori.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVNORI.B"
+api = "xvnori_b"
+forms = ["xvnori.b"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVLDI"
+api = "xvldi"
+forms = ["xvldi"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPERMI.W"
+api = "xvpermi_w"
+forms = ["xvpermi.w"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPERMI.D"
+api = "xvpermi_d"
+forms = ["xvpermi.d"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]
+[[instruction]]
+mnemonic = "XVPERMI.Q"
+api = "xvpermi_q"
+forms = ["xvpermi.q"]
+status = "implemented"
+test_ids = ["tests/loongarch.rs::loongarch_pipeline"]

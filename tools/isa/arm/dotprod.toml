@@ -1,0 +1,21 @@
+schema = 1
+arch = "arm"
+extension = "dotprod"
+module = "crate::arm::simd::dotprod"
+kind = "fixed"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "SDOT"
+api = "sdot"
+required_features = ["dotprod"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "UDOT"
+api = "udot"
+required_features = ["dotprod"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]

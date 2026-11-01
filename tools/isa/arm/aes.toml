@@ -1,0 +1,33 @@
+schema = 1
+arch = "arm"
+extension = "aes"
+module = "crate::arm::crypto::aes"
+kind = "fixed"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "AESD"
+api = "aesd"
+required_features = ["aes"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "AESE"
+api = "aese"
+required_features = ["aes"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "AESIMC"
+api = "aesimc"
+required_features = ["aes"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "AESMC"
+api = "aesmc"
+required_features = ["aes"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]

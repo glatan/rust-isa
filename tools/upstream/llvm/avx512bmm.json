@@ -1,0 +1,69 @@
+{
+  "source": "llvm/llvm-project",
+  "version": "llvmorg-23.1.4",
+  "forms": [
+    {
+      "mnemonic": "vbitrevb",
+      "api": "vbitrevb_v128",
+      "width": 128,
+      "required_features": [
+        "avx512bmm",
+        "avx512vl"
+      ],
+      "encoding": "62 f6 7c 48 81 c8"
+    },
+    {
+      "mnemonic": "vbitrevb",
+      "api": "vbitrevb_v256",
+      "width": 256,
+      "required_features": [
+        "avx512bmm",
+        "avx512vl"
+      ]
+    },
+    {
+      "mnemonic": "vbitrevb",
+      "api": "vbitrevb_v512",
+      "width": 512,
+      "required_features": [
+        "avx512bmm"
+      ]
+    },
+    {
+      "mnemonic": "vbmacor16x16x16",
+      "api": "vbmacor16x16x16_v256",
+      "width": 256,
+      "required_features": [
+        "avx512bmm",
+        "avx512vl"
+      ],
+      "encoding": "62 f6 74 48 80 d0"
+    },
+    {
+      "mnemonic": "vbmacor16x16x16",
+      "api": "vbmacor16x16x16_v512",
+      "width": 512,
+      "required_features": [
+        "avx512bmm"
+      ]
+    },
+    {
+      "mnemonic": "vbmacxor16x16x16",
+      "api": "vbmacxor16x16x16_v256",
+      "width": 256,
+      "required_features": [
+        "avx512bmm",
+        "avx512vl"
+      ],
+      "encoding": "62 f6 f4 48 80 d0"
+    },
+    {
+      "mnemonic": "vbmacxor16x16x16",
+      "api": "vbmacxor16x16x16_v512",
+      "width": 512,
+      "required_features": [
+        "avx512bmm"
+      ]
+    }
+  ]
+}

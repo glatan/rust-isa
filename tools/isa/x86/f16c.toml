@@ -1,0 +1,35 @@
+schema = 1
+arch = "x86_64"
+extension = "f16c"
+module = "crate::x86::simd::f16c"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VCVTPH2PS"
+api = "vcvtph2ps"
+required_features = ["f16c"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTPH2PS"
+api = "vcvtph2ps_v256"
+widths = [256]
+required_features = ["f16c"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTPS2PH"
+api = "vcvtps2ph"
+required_features = ["f16c"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTPS2PH"
+api = "vcvtps2ph_v256"
+widths = [256]
+required_features = ["f16c"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

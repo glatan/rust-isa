@@ -1,0 +1,2955 @@
+schema = 1
+arch = "aarch64"
+extension = "neon"
+module = "crate::aarch64::simd::neon"
+kind = "fixed"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "ABS"
+api = "abs_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ABS"
+api = "abs_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ABS"
+api = "abs_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ABS"
+api = "abs_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADD"
+api = "add"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADD"
+api = "add_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADD"
+api = "add_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADD"
+api = "add_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADD"
+api = "add_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDHN2"
+api = "addhn2_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDHN2"
+api = "addhn2_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDHN2"
+api = "addhn2_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDHN"
+api = "addhn_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDHN"
+api = "addhn_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDHN"
+api = "addhn_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDP"
+api = "addp_s16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDP"
+api = "addp_s32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDP"
+api = "addp_s8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDV"
+api = "addv_s16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDV"
+api = "addv_s32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ADDV"
+api = "addv_s8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "AND"
+api = "and"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "BIC"
+api = "bic"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "BIF"
+api = "bif"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "BIT"
+api = "bit"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "BSL"
+api = "bsl"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CLS"
+api = "cls_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CLS"
+api = "cls_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CLS"
+api = "cls_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CLS"
+api = "cls_u64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CLZ"
+api = "clz_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CLZ"
+api = "clz_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CLZ"
+api = "clz_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CLZ"
+api = "clz_u64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMGE"
+api = "cmge_i16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMGE"
+api = "cmge_i32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMGE"
+api = "cmge_i8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMLE"
+api = "cmle_i16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMLE"
+api = "cmle_i32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMLE"
+api = "cmle_i8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMLT"
+api = "cmlt_i16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMLT"
+api = "cmlt_i32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMLT"
+api = "cmlt_i8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMEQ"
+api = "cmpeq_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMEQ"
+api = "cmpeq_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMEQ"
+api = "cmpeq_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMEQ"
+api = "cmpeq_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMGT"
+api = "cmpgt_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMGT"
+api = "cmpgt_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMGT"
+api = "cmpgt_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMGT"
+api = "cmpgt_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMTST"
+api = "cmtst_i16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMTST"
+api = "cmtst_i32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CMTST"
+api = "cmtst_i8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CNT"
+api = "cnt_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CNT"
+api = "cnt_u64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "DUP"
+api = "dup_i16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "DUP"
+api = "dup_i32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "DUP"
+api = "dup_i64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "DUP"
+api = "dup_i8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "EOR"
+api = "eor"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "EXT"
+api = "ext"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "EXTRACT"
+api = "extract_i32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FABD"
+api = "fabd_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FABD"
+api = "fabd_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FABS"
+api = "fabs"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FACGE"
+api = "facge_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FACGE"
+api = "facge_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FACGT"
+api = "facgt_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FACGT"
+api = "facgt_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FADD"
+api = "fadd"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FADD"
+api = "fadd_f64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FADDP"
+api = "faddp_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FADDP"
+api = "faddp_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FADDV"
+api = "faddv_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FADDV"
+api = "faddv_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCMEQ"
+api = "fcmeq_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCMEQ"
+api = "fcmeq_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCMGE"
+api = "fcmge_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCMGE"
+api = "fcmge_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCMGT"
+api = "fcmgt_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCMGT"
+api = "fcmgt_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCMLE"
+api = "fcmle_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCMLE"
+api = "fcmle_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCMLT"
+api = "fcmlt_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCMLT"
+api = "fcmlt_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCVTZS"
+api = "fcvtzs_s32_f32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCVTZS"
+api = "fcvtzs_s64_f64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCVTZU"
+api = "fcvtzu_u32_f32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCVTZU"
+api = "fcvtzu_u64_f64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FDIV"
+api = "fdiv"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FDIV"
+api = "fdiv_f64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMAX"
+api = "fmax"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMAXNM"
+api = "fmaxnm_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMAXNM"
+api = "fmaxnm_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMAXNMV"
+api = "fmaxnmv_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMAXNMV"
+api = "fmaxnmv_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMAXV"
+api = "fmaxv_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMAXV"
+api = "fmaxv_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMIN"
+api = "fmin"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMINNM"
+api = "fminnm_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMINNM"
+api = "fminnm_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMINNMV"
+api = "fminnmv_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMINNMV"
+api = "fminnmv_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMINV"
+api = "fminv_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMINV"
+api = "fminv_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMLA"
+api = "fmla_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMLA"
+api = "fmla_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMLS"
+api = "fmls_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMLS"
+api = "fmls_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMUL"
+api = "fmul"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMUL"
+api = "fmul_f64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMULX"
+api = "fmulx_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FMULX"
+api = "fmulx_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FNEG"
+api = "fneg"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FRECPE"
+api = "frecpe_f32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FRECPE"
+api = "frecpe_f64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FRECPS"
+api = "frecps_f32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FRECPS"
+api = "frecps_f64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FRECPX"
+api = "frecpx_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FRECPX"
+api = "frecpx_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FRSQRTE"
+api = "frsqrte_f32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FRSQRTE"
+api = "frsqrte_f64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FRSQRTS"
+api = "frsqrts_f32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FRSQRTS"
+api = "frsqrts_f64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FSQRT"
+api = "fsqrt"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FSUB"
+api = "fsub"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FSUB"
+api = "fsub_f64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "INS"
+api = "ins_i16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "INS"
+api = "ins_i32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "INS"
+api = "ins_i64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "INS"
+api = "ins_i8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "LD1"
+api = "ld1"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "LD2"
+api = "ld2"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "LD2R"
+api = "ld2r_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "LD2R"
+api = "ld2r_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "LD2R"
+api = "ld2r_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "LD2R"
+api = "ld2r_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "LD3"
+api = "ld3"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "LD3R"
+api = "ld3r_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "LD3R"
+api = "ld3r_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "LD3R"
+api = "ld3r_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "LD3R"
+api = "ld3r_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "LD4"
+api = "ld4"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "LD4R"
+api = "ld4r_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "LD4R"
+api = "ld4r_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "LD4R"
+api = "ld4r_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "LD4R"
+api = "ld4r_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "LDNP"
+api = "ldnp"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "LDP"
+api = "ldp"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "MLA"
+api = "mla_s16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "MLA"
+api = "mla_s32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "MLA"
+api = "mla_s8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "MLS"
+api = "mls_s16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "MLS"
+api = "mls_s32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "MLS"
+api = "mls_s8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "MUL"
+api = "mul"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "MUL"
+api = "mul_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "MUL"
+api = "mul_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "MUL"
+api = "mul_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "NEG"
+api = "neg_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "NEG"
+api = "neg_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "NEG"
+api = "neg_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "NOT"
+api = "not"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ORN"
+api = "orn"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ORR"
+api = "orr"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "PMUL"
+api = "pmul"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "PMULL2_P8"
+api = "pmull2_p8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "PMULL_P64"
+api = "pmull_p64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "PMULL_P8"
+api = "pmull_p8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "RADDHN2"
+api = "raddhn2_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "RADDHN2"
+api = "raddhn2_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "RADDHN2"
+api = "raddhn2_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "RADDHN"
+api = "raddhn_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "RADDHN"
+api = "raddhn_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "RADDHN"
+api = "raddhn_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "RBIT"
+api = "rbit"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "REPLACE"
+api = "replace_i32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "REV16"
+api = "rev16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "REV32"
+api = "rev32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "REV64"
+api = "rev64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "RSUBHN2"
+api = "rsubhn2_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "RSUBHN2"
+api = "rsubhn2_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "RSUBHN2"
+api = "rsubhn2_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "RSUBHN"
+api = "rsubhn_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "RSUBHN"
+api = "rsubhn_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "RSUBHN"
+api = "rsubhn_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SABD"
+api = "sabd_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SABD"
+api = "sabd_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SABD"
+api = "sabd_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SABDL"
+api = "sabdl_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SABDL"
+api = "sabdl_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SABDL"
+api = "sabdl_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SADDL"
+api = "saddl_s16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SADDL"
+api = "saddl_s32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SADDL"
+api = "saddl_s8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SADDW"
+api = "saddw_s16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SADDW"
+api = "saddw_s32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SADDW"
+api = "saddw_s8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SAR"
+api = "sar_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SAR"
+api = "sar_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SAR"
+api = "sar_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SCVTF"
+api = "scvtf_f32_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SCVTF"
+api = "scvtf_f64_s64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHADD"
+api = "shadd_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHADD"
+api = "shadd_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHADD"
+api = "shadd_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHL"
+api = "shl_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHL"
+api = "shl_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHL"
+api = "shl_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHL"
+api = "shl_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHL"
+api = "shl_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHL"
+api = "shl_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHL"
+api = "shl_s64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHL"
+api = "shl_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHLL"
+api = "shll_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHLL"
+api = "shll_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHLL"
+api = "shll_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHR"
+api = "shr_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHR"
+api = "shr_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHR"
+api = "shr_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHRN2"
+api = "shrn2_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHRN2"
+api = "shrn2_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHRN2"
+api = "shrn2_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHRN"
+api = "shrn_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHRN"
+api = "shrn_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHRN"
+api = "shrn_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHSUB"
+api = "shsub_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHSUB"
+api = "shsub_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SHSUB"
+api = "shsub_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SLI"
+api = "sli_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SLI"
+api = "sli_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SLI"
+api = "sli_s64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SLI"
+api = "sli_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMAX"
+api = "smax_s16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMAX"
+api = "smax_s32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMAX"
+api = "smax_s8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMAXP"
+api = "smaxp_s16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMAXP"
+api = "smaxp_s32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMAXP"
+api = "smaxp_s8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMAXV"
+api = "smaxv_s16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMAXV"
+api = "smaxv_s32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMAXV"
+api = "smaxv_s8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMIN"
+api = "smin_s16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMIN"
+api = "smin_s32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMIN"
+api = "smin_s8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMINP"
+api = "sminp_s16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMINP"
+api = "sminp_s32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMINP"
+api = "sminp_s8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMINV"
+api = "sminv_s16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMINV"
+api = "sminv_s32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMINV"
+api = "sminv_s8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMLAL2"
+api = "smlal2_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMLAL2"
+api = "smlal2_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMLAL2"
+api = "smlal2_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMLAL"
+api = "smlal_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMLAL"
+api = "smlal_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMLAL"
+api = "smlal_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMLSL2"
+api = "smlsl2_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMLSL2"
+api = "smlsl2_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMLSL2"
+api = "smlsl2_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMLSL"
+api = "smlsl_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMLSL"
+api = "smlsl_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMLSL"
+api = "smlsl_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMULL2"
+api = "smull2_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMULL2"
+api = "smull2_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMULL2"
+api = "smull2_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMULL"
+api = "smull_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMULL"
+api = "smull_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SMULL"
+api = "smull_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SPLAT"
+api = "splat_f32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SPLAT"
+api = "splat_f64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SPLAT"
+api = "splat_i16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SPLAT"
+api = "splat_i32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SPLAT"
+api = "splat_i64"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SPLAT"
+api = "splat_i8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQABS"
+api = "sqabs_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQABS"
+api = "sqabs_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQABS"
+api = "sqabs_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQADD"
+api = "sqadd_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQADD"
+api = "sqadd_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQADD"
+api = "sqadd_s64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQADD"
+api = "sqadd_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQDMLAL2"
+api = "sqdmlal2_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQDMLAL2"
+api = "sqdmlal2_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQDMLAL"
+api = "sqdmlal_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQDMLAL"
+api = "sqdmlal_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQDMLSL2"
+api = "sqdmlsl2_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQDMLSL2"
+api = "sqdmlsl2_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQDMLSL"
+api = "sqdmlsl_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQDMLSL"
+api = "sqdmlsl_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQDMULH"
+api = "sqdmulh_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQDMULH"
+api = "sqdmulh_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQDMULL2"
+api = "sqdmull2_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQDMULL2"
+api = "sqdmull2_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQDMULL"
+api = "sqdmull_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQDMULL"
+api = "sqdmull_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQNEG"
+api = "sqneg_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQNEG"
+api = "sqneg_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQNEG"
+api = "sqneg_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQRDMULH"
+api = "sqrdmulh_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQRDMULH"
+api = "sqrdmulh_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQRSHL"
+api = "sqrshl_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQRSHL"
+api = "sqrshl_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQRSHL"
+api = "sqrshl_s64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQRSHL"
+api = "sqrshl_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQRSHRN2"
+api = "sqrshrn2_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQRSHRN2"
+api = "sqrshrn2_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQRSHRN2"
+api = "sqrshrn2_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQRSHRN"
+api = "sqrshrn_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQRSHRN"
+api = "sqrshrn_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQRSHRN"
+api = "sqrshrn_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQRSHRUN2"
+api = "sqrshrun2_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQRSHRUN2"
+api = "sqrshrun2_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQRSHRUN2"
+api = "sqrshrun2_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQRSHRUN"
+api = "sqrshrun_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQRSHRUN"
+api = "sqrshrun_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQRSHRUN"
+api = "sqrshrun_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHL"
+api = "sqshl_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHL"
+api = "sqshl_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHL"
+api = "sqshl_s64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHL"
+api = "sqshl_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHLU"
+api = "sqshlu_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHLU"
+api = "sqshlu_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHLU"
+api = "sqshlu_s64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHLU"
+api = "sqshlu_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHRN2"
+api = "sqshrn2_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHRN2"
+api = "sqshrn2_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHRN2"
+api = "sqshrn2_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHRN"
+api = "sqshrn_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHRN"
+api = "sqshrn_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHRN"
+api = "sqshrn_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHRUN2"
+api = "sqshrun2_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHRUN2"
+api = "sqshrun2_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHRUN2"
+api = "sqshrun2_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHRUN"
+api = "sqshrun_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHRUN"
+api = "sqshrun_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSHRUN"
+api = "sqshrun_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSUB"
+api = "sqsub_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSUB"
+api = "sqsub_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSUB"
+api = "sqsub_s64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SQSUB"
+api = "sqsub_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRHADD"
+api = "srhadd_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRHADD"
+api = "srhadd_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRHADD"
+api = "srhadd_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRI"
+api = "sri_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRI"
+api = "sri_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRI"
+api = "sri_s64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRI"
+api = "sri_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRSHL"
+api = "srshl_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRSHL"
+api = "srshl_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRSHL"
+api = "srshl_s64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRSHL"
+api = "srshl_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRSHR"
+api = "srshr_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRSHR"
+api = "srshr_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRSHR"
+api = "srshr_s64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRSHR"
+api = "srshr_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRSRA"
+api = "srsra_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRSRA"
+api = "srsra_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRSRA"
+api = "srsra_s64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SRSRA"
+api = "srsra_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SSHL"
+api = "sshl_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SSHL"
+api = "sshl_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SSHL"
+api = "sshl_s64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SSHL"
+api = "sshl_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SSHR"
+api = "sshr_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SSHR"
+api = "sshr_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SSHR"
+api = "sshr_s64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SSHR"
+api = "sshr_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SSRA"
+api = "ssra_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SSRA"
+api = "ssra_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SSRA"
+api = "ssra_s64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SSRA"
+api = "ssra_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SSUBL"
+api = "ssubl_s16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SSUBL"
+api = "ssubl_s32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SSUBL"
+api = "ssubl_s8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SSUBW"
+api = "ssubw_s16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SSUBW"
+api = "ssubw_s32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SSUBW"
+api = "ssubw_s8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ST1"
+api = "st1"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ST2"
+api = "st2"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ST3"
+api = "st3"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ST4"
+api = "st4"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "STNP"
+api = "stnp"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "STP"
+api = "stp"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SUB"
+api = "sub_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SUB"
+api = "sub_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SUB"
+api = "sub_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SUB"
+api = "sub_i8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SUBHN2"
+api = "subhn2_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SUBHN2"
+api = "subhn2_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SUBHN2"
+api = "subhn2_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SUBHN"
+api = "subhn_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SUBHN"
+api = "subhn_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "SUBHN"
+api = "subhn_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "TBL"
+api = "tbl"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "TBX"
+api = "tbx"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "TRN1"
+api = "trn1"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "TRN2"
+api = "trn2"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UABD"
+api = "uabd_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UABD"
+api = "uabd_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UABD"
+api = "uabd_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UABDL"
+api = "uabdl_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UABDL"
+api = "uabdl_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UABDL"
+api = "uabdl_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UADDL"
+api = "uaddl_u16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UADDL"
+api = "uaddl_u32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UADDL"
+api = "uaddl_u8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UADDW"
+api = "uaddw_u16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UADDW"
+api = "uaddw_u32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UADDW"
+api = "uaddw_u8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UCVTF"
+api = "ucvtf_f32_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UCVTF"
+api = "ucvtf_f64_u64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHADD"
+api = "uhadd_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHADD"
+api = "uhadd_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHADD"
+api = "uhadd_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHSUB"
+api = "uhsub_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHSUB"
+api = "uhsub_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UHSUB"
+api = "uhsub_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMAX"
+api = "umax_u16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMAX"
+api = "umax_u32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMAX"
+api = "umax_u8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMAXP"
+api = "umaxp_u16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMAXP"
+api = "umaxp_u32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMAXP"
+api = "umaxp_u8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMAXV"
+api = "umaxv_u16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMAXV"
+api = "umaxv_u32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMAXV"
+api = "umaxv_u8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMIN"
+api = "umin_u16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMIN"
+api = "umin_u32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMIN"
+api = "umin_u8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMINP"
+api = "uminp_u16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMINP"
+api = "uminp_u32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMINP"
+api = "uminp_u8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMINV"
+api = "uminv_u16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMINV"
+api = "uminv_u32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMINV"
+api = "uminv_u8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMLAL2"
+api = "umlal2_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMLAL2"
+api = "umlal2_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMLAL2"
+api = "umlal2_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMLAL"
+api = "umlal_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMLAL"
+api = "umlal_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMLAL"
+api = "umlal_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMLSL2"
+api = "umlsl2_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMLSL2"
+api = "umlsl2_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMLSL2"
+api = "umlsl2_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMLSL"
+api = "umlsl_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMLSL"
+api = "umlsl_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMLSL"
+api = "umlsl_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMULL2"
+api = "umull2_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMULL2"
+api = "umull2_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMULL2"
+api = "umull2_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMULL"
+api = "umull_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMULL"
+api = "umull_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UMULL"
+api = "umull_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQADD"
+api = "uqadd_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQADD"
+api = "uqadd_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQADD"
+api = "uqadd_u64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQADD"
+api = "uqadd_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQRSHL"
+api = "uqrshl_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQRSHL"
+api = "uqrshl_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQRSHL"
+api = "uqrshl_u64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQRSHL"
+api = "uqrshl_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQRSHRN2"
+api = "uqrshrn2_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQRSHRN2"
+api = "uqrshrn2_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQRSHRN2"
+api = "uqrshrn2_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQRSHRN"
+api = "uqrshrn_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQRSHRN"
+api = "uqrshrn_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQRSHRN"
+api = "uqrshrn_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQSHL"
+api = "uqshl_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQSHL"
+api = "uqshl_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQSHL"
+api = "uqshl_u64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQSHL"
+api = "uqshl_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQSHRN2"
+api = "uqshrn2_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQSHRN2"
+api = "uqshrn2_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQSHRN2"
+api = "uqshrn2_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQSHRN"
+api = "uqshrn_i16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQSHRN"
+api = "uqshrn_i32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQSHRN"
+api = "uqshrn_i64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQSUB"
+api = "uqsub_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQSUB"
+api = "uqsub_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQSUB"
+api = "uqsub_u64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UQSUB"
+api = "uqsub_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "URECPE"
+api = "urecpe_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "URHADD"
+api = "urhadd_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "URHADD"
+api = "urhadd_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "URHADD"
+api = "urhadd_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "URSHL"
+api = "urshl_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "URSHL"
+api = "urshl_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "URSHL"
+api = "urshl_u64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "URSHL"
+api = "urshl_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "URSQRTE"
+api = "ursqrte_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "USHL"
+api = "ushl_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "USHL"
+api = "ushl_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "USHL"
+api = "ushl_u64"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "USHL"
+api = "ushl_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "USUBL"
+api = "usubl_u16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "USUBL"
+api = "usubl_u32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "USUBL"
+api = "usubl_u8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "USUBW"
+api = "usubw_u16"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "USUBW"
+api = "usubw_u32"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "USUBW"
+api = "usubw_u8"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UZP1"
+api = "uzp1"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "UZP2"
+api = "uzp2"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "V128_LOAD"
+api = "v128_load"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "V128_STORE"
+api = "v128_store"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "XTN2"
+api = "xtn2_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "XTN2"
+api = "xtn2_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "XTN2"
+api = "xtn2_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "XTN2"
+api = "xtn2_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "XTN2"
+api = "xtn2_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "XTN2"
+api = "xtn2_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "XTN"
+api = "xtn_s16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "XTN"
+api = "xtn_s32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "XTN"
+api = "xtn_s8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "XTN"
+api = "xtn_u16"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "XTN"
+api = "xtn_u32"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "XTN"
+api = "xtn_u8"
+status = "implemented"
+generated = true
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ZIP1"
+api = "zip1"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "ZIP2"
+api = "zip2"
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]

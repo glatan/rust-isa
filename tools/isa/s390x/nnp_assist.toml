@@ -1,0 +1,43 @@
+schema = 1
+arch = "s390x"
+extension = "nnp-assist"
+module = "crate::s390x::simd::nnp_assist"
+kind = "fixed"
+parent = ""
+source = "llvm/llvm-project"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VCFN"
+api = "vcfn"
+required_features = ["nnp-assist"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VCLFNH"
+api = "vclfnh"
+required_features = ["nnp-assist"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VCLFNL"
+api = "vclfnl"
+required_features = ["nnp-assist"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VCNF"
+api = "vcnf"
+required_features = ["nnp-assist"]
+status = "implemented"
+generated = true
+test_ids = ["tests/s390x.rs::s390x_values"]
+[[instruction]]
+mnemonic = "VCRNF"
+api = "vcrnf"
+required_features = ["nnp-assist"]
+status = "implemented"
+test_ids = ["tests/s390x.rs::s390x_values"]

@@ -1,0 +1,373 @@
+schema = 1
+# 1 batch = 1 instruction group. A batch is done only when make test passes.
+[[batch]]
+id = "sve-orv"
+status = "done"
+scope = "ORV i8/i16/i32/i64/u8/u16/u32/u64"
+coverage_delta = 8
+
+[[batch]]
+id = "sve-andv-eorv"
+status = "done"
+scope = "ANDV and EORV all integer types"
+coverage_delta = 16
+
+[[batch]]
+id = "sve-fadda"
+status = "done"
+scope = "FADDA f32/f64"
+coverage_delta = 2
+
+[[batch]]
+id = "sve2-minmaxp"
+status = "done"
+scope = "SMAXP/SMINP/UMAXP/UMINP integer types"
+coverage_delta = 16
+
+[[batch]]
+id = "sve-fdivr-fsubr"
+status = "done"
+scope = "FDIVR and FSUBR vector forms f32/f64"
+coverage_delta = 4
+
+[[batch]]
+id = "sve2-float-pairwise"
+status = "done"
+scope = "FADDP/FMAXP/FMINP/FMAXNMP/FMINNMP f32/f64"
+coverage_delta = 10
+
+[[batch]]
+id = "sve-udiv-divr"
+status = "done"
+scope = "UDIV/SDIVR/UDIVR i32/i64/u32/u64"
+coverage_delta = 8
+
+[[batch]]
+id = "loongarch-vfcmp"
+status = "done"
+scope = "LSX/LASX vfcmp conditions s/d"
+coverage_delta = 88
+
+[[batch]]
+id = "loongarch-fma"
+status = "done"
+scope = "LSX/LASX vfmadd/vfmsub/vfnmadd/vfnmsub s/d"
+coverage_delta = 16
+
+[[batch]]
+id = "sve-frecpx"
+status = "done"
+scope = "FRECPX f32/f64 mapped to existing semantic wrappers"
+coverage_delta = 2
+
+[[batch]]
+id = "sve-fexpa"
+status = "done"
+scope = "FEXPA f32/f64"
+coverage_delta = 2
+
+[[batch]]
+id = "sve-widening-sums"
+status = "done"
+scope = "SADDV and UADDV widening reductions"
+coverage_delta = 8
+
+[[batch]]
+id = "sve2-core"
+status = "done"
+scope = "SVE2 module and ADDP/SHADD/SHSUB/UHADD/UHSUB"
+coverage_delta = 42
+
+[[batch]]
+id = "riscv-zvbb"
+status = "done"
+scope = "Zvbb vandn/vbrev/vrev8/vclz/vctz/vcpop/vrol/vror/vwsll/vror.vi/vwsll.vi (16/16)"
+coverage_delta = 14
+
+[[batch]]
+id = "riscv-vset"
+status = "done"
+scope = "vsetivli/vsetvli/vsetvl"
+coverage_delta = 3
+
+[[batch]]
+id = "riscv-rvv-manifest-completion"
+status = "done"
+scope = "Inventory 80 implemented RVV APIs missing from v.toml (vlseg3-7, vlsseg3-7, etc.)"
+coverage_delta = 80
+
+[[batch]]
+id = "riscv-float-slide-compare"
+status = "done"
+scope = "vfslide1up/vfslide1down and vmf*.vf/vv compares"
+coverage_delta = 14
+
+[[batch]]
+id = "riscv-float-fma"
+status = "done"
+scope = "vfrsub.vf and vfmadd/vfmsub/vfnmadd/vfnmsub .vf/.vv"
+coverage_delta = 9
+
+[[batch]]
+id = "riscv-vfcvt-manifest-dedupe"
+status = "done"
+scope = "Remove duplicate vfcvt missing entries; existing vfcvt_* APIs already cover them"
+coverage_delta = 0
+
+[[batch]]
+id = "riscv-widen-narrow-conv"
+status = "done"
+scope = "vfwcvt/vfncvt conversion forms"
+coverage_delta = 15
+
+[[batch]]
+id = "riscv-fma-accumulate-mulh-mv"
+status = "done"
+scope = "vfmacc/vfnmacc/vfmsac/vfnmsac .vv/.vf, vmulhu/vmulhsu/vmulh .vv/.vx, vmv1r/2r/4r/8r"
+coverage_delta = 18
+
+[[batch]]
+id = "riscv-v-rest"
+status = "done"
+scope = "vfwredusum/vfwredosum, vrsub, vadc/vmadc/vsbc/vmsbc, vsmul, vssrl/vssra (27 forms)"
+coverage_delta = 27
+
+[[batch]]
+id = "loongarch-intrinsic-batch"
+status = "done"
+scope = "LSX 396 + LASX 421 regular-intrinsic wrappers, plus 30 LSX manifest recoveries (compare, bit, arithmetic, cvt, load/store)"
+coverage_delta = 847
+
+[[batch]]
+id = "loongarch-immediate-compare-shift"
+status = "done"
+scope = "LSX/LASX vseqi/vslei/vslti, vslli/vsrli/vsrai, vmaxi/vmini immediate forms (48 each)"
+coverage_delta = 96
+
+[[batch]]
+id = "loongarch-immediate-rotate-bitwise"
+status = "done"
+scope = "LSX/LASX vrotri/vbitclri/vbitseti/vbitrevi and vandi/vori/vxori/vnori (20 each)"
+coverage_delta = 40
+
+[[batch]]
+id = "loongarch-immediate-saturating-rounding"
+status = "done"
+scope = "LSX/LASX vaddi/vsubi unsigned saturating and vsrlri/vsrari rounding shifts (16 each)"
+coverage_delta = 32
+
+[[batch]]
+id = "loongarch-float-group"
+status = "done"
+scope = "LSX 24 / LASX 46 float wrappers (sqrt, rint, reciprocal, logb, max/min, conversions)"
+coverage_delta = 70
+
+[[batch]]
+id = "loongarch-lane-memory"
+status = "done"
+scope = "LSX 24 / LASX 22 lane and memory wrappers (ldrepl, stelm, replvei, insgr2vr, pickve2gr, insve0, pickve)"
+coverage_delta = 46
+
+[[batch]]
+id = "loongarch-narrowing-shift"
+status = "done"
+scope = "LSX/LASX vsllwil and vsrlni/vsrlrni/vssrlni/vssrlrni/vsrani/vsrarni/vssrani/vssrarni (54 each)"
+coverage_delta = 108
+
+[[batch]]
+id = "loongarch-misc-recipe"
+status = "done"
+scope = "LSX/LASX bsll/bsrl, set tests, xvsat, vbitseli, vshuf4i, vpermi, vextrins, vfrecipe/vfrsqrte, LSX vfrstpi"
+coverage_delta = 64
+
+[[batch]]
+id = "sve-integer-compare"
+status = "done"
+scope = "SVE CMPEQ/CMPGE/CMPGT/CMPHI/CMPHS/CMPLE/CMPLO/CMPLS/CMPLT/CMPNE immediate/vector/wide (30 forms)"
+coverage_delta = 30
+
+[[batch]]
+id = "sve-predicate-logical"
+status = "done"
+scope = "SVE ANDS/BICS/EON/EORS/ORRS and BRKA/BRKAS/BRKB/BRKBS (9 forms)"
+coverage_delta = 9
+
+[[batch]]
+id = "sve-predicate-break-binary"
+status = "done"
+scope = "SVE BRKN/BRKNS/BRKPA/BRKPAS/BRKPB/BRKPBS (6 forms)"
+coverage_delta = 6
+
+[[batch]]
+id = "sve-dup-clast"
+status = "done"
+scope = "SVE DUP scalar/indexed/immediate, DUPM, CLASTA/CLASTB scalar (6 forms)"
+coverage_delta = 6
+
+[[batch]]
+id = "sve-index-clast"
+status = "done"
+scope = "SVE INDEX x4 and CLASTA/CLASTB SIMD scalar/vector (8 forms)"
+coverage_delta = 8
+
+[[batch]]
+id = "sve-prefetch-ldff1"
+status = "done"
+scope = "SVE PRFB/PRFD/PRFH/PRFW x4 forms and LDFF1SB/SH/SW x3 forms (25 forms)"
+coverage_delta = 25
+
+[[batch]]
+id = "sve-fcmne-fmlal"
+status = "done"
+scope = "SVE FCMNE vectors/zero and FMLALB/FMLALT/FMLSLB/FMLSLT vectors (6 forms)"
+coverage_delta = 6
+
+[[batch]]
+id = "sve-cdot-cmla-fcmla"
+status = "done"
+scope = "SVE2 CDOT/CMLA/FCMLA vectors and indexed (6 forms)"
+coverage_delta = 6
+
+[[batch]]
+id = "loongarch-finish"
+status = "done"
+scope = "LASX xvfrstpi.b/h via 128-bit halves; vmepatmsk excluded due to LLVM toolchain gap"
+coverage_delta = 2
+
+[[batch]]
+id = "sve-incdec-plain"
+status = "done"
+scope = "SVE INCD/INCW/INCH/INCP/DECD/DECW/DECH/DECP scalar and vector (16 forms)"
+coverage_delta = 16
+
+[[batch]]
+id = "sve-incdec-saturating"
+status = "done"
+scope = "SVE SQ/UQ INCD/INCW/INCH/INCP and DECD/DECW/DECH/DECP scalar and vector (32 forms)"
+coverage_delta = 32
+
+[[batch]]
+id = "sve-ld1ro-ldr-str"
+status = "done"
+scope = "SVE LD1ROB/H/W/D immediate+scalar and LDR/STR predicate/vector (12 forms)"
+coverage_delta = 12
+
+[[batch]]
+id = "sve-mla-mls-movs"
+status = "done"
+scope = "SVE MLA/MLS vectors+indexed, RDFFR predicated/unpredicated, BSL1N/BSL2N (8 forms)"
+coverage_delta = 8
+
+[[batch]]
+id = "sve-predicate-misc"
+status = "done"
+scope = "SVE PFALSE/PTRUE/PTRUES/PFIRST/PNEXT/PTEST/CNTP/CTERMEQ/CTERMNE/SETFFR/WRFFR/RDFFRS (12 forms)"
+coverage_delta = 12
+
+[[batch]]
+id = "sve-movs-addhn"
+status = "done"
+scope = "SVE MOVS predicated/unpredicated and ADDHNB/ADDHNT (4 forms)"
+coverage_delta = 4
+
+[[batch]]
+id = "sve2-crypto-bitwise"
+status = "done"
+scope = "SVE2 AESD/AESE/AESIMC/AESMC, SM4E/SM4EKEY, BCAX/EOR3/RAX1/XAR (10 forms)"
+coverage_delta = 10
+
+[[batch]]
+id = "sve-carry-rounding-shift"
+status = "done"
+scope = "SVE ADCLB/ADCLT/SBCLB/SBCLT and ASRD/ASRR/LSLR/LSRR (8 forms)"
+coverage_delta = 8
+
+[[batch]]
+id = "sve-bf16-dot-matrix"
+status = "done"
+scope = "SVE BFDOT/BFMLALB/BFMLALT/BFMMLA (4 forms)"
+coverage_delta = 4
+
+[[batch]]
+id = "sve-shrn-rshrn"
+status = "done"
+scope = "SVE SHRNB/SHRNT/RSHRNB/RSHRNT (4 forms)"
+coverage_delta = 4
+
+[[batch]]
+id = "sve-sshll-ushll"
+status = "done"
+scope = "SVE SSHLLB/SSHLLT/USHLLB/USHLLT (4 forms)"
+coverage_delta = 4
+
+[[batch]]
+id = "sve-pmul-pairwise"
+status = "done"
+scope = "SVE PMUL/PMULLB/PMULLT and SMAXP/SMINP/UMAXP/UMINP (7 forms)"
+coverage_delta = 7
+
+[[batch]]
+id = "sve-bitperm-ternary"
+status = "done"
+scope = "SVE BDEP/BEXT/BGRP/EORBT/EORTB (5 forms)"
+coverage_delta = 5
+
+[[batch]]
+id = "sve-logical-byte-incdec"
+status = "done"
+scope = "SVE NANDS/NORS/NOTS/ORNS/NBSL and DECB/INCB/SQDECB/SQINCB/UQDECB/UQINCB (17 forms)"
+coverage_delta = 17
+
+[[batch]]
+id = "sve-ldnf1-ldnt1"
+status = "done"
+scope = "SVE LDNF1SB/SH/SW and LDNT1SB/SH/SW (6 forms)"
+coverage_delta = 6
+
+[[batch]]
+id = "sve-float-misc"
+status = "done"
+scope = "SVE FCADD/FCMUO/FCPY/FDUP/FLOGB (5 forms)"
+coverage_delta = 5
+
+[[batch]]
+id = "sve-convert-misc"
+status = "done"
+scope = "SVE BFCVT/BFCVTNT/FCVT/FCVTLT/FCVTNT/FCVTX/FCVTXNT (7 forms)"
+coverage_delta = 7
+
+[[batch]]
+id = "sve-subhn-hsubr"
+status = "done"
+scope = "SVE SUBHNB/SUBHNT and SHSUBR/UHSUBR (4 forms)"
+coverage_delta = 4
+
+[[batch]]
+id = "sve-sat-shift-subr"
+status = "done"
+scope = "SVE SQRSHLR/SQSHLR/SQSUBR/UQRSHLR/UQSHLR/UQSUBR/SRSHLR/URSHLR/SUQADD/USQADD (10 forms)"
+coverage_delta = 10
+
+[[batch]]
+id = "sve-final"
+status = "done"
+scope = "SVE FMLAL/FMLSL indexed, HISTCNT/HISTSEG, SQRDCMLAH indexed/vectors (8 forms)"
+coverage_delta = 8
+
+[[batch]]
+id = "sve2-inventory-verification"
+status = "done"
+scope = "ACLE SVE/SVE2 824 instruction inventory checked against sve.toml and sve2.toml; manifests marked complete"
+coverage_delta = 0
+
+[[batch]]
+id = "riscv-missing"
+status = "done"
+scope = "RISC-V, LoongArch, and SVE complete (5691 implemented / 9 excluded / 0 missing; exclusions documented with toolchain, pseudo, or API limits)"
+definition_of_done = "Each form implemented or explicitly excluded with reason"
+
+[[batch]]
+id = "alias-test-ids"
+status = "done"
+scope = "Removed instruction aliases and cross-extension re-exports; populated test_ids for every implemented entry and validated them in coverage.py"
+coverage_delta = 0

@@ -1,0 +1,27 @@
+schema = 1
+arch = "x86_64"
+extension = "avx512vbmi"
+module = "crate::x86::simd::avx512vbmi"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VPERMB"
+api = "vpermb"
+required_features = ["avx512vbmi"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPERMI2B"
+api = "vpermi2b"
+required_features = ["avx512vbmi"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPERMT2B"
+api = "vpermt2b"
+required_features = ["avx512vbmi"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

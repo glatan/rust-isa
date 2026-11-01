@@ -1,0 +1,27 @@
+schema = 1
+arch = "x86_64"
+extension = "sha512"
+module = "crate::x86::crypto::sha512"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VSHA512MSG1"
+api = "vsha512msg1"
+required_features = ["sha512"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VSHA512MSG2"
+api = "vsha512msg2"
+required_features = ["sha512"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VSHA512RNDS2"
+api = "vsha512rnds2"
+required_features = ["sha512"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

@@ -152,6 +152,7 @@
 //!
 //! </details>
 
+use crate::x86::simd::Mask32;
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;
 use crate::x86::simd::sse2::V128;
@@ -305,7 +306,7 @@ pub unsafe fn vminph(a: V512, b: V512) -> V512 {
 /// The caller must enable AVX-512FP16.
 #[target_feature(enable = "avx512fp16")]
 #[inline]
-pub unsafe fn vcmpph<const IMM: u8>(a: V512, b: V512) -> u32 {
+pub unsafe fn vcmpph<const IMM: u8>(a: V512, b: V512) -> Mask32 {
     let out: u32;
     unsafe {
         asm!(
@@ -323,7 +324,7 @@ pub unsafe fn vcmpph<const IMM: u8>(a: V512, b: V512) -> u32 {
             options(nostack, preserves_flags),
         );
     }
-    out as u32
+    Mask32::from_bits(out as u32)
 }
 
 unsafe extern "C" {
@@ -366,7 +367,7 @@ pub unsafe fn vucomish(a: V128, b: V128) -> u32 {
 /// The caller must enable AVX-512FP16.
 #[target_feature(enable = "avx512fp16")]
 #[inline]
-pub unsafe fn vfpclassph<const IMM: u8>(a: V512) -> u32 {
+pub unsafe fn vfpclassph<const IMM: u8>(a: V512) -> Mask32 {
     let out: u32;
     unsafe {
         asm!(
@@ -381,7 +382,7 @@ pub unsafe fn vfpclassph<const IMM: u8>(a: V512) -> u32 {
             options(nostack, preserves_flags),
         );
     }
-    out as u32
+    Mask32::from_bits(out as u32)
 }
 
 unsafe extern "C" {

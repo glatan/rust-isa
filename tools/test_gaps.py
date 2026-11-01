@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Report public functions that are not referenced by value tests.
 
-The check is name based. It is intentionally conservative: a function is
-counted as covered when its name appears anywhere in the arch's test sources
-or value fixture. This catches functions that are never called by any test,
+The check is call based. A function is counted as covered only when its name
+appears as a call expression in the arch's test sources or value fixture;
+imports and bare mentions do not count. This catches functions that are never called by any test,
 without pretending to prove semantic coverage.
 """
 
@@ -15,7 +15,7 @@ import re
 from pathlib import Path
 
 PUBLIC_FN = re.compile(r"pub\s+(?:unsafe\s+)?fn\s+([A-Za-z0-9_]+)")
-IDENTIFIER = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
+CALL = re.compile(r"\b([A-Za-z_][A-Za-z0-9_]*)\s*(?:::<[^>]*>)?\s*\(")
 
 ARCHES = {
     "x86": (
@@ -70,11 +70,17 @@ def public_functions(root: Path, source: str) -> set[str]:
     return {name for name in names if not name.startswith("rust_isa_")}
 
 
+ALIAS = re.compile(r"([A-Za-z_][A-Za-z0-9_]*)\s+as\s+([A-Za-z_][A-Za-z0-9_]*)")
+
+
 def used_names(root: Path, tests: list[str]) -> set[str]:
     names: set[str] = set()
     for entry in tests:
         for path in source_files(root / entry):
-            names.update(IDENTIFIER.findall(path.read_text(encoding="utf-8")))
+            text = path.read_text(encoding="utf-8")
+            aliases = {alias: original for original, alias in ALIAS.findall(text)}
+            for called in CALL.findall(text):
+                names.add(aliases.get(called, called))
     return names
 
 

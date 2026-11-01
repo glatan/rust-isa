@@ -1,0 +1,533 @@
+schema = 1
+arch = "mips64"
+extension = "msa"
+module = "crate::mips::simd::msa"
+kind = "fixed"
+parent = ""
+source = "llvm/llvm-project"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "ADDV.W"
+api = "add"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "ADD_A.W"
+api = "add_a"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "ADDV.H"
+api = "add_i16"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "ADDV.D"
+api = "add_i64"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "ADDV.B"
+api = "add_i8"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "ADDS_A.W"
+api = "adds_a"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "ADDS_S.W"
+api = "adds_s"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "ADDS_U.W"
+api = "adds_u"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "AND.V"
+api = "and"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "BCLR"
+api = "bclr"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "BNEG"
+api = "bneg"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "BINSL"
+api = "binsl"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "BINSR"
+api = "binsr"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "BSET"
+api = "bset"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "CEQ.W"
+api = "cmpeq_i32"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "CLT_S.W"
+api = "cmpgt_i32"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "DIV_S"
+api = "div_s"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "DIV_U"
+api = "div_u"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FADD"
+api = "fadd"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FADD.D"
+api = "fadd_f64"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FCLASS"
+api = "fclass"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FCMP"
+api = "fcmp"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FDIV"
+api = "fdiv"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FDIV.D"
+api = "fdiv_f64"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FEXP2"
+api = "fexp2"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FFINT_S.W"
+api = "ffint"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FFINT_S"
+api = "ffint_s"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FFINT_U"
+api = "ffint_u"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FLOG2"
+api = "flog2"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FMAX"
+api = "fmax"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FMIN"
+api = "fmin"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FMUL"
+api = "fmul"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FMUL.D"
+api = "fmul_f64"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FRCP"
+api = "frcp"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FRSQRT"
+api = "frsqrt"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FSUB"
+api = "fsub"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FSUB.D"
+api = "fsub_f64"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FSQRT"
+api = "fsqrt"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FTINT_S.W"
+api = "ftint"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FTINT_S"
+api = "ftint_s"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FTINT_U"
+api = "ftint_u"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "MAX_S"
+api = "max_s"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "MAX_U"
+api = "max_u"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "MIN_S"
+api = "min_s"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "MIN_U"
+api = "min_u"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "MOD_S"
+api = "mod_s"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "MOD_U"
+api = "mod_u"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "MULV.W"
+api = "mul"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "MULV.H"
+api = "mul_i16"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "MULV.W"
+api = "mul_i32"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "NLOC"
+api = "nloc"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "NLZC"
+api = "nlzc"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "NOR.V"
+api = "nor"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "OR.V"
+api = "or"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "PCNT"
+api = "pcnt"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SAT_S"
+api = "sat_s"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SAT_U"
+api = "sat_u"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SEQ"
+api = "seq"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SHF"
+api = "shf"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SLE_S"
+api = "sle_s"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SLE_U"
+api = "sle_u"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SLD"
+api = "sld"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SLL.W"
+api = "sll"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SLLI"
+api = "slli"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SLT_S"
+api = "slt_s"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SLT_U"
+api = "slt_u"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "FILL.W"
+api = "splat_i32"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SRA.W"
+api = "sra"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SRAI"
+api = "srai"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SRL.W"
+api = "srl"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SRLI"
+api = "srli"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SUBV.H"
+api = "sub_i16"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SUBV.W"
+api = "sub_i32"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SUBV.D"
+api = "sub_i64"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SUBV.B"
+api = "sub_i8"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SUBS_S"
+api = "subs_s"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "SUBS_U"
+api = "subs_u"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "VSHF"
+api = "vshf"
+required_features = ["msa"]
+status = "implemented"
+test_ids = ["tests/mips.rs::mips_values"]
+[[instruction]]
+mnemonic = "XOR.V"
+api = "xor"
+required_features = ["msa"]
+status = "implemented"
+generated = true
+test_ids = ["tests/mips.rs::mips_values"]

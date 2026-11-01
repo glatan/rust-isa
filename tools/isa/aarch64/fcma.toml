@@ -1,0 +1,33 @@
+schema = 1
+arch = "aarch64"
+extension = "fcma"
+module = "crate::aarch64::simd::fcma"
+kind = "fixed"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "FCMLA"
+api = "fcmla"
+required_features = ["fcma"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCMLA_ROT90"
+api = "fcmla_rot90"
+required_features = ["fcma"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCMLA_ROT180"
+api = "fcmla_rot180"
+required_features = ["fcma"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "FCMLA_ROT270"
+api = "fcmla_rot270"
+required_features = ["fcma"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]

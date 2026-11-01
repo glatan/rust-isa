@@ -1,0 +1,27 @@
+schema = 1
+arch = "x86_64"
+extension = "sm3"
+module = "crate::x86::crypto::sm3"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VSM3MSG1"
+api = "vsm3msg1"
+required_features = ["sm3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VSM3MSG2"
+api = "vsm3msg2"
+required_features = ["sm3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VSM3RNDS2"
+api = "vsm3rnds2"
+required_features = ["sm3"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

@@ -37,7 +37,10 @@
 //! let _ = unsafe { cpop(0) };
 //! let _ = unsafe { ctz(0) };
 //! let _ = unsafe { max(0, 0) };
+//! let _ = unsafe { maxu(0, 0) };
 //! let _ = unsafe { min(0, 0) };
+//! let _ = unsafe { minu(0, 0) };
+//! let _ = unsafe { orc_b(0) };
 //! let _ = unsafe { orn(0, 0) };
 //! let _ = unsafe { rol(0, 0) };
 //! let _ = unsafe { ror(0, 0) };
@@ -57,7 +60,10 @@
 //! use rust_isa::riscv::integer::zbb::cpop as _;
 //! use rust_isa::riscv::integer::zbb::ctz as _;
 //! use rust_isa::riscv::integer::zbb::max as _;
+//! use rust_isa::riscv::integer::zbb::maxu as _;
 //! use rust_isa::riscv::integer::zbb::min as _;
+//! use rust_isa::riscv::integer::zbb::minu as _;
+//! use rust_isa::riscv::integer::zbb::orc_b as _;
 //! use rust_isa::riscv::integer::zbb::orn as _;
 //! use rust_isa::riscv::integer::zbb::rol as _;
 //! use rust_isa::riscv::integer::zbb::ror as _;
@@ -79,6 +85,9 @@ unsafe extern "C" {
     fn rust_isa_riscv_zbb_cpop(value: u64) -> u64;
     fn rust_isa_riscv_zbb_min(a: u64, b: u64) -> u64;
     fn rust_isa_riscv_zbb_max(a: u64, b: u64) -> u64;
+    fn rust_isa_riscv_zbb_min_signed(a: u64, b: u64) -> u64;
+    fn rust_isa_riscv_zbb_max_signed(a: u64, b: u64) -> u64;
+    fn rust_isa_riscv_zbb_orc_b(value: u64) -> u64;
     fn rust_isa_riscv_zbb_sext_b(value: u64) -> u64;
     fn rust_isa_riscv_zbb_sext_h(value: u64) -> u64;
     fn rust_isa_riscv_zbb_zext_h(value: u64) -> u64;
@@ -147,14 +156,29 @@ unary!(
     rust_isa_riscv_zbb_cpop
 );
 binary!(
-    /// Unsigned minimum.
+    /// Signed minimum.
     min,
+    rust_isa_riscv_zbb_min_signed
+);
+binary!(
+    /// Unsigned minimum.
+    minu,
     rust_isa_riscv_zbb_min
 );
 binary!(
-    /// Unsigned maximum.
+    /// Signed maximum.
     max,
+    rust_isa_riscv_zbb_max_signed
+);
+binary!(
+    /// Unsigned maximum.
+    maxu,
     rust_isa_riscv_zbb_max
+);
+unary!(
+    /// Set each byte to all ones when the byte is nonzero, otherwise zero.
+    orc_b,
+    rust_isa_riscv_zbb_orc_b
 );
 unary!(
     /// Sign-extend the low byte.

@@ -55,13 +55,6 @@
 //!
 //! let _ = unsafe { ldtilecfg(&config) };
 //! let _ = unsafe { sttilecfg(&amx_guard, &mut config) };
-//! let _ = unsafe { tcmmimfp16ps::<0, 0, 0>(&amx_guard) };
-//! let _ = unsafe { tcmmrlfp16ps::<0, 0, 0>(&amx_guard) };
-//! let _ = unsafe { tdpbf16ps::<0, 0, 0>(&amx_guard) };
-//! let _ = unsafe { tdpbssd::<0, 0, 0>(&amx_guard) };
-//! let _ = unsafe { tdpbsud::<0, 0, 0>(&amx_guard) };
-//! let _ = unsafe { tdpbuud::<0, 0, 0>(&amx_guard) };
-//! let _ = unsafe { tdpfp16ps::<0, 0, 0>(&amx_guard) };
 //! let _ = unsafe { tileloadd::<0>(&amx_guard, storage.0.as_ptr().cast(), 0) };
 //! let _ = unsafe { tileloaddt1::<0>(&amx_guard, storage.0.as_ptr().cast(), 0) };
 //! let _ = unsafe { tilestored::<0>(&amx_guard, storage.0.as_mut_ptr().cast(), 0) };
@@ -78,13 +71,6 @@
 //! ```
 //! use rust_isa::x86::matrix::amx_tile::ldtilecfg as _;
 //! use rust_isa::x86::matrix::amx_tile::sttilecfg as _;
-//! use rust_isa::x86::matrix::amx_tile::tcmmimfp16ps as _;
-//! use rust_isa::x86::matrix::amx_tile::tcmmrlfp16ps as _;
-//! use rust_isa::x86::matrix::amx_tile::tdpbf16ps as _;
-//! use rust_isa::x86::matrix::amx_tile::tdpbssd as _;
-//! use rust_isa::x86::matrix::amx_tile::tdpbsud as _;
-//! use rust_isa::x86::matrix::amx_tile::tdpbuud as _;
-//! use rust_isa::x86::matrix::amx_tile::tdpfp16ps as _;
 //! use rust_isa::x86::matrix::amx_tile::tileloadd as _;
 //! use rust_isa::x86::matrix::amx_tile::tileloaddt1 as _;
 //! use rust_isa::x86::matrix::amx_tile::tilestored as _;
@@ -100,11 +86,9 @@
 //! </details>
 
 mod config;
-mod mma;
 mod tile;
 
 pub use config::*;
-pub use mma::*;
 pub use tile::*;
 
 use core::marker::PhantomData;

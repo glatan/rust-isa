@@ -1,0 +1,36 @@
+schema = 1
+arch = "riscv64"
+extension = "zbs"
+module = "crate::riscv"
+kind = "fixed"
+parent = ""
+source = "riscv/riscv-opcodes"
+coverage = "pilot"
+raw = true
+
+normalization = "mnemonic+api"
+
+[[instruction]]
+mnemonic = "BCLR"
+api = "bclr"
+forms = ["bclr"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "BEXT"
+api = "bext"
+forms = ["bext"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "BINV"
+api = "binv"
+forms = ["binv"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "BSET"
+api = "bset"
+forms = ["bset"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]

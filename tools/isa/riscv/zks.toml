@@ -1,0 +1,120 @@
+schema = 1
+arch = "riscv64"
+extension = "zks"
+module = "crate::riscv"
+kind = "fixed"
+parent = ""
+source = "riscv/riscv-opcodes"
+coverage = "pilot"
+raw = true
+
+normalization = "mnemonic+api"
+
+[[instruction]]
+mnemonic = "ROL"
+api = "rol"
+forms = ["rol"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "ROR"
+api = "ror"
+forms = ["ror"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "ANDN"
+api = "andn"
+forms = ["andn"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "ORN"
+api = "orn"
+forms = ["orn"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "XNOR"
+api = "xnor"
+forms = ["xnor"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "PACK"
+api = "pack"
+forms = ["pack"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "PACKH"
+api = "packh"
+forms = ["packh"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "$pseudo_op"
+api = ""
+status = "excluded"
+exclusion_class = "pseudo"
+reason = "Pseudo operation, not a hardware instruction."
+test_ids = []
+[[instruction]]
+mnemonic = "CLMUL"
+api = "clmul"
+forms = ["clmul"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "CLMULH"
+api = "clmulh"
+forms = ["clmulh"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "XPERM4"
+api = "xperm4"
+forms = ["xperm4"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "XPERM8"
+api = "xperm8"
+forms = ["xperm8"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "SM4ED"
+api = "sm4ed"
+forms = ["sm4ed"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "SM4KS"
+api = "sm4ks"
+forms = ["sm4ks"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "SM3P0"
+api = "sm3p0"
+forms = ["sm3p0"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "SM3P1"
+api = "sm3p1"
+forms = ["sm3p1"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]

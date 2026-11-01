@@ -205,6 +205,14 @@ def arch_names(arch: str) -> set[str]:
             header = re.search(r"([A-Za-z_][A-Za-z0-9_]*)!\s*[\[({]", lines[start])
             if header:
                 macro_name = header.group(1)
+            if macro_name == "vfcmp_conditions":
+                block = "\n".join(lines[start : limit + 1])
+                for first, second in re.findall(
+                    r"\((vfcmp_[a-z0-9_]+),\s*(vfcmp_[a-z0-9_]+)", block
+                ):
+                    names.add(first)
+                    names.add(second)
+                continue
             want = 4 if macro_name == "segment" else 1
             found = 0
             for index in range(start, limit + 1):

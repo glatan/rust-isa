@@ -1,0 +1,25 @@
+schema = 1
+arch = "riscv64"
+extension = "zvkg"
+module = "crate::riscv"
+kind = "fixed"
+parent = ""
+source = "riscv/riscv-opcodes"
+coverage = "pilot"
+raw = true
+
+normalization = "mnemonic+api"
+
+[[instruction]]
+mnemonic = "VGMUL"
+api = "vgmul"
+forms = ["vgmul.vv"]
+status = "implemented"
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VGHSH"
+api = "vghsh"
+forms = ["vghsh.vv"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]

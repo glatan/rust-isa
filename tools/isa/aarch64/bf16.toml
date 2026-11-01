@@ -1,0 +1,21 @@
+schema = 1
+arch = "aarch64"
+extension = "bf16"
+module = "crate::aarch64::simd::bf16"
+kind = "fixed"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "BFDOT"
+api = "bfdot"
+required_features = ["bf16"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "BFMMLA"
+api = "bfmmla"
+required_features = ["bf16"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]

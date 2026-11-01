@@ -1,0 +1,63 @@
+schema = 1
+arch = "x86_64"
+extension = "sse4.2"
+module = "crate::x86::simd::sse4_2"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "CRC32"
+api = "crc32_u16"
+required_features = ["sse4.2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CRC32"
+api = "crc32_u32"
+required_features = ["sse4.2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CRC32"
+api = "crc32_u64"
+required_features = ["sse4.2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "CRC32"
+api = "crc32_u8"
+required_features = ["sse4.2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PCMPESTRI"
+api = "pcmpestri"
+required_features = ["sse4.2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PCMPESTRM"
+api = "pcmpestrm"
+required_features = ["sse4.2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PCMPGTQ"
+api = "pcmpgtq"
+required_features = ["sse4.2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PCMPISTRI"
+api = "pcmpistri"
+required_features = ["sse4.2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PCMPISTRM"
+api = "pcmpistrm"
+required_features = ["sse4.2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

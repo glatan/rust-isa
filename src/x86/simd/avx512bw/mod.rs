@@ -20,6 +20,7 @@
 //! if std::env::var_os("RUST_ISA_SDE_FLAGS").is_some() {
 //! use rust_isa::x86::simd::avx512bw::vpaddb;
 //! use rust_isa::x86::simd::avx512f::V512;
+//! use rust_isa::x86::simd::{Mask32, Mask64};
 //!
 //! let v = V512::from_bytes([0; 64]);
 //! assert_eq!(unsafe { vpaddb(v, v) }.to_bytes(), [0; 64]);
@@ -36,6 +37,7 @@
 //! use rust_isa::x86::simd::sse2::V128;
 //! use rust_isa::x86::simd::avx::V256;
 //! use rust_isa::x86::simd::avx512f::V512;
+//! use rust_isa::x86::simd::{Mask32, Mask64};
 //!
 //! let v128 = V128::from_bytes([0; 16]);
 //! let v256 = V256::from_bytes([0; 32]);
@@ -70,8 +72,8 @@
 //! let _ = unsafe { vpmovb2m(v512) };
 //! let _ = unsafe { vpmovdb(v512) };
 //! let _ = unsafe { vpmovdw(v512) };
-//! let _ = unsafe { vpmovm2b(0) };
-//! let _ = unsafe { vpmovm2w(0) };
+//! let _ = unsafe { vpmovm2b( Mask64::from_bits(0)) };
+//! let _ = unsafe { vpmovm2w( Mask32::from_bits(0)) };
 //! let _ = unsafe { vpmovqb(v512) };
 //! let _ = unsafe { vpmovqw(v512) };
 //! let _ = unsafe { vpmovsdb(v512) };
@@ -192,6 +194,7 @@
 use crate::x86::simd::avx2::V256;
 use crate::x86::simd::avx512f::V512;
 use crate::x86::simd::sse2::V128;
+use crate::x86::simd::{Mask32, Mask64};
 use core::arch::asm;
 
 unsafe extern "C" {
@@ -1327,7 +1330,7 @@ pub unsafe fn vpmovusqb(a: V512) -> V128 {
 #[target_feature(enable = "avx512bw")]
 #[inline]
 #[cfg(target_arch = "x86_64")]
-pub unsafe fn vpcmpb<const IMM: u8>(a: V512, b: V512) -> u64 {
+pub unsafe fn vpcmpb<const IMM: u8>(a: V512, b: V512) -> Mask64 {
     let out: u64;
     unsafe {
         asm!(
@@ -1345,7 +1348,7 @@ pub unsafe fn vpcmpb<const IMM: u8>(a: V512, b: V512) -> u64 {
             options(nostack, preserves_flags),
         );
     }
-    out
+    Mask64::from_bits(out)
 }
 
 /// `vpcmpw`
@@ -1357,7 +1360,7 @@ pub unsafe fn vpcmpb<const IMM: u8>(a: V512, b: V512) -> u64 {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512bw")]
 #[inline]
-pub unsafe fn vpcmpw<const IMM: u8>(a: V512, b: V512) -> u32 {
+pub unsafe fn vpcmpw<const IMM: u8>(a: V512, b: V512) -> Mask32 {
     let out: u32;
     unsafe {
         asm!(
@@ -1375,7 +1378,7 @@ pub unsafe fn vpcmpw<const IMM: u8>(a: V512, b: V512) -> u32 {
             options(nostack, preserves_flags),
         );
     }
-    out as u32
+    Mask32::from_bits(out as u32)
 }
 
 /// `vpcmpub`
@@ -1388,7 +1391,7 @@ pub unsafe fn vpcmpw<const IMM: u8>(a: V512, b: V512) -> u32 {
 #[target_feature(enable = "avx512bw")]
 #[inline]
 #[cfg(target_arch = "x86_64")]
-pub unsafe fn vpcmpub<const IMM: u8>(a: V512, b: V512) -> u64 {
+pub unsafe fn vpcmpub<const IMM: u8>(a: V512, b: V512) -> Mask64 {
     let out: u64;
     unsafe {
         asm!(
@@ -1406,7 +1409,7 @@ pub unsafe fn vpcmpub<const IMM: u8>(a: V512, b: V512) -> u64 {
             options(nostack, preserves_flags),
         );
     }
-    out
+    Mask64::from_bits(out)
 }
 
 /// `vpcmpuw`
@@ -1418,7 +1421,7 @@ pub unsafe fn vpcmpub<const IMM: u8>(a: V512, b: V512) -> u64 {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512bw")]
 #[inline]
-pub unsafe fn vpcmpuw<const IMM: u8>(a: V512, b: V512) -> u32 {
+pub unsafe fn vpcmpuw<const IMM: u8>(a: V512, b: V512) -> Mask32 {
     let out: u32;
     unsafe {
         asm!(
@@ -1436,7 +1439,7 @@ pub unsafe fn vpcmpuw<const IMM: u8>(a: V512, b: V512) -> u32 {
             options(nostack, preserves_flags),
         );
     }
-    out as u32
+    Mask32::from_bits(out as u32)
 }
 
 unsafe extern "C" {
@@ -1452,8 +1455,8 @@ unsafe extern "C" {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512bw")]
 #[inline]
-pub unsafe fn vptestmb(a: V512, b: V512) -> u64 {
-    unsafe { rust_isa_avx512bw_vptestmb(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestmb(a: V512, b: V512) -> Mask64 {
+    Mask64::from_bits(unsafe { rust_isa_avx512bw_vptestmb(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -1469,8 +1472,8 @@ unsafe extern "C" {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512bw")]
 #[inline]
-pub unsafe fn vptestmw(a: V512, b: V512) -> u32 {
-    unsafe { rust_isa_avx512bw_vptestmw(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestmw(a: V512, b: V512) -> Mask32 {
+    Mask32::from_bits(unsafe { rust_isa_avx512bw_vptestmw(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -1486,8 +1489,8 @@ unsafe extern "C" {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512bw")]
 #[inline]
-pub unsafe fn vptestnmb(a: V512, b: V512) -> u64 {
-    unsafe { rust_isa_avx512bw_vptestnmb(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestnmb(a: V512, b: V512) -> Mask64 {
+    Mask64::from_bits(unsafe { rust_isa_avx512bw_vptestnmb(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -1503,8 +1506,8 @@ unsafe extern "C" {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512bw")]
 #[inline]
-pub unsafe fn vptestnmw(a: V512, b: V512) -> u32 {
-    unsafe { rust_isa_avx512bw_vptestnmw(a.as_ptr(), b.as_ptr()) }
+pub unsafe fn vptestnmw(a: V512, b: V512) -> Mask32 {
+    Mask32::from_bits(unsafe { rust_isa_avx512bw_vptestnmw(a.as_ptr(), b.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -1520,10 +1523,10 @@ unsafe extern "C" {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512bw")]
 #[inline]
-pub unsafe fn vpmovm2b(mask: u64) -> V512 {
+pub unsafe fn vpmovm2b(mask: Mask64) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512bw_vpmovm2b(mask, out.as_mut_ptr());
+        rust_isa_avx512bw_vpmovm2b(mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -1541,10 +1544,10 @@ unsafe extern "C" {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512bw")]
 #[inline]
-pub unsafe fn vpmovm2w(mask: u32) -> V512 {
+pub unsafe fn vpmovm2w(mask: Mask32) -> V512 {
     let mut out = V512::from_bytes([0; 64]);
     unsafe {
-        rust_isa_avx512bw_vpmovm2w(mask, out.as_mut_ptr());
+        rust_isa_avx512bw_vpmovm2w(mask.bits(), out.as_mut_ptr());
     }
     out
 }
@@ -1562,8 +1565,8 @@ unsafe extern "C" {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512bw")]
 #[inline]
-pub unsafe fn vpmovb2m(a: V512) -> u64 {
-    unsafe { rust_isa_avx512bw_vpmovb2m(a.as_ptr()) }
+pub unsafe fn vpmovb2m(a: V512) -> Mask64 {
+    Mask64::from_bits(unsafe { rust_isa_avx512bw_vpmovb2m(a.as_ptr()) })
 }
 
 unsafe extern "C" {
@@ -1579,8 +1582,8 @@ unsafe extern "C" {
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512bw")]
 #[inline]
-pub unsafe fn vpmovw2m(a: V512) -> u32 {
-    unsafe { rust_isa_avx512bw_vpmovw2m(a.as_ptr()) }
+pub unsafe fn vpmovw2m(a: V512) -> Mask32 {
+    Mask32::from_bits(unsafe { rust_isa_avx512bw_vpmovw2m(a.as_ptr()) })
 }
 
 unsafe extern "C" {

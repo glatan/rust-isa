@@ -1,0 +1,26 @@
+schema = 1
+arch = "riscv64"
+extension = "zvbc"
+module = "crate::riscv"
+kind = "fixed"
+parent = ""
+source = "riscv/riscv-opcodes"
+coverage = "pilot"
+raw = true
+
+normalization = "mnemonic+api"
+
+[[instruction]]
+mnemonic = "VCLMUL"
+api = "vclmul"
+forms = ["vclmul.vv", "vclmul.vx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]
+[[instruction]]
+mnemonic = "VCLMULH"
+api = "vclmulh"
+forms = ["vclmulh.vv", "vclmulh.vx"]
+status = "implemented"
+generated = true
+test_ids = ["tests/riscv.rs::riscv_pipeline"]

@@ -1,0 +1,33 @@
+schema = 1
+arch = "aarch64"
+extension = "crc"
+module = "crate::aarch64::crypto::crc"
+kind = "fixed"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "CRC32B"
+api = "crc32b"
+required_features = ["crc"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CRC32H"
+api = "crc32h"
+required_features = ["crc"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CRC32W"
+api = "crc32w"
+required_features = ["crc"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]
+[[instruction]]
+mnemonic = "CRC32X"
+api = "crc32x"
+required_features = ["crc"]
+status = "implemented"
+test_ids = ["tests/aarch64.rs::aarch64_pipeline"]

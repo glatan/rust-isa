@@ -1,0 +1,51 @@
+schema = 1
+arch = "x86_64"
+extension = "bmi2"
+module = "crate::x86::integer::bmi2"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "BZHI"
+api = "bzhi"
+required_features = ["bmi2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PDEP"
+api = "pdep"
+required_features = ["bmi2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "PEXT"
+api = "pext"
+required_features = ["bmi2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "RORX"
+api = "rorx"
+required_features = ["bmi2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "SARX"
+api = "sarx"
+required_features = ["bmi2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "SHLX"
+api = "shlx"
+required_features = ["bmi2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "SHRX"
+api = "shrx"
+required_features = ["bmi2"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

@@ -1,0 +1,105 @@
+schema = 1
+arch = "x86_64"
+extension = "amx-avx512"
+module = "crate::x86::matrix::amx_avx512"
+kind = "subextension"
+parent = "amx-tile"
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "TILEMOVROW"
+api = "tilemovrow"
+widths = [512]
+required_features = ["amx-tile", "amx-avx512"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TILEMOVROW"
+api = "tilemovrow_imm"
+widths = [512]
+required_features = ["amx-tile", "amx-avx512"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TCVTROWD2PS"
+api = "tcvtrowd2ps"
+widths = [512]
+required_features = ["amx-tile", "amx-avx512"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TCVTROWD2PS"
+api = "tcvtrowd2ps_imm"
+widths = [512]
+required_features = ["amx-tile", "amx-avx512"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TCVTROWPS2BF16H"
+api = "tcvtrowps2bf16h"
+widths = [512]
+required_features = ["amx-tile", "amx-avx512"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TCVTROWPS2BF16H"
+api = "tcvtrowps2bf16h_imm"
+widths = [512]
+required_features = ["amx-tile", "amx-avx512"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TCVTROWPS2BF16L"
+api = "tcvtrowps2bf16l"
+widths = [512]
+required_features = ["amx-tile", "amx-avx512"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TCVTROWPS2BF16L"
+api = "tcvtrowps2bf16l_imm"
+widths = [512]
+required_features = ["amx-tile", "amx-avx512"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TCVTROWPS2PHH"
+api = "tcvtrowps2phh"
+widths = [512]
+required_features = ["amx-tile", "amx-avx512"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TCVTROWPS2PHH"
+api = "tcvtrowps2phh_imm"
+widths = [512]
+required_features = ["amx-tile", "amx-avx512"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TCVTROWPS2PHL"
+api = "tcvtrowps2phl"
+widths = [512]
+required_features = ["amx-tile", "amx-avx512"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TCVTROWPS2PHL"
+api = "tcvtrowps2phl_imm"
+widths = [512]
+required_features = ["amx-tile", "amx-avx512"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]

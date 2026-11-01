@@ -1,0 +1,53 @@
+schema = 1
+arch = "x86_64"
+extension = "amx-tile"
+module = "crate::x86::matrix::amx_tile"
+kind = "stateful"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "LDTILECFG"
+api = "ldtilecfg"
+widths = [128]
+required_features = ["amx-tile"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "STTILECFG"
+api = "sttilecfg"
+widths = [128]
+required_features = ["amx-tile"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TILELOADD"
+api = "tileloadd"
+widths = [128]
+required_features = ["amx-tile"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TILELOADDT1"
+api = "tileloaddt1"
+widths = [128]
+required_features = ["amx-tile"]
+status = "implemented"
+generated = true
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TILESTORED"
+api = "tilestored"
+widths = [128]
+required_features = ["amx-tile"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "TILEZERO"
+api = "tilezero"
+widths = [128]
+required_features = ["amx-tile"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

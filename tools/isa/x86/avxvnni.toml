@@ -1,0 +1,61 @@
+schema = 1
+arch = "x86_64"
+extension = "avxvnni"
+module = "crate::x86::simd::avxvnni"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VPDPBUSD"
+api = "vpdpbusd"
+required_features = ["avxvnni"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPBUSD"
+api = "vpdpbusd_v128"
+widths = [128]
+required_features = ["avxvnni"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPBUSDS"
+api = "vpdpbusds"
+required_features = ["avxvnni"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPBUSDS"
+api = "vpdpbusds_v128"
+widths = [128]
+required_features = ["avxvnni"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPWSSD"
+api = "vpdpwssd"
+required_features = ["avxvnni"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPWSSD"
+api = "vpdpwssd_v128"
+widths = [128]
+required_features = ["avxvnni"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPWSSDS"
+api = "vpdpwssds"
+required_features = ["avxvnni"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPWSSDS"
+api = "vpdpwssds_v128"
+widths = [128]
+required_features = ["avxvnni"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

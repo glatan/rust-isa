@@ -1,0 +1,21 @@
+schema = 1
+arch = "x86_64"
+extension = "rdrand"
+module = "crate::x86::integer::rdrand"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "RDRAND"
+api = "rdrand_u32"
+required_features = ["rdrand"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "RDRAND"
+api = "rdrand_u64"
+required_features = ["rdrand"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

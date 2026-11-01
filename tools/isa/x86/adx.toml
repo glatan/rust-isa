@@ -1,0 +1,33 @@
+schema = 1
+arch = "x86_64"
+extension = "adx"
+module = "crate::x86::integer::adx"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "ADCX"
+api = "adcx_u32"
+required_features = ["adx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "ADCX"
+api = "adcx_u64"
+required_features = ["adx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "ADOX"
+api = "adox_u32"
+required_features = ["adx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "ADOX"
+api = "adox_u64"
+required_features = ["adx"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

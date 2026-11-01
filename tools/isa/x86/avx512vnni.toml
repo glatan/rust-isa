@@ -1,0 +1,33 @@
+schema = 1
+arch = "x86_64"
+extension = "avx512vnni"
+module = "crate::x86::simd::avx512vnni"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VPDPBUSD"
+api = "vpdpbusd"
+required_features = ["avx512vnni"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPBUSDS"
+api = "vpdpbusds"
+required_features = ["avx512vnni"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPWSSD"
+api = "vpdpwssd"
+required_features = ["avx512vnni"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPDPWSSDS"
+api = "vpdpwssds"
+required_features = ["avx512vnni"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

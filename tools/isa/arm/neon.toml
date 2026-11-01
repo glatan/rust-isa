@@ -1,0 +1,825 @@
+schema = 1
+arch = "arm"
+extension = "neon"
+module = "crate::arm::simd::neon"
+kind = "fixed"
+parent = ""
+source = "ARM-software/acle"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VADD.I32"
+api = "add"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VADD.I16"
+api = "add_i16"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VADD.I64"
+api = "add_i64"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VADD.I8"
+api = "add_i8"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VAND"
+api = "and"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VCEQ.I16"
+api = "cmpeq_i16"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VCEQ.I32"
+api = "cmpeq_i32"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VCEQ.I8"
+api = "cmpeq_i8"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VCGT.S16"
+api = "cmpgt_i16"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VCGT.S32"
+api = "cmpgt_i32"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VCGT.S8"
+api = "cmpgt_i8"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VEOR"
+api = "eor"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VADD.F32"
+api = "fadd"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VMUL.F32"
+api = "fmul"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VSUB.F32"
+api = "fsub"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VMUL.I32"
+api = "mul"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VMUL.I16"
+api = "mul_i16"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VMUL.I32"
+api = "mul_i32"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VORR"
+api = "orr"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VDUP.16"
+api = "splat_i16"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VDUP.32"
+api = "splat_i32"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VDUP.8"
+api = "splat_i8"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VSUB.I16"
+api = "sub_i16"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VSUB.I32"
+api = "sub_i32"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VSUB.I64"
+api = "sub_i64"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VSUB.I8"
+api = "sub_i8"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VABA"
+api = "vaba"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VABAL"
+api = "vabal"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VABD"
+api = "vabd"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VABDL"
+api = "vabdl"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VABS"
+api = "vabs"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VADDHN"
+api = "vaddhn"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VADDL"
+api = "vaddl"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VADDW"
+api = "vaddw"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VBIC"
+api = "vbic"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VBSL"
+api = "vbsl"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VCEQ"
+api = "vceq"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VCGE"
+api = "vcge"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VCGT"
+api = "vcgt"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VCLE"
+api = "vcle"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VCLS"
+api = "vcls"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VCLT"
+api = "vclt"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VCLZ"
+api = "vclz"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VCNT"
+api = "vcnt"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VCVT"
+api = "vcvt"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VEXT"
+api = "vext"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VFMA"
+api = "vfma"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VFMS"
+api = "vfms"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VFNMA"
+api = "vfnma"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VFNMS"
+api = "vfnms"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VHADD"
+api = "vhadd"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VHSUB"
+api = "vhsub"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VLD1"
+api = "vld1"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VLD2"
+api = "vld2"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VLD3"
+api = "vld3"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VLD4"
+api = "vld4"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VMAX"
+api = "vmax"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VMIN"
+api = "vmin"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VMLA"
+api = "vmla"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VMLAL"
+api = "vmlal"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VMLS"
+api = "vmls"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VMLSL"
+api = "vmlsl"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VMOV"
+api = "vmov"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VMOVN"
+api = "vmovn"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VMULL"
+api = "vmull"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VMVN"
+api = "vmvn"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VNEG"
+api = "vneg"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VORN"
+api = "vorn"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VPADAL"
+api = "vpadal"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VPADD"
+api = "vpadd"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VPMAX"
+api = "vpmax"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VPMIN"
+api = "vpmin"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VQABS"
+api = "vqabs"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VQADD"
+api = "vqadd"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VQDMLAL"
+api = "vqdmlal"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VQDMLSL"
+api = "vqdmlsl"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VQDMULH"
+api = "vqdmulh"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VQDMULL"
+api = "vqdmull"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VQMOVN"
+api = "vqmovn"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VQMOVUN"
+api = "vqmovun"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VQNEG"
+api = "vqneg"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VQRDMULH"
+api = "vqrdmulh"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VQRSHL"
+api = "vqrshl"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VQRSHRN"
+api = "vqrshrn"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VQRSHRUN"
+api = "vqrshrun"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VQSHL"
+api = "vqshl"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VQSHLU"
+api = "vqshlu"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VQSHRN"
+api = "vqshrn"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VQSHRUN"
+api = "vqshrun"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VQSUB"
+api = "vqsub"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VRADDHN"
+api = "vraddhn"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VRECPE"
+api = "vrecpe"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VRECPS"
+api = "vrecps"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VREV16"
+api = "vrev16"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VREV32"
+api = "vrev32"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VREV64"
+api = "vrev64"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VRSHL"
+api = "vrshl"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VRSHR"
+api = "vrshr"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VRSHRN"
+api = "vrshrn"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VRSQRTE"
+api = "vrsqrte"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VRSQRTS"
+api = "vrsqrts"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VRSRA"
+api = "vrsra"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VRSUBHN"
+api = "vrsubhn"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VSHL"
+api = "vshl"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VSHLL"
+api = "vshll"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VSHR"
+api = "vshr"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VSHRN"
+api = "vshrn"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VSLI"
+api = "vsli"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VSRA"
+api = "vsra"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VSRI"
+api = "vsri"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VSUBHN"
+api = "vsubhn"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VSUBL"
+api = "vsubl"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VSUBW"
+api = "vsubw"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VSWP"
+api = "vswp"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VTBL"
+api = "vtbl"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VTBX"
+api = "vtbx"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VTRN"
+api = "vtrn"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VTST"
+api = "vtst"
+required_features = ["neon"]
+status = "implemented"
+generated = true
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VUZP"
+api = "vuzp"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]
+[[instruction]]
+mnemonic = "VZIP"
+api = "vzip"
+required_features = ["neon"]
+status = "implemented"
+test_ids = ["tests/arm.rs::arm_values"]

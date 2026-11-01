@@ -1,0 +1,38 @@
+{
+  "source": "intelxed/xed",
+  "version": "v2026.08.23",
+  "forms": [
+    {
+      "mnemonic": "TDPBF8PS",
+      "api": "tdpbf8ps",
+      "required_features": [
+        "amx-tile",
+        "amx-fp8"
+      ]
+    },
+    {
+      "mnemonic": "TDPBHF8PS",
+      "api": "tdpbhf8ps",
+      "required_features": [
+        "amx-tile",
+        "amx-fp8"
+      ]
+    },
+    {
+      "mnemonic": "TDPHBF8PS",
+      "api": "tdphbf8ps",
+      "required_features": [
+        "amx-tile",
+        "amx-fp8"
+      ]
+    },
+    {
+      "mnemonic": "TDPHF8PS",
+      "api": "tdphf8ps",
+      "required_features": [
+        "amx-tile",
+        "amx-fp8"
+      ]
+    }
+  ]
+}

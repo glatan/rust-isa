@@ -1,0 +1,399 @@
+schema = 1
+arch = "x86_64"
+extension = "avx512dq"
+module = "crate::x86::simd::avx512dq"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "VANDNPD"
+api = "vandnpd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VANDNPS"
+api = "vandnps"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VANDPD"
+api = "vandpd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VANDPS"
+api = "vandps"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCMPPD"
+api = "vcmppd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCMPPS"
+api = "vcmpps"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCMPSD"
+api = "vcmpsd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCMPSS"
+api = "vcmpss"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTPD2QQ"
+api = "vcvtpd2qq"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTPD2UQQ"
+api = "vcvtpd2uqq"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTPS2QQ"
+api = "vcvtps2qq"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTPS2UQQ"
+api = "vcvtps2uqq"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTQQ2PD"
+api = "vcvtqq2pd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTQQ2PS"
+api = "vcvtqq2ps"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTTPD2QQ"
+api = "vcvttpd2qq"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTTPD2UQQ"
+api = "vcvttpd2uqq"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTTPS2QQ"
+api = "vcvttps2qq"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTTPS2UQQ"
+api = "vcvttps2uqq"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTUQQ2PD"
+api = "vcvtuqq2pd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VCVTUQQ2PS"
+api = "vcvtuqq2ps"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFIXUPIMMPD"
+api = "vfixupimmpd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFIXUPIMMSD"
+api = "vfixupimmsd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFIXUPIMMSS"
+api = "vfixupimmss"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFIXUPIMMPS"
+api = "vfixupimmps"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFPCLASSPD"
+api = "vfpclasspd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFPCLASSPS"
+api = "vfpclassps"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFPCLASSSD"
+api = "vfpclasssd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VFPCLASSSS"
+api = "vfpclassss"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VGETEXPPD"
+api = "vgetexppd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VGETEXPPS"
+api = "vgetexpps"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VGETEXPSD"
+api = "vgetexpsd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VGETEXPSS"
+api = "vgetexpss"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VGETMANTPD"
+api = "vgetmantpd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VGETMANTPS"
+api = "vgetmantps"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VGETMANTSD"
+api = "vgetmantsd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VGETMANTSS"
+api = "vgetmantss"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VORPD"
+api = "vorpd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VORPS"
+api = "vorps"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVD2M"
+api = "vpmovd2m"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVM2D"
+api = "vpmovm2d"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVM2Q"
+api = "vpmovm2q"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMOVQ2M"
+api = "vpmovq2m"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VPMULLQ"
+api = "vpmullq"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VRANGEPD"
+api = "vrangepd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VRANGEPS"
+api = "vrangeps"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VRANGESD"
+api = "vrangesd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VRANGESS"
+api = "vrangess"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VRCP14PD"
+api = "vrcp14pd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VRCP14PS"
+api = "vrcp14ps"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VRCP14SD"
+api = "vrcp14sd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VRCP14SS"
+api = "vrcp14ss"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VREDUCEPD"
+api = "vreducepd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VREDUCEPS"
+api = "vreduceps"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VREDUCESD"
+api = "vreducesd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VREDUCESS"
+api = "vreducess"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VRSQRT14PD"
+api = "vrsqrt14pd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VRSQRT14PS"
+api = "vrsqrt14ps"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VRSQRT14SD"
+api = "vrsqrt14sd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VRSQRT14SS"
+api = "vrsqrt14ss"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VSCALEFPD"
+api = "vscalefpd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VSCALEFPS"
+api = "vscalefps"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VSCALEFSD"
+api = "vscalefsd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VSCALEFSS"
+api = "vscalefss"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VXORPD"
+api = "vxorpd"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "VXORPS"
+api = "vxorps"
+required_features = ["avx512dq"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

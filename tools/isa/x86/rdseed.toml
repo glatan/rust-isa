@@ -1,0 +1,21 @@
+schema = 1
+arch = "x86_64"
+extension = "rdseed"
+module = "crate::x86::integer::rdseed"
+kind = "fixed"
+parent = ""
+source = "intelxed/xed"
+coverage = "pilot"
+
+[[instruction]]
+mnemonic = "RDSEED"
+api = "rdseed_u32"
+required_features = ["rdseed"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]
+[[instruction]]
+mnemonic = "RDSEED"
+api = "rdseed_u64"
+required_features = ["rdseed"]
+status = "implemented"
+test_ids = ["tests/x86/main.rs"]

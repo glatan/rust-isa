@@ -1,5 +1,6 @@
 use rust_isa::x86::simd::avx2::V256;
 use rust_isa::x86::simd::avx512f::*;
+use rust_isa::x86::simd::{Mask8, Mask16, Mask32, Mask64};
 
 use crate::simd::avx512::support::*;
 
@@ -18,7 +19,7 @@ fn avx10_1_integer_and_float() {
     let sum = unsafe { vpaddq_v512(i64x8([1; 8]), i64x8([2; 8])) };
     assert_eq!(i64_lanes(sum), [3; 8]);
     assert_eq!(
-        unsafe { vpcmpd_v512::<0>(i32x16([1; 16]), i32x16([1; 16])) },
+        unsafe { vpcmpd_v512::<0>(i32x16([1; 16]), i32x16([1; 16])).bits() },
         0xffff
     );
     if is_x86_feature_detected!("avx512vpopcntdq") {
@@ -46,7 +47,7 @@ fn avx10_1_integer_and_float() {
         );
     }
     assert_eq!(
-        unsafe { vptestnmd_v512(i32x16([0; 16]), i32x16([0; 16])) },
+        unsafe { vptestnmd_v512(i32x16([0; 16]), i32x16([0; 16])).bits() },
         0xffff
     );
     if is_x86_feature_detected!("avx512vnni") {
@@ -72,7 +73,7 @@ fn avx10_1_integer_and_float() {
                 f32x8([0.0; 8]),
                 data.as_ptr().cast(),
                 i32x8([0, 1, 2, 3, 0, 0, 0, 0]),
-                0x0f,
+                Mask8::from_bits(0x0f),
             )
         };
         assert_eq!(f32x8_lanes(gathered)[..4], [1.0, 2.0, 3.0, 4.0]);
@@ -91,41 +92,42 @@ fn avx10_1_compress_expand() {
 
     if is_x86_feature_detected!("avx512vl") {
         let bytes256 = V256::from_bytes(core::array::from_fn(|index| index as u8));
-        let compressed = unsafe { vpcompressb_v256(bytes256, 0b0101) }.to_bytes();
+        let compressed =
+            unsafe { vpcompressb_v256(bytes256, Mask32::from_bits(0b0101)) }.to_bytes();
         assert_eq!(compressed[..4], [0, 2, 0, 0]);
         assert!(compressed[4..].iter().all(|value| *value == 0));
 
-        let expanded = unsafe { vpexpandb_v256(bytes256, 0b0101) }.to_bytes();
+        let expanded = unsafe { vpexpandb_v256(bytes256, Mask32::from_bits(0b0101)) }.to_bytes();
         assert_eq!(expanded[..4], [0, 0, 1, 0]);
         assert!(expanded[4..].iter().all(|value| *value == 0));
     }
 
     let bytes512 = V512::from_bytes(core::array::from_fn(|index| index as u8));
-    let compressed = unsafe { vpcompressb_v512(bytes512, 0b0101) }.to_bytes();
+    let compressed = unsafe { vpcompressb_v512(bytes512, Mask64::from_bits(0b0101)) }.to_bytes();
     assert_eq!(compressed[..4], [0, 2, 0, 0]);
     assert!(compressed[4..].iter().all(|value| *value == 0));
 
-    let expanded = unsafe { vpexpandb_v512(bytes512, 0b0101) }.to_bytes();
+    let expanded = unsafe { vpexpandb_v512(bytes512, Mask64::from_bits(0b0101)) }.to_bytes();
     assert_eq!(expanded[..4], [0, 0, 1, 0]);
     assert!(expanded[4..].iter().all(|value| *value == 0));
 
     if is_x86_feature_detected!("avx512vl") {
         let words = V256::from_bytes(core::array::from_fn(|index| index as u8));
-        let compressed = unsafe { vpcompressw_v256(words, 0b0101) }.to_bytes();
+        let compressed = unsafe { vpcompressw_v256(words, Mask16::from_bits(0b0101)) }.to_bytes();
         assert_eq!(compressed[..6], [0, 1, 4, 5, 0, 0]);
         assert!(compressed[6..].iter().all(|value| *value == 0));
 
-        let expanded = unsafe { vpexpandw_v256(words, 0b0101) }.to_bytes();
+        let expanded = unsafe { vpexpandw_v256(words, Mask16::from_bits(0b0101)) }.to_bytes();
         assert_eq!(expanded[..6], [0, 1, 0, 0, 2, 3]);
         assert!(expanded[6..].iter().all(|value| *value == 0));
     }
 
     let words = V512::from_bytes(core::array::from_fn(|index| index as u8));
-    let compressed = unsafe { vpcompressw_v512(words, 0b0101) }.to_bytes();
+    let compressed = unsafe { vpcompressw_v512(words, Mask32::from_bits(0b0101)) }.to_bytes();
     assert_eq!(compressed[..6], [0, 1, 4, 5, 0, 0]);
     assert!(compressed[6..].iter().all(|value| *value == 0));
 
-    let expanded = unsafe { vpexpandw_v512(words, 0b0101) }.to_bytes();
+    let expanded = unsafe { vpexpandw_v512(words, Mask32::from_bits(0b0101)) }.to_bytes();
     assert_eq!(expanded[..6], [0, 1, 0, 0, 2, 3]);
     assert!(expanded[6..].iter().all(|value| *value == 0));
 }
