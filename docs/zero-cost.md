@@ -170,6 +170,8 @@ arch 単位では、ゼロコストを確認していない arch はない。ext
 
 文書の `-Xclang -target-feature` 調整を `build.rs` に入れると、LTO リンクで LLVM の ARM Instruction Selection が `Do not know how to split this operator's operand!` でクラッシュする。thin / fat の両方の LTO モードで、専用 link fixture でも同じクラッシュを再現した。当面は `manual` に残し、対応が必要になれば C の分割を内部で検討する。
 
+clang 23.1.3 で再確認した。文書の調整一式（thin / fat）でも、最小の `-dsp` / `-fp64` 除外だけでも、LTO リンクは `rust_isa_arm_neon_add` の ISel で同じクラッシュを起こす。調整なしではリンクできるが、`blx rust_isa_arm_neon_add` が残りインラインされない。調整はゼロコストに必要だが、入れるとリンクできないため、`manual` を維持する。
+
 ### 往復が残る命令とスカラーフォールバック
 
 RISC-V の `vrgather` / `vcompress` と LoongArch の `xvshuf.b` は、intrinsics が必要なため命令間に store/load が残る。表の「往復が残る」を仕様として `manual` に残す。MIPS の `vshf.w` はスカラーの C フォールバックを仕様とし、fixture 化しない。
