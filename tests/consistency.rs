@@ -392,3 +392,122 @@ fn check_lane_arms_match_width() {
     }
     assert_eq!(seen, 22);
 }
+
+/// Split `fn` definitions into (name, parameter list, body) triples.
+///
+/// Macro template placeholders such as `$name` are kept so the caller can
+/// cover macro-generated functions through their template body.
+fn fn_definitions(text: &str) -> Vec<(&str, &str, &str)> {
+    let mut found = Vec::new();
+    let mut rest = text;
+    while let Some(index) = rest.find("fn ") {
+        let after_fn = &rest[index + 3..];
+        let mut name_end = 0;
+        for char in after_fn.chars() {
+            if char.is_alphanumeric() || char == '_' || char == '$' {
+                name_end += char.len_utf8();
+            } else {
+                break;
+            }
+        }
+        if name_end == 0 {
+            rest = after_fn;
+            continue;
+        }
+        let name = &after_fn[..name_end];
+        let mut chars = after_fn[name_end..].chars();
+        if chars.next() != Some('(') {
+            rest = &after_fn[name_end..];
+            continue;
+        }
+        let Some(params_end) = matched_end(&after_fn[name_end..], '(', ')') else {
+            rest = &after_fn[name_end..];
+            continue;
+        };
+        let params = &after_fn[name_end + 1..name_end + params_end];
+        let after_params = &after_fn[name_end + params_end + 1..];
+        let body_start = after_params.find('{');
+        let semi = after_params.find(';');
+        let Some(open) = body_start else {
+            rest = after_params;
+            continue;
+        };
+        if semi.is_some_and(|position| position < open) {
+            // Declaration without a body, such as an `extern` function.
+            // Continue after the semicolon instead of jumping into the
+            // next body, which would swallow the following definition.
+            rest = &after_params[semi.unwrap() + 1..];
+            continue;
+        }
+        let Some(body_end) = matched_end(&after_params[open..], '{', '}') else {
+            rest = &after_params[open..];
+            continue;
+        };
+        found.push((name, params, &after_params[open + 1..open + body_end]));
+        rest = &after_params[open + body_end..];
+    }
+    found
+}
+
+fn matched_end(text: &str, open: char, close: char) -> Option<usize> {
+    let mut depth = 0;
+    for (index, char) in text.char_indices() {
+        if char == open {
+            depth += 1;
+        } else if char == close {
+            depth -= 1;
+            if depth == 0 {
+                return Some(index);
+            }
+        }
+    }
+    None
+}
+
+fn is_ident(name: &str) -> bool {
+    !name.is_empty()
+        && name
+            .chars()
+            .all(|char| char.is_alphanumeric() || char == '_')
+        && !name.starts_with(|char: char| char.is_numeric())
+}
+
+#[test]
+fn check_slice_panic_contracts() {
+    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    let mut files = rust_sources(&root.join("src/aarch64/simd/sve/semantic"));
+    for leaf in [
+        "src/aarch64/simd/sve2/mod.rs",
+        "src/aarch64/simd/f32mm/mod.rs",
+        "src/aarch64/simd/f64mm/mod.rs",
+        "src/riscv/simd/rvv_slice/mod.rs",
+    ] {
+        files.push(root.join(leaf));
+    }
+    let mut missing = Vec::new();
+    let mut seen = 0;
+    for path in &files {
+        let text = fs::read_to_string(path).unwrap();
+        for (name, params, body) in fn_definitions(&text) {
+            let slices = params.matches("&[").count() + params.matches("&mut [").count();
+            if slices < 2 {
+                continue;
+            }
+            seen += 1;
+            if !(body.contains("assert") && body.contains(".len()")) {
+                let location = if is_ident(name) {
+                    name.to_string()
+                } else {
+                    format!("macro template in {}", path.display())
+                };
+                missing.push(format!("{}: {location}", path.display()));
+            }
+        }
+    }
+    assert!(
+        missing.is_empty(),
+        "slice functions without a length assert:\n{}",
+        missing.join("\n")
+    );
+    assert!(seen > 0, "no slice functions found");
+}
