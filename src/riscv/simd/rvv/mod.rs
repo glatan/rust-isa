@@ -21,6 +21,62 @@
 //! assert_eq!(sum.to_bytes(), unsafe { splat_i32(3) }.to_bytes());
 //! ```
 //!
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::riscv::simd::rvv::{vadc_vim, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vadc_vim::<16>(v, 0) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::riscv::simd::rvv::{vmadc_vim, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vmadc_vim::<16>(v, 0) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::riscv::simd::rvv::{vmadc_vi, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vmadc_vi::<16>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::riscv::simd::rvv::{vrsub_vi, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vrsub_vi::<16>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::riscv::simd::rvv::{vssra_vi, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vssra_vi::<32>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::riscv::simd::rvv::{vssrl_vi, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vssrl_vi::<32>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::riscv::simd::rvv::vsetivli;
+//!
+//! let _ = unsafe { vsetivli::<32, 0>() };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::riscv::simd::rvv::vsetvli;
+//!
+//! let _ = unsafe { vsetvli::<2048>(4) };
+//! ```
+//!
 //! <details>
 //! <summary>Instruction examples</summary>
 //!
