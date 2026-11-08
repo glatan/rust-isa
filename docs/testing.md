@@ -84,7 +84,7 @@ doctest は命令の意味論を網羅しない。inventory は公開パスの�
 1. 追加するテストがどの役割を担うかを決める。
 2. 命令の意味論には値テストを追加する。native は fixture、wasm32 は `tests/wasm32`、x86_64 は `tests/x86` に置く。
 3. ゼロコストを主張する場合は、`kernel_*` と disassembly の検査を追加する。fixture 化できない場合は `docs/zero-cost.md` の `manual` 行に理由を書く。
-4. 即値の範囲を追加する場合は、可能なら `compile_fail` doctest も追加する。
+4. 即値の範囲を追加する場合は、可能なら `compile_fail` doctest も追加する。在庫は `make immediates` で確認する。
 5. スライス API を追加・変更する場合は、`# Panics` と代表例の `should_panic` doctest を付ける。
 6. arch の README、`fixture-matrix.md`、`zero-cost.md` を同じ変更で更新する。
 7. 既定の `make test` で実行する必要があるテストは、`test` の依存に含める。

@@ -42,6 +42,7 @@ make docs-check
 make fixtures-check
 make check-mnemonics
 make duplicates
+make immediates
 ```
 
 `make test` が既定で、`fmt-check`、`inventory-check`、`manifest-pilot-check`、`docs-check`、`docs-rustdoc-check`、`fixtures-check`、`check-mnemonics`、`check-docs`、`test-check-wasm-link`、`test-host`、`test-doc`、`test-wasip1`、`test-wasip1-wide-arithmetic` を実行する。すべてのテストはイメージ内で、対象 triple を明示して実行する。各テストの役割は [テストの役割](testing.md) にある。
