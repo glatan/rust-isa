@@ -26,6 +26,40 @@
 //! }
 //! ```
 //!
+//! # Compile-time predicate check
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx512f::vpcmpd;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v = V512::from_bytes([0; 64]);
+//! let _ = unsafe { vpcmpd::<8>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx512f::vpcmpq;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v = V512::from_bytes([0; 64]);
+//! let _ = unsafe { vpcmpq::<8>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx512f::vpcmpud;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v = V512::from_bytes([0; 64]);
+//! let _ = unsafe { vpcmpud::<8>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx512f::vpcmpuq;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v = V512::from_bytes([0; 64]);
+//! let _ = unsafe { vpcmpuq::<8>(v, v) };
+//! ```
+//!
 //! <details>
 //! <summary>Compile-only instruction examples</summary>
 //!

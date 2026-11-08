@@ -328,7 +328,7 @@ pub unsafe fn vpternlogq<const IMM: u8>(a: V512, b: V512, c: V512) -> V512 {
 }
 
 /// `vpcmpd`
-/// Compare the 16 32-bit signed lanes with the predicate in `IMM` and return the mask.
+/// Compare the 16 32-bit signed lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
@@ -336,6 +336,9 @@ pub unsafe fn vpternlogq<const IMM: u8>(a: V512, b: V512, c: V512) -> V512 {
 #[target_feature(enable = "avx512f")]
 #[inline]
 pub unsafe fn vpcmpd<const IMM: u8>(a: V512, b: V512) -> Mask16 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -357,7 +360,7 @@ pub unsafe fn vpcmpd<const IMM: u8>(a: V512, b: V512) -> Mask16 {
 }
 
 /// `vpcmpq`
-/// Compare the eight 64-bit signed lanes with the predicate in `IMM` and return the mask.
+/// Compare the eight 64-bit signed lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
@@ -365,6 +368,9 @@ pub unsafe fn vpcmpd<const IMM: u8>(a: V512, b: V512) -> Mask16 {
 #[target_feature(enable = "avx512f")]
 #[inline]
 pub unsafe fn vpcmpq<const IMM: u8>(a: V512, b: V512) -> Mask8 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -386,7 +392,7 @@ pub unsafe fn vpcmpq<const IMM: u8>(a: V512, b: V512) -> Mask8 {
 }
 
 /// `vpcmpud`
-/// Compare the 16 32-bit unsigned lanes with the predicate in `IMM` and return the mask.
+/// Compare the 16 32-bit unsigned lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
@@ -394,6 +400,9 @@ pub unsafe fn vpcmpq<const IMM: u8>(a: V512, b: V512) -> Mask8 {
 #[target_feature(enable = "avx512f")]
 #[inline]
 pub unsafe fn vpcmpud<const IMM: u8>(a: V512, b: V512) -> Mask16 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -415,7 +424,7 @@ pub unsafe fn vpcmpud<const IMM: u8>(a: V512, b: V512) -> Mask16 {
 }
 
 /// `vpcmpuq`
-/// Compare the eight 64-bit unsigned lanes with the predicate in `IMM` and return the mask.
+/// Compare the eight 64-bit unsigned lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
@@ -423,6 +432,9 @@ pub unsafe fn vpcmpud<const IMM: u8>(a: V512, b: V512) -> Mask16 {
 #[target_feature(enable = "avx512f")]
 #[inline]
 pub unsafe fn vpcmpuq<const IMM: u8>(a: V512, b: V512) -> Mask8 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u32;
     unsafe {
         asm!(
