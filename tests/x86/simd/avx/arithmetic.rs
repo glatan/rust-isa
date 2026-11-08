@@ -9,6 +9,7 @@ use super::support::*;
 #[test]
 fn float_arithmetic() {
     if !is_x86_feature_detected!("avx") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = f32x8([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]);
@@ -53,6 +54,7 @@ fn float_arithmetic() {
 #[test]
 fn arithmetic_and_bitwise() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(

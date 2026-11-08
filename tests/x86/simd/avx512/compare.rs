@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn avx512f_compare_and_test() {
     if !f_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let lhs = i32x16(core::array::from_fn(|lane| lane as i32));

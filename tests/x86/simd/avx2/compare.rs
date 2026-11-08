@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn compare() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = V256::from_bytes([0b1010_1010; 32]);

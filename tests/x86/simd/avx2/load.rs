@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn load_store_roundtrip() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let source = core::array::from_fn::<u8, 32, _>(|index| index as u8);

@@ -4,6 +4,7 @@ use rust_isa::x86::simd::sse4a::{extrq, extrq_imm, insertq, insertq_imm, movntsd
 #[test]
 fn sse4a_immediate_forms_and_stores() {
     if !is_x86_feature_detected!("sse4a") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut value_bytes = [0u8; 16];

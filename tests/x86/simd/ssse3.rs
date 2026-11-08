@@ -9,6 +9,7 @@ use super::support::*;
 #[test]
 fn ssse3_abs_and_shuffle() {
     if !is_x86_feature_detected!("ssse3") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = V128::from_bytes([
@@ -42,6 +43,7 @@ fn ssse3_abs_and_shuffle() {
 #[test]
 fn ssse3_horizontal_and_saturating() {
     if !is_x86_feature_detected!("ssse3") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = i16x8([1, 2, 3, 4, 5, 6, 7, 8]);
@@ -72,6 +74,7 @@ fn ssse3_horizontal_and_saturating() {
 #[test]
 fn ssse3_multiply_and_sign() {
     if !is_x86_feature_detected!("ssse3") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = V128::from_bytes([
@@ -116,6 +119,7 @@ fn ssse3_multiply_and_sign() {
 #[test]
 fn ssse3_palignr() {
     if !is_x86_feature_detected!("ssse3") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = V128::from_bytes(core::array::from_fn(|index| index as u8 + 16));

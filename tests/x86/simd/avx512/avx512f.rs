@@ -8,6 +8,7 @@ use super::support::*;
 #[test]
 fn load_store_roundtrip() {
     if !f_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let source = core::array::from_fn::<u8, 64, _>(|index| index as u8);
@@ -23,6 +24,7 @@ fn load_store_roundtrip() {
 #[test]
 fn avx512f_integer_arithmetic() {
     if !f_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = i32x16(core::array::from_fn::<i32, 16, _>(|index| index as i32 + 1));
@@ -46,6 +48,7 @@ fn avx512f_integer_arithmetic() {
 #[test]
 fn avx512f_bitwise_permute_broadcast() {
     if !f_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = V512::from_bytes([0b1010_1010; 64]);
@@ -66,6 +69,7 @@ fn avx512f_bitwise_permute_broadcast() {
 #[test]
 fn subtract_bitwise_and_shift() {
     if !f_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = i32x16(core::array::from_fn(|index| index as i32 + 1));

@@ -17,6 +17,7 @@ fn popcnt_enabled() -> bool {
 #[test]
 fn bmi1_operations() {
     if !bmi1_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(unsafe { andn(0b1010, 0b1100) }, 0b0100);
@@ -30,6 +31,7 @@ fn bmi1_operations() {
 #[test]
 fn bmi2_operations() {
     if !bmi2_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(unsafe { bzhi(u32::MAX, 8) }, 0xff);
@@ -47,6 +49,7 @@ fn bmi2_operations() {
 #[test]
 fn popcnt() {
     if !popcnt_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(unsafe { popcnt_u32(0b1011) }, 3);
@@ -56,6 +59,7 @@ fn popcnt() {
 #[test]
 fn lzcnt_counts_leading_zeros() {
     if !is_x86_feature_detected!("lzcnt") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     use rust_isa::x86::integer::lzcnt::{lzcnt_u32, lzcnt_u64};
@@ -68,6 +72,7 @@ fn lzcnt_counts_leading_zeros() {
 #[test]
 fn movbe_loads_and_stores_big_endian() {
     if !is_x86_feature_detected!("movbe") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     use rust_isa::x86::integer::movbe::{
@@ -94,6 +99,7 @@ fn movbe_loads_and_stores_big_endian() {
 #[test]
 fn adx_carry_chains() {
     if !is_x86_feature_detected!("adx") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     use rust_isa::x86::integer::adx::{adcx_u32, adcx_u64, adox_u32, adox_u64};

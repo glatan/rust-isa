@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn avx512f_float_and_convert() {
     if !f_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let roots = f32_lanes(unsafe {

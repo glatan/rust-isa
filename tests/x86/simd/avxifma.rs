@@ -21,6 +21,7 @@ fn i64x4_lanes(value: V256) -> [i64; 4] {
 #[test]
 fn avx_ifma() {
     if !is_x86_feature_detected!("avxifma") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = i64x4([3; 4]);

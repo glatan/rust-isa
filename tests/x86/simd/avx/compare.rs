@@ -9,6 +9,7 @@ use super::support::*;
 #[test]
 fn compare_flags() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let one = f32x4([1.0; 4]);
@@ -41,6 +42,7 @@ fn compare_flags() {
 #[test]
 fn compare_masks_and_dot_products() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mask = unsafe {

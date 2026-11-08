@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn avx512cd_leading_zeros_and_conflicts() {
     if !is_x86_feature_detected!("avx512cd") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let values = i32x16([1, 2, 3, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);

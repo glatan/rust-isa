@@ -8,6 +8,7 @@ use super::support::*;
 #[test]
 fn vl_mullo() {
     if !vl_dq_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = V128::from_bytes([3, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0]);
@@ -38,6 +39,7 @@ fn vl_mullo() {
 #[test]
 fn vl_narrow_forms() {
     if !vl_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     if bw_enabled() {

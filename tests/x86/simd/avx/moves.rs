@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn moves() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(

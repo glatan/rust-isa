@@ -6,6 +6,7 @@ use super::support::*;
 #[test]
 fn avx512vpopcntdq() {
     if !is_x86_feature_detected!("avx512vpopcntdq") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let all = V512::from_bytes([0xff; 64]);

@@ -69,6 +69,7 @@ fn sd_lanes(value: V128) -> [f64; 2] {
 #[test]
 fn packed_single() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = ps([2.0; 8]);
@@ -151,6 +152,7 @@ fn packed_single() {
 #[test]
 fn packed_double() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = pd([2.0; 4]);
@@ -233,6 +235,7 @@ fn packed_double() {
 #[test]
 fn scalar_single() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = ss([2.0, 7.0, 8.0, 9.0]);
@@ -291,6 +294,7 @@ fn scalar_single() {
 #[test]
 fn scalar_double() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = sd([2.0, 7.0]);

@@ -7,6 +7,7 @@ use super::support::*;
 #[test]
 fn integer_arithmetic() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = i32x8([1, 2, 3, 4, 5, 6, 7, 8]);
@@ -27,6 +28,7 @@ fn integer_arithmetic() {
 #[test]
 fn byte_and_word_arithmetic() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(
@@ -52,6 +54,7 @@ fn byte_and_word_arithmetic() {
 #[test]
 fn dword_and_qword_arithmetic() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = i32x8([1, 2, 3, 4, 5, 6, 7, 8]);

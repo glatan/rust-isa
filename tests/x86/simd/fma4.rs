@@ -42,6 +42,7 @@ fn f64_lanes(value: V128) -> [f64; 2] {
 #[test]
 fn fma4_values() {
     if !fma4_available() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
 

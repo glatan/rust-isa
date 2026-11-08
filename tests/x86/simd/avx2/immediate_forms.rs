@@ -7,6 +7,7 @@ use super::support::*;
 #[test]
 fn immediate_forms() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = i64x4([10, 20, 30, 40]);

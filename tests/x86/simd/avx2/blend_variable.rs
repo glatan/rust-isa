@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn blend_variable() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mask = V256::from_bytes(core::array::from_fn(|index| {

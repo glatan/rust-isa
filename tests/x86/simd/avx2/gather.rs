@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn gathers() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let data = [10i32, 20, 30, 40, 50, 60, 70, 80];

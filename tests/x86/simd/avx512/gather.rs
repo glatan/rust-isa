@@ -6,6 +6,7 @@ use super::support::*;
 #[test]
 fn avx512f_gather_and_scatter() {
     if !f_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let data = [10.0f32, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0];

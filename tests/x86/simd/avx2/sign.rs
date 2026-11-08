@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn sign() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let signs = i8x32(core::array::from_fn(|lane| match lane % 3 {

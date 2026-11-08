@@ -6,6 +6,7 @@ use super::support::*;
 #[test]
 fn vbmi() {
     if !vbmi_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let source = V512::from_bytes(core::array::from_fn::<u8, 64, _>(|index| index as u8));

@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn avx512vp2intersect_masks() {
     if !is_x86_feature_detected!("avx512vp2intersect") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = i32x16(core::array::from_fn(|index| {

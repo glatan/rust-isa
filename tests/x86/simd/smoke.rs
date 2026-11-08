@@ -73,6 +73,7 @@ fn avx10_1_smoke() {
         && is_x86_feature_detected!("avx512vpopcntdq")
         && is_x86_feature_detected!("avx512vp2intersect"))
     {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut storage = Aligned([0u8; 4096]);
@@ -722,6 +723,7 @@ fn avx10_1_smoke() {
 #[test]
 fn avx10_2_smoke() {
     if !(avx10_2_available() && f_enabled()) {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut storage = Aligned([0u8; 4096]);
@@ -894,6 +896,7 @@ fn avx512vl_smoke() {
         && is_x86_feature_detected!("avx512vpopcntdq")
         && is_x86_feature_detected!("avx512vp2intersect"))
     {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut storage = Aligned([0u8; 4096]);
@@ -1347,6 +1350,7 @@ fn avx512dq_smoke() {
         && is_x86_feature_detected!("avx512dq")
         && is_x86_feature_detected!("avx512vl"))
     {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut storage = Aligned([0u8; 4096]);
@@ -1408,6 +1412,7 @@ fn avx512dq_smoke() {
 #[test]
 fn avx512fp16_smoke() {
     if !(is_x86_feature_detected!("avx512fp16")) {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut storage = Aligned([0u8; 4096]);
@@ -1493,6 +1498,7 @@ fn avx512fp16_smoke() {
 #[test]
 fn avx512bw_smoke() {
     if !(is_x86_feature_detected!("avx512bw")) {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut storage = Aligned([0u8; 4096]);
@@ -1530,6 +1536,7 @@ fn avx512bw_smoke() {
 #[test]
 fn avx512f_smoke() {
     if !(f_enabled()) {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut storage = Aligned([0u8; 4096]);
@@ -1589,6 +1596,7 @@ fn avx512f_smoke() {
 #[test]
 fn avx512vbmi2_smoke() {
     if !(is_x86_feature_detected!("avx512vbmi2")) {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut storage = Aligned([0u8; 4096]);
@@ -1626,6 +1634,7 @@ fn avx512vbmi2_smoke() {
 #[test]
 fn avx512bitalg_smoke() {
     if !(is_x86_feature_detected!("avx512bitalg")) {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut storage = Aligned([0u8; 4096]);
@@ -1640,6 +1649,7 @@ fn avx512bitalg_smoke() {
 #[test]
 fn avx512cd_smoke() {
     if !(is_x86_feature_detected!("avx512cd")) {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut storage = Aligned([0u8; 4096]);
@@ -1654,6 +1664,7 @@ fn avx512cd_smoke() {
 #[test]
 fn avx512vp2intersect_smoke() {
     if !(is_x86_feature_detected!("avx512vp2intersect")) {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut storage = Aligned([0u8; 4096]);
@@ -1670,6 +1681,7 @@ fn avx512vp2intersect_smoke() {
 #[test]
 fn avxvnniint8_smoke() {
     if !(is_x86_feature_detected!("avxvnniint8")) {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut storage = Aligned([0u8; 4096]);
@@ -1707,6 +1719,7 @@ fn avxvnniint8_smoke() {
 #[test]
 fn avxvnniint16_smoke() {
     if !(is_x86_feature_detected!("avxvnniint16")) {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut storage = Aligned([0u8; 4096]);
@@ -1747,6 +1760,7 @@ fn avxvnniint16_smoke() {
 #[test]
 fn avxneconvert_smoke() {
     if !(is_x86_feature_detected!("avxneconvert")) {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut storage = Aligned([0u8; 4096]);

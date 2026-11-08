@@ -7,6 +7,7 @@ use super::support::*;
 #[test]
 fn ifma() {
     if !ifma_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let acc = i64x8([7; 8]);
@@ -24,6 +25,7 @@ fn ifma() {
 #[test]
 fn ifma_narrow_forms() {
     if !ifma_enabled() || !ifma_narrow_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let acc = i64x8([7; 8]);

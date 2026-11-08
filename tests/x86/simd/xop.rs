@@ -19,6 +19,7 @@ fn i16_lanes(value: V128) -> [i16; 8] {
 #[test]
 fn xop_values() {
     if !xop_available() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
 

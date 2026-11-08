@@ -7,6 +7,7 @@ use super::support::*;
 #[test]
 fn packed_sum_of_absolute_differences() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(
@@ -18,6 +19,7 @@ fn packed_sum_of_absolute_differences() {
 #[test]
 fn sum_of_absolute_differences() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let sad = unsafe { vmpsadbw::<0>(V256::from_bytes([1; 32]), V256::from_bytes([0; 32])) };

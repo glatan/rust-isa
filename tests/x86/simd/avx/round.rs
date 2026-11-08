@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn round() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = f32x8([1.7, 2.2, 3.8, 4.1, -1.7, -2.2, -3.8, -4.1]);

@@ -4,6 +4,7 @@ use rust_isa::x86::simd::avx512f::V512;
 #[test]
 fn avx512bf16_convert_and_dot() {
     if !is_x86_feature_detected!("avx512bf16") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut floats = [0u8; 64];
