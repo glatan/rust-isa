@@ -1,4 +1,13 @@
 //! Blend instructions.
+//!
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx::{vblendpd, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vblendpd::<16>(v, v) };
+//! ```
 
 use super::V256;
 use core::arch::asm;

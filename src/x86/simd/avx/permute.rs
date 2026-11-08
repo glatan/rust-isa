@@ -1,4 +1,29 @@
 //! Permute and insert/extract instructions.
+//!
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx::{vextractf128, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vextractf128::<2>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx::{vinsertf128, V256};
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let w = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vinsertf128::<2>(v, w) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx::{vperm2f128, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vperm2f128::<0x44>(v, v) };
+//! ```
 
 use super::V256;
 use crate::x86::simd::sse2::V128;
