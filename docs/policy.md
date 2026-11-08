@@ -144,4 +144,4 @@ arch ごとの値テストの runner と実行状況は [値テストの fixture
 - Cargo feature による opt-in。
 - 実行時ディスパッチを提供する `std` feature。
 - native の全命令の網羅。固定長 extension の未実装命令は arch の表で管理し、スケーラブル・状態付き extension は操作単位の対応表で管理する。
-- 追加した命令のゼロコスト確認。確認できるまでは zero-cost を主張しない。
+- 未確認の命令のゼロコスト確認。確認できるまでは zero-cost を主張しない。

@@ -37,7 +37,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
 
 ## 実装方式
 
-- 今回測った feature はすべて不安定であり、cfg ゲート方式を使えない。関数を無条件に置き、`unsafe fn` として公開する。
+- 対象の feature はすべて不安定であり、cfg ゲート方式を使えない。関数を無条件に置き、`unsafe fn` として公開する。
 - C + clang を主方式とする。NEON は `<arm_neon.h>`、MVE は `<arm_mve.h>` を使う。
 - 値は `V128` をポインタで渡す。MVE も NEON と同じ `V128` を使う。
 - C は extension ごとに分ける。NEON は `-mfpu=neon-vfpv4` と `-mfloat-abi=hard` を使う。`vfma` / `vfms` には VFPv4 が必要である。

@@ -38,12 +38,9 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`matrix`
 | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | -------- |
 | `power8-crypto` | `cipher`, `cipherlast`, `ncipher`, `ncipherlast`, `vcipher`, `vncipher`, `vcipherlast`, `vncipherlast`, `vpermxor`, `vpmsumb`, `vpmsumh`, `vpmsumw`, `vpmsumd`, `vsbox`, `vshasigmaw`, `vshasigmad` | なし       | QEMU     |
 
-`vsha256h`、`vsha256h2`、`vsha256su0`、`vsha256su1` は ARM Crypto の命令で
-あり、PowerPC の命令ではない。以前の表にあったこれらは削除した。PowerPC の SHA 命令は `vshasigmaw` と `vshasigmad` である。
-
 ## 実装方式
 
-- 今回測った feature はすべて不安定または LLVM のみであり、cfg ゲート方式を使えない。関数を無条件に置き、`unsafe fn` として公開する。
+- 対象の feature はすべて不安定または LLVM のみであり、cfg ゲート方式を使えない。関数を無条件に置き、`unsafe fn` として公開する。
 - C + clang を主方式とする。`<altivec.h>` を使う。
 - 値は `V128` をポインタで渡す。C の `vector` 型は境界では使わない。
 - C は extension ごとに分ける。`-maltivec` と `-mvsx` を使う。関数単位の `__attribute__((target("altivec")))` も使える。
