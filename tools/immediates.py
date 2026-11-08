@@ -5,10 +5,12 @@ An immediate-taking function is a public function whose signature carries a
 const generic parameter (for example ``const IMM: u8`` or ``const LANE: usize``).
 The check is name based within each arch: a function counts as covered when its
 name appears as a call expression inside a `````compile_fail`` doctest in that
-arch's ``src/`` tree. Functions without a const assert (full-range immediates,
-boolean switches) cannot fail to compile and are reported as uncoverable
-rather than missing. This catches missing range-rejection tests without
-pretending to prove that every invalid value is rejected.
+arch's ``src/`` tree. Functions whose const asserts cannot fail (a bound
+covering the whole type, such as ``IMM <= 255`` on a ``u8``) are reported
+as uncoverable with a vacuous bound; functions without any const assert
+are reported as uncoverable without one. Only rejectable functions fail
+``--check``. This catches missing range-rejection tests without pretending
+that every invalid value is rejected.
 """
 
 from __future__ import annotations
@@ -133,12 +135,13 @@ def assert_conditions(span: str) -> list[str]:
 
 
 def immediate_functions(root: Path, arch: str) -> dict[str, dict[str, object]]:
-    """Map function name to const params and whether a range is asserted.
+    """Map function name to const params and their assert coverage.
 
-    A function is rejectable only when its body carries a ``const`` assert on
-    the const generic (for example ``const { assert!(IMM <= 15, ...) };``).
-    Full-range immediates (any ``u8`` is encodable) and boolean switches have
-    no invalid value and are reported as uncoverable instead of missing.
+    A parameter is testable when a ``const`` assert constrains it to fewer
+    values than its type allows (for example ``const { assert!(IMM <= 15,
+    ...) };``). Full-range immediates (any ``u8`` is encodable) and boolean
+    switches have no invalid value. A function is rejectable when at least
+    one parameter is testable.
     """
     found: dict[str, dict[str, object]] = {}
     for path in source_files(root / "src" / arch):
@@ -153,37 +156,45 @@ def immediate_functions(root: Path, arch: str) -> dict[str, dict[str, object]]:
             end = ITEM_END.search(following)
             span = following[: end.start()] if end else following[:3000]
             conditions = assert_conditions(span)
-            entry = found.setdefault(
-                match.group(1),
-                {"params": set(), "types": {}, "asserted": False},
-            )
-            params_set = entry["params"]
-            assert isinstance(params_set, set)
-            params_set.update(types)
-            types_map = entry["types"]
-            assert isinstance(types_map, dict)
-            types_map.update(types)
-            if "const {" in span and conditions:
-                entry["asserted"] = True
+            mentioned: set[str] = set()
+            testable: set[str] = set()
             for param in types:
                 relevant = [
-                    c
-                    for c in conditions
-                    if re.search(rf"\b{re.escape(param)}\b", c)
+                    condition
+                    for condition in conditions
+                    if re.search(rf"\b{re.escape(param)}\b", condition)
                 ]
-                if relevant and all(
-                    assert_is_vacuous(c, param, types) for c in relevant
-                ):
-                    entry.setdefault("vacuous", set()).add(param)  # type: ignore[union-attr]
+                if relevant:
+                    mentioned.add(param)
+                    if not all(
+                        assert_is_vacuous(condition, param, types)
+                        for condition in relevant
+                    ):
+                        testable.add(param)
+            entry = found.setdefault(
+                match.group(1),
+                {"params": set(), "mentioned": set(), "testable": set()},
+            )
+            for key, values in (
+                ("params", set(types)),
+                ("mentioned", mentioned),
+                ("testable", testable),
+            ):
+                stored = entry[key]
+                assert isinstance(stored, set)
+                stored.update(values)
     result: dict[str, dict[str, object]] = {}
     for name, entry in found.items():
         params = entry["params"]
         assert isinstance(params, set)
-        vacuous = entry.get("vacuous", set())
-        assert isinstance(vacuous, set)
+        mentioned = entry["mentioned"]
+        assert isinstance(mentioned, set)
+        testable = entry["testable"]
+        assert isinstance(testable, set)
         result[name] = {
             "params": sorted(params),
-            "asserted": bool(entry["asserted"]) and bool(params - vacuous),
+            "asserted": bool(mentioned),
+            "testable": bool(testable),
         }
     return result
 
@@ -210,18 +221,25 @@ def report(root: Path, arch: str) -> dict[str, object]:
     missing = sorted(
         name
         for name, info in functions.items()
-        if name not in covered and info["asserted"]
+        if name not in covered and info["testable"]
     )
-    uncoverable = sorted(
+    uncovered = sorted(
+        name for name, info in functions.items() if name not in covered
+    )
+    vacuous = sorted(
         name
-        for name, info in functions.items()
-        if name not in covered and not info["asserted"]
+        for name in uncovered
+        if functions[name]["asserted"] and not functions[name]["testable"]
+    )
+    no_assert = sorted(
+        name for name in uncovered if not functions[name]["asserted"]
     )
     return {
         "arch": arch,
         "immediate": len(functions),
         "missing": missing,
-        "uncoverable": uncoverable,
+        "uncoverable_vacuous": vacuous,
+        "uncoverable_no_assert": no_assert,
     }
 
 
@@ -257,11 +275,14 @@ def main() -> None:
     for entry in reports:
         missing = entry["missing"]
         assert isinstance(missing, list)
-        uncoverable = entry["uncoverable"]
-        assert isinstance(uncoverable, list)
+        vacuous = entry["uncoverable_vacuous"]
+        assert isinstance(vacuous, list)
+        no_assert = entry["uncoverable_no_assert"]
+        assert isinstance(no_assert, list)
         print(
             f"{entry['arch']}: {len(missing)} missing / "
-            f"{entry['immediate']} immediate ({len(uncoverable)} uncoverable)"
+            f"{entry['immediate']} immediate "
+            f"({len(vacuous)} vacuous, {len(no_assert)} without assert)"
         )
         if missing:
             failed = True
@@ -269,8 +290,10 @@ def main() -> None:
             for name in missing:
                 print(f"  {name}")
         if args.names:
-            for name in uncoverable:
-                print(f"  uncoverable: {name}")
+            for name in vacuous:
+                print(f"  uncoverable vacuous bound: {name}")
+            for name in no_assert:
+                print(f"  uncoverable no assert: {name}")
     if args.check and failed:
         raise SystemExit(1)
 
