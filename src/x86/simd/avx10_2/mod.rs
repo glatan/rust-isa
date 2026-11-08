@@ -35,6 +35,56 @@
 //! assert_eq!(unsafe { vaddps_v256(v, v) }.to_bytes(), [0; 32]);
 //! ```
 //!
+//! # Compile-time predicate check
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_2::vcmpps_v256;
+//! use rust_isa::x86::simd::avx::V256;
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vcmpps_v256::<32>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_2::vcmpps_v512;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v = V512::from_bytes([0; 64]);
+//! let _ = unsafe { vcmpps_v512::<32>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_2::vcmppd_v256;
+//! use rust_isa::x86::simd::avx::V256;
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vcmppd_v256::<32>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_2::vcmppd_v512;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v = V512::from_bytes([0; 64]);
+//! let _ = unsafe { vcmppd_v512::<32>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_2::vcmpph_v256;
+//! use rust_isa::x86::simd::avx::V256;
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vcmpph_v256::<32>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_2::vcmpph_v512;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v = V512::from_bytes([0; 64]);
+//! let _ = unsafe { vcmpph_v512::<32>(v, v) };
+//! ```
+//!
 //! <details>
 //! <summary>Compile-only instruction examples</summary>
 //!
@@ -538,13 +588,16 @@ pub unsafe fn vminmaxsh_v128<const IMM: u8>(a: V128, b: V128) -> V128 {
 }
 
 /// `vcmpps_v256`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=31`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vcmpps_v256<const IMM: u8>(a: V256, b: V256) -> Mask8 {
+    const {
+        assert!(IMM <= 31, "vcmp predicate must be in 0..=31");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -566,13 +619,16 @@ pub unsafe fn vcmpps_v256<const IMM: u8>(a: V256, b: V256) -> Mask8 {
 }
 
 /// `vcmpps_v512`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=31`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vcmpps_v512<const IMM: u8>(a: V512, b: V512) -> Mask16 {
+    const {
+        assert!(IMM <= 31, "vcmp predicate must be in 0..=31");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -594,13 +650,16 @@ pub unsafe fn vcmpps_v512<const IMM: u8>(a: V512, b: V512) -> Mask16 {
 }
 
 /// `vcmppd_v256`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=31`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vcmppd_v256<const IMM: u8>(a: V256, b: V256) -> Mask4 {
+    const {
+        assert!(IMM <= 31, "vcmp predicate must be in 0..=31");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -622,13 +681,16 @@ pub unsafe fn vcmppd_v256<const IMM: u8>(a: V256, b: V256) -> Mask4 {
 }
 
 /// `vcmppd_v512`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=31`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vcmppd_v512<const IMM: u8>(a: V512, b: V512) -> Mask8 {
+    const {
+        assert!(IMM <= 31, "vcmp predicate must be in 0..=31");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -650,13 +712,16 @@ pub unsafe fn vcmppd_v512<const IMM: u8>(a: V512, b: V512) -> Mask8 {
 }
 
 /// `vcmpph_v256`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=31`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vcmpph_v256<const IMM: u8>(a: V256, b: V256) -> Mask16 {
+    const {
+        assert!(IMM <= 31, "vcmp predicate must be in 0..=31");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -678,13 +743,16 @@ pub unsafe fn vcmpph_v256<const IMM: u8>(a: V256, b: V256) -> Mask16 {
 }
 
 /// `vcmpph_v512`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=31`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.2 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vcmpph_v512<const IMM: u8>(a: V512, b: V512) -> Mask32 {
+    const {
+        assert!(IMM <= 31, "vcmp predicate must be in 0..=31");
+    }
     let out: u32;
     unsafe {
         asm!(
