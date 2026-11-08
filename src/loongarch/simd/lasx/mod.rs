@@ -860,6 +860,18 @@
 //! let _ = unsafe { xvfrstpi_h::<32>(v, v) };
 //! ```
 //!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::xvldi;
+//!
+//! let _ = unsafe { xvldi::<0x2000>() };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::xvldi;
+//!
+//! let _ = unsafe { xvldi::<-0x2000>() };
+//! ```
+//!
 //!
 //! # Instruction examples
 //!
@@ -3629,6 +3641,7 @@ pub unsafe fn xvst(p: *mut u8, offset: i32, value: V256) {
 ///
 /// Build the immediate value of the instruction. `IMM` is the 13-bit encoding,
 /// not the loaded scalar.
+/// `IMM` must be in `0..=8191`.
 ///
 /// When bit 12 is clear, bits 9 to 0 are sign-extended and replicated as lanes
 /// of the width selected by bits 11 and 10 (`0` is 8-bit, `1` is 16-bit, `2` is
@@ -3644,7 +3657,13 @@ pub unsafe fn xvst(p: *mut u8, offset: i32, value: V256) {
 #[target_feature(enable = "lasx")]
 #[inline]
 pub unsafe fn xvldi<const IMM: i32>() -> V256 {
-    const { V256::from_bytes(vldi_bytes(IMM as u32)) }
+    const {
+        assert!(
+            0 <= IMM && IMM <= 8191,
+            "vldi immediate must be in 0..=8191"
+        );
+        V256::from_bytes(vldi_bytes(IMM as u32))
+    }
 }
 
 const fn vldi_bytes(imm: u32) -> [u8; 32] {
