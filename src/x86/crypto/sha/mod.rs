@@ -20,6 +20,16 @@
 //! assert_eq!(unsafe { sha1msg1(v, v) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::x86::crypto::sha::sha1rnds4;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { sha1rnds4::<4>(v, v) };
+//! ```
+//!
 //! <details>
 //! <summary>Instruction examples</summary>
 //!
@@ -193,7 +203,8 @@ pub unsafe fn sha256rnds2(a: V128, b: V128, k: V128) -> V128 {
 
 /// `sha1rnds4`
 ///
-/// Perform four SHA-1 rounds with `IMM`.
+/// Perform four SHA-1 rounds with `IMM`. `IMM` selects the round function
+/// and must be in `0..=3`; a larger value is a compile-time error.
 ///
 /// # Safety
 ///
@@ -201,6 +212,7 @@ pub unsafe fn sha256rnds2(a: V128, b: V128, k: V128) -> V128 {
 #[target_feature(enable = "sha")]
 #[inline]
 pub unsafe fn sha1rnds4<const IMM: u8>(a: V128, b: V128) -> V128 {
+    const { assert!(IMM <= 3, "sha1rnds4 function must be in 0..=3") };
     #[cfg(target_arch = "x86_64")]
     {
         let a = u128::from_le_bytes(a.to_bytes());
