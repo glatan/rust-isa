@@ -84,8 +84,9 @@ doctest は命令の意味論を網羅しない。inventory は公開パスの�
 2. 命令の意味論には値テストを追加する。native は fixture、wasm32 は `tests/wasm32`、x86_64 は `tests/x86` に置く。
 3. ゼロコストを主張する場合は、`kernel_*` と disassembly の検査を追加する。fixture 化できない場合は `docs/zero-cost.md` の `manual` 行に理由を書く。
 4. 即値の範囲を追加する場合は、可能なら `compile_fail` doctest も追加する。
-5. arch の README、`fixture-matrix.md`、`zero-cost.md` を同じ変更で更新する。
-6. 既定の `make test` で実行する必要があるテストは、`test` の依存に含める。
+5. スライス API を追加・変更する場合は、`# Panics` と代表例の `should_panic` doctest を付ける。
+6. arch の README、`fixture-matrix.md`、`zero-cost.md` を同じ変更で更新する。
+7. 既定の `make test` で実行する必要があるテストは、`test` の依存に含める。
 
 ## テスト在庫
 
@@ -110,6 +111,6 @@ SVE と RVV は操作単位の API を正とする。smoke test は全関数の�
 - native arch の即値の範囲外は、コンパイル拒否を自動で検査していない。wasm32 だけが `compile_fail` doctest を持つ。
 - instruction inventory は公開パスの import だけを検査する。命令の実行とリンクは値テストが担う。
 - Arch イメージの native doctest はコンパイルだけを確認する。実行は Debian イメージが担う。値テストは doctest の例を実行しない。
-- SVE と RVV のスライス API は、長さの不一致で panic する。panic 条件を検査するテストはない。
+- SVE と RVV のスライス API は、長さの不一致で panic する。代表例は `should_panic` doctest で検査する。全関数の引数組合せは検査しない。
 - `docs/zero-cost.md` の `manual` 行は、測定結果を再実行しない。再現手順と理由だけを検査する。
 - x86 の任意 feature の値テストは、CPU が feature を持たない場合に早期 return する。`make test` は SDE で実行するため、既定の経路では feature を有効にできる。SDE を使わない実行では、テストが成功しても命令を実行していないことがある。
