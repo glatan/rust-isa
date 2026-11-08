@@ -66,7 +66,7 @@ RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release
 
 `manual` の行は、[ゼロコストの測定方法](#ゼロコストの測定方法) の `RUSTC_BOOTSTRAP=1 cargo build -Z build-std=core --target <target> --release` で作った `no_std` / `no_main` のバイナリを `llvm-objdump` で見る。再現手順は [再現の例](#再現の例) に従う。`make zero-cost-check` は `manual` の行を fixture / kernel の検査対象にしないが、各行に理由があることは検査する。
 
-`manual` が残るのは、RISC-V の `vrgather` / `vcompress`、LoongArch の `xvshuf.b`、32-bit ARM、MIPS の `vshf.w` である。値テスト fixture にゼロコスト用カーネルがない、ビルド条件がゼロコスト条件と一致しない、または `llvm-mc` でバイト列をデコードする必要があるため、個別の link fixture にしていない。
+`manual` が残るのは、RISC-V の `vrgather` / `vcompress`、LoongArch の `xvshuf.b`、32-bit ARM、MIPS の `vshf.w` である。理由は行ごとに確定している。RISC-V と LoongArch は intrinsics が必要なため命令間に store/load が残り、仕様上の限界として `manual` に残す。MIPS の `vshf.w` はスカラーの C フォールバックを仕様とし、fixture 化しない。32-bit ARM は下の「fixture 化できない測定」のとおり LTO リンクがクラッシュするため、値テスト fixture にゼロコスト用カーネルを置かない。
 
 | arch       | fixture                         | kernel                                                     | LTO  | extension                  | 確認した命令                      | `call` | 命令間の store/load | 結果                      |
 | ---------- | ------------------------------- | ---------------------------------------------------------- | ---- | -------------------------- | --------------------------------- | ------ | ------------------- | ------------------------- |
@@ -168,7 +168,11 @@ arch 単位では、ゼロコストを確認していない arch はない。ext
 
 ### 32-bit ARM
 
-文書の `-Xclang -target-feature` 調整を `build.rs` に入れると、LTO リンクで LLVM の ARM Instruction Selection が `Do not know how to split this operator's operand!` でクラッシュする。thin / fat の両方の LTO モードで、専用 link fixture でも同じクラッシュを再現した。LLVM の修正版を待つか、C を分割して feature 集合を合わせる必要がある。
+文書の `-Xclang -target-feature` 調整を `build.rs` に入れると、LTO リンクで LLVM の ARM Instruction Selection が `Do not know how to split this operator's operand!` でクラッシュする。thin / fat の両方の LTO モードで、専用 link fixture でも同じクラッシュを再現した。当面は `manual` に残し、対応が必要になれば C の分割を内部で検討する。
+
+### 往復が残る命令とスカラーフォールバック
+
+RISC-V の `vrgather` / `vcompress` と LoongArch の `xvshuf.b` は、intrinsics が必要なため命令間に store/load が残る。表の「往復が残る」を仕様として `manual` に残す。MIPS の `vshf.w` はスカラーの C フォールバックを仕様とし、fixture 化しない。
 
 ## スケーラブルベクタ
 
