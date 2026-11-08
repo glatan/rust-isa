@@ -59,6 +59,7 @@ help:
 		'image                        開発イメージを作る' \
 		'image-debian                 Debian ベースのテストイメージを作る' \
 		'test                         フォーマット検査・rustdoc・全 arch のテスト（QEMU / SDE / wasmtime）' \
+		'check                        SDE・QEMU を使わない静的検査（fmt・文書整合・シンボル・リンク）' \
 		'test-debian                  Debian イメージで全テストを実行する' \
 		'test-doc-debian              Debian イメージで native doctest を実行する' \
 		'check-docs                   全ターゲットの rustdoc を -D warnings で検査する' \
@@ -208,6 +209,9 @@ check-docs:
 			RUSTC_BOOTSTRAP=1 RUSTDOCFLAGS="-D warnings" CARGO_TARGET_DIR=$(DOC_TARGET_DIR) cargo doc --no-deps -Z build-std=core --target "$$t"; \
 		done; \
 		CARGO_TARGET_DIR=$(WASM_DOC_TARGET_DIR) RUSTDOCFLAGS="-D warnings -C target-feature=+simd128,+relaxed-simd" cargo doc --no-deps --features wide-arithmetic --target $(WASM_UNKNOWN_TARGET)'
+
+.PHONY: check
+check: fmt-check inventory-check manifest-pilot-check docs-check fixtures-check check-mnemonics test-check-static test-check-wasm-link
 
 .PHONY: test
 test: fmt-check inventory-check manifest-pilot-check docs-check docs-rustdoc-check fixtures-check check-mnemonics check-docs test-check-wasm-link test-host test-doc test-wasip1 test-wasip1-wide-arithmetic
