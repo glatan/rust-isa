@@ -32,6 +32,569 @@
 //! let _ = vsat::<32>(v);
 //! ```
 //!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vseqi_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vseqi_b::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vseqi_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vseqi_h::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vseqi_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vseqi_w::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vseqi_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vseqi_d::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslei_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslei_b::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslei_bu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslei_bu::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslei_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslei_h::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslei_hu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslei_hu::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslei_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslei_w::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslei_wu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslei_wu::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslei_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslei_d::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslei_du, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslei_du::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslti_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslti_b::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslti_bu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslti_bu::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslti_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslti_h::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslti_hu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslti_hu::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslti_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslti_w::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslti_wu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslti_wu::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslti_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslti_d::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslti_du, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslti_du::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslli_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslli_b::<8>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslli_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslli_h::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslli_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslli_w::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vslli_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vslli_d::<64>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsrli_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsrli_b::<8>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsrli_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsrli_h::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsrli_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsrli_w::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsrli_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsrli_d::<64>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsrai_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsrai_b::<8>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsrai_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsrai_h::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsrai_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsrai_w::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsrai_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsrai_d::<64>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vmaxi_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vmaxi_b::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vmaxi_bu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vmaxi_bu::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vmaxi_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vmaxi_h::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vmaxi_hu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vmaxi_hu::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vmaxi_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vmaxi_w::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vmaxi_wu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vmaxi_wu::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vmaxi_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vmaxi_d::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vmaxi_du, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vmaxi_du::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vmini_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vmini_b::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vmini_bu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vmini_bu::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vmini_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vmini_h::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vmini_hu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vmini_hu::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vmini_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vmini_w::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vmini_wu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vmini_wu::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vmini_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vmini_d::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vmini_du, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vmini_du::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vrotri_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vrotri_b::<8>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vrotri_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vrotri_h::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vrotri_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vrotri_w::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vrotri_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vrotri_d::<64>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vbitclri_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vbitclri_b::<8>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vbitclri_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vbitclri_h::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vbitclri_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vbitclri_w::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vbitclri_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vbitclri_d::<64>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vbitseti_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vbitseti_b::<8>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vbitseti_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vbitseti_h::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vbitseti_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vbitseti_w::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vbitseti_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vbitseti_d::<64>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vbitrevi_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vbitrevi_b::<8>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vbitrevi_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vbitrevi_h::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vbitrevi_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vbitrevi_w::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vbitrevi_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vbitrevi_d::<64>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vaddi_bu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vaddi_bu::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vaddi_hu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vaddi_hu::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vaddi_wu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vaddi_wu::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vaddi_du, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vaddi_du::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsubi_bu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsubi_bu::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsubi_hu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsubi_hu::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsubi_wu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsubi_wu::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsubi_du, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsubi_du::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsrlri_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsrlri_b::<8>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsrlri_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsrlri_h::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsrlri_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsrlri_w::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsrlri_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsrlri_d::<64>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsrari_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsrari_b::<8>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsrari_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsrari_h::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsrari_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsrari_w::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsrari_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsrari_d::<64>(v);
+//! ```
+//!
+//!
+
+//!
 //! # Instruction examples
 //!
 //! ```
