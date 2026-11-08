@@ -25,6 +25,12 @@
 //! let _ = bstrpick::<64, 0>(0);
 //! ```
 //!
+//! ```compile_fail
+//! use rust_isa::loongarch::integer::bitmanip::bstrins;
+//!
+//! let _ = bstrins::<64, 0>(0, 0);
+//! ```
+//!
 //! <details>
 //! <summary>Instruction examples</summary>
 //!

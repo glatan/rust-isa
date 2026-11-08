@@ -592,6 +592,275 @@
 //! <details>
 //! <summary>Instruction examples</summary>
 //!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvsat_b, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvsat_b::<8>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvsat_bu, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvsat_bu::<8>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvsat_h, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvsat_h::<16>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvsat_hu, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvsat_hu::<16>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvsat_w, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvsat_w::<32>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvsat_wu, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvsat_wu::<32>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvsat_d, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvsat_d::<64>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvsat_du, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvsat_du::<64>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvsat, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvsat::<32>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvfcmp, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvfcmp::<18>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvstelm_b, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//! let _ = unsafe { xvstelm_b::<16>(v, storage.0.as_mut_ptr(), 0) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvstelm_h, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//! let _ = unsafe { xvstelm_h::<8>(v, storage.0.as_mut_ptr(), 0) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvstelm_w, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//! let _ = unsafe { xvstelm_w::<4>(v, storage.0.as_mut_ptr(), 0) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvstelm_d, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//! let _ = unsafe { xvstelm_d::<2>(v, storage.0.as_mut_ptr(), 0) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvrepl128vei_b, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvrepl128vei_b::<2>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvrepl128vei_h, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvrepl128vei_h::<2>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvrepl128vei_w, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvrepl128vei_w::<2>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvrepl128vei_d, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvrepl128vei_d::<2>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvinsgr2vr_w, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvinsgr2vr_w::<8>(v, 1) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvinsgr2vr_d, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvinsgr2vr_d::<4>(v, 1) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvinsve0_w, V256};
+//! use rust_isa::loongarch::simd::lsx::V128;
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let w = V128::from_bytes([0; 16]);
+//! let _ = unsafe { xvinsve0_w::<2>(v, w) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvinsve0_d, V256};
+//! use rust_isa::loongarch::simd::lsx::V128;
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let w = V128::from_bytes([0; 16]);
+//! let _ = unsafe { xvinsve0_d::<2>(v, w) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvpickve_w, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvpickve_w::<2>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvpickve_d, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvpickve_d::<2>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvpickve2gr_w, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvpickve2gr_w::<8>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvpickve2gr_wu, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvpickve2gr_wu::<8>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvpickve2gr_d, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvpickve2gr_d::<4>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvpickve2gr_du, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvpickve2gr_du::<4>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvsllwil_h_b, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvsllwil_h_b::<8>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvsllwil_hu_bu, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvsllwil_hu_bu::<8>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvsllwil_w_h, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvsllwil_w_h::<16>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvsllwil_wu_hu, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvsllwil_wu_hu::<16>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvsllwil_d_w, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvsllwil_d_w::<32>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvsllwil_du_wu, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvsllwil_du_wu::<32>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvfrstpi_b, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvfrstpi_b::<32>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lasx::{xvfrstpi_h, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { xvfrstpi_h::<32>(v, v) };
+//! ```
+//!
+//!
 //! # Instruction examples
 //!
 //! ```
