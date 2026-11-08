@@ -1,4 +1,22 @@
 //! 128-bit lane insert and extract instructions.
+//!
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx2::{vinserti128, V256};
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let w = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vinserti128::<2>(v, w) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx2::{vextracti128, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vextracti128::<2>(v) };
+//! ```
 
 use super::V256;
 use crate::x86::simd::sse2::V128;

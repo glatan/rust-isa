@@ -2,6 +2,25 @@
 //!
 //! These wrappers use inline assembly because rustc does not expose the AMX
 //! tile number as a value type.
+//!
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::x86::matrix::amx_tile::{tilezero, AmxGuard, TileConfig};
+//!
+//! let mut config = TileConfig::builder().tile::<0>(1, 64).build();
+//! let guard = unsafe { AmxGuard::enter(&config) };
+//! let _ = unsafe { tilezero::<8>(&guard) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::matrix::amx_tile::{tilestored, AmxGuard, TileConfig};
+//!
+//! let mut storage = [0u8; 64];
+//! let mut config = TileConfig::builder().tile::<0>(1, 64).build();
+//! let guard = unsafe { AmxGuard::enter(&config) };
+//! let _ = unsafe { tilestored::<8>(&guard, storage.as_mut_ptr(), 64) };
+//! ```
 
 use core::arch::asm;
 

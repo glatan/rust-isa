@@ -35,6 +35,16 @@
 //! let _ = unsafe { vsm3msg1(v, v, v) };
 //! ```
 //!
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::x86::crypto::sm3::vsm3rnds2;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vsm3rnds2::<4>(v, v, v) };
+//! ```
+//!
 //! <details>
 //! <summary>Compile-only instruction examples</summary>
 //!

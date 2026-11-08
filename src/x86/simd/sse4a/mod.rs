@@ -15,6 +15,24 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::sse4a::extrq_imm;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { extrq_imm::<64, 0>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::sse4a::insertq_imm;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { insertq_imm::<64, 0>(v, v) };
+//! ```
+//!
 //! # Behavior example
 //!
 //! ```no_run

@@ -35,6 +35,14 @@
 //! let _ = unsafe { vcvtps2ph::<5>(v) };
 //! ```
 //!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx2::V256;
+//! use rust_isa::x86::simd::f16c::vcvtps2ph_v256;
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vcvtps2ph_v256::<5>(v) };
+//! ```
+//!
 //! <details>
 //! <summary>Instruction examples</summary>
 //!
