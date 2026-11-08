@@ -1,6 +1,57 @@
 //! `v128.*` instructions and the [`V128`] value.
 //!
 //! Rules shared by every SIMD128 instruction are documented on the [parent module](super).
+//!
+//! # Compile-time lane check
+//!
+//! ```compile_fail,E0080
+//! use rust_isa::wasm32::simd::simd128::{i16x8_splat, v128_load16_lane};
+//!
+//! let buffer = [0u8; 2];
+//! let _ = unsafe { v128_load16_lane::<8>(buffer.as_ptr(), i16x8_splat(0)) };
+//! ```
+//!
+//! ```compile_fail,E0080
+//! use rust_isa::wasm32::simd::simd128::{i32x4_splat, v128_load32_lane};
+//!
+//! let buffer = [0u8; 4];
+//! let _ = unsafe { v128_load32_lane::<4>(buffer.as_ptr(), i32x4_splat(0)) };
+//! ```
+//!
+//! ```compile_fail,E0080
+//! use rust_isa::wasm32::simd::simd128::{i64x2_splat, v128_load64_lane};
+//!
+//! let buffer = [0u8; 8];
+//! let _ = unsafe { v128_load64_lane::<2>(buffer.as_ptr(), i64x2_splat(0)) };
+//! ```
+//!
+//! ```compile_fail,E0080
+//! use rust_isa::wasm32::simd::simd128::{i8x16_splat, v128_store8_lane};
+//!
+//! let mut buffer = [0u8; 1];
+//! unsafe { v128_store8_lane::<16>(buffer.as_mut_ptr(), i8x16_splat(0)) };
+//! ```
+//!
+//! ```compile_fail,E0080
+//! use rust_isa::wasm32::simd::simd128::{i16x8_splat, v128_store16_lane};
+//!
+//! let mut buffer = [0u8; 2];
+//! unsafe { v128_store16_lane::<8>(buffer.as_mut_ptr(), i16x8_splat(0)) };
+//! ```
+//!
+//! ```compile_fail,E0080
+//! use rust_isa::wasm32::simd::simd128::{i32x4_splat, v128_store32_lane};
+//!
+//! let mut buffer = [0u8; 4];
+//! unsafe { v128_store32_lane::<4>(buffer.as_mut_ptr(), i32x4_splat(0)) };
+//! ```
+//!
+//! ```compile_fail,E0080
+//! use rust_isa::wasm32::simd::simd128::{i64x2_splat, v128_store64_lane};
+//!
+//! let mut buffer = [0u8; 8];
+//! unsafe { v128_store64_lane::<2>(buffer.as_mut_ptr(), i64x2_splat(0)) };
+//! ```
 
 /// A WebAssembly `v128`: 16 bytes.
 ///
