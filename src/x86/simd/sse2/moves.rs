@@ -1,4 +1,20 @@
 //! Move instructions.
+//!
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::sse2::{pextrw, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = pextrw::<8>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::sse2::{pinsrw, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = pinsrw::<8>(v, 0);
+//! ```
 
 use super::V128;
 

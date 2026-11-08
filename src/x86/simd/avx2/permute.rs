@@ -1,4 +1,13 @@
 //! Permute instructions.
+//!
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx2::{vperm2i128, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vperm2i128::<0x44>(v, v) };
+//! ```
 
 use super::V256;
 use core::arch::asm;
