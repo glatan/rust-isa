@@ -41,6 +41,94 @@
 //! let _ = unsafe { pinsrb::<16>(v, 0) };
 //! ```
 //!
+//! ```compile_fail
+//! use rust_isa::x86::simd::sse4_1::blendpd;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { blendpd::<4>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::sse4_1::roundps;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { roundps::<16>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::sse4_1::roundpd;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { roundpd::<4>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::sse4_1::roundss;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { roundss::<16>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::sse4_1::roundsd;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { roundsd::<16>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::sse4_1::mpsadbw;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { mpsadbw::<8>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::sse4_1::pinsrd;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { pinsrd::<4>(v, 0) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::sse4_1::pextrb;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { pextrb::<16>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::sse4_1::pextrd;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { pextrd::<4>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::sse4_1::pinsrq;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { pinsrq::<2>(v, 0) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::sse4_1::pextrq;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { pextrq::<2>(v) };
+//! ```
+//!
 //! <details>
 //! <summary>Compile-only instruction examples</summary>
 //!
