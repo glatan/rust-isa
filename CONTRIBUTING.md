@@ -6,7 +6,7 @@ arch を足すときは、`docs/<arch>/README.md` と `docs/<arch>/feasibility.m
 
 命令の動作と、利用者が extension を有効にする条件は rustdoc に書く。
 
-変更したら `make fmt` で整形し、`make fmt-check` と `make test` を通す。
+変更したら `make fmt` で整形し、まず `make check` を通す。変更範囲の `test-<arch>` を実行し、最後に `make test` を通す。
 
 ## MR
 
