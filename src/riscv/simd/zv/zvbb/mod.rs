@@ -10,6 +10,24 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::riscv::simd::rvv::V128;
+//! use rust_isa::riscv::simd::zv::vror_vi;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vror_vi::<64>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::riscv::simd::rvv::V128;
+//! use rust_isa::riscv::simd::zv::vwsll_vi;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vwsll_vi::<32>(v) };
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```no_run
