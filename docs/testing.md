@@ -21,8 +21,9 @@
 - `tests/wasm_link.rs`: `simd128` を無効にしたビルドが失敗することを検査する。
 - `tests/wasm32/wide_arithmetic.rs`: `wide-arithmetic` feature が有効なときだけビルドされる。
 - wasm32 の 2 つの `compile_fail,E0080` doctest: レーン即値の範囲外をコンパイルエラーにする。
+- native の代表的な `compile_fail` doctest: `x86::simd::{sse4_1, ssse3, avx, f16c}`、`aarch64::simd::neon`、`loongarch::{simd::lsx, integer::bitmanip}`、`riscv::crypto::zks` が即値の範囲外をコンパイルエラーにする。全即値の網羅ではない。
 
-値テストは有効な即値だけを呼ぶ。native arch の即値の範囲外は、コンパイル拒否を自動で検査していない。
+値テストは有効な即値だけを呼ぶ。native arch の即値の範囲外は、代表的な extension だけを `compile_fail` doctest で自動検査する。
 
 ### コード生成とゼロコスト
 
@@ -107,7 +108,7 @@ SVE と RVV は操作単位の API を正とする。smoke test は全関数の�
 
 ## 既知の欠落
 
-- native arch の即値の範囲外は、コンパイル拒否を自動で検査していない。wasm32 だけが `compile_fail` doctest を持つ。
+- native arch の即値の範囲外は、代表的な extension だけを `compile_fail` doctest で自動検査する。全即値の網羅ではない。
 - instruction inventory は公開パスの import だけを検査する。命令の実行とリンクは値テストが担う。
 - Arch イメージの native doctest はコンパイルだけを確認する。実行は Debian イメージが担う。値テストは doctest の例を実行しない。
 - SVE と RVV のスライス API は、長さの不一致で panic する。panic 条件を検査するテストはない。
