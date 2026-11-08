@@ -26,6 +26,92 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::s390x::simd::vector::{vrepb, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vrepb::<16>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::s390x::simd::vector::{vreph, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vreph::<8>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::s390x::simd::vector::{vrepf, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vrepf::<4>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::s390x::simd::vector::{vrepg, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vrepg::<2>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::s390x::simd::vector::{vrep, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vrep::<4, 0>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::s390x::simd::vector::{vseg, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vseg::<3>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::s390x::simd::vector::{vistr, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vistr::<3>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::s390x::simd::vector::{vscbi, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vscbi::<4>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::s390x::simd::vector::{vlgv, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vlgv::<4, 0>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::s390x::simd::vector::{vstrc, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vstrc::<3, 0>(v, v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::s390x::simd::vector::{vfi_f64, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vfi_f64::<16, 0>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::s390x::simd::vector::{vftci_f64, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vftci_f64::<0x1000>(v) };
+//! ```
+//!
 //! <details>
 //! <summary>Instruction examples</summary>
 //!

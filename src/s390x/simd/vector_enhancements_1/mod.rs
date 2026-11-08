@@ -25,6 +25,32 @@
 //! assert_eq!(count.to_bytes(), [4; 16]);
 //! ```
 //!
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::s390x::simd::vector::V128;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vftci_f32;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vftci_f32::<0x1000>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::s390x::simd::vector::V128;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vfi_f32;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vfi_f32::<16, 0>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::s390x::simd::vector::V128;
+//! use rust_isa::s390x::simd::vector_enhancements_1::vflr;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vflr::<16, 0>(v) };
+//! ```
+//!
 //! <details>
 //! <summary>Instruction examples</summary>
 //!
