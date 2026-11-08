@@ -109,7 +109,7 @@ SVE と RVV は操作単位の API を正とする。smoke test は全関数の�
 
 ## 既知の欠落
 
-- native arch の即値の範囲外は、代表的な extension だけを `compile_fail` doctest で自動検査する。全即値の網羅ではない。
+- native arch の即値の範囲外は、拒否可能な extension を `compile_fail` doctest で自動検査する。在庫と検査は `make immediates` と `make immediates-check` を見る。全範囲・全値の網羅ではない。
 - instruction inventory は公開パスの import だけを検査する。命令の実行とリンクは値テストが担う。
 - Arch イメージの native doctest はコンパイルだけを確認する。実行は Debian イメージが担う。値テストは doctest の例を実行しない。
 - SVE と RVV のスライス API は、長さの不一致で panic する。代表例は `should_panic` doctest で検査する。全関数の引数組合せは検査しない。

@@ -268,6 +268,7 @@ def main() -> None:
         if args.names or args.check:
             for name in missing:
                 print(f"  {name}")
+        if args.names:
             for name in uncoverable:
                 print(f"  uncoverable: {name}")
     if args.check and failed:
