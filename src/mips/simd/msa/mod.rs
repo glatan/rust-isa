@@ -25,6 +25,43 @@
 //! );
 //! ```
 //!
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::mips::simd::msa::{slli, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { slli::<32>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::mips::simd::msa::{srli, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { srli::<32>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::mips::simd::msa::{srai, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { srai::<32>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::mips::simd::msa::{sat_s, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { sat_s::<33>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::mips::simd::msa::{sat_u, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { sat_u::<33>(v) };
+//! ```
+//!
 //! <details>
 //! <summary>Compile-only instruction examples</summary>
 //!
