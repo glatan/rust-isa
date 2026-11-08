@@ -20,6 +20,22 @@
 //! assert_eq!(unsafe { add(v, v) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! # Compile-time lane check
+//!
+//! ```compile_fail
+//! use rust_isa::arm::simd::neon::{vext, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vext::<16>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::arm::simd::neon::{vshr, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vshr::<17>(v) };
+//! ```
+//!
 //! <details>
 //! <summary>Compile-only instruction examples</summary>
 //!
