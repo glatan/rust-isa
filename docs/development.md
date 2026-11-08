@@ -46,7 +46,7 @@ make duplicates
 
 `make test` が既定で、`fmt-check`、`inventory-check`、`manifest-pilot-check`、`docs-check`、`docs-rustdoc-check`、`fixtures-check`、`check-mnemonics`、`check-docs`、`test-check-wasm-link`、`test-host`、`test-doc`、`test-wasip1`、`test-wasip1-wide-arithmetic` を実行する。すべてのテストはイメージ内で、対象 triple を明示して実行する。各テストの役割は [テストの役割](testing.md) にある。
 
-`make check` は SDE・QEMU を使わない静的検査で、`fmt-check`、`inventory-check`、`manifest-pilot-check`、`docs-check`、`fixtures-check`、`check-mnemonics`、`test-check-static`、`test-check-wasm-link` を実行する。反復中は `make check` と変更範囲の `test-<arch>` を使い、最後に `make test` を通す。
+`make check` は SDE・QEMU を使わない静的検査で、`fmt-check`、`inventory-check`、`manifest-pilot-check`、`docs-check`、`fixtures-check`、`check-mnemonics`、`test-check-static`、`test-check-wasm-link` を実行する。反復中は `make check` と変更範囲の `test-<arch>` を使い、最後に `make test` を通す。`check-docs` と `docs-rustdoc-check` の rustdoc ビルドは `make check` に含まない。
 
 `make test-debian` は Debian イメージで `make test` を実行し、native doctest を `DOC_TEST=run` で実行する。既定の Arch イメージでは、native doctest は `--no-run` のコンパイル確認だけを行う。
 
