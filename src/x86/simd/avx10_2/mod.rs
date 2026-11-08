@@ -9,8 +9,7 @@
 //! The values are [`V128`], [`V256`], and [`V512`]. The module covers the
 //! AVX10.2 `vminmax`, `vcomi`, `vcmp`, `vfpclass`, `vgetexp`, `vgetmant`,
 //! `vscalef`, `vrndscale`, `vreduce`, `vfixupimm`, `vrange`, `vrcp14`,
-//! `vrsqrt14`, and `vsqrt` forms that were previously listed as missing.
-//! Embedded rounding control is omitted.
+//! `vrsqrt14`, and `vsqrt` forms. Embedded rounding control is omitted.
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 //!

@@ -9,8 +9,8 @@
 //! The values are [`V128`], [`V256`], and [`V512`]. The module covers the
 //! integer, mask, permute, compress/expand, gather/scatter, conversion, reciprocal,
 //! square-root, FMA, VNNI, IFMA, population-count, leading-zero, and conflict
-//! instructions that were previously listed as missing. Embedded rounding
-//! control and the vector-length selection bits are omitted.
+//! instructions. Embedded rounding control and the vector-length selection
+//! bits are omitted.
 //!
 //! Instruction behavior follows the [Intel 64 and IA-32 Architectures Software Developer's Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
 //!
