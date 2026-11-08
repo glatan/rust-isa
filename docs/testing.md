@@ -112,4 +112,4 @@ SVE と RVV は操作単位の API を正とする。smoke test は全関数の�
 - Arch イメージの native doctest はコンパイルだけを確認する。実行は Debian イメージが担う。値テストは doctest の例を実行しない。
 - SVE と RVV のスライス API は、長さの不一致で panic する。panic 条件を検査するテストはない。
 - `docs/zero-cost.md` の `manual` 行は、測定結果を再実行しない。再現手順と理由だけを検査する。
-- x86 の任意 feature の値テストは、CPU が feature を持たない場合に `eprintln!("rust-isa-skip: ...")` して早期 return する。`make test` は SDE で実行するため、既定の経路では feature を有効にできる。SDE を使わない実行では `-- --nocapture` でスキップを確認する。表示がなければ命令を実行したことになる。
+- x86 の任意 feature の値テストは、CPU が feature を持たない場合に `eprintln!("rust-isa-skip: ...")` して早期 return する。`make test` は SDE で実行するため、既定の経路では feature を有効にできる。SDE を使わない実行では `make test-x86_64 CARGO_ARGS="-- --nocapture"` でスキップを確認する。表示がなければ命令を実行したことになる。
