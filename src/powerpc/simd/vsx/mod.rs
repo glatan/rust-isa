@@ -24,6 +24,16 @@
 //! assert_eq!(unsafe { abs_f64(value) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::powerpc::simd::altivec::V128;
+//! use rust_isa::powerpc::simd::vsx::vsldoi;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vsldoi::<16>(v, v) };
+//! ```
+//!
 //! <details>
 //! <summary>Instruction examples</summary>
 //!

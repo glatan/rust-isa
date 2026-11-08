@@ -11,6 +11,15 @@
 //!
 //! Instructions not listed in this module are not exposed.
 
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::powerpc::simd::altivec::{vsldoi, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vsldoi::<16>(v, v) };
+//! ```
+//!
 //! <details>
 //! <summary>Instruction examples</summary>
 //!

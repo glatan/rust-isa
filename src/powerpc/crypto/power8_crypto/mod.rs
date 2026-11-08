@@ -22,6 +22,24 @@
 //! assert_ne!(unsafe { vcipher(zero, zero) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::powerpc::crypto::power8_crypto::vshasigmaw;
+//! use rust_isa::powerpc::simd::altivec::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vshasigmaw::<2, 0>(v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::powerpc::crypto::power8_crypto::vshasigmad;
+//! use rust_isa::powerpc::simd::altivec::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vshasigmad::<2, 0>(v) };
+//! ```
+//!
 //! <details>
 //! <summary>Instruction examples</summary>
 //!
