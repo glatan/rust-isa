@@ -37,6 +37,16 @@
 //! assert_eq!(unsafe { vaddph(v, v) }.to_bytes(), [0; 64]);
 //! ```
 //!
+//! # Compile-time predicate check
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx512fp16::vcmpph;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v = V512::from_bytes([0; 64]);
+//! let _ = unsafe { vcmpph::<32>(v, v) };
+//! ```
+//!
 //! <details>
 //! <summary>Compile-only instruction examples</summary>
 //!
@@ -299,7 +309,7 @@ pub unsafe fn vminph(a: V512, b: V512) -> V512 {
 }
 
 /// `vcmpph`
-/// Compare the 32 binary16 lanes with the predicate in `IMM` and return the mask.
+/// Compare the 32 binary16 lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=31`.
 ///
 /// # Safety
 ///
@@ -307,6 +317,9 @@ pub unsafe fn vminph(a: V512, b: V512) -> V512 {
 #[target_feature(enable = "avx512fp16")]
 #[inline]
 pub unsafe fn vcmpph<const IMM: u8>(a: V512, b: V512) -> Mask32 {
+    const {
+        assert!(IMM <= 31, "vcmp predicate must be in 0..=31");
+    }
     let out: u32;
     unsafe {
         asm!(
