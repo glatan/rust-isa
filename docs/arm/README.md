@@ -58,7 +58,7 @@ family は命令の種類に合わせて決める（`simd`、`crypto`、`integer
   - 外す: `armv7-a`、`dsp`、`fp64`、`vfp2sp`、`vfp3sp`、`vfp3d16sp`、`read-tp-tpidruro`、`thumb-mode`
   - 足す: `v7`、`thumb2`
 - `-C target-feature=+neon` は不安定警告が出る。`#[target_feature]` は使えない。クレート全体を flag 付きでコンパイルする。
-- この feature 調整は clang の実装に依存する。build.rs に固定し、disassembly で確認する。
+- この feature 調整は clang の実装に依存する。LTO リンクがクラッシュするため `build.rs` には入れず、manual 測定の手順だけに残す。詳細は [ゼロコストの確認](../zero-cost.md) の `fixture 化できない測定` を見る。
 
 ## ツールチェーン
 
