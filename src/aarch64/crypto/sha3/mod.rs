@@ -24,6 +24,16 @@
 //! assert_eq!(unsafe { eor3(zero, zero, zero) }.to_bytes(), [0; 16]);
 //! ```
 //!
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::aarch64::crypto::sha3::xar;
+//! use rust_isa::aarch64::simd::neon::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { xar::<64>(v, v) };
+//! ```
+//!
 //! <details>
 //! <summary>Instruction examples</summary>
 //!

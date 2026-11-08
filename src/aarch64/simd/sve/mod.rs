@@ -43,6 +43,26 @@
 //! unsafe { add_f32(&[1.0, 2.0], &[3.0], &mut out) };
 //! ```
 //!
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::aarch64::simd::sve::addpl;
+//!
+//! let _ = unsafe { addpl::<32>(0) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::aarch64::simd::sve::addvl;
+//!
+//! let _ = unsafe { addvl::<32>(0) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::aarch64::simd::sve::rdvl;
+//!
+//! let _ = unsafe { rdvl::<32>() };
+//! ```
+//!
 //! <details>
 //! <summary>Compile-only instruction examples</summary>
 //!

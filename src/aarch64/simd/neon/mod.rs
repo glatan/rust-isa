@@ -38,6 +38,69 @@
 //! let _ = ext::<16>(v, v);
 //! ```
 //!
+//! ```compile_fail
+//! use rust_isa::aarch64::simd::neon::{replace_i32, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = replace_i32::<4>(v, 0);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::aarch64::simd::neon::{ins_i8, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = ins_i8::<16>(v, 0);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::aarch64::simd::neon::{ins_i16, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = ins_i16::<8>(v, 0);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::aarch64::simd::neon::{ins_i32, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = ins_i32::<4>(v, 0);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::aarch64::simd::neon::{ins_i64, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = ins_i64::<2>(v, 0);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::aarch64::simd::neon::{dup_i8, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = dup_i8::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::aarch64::simd::neon::{dup_i16, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = dup_i16::<8>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::aarch64::simd::neon::{dup_i32, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = dup_i32::<4>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::aarch64::simd::neon::{dup_i64, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = dup_i64::<2>(v);
+//! ```
+//!
 //! # Instruction examples
 //!
 //! ```
