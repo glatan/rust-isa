@@ -95,6 +95,7 @@ help:
 		'doctest-inventory-check      全公開命令の doctest 在庫を検査する' \
 		'test-gaps                    値テストから参照されていない公開関数を表示する' \
 		'immediates                   即値を取る公開関数と compile_fail の対応を表示する' \
+		'immediates-check             拒否可能な即値に compile_fail があるか検査する' \
 		'test-gaps-check              未参照の公開関数があれば失敗する' \
 		'zero-cost-check              ゼロコスト結果表の fixture と kernel を検査する' \
 		'docs-check                   文書間リンク・アンカー・索引・API対応表・makeターゲット名を検査する' \
@@ -144,8 +145,12 @@ doctest-coverage:
 doctest-inventory-check:
 	$(PODMAN_RUN) python3 tools/doctest_inventory.py --check
 
+.PHONY: immediates-check
+immediates-check:
+	$(PODMAN_RUN) python3 tools/immediates.py --check
+
 .PHONY: inventory-check
-inventory-check: zero-cost-check doctest-inventory-check test-gaps-check
+inventory-check: zero-cost-check doctest-inventory-check test-gaps-check immediates-check
 	$(PODMAN_RUN) python3 tools/inventory.py --check
 	$(PODMAN_RUN) python3 tools/doc_names.py --check
 
