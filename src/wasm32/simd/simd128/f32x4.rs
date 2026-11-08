@@ -1,6 +1,20 @@
 //! `f32x4.*` instructions.
 //!
 //! Rules shared by every SIMD128 instruction are documented on the [parent module](super).
+//!
+//! # Compile-time lane check
+//!
+//! ```compile_fail,E0080
+//! use rust_isa::wasm32::simd::simd128::{f32x4_extract_lane, f32x4_splat};
+//!
+//! let _ = f32x4_extract_lane::<4>(f32x4_splat(0.0));
+//! ```
+//!
+//! ```compile_fail,E0080
+//! use rust_isa::wasm32::simd::simd128::{f32x4_replace_lane, f32x4_splat};
+//!
+//! let _ = f32x4_replace_lane::<4>(f32x4_splat(0.0), 1.0);
+//! ```
 
 use super::V128;
 

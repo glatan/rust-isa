@@ -1,6 +1,26 @@
 //! `i16x8.*` instructions.
 //!
 //! Rules shared by every SIMD128 instruction are documented on the [parent module](super).
+//!
+//! # Compile-time lane check
+//!
+//! ```compile_fail,E0080
+//! use rust_isa::wasm32::simd::simd128::{i16x8_extract_lane_s, i16x8_splat};
+//!
+//! let _ = i16x8_extract_lane_s::<8>(i16x8_splat(0));
+//! ```
+//!
+//! ```compile_fail,E0080
+//! use rust_isa::wasm32::simd::simd128::{i16x8_extract_lane_u, i16x8_splat};
+//!
+//! let _ = i16x8_extract_lane_u::<8>(i16x8_splat(0));
+//! ```
+//!
+//! ```compile_fail,E0080
+//! use rust_isa::wasm32::simd::simd128::{i16x8_replace_lane, i16x8_splat};
+//!
+//! let _ = i16x8_replace_lane::<8>(i16x8_splat(0), 1);
+//! ```
 
 use super::V128;
 
