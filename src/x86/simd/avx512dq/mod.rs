@@ -27,6 +27,40 @@
 //! }
 //! ```
 //!
+//! # Compile-time predicate check
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx512dq::vcmpps;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v = V512::from_bytes([0; 64]);
+//! let _ = unsafe { vcmpps::<32>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx512dq::vcmppd;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v = V512::from_bytes([0; 64]);
+//! let _ = unsafe { vcmppd::<32>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx512dq::vcmpss;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vcmpss::<32>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx512dq::vcmpsd;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vcmpsd::<32>(v, v) };
+//! ```
+//!
 //! <details>
 //! <summary>Compile-only instruction examples</summary>
 //!
@@ -461,11 +495,14 @@ pub unsafe fn vxorps(a: V512, b: V512) -> V512 {
 ///
 /// # Safety
 ///
-/// The caller must enable AVX-512F, AVX-512DQ.
+/// The caller must enable AVX-512F, AVX-512DQ. `IMM` must be in `0..=31`.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512dq")]
 #[inline]
 pub unsafe fn vcmpps<const IMM: u8>(a: V512, b: V512) -> Mask16 {
+    const {
+        assert!(IMM <= 31, "vcmp predicate must be in 0..=31");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -491,11 +528,14 @@ pub unsafe fn vcmpps<const IMM: u8>(a: V512, b: V512) -> Mask16 {
 ///
 /// # Safety
 ///
-/// The caller must enable AVX-512F, AVX-512DQ.
+/// The caller must enable AVX-512F, AVX-512DQ. `IMM` must be in `0..=31`.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512dq")]
 #[inline]
 pub unsafe fn vcmppd<const IMM: u8>(a: V512, b: V512) -> Mask8 {
+    const {
+        assert!(IMM <= 31, "vcmp predicate must be in 0..=31");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -521,11 +561,14 @@ pub unsafe fn vcmppd<const IMM: u8>(a: V512, b: V512) -> Mask8 {
 ///
 /// # Safety
 ///
-/// The caller must enable AVX-512F, AVX-512DQ.
+/// The caller must enable AVX-512F, AVX-512DQ. `IMM` must be in `0..=31`.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512dq")]
 #[inline]
 pub unsafe fn vcmpss<const IMM: u8>(a: V128, b: V128) -> Mask1 {
+    const {
+        assert!(IMM <= 31, "vcmp predicate must be in 0..=31");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -551,11 +594,14 @@ pub unsafe fn vcmpss<const IMM: u8>(a: V128, b: V128) -> Mask1 {
 ///
 /// # Safety
 ///
-/// The caller must enable AVX-512F, AVX-512DQ.
+/// The caller must enable AVX-512F, AVX-512DQ. `IMM` must be in `0..=31`.
 #[target_feature(enable = "avx512f")]
 #[target_feature(enable = "avx512dq")]
 #[inline]
 pub unsafe fn vcmpsd<const IMM: u8>(a: V128, b: V128) -> Mask1 {
+    const {
+        assert!(IMM <= 31, "vcmp predicate must be in 0..=31");
+    }
     let out: u32;
     unsafe {
         asm!(
