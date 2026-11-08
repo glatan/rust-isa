@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn multiply_and_sum_of_differences() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(

@@ -7,6 +7,7 @@ use crate::simd::avx512::support::*;
 #[test]
 fn avx10_1_integer_and_float() {
     if !f_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     use rust_isa::x86::simd::avx10_1::{
@@ -83,6 +84,7 @@ fn avx10_1_integer_and_float() {
 #[test]
 fn avx10_1_compress_expand() {
     if !is_x86_feature_detected!("avx512vbmi2") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     use rust_isa::x86::simd::avx10_1::{

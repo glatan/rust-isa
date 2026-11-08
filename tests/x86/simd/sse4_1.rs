@@ -14,6 +14,7 @@ use super::support::*;
 #[test]
 fn sse41_integer_and_mask_operations() {
     if !is_x86_feature_detected!("sse4.1") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(
@@ -53,6 +54,7 @@ fn sse41_integer_and_mask_operations() {
 #[test]
 fn sse41_test_blend_and_pack() {
     if !is_x86_feature_detected!("sse4.1") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert!(unsafe { ptest(V128::from_bytes([0; 16]), V128::from_bytes([0xff; 16])) });
@@ -94,6 +96,7 @@ fn sse41_test_blend_and_pack() {
 #[test]
 fn sse41_minpos_and_extend() {
     if !is_x86_feature_detected!("sse4.1") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let input = u16x8([5, 1, 3, 9, 0, 7, 2, 8]);
@@ -119,6 +122,7 @@ fn sse41_minpos_and_extend() {
 #[test]
 fn sse41_immediate_operations() {
     if !is_x86_feature_detected!("sse4.1") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
 
@@ -181,6 +185,7 @@ fn sse41_immediate_operations() {
 #[test]
 fn sse41_signed_minmax_and_extend() {
     if !is_x86_feature_detected!("sse4.1") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
 
@@ -256,6 +261,7 @@ fn sse41_signed_minmax_and_extend() {
 #[test]
 fn sse41_insert_and_extract() {
     if !is_x86_feature_detected!("sse4.1") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let zero = V128::from_bytes([0; 16]);

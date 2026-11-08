@@ -64,6 +64,7 @@ fn sequential512(start: u8) -> V512 {
 #[test]
 fn aes_rounds() {
     if !aes_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let zero = V128::from_bytes([0; 16]);
@@ -111,6 +112,7 @@ fn aes_rounds() {
 #[test]
 fn sha_zero_schedule() {
     if !sha_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let zero = V128::from_bytes([0; 16]);
@@ -124,6 +126,7 @@ fn sha_zero_schedule() {
 #[test]
 fn sha_message_schedule_is_not_zero_for_nonzero_input() {
     if !sha_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = sequential(0);
@@ -143,6 +146,7 @@ fn sha_message_schedule_is_not_zero_for_nonzero_input() {
 #[test]
 fn gfni_multiply() {
     if !gfni_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = V128::from_bytes([2; 16]);
@@ -153,6 +157,7 @@ fn gfni_multiply() {
 #[test]
 fn carry_less_multiply() {
     if !clmul_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = quad(3);
@@ -171,6 +176,7 @@ fn carry_less_multiply() {
 #[test]
 fn vaes_rounds() {
     if !vaes_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let zero128 = V128::from_bytes([0; 16]);
@@ -196,6 +202,7 @@ fn vaes_rounds() {
 #[test]
 fn vaes_512_rounds() {
     if !vaes512_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let zero = V512::from_bytes([0; 64]);
@@ -233,6 +240,7 @@ fn vaes_512_rounds() {
 #[test]
 fn vpclmulqdq_lanes() {
     if !vpclmul_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut bytes = [0u8; 32];
@@ -275,6 +283,7 @@ fn vpclmulqdq_lanes() {
 #[test]
 fn sha_rounds() {
     if !sha_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = sequential(0);
@@ -306,6 +315,7 @@ fn sha_rounds() {
 #[test]
 fn gfni_affine_identity() {
     if !gfni_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let matrix = V128::from_bytes(core::array::from_fn(|index| 1u8 << (7 - (index % 8))));
@@ -332,6 +342,7 @@ fn gfni_affine_identity() {
 #[test]
 fn aes_key_schedule() {
     if !aes_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(
@@ -351,6 +362,7 @@ fn aes_key_schedule() {
 #[test]
 fn vaes_sub_bytes_and_last_rounds() {
     if !vaes_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let zero128 = V128::from_bytes([0; 16]);
@@ -418,6 +430,7 @@ fn vaes_sub_bytes_and_last_rounds() {
 #[test]
 fn sha512_message_schedule_and_rounds() {
     if !is_x86_feature_detected!("sha512") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     use rust_isa::x86::crypto::sha512::{vsha512msg1, vsha512msg2, vsha512rnds2};
@@ -469,6 +482,7 @@ fn sha512_message_schedule_and_rounds() {
 #[test]
 fn sm3_message_expansion_and_rounds() {
     if !is_x86_feature_detected!("sm3") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     use rust_isa::x86::crypto::sm3::{vsm3msg1, vsm3msg2, vsm3rnds2};
@@ -513,6 +527,7 @@ fn sm3_message_expansion_and_rounds() {
 #[test]
 fn sm4_key_schedule_and_rounds() {
     if !is_x86_feature_detected!("sm4") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     use rust_isa::x86::crypto::sm4::{vsm4key4, vsm4rnds4};
@@ -814,6 +829,7 @@ fn sm4_rnds4_ref(a: [u32; 4], b: [u32; 4]) -> [u32; 4] {
 #[test]
 fn sm4_instruction_reference() {
     if !is_x86_feature_detected!("sm4") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     use rust_isa::x86::crypto::sm4::{vsm4key4, vsm4rnds4};

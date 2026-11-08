@@ -5,6 +5,7 @@ use crate::simd::support::*;
 #[test]
 fn scalar_values() {
     if !is_x86_feature_detected!("avx") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = f32x4([1.0, 2.0, 3.0, 4.0]);

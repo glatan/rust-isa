@@ -6,6 +6,7 @@ use super::support::*;
 #[test]
 fn vnni() {
     if !vnni_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let acc = V512::from_bytes([0; 64]);
@@ -17,6 +18,7 @@ fn vnni() {
 #[test]
 fn vnni_additional_accumulate() {
     if !vnni_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let acc = V512::from_bytes([0; 64]);

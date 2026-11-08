@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn broadcast() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(unsafe { vpbroadcastb(0xab) }.to_bytes(), [0xab; 32]);

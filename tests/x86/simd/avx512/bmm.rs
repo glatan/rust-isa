@@ -26,6 +26,7 @@ fn avx512bmm_bitrevb_values() {
     use rust_isa::x86::simd::sse2::V128;
 
     if !available() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let bytes = [0x01, 0x02, 0x80, 0xff, 0x0f, 0xf0, 0x55, 0xaa];
@@ -57,6 +58,7 @@ fn avx512bmm_matrix_values() {
     use rust_isa::x86::simd::avx512f::V512;
 
     if !available() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let identity = identity16();

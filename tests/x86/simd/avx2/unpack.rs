@@ -8,6 +8,7 @@ use super::support::*;
 #[test]
 fn unpack_operations() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = V256::from_bytes(core::array::from_fn(|index| index as u8));

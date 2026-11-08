@@ -8,6 +8,7 @@ use crate::simd::avx512::support::*;
 #[test]
 fn avx_ne_convert_packed() {
     if !is_x86_feature_detected!("avxneconvert") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let even_bf16 = u16x16(core::array::from_fn(|index| {
@@ -26,6 +27,7 @@ fn avx_ne_convert_packed() {
 #[test]
 fn avx_ne_convert_broadcast() {
     if !is_x86_feature_detected!("avxneconvert") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(f32x8_lanes(unsafe { vbcstnebf162ps(0x3f80) }), [1.0; 8]);

@@ -8,6 +8,7 @@ struct Aligned([u8; 32]);
 #[test]
 fn non_temporal_stores() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let value = f32x8([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]);

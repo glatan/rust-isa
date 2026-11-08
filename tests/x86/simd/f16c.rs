@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn convert() {
     if !is_x86_feature_detected!("f16c") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let floats = f32x4([1.0, 0.5, -2.0, 3.0]);

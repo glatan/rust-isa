@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn bitwise_and() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = V256::from_bytes([0b1010_1010; 32]);
@@ -15,6 +16,7 @@ fn bitwise_and() {
 #[test]
 fn bitwise_or_and_xor() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = V256::from_bytes([0b1010_1010; 32]);

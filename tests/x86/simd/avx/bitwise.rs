@@ -4,6 +4,7 @@ use rust_isa::x86::simd::avx2::V256;
 #[test]
 fn bitwise_and_mask() {
     if !is_x86_feature_detected!("avx") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = V256::from_bytes([0b1010_1010; 32]);

@@ -10,6 +10,7 @@ use super::support::*;
 #[test]
 fn dq_integer_mullo() {
     if !dq_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(
@@ -21,6 +22,7 @@ fn dq_integer_mullo() {
 #[test]
 fn dq_float_and_convert() {
     if !dq_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = f64x8([1.0; 8]);
@@ -81,6 +83,7 @@ fn dq_float_and_convert() {
 #[test]
 fn dq_mask_conversions() {
     if !dq_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(

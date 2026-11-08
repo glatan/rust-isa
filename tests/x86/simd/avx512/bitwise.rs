@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn avx512f_bitwise() {
     if !f_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = V512::from_bytes([0xf0; 64]);

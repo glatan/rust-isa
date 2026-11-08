@@ -103,6 +103,7 @@ fn avx10_1_alias_values() {
         && is_x86_feature_detected!("avx512vbmi")
         && is_x86_feature_detected!("avx512vbmi2"))
     {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = f32x8([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]);
@@ -141,6 +142,7 @@ fn avx10_1_alias_values() {
 #[test]
 fn avx512vl_alias_values() {
     if !(f_enabled() && is_x86_feature_detected!("avx512vl")) {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     if is_x86_feature_detected!("avx512bw") {
@@ -185,6 +187,7 @@ fn avx512vl_alias_values() {
 #[test]
 fn avx10_1_permute_and_popcount_values() {
     if !(f_enabled() && is_x86_feature_detected!("avx512vl")) {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     if is_x86_feature_detected!("avx512bw") {
@@ -207,6 +210,7 @@ fn avx10_1_permute_and_popcount_values() {
 #[test]
 fn avx512vl_mask_and_ternlog_values() {
     if !(f_enabled() && is_x86_feature_detected!("avx512vl")) {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let all = V128::from_bytes([0xff; 16]);
@@ -268,6 +272,7 @@ fn avx512vl_mask_and_ternlog_values() {
 #[test]
 fn avx10_2_math_values() {
     if !(avx10_2_available() && f_enabled() && is_x86_feature_detected!("avx512dq")) {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(

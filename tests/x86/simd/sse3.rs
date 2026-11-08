@@ -7,6 +7,7 @@ use super::support::*;
 #[test]
 fn sse3_addsub_and_horizontal() {
     if !is_x86_feature_detected!("sse3") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = f32x4([1.0, 2.0, 3.0, 4.0]);
@@ -34,6 +35,7 @@ fn sse3_addsub_and_horizontal() {
 #[test]
 fn sse3_lddqu_loads_unaligned() {
     if !is_x86_feature_detected!("sse3") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let memory = [1u8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];

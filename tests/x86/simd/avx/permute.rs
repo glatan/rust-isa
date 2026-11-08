@@ -7,6 +7,7 @@ use super::support::*;
 #[test]
 fn lane_insert_extract_and_permute() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = i32x8([1, 2, 3, 4, 5, 6, 7, 8]);

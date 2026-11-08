@@ -52,6 +52,7 @@ fn request_amx_tile_data_permission() -> bool {
 #[test]
 fn amx_api_is_gated() {
     if !amx_tile_available() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     use rust_isa::x86::matrix::amx_tile::{
@@ -160,6 +161,7 @@ fn amx_complex_available() -> bool {
 #[test]
 fn amx_int8_ones_accumulate() {
     if !amx_tile_available() || !amx_int8_available() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     use rust_isa::x86::matrix::amx_int8::tdpbssd;
@@ -190,6 +192,7 @@ fn amx_int8_ones_accumulate() {
 #[test]
 fn amx_int8_mixed_ones_accumulate() {
     if !amx_tile_available() || !amx_int8_available() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     use rust_isa::x86::matrix::amx_int8::{tdpbsud, tdpbuud};
@@ -234,6 +237,7 @@ fn amx_int8_mixed_ones_accumulate() {
 #[test]
 fn amx_bf16_ones_accumulate() {
     if !amx_tile_available() || !amx_bf16_available() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     use rust_isa::x86::matrix::amx_bf16::tdpbf16ps;
@@ -265,6 +269,7 @@ fn amx_bf16_ones_accumulate() {
 #[test]
 fn amx_fp16_ones_accumulate() {
     if !amx_tile_available() || !amx_fp16_available() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     use rust_isa::x86::matrix::amx_fp16::tdpfp16ps;
@@ -296,6 +301,7 @@ fn amx_fp16_ones_accumulate() {
 #[test]
 fn amx_fp8_ones_accumulate() {
     if !amx_tile_available() || !amx_fp8_available() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     use rust_isa::x86::matrix::amx_fp8::{tdpbf8ps, tdpbhf8ps, tdphbf8ps, tdphf8ps};
@@ -343,6 +349,7 @@ fn amx_fp8_ones_accumulate() {
 #[test]
 fn amx_complex_values_accumulate() {
     if !amx_tile_available() || !amx_complex_available() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     use rust_isa::x86::matrix::amx_complex::{tcmmimfp16ps, tcmmrlfp16ps};

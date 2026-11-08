@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn variable_shifts() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(
@@ -37,6 +38,7 @@ fn variable_shifts() {
 #[test]
 fn immediate_shifts() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(

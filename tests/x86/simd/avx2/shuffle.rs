@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn shuffle_and_broadcast() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let source = V256::from_bytes(core::array::from_fn::<u8, 32, _>(|index| index as u8));

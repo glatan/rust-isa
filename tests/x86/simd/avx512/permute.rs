@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn avx512f_permute_and_shuffle() {
     if !f_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(i64_lanes(unsafe { vpbroadcastq(9) }), [9; 8]);

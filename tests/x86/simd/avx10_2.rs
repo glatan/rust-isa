@@ -51,6 +51,7 @@ fn f32x8_lanes(value: V256) -> [f32; 8] {
 #[test]
 fn avx10_2_compare_values() {
     if !avx10_2_available() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
 
@@ -74,6 +75,7 @@ fn avx10_2_compare_values() {
 #[test]
 fn avx10_2_minmax_values() {
     if !avx10_2_available() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
 

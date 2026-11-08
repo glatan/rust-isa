@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn movemask() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut bytes = [0u8; 32];

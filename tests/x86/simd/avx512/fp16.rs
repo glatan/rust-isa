@@ -10,6 +10,7 @@ use super::support::*;
 #[test]
 fn avx512fp16_arithmetic() {
     if !is_x86_feature_detected!("avx512fp16") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut one = [0u8; 64];
@@ -42,6 +43,7 @@ fn avx512fp16_arithmetic() {
 #[test]
 fn fp16_extended_operations() {
     if !fp16_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let four = f16x32(0x4400);

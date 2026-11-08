@@ -7,6 +7,7 @@ use super::support::*;
 #[test]
 fn bw_byte_arithmetic() {
     if !bw_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let bytes = V512::from_bytes([250; 64]);
@@ -19,6 +20,7 @@ fn bw_byte_arithmetic() {
 #[test]
 fn bw_word_arithmetic() {
     if !bw_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(
@@ -34,6 +36,7 @@ fn bw_word_arithmetic() {
 #[test]
 fn bw_extended_operations() {
     if !bw_enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     assert_eq!(

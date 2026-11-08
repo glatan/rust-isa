@@ -5,6 +5,7 @@ use super::support::*;
 #[test]
 fn horizontal() {
     if !enabled() {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = i16x16(core::array::from_fn(|lane| lane as i16 + 1));

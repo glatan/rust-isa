@@ -6,6 +6,7 @@ use rust_isa::x86::simd::sse4_2::{
 #[test]
 fn sse42_compare_and_crc32() {
     if !is_x86_feature_detected!("sse4.2") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let a = V128::from_bytes([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x80]);
@@ -24,6 +25,7 @@ fn sse42_compare_and_crc32() {
 #[test]
 fn sse42_string_comparisons() {
     if !is_x86_feature_detected!("sse4.2") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let mut needle = [0u8; 16];
@@ -48,6 +50,7 @@ fn sse42_string_comparisons() {
 #[test]
 fn crc32_widths_match_reference() {
     if !is_x86_feature_detected!("sse4.2") {
+        eprintln!("rust-isa-skip: CPU lacks required feature");
         return;
     }
     let crc = 0xffff_ffffu32;
