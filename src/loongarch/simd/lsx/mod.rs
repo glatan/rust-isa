@@ -595,6 +595,243 @@
 //!
 
 //!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vstelm_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//! let _ = unsafe { vstelm_b::<16>(v, storage.0.as_mut_ptr(), 0) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vreplvei_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vreplvei_b::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vinsgr2vr_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vinsgr2vr_b::<16>(v, 1);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vpickve2gr_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vpickve2gr_b::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vpickve2gr_bu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vpickve2gr_bu::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vstelm_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//! let _ = unsafe { vstelm_h::<8>(v, storage.0.as_mut_ptr(), 0) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vreplvei_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vreplvei_h::<8>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vinsgr2vr_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vinsgr2vr_h::<8>(v, 1);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vpickve2gr_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vpickve2gr_h::<8>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vpickve2gr_hu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vpickve2gr_hu::<8>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vstelm_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//! let _ = unsafe { vstelm_w::<4>(v, storage.0.as_mut_ptr(), 0) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vreplvei_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vreplvei_w::<4>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vinsgr2vr_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vinsgr2vr_w::<4>(v, 1);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vpickve2gr_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vpickve2gr_w::<4>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vpickve2gr_wu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vpickve2gr_wu::<4>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vstelm_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! #[repr(align(64))]
+//! struct Aligned([u8; 4096]);
+//! let mut storage = Aligned([0; 4096]);
+//! let _ = unsafe { vstelm_d::<2>(v, storage.0.as_mut_ptr(), 0) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vreplvei_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vreplvei_d::<2>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vinsgr2vr_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vinsgr2vr_d::<2>(v, 1i64);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vpickve2gr_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vpickve2gr_d::<2>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vpickve2gr_du, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vpickve2gr_du::<2>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vfrstpi_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vfrstpi_b::<32>(v, v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vfrstpi_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vfrstpi_h::<32>(v, v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vssrarn_w_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vssrarn_w_d::<64>(v, v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vssrarn_wu_du, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vssrarn_wu_du::<64>(v, v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vfcmp, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vfcmp::<18>(v, v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vfcmp_d, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vfcmp_d::<18>(v, v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsllwil_h_b, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsllwil_h_b::<8>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsllwil_hu_bu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsllwil_hu_bu::<8>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsllwil_w_h, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsllwil_w_h::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsllwil_wu_hu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsllwil_wu_hu::<16>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsllwil_d_w, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsllwil_d_w::<32>(v);
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::loongarch::simd::lsx::{vsllwil_du_wu, V128};
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = vsllwil_du_wu::<32>(v);
+//! ```
+//!
+//!
 //! # Instruction examples
 //!
 //! ```
