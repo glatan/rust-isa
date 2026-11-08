@@ -1,4 +1,29 @@
 //! Immediate compare instructions.
+//!
+//! # Compile-time predicate check
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx::{vcmppd, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vcmppd::<32>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx::vcmpss;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vcmpss::<32>(v, v) };
+//! ```
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx::vcmpsd;
+//! use rust_isa::x86::simd::sse2::V128;
+//!
+//! let v = V128::from_bytes([0; 16]);
+//! let _ = unsafe { vcmpsd::<32>(v, v) };
+//! ```
 
 use super::V128;
 use super::V256;

@@ -1,4 +1,13 @@
 //! Sum of absolute differences instructions.
+//!
+//! # Compile-time immediate check
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx::{vmpsadbw, V256};
+//!
+//! let v = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vmpsadbw::<8>(v, v) };
+//! ```
 
 use super::V256;
 use crate::x86::simd::sse2::V128;
