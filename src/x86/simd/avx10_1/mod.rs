@@ -71,6 +71,150 @@
 //! let _ = unsafe { vcmppd_v512::<32>(v, v) };
 //! ```
 //!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_1::vpcmpb_v256;
+//! use rust_isa::x86::simd::avx::V256;
+//!
+//! let v256 = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vpcmpb_v256::<8>(v256, v256) };
+//! ```
+//!
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_1::vpcmpb_v512;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v512 = V512::from_bytes([0; 64]);
+//! let _ = unsafe { vpcmpb_v512::<8>(v512, v512) };
+//! ```
+//!
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_1::vpcmpub_v256;
+//! use rust_isa::x86::simd::avx::V256;
+//!
+//! let v256 = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vpcmpub_v256::<8>(v256, v256) };
+//! ```
+//!
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_1::vpcmpub_v512;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v512 = V512::from_bytes([0; 64]);
+//! let _ = unsafe { vpcmpub_v512::<8>(v512, v512) };
+//! ```
+//!
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_1::vpcmpw_v256;
+//! use rust_isa::x86::simd::avx::V256;
+//!
+//! let v256 = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vpcmpw_v256::<8>(v256, v256) };
+//! ```
+//!
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_1::vpcmpw_v512;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v512 = V512::from_bytes([0; 64]);
+//! let _ = unsafe { vpcmpw_v512::<8>(v512, v512) };
+//! ```
+//!
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_1::vpcmpuw_v256;
+//! use rust_isa::x86::simd::avx::V256;
+//!
+//! let v256 = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vpcmpuw_v256::<8>(v256, v256) };
+//! ```
+//!
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_1::vpcmpuw_v512;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v512 = V512::from_bytes([0; 64]);
+//! let _ = unsafe { vpcmpuw_v512::<8>(v512, v512) };
+//! ```
+//!
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_1::vpcmpd_v256;
+//! use rust_isa::x86::simd::avx::V256;
+//!
+//! let v256 = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vpcmpd_v256::<8>(v256, v256) };
+//! ```
+//!
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_1::vpcmpd_v512;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v512 = V512::from_bytes([0; 64]);
+//! let _ = unsafe { vpcmpd_v512::<8>(v512, v512) };
+//! ```
+//!
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_1::vpcmpud_v256;
+//! use rust_isa::x86::simd::avx::V256;
+//!
+//! let v256 = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vpcmpud_v256::<8>(v256, v256) };
+//! ```
+//!
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_1::vpcmpud_v512;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v512 = V512::from_bytes([0; 64]);
+//! let _ = unsafe { vpcmpud_v512::<8>(v512, v512) };
+//! ```
+//!
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_1::vpcmpq_v256;
+//! use rust_isa::x86::simd::avx::V256;
+//!
+//! let v256 = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vpcmpq_v256::<8>(v256, v256) };
+//! ```
+//!
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_1::vpcmpq_v512;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v512 = V512::from_bytes([0; 64]);
+//! let _ = unsafe { vpcmpq_v512::<8>(v512, v512) };
+//! ```
+//!
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_1::vpcmpuq_v256;
+//! use rust_isa::x86::simd::avx::V256;
+//!
+//! let v256 = V256::from_bytes([0; 32]);
+//! let _ = unsafe { vpcmpuq_v256::<8>(v256, v256) };
+//! ```
+//!
+//!
+//! ```compile_fail
+//! use rust_isa::x86::simd::avx10_1::vpcmpuq_v512;
+//! use rust_isa::x86::simd::avx512f::V512;
+//!
+//! let v512 = V512::from_bytes([0; 64]);
+//! let _ = unsafe { vpcmpuq_v512::<8>(v512, v512) };
+//! ```
+//!
+//!
 //! <details>
 //! <summary>Compile-only instruction examples</summary>
 //!
@@ -1649,13 +1793,16 @@ pub unsafe fn vpxorq_v512(a: V512, b: V512) -> V512 {
 }
 
 /// `vpcmpb_v256`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vpcmpb_v256<const IMM: u8>(a: V256, b: V256) -> Mask32 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -1677,7 +1824,7 @@ pub unsafe fn vpcmpb_v256<const IMM: u8>(a: V256, b: V256) -> Mask32 {
 }
 
 /// `vpcmpb_v512`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
@@ -1685,6 +1832,9 @@ pub unsafe fn vpcmpb_v256<const IMM: u8>(a: V256, b: V256) -> Mask32 {
 #[inline]
 #[cfg(target_arch = "x86_64")]
 pub unsafe fn vpcmpb_v512<const IMM: u8>(a: V512, b: V512) -> Mask64 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u64;
     unsafe {
         asm!(
@@ -1706,13 +1856,16 @@ pub unsafe fn vpcmpb_v512<const IMM: u8>(a: V512, b: V512) -> Mask64 {
 }
 
 /// `vpcmpub_v256`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vpcmpub_v256<const IMM: u8>(a: V256, b: V256) -> Mask32 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -1734,7 +1887,7 @@ pub unsafe fn vpcmpub_v256<const IMM: u8>(a: V256, b: V256) -> Mask32 {
 }
 
 /// `vpcmpub_v512`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
@@ -1742,6 +1895,9 @@ pub unsafe fn vpcmpub_v256<const IMM: u8>(a: V256, b: V256) -> Mask32 {
 #[inline]
 #[cfg(target_arch = "x86_64")]
 pub unsafe fn vpcmpub_v512<const IMM: u8>(a: V512, b: V512) -> Mask64 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u64;
     unsafe {
         asm!(
@@ -1763,13 +1919,16 @@ pub unsafe fn vpcmpub_v512<const IMM: u8>(a: V512, b: V512) -> Mask64 {
 }
 
 /// `vpcmpw_v256`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vpcmpw_v256<const IMM: u8>(a: V256, b: V256) -> Mask16 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -1791,13 +1950,16 @@ pub unsafe fn vpcmpw_v256<const IMM: u8>(a: V256, b: V256) -> Mask16 {
 }
 
 /// `vpcmpw_v512`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vpcmpw_v512<const IMM: u8>(a: V512, b: V512) -> Mask32 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -1819,13 +1981,16 @@ pub unsafe fn vpcmpw_v512<const IMM: u8>(a: V512, b: V512) -> Mask32 {
 }
 
 /// `vpcmpuw_v256`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vpcmpuw_v256<const IMM: u8>(a: V256, b: V256) -> Mask16 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -1847,13 +2012,16 @@ pub unsafe fn vpcmpuw_v256<const IMM: u8>(a: V256, b: V256) -> Mask16 {
 }
 
 /// `vpcmpuw_v512`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vpcmpuw_v512<const IMM: u8>(a: V512, b: V512) -> Mask32 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -1875,13 +2043,16 @@ pub unsafe fn vpcmpuw_v512<const IMM: u8>(a: V512, b: V512) -> Mask32 {
 }
 
 /// `vpcmpd_v256`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vpcmpd_v256<const IMM: u8>(a: V256, b: V256) -> Mask8 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -1903,13 +2074,16 @@ pub unsafe fn vpcmpd_v256<const IMM: u8>(a: V256, b: V256) -> Mask8 {
 }
 
 /// `vpcmpd_v512`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vpcmpd_v512<const IMM: u8>(a: V512, b: V512) -> Mask16 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -1931,13 +2105,16 @@ pub unsafe fn vpcmpd_v512<const IMM: u8>(a: V512, b: V512) -> Mask16 {
 }
 
 /// `vpcmpud_v256`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vpcmpud_v256<const IMM: u8>(a: V256, b: V256) -> Mask8 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -1959,13 +2136,16 @@ pub unsafe fn vpcmpud_v256<const IMM: u8>(a: V256, b: V256) -> Mask8 {
 }
 
 /// `vpcmpud_v512`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vpcmpud_v512<const IMM: u8>(a: V512, b: V512) -> Mask16 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -1987,13 +2167,16 @@ pub unsafe fn vpcmpud_v512<const IMM: u8>(a: V512, b: V512) -> Mask16 {
 }
 
 /// `vpcmpq_v256`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vpcmpq_v256<const IMM: u8>(a: V256, b: V256) -> Mask4 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -2015,13 +2198,16 @@ pub unsafe fn vpcmpq_v256<const IMM: u8>(a: V256, b: V256) -> Mask4 {
 }
 
 /// `vpcmpq_v512`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vpcmpq_v512<const IMM: u8>(a: V512, b: V512) -> Mask8 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -2043,13 +2229,16 @@ pub unsafe fn vpcmpq_v512<const IMM: u8>(a: V512, b: V512) -> Mask8 {
 }
 
 /// `vpcmpuq_v256`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vpcmpuq_v256<const IMM: u8>(a: V256, b: V256) -> Mask4 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u32;
     unsafe {
         asm!(
@@ -2071,13 +2260,16 @@ pub unsafe fn vpcmpuq_v256<const IMM: u8>(a: V256, b: V256) -> Mask4 {
 }
 
 /// `vpcmpuq_v512`
-/// Compare the lanes with the predicate in `IMM` and return the mask.
+/// Compare the lanes with the predicate in `IMM` and return the mask. `IMM` must be in `0..=7`.
 ///
 /// # Safety
 ///
 /// The caller must compile with AVX10.1 enabled and the CPU must support it.
 #[inline]
 pub unsafe fn vpcmpuq_v512<const IMM: u8>(a: V512, b: V512) -> Mask8 {
+    const {
+        assert!(IMM <= 7, "vpcmp predicate must be in 0..=7");
+    }
     let out: u32;
     unsafe {
         asm!(
