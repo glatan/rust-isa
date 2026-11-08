@@ -112,6 +112,6 @@ SVE と RVV は操作単位の API を正とする。smoke test は全関数の�
 - native arch の即値の範囲外は、拒否可能な extension を `compile_fail` doctest で自動検査する。在庫と検査は `make immediates` と `make immediates-check` を見る。全範囲・全値の網羅ではない。
 - instruction inventory は公開パスの import だけを検査する。命令の実行とリンクは値テストが担う。
 - Arch イメージの native doctest はコンパイルだけを確認する。実行は Debian イメージが担う。値テストは doctest の例を実行しない。
-- SVE と RVV のスライス API は、長さの不一致で panic する。代表例は `should_panic` doctest で検査する。全関数の引数組合せは検査しない。
+- SVE と RVV のスライス API は、長さの不一致で panic する。代表例は `should_panic` doctest で実行し、全関数の長さ検査の有無は `check_slice_panic_contracts` で検査する。引数組合せごとの実行は行わない。
 - `docs/zero-cost.md` の `manual` 行は、測定結果を再実行しない。再現手順と理由だけを検査する。
 - x86 の任意 feature の値テストは、CPU が feature を持たない場合に `eprintln!("rust-isa-skip: ...")` して早期 return する。`make test` は SDE で実行するため、既定の経路では feature を有効にできる。SDE を使わない実行では `make test-x86_64 CARGO_ARGS="-- --nocapture"` でスキップを確認する。表示がなければ命令を実行したことになる。
