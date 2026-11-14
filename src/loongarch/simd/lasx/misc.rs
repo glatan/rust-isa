@@ -538,7 +538,7 @@ pub unsafe fn xvpermi_q<const IMM: u8>(a: V256, b: V256) -> V256 {
     let right = b.to_bytes();
     let mut out = [0u8; 32];
     for (lane, chunk) in out.as_chunks_mut::<16>().0.iter_mut().enumerate() {
-        let field = (IMM >> (2 * lane)) & 3;
+        let field = (IMM >> (4 * lane)) & 3;
         let source = if field & 2 != 0 { &left } else { &right };
         let index = (field & 1) as usize;
         chunk.copy_from_slice(&source[index * 16..index * 16 + 16]);
