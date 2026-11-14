@@ -16,9 +16,8 @@ macro_rules! binary_mask {
         pub unsafe fn $name(a: &[u32], b: &[u32], out: &mut [u32]) {
             assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
             assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-            for lane in 0..a.len() {
-                out[lane] = a[lane] $op b[lane];
-            }
+            for ((out_elem, a_elem), b_elem) in out.iter_mut().zip(a.iter()).zip(b.iter()) {
+                *out_elem = *a_elem $op *b_elem;}
         }
     };
 }
@@ -45,9 +44,8 @@ macro_rules! binary_mask_not {
         pub unsafe fn $name(a: &[u32], b: &[u32], out: &mut [u32]) {
             assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
             assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-            for lane in 0..a.len() {
-                out[lane] = a[lane] $op !b[lane];
-            }
+            for ((out_elem, a_elem), b_elem) in out.iter_mut().zip(a.iter()).zip(b.iter()) {
+                *out_elem = *a_elem $op !*b_elem;}
         }
     };
 }
@@ -90,19 +88,18 @@ macro_rules! break_mask {
         pub unsafe fn $name(a: &[u32], out: &mut [u32]) {
             assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
             let mut stopped = false;
-            for lane in 0..a.len() {
+            for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
                 if stopped {
-                    out[lane] = 0;
+                    *out_elem = 0;
                 } else if $include_first {
-                    out[lane] = u32::MAX;
-                    stopped = a[lane] != 0;
-                } else if a[lane] != 0 {
-                    out[lane] = 0;
+                    *out_elem = u32::MAX;
+                    stopped = *a_elem != 0;
+                } else if *a_elem != 0 {
+                    *out_elem = 0;
                     stopped = true;
                 } else {
-                    out[lane] = u32::MAX;
-                }
-            }
+                    *out_elem = u32::MAX;
+                }}
         }
     };
 }
@@ -145,25 +142,24 @@ macro_rules! break_binary {
             assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
             assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
             let mut seen = false;
-            for lane in 0..a.len() {
+            for ((out_elem, a_elem), b_elem) in out.iter_mut().zip(a.iter()).zip(b.iter()) {
                 match $kind {
                     "brkn" => {
-                        out[lane] = if seen { u32::MAX } else { 0 };
-                        seen |= a[lane] != 0;
-                        if b[lane] != 0 {
+                        *out_elem = if seen { u32::MAX } else { 0 };
+                        seen |= *a_elem != 0;
+                        if *b_elem != 0 {
                             seen = false;
                         }
                     }
                     "brkpa" => {
-                        seen |= a[lane] != 0 || b[lane] != 0;
-                        out[lane] = if seen { u32::MAX } else { 0 };
+                        seen |= *a_elem != 0 || *b_elem != 0;
+                        *out_elem = if seen { u32::MAX } else { 0 };
                     }
                     _ => {
-                        seen |= a[lane] != 0 && b[lane] == 0;
-                        out[lane] = if seen { u32::MAX } else { 0 };
+                        seen |= *a_elem != 0 && *b_elem == 0;
+                        *out_elem = if seen { u32::MAX } else { 0 };
                     }
-                }
-            }
+                }}
         }
     };
 }
@@ -213,8 +209,8 @@ break_binary!(
 pub unsafe fn nands(a: &[u32], b: &[u32], out: &mut [u32]) {
     assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..a.len() {
-        out[lane] = !(a[lane] & b[lane]);
+    for ((out_elem, a_elem), b_elem) in out.iter_mut().zip(a.iter()).zip(b.iter()) {
+        *out_elem = !(*a_elem & *b_elem);
     }
 }
 
@@ -232,8 +228,8 @@ pub unsafe fn nands(a: &[u32], b: &[u32], out: &mut [u32]) {
 pub unsafe fn nors(a: &[u32], b: &[u32], out: &mut [u32]) {
     assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..a.len() {
-        out[lane] = !(a[lane] | b[lane]);
+    for ((out_elem, a_elem), b_elem) in out.iter_mut().zip(a.iter()).zip(b.iter()) {
+        *out_elem = !(*a_elem | *b_elem);
     }
 }
 
@@ -251,8 +247,8 @@ pub unsafe fn nors(a: &[u32], b: &[u32], out: &mut [u32]) {
 pub unsafe fn orns(a: &[u32], b: &[u32], out: &mut [u32]) {
     assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..a.len() {
-        out[lane] = a[lane] | !b[lane];
+    for ((out_elem, a_elem), b_elem) in out.iter_mut().zip(a.iter()).zip(b.iter()) {
+        *out_elem = *a_elem | !*b_elem;
     }
 }
 
@@ -269,8 +265,8 @@ pub unsafe fn orns(a: &[u32], b: &[u32], out: &mut [u32]) {
 #[inline]
 pub unsafe fn nots(a: &[u32], out: &mut [u32]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..a.len() {
-        out[lane] = !a[lane];
+    for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
+        *out_elem = !*a_elem;
     }
 }
 
@@ -289,7 +285,9 @@ pub unsafe fn nbsl(a: &[u32], b: &[u32], c: &[u32], out: &mut [u32]) {
     assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
     assert_eq!(a.len(), c.len(), "SVE slices must have the same length");
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..a.len() {
-        out[lane] = !((a[lane] & !b[lane]) | (c[lane] & b[lane]));
+    for (((out_elem, a_elem), b_elem), c_elem) in
+        out.iter_mut().zip(a.iter()).zip(b.iter()).zip(c.iter())
+    {
+        *out_elem = !((*a_elem & !*b_elem) | (*c_elem & *b_elem));
     }
 }

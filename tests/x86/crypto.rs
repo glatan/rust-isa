@@ -229,11 +229,11 @@ fn vaes_512_rounds() {
     ];
     let out = unsafe { vaesenc_v512(a, b) }.to_bytes();
     for lane in 0..4 {
-        assert_eq!(&out[lane * 16..lane * 16 + 16], &expected_enc);
+        assert_eq!(out[lane * 16..].first_chunk().unwrap(), &expected_enc);
     }
     let out = unsafe { vaesdec_v512(a, b) }.to_bytes();
     for lane in 0..4 {
-        assert_eq!(&out[lane * 16..lane * 16 + 16], &expected_dec);
+        assert_eq!(out[lane * 16..].first_chunk().unwrap(), &expected_dec);
     }
 }
 
@@ -244,37 +244,37 @@ fn vpclmulqdq_lanes() {
         return;
     }
     let mut bytes = [0u8; 32];
-    for lane in 0..2 {
-        bytes[lane * 16..lane * 16 + 8].copy_from_slice(&3u64.to_le_bytes());
+    for chunk in bytes.as_chunks_mut::<16>().0.iter_mut() {
+        chunk[..8].copy_from_slice(&3u64.to_le_bytes());
     }
     let a = V256::from_bytes(bytes);
     let mut bytes = [0u8; 32];
-    for lane in 0..2 {
-        bytes[lane * 16..lane * 16 + 8].copy_from_slice(&5u64.to_le_bytes());
+    for chunk in bytes.as_chunks_mut::<16>().0.iter_mut() {
+        chunk[..8].copy_from_slice(&5u64.to_le_bytes());
     }
     let b = V256::from_bytes(bytes);
     let out = unsafe { vpclmulqdq_v256(a, b, 0) }.to_bytes();
     for lane in 0..2 {
         assert_eq!(
-            u128::from_le_bytes(out[lane * 16..lane * 16 + 16].try_into().unwrap()),
+            u128::from_le_bytes(*out[lane * 16..].first_chunk().unwrap()),
             15
         );
     }
 
     let mut bytes = [0u8; 64];
-    for lane in 0..4 {
-        bytes[lane * 16..lane * 16 + 8].copy_from_slice(&3u64.to_le_bytes());
+    for chunk in bytes.as_chunks_mut::<16>().0.iter_mut() {
+        chunk[..8].copy_from_slice(&3u64.to_le_bytes());
     }
     let a = V512::from_bytes(bytes);
     let mut bytes = [0u8; 64];
-    for lane in 0..4 {
-        bytes[lane * 16..lane * 16 + 8].copy_from_slice(&5u64.to_le_bytes());
+    for chunk in bytes.as_chunks_mut::<16>().0.iter_mut() {
+        chunk[..8].copy_from_slice(&5u64.to_le_bytes());
     }
     let b = V512::from_bytes(bytes);
     let out = unsafe { vpclmulqdq_v512(a, b, 0) }.to_bytes();
     for lane in 0..4 {
         assert_eq!(
-            u128::from_le_bytes(out[lane * 16..lane * 16 + 16].try_into().unwrap()),
+            u128::from_le_bytes(*out[lane * 16..].first_chunk().unwrap()),
             15
         );
     }
@@ -536,7 +536,7 @@ fn sm4_key_schedule_and_rounds() {
     let mk = [0x0123_4567, 0x89ab_cdef, 0xfedc_ba98, 0x7654_3210];
     let fk = [0xa3b1_bac6, 0x56aa_3350, 0x677d_9197, 0xb270_22dc];
     let mut k = [mk[0] ^ fk[0], mk[1] ^ fk[1], mk[2] ^ fk[2], mk[3] ^ fk[3]];
-    for round in 0..8 {
+    for (round, chunk) in rk.as_chunks_mut::<4>().0.iter_mut().enumerate() {
         let ck = [
             sm4_ck(round * 4),
             sm4_ck(round * 4 + 1),
@@ -544,7 +544,7 @@ fn sm4_key_schedule_and_rounds() {
             sm4_ck(round * 4 + 3),
         ];
         let out = v128_to_u32x4(unsafe { vsm4key4(u32x4_to_v128(ck), u32x4_to_v128(k)) });
-        rk[round * 4..round * 4 + 4].copy_from_slice(&out);
+        chunk.copy_from_slice(&out);
         k = out;
     }
 
@@ -564,40 +564,38 @@ fn sm4_key_schedule_and_rounds() {
 
 fn u32x4_to_v128(values: [u32; 4]) -> V128 {
     let mut bytes = [0u8; 16];
-    for (lane, value) in values.iter().enumerate() {
-        bytes[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+    for (chunk, value) in bytes.as_chunks_mut::<4>().0.iter_mut().zip(values) {
+        *chunk = value.to_le_bytes();
     }
     V128::from_bytes(bytes)
 }
 
 fn v128_to_u32x4(value: V128) -> [u32; 4] {
     let bytes = value.to_bytes();
-    core::array::from_fn(|lane| {
-        u32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap())
-    })
+    let mut lanes = bytes.as_chunks::<4>().0.iter();
+    core::array::from_fn(|_| u32::from_le_bytes(*lanes.next().unwrap()))
 }
 
 fn u64x2_to_v128(values: [u64; 2]) -> V128 {
     let mut bytes = [0u8; 16];
-    for (lane, value) in values.iter().enumerate() {
-        bytes[lane * 8..lane * 8 + 8].copy_from_slice(&value.to_le_bytes());
+    for (chunk, value) in bytes.as_chunks_mut::<8>().0.iter_mut().zip(values) {
+        *chunk = value.to_le_bytes();
     }
     V128::from_bytes(bytes)
 }
 
 fn u64x4_to_v256(values: [u64; 4]) -> V256 {
     let mut bytes = [0u8; 32];
-    for (lane, value) in values.iter().enumerate() {
-        bytes[lane * 8..lane * 8 + 8].copy_from_slice(&value.to_le_bytes());
+    for (chunk, value) in bytes.as_chunks_mut::<8>().0.iter_mut().zip(values) {
+        *chunk = value.to_le_bytes();
     }
     V256::from_bytes(bytes)
 }
 
 fn v256_to_u64x4(value: V256) -> [u64; 4] {
     let bytes = value.to_bytes();
-    core::array::from_fn(|lane| {
-        u64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap())
-    })
+    let mut lanes = bytes.as_chunks::<8>().0.iter();
+    core::array::from_fn(|_| u64::from_le_bytes(*lanes.next().unwrap()))
 }
 
 fn sha512_msg1_ref(a: [u64; 4], b: [u64; 2]) -> [u64; 4] {
@@ -704,8 +702,8 @@ fn sm3_msg2_ref(a: [u32; 4], b: [u32; 4], c: [u32; 4]) -> [u32; 4] {
     w[3..7].copy_from_slice(&b);
     w[10..14].copy_from_slice(&c);
     let mut out = [0u32; 4];
-    for lane in 0..4 {
-        out[lane] = rol32(w[3 + lane], 7) ^ w[10 + lane] ^ a[lane];
+    for (lane, (out_elem, a_elem)) in out.iter_mut().zip(a.iter()).enumerate() {
+        *out_elem = rol32(w[3 + lane], 7) ^ w[10 + lane] ^ *a_elem;
     }
     out[3] ^= rol32(out[0], 6) ^ rol32(out[0], 15) ^ rol32(out[0], 30);
     out

@@ -138,8 +138,8 @@ pub unsafe fn sbclt_u32(a: &[u32], b: &[u32], c: &[u32], out: &mut [u32]) {
 pub unsafe fn asrd_i32(a: &[i32], shift: i32, out: &mut [i32]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     assert!((0..32).contains(&shift), "shift must be in 0..31");
-    for lane in 0..a.len() {
-        out[lane] = a[lane] >> shift;
+    for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
+        *out_elem = *a_elem >> shift;
     }
 }
 
@@ -157,11 +157,11 @@ pub unsafe fn asrd_i32(a: &[i32], shift: i32, out: &mut [i32]) {
 pub unsafe fn asrr_i32(a: &[i32], shift: i32, out: &mut [i32]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     assert!((0..32).contains(&shift), "shift must be in 0..31");
-    for lane in 0..a.len() {
-        out[lane] = if shift == 0 {
-            a[lane]
+    for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
+        *out_elem = if shift == 0 {
+            *a_elem
         } else {
-            (a[lane] >> shift) + ((a[lane] >> (shift - 1)) & 1)
+            (*a_elem >> shift) + ((*a_elem >> (shift - 1)) & 1)
         };
     }
 }
@@ -180,8 +180,8 @@ pub unsafe fn asrr_i32(a: &[i32], shift: i32, out: &mut [i32]) {
 pub unsafe fn lslr_i32(a: &[i32], shift: i32, out: &mut [i32]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     assert!((0..32).contains(&shift), "shift must be in 0..31");
-    for lane in 0..a.len() {
-        out[lane] = a[lane] << shift;
+    for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
+        *out_elem = *a_elem << shift;
     }
 }
 
@@ -199,11 +199,11 @@ pub unsafe fn lslr_i32(a: &[i32], shift: i32, out: &mut [i32]) {
 pub unsafe fn lsrr_i32(a: &[i32], shift: i32, out: &mut [i32]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     assert!((0..32).contains(&shift), "shift must be in 0..31");
-    for lane in 0..a.len() {
-        out[lane] = if shift == 0 {
-            a[lane]
+    for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
+        *out_elem = if shift == 0 {
+            *a_elem
         } else {
-            ((a[lane] as u32 >> shift) as i32) + (((a[lane] as u32 >> (shift - 1)) & 1) as i32)
+            ((*a_elem as u32 >> shift) as i32) + (((*a_elem as u32 >> (shift - 1)) & 1) as i32)
         };
     }
 }

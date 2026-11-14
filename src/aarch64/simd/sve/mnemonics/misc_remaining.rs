@@ -13,8 +13,8 @@ pub unsafe fn adr_u64(base: u64, offsets: &[u64], out: &mut [u64]) {
         out.len(),
         "SVE slices must have the same length"
     );
-    for lane in 0..out.len() {
-        out[lane] = base.wrapping_add(offsets[lane]);
+    for (out_elem, offsets_elem) in out.iter_mut().zip(offsets.iter()) {
+        *out_elem = base.wrapping_add(*offsets_elem);
     }
 }
 
@@ -34,13 +34,12 @@ macro_rules! fac {
         pub unsafe fn $name(a: &[f32], b: &[f32], out: &mut [u32]) {
             assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
             assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-            for lane in 0..a.len() {
-                out[lane] = if a[lane].abs() $op b[lane].abs() {
+            for ((out_elem, a_elem), b_elem) in out.iter_mut().zip(a.iter()).zip(b.iter()) {
+                *out_elem = if a_elem.abs() $op b_elem.abs() {
                     u32::MAX
                 } else {
                     0
-                };
-            }
+                };}
         }
     };
 }
@@ -65,8 +64,8 @@ fac!(
 #[inline]
 pub unsafe fn fsubr_imm_f32(a: &[f32], imm: f32, out: &mut [f32]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..a.len() {
-        out[lane] = imm - a[lane];
+    for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
+        *out_elem = imm - *a_elem;
     }
 }
 
@@ -168,9 +167,9 @@ pub unsafe fn tbx_u8(table: &[u8], indices: &[u8], out: &mut [u8]) {
         out.len(),
         "SVE slices must have the same length"
     );
-    for lane in 0..out.len() {
-        if let Some(&value) = table.get(indices[lane] as usize) {
-            out[lane] = value;
+    for (indices_elem, out_elem) in indices.iter().zip(out.iter_mut()) {
+        if let Some(&value) = table.get(*indices_elem as usize) {
+            *out_elem = value;
         }
     }
 }
@@ -184,8 +183,8 @@ pub unsafe fn tbx_u8(table: &[u8], indices: &[u8], out: &mut [u8]) {
 #[inline]
 pub unsafe fn ursqrte_u32(a: &[u32], out: &mut [u32]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..a.len() {
-        out[lane] = if a[lane] == 0 { u32::MAX } else { 1 };
+    for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
+        *out_elem = if *a_elem == 0 { u32::MAX } else { 1 };
     }
 }
 
@@ -235,8 +234,8 @@ pub unsafe fn histcnt_u32(data: &[u32], counts: &[u32], out: &mut [u32]) {
         out.len(),
         "SVE slices must have the same length"
     );
-    for lane in 0..data.len() {
-        out[lane] = counts.iter().filter(|&&v| v == data[lane]).count() as u32;
+    for (out_elem, data_elem) in out.iter_mut().zip(data.iter()) {
+        *out_elem = counts.iter().filter(|&&v| v == *data_elem).count() as u32;
     }
 }
 
@@ -283,8 +282,10 @@ pub unsafe fn sqrdcmlah_indexed_i32(acc: &[i32], a: &[i32], b: &[i32], out: &mut
     assert_eq!(acc.len(), a.len(), "SVE slices must have the same length");
     assert_eq!(acc.len(), b.len(), "SVE slices must have the same length");
     assert_eq!(acc.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..out.len() {
-        out[lane] = acc[lane].saturating_add(a[lane].wrapping_mul(b[lane]).wrapping_mul(2));
+    for (((out_elem, acc_elem), a_elem), b_elem) in
+        out.iter_mut().zip(acc.iter()).zip(a.iter()).zip(b.iter())
+    {
+        *out_elem = acc_elem.saturating_add(a_elem.wrapping_mul(*b_elem).wrapping_mul(2));
     }
 }
 
@@ -299,7 +300,9 @@ pub unsafe fn sqrdcmlah_vec_i32(acc: &[i32], a: &[i32], b: &[i32], out: &mut [i3
     assert_eq!(acc.len(), a.len(), "SVE slices must have the same length");
     assert_eq!(acc.len(), b.len(), "SVE slices must have the same length");
     assert_eq!(acc.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..out.len() {
-        out[lane] = acc[lane].saturating_add(a[lane].wrapping_mul(b[lane]).wrapping_mul(2));
+    for (((out_elem, acc_elem), a_elem), b_elem) in
+        out.iter_mut().zip(acc.iter()).zip(a.iter()).zip(b.iter())
+    {
+        *out_elem = acc_elem.saturating_add(a_elem.wrapping_mul(*b_elem).wrapping_mul(2));
     }
 }

@@ -68,9 +68,14 @@ fn avx_vnni() {
     if is_x86_feature_detected!("avxvnniint16") {
         let mut a = [0u8; 32];
         let mut b = [0u8; 32];
-        for lane in 0..16 {
-            a[lane * 2..lane * 2 + 2].copy_from_slice(&1u16.to_le_bytes());
-            b[lane * 2..lane * 2 + 2].copy_from_slice(&2u16.to_le_bytes());
+        for (a_chunk, b_chunk) in a
+            .as_chunks_mut::<2>()
+            .0
+            .iter_mut()
+            .zip(b.as_chunks_mut::<2>().0.iter_mut())
+        {
+            a_chunk.copy_from_slice(&1u16.to_le_bytes());
+            b_chunk.copy_from_slice(&2u16.to_le_bytes());
         }
         let zero = V256::from_bytes([0; 32]);
         assert_eq!(

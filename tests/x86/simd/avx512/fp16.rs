@@ -15,23 +15,28 @@ fn avx512fp16_arithmetic() {
     }
     let mut one = [0u8; 64];
     let mut two = [0u8; 64];
-    for lane in 0..32 {
-        one[lane * 2..lane * 2 + 2].copy_from_slice(&0x3c00u16.to_le_bytes());
-        two[lane * 2..lane * 2 + 2].copy_from_slice(&0x4000u16.to_le_bytes());
+    for (one_chunk, two_chunk) in one
+        .as_chunks_mut::<2>()
+        .0
+        .iter_mut()
+        .zip(two.as_chunks_mut::<2>().0.iter_mut())
+    {
+        one_chunk.copy_from_slice(&0x3c00u16.to_le_bytes());
+        two_chunk.copy_from_slice(&0x4000u16.to_le_bytes());
     }
     let out = unsafe { vaddph(V512::from_bytes(one), V512::from_bytes(two)) }.to_bytes();
     assert_eq!(u16::from_le_bytes(out[0..2].try_into().unwrap()), 0x4200);
 
     let mut half = [0u8; 32];
-    for lane in 0..16 {
-        half[lane * 2..lane * 2 + 2].copy_from_slice(&0x3c00u16.to_le_bytes());
+    for chunk in half.as_chunks_mut::<2>().0.iter_mut() {
+        *chunk = 0x3c00u16.to_le_bytes();
     }
     let out = unsafe { vcvtph2psx(V256::from_bytes(half)) }.to_bytes();
     assert_eq!(f32::from_le_bytes(out[0..4].try_into().unwrap()), 1.0);
 
     let mut floats = [0u8; 64];
-    for lane in 0..16 {
-        floats[lane * 4..lane * 4 + 4].copy_from_slice(&1.0f32.to_le_bytes());
+    for chunk in floats.as_chunks_mut::<4>().0.iter_mut() {
+        *chunk = 1.0f32.to_le_bytes();
     }
     let compressed = unsafe { vcvtps2phx(V512::from_bytes(floats)) }.to_bytes();
     assert_eq!(

@@ -184,8 +184,8 @@ fn amx_int8_ones_accumulate() {
         tdpbssd::<2, 0, 1>(&guard);
         tilestored::<2>(&guard, out.as_mut_ptr(), 64);
     }
-    for lane in out.chunks_exact(4) {
-        assert_eq!(i32::from_le_bytes(lane.try_into().unwrap()), 64);
+    for lane in out.as_chunks::<4>().0 {
+        assert_eq!(i32::from_le_bytes(*lane), 64);
     }
 }
 
@@ -216,8 +216,8 @@ fn amx_int8_mixed_ones_accumulate() {
         tdpbsud::<2, 0, 1>(&guard);
         tilestored::<2>(&guard, out.as_mut_ptr(), 64);
     }
-    for lane in out.chunks_exact(4) {
-        assert_eq!(i32::from_le_bytes(lane.try_into().unwrap()), 64);
+    for lane in out.as_chunks::<4>().0 {
+        assert_eq!(i32::from_le_bytes(*lane), 64);
     }
 
     out = [0u8; 1024];
@@ -229,8 +229,8 @@ fn amx_int8_mixed_ones_accumulate() {
         tdpbuud::<2, 0, 1>(&guard);
         tilestored::<2>(&guard, out.as_mut_ptr(), 64);
     }
-    for lane in out.chunks_exact(4) {
-        assert_eq!(i32::from_le_bytes(lane.try_into().unwrap()), 64);
+    for lane in out.as_chunks::<4>().0 {
+        assert_eq!(i32::from_le_bytes(*lane), 64);
     }
 }
 
@@ -261,8 +261,8 @@ fn amx_bf16_ones_accumulate() {
         tdpbf16ps::<2, 0, 1>(&guard);
         tilestored::<2>(&guard, out.as_mut_ptr(), 64);
     }
-    for lane in out.chunks_exact(4) {
-        assert_eq!(f32::from_le_bytes(lane.try_into().unwrap()), 64.0);
+    for lane in out.as_chunks::<4>().0 {
+        assert_eq!(f32::from_le_bytes(*lane), 64.0);
     }
 }
 
@@ -293,8 +293,8 @@ fn amx_fp16_ones_accumulate() {
         tdpfp16ps::<2, 0, 1>(&guard);
         tilestored::<2>(&guard, out.as_mut_ptr(), 64);
     }
-    for lane in out.chunks_exact(4) {
-        assert_eq!(f32::from_le_bytes(lane.try_into().unwrap()), 64.0);
+    for lane in out.as_chunks::<4>().0 {
+        assert_eq!(f32::from_le_bytes(*lane), 64.0);
     }
 }
 
@@ -339,8 +339,8 @@ fn amx_fp8_ones_accumulate() {
             run(&guard);
             tilestored::<2>(&guard, out.as_mut_ptr(), 64);
         }
-        for lane in out.chunks_exact(4) {
-            assert_eq!(f32::from_le_bytes(lane.try_into().unwrap()), 256.0);
+        for lane in out.as_chunks::<4>().0 {
+            assert_eq!(f32::from_le_bytes(*lane), 256.0);
         }
         out = [0u8; 1024];
     }
@@ -385,11 +385,11 @@ fn amx_complex_values_accumulate() {
         tcmmimfp16ps::<3, 0, 1>(&guard);
         tilestored::<3>(&guard, imaginary.as_mut_ptr(), 64);
     }
-    for lane in real.chunks_exact(4) {
-        assert_eq!(f32::from_le_bytes(lane.try_into().unwrap()), 16.0);
+    for lane in real.as_chunks::<4>().0 {
+        assert_eq!(f32::from_le_bytes(*lane), 16.0);
     }
-    for lane in imaginary.chunks_exact(4) {
-        assert_eq!(f32::from_le_bytes(lane.try_into().unwrap()), 32.0);
+    for lane in imaginary.as_chunks::<4>().0 {
+        assert_eq!(f32::from_le_bytes(*lane), 32.0);
     }
 }
 

@@ -1011,9 +1011,9 @@ unsafe extern "C" {
 /// Expand a four-lane mask into all-ones 32-bit lanes.
 fn mask_to_v128_i32(mask: u16) -> V128 {
     let mut bytes = [0u8; 16];
-    for lane in 0..4 {
+    for (lane, chunk) in bytes.as_chunks_mut::<4>().0.iter_mut().enumerate() {
         if mask & (1 << lane) != 0 {
-            bytes[lane * 4..lane * 4 + 4].copy_from_slice(&(-1i32).to_le_bytes());
+            chunk.copy_from_slice(&(-1i32).to_le_bytes());
         }
     }
     V128::from_bytes(bytes)

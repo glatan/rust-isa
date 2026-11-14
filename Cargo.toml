@@ -21,13 +21,16 @@ license = "MIT OR Apache-2.0"
 links = "rust_isa"
 publish = false
 repository = "https://gitlab.com/glatan/rust-isa"
-rust-version = "1.99.1"
+rust-version = "1.100.0"
 description = "Architecture-specific ISA extensions for stable no_std Rust"
 
 [features]
 wide-arithmetic = []
 
 [dependencies]
+
+[lints.cargo]
+unused_dependencies = "warn"
 
 [profile.release]
 lto = "thin"

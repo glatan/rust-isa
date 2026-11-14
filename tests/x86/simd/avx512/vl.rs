@@ -18,19 +18,19 @@ fn vl_mullo() {
     assert_eq!(&c.to_bytes()[8..16], &55i64.to_le_bytes());
 
     let mut bytes = [0u8; 32];
-    for index in 0..4 {
-        bytes[index * 8..index * 8 + 8].copy_from_slice(&(index as i64 + 2).to_le_bytes());
+    for (index, chunk) in bytes.as_chunks_mut::<8>().0.iter_mut().enumerate() {
+        chunk.copy_from_slice(&(index as i64 + 2).to_le_bytes());
     }
     let a = V256::from_bytes(bytes);
-    for index in 0..4 {
-        bytes[index * 8..index * 8 + 8].copy_from_slice(&(index as i64 + 3).to_le_bytes());
+    for (index, chunk) in bytes.as_chunks_mut::<8>().0.iter_mut().enumerate() {
+        chunk.copy_from_slice(&(index as i64 + 3).to_le_bytes());
     }
     let b = V256::from_bytes(bytes);
     let c = unsafe { vpmullq_v256(a, b) };
     let out = c.to_bytes();
-    for index in 0..4 {
+    for (index, chunk) in out.as_chunks::<8>().0.iter().enumerate() {
         assert_eq!(
-            i64::from_le_bytes(out[index * 8..index * 8 + 8].try_into().unwrap()),
+            i64::from_le_bytes(*chunk),
             (index as i64 + 2) * (index as i64 + 3)
         );
     }

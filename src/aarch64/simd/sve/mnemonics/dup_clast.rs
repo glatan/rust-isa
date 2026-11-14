@@ -62,9 +62,9 @@ pub unsafe fn dupm_u64(mask: u64, out: &mut [u64]) {
 pub unsafe fn clasta_i32(mask: &[u32], fallback: i32, a: &[i32]) -> i32 {
     assert_eq!(mask.len(), a.len(), "SVE slices must have the same length");
     let mut result = fallback;
-    for lane in 0..a.len() {
-        if mask[lane] != 0 {
-            result = a[lane];
+    for (mask_elem, a_elem) in mask.iter().zip(a.iter()) {
+        if *mask_elem != 0 {
+            result = *a_elem;
         }
     }
     result
@@ -85,9 +85,9 @@ pub unsafe fn clasta_i32(mask: &[u32], fallback: i32, a: &[i32]) -> i32 {
 #[inline]
 pub unsafe fn clastb_i32(mask: &[u32], fallback: i32, a: &[i32]) -> i32 {
     assert_eq!(mask.len(), a.len(), "SVE slices must have the same length");
-    for lane in 0..a.len() {
-        if mask[lane] != 0 {
-            return a[lane];
+    for (mask_elem, a_elem) in mask.iter().zip(a.iter()) {
+        if *mask_elem != 0 {
+            return *a_elem;
         }
     }
     fallback
@@ -161,17 +161,15 @@ macro_rules! clast_simd {
             assert_eq!(mask.len(), a.len(), "SVE slices must have the same length");
             let mut result = fallback;
             if $last {
-                for lane in 0..a.len() {
-                    if mask[lane] != 0 {
-                        result = a[lane];
-                    }
-                }
+                for (mask_elem, a_elem) in mask.iter().zip(a.iter()) {
+                    if *mask_elem != 0 {
+                        result = *a_elem;
+                    }}
             } else {
-                for lane in 0..a.len() {
-                    if mask[lane] != 0 {
-                        return a[lane];
-                    }
-                }
+                for (mask_elem, a_elem) in mask.iter().zip(a.iter()) {
+                    if *mask_elem != 0 {
+                        return *a_elem;
+                    }}
             }
             result
         }
@@ -208,26 +206,23 @@ macro_rules! clast_vec {
             assert_eq!(mask.len(), out.len(), "SVE slices must have the same length");
             let mut selected = None;
             if $last {
-                for lane in 0..a.len() {
-                    if mask[lane] != 0 {
-                        selected = Some(a[lane]);
-                    }
-                }
+                for (mask_elem, a_elem) in mask.iter().zip(a.iter()) {
+                    if *mask_elem != 0 {
+                        selected = Some(*a_elem);
+                    }}
             } else {
-                for lane in 0..a.len() {
-                    if mask[lane] != 0 {
-                        selected = Some(a[lane]);
+                for (mask_elem, a_elem) in mask.iter().zip(a.iter()) {
+                    if *mask_elem != 0 {
+                        selected = Some(*a_elem);
                         break;
-                    }
-                }
+                    }}
             }
-            for lane in 0..out.len() {
-                out[lane] = if mask[lane] != 0 {
-                    selected.unwrap_or(fallback[lane])
+            for ((out_elem, mask_elem), fallback_elem) in out.iter_mut().zip(mask.iter()).zip(fallback.iter()) {
+                *out_elem = if *mask_elem != 0 {
+                    selected.unwrap_or(*fallback_elem)
                 } else {
-                    fallback[lane]
-                };
-            }
+                    *fallback_elem
+                };}
         }
     };
 }

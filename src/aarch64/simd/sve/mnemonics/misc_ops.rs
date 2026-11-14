@@ -20,9 +20,8 @@ macro_rules! mla_mls_lane {
             assert_eq!(acc.len(), out.len(), "SVE slices must have the same length");
             assert!(!b.is_empty(), "SVE indexed input must not be empty");
             let factor = b[0];
-            for lane in 0..out.len() {
-                out[lane] = acc[lane] $op a[lane].wrapping_mul(factor);
-            }
+            for ((out_elem, acc_elem), a_elem) in out.iter_mut().zip(acc.iter()).zip(a.iter()) {
+                *out_elem = *acc_elem $op a_elem.wrapping_mul(factor);}
         }
     };
 }
@@ -69,8 +68,10 @@ pub unsafe fn bsl1n_u8(a: &[u8], b: &[u8], c: &[u8], out: &mut [u8]) {
     assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
     assert_eq!(a.len(), c.len(), "SVE slices must have the same length");
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..out.len() {
-        out[lane] = (a[lane] & !b[lane]) | (c[lane] & b[lane]);
+    for (((out_elem, a_elem), b_elem), c_elem) in
+        out.iter_mut().zip(a.iter()).zip(b.iter()).zip(c.iter())
+    {
+        *out_elem = (*a_elem & !*b_elem) | (*c_elem & *b_elem);
     }
 }
 
@@ -89,8 +90,10 @@ pub unsafe fn bsl2n_u8(a: &[u8], b: &[u8], c: &[u8], out: &mut [u8]) {
     assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
     assert_eq!(a.len(), c.len(), "SVE slices must have the same length");
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..out.len() {
-        out[lane] = (a[lane] & b[lane]) | (c[lane] & !b[lane]);
+    for (((out_elem, a_elem), b_elem), c_elem) in
+        out.iter_mut().zip(a.iter()).zip(b.iter()).zip(c.iter())
+    {
+        *out_elem = (*a_elem & *b_elem) | (*c_elem & !*b_elem);
     }
 }
 

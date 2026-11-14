@@ -237,13 +237,13 @@ fn main() {
         &msa_c,
         &amx_tile_c,
     ] {
-        println!("cargo:rerun-if-changed={}", path.display());
+        println!("cargo::rerun-if-changed={}", path.display());
     }
-    println!("cargo:rerun-if-env-changed=CARGO_CFG_TARGET_FEATURE");
-    println!("cargo:rerun-if-env-changed=RUST_ISA_DOCTEST");
-    println!("cargo:rerun-if-env-changed=RUST_ISA_DOCS");
-    println!("cargo:rerun-if-env-changed=RUST_ISA_CC");
-    println!("cargo:rerun-if-env-changed=RUST_ISA_AR");
+    println!("cargo::rerun-if-env-changed=CARGO_CFG_TARGET_FEATURE");
+    println!("cargo::rerun-if-env-changed=RUST_ISA_DOCTEST");
+    println!("cargo::rerun-if-env-changed=RUST_ISA_DOCS");
+    println!("cargo::rerun-if-env-changed=RUST_ISA_CC");
+    println!("cargo::rerun-if-env-changed=RUST_ISA_AR");
 
     if env::var_os("RUST_ISA_DOCS").is_some() {
         return;
@@ -1058,7 +1058,10 @@ fn compile_archive(
     ]);
     // Cross GCC linkers cannot read clang's ThinLTO bitcode. Doctest builds
     // use ELF objects so the GNU target linker can link the test harness.
-    if env::var("RUST_ISA_DOCTEST").ok().as_deref() != Some("1") {
+    if env::var("RUST_ISA_DOCTEST")
+        .ok()
+        .is_none_or(|value| value != "1")
+    {
         command.arg("-flto=thin");
     }
     command.args(flags);
@@ -1080,6 +1083,6 @@ fn compile_archive(
     if !status.success() {
         panic!("llvm-ar failed to archive {}", obj_path.display());
     }
-    println!("cargo:rustc-link-search=native={}", out_dir.display());
-    println!("cargo:rustc-link-lib=static={name}");
+    println!("cargo::rustc-link-search=native={}", out_dir.display());
+    println!("cargo::rustc-link-lib=static={name}");
 }

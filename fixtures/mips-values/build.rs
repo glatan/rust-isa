@@ -7,7 +7,7 @@ fn main() {
     let out = PathBuf::from(env::var("OUT_DIR").unwrap());
     let source = manifest.join("start.c");
     let object = out.join("start.o");
-    println!("cargo:rerun-if-changed={}", source.display());
+    println!("cargo::rerun-if-changed={}", source.display());
     let status = Command::new("clang")
         .args([
             "--target=mips64-unknown-linux-gnuabi64",
@@ -26,5 +26,5 @@ fn main() {
         .status()
         .expect("clang");
     assert!(status.success());
-    println!("cargo:rustc-link-arg={}", object.display());
+    println!("cargo::rustc-link-arg={}", object.display());
 }

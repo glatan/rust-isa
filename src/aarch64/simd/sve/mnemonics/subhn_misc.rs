@@ -50,8 +50,8 @@ pub unsafe fn subhnt_i16(a: &[i16], b: &[i16], out: &mut [i8]) {
 pub unsafe fn shsubr_i32(a: &[i32], b: &[i32], out: &mut [i32]) {
     assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..a.len() {
-        out[lane] = b[lane].wrapping_sub(a[lane]) >> 1;
+    for ((out_elem, b_elem), a_elem) in out.iter_mut().zip(b.iter()).zip(a.iter()) {
+        *out_elem = b_elem.wrapping_sub(*a_elem) >> 1;
     }
 }
 
@@ -69,7 +69,7 @@ pub unsafe fn shsubr_i32(a: &[i32], b: &[i32], out: &mut [i32]) {
 pub unsafe fn uhsubr_u32(a: &[u32], b: &[u32], out: &mut [u32]) {
     assert_eq!(a.len(), b.len(), "SVE slices must have the same length");
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..a.len() {
-        out[lane] = b[lane].wrapping_sub(a[lane]) >> 1;
+    for ((out_elem, b_elem), a_elem) in out.iter_mut().zip(b.iter()).zip(a.iter()) {
+        *out_elem = b_elem.wrapping_sub(*a_elem) >> 1;
     }
 }

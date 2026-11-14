@@ -69,7 +69,7 @@ fn assert_undefined_symbols(archive: &Path) {
     let undefined = String::from_utf8_lossy(&nm.stdout);
     for line in undefined.lines() {
         let mut parts = line.split_whitespace();
-        if parts.next() == Some("U") {
+        if matches!(parts.next(), Some("U")) {
             let symbol = parts.next().unwrap_or("");
             assert_eq!(
                 symbol, "__stack_pointer",

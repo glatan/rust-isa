@@ -8,17 +8,22 @@ fn avx512bf16_convert_and_dot() {
         return;
     }
     let mut floats = [0u8; 64];
-    for lane in 0..16 {
-        floats[lane * 4..lane * 4 + 4].copy_from_slice(&1.0f32.to_le_bytes());
+    for chunk in floats.as_chunks_mut::<4>().0.iter_mut() {
+        *chunk = 1.0f32.to_le_bytes();
     }
     let out = unsafe { vcvtneps2bf16(V512::from_bytes(floats)) }.to_bytes();
     assert_eq!(u16::from_le_bytes(out[0..2].try_into().unwrap()), 0x3f80);
 
     let mut a = [0u8; 64];
     let mut b = [0u8; 64];
-    for lane in 0..32 {
-        a[lane * 2..lane * 2 + 2].copy_from_slice(&0x3f80u16.to_le_bytes());
-        b[lane * 2..lane * 2 + 2].copy_from_slice(&0x4000u16.to_le_bytes());
+    for (a_chunk, b_chunk) in a
+        .as_chunks_mut::<2>()
+        .0
+        .iter_mut()
+        .zip(b.as_chunks_mut::<2>().0.iter_mut())
+    {
+        a_chunk.copy_from_slice(&0x3f80u16.to_le_bytes());
+        b_chunk.copy_from_slice(&0x4000u16.to_le_bytes());
     }
     let out = unsafe {
         vdpbf16ps(
@@ -30,7 +35,7 @@ fn avx512bf16_convert_and_dot() {
     let bytes = out.to_bytes();
     for lane in 0..16 {
         assert_eq!(
-            f32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap()),
+            f32::from_le_bytes(*bytes[lane * 4..].first_chunk().unwrap()),
             4.0
         );
     }

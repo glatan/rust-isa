@@ -119,7 +119,8 @@ macro_rules! prefetch_vec_imm {
         #[inline]
         pub unsafe fn $name(offsets: &[i64], imm: i64) {
             for &offset in offsets {
-                let addr = (offset as *const u8).wrapping_offset(imm as isize);
+                let addr =
+                    core::ptr::without_provenance::<u8>(offset as usize).wrapping_offset(imm as isize);
                 unsafe {
                     core::arch::asm!(
                         concat!("prfm ", $mnemonic, ", [{addr}]"),
@@ -163,9 +164,8 @@ macro_rules! ldff1 {
         #[target_feature(enable = "sve")]
         #[inline]
         pub unsafe fn $name(base: *const $ty, offset: i64, out: &mut [$out]) {
-            for lane in 0..out.len() {
-                out[lane] = unsafe { *base.offset(offset as isize + lane as isize) } as $out;
-            }
+            for (lane, elem) in out.iter_mut().enumerate() {
+                *elem = unsafe { *base.offset(offset as isize + lane as isize) } as $out;}
         }
     };
 }
@@ -200,9 +200,8 @@ macro_rules! ldff1_vec {
         #[inline]
         pub unsafe fn $name(base: *const $ty, offsets: &[i64], out: &mut [$out]) {
             assert_eq!(offsets.len(), out.len(), "SVE slices must have the same length");
-            for lane in 0..out.len() {
-                out[lane] = unsafe { *base.offset(offsets[lane] as isize) } as $out;
-            }
+            for (out_elem, offsets_elem) in out.iter_mut().zip(offsets.iter()) {
+                *out_elem = unsafe { *base.offset(*offsets_elem as isize) } as $out;}
         }
     };
 }
@@ -237,10 +236,9 @@ macro_rules! ldff1_vec_imm {
         #[inline]
         pub unsafe fn $name(offsets: &[i64], imm: i64, out: &mut [$out]) {
             assert_eq!(offsets.len(), out.len(), "SVE slices must have the same length");
-            for lane in 0..out.len() {
-                let base = offsets[lane] as *const $ty;
-                out[lane] = unsafe { *base.offset(imm as isize) } as $out;
-            }
+            for (offsets_elem, out_elem) in offsets.iter().zip(out.iter_mut()) {
+                let base = *offsets_elem as *const $ty;
+                *out_elem = unsafe { *base.offset(imm as isize) } as $out;}
         }
     };
 }

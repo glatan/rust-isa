@@ -11,9 +11,8 @@ fn xop_available() -> bool {
 
 fn i16_lanes(value: V128) -> [i16; 8] {
     let bytes = value.to_bytes();
-    core::array::from_fn(|lane| {
-        i16::from_le_bytes(bytes[lane * 2..lane * 2 + 2].try_into().unwrap())
-    })
+    let mut lanes = bytes.as_chunks::<2>().0.iter();
+    core::array::from_fn(|_| i16::from_le_bytes(*lanes.next().unwrap()))
 }
 
 #[test]

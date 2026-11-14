@@ -34,8 +34,8 @@ pub unsafe fn incb_scalar(value: i8, imm: i8) -> i8 {
 pub unsafe fn incb_vector(a: &[i8], imm: i8, out: &mut [i8]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     let step = imm.wrapping_mul(count_b() as i8);
-    for lane in 0..a.len() {
-        out[lane] = a[lane].wrapping_add(step);
+    for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
+        *out_elem = a_elem.wrapping_add(step);
     }
 }
 
@@ -64,8 +64,8 @@ pub unsafe fn decb_scalar(value: i8, imm: i8) -> i8 {
 pub unsafe fn decb_vector(a: &[i8], imm: i8, out: &mut [i8]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     let step = imm.wrapping_mul(count_b() as i8);
-    for lane in 0..a.len() {
-        out[lane] = a[lane].wrapping_sub(step);
+    for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
+        *out_elem = a_elem.wrapping_sub(step);
     }
 }
 
@@ -94,8 +94,8 @@ pub unsafe fn sqincb_scalar(value: i8, imm: i8) -> i8 {
 pub unsafe fn sqincb_vector(a: &[i8], imm: i8, out: &mut [i8]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     let step = imm.wrapping_mul(count_b() as i8);
-    for lane in 0..a.len() {
-        out[lane] = a[lane].saturating_add(step);
+    for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
+        *out_elem = a_elem.saturating_add(step);
     }
 }
 
@@ -124,8 +124,8 @@ pub unsafe fn sqdecb_scalar(value: i8, imm: i8) -> i8 {
 pub unsafe fn sqdecb_vector(a: &[i8], imm: i8, out: &mut [i8]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     let step = imm.wrapping_mul(count_b() as i8);
-    for lane in 0..a.len() {
-        out[lane] = a[lane].saturating_sub(step);
+    for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
+        *out_elem = a_elem.saturating_sub(step);
     }
 }
 
@@ -154,8 +154,8 @@ pub unsafe fn uqincb_scalar(value: u8, imm: u8) -> u8 {
 pub unsafe fn uqincb_vector(a: &[u8], imm: u8, out: &mut [u8]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     let step = imm.wrapping_mul(count_b() as u8);
-    for lane in 0..a.len() {
-        out[lane] = a[lane].saturating_add(step);
+    for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
+        *out_elem = a_elem.saturating_add(step);
     }
 }
 
@@ -184,7 +184,7 @@ pub unsafe fn uqdecb_scalar(value: u8, imm: u8) -> u8 {
 pub unsafe fn uqdecb_vector(a: &[u8], imm: u8, out: &mut [u8]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
     let step = imm.wrapping_mul(count_b() as u8);
-    for lane in 0..a.len() {
-        out[lane] = a[lane].saturating_sub(step);
+    for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
+        *out_elem = a_elem.saturating_sub(step);
     }
 }

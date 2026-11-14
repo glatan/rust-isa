@@ -58,9 +58,9 @@ fn f32_to_half(value: f32) -> u16 {
 #[inline]
 pub unsafe fn bfcvt_f32(a: &[f32], out: &mut [u16]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..a.len() {
-        let bits = a[lane].to_bits();
-        out[lane] = if a[lane].is_nan() {
+    for (a_elem, out_elem) in a.iter().zip(out.iter_mut()) {
+        let bits = a_elem.to_bits();
+        *out_elem = if a_elem.is_nan() {
             ((bits >> 16) | 0x0040) as u16
         } else {
             let lsb = (bits >> 16) & 1;
@@ -82,9 +82,9 @@ pub unsafe fn bfcvt_f32(a: &[f32], out: &mut [u16]) {
 #[inline]
 pub unsafe fn bfcvtnt_f32(a: &[f32], out: &mut [u16]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..a.len() {
-        let bits = a[lane].to_bits();
-        out[lane] = if a[lane].is_nan() {
+    for (a_elem, out_elem) in a.iter().zip(out.iter_mut()) {
+        let bits = a_elem.to_bits();
+        *out_elem = if a_elem.is_nan() {
             ((bits >> 16) | 0x0040) as u16
         } else {
             let lsb = (bits >> 16) & 1;
@@ -106,8 +106,8 @@ pub unsafe fn bfcvtnt_f32(a: &[f32], out: &mut [u16]) {
 #[inline]
 pub unsafe fn fcvt_f64_to_f32(a: &[f64], out: &mut [f32]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..a.len() {
-        out[lane] = a[lane] as f32;
+    for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
+        *out_elem = *a_elem as f32;
     }
 }
 
@@ -124,8 +124,8 @@ pub unsafe fn fcvt_f64_to_f32(a: &[f64], out: &mut [f32]) {
 #[inline]
 pub unsafe fn fcvtlt_f16_to_f32(a: &[u16], out: &mut [f32]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..a.len() {
-        out[lane] = half_to_f32(a[lane]);
+    for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
+        *out_elem = half_to_f32(*a_elem);
     }
 }
 
@@ -142,8 +142,8 @@ pub unsafe fn fcvtlt_f16_to_f32(a: &[u16], out: &mut [f32]) {
 #[inline]
 pub unsafe fn fcvtnt_f32(a: &[f32], out: &mut [u16]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..a.len() {
-        out[lane] = f32_to_half(a[lane]);
+    for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
+        *out_elem = f32_to_half(*a_elem);
     }
 }
 
@@ -160,8 +160,8 @@ pub unsafe fn fcvtnt_f32(a: &[f32], out: &mut [u16]) {
 #[inline]
 pub unsafe fn fcvtx_f32(a: &[f32], out: &mut [u16]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..a.len() {
-        out[lane] = f32_to_half(a[lane]);
+    for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
+        *out_elem = f32_to_half(*a_elem);
     }
 }
 
@@ -178,7 +178,7 @@ pub unsafe fn fcvtx_f32(a: &[f32], out: &mut [u16]) {
 #[inline]
 pub unsafe fn fcvtxnt_f32(a: &[f32], out: &mut [u16]) {
     assert_eq!(a.len(), out.len(), "SVE slices must have the same length");
-    for lane in 0..a.len() {
-        out[lane] = f32_to_half(a[lane]);
+    for (out_elem, a_elem) in out.iter_mut().zip(a.iter()) {
+        *out_elem = f32_to_half(*a_elem);
     }
 }

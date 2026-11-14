@@ -17,9 +17,7 @@ pub unsafe fn xvldrepl_b(p: *const u8, offset: i64) -> V256 {
         core::ptr::copy_nonoverlapping(p.offset(offset as isize), chunk.as_mut_ptr(), 1);
     }
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        out[lane * 1..lane * 1 + 1].copy_from_slice(&chunk);
-    }
+    out.fill(chunk[0]);
     V256::from_bytes(out)
 }
 
@@ -37,8 +35,8 @@ pub unsafe fn xvldrepl_h(p: *const u8, offset: i64) -> V256 {
         core::ptr::copy_nonoverlapping(p.offset(offset as isize), chunk.as_mut_ptr(), 2);
     }
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        out[lane * 2..lane * 2 + 2].copy_from_slice(&chunk);
+    for out_chunk in out.as_chunks_mut::<2>().0.iter_mut() {
+        *out_chunk = chunk;
     }
     V256::from_bytes(out)
 }
@@ -57,8 +55,8 @@ pub unsafe fn xvldrepl_w(p: *const u8, offset: i64) -> V256 {
         core::ptr::copy_nonoverlapping(p.offset(offset as isize), chunk.as_mut_ptr(), 4);
     }
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&chunk);
+    for out_chunk in out.as_chunks_mut::<4>().0.iter_mut() {
+        *out_chunk = chunk;
     }
     V256::from_bytes(out)
 }
@@ -77,8 +75,8 @@ pub unsafe fn xvldrepl_d(p: *const u8, offset: i64) -> V256 {
         core::ptr::copy_nonoverlapping(p.offset(offset as isize), chunk.as_mut_ptr(), 8);
     }
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        out[lane * 8..lane * 8 + 8].copy_from_slice(&chunk);
+    for out_chunk in out.as_chunks_mut::<8>().0.iter_mut() {
+        *out_chunk = chunk;
     }
     V256::from_bytes(out)
 }

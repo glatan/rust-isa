@@ -90,8 +90,8 @@ pub unsafe fn ld1rod_scalar_u64(base: *const u64, offset: i64, out: &mut [u64]) 
 
 #[inline(always)]
 unsafe fn ld1ro_impl<T: Copy>(base: *const T, offset: i64, out: &mut [T]) {
-    for lane in 0..out.len() {
-        out[lane] = unsafe { *base.offset(offset as isize + lane as isize) };
+    for (lane, elem) in out.iter_mut().enumerate() {
+        *elem = unsafe { *base.offset(offset as isize + lane as isize) };
     }
 }
 
@@ -159,9 +159,8 @@ macro_rules! nonfault_load {
         #[target_feature(enable = "sve")]
         #[inline]
         pub unsafe fn $name(base: *const $ty, out: &mut [i32]) {
-            for lane in 0..out.len() {
-                out[lane] = unsafe { *base.add(lane) } as i32;
-            }
+            for (lane, elem) in out.iter_mut().enumerate() {
+                *elem = unsafe { *base.add(lane) } as i32;}
         }
     };
 }

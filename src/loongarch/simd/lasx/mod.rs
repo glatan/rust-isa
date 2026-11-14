@@ -2766,9 +2766,14 @@ pub unsafe fn xvxor(a: V256, b: V256) -> V256 {
 pub unsafe fn xvabs(a: V256) -> V256 {
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.wrapping_abs().to_le_bytes());
+    for (bytes_chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = i32::from_le_bytes(*bytes_chunk);
+        out_chunk.copy_from_slice(&value.wrapping_abs().to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -2783,9 +2788,14 @@ pub unsafe fn xvabs(a: V256) -> V256 {
 pub unsafe fn xvneg(a: V256) -> V256 {
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.wrapping_neg().to_le_bytes());
+    for (bytes_chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = i32::from_le_bytes(*bytes_chunk);
+        out_chunk.copy_from_slice(&value.wrapping_neg().to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -2834,10 +2844,15 @@ pub unsafe fn xvadd_h(a: V256, b: V256) -> V256 {
     let a = a.to_bytes();
     let b = b.to_bytes();
     let mut out = [0u8; 32];
-    for i in 0..16 {
-        let value = u16::from_le_bytes([a[i * 2], a[i * 2 + 1]])
-            .wrapping_add(u16::from_le_bytes([b[i * 2], b[i * 2 + 1]]));
-        out[i * 2..i * 2 + 2].copy_from_slice(&value.to_le_bytes());
+    for ((a_chunk, b_chunk), chunk) in a
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(b.as_chunks::<2>().0.iter())
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = u16::from_le_bytes(*a_chunk).wrapping_add(u16::from_le_bytes(*b_chunk));
+        chunk.copy_from_slice(&value.to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -2864,10 +2879,15 @@ pub unsafe fn xvsub_h(a: V256, b: V256) -> V256 {
     let a = a.to_bytes();
     let b = b.to_bytes();
     let mut out = [0u8; 32];
-    for i in 0..16 {
-        let value = u16::from_le_bytes([a[i * 2], a[i * 2 + 1]])
-            .wrapping_sub(u16::from_le_bytes([b[i * 2], b[i * 2 + 1]]));
-        out[i * 2..i * 2 + 2].copy_from_slice(&value.to_le_bytes());
+    for ((a_chunk, b_chunk), chunk) in a
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(b.as_chunks::<2>().0.iter())
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = u16::from_le_bytes(*a_chunk).wrapping_sub(u16::from_le_bytes(*b_chunk));
+        chunk.copy_from_slice(&value.to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -2882,10 +2902,15 @@ pub unsafe fn xvmul_h(a: V256, b: V256) -> V256 {
     let a = a.to_bytes();
     let b = b.to_bytes();
     let mut out = [0u8; 32];
-    for i in 0..16 {
-        let value = u16::from_le_bytes([a[i * 2], a[i * 2 + 1]])
-            .wrapping_mul(u16::from_le_bytes([b[i * 2], b[i * 2 + 1]]));
-        out[i * 2..i * 2 + 2].copy_from_slice(&value.to_le_bytes());
+    for ((a_chunk, b_chunk), chunk) in a
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(b.as_chunks::<2>().0.iter())
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = u16::from_le_bytes(*a_chunk).wrapping_mul(u16::from_le_bytes(*b_chunk));
+        chunk.copy_from_slice(&value.to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -2913,9 +2938,14 @@ pub unsafe fn xvabs_b(a: V256) -> V256 {
 pub unsafe fn xvabs_h(a: V256) -> V256 {
     let b = a.to_bytes();
     let mut o = [0u8; 32];
-    for i in 0..16 {
-        let v = i16::from_le_bytes([b[i * 2], b[i * 2 + 1]]);
-        o[i * 2..i * 2 + 2].copy_from_slice(&v.wrapping_abs().to_le_bytes());
+    for (b_chunk, o_chunk) in b
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(o.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let v = i16::from_le_bytes(*b_chunk);
+        o_chunk.copy_from_slice(&v.wrapping_abs().to_le_bytes());
     }
     V256::from_bytes(o)
 }
@@ -2930,9 +2960,14 @@ pub unsafe fn xvabs_h(a: V256) -> V256 {
 pub unsafe fn xvabs_d(a: V256) -> V256 {
     let b = a.to_bytes();
     let mut o = [0u8; 32];
-    for i in 0..4 {
-        let v = i64::from_le_bytes(b[i * 8..i * 8 + 8].try_into().unwrap());
-        o[i * 8..i * 8 + 8].copy_from_slice(&v.wrapping_abs().to_le_bytes());
+    for (b_chunk, o_chunk) in b
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(o.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let v = i64::from_le_bytes(*b_chunk);
+        o_chunk.copy_from_slice(&v.wrapping_abs().to_le_bytes());
     }
     V256::from_bytes(o)
 }
@@ -2960,9 +2995,14 @@ pub unsafe fn xvneg_b(a: V256) -> V256 {
 pub unsafe fn xvneg_h(a: V256) -> V256 {
     let b = a.to_bytes();
     let mut o = [0u8; 32];
-    for i in 0..16 {
-        let v = i16::from_le_bytes([b[i * 2], b[i * 2 + 1]]);
-        o[i * 2..i * 2 + 2].copy_from_slice(&v.wrapping_neg().to_le_bytes());
+    for (b_chunk, o_chunk) in b
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(o.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let v = i16::from_le_bytes(*b_chunk);
+        o_chunk.copy_from_slice(&v.wrapping_neg().to_le_bytes());
     }
     V256::from_bytes(o)
 }
@@ -2977,9 +3017,14 @@ pub unsafe fn xvneg_h(a: V256) -> V256 {
 pub unsafe fn xvneg_d(a: V256) -> V256 {
     let b = a.to_bytes();
     let mut o = [0u8; 32];
-    for i in 0..4 {
-        let v = i64::from_le_bytes(b[i * 8..i * 8 + 8].try_into().unwrap());
-        o[i * 8..i * 8 + 8].copy_from_slice(&v.wrapping_neg().to_le_bytes());
+    for (b_chunk, o_chunk) in b
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(o.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let v = i64::from_le_bytes(*b_chunk);
+        o_chunk.copy_from_slice(&v.wrapping_neg().to_le_bytes());
     }
     V256::from_bytes(o)
 }
@@ -3028,10 +3073,16 @@ pub unsafe fn xvmax(a: V256, b: V256) -> V256 {
     let a = a.to_bytes();
     let b = b.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
-        let y = i32::from_le_bytes(b[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&x.max(y).to_le_bytes());
+    for ((a_chunk, b_chunk), out_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(b.as_chunks::<4>().0.iter())
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        let y = i32::from_le_bytes(*b_chunk);
+        out_chunk.copy_from_slice(&x.max(y).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -3047,10 +3098,16 @@ pub unsafe fn xvmin(a: V256, b: V256) -> V256 {
     let a = a.to_bytes();
     let b = b.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
-        let y = i32::from_le_bytes(b[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&x.min(y).to_le_bytes());
+    for ((a_chunk, b_chunk), out_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(b.as_chunks::<4>().0.iter())
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        let y = i32::from_le_bytes(*b_chunk);
+        out_chunk.copy_from_slice(&x.min(y).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -3066,11 +3123,17 @@ pub unsafe fn xvseq(a: V256, b: V256) -> V256 {
     let a = a.to_bytes();
     let b = b.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
-        let y = i32::from_le_bytes(b[lane * 4..lane * 4 + 4].try_into().unwrap());
+    for ((a_chunk, b_chunk), out_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(b.as_chunks::<4>().0.iter())
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        let y = i32::from_le_bytes(*b_chunk);
         let value = if x == y { -1i32 } else { 0 };
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+        out_chunk.copy_from_slice(&value.to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -3086,11 +3149,17 @@ pub unsafe fn xvsle(a: V256, b: V256) -> V256 {
     let a = a.to_bytes();
     let b = b.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
-        let y = i32::from_le_bytes(b[lane * 4..lane * 4 + 4].try_into().unwrap());
+    for ((a_chunk, b_chunk), out_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(b.as_chunks::<4>().0.iter())
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        let y = i32::from_le_bytes(*b_chunk);
         let value = if x <= y { -1i32 } else { 0 };
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+        out_chunk.copy_from_slice(&value.to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -3106,11 +3175,17 @@ pub unsafe fn xvslt(a: V256, b: V256) -> V256 {
     let a = a.to_bytes();
     let b = b.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
-        let y = i32::from_le_bytes(b[lane * 4..lane * 4 + 4].try_into().unwrap());
+    for ((a_chunk, b_chunk), out_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(b.as_chunks::<4>().0.iter())
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        let y = i32::from_le_bytes(*b_chunk);
         let value = if x < y { -1i32 } else { 0 };
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+        out_chunk.copy_from_slice(&value.to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -3125,10 +3200,15 @@ pub unsafe fn xvslt(a: V256, b: V256) -> V256 {
 pub unsafe fn xvseqi(a: V256, imm: i32) -> V256 {
     let a = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+    for (a_chunk, out_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
         let value = if x == imm { -1i32 } else { 0 };
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+        out_chunk.copy_from_slice(&value.to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -3143,10 +3223,15 @@ pub unsafe fn xvseqi(a: V256, imm: i32) -> V256 {
 pub unsafe fn xvslei(a: V256, imm: i32) -> V256 {
     let a = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+    for (a_chunk, out_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
         let value = if x <= imm { -1i32 } else { 0 };
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+        out_chunk.copy_from_slice(&value.to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -3161,10 +3246,15 @@ pub unsafe fn xvslei(a: V256, imm: i32) -> V256 {
 pub unsafe fn xvslti(a: V256, imm: i32) -> V256 {
     let a = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+    for (a_chunk, out_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
         let value = if x < imm { -1i32 } else { 0 };
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+        out_chunk.copy_from_slice(&value.to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -3248,9 +3338,14 @@ pub unsafe fn xvshuf4i<const IMM: u8>(a: V256) -> V256 {
 pub unsafe fn xvsll(a: V256, shift: i32) -> V256 {
     let a = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&(x << ((shift as u32) & 31)).to_le_bytes());
+    for (a_chunk, out_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        out_chunk.copy_from_slice(&(x << ((shift as u32) & 31)).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -3267,9 +3362,14 @@ pub unsafe fn xvsll(a: V256, shift: i32) -> V256 {
 pub unsafe fn xvsrl(a: V256, shift: i32) -> V256 {
     let a = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let x = u32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&(x >> ((shift as u32) & 31)).to_le_bytes());
+    for (a_chunk, out_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = u32::from_le_bytes(*a_chunk);
+        out_chunk.copy_from_slice(&(x >> ((shift as u32) & 31)).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -3286,9 +3386,14 @@ pub unsafe fn xvsrl(a: V256, shift: i32) -> V256 {
 pub unsafe fn xvsra(a: V256, shift: i32) -> V256 {
     let a = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&(x >> ((shift as u32) & 31)).to_le_bytes());
+    for (a_chunk, out_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        out_chunk.copy_from_slice(&(x >> ((shift as u32) & 31)).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -3303,9 +3408,14 @@ pub unsafe fn xvsra(a: V256, shift: i32) -> V256 {
 pub unsafe fn xvslli<const SHIFT: u32>(a: V256) -> V256 {
     let a = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&(x << (SHIFT & 31)).to_le_bytes());
+    for (a_chunk, out_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        out_chunk.copy_from_slice(&(x << (SHIFT & 31)).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -3320,9 +3430,14 @@ pub unsafe fn xvslli<const SHIFT: u32>(a: V256) -> V256 {
 pub unsafe fn xvsrli<const SHIFT: u32>(a: V256) -> V256 {
     let a = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let x = u32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&(x >> (SHIFT & 31)).to_le_bytes());
+    for (a_chunk, out_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = u32::from_le_bytes(*a_chunk);
+        out_chunk.copy_from_slice(&(x >> (SHIFT & 31)).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -3337,9 +3452,14 @@ pub unsafe fn xvsrli<const SHIFT: u32>(a: V256) -> V256 {
 pub unsafe fn xvsrai<const SHIFT: u32>(a: V256) -> V256 {
     let a = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&(x >> (SHIFT & 31)).to_le_bytes());
+    for (a_chunk, out_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        out_chunk.copy_from_slice(&(x >> (SHIFT & 31)).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -3387,9 +3507,9 @@ pub unsafe fn xvpackod(a: V256, b: V256) -> V256 {
 pub unsafe fn vext2xv_h_b(a: V256) -> V256 {
     let a = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = (a[lane] as i8 as i16).to_le_bytes();
-        out[lane * 2..lane * 2 + 2].copy_from_slice(&value);
+    for (elem, chunk) in a.iter().zip(out.as_chunks_mut::<2>().0.iter_mut()) {
+        let value = (*elem as i8 as i16).to_le_bytes();
+        *chunk = value;
     }
     V256::from_bytes(out)
 }
@@ -3410,10 +3530,15 @@ pub unsafe fn xvsat<const SAT: u32>(a: V256) -> V256 {
     let min = -(1i64 << SAT);
     let a = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let x = i32::from_le_bytes(a[lane * 4..lane * 4 + 4].try_into().unwrap());
+    for (a_chunk, out_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
         let value = (x as i64).clamp(min, max) as i32;
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+        out_chunk.copy_from_slice(&value.to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -3552,16 +3677,21 @@ pub unsafe fn xvfcmp<const COND: u32>(a: V256, b: V256) -> V256 {
     let a = a.to_bytes();
     let b = b.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let offset = lane * 4;
-        let x = f32::from_le_bytes(a[offset..offset + 4].try_into().unwrap());
-        let y = f32::from_le_bytes(b[offset..offset + 4].try_into().unwrap());
+    for ((a_chunk, b_chunk), out_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(b.as_chunks::<4>().0.iter())
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = f32::from_le_bytes(*a_chunk);
+        let y = f32::from_le_bytes(*b_chunk);
         let hit = (less && x < y)
             || (equal && x == y)
             || (unordered && (x.is_nan() || y.is_nan()))
             || (ordered_ne && (x < y || x > y));
         let value = if hit { -1i32 } else { 0 };
-        out[offset..offset + 4].copy_from_slice(&value.to_le_bytes());
+        out_chunk.copy_from_slice(&value.to_le_bytes());
     }
     V256::from_bytes(out)
 }

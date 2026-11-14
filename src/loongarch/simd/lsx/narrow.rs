@@ -79,25 +79,20 @@ macro_rules! narrow_logical_b_h {
             let a = a.to_bytes();
             let b = b.to_bytes();
             let mut out = [0u8; 16];
-            for lane in 0..8 {
+            for (lane, (a_chunk, b_chunk)) in a.as_chunks::<2>().0.iter().zip(b.as_chunks::<2>().0.iter()).enumerate() {
                 let av = u16::from_le_bytes(
-                    a[0 + lane * 2..0 + lane * 2 + 2]
-                        .try_into()
-                        .unwrap(),
+                    *a_chunk,
                 );
                 let bv = u16::from_le_bytes(
-                    b[0 + lane * 2..0 + lane * 2 + 2]
-                        .try_into()
-                        .unwrap(),
+                    *b_chunk,
                 );
                 let a_shifted = $op(av, IMM) as u16;
                 let b_shifted = $op(bv, IMM) as u16;
-                out[0 + lane * 1..0 + lane * 1 + 1]
+                out[lane * 1..lane * 1 + 1]
                     .copy_from_slice(&a_shifted.to_le_bytes()[..1]);
                 out[0 + lane * 1 + 8
                     ..0 + lane * 1 + 8 + 1]
-                    .copy_from_slice(&b_shifted.to_le_bytes()[..1]);
-            }
+                    .copy_from_slice(&b_shifted.to_le_bytes()[..1]);}
             V128::from_bytes(out)
         }
     };
@@ -112,25 +107,20 @@ macro_rules! narrow_arith_b_h {
             let a = a.to_bytes();
             let b = b.to_bytes();
             let mut out = [0u8; 16];
-            for lane in 0..8 {
+            for (lane, (a_chunk, b_chunk)) in a.as_chunks::<2>().0.iter().zip(b.as_chunks::<2>().0.iter()).enumerate() {
                 let av = i16::from_le_bytes(
-                    a[0 + lane * 2..0 + lane * 2 + 2]
-                        .try_into()
-                        .unwrap(),
+                    *a_chunk,
                 );
                 let bv = i16::from_le_bytes(
-                    b[0 + lane * 2..0 + lane * 2 + 2]
-                        .try_into()
-                        .unwrap(),
+                    *b_chunk,
                 );
                 let a_shifted = $op(av, IMM) as u16;
                 let b_shifted = $op(bv, IMM) as u16;
-                out[0 + lane * 1..0 + lane * 1 + 1]
+                out[lane * 1..lane * 1 + 1]
                     .copy_from_slice(&a_shifted.to_le_bytes()[..1]);
                 out[0 + lane * 1 + 8
                     ..0 + lane * 1 + 8 + 1]
-                    .copy_from_slice(&b_shifted.to_le_bytes()[..1]);
-            }
+                    .copy_from_slice(&b_shifted.to_le_bytes()[..1]);}
             V128::from_bytes(out)
         }
     };
@@ -142,11 +132,11 @@ pub fn vsllwil_h_b<const IMM: u32>(a: V128) -> V128 {
     const { assert!(IMM <= 7, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 16];
-    for lane in 0..8 {
-        let raw = u8::from_le_bytes(bytes[lane * 1..lane * 1 + 1].try_into().unwrap());
+    for (bytes_chunk, out_chunk) in bytes.iter().zip(out.as_chunks_mut::<2>().0.iter_mut()) {
+        let raw = *bytes_chunk;
         let value = (raw as i8) as i128;
         let widened = value << IMM;
-        out[lane * 2..lane * 2 + 2].copy_from_slice(&(widened as i16).to_le_bytes());
+        out_chunk.copy_from_slice(&(widened as i16).to_le_bytes());
     }
     V128::from_bytes(out)
 }
@@ -157,11 +147,11 @@ pub fn vsllwil_hu_bu<const IMM: u32>(a: V128) -> V128 {
     const { assert!(IMM <= 7, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 16];
-    for lane in 0..8 {
-        let raw = u8::from_le_bytes(bytes[lane * 1..lane * 1 + 1].try_into().unwrap());
+    for (bytes_chunk, out_chunk) in bytes.iter().zip(out.as_chunks_mut::<2>().0.iter_mut()) {
+        let raw = *bytes_chunk;
         let value = (raw as u8) as i128;
         let widened = value << IMM;
-        out[lane * 2..lane * 2 + 2].copy_from_slice(&(widened as u16).to_le_bytes());
+        out_chunk.copy_from_slice(&(widened as u16).to_le_bytes());
     }
     V128::from_bytes(out)
 }
@@ -315,25 +305,20 @@ macro_rules! narrow_logical_h_w {
             let a = a.to_bytes();
             let b = b.to_bytes();
             let mut out = [0u8; 16];
-            for lane in 0..4 {
+            for (lane, (a_chunk, b_chunk)) in a.as_chunks::<4>().0.iter().zip(b.as_chunks::<4>().0.iter()).enumerate() {
                 let av = u32::from_le_bytes(
-                    a[0 + lane * 4..0 + lane * 4 + 4]
-                        .try_into()
-                        .unwrap(),
+                    *a_chunk,
                 );
                 let bv = u32::from_le_bytes(
-                    b[0 + lane * 4..0 + lane * 4 + 4]
-                        .try_into()
-                        .unwrap(),
+                    *b_chunk,
                 );
                 let a_shifted = $op(av, IMM) as u32;
                 let b_shifted = $op(bv, IMM) as u32;
-                out[0 + lane * 2..0 + lane * 2 + 2]
+                out[lane * 2..lane * 2 + 2]
                     .copy_from_slice(&a_shifted.to_le_bytes()[..2]);
                 out[0 + lane * 2 + 8
                     ..0 + lane * 2 + 8 + 2]
-                    .copy_from_slice(&b_shifted.to_le_bytes()[..2]);
-            }
+                    .copy_from_slice(&b_shifted.to_le_bytes()[..2]);}
             V128::from_bytes(out)
         }
     };
@@ -348,25 +333,20 @@ macro_rules! narrow_arith_h_w {
             let a = a.to_bytes();
             let b = b.to_bytes();
             let mut out = [0u8; 16];
-            for lane in 0..4 {
+            for (lane, (a_chunk, b_chunk)) in a.as_chunks::<4>().0.iter().zip(b.as_chunks::<4>().0.iter()).enumerate() {
                 let av = i32::from_le_bytes(
-                    a[0 + lane * 4..0 + lane * 4 + 4]
-                        .try_into()
-                        .unwrap(),
+                    *a_chunk,
                 );
                 let bv = i32::from_le_bytes(
-                    b[0 + lane * 4..0 + lane * 4 + 4]
-                        .try_into()
-                        .unwrap(),
+                    *b_chunk,
                 );
                 let a_shifted = $op(av, IMM) as u32;
                 let b_shifted = $op(bv, IMM) as u32;
-                out[0 + lane * 2..0 + lane * 2 + 2]
+                out[lane * 2..lane * 2 + 2]
                     .copy_from_slice(&a_shifted.to_le_bytes()[..2]);
                 out[0 + lane * 2 + 8
                     ..0 + lane * 2 + 8 + 2]
-                    .copy_from_slice(&b_shifted.to_le_bytes()[..2]);
-            }
+                    .copy_from_slice(&b_shifted.to_le_bytes()[..2]);}
             V128::from_bytes(out)
         }
     };
@@ -378,11 +358,16 @@ pub fn vsllwil_w_h<const IMM: u32>(a: V128) -> V128 {
     const { assert!(IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 16];
-    for lane in 0..4 {
-        let raw = u16::from_le_bytes(bytes[lane * 2..lane * 2 + 2].try_into().unwrap());
+    for (bytes_chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let raw = u16::from_le_bytes(*bytes_chunk);
         let value = (raw as i16) as i128;
         let widened = value << IMM;
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&(widened as i32).to_le_bytes());
+        out_chunk.copy_from_slice(&(widened as i32).to_le_bytes());
     }
     V128::from_bytes(out)
 }
@@ -393,11 +378,16 @@ pub fn vsllwil_wu_hu<const IMM: u32>(a: V128) -> V128 {
     const { assert!(IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 16];
-    for lane in 0..4 {
-        let raw = u16::from_le_bytes(bytes[lane * 2..lane * 2 + 2].try_into().unwrap());
+    for (bytes_chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let raw = u16::from_le_bytes(*bytes_chunk);
         let value = (raw as u16) as i128;
         let widened = value << IMM;
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&(widened as u32).to_le_bytes());
+        out_chunk.copy_from_slice(&(widened as u32).to_le_bytes());
     }
     V128::from_bytes(out)
 }
@@ -551,25 +541,20 @@ macro_rules! narrow_logical_w_d {
             let a = a.to_bytes();
             let b = b.to_bytes();
             let mut out = [0u8; 16];
-            for lane in 0..2 {
+            for (lane, (a_chunk, b_chunk)) in a.as_chunks::<8>().0.iter().zip(b.as_chunks::<8>().0.iter()).enumerate() {
                 let av = u64::from_le_bytes(
-                    a[0 + lane * 8..0 + lane * 8 + 8]
-                        .try_into()
-                        .unwrap(),
+                    *a_chunk,
                 );
                 let bv = u64::from_le_bytes(
-                    b[0 + lane * 8..0 + lane * 8 + 8]
-                        .try_into()
-                        .unwrap(),
+                    *b_chunk,
                 );
                 let a_shifted = $op(av, IMM) as u64;
                 let b_shifted = $op(bv, IMM) as u64;
-                out[0 + lane * 4..0 + lane * 4 + 4]
+                out[lane * 4..lane * 4 + 4]
                     .copy_from_slice(&a_shifted.to_le_bytes()[..4]);
                 out[0 + lane * 4 + 8
                     ..0 + lane * 4 + 8 + 4]
-                    .copy_from_slice(&b_shifted.to_le_bytes()[..4]);
-            }
+                    .copy_from_slice(&b_shifted.to_le_bytes()[..4]);}
             V128::from_bytes(out)
         }
     };
@@ -584,25 +569,20 @@ macro_rules! narrow_arith_w_d {
             let a = a.to_bytes();
             let b = b.to_bytes();
             let mut out = [0u8; 16];
-            for lane in 0..2 {
+            for (lane, (a_chunk, b_chunk)) in a.as_chunks::<8>().0.iter().zip(b.as_chunks::<8>().0.iter()).enumerate() {
                 let av = i64::from_le_bytes(
-                    a[0 + lane * 8..0 + lane * 8 + 8]
-                        .try_into()
-                        .unwrap(),
+                    *a_chunk,
                 );
                 let bv = i64::from_le_bytes(
-                    b[0 + lane * 8..0 + lane * 8 + 8]
-                        .try_into()
-                        .unwrap(),
+                    *b_chunk,
                 );
                 let a_shifted = $op(av, IMM) as u64;
                 let b_shifted = $op(bv, IMM) as u64;
-                out[0 + lane * 4..0 + lane * 4 + 4]
+                out[lane * 4..lane * 4 + 4]
                     .copy_from_slice(&a_shifted.to_le_bytes()[..4]);
                 out[0 + lane * 4 + 8
                     ..0 + lane * 4 + 8 + 4]
-                    .copy_from_slice(&b_shifted.to_le_bytes()[..4]);
-            }
+                    .copy_from_slice(&b_shifted.to_le_bytes()[..4]);}
             V128::from_bytes(out)
         }
     };
@@ -614,11 +594,16 @@ pub fn vsllwil_d_w<const IMM: u32>(a: V128) -> V128 {
     const { assert!(IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 16];
-    for lane in 0..2 {
-        let raw = u32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
+    for (bytes_chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let raw = u32::from_le_bytes(*bytes_chunk);
         let value = (raw as i32) as i128;
         let widened = value << IMM;
-        out[lane * 8..lane * 8 + 8].copy_from_slice(&(widened as i64).to_le_bytes());
+        out_chunk.copy_from_slice(&(widened as i64).to_le_bytes());
     }
     V128::from_bytes(out)
 }
@@ -629,11 +614,16 @@ pub fn vsllwil_du_wu<const IMM: u32>(a: V128) -> V128 {
     const { assert!(IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 16];
-    for lane in 0..2 {
-        let raw = u32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
+    for (bytes_chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let raw = u32::from_le_bytes(*bytes_chunk);
         let value = (raw as u32) as i128;
         let widened = value << IMM;
-        out[lane * 8..lane * 8 + 8].copy_from_slice(&(widened as u64).to_le_bytes());
+        out_chunk.copy_from_slice(&(widened as u64).to_le_bytes());
     }
     V128::from_bytes(out)
 }

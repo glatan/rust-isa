@@ -26,7 +26,7 @@ fn sum_of_absolute_differences() {
     let sad_bytes = sad.to_bytes();
     for lane in 0..16 {
         assert_eq!(
-            i16::from_le_bytes(sad_bytes[lane * 2..lane * 2 + 2].try_into().unwrap()),
+            i16::from_le_bytes(*sad_bytes[lane * 2..].first_chunk().unwrap()),
             4
         );
     }

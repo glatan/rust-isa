@@ -13,10 +13,10 @@ pub unsafe fn xvseqi_b<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as i8;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as i8;
         if value == IMM as i8 {
-            out[lane] = 0xff;
+            *out_elem = 0xff;
         }
     }
     V256::from_bytes(out)
@@ -33,10 +33,15 @@ pub unsafe fn xvseqi_h<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = i16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = i16::from_le_bytes(*chunk);
         if value == IMM as i16 {
-            out[lane * 2..lane * 2 + 2].fill(0xff);
+            out_chunk.fill(0xff);
         }
     }
     V256::from_bytes(out)
@@ -53,10 +58,15 @@ pub unsafe fn xvseqi_w<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = i32::from_le_bytes(*chunk);
         if value == IMM as i32 {
-            out[lane * 4..lane * 4 + 4].fill(0xff);
+            out_chunk.fill(0xff);
         }
     }
     V256::from_bytes(out)
@@ -73,10 +83,15 @@ pub unsafe fn xvseqi_d<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = i64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = i64::from_le_bytes(*chunk);
         if value == IMM as i64 {
-            out[lane * 8..lane * 8 + 8].fill(0xff);
+            out_chunk.fill(0xff);
         }
     }
     V256::from_bytes(out)
@@ -93,10 +108,10 @@ pub unsafe fn xvslei_b<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as i8;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as i8;
         if value <= IMM as i8 {
-            out[lane] = 0xff;
+            *out_elem = 0xff;
         }
     }
     V256::from_bytes(out)
@@ -113,10 +128,10 @@ pub unsafe fn xvslei_bu<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as u8;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as u8;
         if value <= IMM as u8 {
-            out[lane] = 0xff;
+            *out_elem = 0xff;
         }
     }
     V256::from_bytes(out)
@@ -133,10 +148,15 @@ pub unsafe fn xvslei_h<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = i16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = i16::from_le_bytes(*chunk);
         if value <= IMM as i16 {
-            out[lane * 2..lane * 2 + 2].fill(0xff);
+            out_chunk.fill(0xff);
         }
     }
     V256::from_bytes(out)
@@ -153,10 +173,15 @@ pub unsafe fn xvslei_hu<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = u16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = u16::from_le_bytes(*chunk);
         if value <= IMM as u16 {
-            out[lane * 2..lane * 2 + 2].fill(0xff);
+            out_chunk.fill(0xff);
         }
     }
     V256::from_bytes(out)
@@ -173,10 +198,15 @@ pub unsafe fn xvslei_w<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = i32::from_le_bytes(*chunk);
         if value <= IMM as i32 {
-            out[lane * 4..lane * 4 + 4].fill(0xff);
+            out_chunk.fill(0xff);
         }
     }
     V256::from_bytes(out)
@@ -193,10 +223,15 @@ pub unsafe fn xvslei_wu<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = u32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = u32::from_le_bytes(*chunk);
         if value <= IMM as u32 {
-            out[lane * 4..lane * 4 + 4].fill(0xff);
+            out_chunk.fill(0xff);
         }
     }
     V256::from_bytes(out)
@@ -213,10 +248,15 @@ pub unsafe fn xvslei_d<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = i64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = i64::from_le_bytes(*chunk);
         if value <= IMM as i64 {
-            out[lane * 8..lane * 8 + 8].fill(0xff);
+            out_chunk.fill(0xff);
         }
     }
     V256::from_bytes(out)
@@ -233,10 +273,15 @@ pub unsafe fn xvslei_du<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = u64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = u64::from_le_bytes(*chunk);
         if value <= IMM as u64 {
-            out[lane * 8..lane * 8 + 8].fill(0xff);
+            out_chunk.fill(0xff);
         }
     }
     V256::from_bytes(out)
@@ -253,10 +298,10 @@ pub unsafe fn xvslti_b<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as i8;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as i8;
         if value < IMM as i8 {
-            out[lane] = 0xff;
+            *out_elem = 0xff;
         }
     }
     V256::from_bytes(out)
@@ -273,10 +318,10 @@ pub unsafe fn xvslti_bu<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as u8;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as u8;
         if value < IMM as u8 {
-            out[lane] = 0xff;
+            *out_elem = 0xff;
         }
     }
     V256::from_bytes(out)
@@ -293,10 +338,15 @@ pub unsafe fn xvslti_h<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = i16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = i16::from_le_bytes(*chunk);
         if value < IMM as i16 {
-            out[lane * 2..lane * 2 + 2].fill(0xff);
+            out_chunk.fill(0xff);
         }
     }
     V256::from_bytes(out)
@@ -313,10 +363,15 @@ pub unsafe fn xvslti_hu<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = u16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = u16::from_le_bytes(*chunk);
         if value < IMM as u16 {
-            out[lane * 2..lane * 2 + 2].fill(0xff);
+            out_chunk.fill(0xff);
         }
     }
     V256::from_bytes(out)
@@ -333,10 +388,15 @@ pub unsafe fn xvslti_w<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = i32::from_le_bytes(*chunk);
         if value < IMM as i32 {
-            out[lane * 4..lane * 4 + 4].fill(0xff);
+            out_chunk.fill(0xff);
         }
     }
     V256::from_bytes(out)
@@ -353,10 +413,15 @@ pub unsafe fn xvslti_wu<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = u32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = u32::from_le_bytes(*chunk);
         if value < IMM as u32 {
-            out[lane * 4..lane * 4 + 4].fill(0xff);
+            out_chunk.fill(0xff);
         }
     }
     V256::from_bytes(out)
@@ -373,10 +438,15 @@ pub unsafe fn xvslti_d<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = i64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = i64::from_le_bytes(*chunk);
         if value < IMM as i64 {
-            out[lane * 8..lane * 8 + 8].fill(0xff);
+            out_chunk.fill(0xff);
         }
     }
     V256::from_bytes(out)
@@ -393,10 +463,15 @@ pub unsafe fn xvslti_du<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = u64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = u64::from_le_bytes(*chunk);
         if value < IMM as u64 {
-            out[lane * 8..lane * 8 + 8].fill(0xff);
+            out_chunk.fill(0xff);
         }
     }
     V256::from_bytes(out)
@@ -413,9 +488,9 @@ pub unsafe fn xvslli_b<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 7, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as u8;
-        out[lane] = value.wrapping_shl(IMM) as u8;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as u8;
+        *out_elem = value.wrapping_shl(IMM) as u8;
     }
     V256::from_bytes(out)
 }
@@ -431,10 +506,14 @@ pub unsafe fn xvslli_h<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = u16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
-        out[lane * 2..lane * 2 + 2]
-            .copy_from_slice(&(value.wrapping_shl(IMM) as u16).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = u16::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.wrapping_shl(IMM) as u16).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -450,10 +529,14 @@ pub unsafe fn xvslli_w<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = u32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4]
-            .copy_from_slice(&(value.wrapping_shl(IMM) as u32).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = u32::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.wrapping_shl(IMM) as u32).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -469,10 +552,14 @@ pub unsafe fn xvslli_d<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 63, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = u64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
-        out[lane * 8..lane * 8 + 8]
-            .copy_from_slice(&(value.wrapping_shl(IMM) as u64).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = u64::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.wrapping_shl(IMM) as u64).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -488,9 +575,9 @@ pub unsafe fn xvsrli_b<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 7, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as u8;
-        out[lane] = value.wrapping_shr(IMM) as u8;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as u8;
+        *out_elem = value.wrapping_shr(IMM) as u8;
     }
     V256::from_bytes(out)
 }
@@ -506,10 +593,14 @@ pub unsafe fn xvsrli_h<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = u16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
-        out[lane * 2..lane * 2 + 2]
-            .copy_from_slice(&(value.wrapping_shr(IMM) as u16).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = u16::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.wrapping_shr(IMM) as u16).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -525,10 +616,14 @@ pub unsafe fn xvsrli_w<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = u32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4]
-            .copy_from_slice(&(value.wrapping_shr(IMM) as u32).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = u32::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.wrapping_shr(IMM) as u32).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -544,10 +639,14 @@ pub unsafe fn xvsrli_d<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 63, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = u64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
-        out[lane * 8..lane * 8 + 8]
-            .copy_from_slice(&(value.wrapping_shr(IMM) as u64).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = u64::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.wrapping_shr(IMM) as u64).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -563,9 +662,9 @@ pub unsafe fn xvsrai_b<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 7, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as i8;
-        out[lane] = value.wrapping_shr(IMM) as u8;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as i8;
+        *out_elem = value.wrapping_shr(IMM) as u8;
     }
     V256::from_bytes(out)
 }
@@ -581,10 +680,14 @@ pub unsafe fn xvsrai_h<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = i16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
-        out[lane * 2..lane * 2 + 2]
-            .copy_from_slice(&(value.wrapping_shr(IMM) as u16).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = i16::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.wrapping_shr(IMM) as u16).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -600,10 +703,14 @@ pub unsafe fn xvsrai_w<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4]
-            .copy_from_slice(&(value.wrapping_shr(IMM) as u32).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = i32::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.wrapping_shr(IMM) as u32).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -619,10 +726,14 @@ pub unsafe fn xvsrai_d<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 63, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = i64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
-        out[lane * 8..lane * 8 + 8]
-            .copy_from_slice(&(value.wrapping_shr(IMM) as u64).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = i64::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.wrapping_shr(IMM) as u64).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -638,9 +749,9 @@ pub unsafe fn xvmaxi_b<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as i8;
-        out[lane] = value.max(IMM as i8) as u8;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as i8;
+        *out_elem = value.max(IMM as i8) as u8;
     }
     V256::from_bytes(out)
 }
@@ -656,9 +767,9 @@ pub unsafe fn xvmaxi_bu<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as u8;
-        out[lane] = value.max(IMM as u8) as u8;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as u8;
+        *out_elem = value.max(IMM as u8) as u8;
     }
     V256::from_bytes(out)
 }
@@ -674,9 +785,14 @@ pub unsafe fn xvmaxi_h<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = i16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
-        out[lane * 2..lane * 2 + 2].copy_from_slice(&(value.max(IMM as i16) as u16).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = i16::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.max(IMM as i16) as u16).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -692,9 +808,14 @@ pub unsafe fn xvmaxi_hu<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = u16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
-        out[lane * 2..lane * 2 + 2].copy_from_slice(&(value.max(IMM as u16) as u16).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = u16::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.max(IMM as u16) as u16).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -710,9 +831,14 @@ pub unsafe fn xvmaxi_w<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&(value.max(IMM as i32) as u32).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = i32::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.max(IMM as i32) as u32).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -728,9 +854,14 @@ pub unsafe fn xvmaxi_wu<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = u32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&(value.max(IMM as u32) as u32).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = u32::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.max(IMM as u32) as u32).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -746,9 +877,14 @@ pub unsafe fn xvmaxi_d<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = i64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
-        out[lane * 8..lane * 8 + 8].copy_from_slice(&(value.max(IMM as i64) as u64).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = i64::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.max(IMM as i64) as u64).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -764,9 +900,14 @@ pub unsafe fn xvmaxi_du<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = u64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
-        out[lane * 8..lane * 8 + 8].copy_from_slice(&(value.max(IMM as u64) as u64).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = u64::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.max(IMM as u64) as u64).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -782,9 +923,9 @@ pub unsafe fn xvmini_b<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as i8;
-        out[lane] = value.min(IMM as i8) as u8;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as i8;
+        *out_elem = value.min(IMM as i8) as u8;
     }
     V256::from_bytes(out)
 }
@@ -800,9 +941,9 @@ pub unsafe fn xvmini_bu<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as u8;
-        out[lane] = value.min(IMM as u8) as u8;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as u8;
+        *out_elem = value.min(IMM as u8) as u8;
     }
     V256::from_bytes(out)
 }
@@ -818,9 +959,14 @@ pub unsafe fn xvmini_h<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = i16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
-        out[lane * 2..lane * 2 + 2].copy_from_slice(&(value.min(IMM as i16) as u16).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = i16::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.min(IMM as i16) as u16).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -836,9 +982,14 @@ pub unsafe fn xvmini_hu<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = u16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
-        out[lane * 2..lane * 2 + 2].copy_from_slice(&(value.min(IMM as u16) as u16).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = u16::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.min(IMM as u16) as u16).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -854,9 +1005,14 @@ pub unsafe fn xvmini_w<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&(value.min(IMM as i32) as u32).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = i32::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.min(IMM as i32) as u32).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -872,9 +1028,14 @@ pub unsafe fn xvmini_wu<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = u32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&(value.min(IMM as u32) as u32).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = u32::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.min(IMM as u32) as u32).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -890,9 +1051,14 @@ pub unsafe fn xvmini_d<const IMM: i32>(a: V256) -> V256 {
     const { assert!(IMM >= -16 && IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = i64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
-        out[lane * 8..lane * 8 + 8].copy_from_slice(&(value.min(IMM as i64) as u64).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = i64::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.min(IMM as i64) as u64).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -908,9 +1074,14 @@ pub unsafe fn xvmini_du<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM >= 0 && IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = u64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
-        out[lane * 8..lane * 8 + 8].copy_from_slice(&(value.min(IMM as u64) as u64).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = u64::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.min(IMM as u64) as u64).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -926,9 +1097,9 @@ pub unsafe fn xvrotri_b<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 7, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as u8;
-        out[lane] = (value.rotate_right(IMM)) as u8;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as u8;
+        *out_elem = (value.rotate_right(IMM)) as u8;
     }
     V256::from_bytes(out)
 }
@@ -944,9 +1115,14 @@ pub unsafe fn xvrotri_h<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = u16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
-        out[lane * 2..lane * 2 + 2].copy_from_slice(&(value.rotate_right(IMM)).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = u16::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.rotate_right(IMM)).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -962,9 +1138,14 @@ pub unsafe fn xvrotri_w<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = u32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&(value.rotate_right(IMM)).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = u32::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.rotate_right(IMM)).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -980,9 +1161,14 @@ pub unsafe fn xvrotri_d<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 63, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = u64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
-        out[lane * 8..lane * 8 + 8].copy_from_slice(&(value.rotate_right(IMM)).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = u64::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value.rotate_right(IMM)).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -998,9 +1184,9 @@ pub unsafe fn xvbitclri_b<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 7, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as u8;
-        out[lane] = (value & !(1u8 << IMM)) as u8;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as u8;
+        *out_elem = (value & !(1u8 << IMM)) as u8;
     }
     V256::from_bytes(out)
 }
@@ -1016,9 +1202,14 @@ pub unsafe fn xvbitclri_h<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = u16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
-        out[lane * 2..lane * 2 + 2].copy_from_slice(&(value & !(1u16 << IMM)).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = u16::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value & !(1u16 << IMM)).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1034,9 +1225,14 @@ pub unsafe fn xvbitclri_w<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = u32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&(value & !(1u32 << IMM)).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = u32::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value & !(1u32 << IMM)).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1052,9 +1248,14 @@ pub unsafe fn xvbitclri_d<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 63, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = u64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
-        out[lane * 8..lane * 8 + 8].copy_from_slice(&(value & !(1u64 << IMM)).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = u64::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value & !(1u64 << IMM)).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1070,9 +1271,9 @@ pub unsafe fn xvbitseti_b<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 7, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as u8;
-        out[lane] = (value | (1u8 << IMM)) as u8;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as u8;
+        *out_elem = (value | (1u8 << IMM)) as u8;
     }
     V256::from_bytes(out)
 }
@@ -1088,9 +1289,14 @@ pub unsafe fn xvbitseti_h<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = u16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
-        out[lane * 2..lane * 2 + 2].copy_from_slice(&(value | (1u16 << IMM)).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = u16::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value | (1u16 << IMM)).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1106,9 +1312,14 @@ pub unsafe fn xvbitseti_w<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = u32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&(value | (1u32 << IMM)).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = u32::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value | (1u32 << IMM)).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1124,9 +1335,14 @@ pub unsafe fn xvbitseti_d<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 63, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = u64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
-        out[lane * 8..lane * 8 + 8].copy_from_slice(&(value | (1u64 << IMM)).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = u64::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value | (1u64 << IMM)).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1142,9 +1358,9 @@ pub unsafe fn xvbitrevi_b<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 7, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as u8;
-        out[lane] = (value ^ (1u8 << IMM)) as u8;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as u8;
+        *out_elem = (value ^ (1u8 << IMM)) as u8;
     }
     V256::from_bytes(out)
 }
@@ -1160,9 +1376,14 @@ pub unsafe fn xvbitrevi_h<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = u16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
-        out[lane * 2..lane * 2 + 2].copy_from_slice(&(value ^ (1u16 << IMM)).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = u16::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value ^ (1u16 << IMM)).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1178,9 +1399,14 @@ pub unsafe fn xvbitrevi_w<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = u32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&(value ^ (1u32 << IMM)).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = u32::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value ^ (1u32 << IMM)).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1196,9 +1422,14 @@ pub unsafe fn xvbitrevi_d<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 63, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = u64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
-        out[lane * 8..lane * 8 + 8].copy_from_slice(&(value ^ (1u64 << IMM)).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = u64::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&(value ^ (1u64 << IMM)).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1213,8 +1444,8 @@ pub unsafe fn xvbitrevi_d<const IMM: u32>(a: V256) -> V256 {
 pub unsafe fn xvandi_b<const IMM: u8>(a: V256) -> V256 {
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        out[lane] = bytes[lane] & IMM;
+    for (out_elem, bytes_elem) in out.iter_mut().zip(bytes.iter()) {
+        *out_elem = *bytes_elem & IMM;
     }
     V256::from_bytes(out)
 }
@@ -1229,8 +1460,8 @@ pub unsafe fn xvandi_b<const IMM: u8>(a: V256) -> V256 {
 pub unsafe fn xvori_b<const IMM: u8>(a: V256) -> V256 {
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        out[lane] = bytes[lane] | IMM;
+    for (out_elem, bytes_elem) in out.iter_mut().zip(bytes.iter()) {
+        *out_elem = *bytes_elem | IMM;
     }
     V256::from_bytes(out)
 }
@@ -1245,8 +1476,8 @@ pub unsafe fn xvori_b<const IMM: u8>(a: V256) -> V256 {
 pub unsafe fn xvxori_b<const IMM: u8>(a: V256) -> V256 {
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        out[lane] = bytes[lane] ^ IMM;
+    for (out_elem, bytes_elem) in out.iter_mut().zip(bytes.iter()) {
+        *out_elem = *bytes_elem ^ IMM;
     }
     V256::from_bytes(out)
 }
@@ -1261,8 +1492,8 @@ pub unsafe fn xvxori_b<const IMM: u8>(a: V256) -> V256 {
 pub unsafe fn xvnori_b<const IMM: u8>(a: V256) -> V256 {
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        out[lane] = !(bytes[lane] | IMM);
+    for (out_elem, bytes_elem) in out.iter_mut().zip(bytes.iter()) {
+        *out_elem = !(*bytes_elem | IMM);
     }
     V256::from_bytes(out)
 }
@@ -1278,9 +1509,9 @@ pub unsafe fn xvaddi_bu<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as u8;
-        out[lane] = value.saturating_add(IMM as u8);
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as u8;
+        *out_elem = value.saturating_add(IMM as u8);
     }
     V256::from_bytes(out)
 }
@@ -1296,10 +1527,14 @@ pub unsafe fn xvaddi_hu<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = u16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
-        out[lane * 2..lane * 2 + 2]
-            .copy_from_slice(&value.saturating_add(IMM as u16).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = u16::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&value.saturating_add(IMM as u16).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1315,10 +1550,14 @@ pub unsafe fn xvaddi_wu<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = u32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4]
-            .copy_from_slice(&value.saturating_add(IMM as u32).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = u32::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&value.saturating_add(IMM as u32).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1334,10 +1573,14 @@ pub unsafe fn xvaddi_du<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = u64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
-        out[lane * 8..lane * 8 + 8]
-            .copy_from_slice(&value.saturating_add(IMM as u64).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = u64::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&value.saturating_add(IMM as u64).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1353,9 +1596,9 @@ pub unsafe fn xvsubi_bu<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as u8;
-        out[lane] = value.saturating_sub(IMM as u8);
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as u8;
+        *out_elem = value.saturating_sub(IMM as u8);
     }
     V256::from_bytes(out)
 }
@@ -1371,10 +1614,14 @@ pub unsafe fn xvsubi_hu<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = u16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
-        out[lane * 2..lane * 2 + 2]
-            .copy_from_slice(&value.saturating_sub(IMM as u16).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = u16::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&value.saturating_sub(IMM as u16).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1390,10 +1637,14 @@ pub unsafe fn xvsubi_wu<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = u32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4]
-            .copy_from_slice(&value.saturating_sub(IMM as u32).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = u32::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&value.saturating_sub(IMM as u32).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1409,10 +1660,14 @@ pub unsafe fn xvsubi_du<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = u64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
-        out[lane * 8..lane * 8 + 8]
-            .copy_from_slice(&value.saturating_sub(IMM as u64).to_le_bytes());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = u64::from_le_bytes(*chunk);
+        out_chunk.copy_from_slice(&value.saturating_sub(IMM as u64).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1428,14 +1683,14 @@ pub unsafe fn xvsrlri_b<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 7, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as u8;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as u8;
         let rounded = if IMM == 0 {
             value
         } else {
             (value >> IMM) + ((value >> (IMM - 1)) & 1)
         };
-        out[lane] = rounded as u8;
+        *out_elem = rounded as u8;
     }
     V256::from_bytes(out)
 }
@@ -1451,14 +1706,19 @@ pub unsafe fn xvsrlri_h<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = u16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = u16::from_le_bytes(*chunk);
         let rounded = if IMM == 0 {
             value
         } else {
             (value >> IMM) + ((value >> (IMM - 1)) & 1)
         };
-        out[lane * 2..lane * 2 + 2].copy_from_slice(&(rounded as u16).to_le_bytes());
+        out_chunk.copy_from_slice(&(rounded as u16).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1474,14 +1734,19 @@ pub unsafe fn xvsrlri_w<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = u32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = u32::from_le_bytes(*chunk);
         let rounded = if IMM == 0 {
             value
         } else {
             (value >> IMM) + ((value >> (IMM - 1)) & 1)
         };
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&(rounded as u32).to_le_bytes());
+        out_chunk.copy_from_slice(&(rounded as u32).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1497,14 +1762,19 @@ pub unsafe fn xvsrlri_d<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 63, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = u64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = u64::from_le_bytes(*chunk);
         let rounded = if IMM == 0 {
             value
         } else {
             (value >> IMM) + ((value >> (IMM - 1)) & 1)
         };
-        out[lane * 8..lane * 8 + 8].copy_from_slice(&(rounded as u64).to_le_bytes());
+        out_chunk.copy_from_slice(&(rounded as u64).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1520,14 +1790,14 @@ pub unsafe fn xvsrari_b<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 7, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        let value = bytes[lane] as i8;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as i8;
         let rounded = if IMM == 0 {
             value
         } else {
             (value >> IMM) + ((value >> (IMM - 1)) & 1)
         };
-        out[lane] = rounded as u8;
+        *out_elem = rounded as u8;
     }
     V256::from_bytes(out)
 }
@@ -1543,14 +1813,19 @@ pub unsafe fn xvsrari_h<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 15, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..16 {
-        let value = i16::from_le_bytes([bytes[lane * 2], bytes[lane * 2 + 1]]);
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = i16::from_le_bytes(*chunk);
         let rounded = if IMM == 0 {
             value
         } else {
             (value >> IMM) + ((value >> (IMM - 1)) & 1)
         };
-        out[lane * 2..lane * 2 + 2].copy_from_slice(&(rounded as u16).to_le_bytes());
+        out_chunk.copy_from_slice(&(rounded as u16).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1566,14 +1841,19 @@ pub unsafe fn xvsrari_w<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 31, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..8 {
-        let value = i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = i32::from_le_bytes(*chunk);
         let rounded = if IMM == 0 {
             value
         } else {
             (value >> IMM) + ((value >> (IMM - 1)) & 1)
         };
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&(rounded as u32).to_le_bytes());
+        out_chunk.copy_from_slice(&(rounded as u32).to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -1589,14 +1869,19 @@ pub unsafe fn xvsrari_d<const IMM: u32>(a: V256) -> V256 {
     const { assert!(IMM <= 63, "immediate out of range") };
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
-        let value = i64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap());
+    for (chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = i64::from_le_bytes(*chunk);
         let rounded = if IMM == 0 {
             value
         } else {
             (value >> IMM) + ((value >> (IMM - 1)) & 1)
         };
-        out[lane * 8..lane * 8 + 8].copy_from_slice(&(rounded as u64).to_le_bytes());
+        out_chunk.copy_from_slice(&(rounded as u64).to_le_bytes());
     }
     V256::from_bytes(out)
 }

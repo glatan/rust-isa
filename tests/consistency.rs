@@ -294,7 +294,7 @@ fn check_all_c_symbols_match() {
     let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("src");
     let mut by_dir: BTreeMap<PathBuf, Vec<PathBuf>> = BTreeMap::new();
     for path in files_under(&root) {
-        if path.extension().and_then(|ext| ext.to_str()) != Some("c") {
+        if path.extension().is_none_or(|ext| ext != "c") {
             continue;
         }
         by_dir
@@ -332,7 +332,7 @@ fn check_all_c_symbols_match() {
 fn check_fixture_exit_codes() {
     let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("fixtures");
     for path in files_under(&root) {
-        if path.file_name().and_then(|name| name.to_str()) != Some("main.rs") {
+        if path.file_name().is_none_or(|name| name != "main.rs") {
             continue;
         }
         let text = fs::read_to_string(&path).unwrap();
@@ -375,7 +375,7 @@ fn check_lane_arms_match_width() {
     let mut seen = 0;
     for entry in fs::read_dir(&root).unwrap() {
         let path = entry.unwrap().path();
-        if path.extension().and_then(|ext| ext.to_str()) != Some("rs") {
+        if path.extension().is_none_or(|ext| ext != "rs") {
             continue;
         }
         let text = fs::read_to_string(&path).unwrap();
@@ -416,7 +416,7 @@ fn fn_definitions(text: &str) -> Vec<(&str, &str, &str)> {
         }
         let name = &after_fn[..name_end];
         let mut chars = after_fn[name_end..].chars();
-        if chars.next() != Some('(') {
+        if chars.next().is_none_or(|ch| ch != '(') {
             rest = &after_fn[name_end..];
             continue;
         }
@@ -469,7 +469,7 @@ fn is_ident(name: &str) -> bool {
         && name
             .chars()
             .all(|char| char.is_alphanumeric() || char == '_')
-        && !name.starts_with(|char: char| char.is_numeric())
+        && !name.starts_with(|char: char| char.is_ascii_digit())
 }
 
 #[test]

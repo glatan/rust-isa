@@ -54,13 +54,13 @@ fn compare_masks_and_dot_products() {
     let bytes = mask.to_bytes();
     for lane in 0..8 {
         let expected = if lane % 2 == 0 { 0xff } else { 0x00 };
-        assert_eq!(&bytes[lane * 4..lane * 4 + 4], &[expected; 4]);
+        assert_eq!(bytes[lane * 4..].first_chunk().unwrap(), &[expected; 4]);
     }
     let mask = unsafe { vcmppd::<0>(f64x4([1.0, 2.0, 3.0, 4.0]), f64x4([1.0, 0.0, 3.0, 0.0])) };
     let bytes = mask.to_bytes();
     for lane in 0..4 {
         let expected = if lane % 2 == 0 { 0xff } else { 0x00 };
-        assert_eq!(&bytes[lane * 8..lane * 8 + 8], &[expected; 8]);
+        assert_eq!(bytes[lane * 8..].first_chunk().unwrap(), &[expected; 8]);
     }
 
     let mask = unsafe { vcmpss::<0>(f32x4([9.0; 4]), f32x4([9.0, 0.0, 0.0, 0.0])) }.to_bytes();

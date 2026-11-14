@@ -31,7 +31,7 @@ pub fn check_symbols(root: &Path, c_file: &str, prefix: &str) {
 pub fn rust_sources(dir: &Path) -> Vec<PathBuf> {
     files_under(dir)
         .into_iter()
-        .filter(|path| path.extension().and_then(|ext| ext.to_str()) == Some("rs"))
+        .filter(|path| path.extension().is_some_and(|ext| ext == "rs"))
         .collect()
 }
 
@@ -43,7 +43,7 @@ pub fn is_japanese(ch: char) -> bool {
 }
 
 pub fn function_at<'a>(text: &'a str, symbol: &str) -> &'a str {
-    let name = symbol.trim_end_matches(':');
+    let name = symbol.trim_suffix(':');
     let header = if name.starts_with('<') && name.ends_with('>') {
         format!("{name}:")
     } else {
@@ -437,7 +437,7 @@ pub fn body_at(wat: &str, start: usize) -> &str {
 pub fn newest_archive(dir: &Path, name: &str) -> PathBuf {
     files_under(dir)
         .into_iter()
-        .filter(|path| path.file_name().and_then(|file| file.to_str()) == Some(name))
+        .filter(|path| path.file_name().is_some_and(|file| file == name))
         .max_by_key(|path| {
             fs::metadata(path)
                 .and_then(|meta| meta.modified())

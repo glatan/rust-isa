@@ -7,7 +7,7 @@ fn main() {
     let out = PathBuf::from(env::var("OUT_DIR").unwrap());
     let source = manifest.join("toc.s");
     let object = out.join("toc.o");
-    println!("cargo:rerun-if-changed={}", source.display());
+    println!("cargo::rerun-if-changed={}", source.display());
     let status = Command::new("clang")
         .args(["--target=powerpc64le-unknown-linux-gnu", "-c"])
         .arg(&source)
@@ -16,5 +16,5 @@ fn main() {
         .status()
         .expect("clang");
     assert!(status.success());
-    println!("cargo:rustc-link-arg={}", object.display());
+    println!("cargo::rustc-link-arg={}", object.display());
 }

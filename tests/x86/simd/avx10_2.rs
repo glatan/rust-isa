@@ -19,33 +19,32 @@ fn avx10_2_available() -> bool {
 
 fn f32x4(values: [f32; 4]) -> V128 {
     let mut bytes = [0u8; 16];
-    for (lane, value) in values.iter().enumerate() {
-        bytes[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+    for (chunk, value) in bytes.as_chunks_mut::<4>().0.iter_mut().zip(values) {
+        *chunk = value.to_le_bytes();
     }
     V128::from_bytes(bytes)
 }
 
 fn f64x2(values: [f64; 2]) -> V128 {
     let mut bytes = [0u8; 16];
-    for (lane, value) in values.iter().enumerate() {
-        bytes[lane * 8..lane * 8 + 8].copy_from_slice(&value.to_le_bytes());
+    for (chunk, value) in bytes.as_chunks_mut::<8>().0.iter_mut().zip(values) {
+        *chunk = value.to_le_bytes();
     }
     V128::from_bytes(bytes)
 }
 
 fn f32x8(values: [f32; 8]) -> V256 {
     let mut bytes = [0u8; 32];
-    for (lane, value) in values.iter().enumerate() {
-        bytes[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+    for (chunk, value) in bytes.as_chunks_mut::<4>().0.iter_mut().zip(values) {
+        *chunk = value.to_le_bytes();
     }
     V256::from_bytes(bytes)
 }
 
 fn f32x8_lanes(value: V256) -> [f32; 8] {
     let bytes = value.to_bytes();
-    core::array::from_fn(|lane| {
-        f32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap())
-    })
+    let mut lanes = bytes.as_chunks::<4>().0.iter();
+    core::array::from_fn(|_| f32::from_le_bytes(*lanes.next().unwrap()))
 }
 
 #[test]

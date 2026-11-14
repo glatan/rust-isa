@@ -98,8 +98,8 @@ pub unsafe fn rshrnt_i16(a: &[i16], out: &mut [i8]) {
 pub unsafe fn sshllb_i16(a: &[i8], shift: i32, out: &mut [i16]) {
     assert!(a.len() >= out.len() * 2, "SVE source is too short");
     assert!((0..16).contains(&shift), "shift must be in 0..15");
-    for lane in 0..out.len() {
-        out[lane] = (a[lane * 2] as i16) << shift;
+    for (lane, elem) in out.iter_mut().enumerate() {
+        *elem = (a[lane * 2] as i16) << shift;
     }
 }
 
@@ -117,8 +117,8 @@ pub unsafe fn sshllb_i16(a: &[i8], shift: i32, out: &mut [i16]) {
 pub unsafe fn sshllt_i16(a: &[i8], shift: i32, out: &mut [i16]) {
     assert!(a.len() >= out.len() * 2, "SVE source is too short");
     assert!((0..16).contains(&shift), "shift must be in 0..15");
-    for lane in 0..out.len() {
-        out[lane] = (a[lane * 2 + 1] as i16) << shift;
+    for (lane, elem) in out.iter_mut().enumerate() {
+        *elem = (a[lane * 2 + 1] as i16) << shift;
     }
 }
 
@@ -136,8 +136,8 @@ pub unsafe fn sshllt_i16(a: &[i8], shift: i32, out: &mut [i16]) {
 pub unsafe fn ushllb_u16(a: &[u8], shift: i32, out: &mut [u16]) {
     assert!(a.len() >= out.len() * 2, "SVE source is too short");
     assert!((0..16).contains(&shift), "shift must be in 0..15");
-    for lane in 0..out.len() {
-        out[lane] = (a[lane * 2] as u16) << shift;
+    for (lane, elem) in out.iter_mut().enumerate() {
+        *elem = (a[lane * 2] as u16) << shift;
     }
 }
 
@@ -155,7 +155,7 @@ pub unsafe fn ushllb_u16(a: &[u8], shift: i32, out: &mut [u16]) {
 pub unsafe fn ushllt_u16(a: &[u8], shift: i32, out: &mut [u16]) {
     assert!(a.len() >= out.len() * 2, "SVE source is too short");
     assert!((0..16).contains(&shift), "shift must be in 0..15");
-    for lane in 0..out.len() {
-        out[lane] = (a[lane * 2 + 1] as u16) << shift;
+    for (lane, elem) in out.iter_mut().enumerate() {
+        *elem = (a[lane * 2 + 1] as u16) << shift;
     }
 }

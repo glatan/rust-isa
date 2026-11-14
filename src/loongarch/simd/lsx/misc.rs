@@ -8,9 +8,7 @@ pub fn vbsll(a: V128, shift: u32) -> V128 {
     let bytes = a.to_bytes();
     let mut out = [0u8; 16];
     let shift = (shift & 15) as usize;
-    for lane in shift..16 {
-        out[lane] = bytes[lane - shift];
-    }
+    out[shift..].copy_from_slice(&bytes[..16 - shift]);
     V128::from_bytes(out)
 }
 
@@ -20,9 +18,7 @@ pub fn vbsrl(a: V128, shift: u32) -> V128 {
     let bytes = a.to_bytes();
     let mut out = [0u8; 16];
     let shift = (shift & 15) as usize;
-    for lane in 0..16 - shift {
-        out[lane] = bytes[lane + shift];
-    }
+    out[..16 - shift].copy_from_slice(&bytes[shift..]);
     V128::from_bytes(out)
 }
 
@@ -44,104 +40,80 @@ pub fn vsetnez(a: V128) -> bool {
 #[inline(always)]
 pub fn vsetanyeqz_b(a: V128) -> bool {
     let bytes = a.to_bytes();
-    for lane in 0..16 {
-        let off = lane * 1;
-        if u8::from_le_bytes(bytes[off..off + 1].try_into().unwrap()) == 0 {
-            return true;
-        }
-    }
-    false
+    bytes.contains(&0)
 }
 
 /// `vsetanyeqz.h`
 #[inline(always)]
 pub fn vsetanyeqz_h(a: V128) -> bool {
     let bytes = a.to_bytes();
-    for lane in 0..8 {
-        let off = lane * 2;
-        if u16::from_le_bytes(bytes[off..off + 2].try_into().unwrap()) == 0 {
-            return true;
-        }
-    }
-    false
+    bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .any(|c| u16::from_le_bytes(*c) == 0)
 }
 
 /// `vsetanyeqz.w`
 #[inline(always)]
 pub fn vsetanyeqz_w(a: V128) -> bool {
     let bytes = a.to_bytes();
-    for lane in 0..4 {
-        let off = lane * 4;
-        if u32::from_le_bytes(bytes[off..off + 4].try_into().unwrap()) == 0 {
-            return true;
-        }
-    }
-    false
+    bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .any(|c| u32::from_le_bytes(*c) == 0)
 }
 
 /// `vsetanyeqz.d`
 #[inline(always)]
 pub fn vsetanyeqz_d(a: V128) -> bool {
     let bytes = a.to_bytes();
-    for lane in 0..2 {
-        let off = lane * 8;
-        if u64::from_le_bytes(bytes[off..off + 8].try_into().unwrap()) == 0 {
-            return true;
-        }
-    }
-    false
+    bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .any(|c| u64::from_le_bytes(*c) == 0)
 }
 
 /// `vsetallnez.b`
 #[inline(always)]
 pub fn vsetallnez_b(a: V128) -> bool {
     let bytes = a.to_bytes();
-    for lane in 0..16 {
-        let off = lane * 1;
-        if u8::from_le_bytes(bytes[off..off + 1].try_into().unwrap()) == 0 {
-            return false;
-        }
-    }
-    true
+    bytes.iter().all(|&b| b != 0)
 }
 
 /// `vsetallnez.h`
 #[inline(always)]
 pub fn vsetallnez_h(a: V128) -> bool {
     let bytes = a.to_bytes();
-    for lane in 0..8 {
-        let off = lane * 2;
-        if u16::from_le_bytes(bytes[off..off + 2].try_into().unwrap()) == 0 {
-            return false;
-        }
-    }
-    true
+    bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .all(|c| u16::from_le_bytes(*c) != 0)
 }
 
 /// `vsetallnez.w`
 #[inline(always)]
 pub fn vsetallnez_w(a: V128) -> bool {
     let bytes = a.to_bytes();
-    for lane in 0..4 {
-        let off = lane * 4;
-        if u32::from_le_bytes(bytes[off..off + 4].try_into().unwrap()) == 0 {
-            return false;
-        }
-    }
-    true
+    bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .all(|c| u32::from_le_bytes(*c) != 0)
 }
 
 /// `vsetallnez.d`
 #[inline(always)]
 pub fn vsetallnez_d(a: V128) -> bool {
     let bytes = a.to_bytes();
-    for lane in 0..2 {
-        let off = lane * 8;
-        if u64::from_le_bytes(bytes[off..off + 8].try_into().unwrap()) == 0 {
-            return false;
-        }
-    }
-    true
+    bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .all(|c| u64::from_le_bytes(*c) != 0)
 }
 
 /// `vbitseli.b`
@@ -151,8 +123,8 @@ pub fn vbitseli_b<const IMM: u8>(a: V128, b: V128) -> V128 {
     let bytes = a.to_bytes();
     let other = b.to_bytes();
     let mut out = [0u8; 16];
-    for lane in 0..16 {
-        out[lane] = (bytes[lane] & IMM) | (!bytes[lane] & other[lane]);
+    for ((out_elem, bytes_elem), other_elem) in out.iter_mut().zip(bytes.iter()).zip(other.iter()) {
+        *out_elem = (*bytes_elem & IMM) | (!*bytes_elem & *other_elem);
     }
     V128::from_bytes(out)
 }
@@ -211,11 +183,11 @@ pub fn vshuf4i_d<const IMM: u8>(a: V128, b: V128) -> V128 {
     let left = a.to_bytes();
     let right = b.to_bytes();
     let mut out = [0u8; 16];
-    for lane in 0..2 {
+    for (lane, chunk) in out.as_chunks_mut::<8>().0.iter_mut().enumerate() {
         let field = (IMM >> (2 * lane)) & 3;
         let source = if field & 2 != 0 { &right } else { &left };
         let index = (field & 1) as usize;
-        out[lane * 8..lane * 8 + 8].copy_from_slice(&source[index * 8..index * 8 + 8]);
+        chunk.copy_from_slice(&source[index * 8..index * 8 + 8]);
     }
     V128::from_bytes(out)
 }
@@ -226,10 +198,10 @@ pub fn vpermi_w<const IMM: u8>(a: V128, b: V128) -> V128 {
     let left = a.to_bytes();
     let right = b.to_bytes();
     let mut out = [0u8; 16];
-    for lane in 0..4 {
+    for (lane, chunk) in out.as_chunks_mut::<4>().0.iter_mut().enumerate() {
         let index = ((IMM >> (2 * lane)) & 3) as usize;
         let source = if lane < 2 { &right } else { &left };
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&source[index * 4..index * 4 + 4]);
+        chunk.copy_from_slice(&source[index * 4..index * 4 + 4]);
     }
     V128::from_bytes(out)
 }

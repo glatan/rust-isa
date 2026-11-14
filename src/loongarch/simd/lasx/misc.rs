@@ -13,10 +13,13 @@ pub unsafe fn xvbsll(a: V256, shift: u32) -> V256 {
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
     let shift = (shift & 15) as usize;
-    for half in 0..2 {
-        for lane in shift..16 {
-            out[half * 16 + lane] = bytes[half * 16 + lane - shift];
-        }
+    for (o, b) in out
+        .as_chunks_mut::<16>()
+        .0
+        .iter_mut()
+        .zip(bytes.as_chunks::<16>().0.iter())
+    {
+        o[shift..].copy_from_slice(&b[..16 - shift]);
     }
     V256::from_bytes(out)
 }
@@ -32,10 +35,13 @@ pub unsafe fn xvbsrl(a: V256, shift: u32) -> V256 {
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
     let shift = (shift & 15) as usize;
-    for half in 0..2 {
-        for lane in 0..16 - shift {
-            out[half * 16 + lane] = bytes[half * 16 + lane + shift];
-        }
+    for (o, b) in out
+        .as_chunks_mut::<16>()
+        .0
+        .iter_mut()
+        .zip(bytes.as_chunks::<16>().0.iter())
+    {
+        o[..16 - shift].copy_from_slice(&b[shift..]);
     }
     V256::from_bytes(out)
 }
@@ -73,13 +79,7 @@ pub unsafe fn xvsetnez(a: V256) -> bool {
 #[inline]
 pub unsafe fn xvsetanyeqz_b(a: V256) -> bool {
     let bytes = a.to_bytes();
-    for lane in 0..32 {
-        let off = lane * 1;
-        if u8::from_le_bytes(bytes[off..off + 1].try_into().unwrap()) == 0 {
-            return true;
-        }
-    }
-    false
+    bytes.contains(&0)
 }
 
 /// `xvsetanyeqz.h`
@@ -91,13 +91,11 @@ pub unsafe fn xvsetanyeqz_b(a: V256) -> bool {
 #[inline]
 pub unsafe fn xvsetanyeqz_h(a: V256) -> bool {
     let bytes = a.to_bytes();
-    for lane in 0..16 {
-        let off = lane * 2;
-        if u16::from_le_bytes(bytes[off..off + 2].try_into().unwrap()) == 0 {
-            return true;
-        }
-    }
-    false
+    bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .any(|c| u16::from_le_bytes(*c) == 0)
 }
 
 /// `xvsetanyeqz.w`
@@ -109,13 +107,11 @@ pub unsafe fn xvsetanyeqz_h(a: V256) -> bool {
 #[inline]
 pub unsafe fn xvsetanyeqz_w(a: V256) -> bool {
     let bytes = a.to_bytes();
-    for lane in 0..8 {
-        let off = lane * 4;
-        if u32::from_le_bytes(bytes[off..off + 4].try_into().unwrap()) == 0 {
-            return true;
-        }
-    }
-    false
+    bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .any(|c| u32::from_le_bytes(*c) == 0)
 }
 
 /// `xvsetanyeqz.d`
@@ -127,13 +123,11 @@ pub unsafe fn xvsetanyeqz_w(a: V256) -> bool {
 #[inline]
 pub unsafe fn xvsetanyeqz_d(a: V256) -> bool {
     let bytes = a.to_bytes();
-    for lane in 0..4 {
-        let off = lane * 8;
-        if u64::from_le_bytes(bytes[off..off + 8].try_into().unwrap()) == 0 {
-            return true;
-        }
-    }
-    false
+    bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .any(|c| u64::from_le_bytes(*c) == 0)
 }
 
 /// `xvsetallnez.b`
@@ -145,13 +139,7 @@ pub unsafe fn xvsetanyeqz_d(a: V256) -> bool {
 #[inline]
 pub unsafe fn xvsetallnez_b(a: V256) -> bool {
     let bytes = a.to_bytes();
-    for lane in 0..32 {
-        let off = lane * 1;
-        if u8::from_le_bytes(bytes[off..off + 1].try_into().unwrap()) == 0 {
-            return false;
-        }
-    }
-    true
+    bytes.iter().all(|&b| b != 0)
 }
 
 /// `xvsetallnez.h`
@@ -163,13 +151,11 @@ pub unsafe fn xvsetallnez_b(a: V256) -> bool {
 #[inline]
 pub unsafe fn xvsetallnez_h(a: V256) -> bool {
     let bytes = a.to_bytes();
-    for lane in 0..16 {
-        let off = lane * 2;
-        if u16::from_le_bytes(bytes[off..off + 2].try_into().unwrap()) == 0 {
-            return false;
-        }
-    }
-    true
+    bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .all(|c| u16::from_le_bytes(*c) != 0)
 }
 
 /// `xvsetallnez.w`
@@ -181,13 +167,11 @@ pub unsafe fn xvsetallnez_h(a: V256) -> bool {
 #[inline]
 pub unsafe fn xvsetallnez_w(a: V256) -> bool {
     let bytes = a.to_bytes();
-    for lane in 0..8 {
-        let off = lane * 4;
-        if u32::from_le_bytes(bytes[off..off + 4].try_into().unwrap()) == 0 {
-            return false;
-        }
-    }
-    true
+    bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .all(|c| u32::from_le_bytes(*c) != 0)
 }
 
 /// `xvsetallnez.d`
@@ -199,13 +183,11 @@ pub unsafe fn xvsetallnez_w(a: V256) -> bool {
 #[inline]
 pub unsafe fn xvsetallnez_d(a: V256) -> bool {
     let bytes = a.to_bytes();
-    for lane in 0..4 {
-        let off = lane * 8;
-        if u64::from_le_bytes(bytes[off..off + 8].try_into().unwrap()) == 0 {
-            return false;
-        }
-    }
-    true
+    bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .all(|c| u64::from_le_bytes(*c) != 0)
 }
 
 /// `xvsat.b`
@@ -221,11 +203,10 @@ pub unsafe fn xvsat_b<const IMM: u32>(a: V256) -> V256 {
     let mut out = [0u8; 32];
     let max = (1i128 << IMM) - 1;
     let min = -max - 1;
-    for lane in 0..32 {
-        let off = lane * 1;
-        let value = i8::from_le_bytes(bytes[off..off + 1].try_into().unwrap()) as i128;
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as i128;
         let clamped = value.clamp(min, max) as i8;
-        out[off..off + 1].copy_from_slice(&clamped.to_le_bytes());
+        *out_elem = clamped as u8;
     }
     V256::from_bytes(out)
 }
@@ -243,11 +224,15 @@ pub unsafe fn xvsat_h<const IMM: u32>(a: V256) -> V256 {
     let mut out = [0u8; 32];
     let max = (1i128 << IMM) - 1;
     let min = -max - 1;
-    for lane in 0..16 {
-        let off = lane * 2;
-        let value = i16::from_le_bytes(bytes[off..off + 2].try_into().unwrap()) as i128;
+    for (bytes_chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = i16::from_le_bytes(*bytes_chunk) as i128;
         let clamped = value.clamp(min, max) as i16;
-        out[off..off + 2].copy_from_slice(&clamped.to_le_bytes());
+        out_chunk.copy_from_slice(&clamped.to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -265,11 +250,15 @@ pub unsafe fn xvsat_w<const IMM: u32>(a: V256) -> V256 {
     let mut out = [0u8; 32];
     let max = (1i128 << IMM) - 1;
     let min = -max - 1;
-    for lane in 0..8 {
-        let off = lane * 4;
-        let value = i32::from_le_bytes(bytes[off..off + 4].try_into().unwrap()) as i128;
+    for (bytes_chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = i32::from_le_bytes(*bytes_chunk) as i128;
         let clamped = value.clamp(min, max) as i32;
-        out[off..off + 4].copy_from_slice(&clamped.to_le_bytes());
+        out_chunk.copy_from_slice(&clamped.to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -287,11 +276,15 @@ pub unsafe fn xvsat_d<const IMM: u32>(a: V256) -> V256 {
     let mut out = [0u8; 32];
     let max = (1i128 << IMM) - 1;
     let min = -max - 1;
-    for lane in 0..4 {
-        let off = lane * 8;
-        let value = i64::from_le_bytes(bytes[off..off + 8].try_into().unwrap()) as i128;
+    for (bytes_chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = i64::from_le_bytes(*bytes_chunk) as i128;
         let clamped = value.clamp(min, max) as i64;
-        out[off..off + 8].copy_from_slice(&clamped.to_le_bytes());
+        out_chunk.copy_from_slice(&clamped.to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -308,11 +301,9 @@ pub unsafe fn xvsat_bu<const IMM: u32>(a: V256) -> V256 {
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
     let max = (1i128 << (IMM + 1)) - 1;
-    for lane in 0..32 {
-        let off = lane * 1;
-        let value = u8::from_le_bytes(bytes[off..off + 1].try_into().unwrap()) as i128;
-        let clamped = value.clamp(0, max) as u8;
-        out[off..off + 1].copy_from_slice(&clamped.to_le_bytes());
+    for (bytes_elem, out_elem) in bytes.iter().zip(out.iter_mut()) {
+        let value = *bytes_elem as i128;
+        *out_elem = value.clamp(0, max) as u8;
     }
     V256::from_bytes(out)
 }
@@ -329,11 +320,15 @@ pub unsafe fn xvsat_hu<const IMM: u32>(a: V256) -> V256 {
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
     let max = (1i128 << (IMM + 1)) - 1;
-    for lane in 0..16 {
-        let off = lane * 2;
-        let value = u16::from_le_bytes(bytes[off..off + 2].try_into().unwrap()) as i128;
+    for (bytes_chunk, out_chunk) in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let value = u16::from_le_bytes(*bytes_chunk) as i128;
         let clamped = value.clamp(0, max) as u16;
-        out[off..off + 2].copy_from_slice(&clamped.to_le_bytes());
+        out_chunk.copy_from_slice(&clamped.to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -350,11 +345,15 @@ pub unsafe fn xvsat_wu<const IMM: u32>(a: V256) -> V256 {
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
     let max = (1i128 << (IMM + 1)) - 1;
-    for lane in 0..8 {
-        let off = lane * 4;
-        let value = u32::from_le_bytes(bytes[off..off + 4].try_into().unwrap()) as i128;
+    for (bytes_chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = u32::from_le_bytes(*bytes_chunk) as i128;
         let clamped = value.clamp(0, max) as u32;
-        out[off..off + 4].copy_from_slice(&clamped.to_le_bytes());
+        out_chunk.copy_from_slice(&clamped.to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -371,11 +370,15 @@ pub unsafe fn xvsat_du<const IMM: u32>(a: V256) -> V256 {
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
     let max = (1i128 << (IMM + 1)) - 1;
-    for lane in 0..4 {
-        let off = lane * 8;
-        let value = u64::from_le_bytes(bytes[off..off + 8].try_into().unwrap()) as i128;
+    for (bytes_chunk, out_chunk) in bytes
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let value = u64::from_le_bytes(*bytes_chunk) as i128;
         let clamped = value.clamp(0, max) as u64;
-        out[off..off + 8].copy_from_slice(&clamped.to_le_bytes());
+        out_chunk.copy_from_slice(&clamped.to_le_bytes());
     }
     V256::from_bytes(out)
 }
@@ -392,8 +395,8 @@ pub unsafe fn xvbitseli_b<const IMM: u8>(a: V256, b: V256) -> V256 {
     let bytes = a.to_bytes();
     let other = b.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..32 {
-        out[lane] = (bytes[lane] & IMM) | (!bytes[lane] & other[lane]);
+    for ((out_elem, bytes_elem), other_elem) in out.iter_mut().zip(bytes.iter()).zip(other.iter()) {
+        *out_elem = (*bytes_elem & IMM) | (!*bytes_elem & *other_elem);
     }
     V256::from_bytes(out)
 }
@@ -516,9 +519,9 @@ pub unsafe fn xvpermi_w<const IMM: u8>(a: V256, b: V256) -> V256 {
 pub unsafe fn xvpermi_d<const IMM: u8>(a: V256) -> V256 {
     let bytes = a.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..4 {
+    for (lane, chunk) in out.as_chunks_mut::<8>().0.iter_mut().enumerate() {
         let index = ((IMM >> (2 * lane)) & 3) as usize;
-        out[lane * 8..lane * 8 + 8].copy_from_slice(&bytes[index * 8..index * 8 + 8]);
+        chunk.copy_from_slice(&bytes[index * 8..index * 8 + 8]);
     }
     V256::from_bytes(out)
 }
@@ -534,11 +537,11 @@ pub unsafe fn xvpermi_q<const IMM: u8>(a: V256, b: V256) -> V256 {
     let left = a.to_bytes();
     let right = b.to_bytes();
     let mut out = [0u8; 32];
-    for lane in 0..2 {
+    for (lane, chunk) in out.as_chunks_mut::<16>().0.iter_mut().enumerate() {
         let field = (IMM >> (2 * lane)) & 3;
         let source = if field & 2 != 0 { &left } else { &right };
         let index = (field & 1) as usize;
-        out[lane * 16..lane * 16 + 16].copy_from_slice(&source[index * 16..index * 16 + 16]);
+        chunk.copy_from_slice(&source[index * 16..index * 16 + 16]);
     }
     V256::from_bytes(out)
 }

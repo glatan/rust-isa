@@ -5,17 +5,16 @@ use crate::simd::avx512::support::*;
 
 fn i64x4(values: [i64; 4]) -> V256 {
     let mut bytes = [0u8; 32];
-    for (lane, value) in values.iter().enumerate() {
-        bytes[lane * 8..lane * 8 + 8].copy_from_slice(&value.to_le_bytes());
+    for (chunk, value) in bytes.as_chunks_mut::<8>().0.iter_mut().zip(values) {
+        *chunk = value.to_le_bytes();
     }
     V256::from_bytes(bytes)
 }
 
 fn i64x4_lanes(value: V256) -> [i64; 4] {
     let bytes = value.to_bytes();
-    core::array::from_fn(|lane| {
-        i64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap())
-    })
+    let mut lanes = bytes.as_chunks::<8>().0.iter();
+    core::array::from_fn(|_| i64::from_le_bytes(*lanes.next().unwrap()))
 }
 
 #[test]

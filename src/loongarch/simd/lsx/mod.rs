@@ -2720,9 +2720,14 @@ pub fn vxor(a: V128, b: V128) -> V128 {
 pub fn vabs(a: V128) -> V128 {
     let bytes = a.to_bytes();
     let mut out = [0u8; 16];
-    for lane in 0..4 {
-        let value = i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.wrapping_abs().to_le_bytes());
+    for (bytes_chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = i32::from_le_bytes(*bytes_chunk);
+        out_chunk.copy_from_slice(&value.wrapping_abs().to_le_bytes());
     }
     V128::from_bytes(out)
 }
@@ -2732,9 +2737,14 @@ pub fn vabs(a: V128) -> V128 {
 pub fn vneg(a: V128) -> V128 {
     let bytes = a.to_bytes();
     let mut out = [0u8; 16];
-    for lane in 0..4 {
-        let value = i32::from_le_bytes(bytes[lane * 4..lane * 4 + 4].try_into().unwrap());
-        out[lane * 4..lane * 4 + 4].copy_from_slice(&value.wrapping_neg().to_le_bytes());
+    for (bytes_chunk, out_chunk) in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let value = i32::from_le_bytes(*bytes_chunk);
+        out_chunk.copy_from_slice(&value.wrapping_neg().to_le_bytes());
     }
     V128::from_bytes(out)
 }
@@ -2818,9 +2828,14 @@ pub fn vabs_b(a: V128) -> V128 {
 pub fn vabs_h(a: V128) -> V128 {
     let b = a.to_bytes();
     let mut o = [0u8; 16];
-    for i in 0..8 {
-        let v = i16::from_le_bytes([b[i * 2], b[i * 2 + 1]]);
-        o[i * 2..i * 2 + 2].copy_from_slice(&v.wrapping_abs().to_le_bytes());
+    for (b_chunk, o_chunk) in b
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(o.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let v = i16::from_le_bytes(*b_chunk);
+        o_chunk.copy_from_slice(&v.wrapping_abs().to_le_bytes());
     }
     V128::from_bytes(o)
 }
@@ -2830,9 +2845,14 @@ pub fn vabs_h(a: V128) -> V128 {
 pub fn vabs_d(a: V128) -> V128 {
     let b = a.to_bytes();
     let mut o = [0u8; 16];
-    for i in 0..2 {
-        let v = i64::from_le_bytes(b[i * 8..i * 8 + 8].try_into().unwrap());
-        o[i * 8..i * 8 + 8].copy_from_slice(&v.wrapping_abs().to_le_bytes());
+    for (b_chunk, o_chunk) in b
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(o.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let v = i64::from_le_bytes(*b_chunk);
+        o_chunk.copy_from_slice(&v.wrapping_abs().to_le_bytes());
     }
     V128::from_bytes(o)
 }
@@ -2850,9 +2870,14 @@ pub fn vneg_b(a: V128) -> V128 {
 pub fn vneg_h(a: V128) -> V128 {
     let b = a.to_bytes();
     let mut o = [0u8; 16];
-    for i in 0..8 {
-        let v = i16::from_le_bytes([b[i * 2], b[i * 2 + 1]]);
-        o[i * 2..i * 2 + 2].copy_from_slice(&v.wrapping_neg().to_le_bytes());
+    for (b_chunk, o_chunk) in b
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(o.as_chunks_mut::<2>().0.iter_mut())
+    {
+        let v = i16::from_le_bytes(*b_chunk);
+        o_chunk.copy_from_slice(&v.wrapping_neg().to_le_bytes());
     }
     V128::from_bytes(o)
 }
@@ -2862,9 +2887,14 @@ pub fn vneg_h(a: V128) -> V128 {
 pub fn vneg_d(a: V128) -> V128 {
     let b = a.to_bytes();
     let mut o = [0u8; 16];
-    for i in 0..2 {
-        let v = i64::from_le_bytes(b[i * 8..i * 8 + 8].try_into().unwrap());
-        o[i * 8..i * 8 + 8].copy_from_slice(&v.wrapping_neg().to_le_bytes());
+    for (b_chunk, o_chunk) in b
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(o.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let v = i64::from_le_bytes(*b_chunk);
+        o_chunk.copy_from_slice(&v.wrapping_neg().to_le_bytes());
     }
     V128::from_bytes(o)
 }
@@ -2875,10 +2905,16 @@ pub fn vmax(a: V128, b: V128) -> V128 {
     let a = a.to_bytes();
     let b = b.to_bytes();
     let mut o = [0u8; 16];
-    for i in 0..4 {
-        let x = i32::from_le_bytes(a[i * 4..i * 4 + 4].try_into().unwrap());
-        let y = i32::from_le_bytes(b[i * 4..i * 4 + 4].try_into().unwrap());
-        o[i * 4..i * 4 + 4].copy_from_slice(&x.max(y).to_le_bytes());
+    for ((a_chunk, b_chunk), o_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(b.as_chunks::<4>().0.iter())
+        .zip(o.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        let y = i32::from_le_bytes(*b_chunk);
+        o_chunk.copy_from_slice(&x.max(y).to_le_bytes());
     }
     V128::from_bytes(o)
 }
@@ -2889,10 +2925,16 @@ pub fn vmin(a: V128, b: V128) -> V128 {
     let a = a.to_bytes();
     let b = b.to_bytes();
     let mut o = [0u8; 16];
-    for i in 0..4 {
-        let x = i32::from_le_bytes(a[i * 4..i * 4 + 4].try_into().unwrap());
-        let y = i32::from_le_bytes(b[i * 4..i * 4 + 4].try_into().unwrap());
-        o[i * 4..i * 4 + 4].copy_from_slice(&x.min(y).to_le_bytes());
+    for ((a_chunk, b_chunk), o_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(b.as_chunks::<4>().0.iter())
+        .zip(o.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        let y = i32::from_le_bytes(*b_chunk);
+        o_chunk.copy_from_slice(&x.min(y).to_le_bytes());
     }
     V128::from_bytes(o)
 }
@@ -2903,10 +2945,16 @@ pub fn vseq(a: V128, b: V128) -> V128 {
     let a = a.to_bytes();
     let b = b.to_bytes();
     let mut o = [0u8; 16];
-    for i in 0..4 {
-        let x = i32::from_le_bytes(a[i * 4..i * 4 + 4].try_into().unwrap());
-        let y = i32::from_le_bytes(b[i * 4..i * 4 + 4].try_into().unwrap());
-        o[i * 4..i * 4 + 4].copy_from_slice(&(if x == y { -1i32 } else { 0 }).to_le_bytes());
+    for ((a_chunk, b_chunk), o_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(b.as_chunks::<4>().0.iter())
+        .zip(o.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        let y = i32::from_le_bytes(*b_chunk);
+        o_chunk.copy_from_slice(&(if x == y { -1i32 } else { 0 }).to_le_bytes());
     }
     V128::from_bytes(o)
 }
@@ -2917,10 +2965,16 @@ pub fn vsle(a: V128, b: V128) -> V128 {
     let a = a.to_bytes();
     let b = b.to_bytes();
     let mut o = [0u8; 16];
-    for i in 0..4 {
-        let x = i32::from_le_bytes(a[i * 4..i * 4 + 4].try_into().unwrap());
-        let y = i32::from_le_bytes(b[i * 4..i * 4 + 4].try_into().unwrap());
-        o[i * 4..i * 4 + 4].copy_from_slice(&(if x <= y { -1i32 } else { 0 }).to_le_bytes());
+    for ((a_chunk, b_chunk), o_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(b.as_chunks::<4>().0.iter())
+        .zip(o.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        let y = i32::from_le_bytes(*b_chunk);
+        o_chunk.copy_from_slice(&(if x <= y { -1i32 } else { 0 }).to_le_bytes());
     }
     V128::from_bytes(o)
 }
@@ -2931,10 +2985,16 @@ pub fn vslt(a: V128, b: V128) -> V128 {
     let a = a.to_bytes();
     let b = b.to_bytes();
     let mut o = [0u8; 16];
-    for i in 0..4 {
-        let x = i32::from_le_bytes(a[i * 4..i * 4 + 4].try_into().unwrap());
-        let y = i32::from_le_bytes(b[i * 4..i * 4 + 4].try_into().unwrap());
-        o[i * 4..i * 4 + 4].copy_from_slice(&(if x < y { -1i32 } else { 0 }).to_le_bytes());
+    for ((a_chunk, b_chunk), o_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(b.as_chunks::<4>().0.iter())
+        .zip(o.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        let y = i32::from_le_bytes(*b_chunk);
+        o_chunk.copy_from_slice(&(if x < y { -1i32 } else { 0 }).to_le_bytes());
     }
     V128::from_bytes(o)
 }
@@ -2944,9 +3004,14 @@ pub fn vslt(a: V128, b: V128) -> V128 {
 pub fn vseqi(a: V128, imm: i32) -> V128 {
     let a = a.to_bytes();
     let mut o = [0u8; 16];
-    for i in 0..4 {
-        let x = i32::from_le_bytes(a[i * 4..i * 4 + 4].try_into().unwrap());
-        o[i * 4..i * 4 + 4].copy_from_slice(&(if x == imm { -1i32 } else { 0 }).to_le_bytes());
+    for (a_chunk, o_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(o.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        o_chunk.copy_from_slice(&(if x == imm { -1i32 } else { 0 }).to_le_bytes());
     }
     V128::from_bytes(o)
 }
@@ -2956,9 +3021,14 @@ pub fn vseqi(a: V128, imm: i32) -> V128 {
 pub fn vslei(a: V128, imm: i32) -> V128 {
     let a = a.to_bytes();
     let mut o = [0u8; 16];
-    for i in 0..4 {
-        let x = i32::from_le_bytes(a[i * 4..i * 4 + 4].try_into().unwrap());
-        o[i * 4..i * 4 + 4].copy_from_slice(&(if x <= imm { -1i32 } else { 0 }).to_le_bytes());
+    for (a_chunk, o_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(o.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        o_chunk.copy_from_slice(&(if x <= imm { -1i32 } else { 0 }).to_le_bytes());
     }
     V128::from_bytes(o)
 }
@@ -2968,9 +3038,14 @@ pub fn vslei(a: V128, imm: i32) -> V128 {
 pub fn vslti(a: V128, imm: i32) -> V128 {
     let a = a.to_bytes();
     let mut o = [0u8; 16];
-    for i in 0..4 {
-        let x = i32::from_le_bytes(a[i * 4..i * 4 + 4].try_into().unwrap());
-        o[i * 4..i * 4 + 4].copy_from_slice(&(if x < imm { -1i32 } else { 0 }).to_le_bytes());
+    for (a_chunk, o_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(o.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        o_chunk.copy_from_slice(&(if x < imm { -1i32 } else { 0 }).to_le_bytes());
     }
     V128::from_bytes(o)
 }
@@ -3018,9 +3093,14 @@ pub fn vshuf4i<const IMM: u8>(a: V128) -> V128 {
 pub fn vsll(a: V128, shift: i32) -> V128 {
     let a = a.to_bytes();
     let mut o = [0u8; 16];
-    for i in 0..4 {
-        let x = i32::from_le_bytes(a[i * 4..i * 4 + 4].try_into().unwrap());
-        o[i * 4..i * 4 + 4].copy_from_slice(&(x << ((shift as u32) & 31)).to_le_bytes());
+    for (a_chunk, o_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(o.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        o_chunk.copy_from_slice(&(x << ((shift as u32) & 31)).to_le_bytes());
     }
     V128::from_bytes(o)
 }
@@ -3030,9 +3110,14 @@ pub fn vsll(a: V128, shift: i32) -> V128 {
 pub fn vsrl(a: V128, shift: i32) -> V128 {
     let a = a.to_bytes();
     let mut o = [0u8; 16];
-    for i in 0..4 {
-        let x = u32::from_le_bytes(a[i * 4..i * 4 + 4].try_into().unwrap());
-        o[i * 4..i * 4 + 4].copy_from_slice(&(x >> ((shift as u32) & 31)).to_le_bytes());
+    for (a_chunk, o_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(o.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = u32::from_le_bytes(*a_chunk);
+        o_chunk.copy_from_slice(&(x >> ((shift as u32) & 31)).to_le_bytes());
     }
     V128::from_bytes(o)
 }
@@ -3042,9 +3127,14 @@ pub fn vsrl(a: V128, shift: i32) -> V128 {
 pub fn vsra(a: V128, shift: i32) -> V128 {
     let a = a.to_bytes();
     let mut o = [0u8; 16];
-    for i in 0..4 {
-        let x = i32::from_le_bytes(a[i * 4..i * 4 + 4].try_into().unwrap());
-        o[i * 4..i * 4 + 4].copy_from_slice(&(x >> ((shift as u32) & 31)).to_le_bytes());
+    for (a_chunk, o_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(o.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        o_chunk.copy_from_slice(&(x >> ((shift as u32) & 31)).to_le_bytes());
     }
     V128::from_bytes(o)
 }
@@ -3054,9 +3144,14 @@ pub fn vsra(a: V128, shift: i32) -> V128 {
 pub fn vslli<const SHIFT: u32>(a: V128) -> V128 {
     let a = a.to_bytes();
     let mut o = [0u8; 16];
-    for i in 0..4 {
-        let x = i32::from_le_bytes(a[i * 4..i * 4 + 4].try_into().unwrap());
-        o[i * 4..i * 4 + 4].copy_from_slice(&(x << (SHIFT & 31)).to_le_bytes());
+    for (a_chunk, o_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(o.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        o_chunk.copy_from_slice(&(x << (SHIFT & 31)).to_le_bytes());
     }
     V128::from_bytes(o)
 }
@@ -3066,9 +3161,14 @@ pub fn vslli<const SHIFT: u32>(a: V128) -> V128 {
 pub fn vsrli<const SHIFT: u32>(a: V128) -> V128 {
     let a = a.to_bytes();
     let mut o = [0u8; 16];
-    for i in 0..4 {
-        let x = u32::from_le_bytes(a[i * 4..i * 4 + 4].try_into().unwrap());
-        o[i * 4..i * 4 + 4].copy_from_slice(&(x >> (SHIFT & 31)).to_le_bytes());
+    for (a_chunk, o_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(o.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = u32::from_le_bytes(*a_chunk);
+        o_chunk.copy_from_slice(&(x >> (SHIFT & 31)).to_le_bytes());
     }
     V128::from_bytes(o)
 }
@@ -3078,9 +3178,14 @@ pub fn vsrli<const SHIFT: u32>(a: V128) -> V128 {
 pub fn vsrai<const SHIFT: u32>(a: V128) -> V128 {
     let a = a.to_bytes();
     let mut o = [0u8; 16];
-    for i in 0..4 {
-        let x = i32::from_le_bytes(a[i * 4..i * 4 + 4].try_into().unwrap());
-        o[i * 4..i * 4 + 4].copy_from_slice(&(x >> (SHIFT & 31)).to_le_bytes());
+    for (a_chunk, o_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(o.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = i32::from_le_bytes(*a_chunk);
+        o_chunk.copy_from_slice(&(x >> (SHIFT & 31)).to_le_bytes());
     }
     V128::from_bytes(o)
 }
@@ -3108,24 +3213,22 @@ pub fn vpackod(a: V128, b: V128) -> V128 {
 #[inline(always)]
 fn i64_lanes(a: V128) -> [i64; 2] {
     let bytes = a.to_bytes();
-    core::array::from_fn(|lane| {
-        i64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap())
-    })
+    let mut lanes = bytes.as_chunks::<8>().0.iter();
+    core::array::from_fn(|_| i64::from_le_bytes(*lanes.next().unwrap()))
 }
 
 #[inline(always)]
 fn u64_lanes(a: V128) -> [u64; 2] {
     let bytes = a.to_bytes();
-    core::array::from_fn(|lane| {
-        u64::from_le_bytes(bytes[lane * 8..lane * 8 + 8].try_into().unwrap())
-    })
+    let mut lanes = bytes.as_chunks::<8>().0.iter();
+    core::array::from_fn(|_| u64::from_le_bytes(*lanes.next().unwrap()))
 }
 
 #[inline(always)]
 fn from_u32_lanes(lanes: [u32; 4]) -> V128 {
     let mut bytes = [0u8; 16];
-    for (lane, value) in lanes.iter().enumerate() {
-        bytes[lane * 4..lane * 4 + 4].copy_from_slice(&value.to_le_bytes());
+    for (chunk, value) in bytes.as_chunks_mut::<4>().0.iter_mut().zip(lanes.iter()) {
+        chunk.copy_from_slice(&value.to_le_bytes());
     }
     V128::from_bytes(bytes)
 }
@@ -3137,9 +3240,9 @@ fn from_u32_lanes(lanes: [u32; 4]) -> V128 {
 pub fn vext(a: V128) -> V128 {
     let a = a.to_bytes();
     let mut out = [0u8; 16];
-    for lane in 0..8 {
-        let value = (a[lane] as i8 as i16).to_le_bytes();
-        out[lane * 2..lane * 2 + 2].copy_from_slice(&value);
+    for (elem, chunk) in a.iter().zip(out.as_chunks_mut::<2>().0.iter_mut()) {
+        let value = (*elem as i8 as i16).to_le_bytes();
+        *chunk = value;
     }
     V128::from_bytes(out)
 }
@@ -3494,9 +3597,8 @@ macro_rules! vssr_word_doubleword {
             }
             let mut lanes = [0u32; 4];
             let sources = u64_lanes(a).into_iter().chain(u64_lanes(b));
-            for (lane, value) in sources.enumerate() {
-                lanes[lane] = $body(value);
-            }
+            for (elem, value) in lanes.iter_mut().zip(sources) {
+                *elem = $body(value);}
             from_u32_lanes(lanes)
         }
     };
@@ -3544,8 +3646,8 @@ pub fn vssrarn_w_d<const SHIFT: u32>(a: V128, b: V128) -> V128 {
     }
     let sources = i64_lanes(a).into_iter().chain(i64_lanes(b));
     let mut lanes = [0u32; 4];
-    for (lane, value) in sources.enumerate() {
-        lanes[lane] = ssr_arithmetic(value, SHIFT, true) as u32;
+    for (elem, value) in lanes.iter_mut().zip(sources) {
+        *elem = ssr_arithmetic(value, SHIFT, true) as u32;
     }
     from_u32_lanes(lanes)
 }
@@ -3561,8 +3663,8 @@ pub fn vssrarn_wu_du<const SHIFT: u32>(a: V128, b: V128) -> V128 {
     }
     let mut lanes = [0u32; 4];
     let sources = u64_lanes(a).into_iter().chain(u64_lanes(b));
-    for (lane, value) in sources.enumerate() {
-        lanes[lane] = if (value as i64) < 0 {
+    for (elem, value) in lanes.iter_mut().zip(sources) {
+        *elem = if (value as i64) < 0 {
             0
         } else {
             ssr_logical(value, SHIFT, true, u32::MAX)
@@ -3581,11 +3683,16 @@ pub fn vssr(a: V128, b: V128) -> V128 {
     let a = a.to_bytes();
     let b = b.to_bytes();
     let mut out = [0u8; 16];
-    for lane in 0..8 {
-        let offset = lane * 2;
-        let source = u16::from_le_bytes([a[offset], a[offset + 1]]);
-        let shift = u16::from_le_bytes([b[offset], b[offset + 1]]) % 16;
-        out[lane] = (source >> shift).min(0xff) as u8;
+    for ((a_chunk, b_chunk), out_elem) in a
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .zip(b.as_chunks::<2>().0.iter())
+        .zip(out.iter_mut())
+    {
+        let source = u16::from_le_bytes(*a_chunk);
+        let shift = u16::from_le_bytes(*b_chunk) % 16;
+        *out_elem = (source >> shift).min(0xff) as u8;
     }
     V128::from_bytes(out)
 }
@@ -3719,16 +3826,21 @@ pub fn vfcmp<const COND: u32>(a: V128, b: V128) -> V128 {
     let a = a.to_bytes();
     let b = b.to_bytes();
     let mut out = [0u8; 16];
-    for lane in 0..4 {
-        let offset = lane * 4;
-        let x = f32::from_le_bytes(a[offset..offset + 4].try_into().unwrap());
-        let y = f32::from_le_bytes(b[offset..offset + 4].try_into().unwrap());
+    for ((a_chunk, b_chunk), out_chunk) in a
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .zip(b.as_chunks::<4>().0.iter())
+        .zip(out.as_chunks_mut::<4>().0.iter_mut())
+    {
+        let x = f32::from_le_bytes(*a_chunk);
+        let y = f32::from_le_bytes(*b_chunk);
         let hit = (less && x < y)
             || (equal && x == y)
             || (unordered && (x.is_nan() || y.is_nan()))
             || (ordered_ne && (x < y || x > y));
         let value = if hit { -1i32 } else { 0 };
-        out[offset..offset + 4].copy_from_slice(&value.to_le_bytes());
+        out_chunk.copy_from_slice(&value.to_le_bytes());
     }
     V128::from_bytes(out)
 }
@@ -3746,16 +3858,21 @@ pub fn vfcmp_d<const COND: u32>(a: V128, b: V128) -> V128 {
     let a = a.to_bytes();
     let b = b.to_bytes();
     let mut out = [0u8; 16];
-    for lane in 0..2 {
-        let offset = lane * 8;
-        let x = f64::from_le_bytes(a[offset..offset + 8].try_into().unwrap());
-        let y = f64::from_le_bytes(b[offset..offset + 8].try_into().unwrap());
+    for ((a_chunk, b_chunk), out_chunk) in a
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .zip(b.as_chunks::<8>().0.iter())
+        .zip(out.as_chunks_mut::<8>().0.iter_mut())
+    {
+        let x = f64::from_le_bytes(*a_chunk);
+        let y = f64::from_le_bytes(*b_chunk);
         let hit = (less && x < y)
             || (equal && x == y)
             || (unordered && (x.is_nan() || y.is_nan()))
             || (ordered_ne && (x < y || x > y));
         let value = if hit { -1i64 } else { 0 };
-        out[offset..offset + 8].copy_from_slice(&value.to_le_bytes());
+        out_chunk.copy_from_slice(&value.to_le_bytes());
     }
     V128::from_bytes(out)
 }

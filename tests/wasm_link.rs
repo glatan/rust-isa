@@ -60,7 +60,7 @@ fn assert_undefined_symbols(archive: &Path) {
     let undefined = String::from_utf8_lossy(&nm.stdout);
     for line in undefined.lines() {
         let mut parts = line.split_whitespace();
-        if parts.next() == Some("U") {
+        if matches!(parts.next(), Some("U")) {
             let symbol = parts.next().unwrap_or("");
             assert_eq!(
                 symbol, "__stack_pointer",
@@ -86,7 +86,7 @@ fn check_without_simd128() {
         .expect("cargo");
     assert!(output.status.success(), "{}", output_text(&output));
     for path in files_under(&dir) {
-        if path.extension().and_then(|ext| ext.to_str()) != Some("rlib") {
+        if path.extension().is_none_or(|ext| ext != "rlib") {
             continue;
         }
         let nm = Command::new("llvm-nm")

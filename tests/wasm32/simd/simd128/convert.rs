@@ -128,9 +128,9 @@ fn trunc_sat_convert_promote_and_swizzle() {
     let source = V128::from_bytes([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
     let indices = V128::from_bytes([15, 0, 2, 16, 1, 1, 7, 8, 9, 10, 11, 12, 13, 14, 20, 3]);
     let mut expected = [0u8; 16];
-    for lane in 0..16 {
+    for (lane, elem) in expected.iter_mut().enumerate() {
         let index = indices.to_bytes()[lane];
-        expected[lane] = if index < 16 {
+        *elem = if index < 16 {
             source.to_bytes()[index as usize]
         } else {
             0
